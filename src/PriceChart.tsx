@@ -10,6 +10,7 @@ import {
   TickMarkType,
   type IChartApi,
   type ISeriesApi,
+  type IPriceLine,
   type UTCTimestamp,
 } from 'lightweight-charts';
 import {
@@ -23,6 +24,9 @@ import type { Candle, Drawing, Interval, Period, Point } from '../shared/types';
 import { dateLabel, money, priceDigits, periodStart, save, saved } from './lib';
 import { ChartRangeControl } from './ChartRangeControl';
 import { zoomChartRange } from './chart-range';
+import { THRESHOLDS, thresholdState } from '../shared/thresholds';
+import { ThresholdBands } from './ThresholdBands';
+import { ThresholdLegend } from './ThresholdLegend';
 import './chart-improvements.css';
 const EMPTY: Candle[] = [];
 const ts = (t: number) => t as UTCTimestamp;
@@ -58,12 +62,15 @@ export const PriceChart = memo(function PriceChart({
   const container = useRef<HTMLDivElement>(null);
   const chartRef = useRef<IChartApi | null>(null);
   const candlesRef = useRef<ISeriesApi<'Candlestick'> | null>(null);
+  const thresholdBands = useRef<ThresholdBands[]>([]);
+  const thresholdLines = useRef<IPriceLine[]>([]);
+  const [showThresholds, setShowThresholds] = useState(true);
   const toolRef = useRef(tool);
   const doneRef = useRef(onToolDone);
   toolRef.current = tool;
   doneRef.current = onToolDone;
-  const settingsRef = useRef({ period, log });
-  settingsRef.current = { period, log };
+  const settingsRef = useRef({ period, log, showThresholds });
+  settingsRef.current = { period, log, showThresholds };
   const [drawings, setDrawings] = useState<Drawing[]>(() =>
     validDrawings(saved('drawings.' + scope, [])),
   );
@@ -229,16 +236,23 @@ export const PriceChart = memo(function PriceChart({
         s.applyOptions({
           autoscaleInfoProvider: () => ({ priceRange: { minValue: 0, maxValue: 100 } }),
         });
-        for (const price of [30, 70])
-          s.createPriceLine({
-            price,
-            color: '#66517a',
-            lineWidth: 1,
-            lineStyle: LineStyle.Dashed,
-            axisLabelVisible: true,
-            title: '',
-          });
-        chart.panes()[pane].setHeight(90);
+        const bands = new ThresholdBands(THRESHOLDS.rsi.bands);
+        bands.setVisible(settingsRef.current.showThresholds);
+        s.attachPrimitive(bands);
+        thresholdBands.current.push(bands);
+        for (const boundary of THRESHOLDS.rsi.boundaries)
+          thresholdLines.current.push(
+            s.createPriceLine({
+              price: boundary.value,
+              color: boundary.color,
+              lineWidth: 1,
+              lineStyle: LineStyle.Dashed,
+              lineVisible: settingsRef.current.showThresholds,
+              axisLabelVisible: settingsRef.current.showThresholds,
+              title: boundary.value === 30 ? '과매도 참고' : '과매수 참고',
+            }),
+          );
+        chart.panes()[pane].setHeight(105);
       } else if (definition.kind === 'macd') {
         const pane = nextPane++;
         for (const [index, points] of calculated[id].entries()) {
@@ -270,6 +284,18 @@ export const PriceChart = memo(function PriceChart({
             );
             line.setData(lineData(points));
             line.priceScale().applyOptions({ mode: PriceScaleMode.Normal });
+            if (index === 0)
+              thresholdLines.current.push(
+                line.createPriceLine({
+                  price: 0,
+                  color: '#8799af',
+                  lineWidth: 1,
+                  lineStyle: LineStyle.Dashed,
+                  lineVisible: settingsRef.current.showThresholds,
+                  axisLabelVisible: settingsRef.current.showThresholds,
+                  title: 'EMA12 = EMA26',
+                }),
+              );
           }
         }
         chart.panes()[pane].setHeight(100);
@@ -373,6 +399,8 @@ export const PriceChart = memo(function PriceChart({
       chart.remove();
       chartRef.current = null;
       candlesRef.current = null;
+      thresholdBands.current = [];
+      thresholdLines.current = [];
       redraw.current = null;
     };
   }, [candles, candlesByTime, calculated, interval, large, scope, unit, indicators]);
@@ -381,6 +409,12 @@ export const PriceChart = memo(function PriceChart({
       ?.priceScale()
       .applyOptions({ mode: log ? PriceScaleMode.Logarithmic : PriceScaleMode.Normal });
   }, [log]);
+  useEffect(() => {
+    thresholdBands.current.forEach((band) => band.setVisible(showThresholds));
+    thresholdLines.current.forEach((line) =>
+      line.applyOptions({ lineVisible: showThresholds, axisLabelVisible: showThresholds }),
+    );
+  }, [showThresholds]);
   useEffect(() => {
     const last = candles.at(-1)?.time;
     if (last === undefined) return;
@@ -491,6 +525,13 @@ export const PriceChart = memo(function PriceChart({
                   {v === undefined ? '—' : spec?.kind === 'rsi' ? v.toFixed(1) : money(v, unit)}
                 </b>
               ))}
+              {spec?.kind === 'rsi' && current[0] !== undefined ? (
+                <small style={{ color: thresholdState('rsi', current[0])?.color }}>
+                  {thresholdState('rsi', current[0])?.label} · 30 / 70
+                </small>
+              ) : null}
+              {spec?.kind === 'bb' ? <small>변동성 범위 · ±{spec.multiplier}σ</small> : null}
+              {spec?.kind === 'macd' ? <small>0 = EMA12와 EMA26 같음</small> : null}
             </span>
           );
         })}
@@ -553,10 +594,70 @@ export const PriceChart = memo(function PriceChart({
         </button>
         <button onClick={resetView}>화면 맞춤</button>
         <button onClick={exportCsv}>보이는 구간 CSV</button>
+        {indicators.some((id) => ['rsi', 'macd'].includes(indicatorSpec(id)?.kind ?? '')) ? (
+          <button aria-pressed={showThresholds} onClick={() => setShowThresholds(!showThresholds)}>
+            지표 참고 구간 {showThresholds ? '숨기기' : '표시'}
+          </button>
+        ) : null}
         <button aria-expanded={drawingList} onClick={() => setDrawingList(!drawingList)}>
           그린 선 관리 {drawings.length ? `(${drawings.length})` : ''}
         </button>
       </div>
+      {indicators.some((id) => ['rsi', 'bb', 'macd'].includes(indicatorSpec(id)?.kind ?? '')) ? (
+        <details className="threshold-technical">
+          <summary>기술지표 경계값 읽기 · RSI 30 / 70 · 볼린저밴드 · MACD 0</summary>
+          {indicators
+            .filter((id) => indicatorSpec(id)?.kind === 'rsi')
+            .map((id) => (
+              <ThresholdLegend
+                key={id}
+                id="rsi"
+                dataSource={scope.replaceAll('.', ' · ') + ' 거래소 종가'}
+                point={pointAtOrBefore(calculated[id]?.[0] ?? [], display?.time ?? Infinity)}
+                readingLabel={
+                  (indicatorSpec(id)?.label ?? 'RSI') +
+                  (display?.closed === false ? ' · 진행 중인 봉' : ' · 관측')
+                }
+              />
+            ))}
+          {indicators.some((id) => indicatorSpec(id)?.kind === 'bb') ? (
+            <div className="threshold-legend">
+              <b>볼린저밴드: 중심선 ± 설정한 표준편차 배수</b>
+              <p className="threshold-note">
+                기본은 20봉 SMA ± 2σ입니다. 밴드 접촉은 변동성 범위의 위치이며, 과매수·과매도나 추세
+                반전을 확정하지 않습니다. 강한 추세에서는 한쪽 밴드를 따라 이동할 수 있습니다.
+              </p>
+              <div className="threshold-sources">
+                <a
+                  href="https://www.tradingview.com/support/solutions/43000501840-bollinger-bands-bb/"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  TradingView 볼린저밴드 원문 ↗
+                </a>
+              </div>
+            </div>
+          ) : null}
+          {indicators.some((id) => indicatorSpec(id)?.kind === 'macd') ? (
+            <div className="threshold-legend">
+              <b>MACD 0: EMA12 = EMA26</b>
+              <p className="threshold-note">
+                MACD선의 0 위·아래는 단기·장기 평균의 위치를, 히스토그램의 0 위·아래는 MACD와 신호
+                EMA9의 위치를 뜻합니다. 고정 과열·과매도 경계는 없습니다.
+              </p>
+              <div className="threshold-sources">
+                <a
+                  href="https://www.tradingview.com/support/solutions/43000502344-moving-average-convergence-divergence-macd-indicator/"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  TradingView MACD 원문 ↗
+                </a>
+              </div>
+            </div>
+          ) : null}
+        </details>
+      ) : null}
       <ChartRangeControl
         rows={candles}
         resetKey={scope + ':' + period}

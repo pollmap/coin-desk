@@ -25,6 +25,7 @@ beforeEach(() => {
     'quotes:binance:0',
     'quotes:upbit:0',
     'reference:BTC',
+    'network:BTC',
   ])
     DB.sqlite
       .prepare('INSERT INTO ingestion(key,last_attempt,last_success,data_as_of) VALUES(?,?,?,?)')

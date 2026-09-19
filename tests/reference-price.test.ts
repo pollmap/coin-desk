@@ -76,7 +76,7 @@ describe('reference API against actual SQLite and Worker routing', () => {
     db = openDatabase(':memory:');
     env = {
       DB: db,
-      ENABLED_ASSETS: 'BTC,DOGE,ETH,SOL',
+      ENABLED_ASSETS: 'BTC,DOGE,ETH,XRP,LINK,SOL',
       BITVIEW_BASE_URL: 'https://bitview.space',
       ASSETS: { fetch: async () => new Response('asset') } as unknown as Fetcher,
     };
@@ -102,7 +102,7 @@ describe('reference API against actual SQLite and Worker routing', () => {
   };
 
   it('returns asset-specific daily points with explicit provenance, never invented candles or a second price source', async () => {
-    for (const [index, asset] of (['BTC', 'DOGE', 'ETH'] as const).entries()) {
+    for (const [index, asset] of (['BTC', 'DOGE', 'ETH', 'XRP', 'LINK'] as const).entries()) {
       insert([{ time: now - DAY, value: index + 0.12345678 }], asset);
       await success(db, 'reference:' + asset, now - DAY);
       const response = await request('asset=' + asset);

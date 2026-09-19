@@ -5,7 +5,7 @@ DEST = ROOT.parent / 'Coin-Desk-source.zip'
 ROOT_FILES = ['.gitignore', '.gitattributes', '.nvmrc', '.prettierrc.json', 'README.md', 'package.json',
               'package-lock.json', 'tsconfig.json', 'vite.config.ts', 'wrangler.jsonc', 'index.html']
 files = [ROOT / name for name in ROOT_FILES]
-for folder in ['src', 'shared', 'worker', 'migrations', 'scripts', 'tests', 'docs', '.github', 'pages']:
+for folder in ['src', 'shared', 'worker', 'migrations', 'scripts', 'tests', 'docs', '.github', 'pages', 'public']:
     files.extend(p for p in (ROOT / folder).rglob('*')
                  if p.is_file() and '__pycache__' not in p.parts and '.wrangler' not in p.parts and p.suffix != '.pyc')
 with zipfile.ZipFile(DEST, 'w', compression=zipfile.ZIP_DEFLATED) as archive:

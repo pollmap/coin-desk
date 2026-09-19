@@ -6,7 +6,7 @@ Community data attribution: Coin Metrics, CC BY-NC 4.0; noncommercial use only.
 import argparse, datetime as dt, hashlib, json, math, pathlib, time, urllib.request
 ROOT=pathlib.Path(__file__).resolve().parents[1]
 BASE='https://community-api.coinmetrics.io/v4/timeseries/asset-metrics'
-ASSETS=['BTC','DOGE','ETH']
+ASSETS=['BTC','DOGE','ETH','XRP','LINK']
 def collect(asset,folder):
     url=BASE+'?assets='+asset.lower()+'&metrics=PriceUSD&frequency=1d&page_size=10000&start_time=2009-01-01&paging_from=start'
     request=urllib.request.Request(url,headers={'User-Agent':'CoinDesk/0.4 personal noncommercial dashboard'})
@@ -34,8 +34,8 @@ def collect(asset,folder):
     print(json.dumps(audit,ensure_ascii=False),flush=True)
     return audit
 if __name__=='__main__':
-    parser=argparse.ArgumentParser();parser.add_argument('--assets',default=','.join(ASSETS));args=parser.parse_args()
-    folder=ROOT/'work/reference';folder.mkdir(parents=True,exist_ok=True)
+    parser=argparse.ArgumentParser();parser.add_argument('--assets',default=','.join(ASSETS));parser.add_argument('--output-dir',default='work/reference');args=parser.parse_args()
+    folder=ROOT/args.output_dir;folder.mkdir(parents=True,exist_ok=True)
     for asset in args.assets.split(','):
         if asset not in ASSETS:raise ValueError('Unsupported reference asset')
         collect(asset,folder)

@@ -17,6 +17,7 @@ import { scheduled, updateQuoteBatch } from '../worker/scheduled';
 import { jobPolicies, dueAt, selectJob, operationStatus } from '../worker/health';
 import worker from '../worker/index';
 import { DAY } from '../shared/math';
+import { networkMetrics } from '../shared/network-catalog';
 let DB, env, now, waiting;
 const assets = ['BTC', 'DOGE', 'ETH', 'SOL', 'XRP', 'LINK', 'ONDO', 'PEPE'];
 const quote = (asset) => ({
@@ -61,10 +62,17 @@ function ready() {
   DB.sqlite
     .prepare('INSERT INTO onchain(generation,time,data,fetched_at) VALUES(?,?,?,?)')
     .run('active', now - DAY, '{"mvrv":1.2}', now);
-  for (const asset of ['BTC', 'DOGE', 'ETH'])
+  for (const asset of ['BTC', 'DOGE', 'ETH', 'XRP', 'LINK']) {
     DB.sqlite
       .prepare('INSERT INTO reference_prices VALUES(?,?,?,?)')
       .run(asset, now - DAY, 100, now);
+    for (const metric of networkMetrics(asset))
+      DB.sqlite
+        .prepare(
+          'INSERT INTO network_coverage(asset,metric,first,last,observations,fetched_at) VALUES(?,?,?,?,?,?)',
+        )
+        .run(asset, metric.id, now - DAY, now - DAY, 1, now);
+  }
 }
 beforeEach(() => {
   vi.useFakeTimers({ toFake: ['Date'] });
@@ -284,6 +292,26 @@ it('missing stored history cannot be presented as healthy merely because ingesti
   expect(report.health.ok).toBe(false);
   expect(report.health.reasons.some((r) => r.code === 'QUOTE_MISSING')).toBe(true);
   expect(report.health.reasons.some((r) => r.code === 'HISTORY_MISSING')).toBe(true);
+});
+it('a fresh network collector cannot conceal a missing or outdated individual metric', async () => {
+  ready();
+  await scheduled(env);
+  DB.sqlite
+    .prepare("DELETE FROM network_coverage WHERE asset='DOGE' AND metric='fees_native'")
+    .run();
+  const missing = await operationStatus(env);
+  expect(missing.sources.find((row) => row.key === 'network:DOGE').status).toBe('missing');
+  DB.sqlite
+    .prepare(
+      'INSERT INTO network_coverage(asset,metric,first,last,observations,fetched_at) VALUES(?,?,?,?,?,?)',
+    )
+    .run('DOGE', 'fees_native', now - 5 * DAY, now - 4 * DAY, 2, now);
+  const delayed = await operationStatus(env);
+  expect(delayed.sources.find((row) => row.key === 'network:DOGE')).toMatchObject({
+    status: 'delayed',
+    dataAgeSeconds: 4 * DAY,
+    coverage: { metrics: 12, expectedMetrics: 12, oldestMetricAsOf: now - 4 * DAY },
+  });
 });
 it('status bypasses old cached responses and reflects DB changes immediately without writing or refreshing sources', async () => {
   ready();

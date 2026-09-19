@@ -3,6 +3,7 @@ import { DAY } from '../shared/math';
 import type { Asset, Market } from '../shared/types';
 import { epoch, QUOTE_REFRESH_SECONDS, type Env } from './storage';
 import { REFERENCE_ASSETS } from './reference-price';
+import { NETWORK_ASSETS, networkMetrics } from '../shared/network-catalog';
 
 export const BACKGROUND_QUOTE_SECONDS = 480;
 export const DAILY_REFRESH_SECONDS = 21600;
@@ -18,7 +19,14 @@ export interface IngestionState {
 export interface JobPolicy {
   key: string;
   kind:
-    'quote-batch' | 'price' | 'onchain' | 'dominance' | 'stablecoins' | 'maintenance' | 'reference';
+    | 'quote-batch'
+    | 'price'
+    | 'onchain'
+    | 'dominance'
+    | 'stablecoins'
+    | 'maintenance'
+    | 'reference'
+    | 'network';
   every: number;
   maxLag: number;
   assets?: Asset[];
@@ -55,6 +63,15 @@ export function jobPolicies(assets: Asset[], rebuilding: boolean): JobPolicy[] {
       jobs.push({
         key: 'reference:' + asset,
         kind: 'reference',
+        every: 21600,
+        maxLag: 3 * DAY,
+        assets: [asset],
+      });
+  for (const asset of NETWORK_ASSETS)
+    if (assets.includes(asset))
+      jobs.push({
+        key: 'network:' + asset,
+        kind: 'network',
         every: 21600,
         maxLag: 3 * DAY,
         assets: [asset],
@@ -116,7 +133,7 @@ export function selectJob(jobs: JobPolicy[], states: IngestionState[], now: numb
 
 export async function operationStatus(env: Env) {
   const now = epoch();
-  const [ingestion, historyRows, state, runs, build, snapshots, onchain, references] =
+  const [ingestion, historyRows, state, runs, build, snapshots, onchain, references, networks] =
     await Promise.all([
       env.DB.prepare('SELECT * FROM ingestion ORDER BY key').all<IngestionState>(),
       env.DB.prepare("SELECT value FROM state WHERE key LIKE 'history:%'").all<{ value: string }>(),
@@ -138,8 +155,13 @@ export async function operationStatus(env: Env) {
         "SELECT time FROM onchain WHERE generation=(SELECT json_extract(value,'$') FROM state WHERE key='onchain_generation') ORDER BY time DESC LIMIT 1",
       ).first<{ time: number }>(),
       env.DB.prepare(
-        "WITH wanted(asset) AS (VALUES('BTC'),('DOGE'),('ETH')) SELECT asset,(SELECT time FROM reference_prices r WHERE r.asset=wanted.asset ORDER BY time LIMIT 1) AS first,(SELECT time FROM reference_prices r WHERE r.asset=wanted.asset ORDER BY time DESC LIMIT 1) AS last FROM wanted",
-      ).all<{ asset: string; first: number | null; last: number | null }>(),
+        `WITH wanted(asset) AS (VALUES${REFERENCE_ASSETS.map(() => '(?)').join(',')}) SELECT asset,(SELECT time FROM reference_prices r WHERE r.asset=wanted.asset ORDER BY time LIMIT 1) AS first,(SELECT time FROM reference_prices r WHERE r.asset=wanted.asset ORDER BY time DESC LIMIT 1) AS last FROM wanted`,
+      )
+        .bind(...REFERENCE_ASSETS)
+        .all<{ asset: string; first: number | null; last: number | null }>(),
+      env.DB.prepare(
+        "SELECT asset,MIN(first) AS first,MAX(last) AS last,MIN(last) AS oldest,COUNT(*) AS metrics FROM network_coverage WHERE metric!='price' GROUP BY asset",
+      ).all<{ asset: Asset; first: number; last: number; oldest: number; metrics: number }>(),
     ]);
   const assets = enabledAssets(env),
     rebuilding = !!build;
@@ -163,22 +185,33 @@ export async function operationStatus(env: Env) {
     const row = ingestion.results.find((s) => s.key === key);
     const policy = expected.get(key);
     const active = !!policy;
+    const network = key.startsWith('network:')
+      ? networks.results.find((row) => key === 'network:' + row.asset)
+      : null;
+    const expectedMetrics =
+      policy?.kind === 'network' ? networkMetrics(policy.assets![0]).length : 0;
     const collectorAgeSeconds = row?.last_success ? Math.max(0, now - row.last_success) : null;
-    const dataAgeSeconds = row?.data_as_of ? Math.max(0, now - row.data_as_of) : null;
+    const dataAgeSeconds = row?.data_as_of
+      ? Math.max(0, now - Math.min(row.data_as_of, network?.oldest ?? row.data_as_of))
+      : null;
     const collectorLimit =
       policy?.kind === 'quote-batch' ? 600 : Math.max(7200, (policy?.every || 3600) + 3600);
     const status = !active
       ? 'inactive'
-      : !row?.last_success || !row.data_as_of
+      : !row?.last_success ||
+          !row.data_as_of ||
+          (expectedMetrics > 0 && (network?.metrics ?? 0) < expectedMetrics)
         ? 'missing'
         : row.error
           ? 'error'
           : collectorAgeSeconds! > collectorLimit || dataAgeSeconds! > policy.maxLag
             ? 'delayed'
             : 'ok';
-    const coverage = key.startsWith('reference:')
-      ? references.results.find((r) => key === 'reference:' + r.asset)
-      : history.find((h) => key === h.asset + ':' + h.market + ':' + h.interval);
+    const coverage = key.startsWith('network:')
+      ? network
+      : key.startsWith('reference:')
+        ? references.results.find((r) => key === 'reference:' + r.asset)
+        : history.find((h) => key === h.asset + ':' + h.market + ':' + h.interval);
     return {
       ...row,
       key,
@@ -203,6 +236,9 @@ export async function operationStatus(env: Env) {
             last: coverage.last ?? null,
             rows: coverage.rows ?? null,
             archived: !!coverage.archived,
+            ...(network
+              ? { metrics: network.metrics, expectedMetrics, oldestMetricAsOf: network.oldest }
+              : {}),
           }
         : null,
     };
@@ -247,13 +283,16 @@ export async function operationStatus(env: Env) {
         message: '조회할 가격 이력의 저장 범위를 확인하지 못했습니다.',
       });
     if (
-      policy.kind === 'reference' &&
+      (policy.kind === 'reference' || policy.kind === 'network') &&
       !sources.find((source) => source.key === policy.key)?.coverage?.last
     )
       reasons.push({
-        code: 'REFERENCE_MISSING',
+        code: policy.kind === 'network' ? 'NETWORK_MISSING' : 'REFERENCE_MISSING',
         key: policy.key,
-        message: '초기 가격 참고 이력이 아직 저장되지 않았습니다.',
+        message:
+          policy.kind === 'network'
+            ? '네트워크 온체인 이력이 아직 저장되지 않았습니다.'
+            : '초기 가격 참고 이력이 아직 저장되지 않았습니다.',
       });
     if (policy.key.startsWith('quote:') && !snapshots.results.some((row) => row.key === policy.key))
       reasons.push({

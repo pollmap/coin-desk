@@ -27,6 +27,8 @@ import { candleHistory } from './candle-history';
 import { getDominance, DOMINANCE_VERSION } from './dominance';
 import { REFERENCE_ASSETS, REFERENCE_SOURCE, REFERENCE_VERSION } from './reference-price';
 import { operationStatus } from './health';
+import { NETWORK_ASSETS, NETWORK_METRICS, networkMetric } from '../shared/network-catalog';
+import { readNetworkSeries } from './network-data';
 const response = (body: unknown, status = 200) =>
   new Response(JSON.stringify(body), {
     status,
@@ -48,6 +50,8 @@ function canonicalRequest(request: Request) {
     candles: ['asset', 'market', 'interval', 'from', 'to', 'limit'],
     series: ['asset', 'metric', 'from', 'to', 'limit'],
     reference: ['asset', 'from', 'to', 'limit'],
+    network: ['asset', 'metric', 'from', 'to', 'limit'],
+    'network-catalog': ['asset'],
     metrics: ['asset'],
     status: [],
     health: [],
@@ -229,6 +233,13 @@ async function api(request: Request, env: Env): Promise<Response> {
       priceBasis: 'Bitview 추정 USD 가격',
       calculationVersion: CALC_VERSION,
     });
+  if (endpoint === 'network-catalog')
+    return response({
+      asset,
+      assets: NETWORK_ASSETS,
+      data: NETWORK_METRICS.filter((metric) => networkMetric(asset, metric.id)),
+      source: 'Coin Metrics Community',
+    });
   if (endpoint === 'status' || endpoint === 'health') {
     const report = await operationStatus(env);
     return endpoint === 'status'
@@ -250,9 +261,15 @@ async function api(request: Request, env: Env): Promise<Response> {
     to = number(q, 'to', epoch() + DAY),
     limit = number(q, 'limit', 1000, 1000);
   if (limit < 1 || from >= to) return response({ error: 'Invalid range' }, 400);
+  if (endpoint === 'network') {
+    const metric = q.get('metric') || 'mvrv';
+    if (!networkMetric(asset, metric))
+      throw new RequestError('해당 자산에서 지원하지 않는 온체인 지표입니다.');
+    return response(await readNetworkSeries(env.DB, asset, metric, from, to, limit));
+  }
   if (endpoint === 'reference') {
     if (!(REFERENCE_ASSETS as readonly string[]).includes(asset))
-      return response({ error: '장기 USD 이력은 BTC·DOGE·ETH를 지원합니다.' }, 400);
+      return response({ error: '장기 USD 이력은 BTC·DOGE·ETH·XRP·LINK를 지원합니다.' }, 400);
     const [rows, extent, state] = await Promise.all([
       env.DB.prepare(
         'SELECT time,value FROM reference_prices WHERE asset=? AND time>=? AND time<? ORDER BY time LIMIT ?',

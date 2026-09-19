@@ -1,0 +1,52 @@
+[
+  {
+    "charts": [
+      {
+        "asset": "DOGE",
+        "availableFrom": "1390435200",
+        "availableTo": "1789689600",
+        "chartGeneration": "1",
+        "chartKind": "network",
+        "metric": "mvrv",
+        "metricAxis": "linear",
+        "observationCount": "4622",
+        "thresholdsVisible": "true",
+        "visibleFrom": "1390435200",
+        "visibleTo": "1789689600"
+      }
+    ],
+    "coverage": "제공 시작일\n2014. 01. 23.\n최신 관측일\n2026. 09. 18.\n확보한 일별 관측\n4,622개",
+    "page": "public-doge-mvrv",
+    "scrollWidth": 1265,
+    "summary": "최근 관측 · 2026. 09. 18.0.74×시장평가 < 실현평가경계 1.00×",
+    "url": "https://coin-desk.pages.dev/onchain/DOGE?period=all",
+    "width": 1280
+  },
+  {
+    "charts": [
+      {
+        "availableFrom": "1283212800",
+        "availableTo": "1789689600",
+        "chartGeneration": "1",
+        "comparisonAxis": "right",
+        "metricAxis": "log",
+        "observationCount": "5863",
+        "thresholdsVisible": "true",
+        "visibleFrom": "1283212800",
+        "visibleTo": "1789689600"
+      }
+    ],
+    "page": "public-sth-mvrv",
+    "summary": "최근 관측 · 2026. 09. 18.1.13×집단 미실현 이익경계 1.00×",
+    "url": "https://coin-desk.pages.dev/metrics/sth_mvrv?period=all"
+  },
+  {
+    "screen": "public-sth-mobile",
+    "width": 390,
+    "overflow": false,
+    "first": "2010-08-31",
+    "latest": "2026-09-18",
+    "count": 5863,
+    "threshold": 1
+  }
+]

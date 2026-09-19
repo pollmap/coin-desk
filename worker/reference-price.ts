@@ -2,7 +2,7 @@ import type { Asset, Point } from '../shared/types';
 import { DAY } from '../shared/math';
 import { upstream } from './providers';
 import { epoch, readState, type Env } from './storage';
-export const REFERENCE_ASSETS = ['BTC', 'DOGE', 'ETH'] as const;
+export const REFERENCE_ASSETS = ['BTC', 'DOGE', 'ETH', 'XRP', 'LINK'] as const;
 export const REFERENCE_SOURCE = 'Coin Metrics Community · PriceUSD';
 export const REFERENCE_VERSION = 'coinmetrics-priceusd-utc-close-v1';
 export function parseReference(body: unknown, asset: Asset, now = epoch()): Point[] {

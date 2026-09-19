@@ -3,14 +3,14 @@ import argparse, datetime as dt, json, math, pathlib, time, urllib.request
 ROOT=pathlib.Path(__file__).resolve().parents[1]
 parser=argparse.ArgumentParser();parser.add_argument('--base',default='http://127.0.0.1:8787');args=parser.parse_args()
 reports=[]
-for asset in ['BTC','DOGE','ETH']:
+for asset in ['BTC','DOGE','ETH','XRP','LINK']:
     raw=json.loads((ROOT/f'work/reference/{asset}.raw.json').read_text(encoding='utf-8'))
     audit=json.loads((ROOT/f'work/reference/{asset}.audit.json').read_text(encoding='utf-8'))
     expected={int(dt.datetime.fromisoformat(p['time'].replace('Z','+00:00')).timestamp()):float(p['PriceUSD']) for p in raw['data'] if p.get('PriceUSD') is not None and dt.datetime.fromisoformat(p['time'].replace('Z','+00:00')).timestamp()+86400<=audit['fetchedAt']}
     start=0; actual=[]; begin=time.monotonic(); meta=None
     for page in range(20):
         url=f'{args.base}/api/v1/reference?asset={asset}&limit=1000&from={start}'
-        request=urllib.request.Request(url,headers={'User-Agent':'BTCDesk-Healthcheck/0.4','Accept':'application/json'})
+        request=urllib.request.Request(url,headers={'User-Agent':'BTCDesk-Healthcheck/0.5','Accept':'application/json'})
         with urllib.request.urlopen(request,timeout=30) as response:body=json.load(response)
         assert body['price']==[], 'No synthetic exchange or estimated overlay'
         assert body['meta']['unit']=='USD' and 'Coin Metrics' in body['meta']['source']

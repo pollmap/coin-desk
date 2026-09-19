@@ -12,11 +12,11 @@ const mvrv = 'https://docs.glassnode.com/further-information/metric-guides/mvrv/
 export const METRIC_GUIDES: Record<string, MetricGuideData> = {
   mvrv: {
     question: '현재 평가액은 코인의 마지막 이동 가치보다 얼마나 높은가요?',
-    read: '1보다 크면 시가총액이 실현시가총액보다 크고, 1보다 작으면 더 작습니다. 절대값과 여러 달의 방향을 함께 보세요.',
+    read: '1 미만은 저평가 참고, 3.7 초과는 과열 참고 구간으로 색을 표시합니다. 1은 손익분기이며 경계값에 정확히 닿으면 경계로 표시합니다.',
     example:
       '산식 예시: 1.5배는 현재 평가액이 실현평가액보다 50% 크다는 뜻입니다. 현재 시장 수치를 뜻하는 예시는 아닙니다.',
     caveat:
-      '1 아래라고 바닥이 확정되지 않습니다. 온체인 이동에는 자기 지갑 간 전송도 포함되므로 실제 매수가와 차이가 있습니다.',
+      '3.7은 CryptoQuant 기준이고 Glassnode는 3.5를 설명합니다. Bitview 원자료에 적용한 참고선이므로 타사 신호와 같지 않으며 1 아래라고 바닥이 확정되지 않습니다.',
     pair: 'SOPR로 최근 이동한 코인의 손익을 함께 보세요. 같은 원천의 NUPL은 1−1/MVRV이므로 독립적인 확인 신호가 아닙니다.',
     related: ['sopr_24h', 'nupl'],
     source: mvrv,
@@ -45,13 +45,13 @@ export const METRIC_GUIDES: Record<string, MetricGuideData> = {
   },
   nupl: {
     question: '현재 전체 평가액 중 미실현 손익은 어느 정도인가요?',
-    read: '0 위는 순미실현 이익, 0 아래는 순미실현 손실 상태입니다. 여기서는 비율을 퍼센트로 표시합니다.',
+    read: '0 위는 순미실현 이익, 0 아래는 순미실현 손실입니다. 0·25·50·75%를 경계로 이익 정도를 색으로 나누며 75% 초과는 과열 참고 구간입니다.',
     example: '산식 예시: NUPL 0.25는 화면에서 25%로 표시됩니다. 값이 25→30%이면 변화는 +5%p입니다.',
     caveat:
       '같은 원천에서는 NUPL=1−1/MVRV입니다. 두 지표가 같이 움직인다고 별도의 증거가 하나 더 생기지는 않습니다.',
     pair: 'SOPR과 비교해 보유 중인 평가 손익과 실제 이동한 출력의 손익 비율을 구분하세요.',
     related: ['sopr_24h', 'mvrv'],
-    source: 'https://docs.glassnode.com/basic-api/endpoints/indicators',
+    source: 'https://research.glassnode.com/dissecting-bitcoins-unrealised-on-chain-profit-loss/',
   },
   mvrv_z: {
     question: '시장 평가와 실현평가의 차이는 과거 변동 폭에 비해 얼마나 큰가요?',
@@ -59,7 +59,7 @@ export const METRIC_GUIDES: Record<string, MetricGuideData> = {
     example:
       '산식 예시: 평가액 차이 3 / 누적 표준편차 2 = Z 1.5. 배수나 퍼센트와는 다른 단위입니다.',
     caveat:
-      '미래 고점을 예측하는 값이 아닙니다. 계산 시작일·가격 원천이 다르면 타사 Z값과 달라집니다. 730일 가격 밴드도 아닙니다.',
+      '계산 시작일·가격 원천이 달라 타사의 7~9 과열 밴드를 적용하지 않습니다. 0 손익분기만 표시하며 양수 전체를 과열로 해석하지 않습니다. 730일 가격 밴드도 아닙니다.',
     pair: 'MVRV와 같은 원자료를 변환한 지표입니다. 산식 차이를 확인하고 별도 독립 신호로 세지 마세요.',
     related: ['mvrv', 'realized_price'],
     source: 'https://docs.glassnode.com/further-information/metric-guides/mvrv/mvrv-z-score',

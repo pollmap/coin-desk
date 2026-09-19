@@ -56,11 +56,14 @@ const AutomationSummary = lazy(() =>
 const LongHistoryPanel = lazy(() =>
   import('./LongHistoryPanel').then((m) => ({ default: m.LongHistoryPanel })),
 );
+const NetworkPage = lazy(() => import('./NetworkPage').then((m) => ({ default: m.NetworkPage })));
+const BrandPage = lazy(() => import('./BrandPage').then((m) => ({ default: m.BrandPage })));
 import { MetricGuide } from './MetricGuide';
 import { DeferredMount } from './DeferredMount';
 import { PERIOD_OPTIONS } from '../shared/ranges';
 import './analysis-ux.css';
 import './data-status.css';
+import './network.css';
 import type {
   Asset,
   CandleResponse,
@@ -228,7 +231,7 @@ function MetricCard({
         </span>
         {data?.meta.stale ? <span className="amber">갱신 지연</span> : null}
       </div>
-      <MetricGuide id={metric.id} />
+      <MetricGuide id={metric.id} showThresholds={false} />
     </article>
   );
 }
@@ -242,7 +245,7 @@ function PricePage({ workspace = false }: { workspace?: boolean }) {
   ).toUpperCase() as Asset;
   const coin = ASSETS.find((a) => a.id === asset);
   const { market, interval, period, indicators, log, change } = usePreferences();
-  const hasLongHistory = ['BTC', 'DOGE', 'ETH'].includes(asset);
+  const hasLongHistory = ['BTC', 'DOGE', 'ETH', 'XRP', 'LINK'].includes(asset);
   const historical = !workspace && hasLongHistory && params.get('view') !== 'exchange';
   const { desk, update: updateDesk } = usePersonalDesk();
   const cards = params.has('cards')
@@ -458,6 +461,15 @@ function PricePage({ workspace = false }: { workspace?: boolean }) {
             onLogChange={() => change('log', log ? '0' : '1')}
           />
         </Suspense>
+      ) : null}
+      {hasLongHistory ? (
+        <div className="network-entry">
+          <div>
+            {asset}의 가격과 온체인을 함께 살펴보세요.
+            <small>MVRV · 주소 활동 · 거래 수 · 공급량 · 원천별 전체 이력</small>
+          </div>
+          <Link to={`/onchain/${asset}?period=all`}>{asset} 온체인 전체 보기 ↗</Link>
+        </div>
       ) : null}
       {historical && (
         <WorkspaceBar
@@ -825,7 +837,7 @@ function MetricPage() {
           </span>
           <span>
             <i style={{ background: '#8190a8' }} />
-            Bitview 추정 USD 가격 · 오른쪽 로그축
+            Bitview 추정 USD 가격 · {metric.unit === 'USD' ? '같은 왼쪽 USD 축' : '오른쪽 로그축'}
           </span>
         </div>
         <ErrorNotice message={result.error || result.data?.meta.warning} retry={result.reload} />
@@ -862,7 +874,7 @@ function MetricPage() {
           </span>
         </div>
       </section>
-      <MetricGuide id={metric.id} expanded />
+      <MetricGuide id={metric.id} expanded showThresholds={false} />
       <section className="metric-explanation">
         <div>
           <div className="eyebrow">ABOUT THIS METRIC</div>
@@ -1054,7 +1066,13 @@ export default function App() {
           </button>
         ) : null}
         <Link to="/" className="brand" onClick={() => setMobile(false)}>
-          <span className="brand-symbol">C</span>
+          <img
+            className="brand-symbol"
+            src="/brand/coin-desk-mark.svg"
+            alt=""
+            width="32"
+            height="32"
+          />
           <b>
             Coin<span>Desk</span>
           </b>
@@ -1088,6 +1106,10 @@ export default function App() {
           <NavLink to="/explore">
             <Info size={18} />
             지표 찾아보기
+          </NavLink>
+          <NavLink to="/onchain/DOGE">
+            <Activity size={18} />
+            코인별 온체인
           </NavLink>
           <NavLink to="/coins">
             <Activity size={18} />
@@ -1174,6 +1196,8 @@ export default function App() {
               <Route path="/explore" element={<MetricsExplorer />} />
               <Route path="/dominance" element={<DominancePage />} />
               <Route path="/status" element={<DataStatusPage />} />
+              <Route path="/onchain/:asset" element={<NetworkPage />} />
+              <Route path="/brand" element={<BrandPage />} />
               <Route
                 path="*"
                 element={
@@ -1197,6 +1221,7 @@ export default function App() {
           <a href="https://www.tradingview.com/" target="_blank" rel="noreferrer">
             TradingView Lightweight Charts™ · Copyright (с) 2025 TradingView, Inc.
           </a>
+          <Link to="/brand">Coin Desk 브랜드</Link>
         </footer>
       </div>
       {sources ? <SourceDialog onClose={() => setSources(false)} /> : null}

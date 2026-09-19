@@ -1,7 +1,16 @@
 import { Link } from 'react-router-dom';
 import { METRIC_GUIDES } from '../shared/metric-guides';
 import { METRICS } from '../shared/catalog';
-export function MetricGuide({ id, expanded = false }: { id: string; expanded?: boolean }) {
+import { ThresholdLegend } from './ThresholdLegend';
+export function MetricGuide({
+  id,
+  expanded = false,
+  showThresholds = true,
+}: {
+  id: string;
+  expanded?: boolean;
+  showThresholds?: boolean;
+}) {
   const guide = METRIC_GUIDES[id === 'ema' ? 'sma' : id];
   if (!guide) return null;
   return (
@@ -10,6 +19,7 @@ export function MetricGuide({ id, expanded = false }: { id: string; expanded?: b
         <span>읽는 방법</span>
         {guide.question}
       </summary>
+      {showThresholds ? <ThresholdLegend id={id} showReading={false} /> : null}
       <div className="guide-columns">
         <div>
           <h3>먼저 볼 것</h3>
