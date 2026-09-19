@@ -1,0 +1,149 @@
+.threshold-legend {
+  padding: 12px 16px;
+  border-top: 1px solid #263040;
+  color: #a4b1c5;
+  font-size: 12px;
+}
+.threshold-summary {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 5px 12px;
+  min-height: 46px;
+  padding: 9px 16px;
+  border-top: 1px solid #263040;
+  background: #141d29;
+  color: #9dacbf;
+  font-size: 11px;
+}
+.threshold-summary b {
+  color: #e2eaf6;
+  font-variant-numeric: tabular-nums;
+  font-size: 14px;
+}
+.threshold-summary strong {
+  font-size: 12px;
+  font-weight: 600;
+}
+.threshold-summary small {
+  margin-left: auto;
+  font-size: 10px;
+  color: #bbc6d7;
+}
+@media (max-width: 600px) {
+  .threshold-summary {
+    padding-inline: 10px;
+    gap: 5px 9px;
+  }
+  .threshold-summary > span {
+    flex-basis: 100%;
+  }
+  .threshold-summary small {
+    margin-left: 0;
+  }
+}
+.threshold-current {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 7px 12px;
+  margin-bottom: 10px;
+}
+.threshold-current > span:first-child {
+  color: #8fa1b9;
+  font-size: 11px;
+}
+.threshold-current strong {
+  font-size: 13px;
+  font-weight: 600;
+}
+.threshold-current > b {
+  color: #e5edf7;
+  font-variant-numeric: tabular-nums;
+}
+.threshold-band-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  list-style: none;
+  padding: 0;
+  margin: 0 0 9px;
+}
+.threshold-band-legend li {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 5px;
+  padding: 6px 8px;
+  border: 1px solid #2e3a4c;
+  border-radius: 5px;
+  background: #151e2b;
+}
+.threshold-band-legend li[data-active] {
+  border-color: var(--zone-color);
+  background: #1b2735;
+}
+.threshold-band-legend i {
+  width: 7px;
+  height: 7px;
+  border-radius: 2px;
+  background: var(--zone-color);
+}
+.threshold-band-legend b {
+  color: #d4deeb;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+}
+.threshold-sources {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px 12px;
+  font-size: 11px;
+}
+.threshold-sources a {
+  color: #94badb;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.threshold-note,
+.threshold-comparison {
+  color: #95a3b7;
+  line-height: 1.65;
+  margin: 8px 0 0;
+  font-size: 11px;
+}
+.threshold-note summary {
+  cursor: pointer;
+}
+.threshold-note p {
+  margin: 6px 0 0;
+}
+.threshold-compact {
+  padding: 9px 14px;
+}
+.threshold-compact .threshold-band-legend {
+  font-size: 10px;
+}
+.threshold-compact .threshold-current {
+  gap: 5px 8px;
+}
+.threshold-compact .threshold-current > span:first-child {
+  flex-basis: 100%;
+}
+.threshold-technical {
+  border-top: 1px solid #263040;
+}
+.threshold-technical summary {
+  padding: 11px 14px;
+  color: #b7c7da;
+  font-size: 12px;
+  cursor: pointer;
+}
+@media (max-width: 600px) {
+  .threshold-legend {
+    padding-inline: 10px;
+  }
+  .threshold-band-legend li {
+    flex-grow: 1;
+  }
+}

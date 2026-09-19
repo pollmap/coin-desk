@@ -3,9 +3,9 @@
 [![CI](https://github.com/pollmap/coin-desk/actions/workflows/ci.yml/badge.svg)](https://github.com/pollmap/coin-desk/actions/workflows/ci.yml)
 [사이트 열기](https://coin-desk.pages.dev) · [도지코인 차트](https://coin-desk.pages.dev/chart/DOGE) · [코인 성과 비교](https://coin-desk.pages.dev/compare) · [관심 코인](https://coin-desk.pages.dev/coins) · [시장 도미넌스](https://coin-desk.pages.dev/dominance)
 
-**BTC·DOGE·ETH를 중심으로 8개 코인의 가격, 기술지표, 시장 비중과 비트코인 온체인을 분석하는 한국어 대시보드입니다.** 무료 공개 데이터를 수집하고 출처·기준일·계산식을 함께 표시합니다. 관심 코인을 비교하고, 지표와 기간을 조절한 뒤 나만의 구성을 작업공간으로 저장할 수 있습니다.
+**BTC·DOGE·ETH를 중심으로 8개 코인의 가격과 5개 코인의 온체인을 분석하는 한국어 대시보드입니다.** 무료 공개 데이터를 수집하고 출처·기준일·계산식을 함께 표시합니다. 관심 코인을 비교하고, 지표와 기간을 조절한 뒤 나만의 구성을 작업공간으로 저장할 수 있습니다.
 
-현재 소스는 **0.4.0**입니다. 첫 화면은 BTC·DOGE·ETH의 장기 USD 이력을 전체 기간으로 보여주고, 거래소 캔들·기술지표로 전환할 수 있습니다. 장기 가격 **14,589개 관측값**의 원본 일치를 확인했습니다. 현재 검증과 공개 배포 상태는 [0.4 개선·검증 보고서](docs/UPGRADE04.md)에 기록합니다. 무료 CPU 10ms 예산의 지속 충족과 48시간 운영 관찰은 아직 완료되지 않았습니다.
+현재 소스는 **0.5.0**입니다. MVRV·NUPL·RSI 등의 참고 구간을 색과 숫자로 표시하고, BTC·DOGE·ETH·XRP·LINK의 온체인 56개 시계열을 추가했습니다. 5개 코인의 장기 USD 가격은 **22,284개 관측값**입니다. [0.5 변경·검증 기록](docs/UPGRADE05.md), [DOGE 온체인](https://coin-desk.pages.dev/onchain/DOGE?period=all), [로고·브랜드 자산](https://coin-desk.pages.dev/brand)을 확인할 수 있습니다. 무료 CPU 한도의 지속 충족과 48시간 운영 관찰은 아직 완료되지 않았습니다.
 
 ![Coin Desk 전체 이력 대시보드](docs/upgrade-04/14-public-doge-desktop.png)
 
@@ -23,6 +23,9 @@
 | 프리셋 | 기본 200일/200주, 매직 라인 128·200·365일/200주, 단기 EMA 20·50 + RSI + MACD |
 | 기술지표 | RSI 기간 변경, 볼린저밴드 기간·표준편차 배수 변경, MACD 12·26·9; 기존 지표 수정·날짜별 값 표시 |
 | BTC 온체인 | MVRV, 실현가격, SOPR 24h, NUPL, MVRV-Z, STH·LTH MVRV, STH 실현가격 |
+| 코인별 온체인 `/onchain/:asset` | BTC·DOGE·ETH·XRP·LINK의 MVRV·활성 주소·잔고 주소·거래·전송·공급·시총·수수료·해시와 역산 지표, 총 56개 시계열 |
+| 지표 참고 구간 | BTC MVRV 1·3.7, NUPL 0·25·50·75%, RSI 30·70 등 출처별 참고선·색 구간·현재 위치. 알트 MVRV에는 1 평가 기준만 적용 |
+| 브랜드 `/brand` | 심볼·워드마크 SVG, PNG·ICO 파비콘, Apple 아이콘, 공유 썸네일·Open Graph |
 | 지표 탐색 `/explore` | 질문별 빠른 탐색·활용 설명 검색, 12개 지표의 읽는 방법·함께 볼 것·해석 한계, 기술지표 적용 코인 선택, 대시보드 담기 |
 | 시장 비중 | 8개 코인 도미넌스, USDT.D·USDC.D, 스테이블코인 전체 근사 비중과 누적 관측 차트 |
 | 개인 설정 | 마지막 코인 복원, 이름 붙인 작업공간 최대 12개, 즐겨찾기·카드·작업공간 JSON 백업·가져오기, URL 공유 |
@@ -55,14 +58,14 @@
 | 데이터 | 실제 원천 | 표시 기준 |
 |---|---|---|
 | 거래소 가격·거래량 | Binance 공개 REST/WebSocket, Upbit 공개 REST | 각 거래소가 제공하는 일봉 전체, 최근 90일 시간봉 |
-| BTC·DOGE·ETH 장기 가격 | Coin Metrics Community `PriceUSD` | 실제 확보된 USD 일별 종가 참조가격; 거래소 OHLCV와 별도 |
+| BTC·DOGE·ETH·XRP·LINK 장기 가격 | Coin Metrics Community `PriceUSD` | 실제 확보된 USD 일별 종가 참조가격; 거래소 OHLCV와 별도 |
 | BTC 온체인 | Bitview / Bitcoin Research Kit | 확정 일별 관측, 같은 원천의 **추정 USD 가격**과 비교 |
 | 코인·USDT·USDC 도미넌스 | CoinLore 개별·전체 시가총액 | 같은 제공자의 개별 시가총액 / 전체 시가총액 × 100 |
 | 스테이블코인 전체 ≈ | DefiLlama 일별 USD 총액 / CoinLore 전체 시가총액 | **서로 다른 원천·시점의 근사 비중**; 일별 기준일을 별도 표시 |
 
-- `전체`는 선택한 원천의 확보 이력 전체입니다. 장기 USD 참조가격은 BTC **2010-07-18**, DOGE **2014-01-23**, ETH **2015-08-08**부터입니다. 2026-09-18까지 각각 **5,907·4,622·4,060일**, 합계 **14,589개 일별 관측값**의 원본 일치와 내부 날짜 결측 0을 확인했습니다. 제공 시작 이전 가격은 생성하지 않습니다.
+- `전체`는 선택한 원천의 확보 이력 전체입니다. 장기 USD 참조가격은 BTC **2010-07-18**, DOGE **2014-01-23**, ETH **2015-08-08**부터입니다. 2026-09-18까지 각각 **5,907·4,622·4,060일**, XRP **2014-08-15**부터 **4,418일**, LINK **2017-09-29**부터 **3,277일**을 더해 합계 **22,284개 일별 관측값**의 원본 일치와 내부 날짜 결측 0을 확인했습니다. 제공 시작 이전 가격은 생성하지 않습니다.
 - 거래소 캔들은 Binance BTC 2017-08-17·DOGE 2019-07-05부터이며 장기 USD 참조가격으로 이전 캔들이나 거래량을 합성하지 않습니다. 시간·4시간봉은 최근 90일입니다. 거래소 성과 비교에도 Coin Metrics 가격을 섞지 않습니다.
-- 온체인 MVRV는 시가총액 / 실현시가총액으로 검산합니다. MVRV-Z는 그날까지의 유효 시가총액으로 누적 모집단 표준편차를 계산하며, 최소 365개 유효 표본 이후 표시합니다.
+- Bitview BTC MVRV는 시가총액 / 실현시가총액으로 검산합니다. 새 Coin Metrics 5개 코인의 MVRV는 원천값이며, 실현시총·실현가격·NUPL은 그 MVRV로 역산합니다. 역산값을 독립적인 검산 근거로 사용하지 않습니다. MVRV-Z는 그날까지의 유효 시가총액으로 누적 모집단 표준편차를 계산하며, 최소 365개 유효 표본 이후 표시합니다.
 - Upbit 24시간 등락률은 전일 같은 시각의 1분봉 종가와 비교한 **24H≈**입니다. 고가·저가는 UTC 당일, 거래대금은 실제 24시간 값입니다.
 - CoinLore의 개별 시장값은 별도 기준 시각이 없어 **조회 시각**을 표시합니다. 스테이블 전체는 USD로 환산된 합계만 더합니다. USDT·USDC와 중복 합산하지 않습니다.
 - 도미넌스 과거 이력은 서비스를 시작한 뒤 실제 관측값을 쌓습니다. 다른 산식·제공자의 이력을 이어 붙이지 않습니다.
@@ -73,7 +76,7 @@
 
 ## 로컬 실행
 
-**Node.js 24 이상, Python 3.11 이상**이 필요합니다. Python 도구는 표준 라이브러리만 사용합니다.
+**Node.js 24 이상, Python 3.11 이상**이 필요합니다. 수집·검산 Python 도구는 표준 라이브러리만 사용합니다. 이미 포함된 브랜드 아이콘을 다시 그리는 선택 작업에만 Pillow가 필요합니다.
 
 ```sh
 git clone https://github.com/pollmap/coin-desk.git
@@ -85,6 +88,8 @@ npm run seed:assets
 npm run db:assets
 python scripts/bootstrap_reference.py
 node scripts/import_reference.mjs
+python scripts/bootstrap_network.py
+node scripts/import_network.mjs
 npm run dev
 ```
 

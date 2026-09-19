@@ -73,6 +73,13 @@ def check(base):
         for market in ['binance','upbit']:
             current,latency[asset+':'+market]=get(base,'overview?asset='+asset+'&market='+market)
             inspect_quote(current,asset,market)
+    for source in status['sources']:
+        if source.get('active') and source['key'].startswith('network:'):
+            asset=source['key'].split(':')[1]
+            network,latency['network:'+asset]=get(base,'network?asset='+asset+'&metric=mvrv&limit=10&from='+str(now-10*86400))
+            if not network.get('data') or network.get('meta',{}).get('stale'):issues.append(asset+' network MVRV unavailable or stale')
+            elif not all(isinstance(p.get('value'),(float,int)) and math.isfinite(p['value']) and p['value']>0 for p in network['data']):issues.append(asset+' network MVRV invalid')
+            if 'Coin Metrics' not in network.get('meta',{}).get('source',''):issues.append(asset+' network source missing')
     dominance,latency['dominance']=get(base,'dominance')
     if dominance['stale'] or dominance.get('warning') or len(dominance['coins'])!=11:issues.append('dominance unavailable, incomplete or stale')
     for coin in dominance['coins']:

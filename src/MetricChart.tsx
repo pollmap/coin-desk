@@ -7,12 +7,17 @@ import {
   LineStyle,
   type IChartApi,
   type ISeriesApi,
+  type IPriceLine,
   type UTCTimestamp,
 } from 'lightweight-charts';
 import type { Metric, Period, SeriesResponse } from '../shared/types';
 import { dateLabel, metricValue, money, periodStart } from './lib';
 import { ChartRangeControl } from './ChartRangeControl';
 import { zoomChartRange } from './chart-range';
+import { THRESHOLDS } from '../shared/thresholds';
+import { ThresholdBands } from './ThresholdBands';
+import { ThresholdLegend } from './ThresholdLegend';
+import { ThresholdSummary } from './ThresholdSummary';
 import './chart-improvements.css';
 export const MetricChart = memo(function MetricChart({
   series,
@@ -31,8 +36,12 @@ export const MetricChart = memo(function MetricChart({
   const chartRef = useRef<IChartApi | null>(null);
   const metricRef = useRef<ISeriesApi<'Line'> | null>(null);
   const priceRef = useRef<ISeriesApi<'Line'> | null>(null);
+  const bandsRef = useRef<ThresholdBands | null>(null);
+  const boundariesRef = useRef<IPriceLine[]>([]);
   const lastView = useRef<{ key: string; from: UTCTimestamp; to: UTCTimestamp } | null>(null);
   const [showPrice, setShowPrice] = useState(true);
+  const [showThresholds, setShowThresholds] = useState(true);
+  const thresholds = THRESHOLDS[metric.id];
   const [axisChoice, setAxisChoice] = useState<{ metric: string; log: boolean } | null>(null);
   const positiveHistory = useMemo(
     () =>
@@ -49,8 +58,8 @@ export const MetricChart = memo(function MetricChart({
   const defaultLog = ['mvrv', 'sth_mvrv', 'lth_mvrv'].includes(metric.id);
   const metricLog =
     !logUnavailable && (axisChoice?.metric === metric.id ? axisChoice.log : defaultLog);
-  const settingsRef = useRef({ period, showPrice, metricLog });
-  settingsRef.current = { period, showPrice, metricLog };
+  const settingsRef = useRef({ period, showPrice, metricLog, showThresholds });
+  settingsRef.current = { period, showPrice, metricLog, showThresholds };
   const [keyboardValue, setKeyboardValue] = useState('');
   const [hover, setHover] = useState<{ time: number; value: number } | null>(null);
   const priceByTime = useMemo(
@@ -79,7 +88,7 @@ export const MetricChart = memo(function MetricChart({
         scaleMargins: { top: 0.13, bottom: 0.1 },
       },
       rightPriceScale: {
-        visible: large && settingsRef.current.showPrice,
+        visible: large && settingsRef.current.showPrice && metric.unit !== 'USD',
         borderVisible: false,
         mode: PriceScaleMode.Logarithmic,
         scaleMargins: { top: 0.12, bottom: 0.12 },
@@ -98,6 +107,8 @@ export const MetricChart = memo(function MetricChart({
     surface.dataset.chartGeneration = String(Number(surface.dataset.chartGeneration || 0) + 1);
     surface.dataset.observationCount = String(series.data.length);
     surface.dataset.metricAxis = settingsRef.current.metricLog ? 'log' : 'linear';
+    surface.dataset.comparisonAxis = metric.unit === 'USD' ? 'left' : 'right';
+    surface.dataset.thresholdsVisible = String(settingsRef.current.showThresholds);
     surface.dataset.availableFrom = String(series.data[0].time);
     surface.dataset.availableTo = String(series.data.at(-1)!.time);
     chart.timeScale().subscribeVisibleTimeRangeChange((range) => {
@@ -108,7 +119,7 @@ export const MetricChart = memo(function MetricChart({
     const price = chart.addSeries(LineSeries, {
       color: large ? '#8090a880' : '#69778c65',
       lineWidth: 1,
-      priceScaleId: 'right',
+      priceScaleId: metric.unit === 'USD' ? 'left' : 'right',
       priceLineVisible: false,
       lastValueVisible: false,
       visible: settingsRef.current.showPrice,
@@ -134,15 +145,28 @@ export const MetricChart = memo(function MetricChart({
     line.setData(
       series.data.map((p) => ({ time: p.time as UTCTimestamp, value: p.value * factor })),
     );
-    if (metric.reference !== undefined)
+    const boundaries =
+      thresholds?.boundaries ??
+      (metric.reference === undefined
+        ? []
+        : [{ value: metric.reference, label: '기준', color: '#6c7886' }]);
+    boundariesRef.current = boundaries.map((boundary) =>
       line.createPriceLine({
-        price: metric.reference * factor,
-        color: '#6c7886',
+        price: boundary.value * factor,
+        color: boundary.color,
         lineWidth: 1,
         lineStyle: LineStyle.Dashed,
-        axisLabelVisible: large,
-        title: '',
-      });
+        lineVisible: settingsRef.current.showThresholds,
+        axisLabelVisible: large && settingsRef.current.showThresholds,
+        title: large ? boundary.label : '',
+      }),
+    );
+    if (thresholds?.bands.length) {
+      const bands = new ThresholdBands(thresholds.bands, factor);
+      bands.setVisible(settingsRef.current.showThresholds);
+      line.attachPrimitive(bands);
+      bandsRef.current = bands;
+    }
     const visible = series.data.filter(
       (p) => p.time >= periodStart(settingsRef.current.period, series.data.at(-1)!.time),
     );
@@ -177,12 +201,23 @@ export const MetricChart = memo(function MetricChart({
       chartRef.current = null;
       metricRef.current = null;
       priceRef.current = null;
+      bandsRef.current = null;
+      boundariesRef.current = [];
     };
   }, [series.data, series.price, metric, large]);
   useEffect(() => {
     priceRef.current?.applyOptions({ visible: showPrice });
-    chartRef.current?.priceScale('right').applyOptions({ visible: large && showPrice });
-  }, [showPrice, large]);
+    chartRef.current
+      ?.priceScale('right')
+      .applyOptions({ visible: large && showPrice && metric.unit !== 'USD' });
+  }, [showPrice, large, metric.unit]);
+  useEffect(() => {
+    bandsRef.current?.setVisible(showThresholds);
+    boundariesRef.current.forEach((line) =>
+      line.applyOptions({ lineVisible: showThresholds, axisLabelVisible: large && showThresholds }),
+    );
+    if (container.current) container.current.dataset.thresholdsVisible = String(showThresholds);
+  }, [showThresholds, large]);
   useEffect(() => {
     // Change only the vertical scale: retain every observation, reference line,
     // crosshair series, and the user's current horizontal viewing range.
@@ -212,6 +247,18 @@ export const MetricChart = memo(function MetricChart({
   }
   return (
     <>
+      <ThresholdSummary
+        id={metric.id}
+        unit={metric.unit}
+        point={display}
+        comparison={
+          display && priceByTime.has(display.time)
+            ? { time: display.time, value: priceByTime.get(display.time)! }
+            : undefined
+        }
+        selected={!!hover}
+        stale={series.meta.stale}
+      />
       <div
         ref={container}
         role={large ? 'group' : 'img'}
@@ -268,7 +315,9 @@ export const MetricChart = memo(function MetricChart({
         </span>
       ) : null}
       <div className="chart-actions" aria-label={metric.title + ' 지표축 설정'}>
-        <span className="muted">왼쪽 지표축 · {metricLog ? '로그' : '선형'}</span>
+        <span className="muted">
+          {metric.unit === 'USD' ? '공통 USD 축' : '왼쪽 지표축'} · {metricLog ? '로그' : '선형'}
+        </span>
         <button
           aria-pressed={metricLog}
           disabled={!!logUnavailable}
@@ -289,6 +338,11 @@ export const MetricChart = memo(function MetricChart({
         >
           선형
         </button>
+        {thresholds?.bands.length ? (
+          <button aria-pressed={showThresholds} onClick={() => setShowThresholds(!showThresholds)}>
+            참고 구간 {showThresholds ? '숨기기' : '표시'}
+          </button>
+        ) : null}
         {logUnavailable ? (
           <small className="muted">{logUnavailable}</small>
         ) : large ? (
@@ -299,6 +353,19 @@ export const MetricChart = memo(function MetricChart({
           </small>
         ) : null}
       </div>
+      <ThresholdLegend
+        id={metric.id}
+        point={display}
+        comparison={
+          display && priceByTime.has(display.time)
+            ? { time: display.time, value: priceByTime.get(display.time)! }
+            : undefined
+        }
+        readingLabel={hover ? '선택 관측' : '최근 관측'}
+        compact={!large}
+        stale={series.meta.stale}
+        dataSource={series.meta.source}
+      />
       {large ? (
         <>
           <div className="metric-hover metric-observation" aria-live="off">

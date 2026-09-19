@@ -2,9 +2,13 @@
 
 기준일: 2026-09-20 KST. 공개 주소: [coin-desk.pages.dev](https://coin-desk.pages.dev). 소스: [pollmap/coin-desk](https://github.com/pollmap/coin-desk).
 
-## 0.4.0 현재 운영 기준
+## 0.5.0 현재 운영 기준
 
-현재 버전은 **0.4.0**입니다. BTC·DOGE·ETH 장기 USD 이력, 전체 기간 우선·8개 기간 선택, 질문별 지표 안내, 비교 직접 날짜와 캐시, 독립적인 서버 자동 수집·상태 화면을 포함합니다. 장기 참조가격 원격 적재와 보관 원본 **14,589개 값의 공개 API 일치**를 확인했습니다. 최종 코드·화면·배포 검증은 [0.4 개선·검증 보고서](UPGRADE04.md)에 기록합니다.
+현재 버전은 **0.5.0**입니다. [0.5 릴리스](UPGRADE05.md)와 [무료 원천·산식 조사](RESEARCH05.md)를 기준으로 운영합니다. `0006_network.sql`을 적용해 `network_months`, `network_coverage`를 추가했습니다. 5개 코인의 56개 온체인 시계열과 5개 장기 참조가격 작업은 Cloudflare Cron에서 갱신하며 상태 화면은 원천 62개를 검사합니다. 초기 적재는 `bootstrap_network.py` → `import_network.mjs`, 전량 대조는 `verify_network.py`를 사용합니다. 백업·복원 도구는 새 테이블까지 포함합니다.
+
+## 0.4.0 도입 기록
+
+0.4.0에서 도입한 기능입니다. BTC·DOGE·ETH 장기 USD 이력, 전체 기간 우선·8개 기간 선택, 질문별 지표 안내, 비교 직접 날짜와 캐시, 독립적인 서버 자동 수집·상태 화면을 포함합니다. 장기 참조가격 원격 적재와 보관 원본 **14,589개 값의 공개 API 일치**를 확인했습니다. 최종 코드·화면·배포 검증은 [0.4 개선·검증 보고서](UPGRADE04.md)에 기록합니다.
 
 **마이그레이션 `0004_automation.sql`과 `0005_reference_prices.sql`을 새 Worker 배포 전에 적용해야 합니다.** 전자는 Cron 실행 상태·120개 순환 실행 기록, 후자는 Coin Metrics 참조가격 테이블을 만듭니다. 로컬은 DB를 열 때 모든 마이그레이션을 적용하며, 운영 D1은 아래 Wrangler 명령으로 따로 적용합니다.
 

@@ -7,7 +7,7 @@ backup=sqlite3.connect(folder/(stamp+'-backup.sqlite'));source.backup(backup)
 restored=sqlite3.connect(folder/(stamp+'-restored.sqlite'));backup.backup(restored)
 def fingerprints(db):
     result={}
-    for table in ['candles','price_archive','onchain','state','ingestion','snapshots','raw_samples','dominance_history','cron_state','cron_runs','reference_prices']:
+    for table in ['candles','price_archive','onchain','state','ingestion','snapshots','raw_samples','dominance_history','cron_state','cron_runs','reference_prices','network_months','network_coverage']:
         rows=sorted(db.execute('SELECT * FROM '+table).fetchall(),key=lambda row:json.dumps(row,separators=(',',':')))
         result[table]={'rows':len(rows),'sha256':hashlib.sha256(json.dumps(rows,separators=(',',':')).encode()).hexdigest()}
     return result

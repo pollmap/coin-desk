@@ -15,6 +15,8 @@ import {
 } from './storage';
 import { updateDominance, updateStable } from './dominance';
 import { updateReference } from './reference-price';
+import { updateNetworkData } from './network-data';
+import { isNetworkAsset } from '../shared/network-catalog';
 import {
   cleanError,
   enabledAssets,
@@ -310,7 +312,11 @@ async function executeJob(env: Env, job: JobPolicy, states: IngestionState[]) {
     return partial;
   }
   if (job.key === 'bitview') await updateOnchain(env);
-  else if (job.kind === 'reference')
+  else if (job.kind === 'network') {
+    const asset = job.assets![0];
+    if (!isNetworkAsset(asset)) throw new Error('Unsupported network job');
+    await updateNetworkData(env, asset);
+  } else if (job.kind === 'reference')
     await updateReference(
       env,
       job.assets![0] as (typeof import('./reference-price').REFERENCE_ASSETS)[number],

@@ -2,7 +2,11 @@
 
 기준일: 2026-09-20 KST. 공개 주소: [coin-desk.pages.dev](https://coin-desk.pages.dev). 최초 BTC 전용 결과는 [0.1.0 기록](BTC_BASELINE.md)에 보존했습니다.
 
-## 0.4.0 현재 검증
+## 0.5.0 현재 검증
+
+[0.5 보고서](UPGRADE05.md)와 [릴리스 증거](evidence/upgrade-05-release.json)에 208개 시험, 공개 API의 56개 온체인 시계열 260,284개 관측값 대조, 장기 USD 22,284개 값 대조, 모바일·브랜드 자산 검증을 기록합니다. 48시간 운영 및 무료 CPU의 지속 준수는 별도 관찰 항목입니다.
+
+## 0.4.0 과거 검증
 
 전체 이력 표시, Coin Metrics 원본 14,589개 대조, 날짜·지표 UX, 독립 서버 수집과 원격 DB 복원은 [0.4 개선·검증 보고서](UPGRADE04.md)와 [릴리스 증거](evidence/upgrade-04-release.json)에 기록합니다. 아래 기록은 이전 버전의 검증이며 0.4.0 장기 운영 완료를 뜻하지 않습니다.
 

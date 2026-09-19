@@ -114,14 +114,14 @@ h3 {
   font-weight: 650;
 }
 .brand b span {
-  font-weight: 400;
-  color: #93a0b0;
+  font-weight: 650;
+  color: #f2ba72;
   margin-left: 4px;
 }
 .brand-symbol {
   width: 32px;
   height: 32px;
-  background: #e6a154;
+  background: #101923;
   color: #131921;
   display: grid;
   place-items: center;
