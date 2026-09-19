@@ -11,7 +11,17 @@ import type {
   SeriesResponse,
 } from '../shared/types';
 import { getQuote } from './providers';
-import { dbCandle, epoch, failure, readState, putState, success, type Env } from './storage';
+import {
+  claimRefresh,
+  dbCandle,
+  epoch,
+  failure,
+  readState,
+  putState,
+  success,
+  QUOTE_REFRESH_SECONDS,
+  type Env,
+} from './storage';
 import { scheduled } from './scheduled';
 import { candleHistory } from './candle-history';
 import { getDominance, DOMINANCE_VERSION } from './dominance';
@@ -24,18 +34,65 @@ const response = (body: unknown, status = 200) =>
       'X-Content-Type-Options': 'nosniff',
     },
   });
+const inFlight = new WeakMap<D1Database, Map<string, Promise<Response>>>();
+class RequestError extends Error {}
+/** Requests with equivalent selections must share the same cache entry. */
+function canonicalRequest(request: Request) {
+  const url = new URL(request.url);
+  if (url.href.length > 2048) throw new RequestError('Invalid URL length');
+  const endpoint = url.pathname.slice('/api/v1/'.length);
+  const fields: Record<string, string[]> = {
+    overview: ['asset', 'market'],
+    candles: ['asset', 'market', 'interval', 'from', 'to', 'limit'],
+    series: ['asset', 'metric', 'from', 'to', 'limit'],
+    metrics: ['asset'],
+    status: [],
+    dominance: [],
+    'dominance/history': [],
+  };
+  if (!fields[endpoint]) return new Request(url, { method: 'GET' });
+  for (const key of url.searchParams.keys())
+    if (!fields[endpoint].includes(key) || url.searchParams.getAll(key).length !== 1)
+      throw new RequestError('Invalid query parameter');
+  const defaults: Record<string, string> = {
+    asset: 'BTC',
+    market: 'binance',
+    interval: '1d',
+    metric: 'mvrv',
+    from: '0',
+    limit: '1000',
+  };
+  for (const key of fields[endpoint]) {
+    let value = url.searchParams.get(key) ?? defaults[key];
+    if (value === undefined) continue; // Keep a missing "to" stable instead of adding the current second.
+    if (key === 'asset') value = value.toUpperCase();
+    if (['from', 'to', 'limit'].includes(key)) {
+      const parsed = number(
+        new URLSearchParams([[key, value]]),
+        key,
+        0,
+        key === 'limit' ? 1000 : epoch() + DAY,
+      );
+      value = String(parsed);
+    }
+    url.searchParams.set(key, value);
+  }
+  url.searchParams.sort();
+  return new Request(url, { method: 'GET' });
+}
 function number(q: URLSearchParams, key: string, fallback: number, max = Number.MAX_SAFE_INTEGER) {
   const s = q.get(key);
   if (s === null) return fallback;
   const n = Number(s);
-  if (!Number.isSafeInteger(n) || n < 0 || n > max) throw new Error('Invalid ' + key);
+  if (!/^\d+$/.test(s) || !Number.isSafeInteger(n) || n < 0 || n > max)
+    throw new RequestError('Invalid ' + key);
   return n;
 }
 function selection(q: URLSearchParams) {
   const asset = (q.get('asset') || 'BTC').toUpperCase() as Asset;
   const market = (q.get('market') || 'binance') as Market;
   if (!ASSETS.some((a) => a.id === asset) || !['binance', 'upbit'].includes(market))
-    throw new Error('Unknown asset or market');
+    throw new RequestError('Unknown asset or market');
   return { asset, market };
 }
 const source = (market: Market) => (market === 'binance' ? 'Binance' : 'Upbit');
@@ -61,17 +118,18 @@ async function overview(env: Env, asset: Asset, market: Market): Promise<Overvie
   const retry = await env.DB.prepare('SELECT next_attempt FROM ingestion WHERE key=?')
     .bind(key)
     .first<{ next_attempt: number }>();
-  if ((!saved || epoch() - saved.fetched_at >= 60) && (retry?.next_attempt || 0) <= epoch()) {
+  if (
+    (!saved || epoch() - saved.fetched_at >= QUOTE_REFRESH_SECONDS) &&
+    (retry?.next_attempt || 0) <= epoch() &&
+    (await claimRefresh(env.DB, key, QUOTE_REFRESH_SECONDS))
+  ) {
     try {
       quote = await getQuote(asset, market);
-      const persist = !saved || epoch() - saved.fetched_at >= 300 || !!retry?.next_attempt;
       saved = { data: JSON.stringify(quote), fetched_at: epoch() };
-      if (persist) {
-        await env.DB.prepare('INSERT OR REPLACE INTO snapshots(key,data,fetched_at) VALUES(?,?,?)')
-          .bind(key, saved.data, saved.fetched_at)
-          .run();
-        await success(env.DB, key, quote.time);
-      }
+      await env.DB.prepare('INSERT OR REPLACE INTO snapshots(key,data,fetched_at) VALUES(?,?,?)')
+        .bind(key, saved.data, saved.fetched_at)
+        .run();
+      await success(env.DB, key, quote.time);
     } catch (e) {
       warning = '시세 원천 연결이 지연되고 있습니다. 마지막 정상 값을 표시합니다.';
       await failure(env.DB, key, e);
@@ -117,7 +175,12 @@ async function overview(env: Env, asset: Asset, market: Market): Promise<Overvie
     quote,
     meta: {
       ...meta(market, quote?.time ?? null, saved?.fetched_at ?? null),
-      stale: !!warning || !saved || epoch() - saved.fetched_at > 180,
+      stale:
+        !!warning ||
+        !saved ||
+        epoch() - saved.fetched_at > 300 ||
+        !quote ||
+        epoch() - quote.time > 300,
       warning,
     },
     metrics: latest ? JSON.parse(latest.data) : {},
@@ -167,7 +230,15 @@ async function api(request: Request, env: Env): Promise<Response> {
       now: epoch(),
       sources: (
         await env.DB.prepare('SELECT * FROM ingestion ORDER BY key').all<{ key: string }>()
-      ).results.map((s) => ({ ...s, active: s.key !== 'coingecko' })),
+      ).results.map((s) => ({
+        ...s,
+        active: s.key !== 'coingecko',
+        error:
+          'error' in s && s.error
+            ? String(s.error).match(/(?:HTTP|API)\s+\d{3}/)?.[0] ||
+              '원천 연결 또는 데이터 검증 오류'
+            : null,
+      })),
       rebuilding: !!(await readState(env.DB, 'onchain_build', null)),
       assets: env.ENABLED_ASSETS.split(','),
       history: (
@@ -222,6 +293,11 @@ async function api(request: Request, env: Env): Promise<Response> {
       data,
       meta: {
         ...meta(market, extent?.last ?? null, extent?.fetched ?? null),
+        stale:
+          !extent?.fetched ||
+          epoch() - extent.fetched > 7200 ||
+          !extent.last ||
+          epoch() - extent.last > (base === '1h' ? 7200 : 2 * DAY),
         historyStart: extent?.first,
         gapCount: gaps,
         warning: gaps
@@ -286,26 +362,60 @@ async function api(request: Request, env: Env): Promise<Response> {
 }
 export default {
   async fetch(request: Request, env: Env, ctx: ExecutionContext) {
+    const url = new URL(request.url);
+    if (
+      url.hostname === 'btc-desk.lch68-workers.workers.dev' &&
+      !url.pathname.startsWith('/api/')
+    ) {
+      url.hostname = 'coin-desk.pages.dev';
+      url.protocol = 'https:';
+      url.port = '';
+      return Response.redirect(url.href, 308);
+    }
     if (!new URL(request.url).pathname.startsWith('/api/')) return env.ASSETS.fetch(request);
     if (!new URL(request.url).pathname.startsWith('/api/v1/'))
       return response({ error: 'Not found' }, 404);
     try {
+      if (request.method !== 'GET') return response({ error: 'Read-only API' }, 405);
+      const canonical = canonicalRequest(request);
       const cache = (caches as unknown as { default: Cache }).default;
-      const cached = request.method === 'GET' ? await cache.match(request) : undefined;
+      const cached = await cache.match(canonical).catch(() => undefined);
       if (cached) return cached;
-      const out = await api(request, env);
-      if (out.ok) {
-        const clone = new Response(out.clone().body, out);
-        clone.headers.set(
-          'Cache-Control',
-          'public, max-age=' + (/overview|status/.test(new URL(request.url).pathname) ? 30 : 300),
-        );
-        ctx.waitUntil(cache.put(request, clone));
+      let pending = inFlight.get(env.DB);
+      if (!pending) {
+        pending = new Map();
+        inFlight.set(env.DB, pending);
       }
-      return out;
+      let task = pending.get(canonical.url);
+      if (!task) {
+        if (pending.size >= 64) {
+          const busy = response(
+            { error: '조회가 몰리고 있습니다. 잠시 후 다시 시도해 주세요.', code: 'BUSY' },
+            429,
+          );
+          busy.headers.set('Retry-After', '5');
+          return busy;
+        }
+        task = (async () => {
+          const out = await api(canonical, env);
+          if (out.ok) {
+            const clone = new Response(out.clone().body, out);
+            clone.headers.set(
+              'Cache-Control',
+              'public, max-age=' + (/overview|status/.test(url.pathname) ? 30 : 300),
+            );
+            ctx.waitUntil(cache.put(canonical, clone).catch(() => undefined));
+          }
+          return out;
+        })();
+        pending.set(canonical.url, task);
+        const remove = () => pending!.delete(canonical.url);
+        task.then(remove, remove);
+      }
+      return (await task).clone();
     } catch (e) {
       const message = String(e);
-      const bad = /Invalid|Unknown/.test(message);
+      const bad = e instanceof RequestError;
       return response(
         {
           error: bad ? message : '데이터 조회가 일시적으로 지연되고 있습니다.',

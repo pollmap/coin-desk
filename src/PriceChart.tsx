@@ -12,10 +12,16 @@ import {
   type ISeriesApi,
   type UTCTimestamp,
 } from 'lightweight-charts';
-import { aggregate, atBarClose, bollinger, rsi, sma, ema, macd } from '../shared/math';
+import {
+  calculateIndicators,
+  candlesCsv,
+  pointAtOrBefore,
+  validDrawings,
+} from '../shared/chart-analysis';
 import { indicatorSpec } from '../shared/indicators';
 import type { Candle, Drawing, Interval, Period, Point } from '../shared/types';
 import { dateLabel, money, priceDigits, periodStart, save, saved } from './lib';
+import './chart-improvements.css';
 const EMPTY: Candle[] = [];
 const ts = (t: number) => t as UTCTimestamp;
 const lineData = (p: Point[]) => p.map((p) => ({ time: ts(p.time), value: p.value }));
@@ -52,47 +58,42 @@ export const PriceChart = memo(function PriceChart({
   const doneRef = useRef(onToolDone);
   toolRef.current = tool;
   doneRef.current = onToolDone;
-  const [drawings, setDrawings] = useState<Drawing[]>(() => saved('drawings.' + scope, []));
+  const [drawings, setDrawings] = useState<Drawing[]>(() =>
+    validDrawings(saved('drawings.' + scope, [])),
+  );
   const drawingsRef = useRef(drawings);
+  const redraw = useRef<((items: Drawing[]) => void) | null>(null);
+  const lastView = useRef<{ key: string; from: UTCTimestamp; to: UTCTimestamp } | null>(null);
   const pending = useRef<Point | null>(null);
   const [hover, setHover] = useState<Candle | null>(null);
   const [hint, setHint] = useState('');
+  const [keyboardValue, setKeyboardValue] = useState('');
+  const [linePrice, setLinePrice] = useState('');
+  const [rangeStart, setRangeStart] = useState('');
+  const [rangeEnd, setRangeEnd] = useState('');
+  const [drawingList, setDrawingList] = useState(false);
+  const candlesByTime = useMemo(() => new Map(candles.map((c) => [c.time, c])), [candles]);
   useEffect(() => {
-    const d = saved<Drawing[]>('drawings.' + scope, []);
+    const d = validDrawings(saved('drawings.' + scope, []));
     setDrawings(d);
     drawingsRef.current = d;
     pending.current = null;
+    setHover(null);
+    setKeyboardValue('');
+    setRangeStart('');
+    setRangeEnd('');
   }, [scope]);
-  const calculated = useMemo(() => {
-    const closes = candles.map((c) => ({ time: c.time, value: c.close }));
-    const closedDaily = daily.filter((c) => c.closed);
-    const dailyPoints = closedDaily.map((c) => ({ time: c.time, value: c.close }));
-    const weekly = aggregate(closedDaily, '1w')
-      .filter((c) => c.closed)
-      .map((c) => ({ time: c.time, value: c.close }));
-    const out: Record<string, Point[][]> = {};
-    for (const id of indicators) {
-      const spec = indicatorSpec(id);
-      if (!spec) continue;
-      if (spec.kind === 'bb') {
-        const b = bollinger(closes, spec.period, spec.multiplier);
-        out[id] = [b.middle, b.upper, b.lower];
-      } else if (spec.kind === 'rsi') out[id] = [rsi(closes, spec.period)];
-      else if (spec.kind === 'macd') {
-        const m = macd(closes);
-        out[id] = [m.line, m.signal, m.histogram];
-      } else {
-        const input = spec.basis === 'w' ? weekly : spec.basis === 'd' ? dailyPoints : closes;
-        const points = (spec.kind === 'ema' ? ema : sma)(input, spec.period);
-        out[id] = [
-          spec.basis === 'bar'
-            ? points
-            : atBarClose(points, spec.basis === 'd' ? '1d' : '1w', candles),
-        ];
-      }
-    }
-    return out;
-  }, [candles, daily, indicators]);
+  const calculated = useMemo(
+    () => calculateIndicators(candles, daily, indicators),
+    [candles, daily, indicators],
+  );
+  function updateDrawings(items: Drawing[]) {
+    const next = validDrawings(items);
+    drawingsRef.current = next;
+    setDrawings(next);
+    save('drawings.' + scope, next);
+    redraw.current?.(next);
+  }
   useEffect(() => {
     if (!container.current || !candles.length) return;
     const chart = createChart(container.current, {
@@ -265,14 +266,19 @@ export const PriceChart = memo(function PriceChart({
           .setData(lineData(points));
       }
     }
+    const viewKey = scope + ':' + period;
+    const prior = lastView.current;
     const visible = candles.filter((c) => c.time >= periodStart(period, candles.at(-1)!.time));
-    if (visible.length > 1)
+    if (prior?.key === viewKey && prior.to >= candles[0].time && prior.from <= candles.at(-1)!.time)
+      chart.timeScale().setVisibleRange({ from: prior.from, to: prior.to });
+    else if (visible.length > 1)
       chart
         .timeScale()
         .setVisibleRange({ from: ts(visible[0].time), to: ts(visible.at(-1)!.time) });
+    const drawingCleanup = new Map<string, () => void>();
     const paint = (d: Drawing) => {
-      if (d.kind === 'horizontal')
-        main.createPriceLine({
+      if (d.kind === 'horizontal') {
+        const line = main.createPriceLine({
           price: d.points[0].value,
           color: '#edb35f',
           lineWidth: 1,
@@ -280,24 +286,33 @@ export const PriceChart = memo(function PriceChart({
           axisLabelVisible: true,
           title: '메모',
         });
-      else if (d.points.length === 2)
-        chart
-          .addSeries(LineSeries, {
-            color: '#edb35f',
-            lineWidth: 2,
-            priceLineVisible: false,
-            lastValueVisible: false,
-            crosshairMarkerVisible: false,
-          })
-          .setData(lineData([...d.points].sort((a, b) => a.time - b.time)));
+        drawingCleanup.set(d.id, () => main.removePriceLine(line));
+      } else if (d.points.length === 2) {
+        const line = chart.addSeries(LineSeries, {
+          color: '#edb35f',
+          lineWidth: 2,
+          priceLineVisible: false,
+          lastValueVisible: false,
+          crosshairMarkerVisible: false,
+        });
+        line.setData(lineData(d.points));
+        drawingCleanup.set(d.id, () => chart.removeSeries(line));
+      }
     };
-    const stored = saved<Drawing[]>('drawings.' + scope, []);
+    redraw.current = (items) => {
+      const ids = new Set(items.map((d) => d.id));
+      for (const [id, remove] of drawingCleanup)
+        if (!ids.has(id)) {
+          remove();
+          drawingCleanup.delete(id);
+        }
+      for (const item of items) if (!drawingCleanup.has(item.id)) paint(item);
+    };
+    const stored = validDrawings(saved('drawings.' + scope, []));
     stored.forEach(paint);
     drawingsRef.current = stored;
     chart.subscribeCrosshairMove((p) => {
-      const c = p.seriesData.get(main);
-      if (c && 'open' in c) setHover(c as unknown as Candle);
-      else setHover(null);
+      setHover(p.time ? candlesByTime.get(Number(p.time)) || null : null);
     });
     chart.subscribeClick((p) => {
       if (toolRef.current === 'cursor' || !p.point || !p.time || p.paneIndex !== 0) return;
@@ -320,27 +335,21 @@ export const PriceChart = memo(function PriceChart({
         drawing = { id: crypto.randomUUID(), kind: 'trend', points: [pending.current, point] };
         pending.current = null;
       }
-      const next = [...drawingsRef.current, drawing].slice(-30);
-      drawingsRef.current = next;
-      setDrawings(next);
-      save('drawings.' + scope, next);
-      paint(drawing);
+      updateDrawings([...drawingsRef.current, drawing]);
       setHint('차트 메모를 이 브라우저에 저장했습니다.');
       doneRef.current();
     });
-    const empty = indicators.filter((id) => !calculated[id]?.[0]?.length);
-    if (empty.length)
-      setHint(
-        empty.map((id) => indicatorSpec(id)?.label).join(', ') +
-          ' 계산에 필요한 확정 봉이 부족합니다.',
-      );
     return () => {
+      const range = chart.timeScale().getVisibleRange();
+      if (range)
+        lastView.current = { key: viewKey, from: ts(Number(range.from)), to: ts(Number(range.to)) };
       cancelAnimationFrame(readyFrame);
       chart.remove();
       chartRef.current = null;
       candlesRef.current = null;
+      redraw.current = null;
     };
-  }, [candles, calculated, interval, large, log, period, scope, unit, indicators]);
+  }, [candles, candlesByTime, calculated, interval, large, log, period, scope, unit, indicators]);
   useEffect(() => {
     pending.current = null;
     setHint(
@@ -351,28 +360,58 @@ export const PriceChart = memo(function PriceChart({
           : '',
     );
   }, [tool]);
-  const [reset, setReset] = useState(0);
   function clear() {
-    save('drawings.' + scope, []);
-    drawingsRef.current = [];
-    setDrawings([]);
+    updateDrawings([]);
     pending.current = null;
-    setReset((v) => v + 1);
     setHint('저장된 선을 삭제했습니다.');
   }
-  // A reset remount clears chart-owned price lines and custom drawing series.
-  useEffect(() => {
-    if (reset) window.dispatchEvent(new CustomEvent('btc-drawings-reset', { detail: scope }));
-  }, [reset, scope]);
-  const display = hover ?? candles.at(-1);
+  function zoom(factor: number) {
+    const scale = chartRef.current?.timeScale();
+    const range = scale?.getVisibleLogicalRange();
+    if (!scale || !range) return;
+    const center = (range.from + range.to) / 2;
+    const half = Math.max(5, ((range.to - range.from) * factor) / 2);
+    scale.setVisibleLogicalRange({ from: center - half, to: center + half });
+  }
+  function resetView() {
+    const visible = candles.filter((c) => c.time >= periodStart(period, candles.at(-1)!.time));
+    if (visible.length > 1)
+      chartRef.current
+        ?.timeScale()
+        .setVisibleRange({ from: ts(visible[0].time), to: ts(visible.at(-1)!.time) });
+    else chartRef.current?.timeScale().fitContent();
+    setRangeStart('');
+    setRangeEnd('');
+    setHint('선택한 조회 기간으로 차트를 맞췄습니다.');
+  }
+  function exportCsv() {
+    const range = chartRef.current?.timeScale().getVisibleRange();
+    const csv = candlesCsv(
+      candles,
+      scope,
+      range ? Number(range.from) : 0,
+      range ? Number(range.to) : Infinity,
+    );
+    const url = URL.createObjectURL(new Blob([csv], { type: 'text/csv;charset=utf-8' }));
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = 'Coin-Desk-' + scope.replace(/[^A-Za-z0-9_-]/g, '-') + '.csv';
+    link.click();
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+    setHint('현재 보이는 구간의 실제 OHLCV를 UTC 시각·확정 여부와 함께 내보냈습니다.');
+  }
+  const display = (hover ? candlesByTime.get(hover.time) : null) ?? candles.at(-1);
   const missing = indicators
-    .filter((id) => !calculated[id]?.[0]?.length)
+    .filter((id) => !calculated[id]?.length || calculated[id].some((series) => !series.length))
     .map((id) => indicatorSpec(id)?.label);
   return (
     <div className="chart-surface">
       <div className="ohlc-readout" aria-live="off">
         {display ? (
           <>
+            <span className="chart-observation-date">
+              {dateLabel(display.time, interval === '1h' || interval === '4h')}
+            </span>
             <span>
               O <b>{money(display.open, unit)}</b>
             </span>
@@ -385,7 +424,10 @@ export const PriceChart = memo(function PriceChart({
             <span>
               C <b>{money(display.close, unit)}</b>
             </span>
-            {!display.closed && !hover ? <em>진행 중인 봉</em> : null}
+            <span>
+              V <b>{display.volume.toLocaleString('en-US', { maximumFractionDigits: 4 })}</b>
+            </span>
+            {!display.closed ? <em>진행 중 · 봉 기준 지표는 변동</em> : null}
           </>
         ) : null}
       </div>
@@ -393,17 +435,9 @@ export const PriceChart = memo(function PriceChart({
         {indicators.map((id) => {
           const spec = indicatorSpec(id);
           const current =
-            calculated[id]?.map((series) => {
-              let lo = 0,
-                hi = series.length;
-              const t = display?.time ?? Infinity;
-              while (lo < hi) {
-                const mid = (lo + hi) >>> 1;
-                if (series[mid].time <= t) lo = mid + 1;
-                else hi = mid;
-              }
-              return series[lo - 1]?.value;
-            }) || [];
+            calculated[id]?.map(
+              (series) => pointAtOrBefore(series, display?.time ?? Infinity)?.value,
+            ) || [];
           return (
             <span key={id} style={{ color: spec?.color }}>
               {spec?.label}
@@ -421,17 +455,201 @@ export const PriceChart = memo(function PriceChart({
       <div
         ref={container}
         className="financial-chart"
-        role="img"
-        aria-label="가격, 거래량과 선택한 기술지표 차트"
+        role="group"
+        tabIndex={0}
+        aria-label="가격, 거래량과 기술지표 차트. 좌우 화살표로 날짜별 값 확인, 더하기·빼기로 확대·축소, Escape로 그리기 취소"
+        onKeyDown={(e) => {
+          if (e.target !== e.currentTarget) return;
+          if (['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(e.key)) {
+            e.preventDefault();
+            const index = display
+              ? candles.findIndex((c) => c.time === display.time)
+              : candles.length - 1;
+            const next =
+              e.key === 'Home'
+                ? 0
+                : e.key === 'End'
+                  ? candles.length - 1
+                  : Math.max(
+                      0,
+                      Math.min(candles.length - 1, index + (e.key === 'ArrowLeft' ? -1 : 1)),
+                    );
+            const candle = candles[next];
+            if (candle && candlesRef.current) {
+              setHover(candle);
+              setKeyboardValue(
+                `${dateLabel(candle.time, interval === '1h' || interval === '4h')} · 종가 ${money(candle.close, unit)} · ${candle.closed ? '확정 봉' : '진행 중인 봉'}`,
+              );
+              chartRef.current?.setCrosshairPosition(
+                candle.close,
+                ts(candle.time),
+                candlesRef.current,
+              );
+            }
+          } else if (['+', '=', '-'].includes(e.key)) {
+            e.preventDefault();
+            zoom(e.key === '-' ? 1.4 : 1 / 1.4);
+          } else if (e.key === 'Escape') {
+            pending.current = null;
+            setHover(null);
+            chartRef.current?.clearCrosshairPosition();
+            setHint('그리기를 취소했습니다.');
+            doneRef.current();
+          }
+        }}
       />
-      <div className="chart-bottom">
-        <span>
-          {hint ||
-            (missing.length ? missing.join(', ') + ' 계산에 필요한 확정 봉이 부족합니다.' : null) ||
-            '스크롤로 확대 · 드래그로 이동 · 축을 드래그해 배율 조절'}
-        </span>
-        {drawings.length ? <button onClick={clear}>그린 선 {drawings.length}개 삭제</button> : null}
+      <span className="chart-keyboard-status" role="status">
+        {keyboardValue}
+      </span>
+      <div className="chart-actions" aria-label="차트 조작">
+        <button onClick={() => zoom(1 / 1.4)} aria-label="차트 확대">
+          ＋ 확대
+        </button>
+        <button onClick={() => zoom(1.4)} aria-label="차트 축소">
+          − 축소
+        </button>
+        <button onClick={resetView}>화면 맞춤</button>
+        <button onClick={exportCsv}>보이는 구간 CSV</button>
+        <button aria-expanded={drawingList} onClick={() => setDrawingList(!drawingList)}>
+          그린 선 관리 {drawings.length ? `(${drawings.length})` : ''}
+        </button>
       </div>
+      <details className="chart-range-editor">
+        <summary>날짜 범위 직접 선택</summary>
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            const start = Date.parse(rangeStart + 'T00:00:00+09:00') / 1000;
+            const end = Date.parse(rangeEnd + 'T00:00:00+09:00') / 1000 + 86400;
+            if (!Number.isFinite(start) || !Number.isFinite(end) || start >= end) {
+              setHint('시작일과 종료일을 올바르게 입력하세요.');
+              return;
+            }
+            const rows = candles.filter((c) => c.time >= start && c.time < end);
+            if (!rows.length) {
+              setHint('선택한 기간에 수집된 봉이 없습니다. 시간봉은 최근 90일만 제공합니다.');
+              return;
+            }
+            if (rows.length === 1) {
+              const index = candles.findIndex((c) => c.time === rows[0].time);
+              chartRef.current
+                ?.timeScale()
+                .setVisibleLogicalRange({ from: index - 1, to: index + 1 });
+            } else
+              chartRef.current
+                ?.timeScale()
+                .setVisibleRange({ from: ts(rows[0].time), to: ts(rows.at(-1)!.time) });
+            setHint('KST 기준 시작 시각이 선택한 날짜에 포함되는 실제 봉을 표시합니다.');
+          }}
+        >
+          <label>
+            시작일 (KST)
+            <input
+              type="date"
+              value={rangeStart}
+              onChange={(e) => setRangeStart(e.target.value)}
+              required
+            />
+          </label>
+          <label>
+            종료일 (KST)
+            <input
+              type="date"
+              value={rangeEnd}
+              onChange={(e) => setRangeEnd(e.target.value)}
+              required
+            />
+          </label>
+          <button type="submit">기간 적용</button>
+        </form>
+      </details>
+      {drawingList ? (
+        <section className="drawing-manager" aria-label="저장된 선 관리">
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              const price = Number(linePrice);
+              if (!Number.isFinite(price) || price <= 0 || !candles.length) {
+                setHint('수평선 가격은 0보다 큰 숫자로 입력하세요.');
+                return;
+              }
+              updateDrawings([
+                ...drawingsRef.current,
+                {
+                  id: crypto.randomUUID(),
+                  kind: 'horizontal',
+                  points: [{ time: candles.at(-1)!.time, value: price }],
+                },
+              ]);
+              setLinePrice('');
+              setHint('지정한 가격의 수평선을 저장했습니다. 최대 30개를 보관합니다.');
+            }}
+          >
+            <label>
+              수평선 가격 ({unit})
+              <input
+                type="number"
+                step="any"
+                min="0"
+                value={linePrice}
+                onChange={(e) => setLinePrice(e.target.value)}
+                placeholder={display ? String(display.close) : ''}
+                required
+              />
+            </label>
+            <button type="submit">수평선 추가</button>
+          </form>
+          {drawings.length ? (
+            <>
+              <div className="chart-actions">
+                <button
+                  onClick={() => {
+                    updateDrawings(drawingsRef.current.slice(0, -1));
+                    setHint('마지막에 추가한 선을 삭제했습니다.');
+                  }}
+                >
+                  마지막 선 실행 취소
+                </button>
+                <button onClick={clear}>모두 삭제</button>
+              </div>
+              <ul>
+                {drawings.map((drawing, index) => (
+                  <li key={drawing.id}>
+                    <span>
+                      {index + 1}. {drawing.kind === 'horizontal' ? '수평선' : '추세선'} ·{' '}
+                      {drawing.points.map((p) => money(p.value, unit)).join(' → ')}
+                    </span>
+                    <button
+                      aria-label={`${index + 1}번 ${drawing.kind === 'horizontal' ? '수평선' : '추세선'} 삭제`}
+                      onClick={() =>
+                        updateDrawings(drawingsRef.current.filter((d) => d.id !== drawing.id))
+                      }
+                    >
+                      삭제
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            </>
+          ) : (
+            <p>
+              마우스로 그리거나 가격을 입력해 선을 추가하세요. 이 코인·시장·봉 간격별로 최대 30개를
+              브라우저에 저장합니다.
+            </p>
+          )}
+        </section>
+      ) : null}
+      <div className="chart-bottom">
+        <span role="status">
+          {hint || '스크롤로 확대 · 드래그로 이동 · 축을 드래그해 배율 조절'}
+        </span>
+      </div>
+      {missing.length ? (
+        <div className="indicator-feedback" role="status">
+          {missing.join(', ')}: 일부 선을 계산할 봉이 부족합니다. 일·주 기준은 확정된 봉만
+          사용합니다.
+        </div>
+      ) : null}
     </div>
   );
 });

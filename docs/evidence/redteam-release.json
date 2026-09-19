@@ -1,0 +1,139 @@
+{
+  "checkedAt": "2026-09-19T18:38:33.389596+00:00",
+  "workerVersion": "aadce5f8-cb32-4745-a5dd-5ae33fb00dda",
+  "pagesDeployment": "c6e9c999",
+  "publicBuildMatches": true,
+  "assets": [
+    {
+      "path": "/assets/index-BltfOQWm.js",
+      "bytes": 542776,
+      "sha256": "7458b1e3e632a27817e982ff91db473e240ee0091143ef0303b8428273b446f9"
+    },
+    {
+      "path": "/assets/index-Bskl_-lk.css",
+      "bytes": 34990,
+      "sha256": "c88e2b36878c4ff450f4d3305c1152a6deb2e8a490fc47ac0e2f7d276dae58e9"
+    }
+  ],
+  "legacyRedirect": {
+    "status": 308,
+    "location": "https://coin-desk.pages.dev/chart/DOGE?market=upbit&period=1y"
+  },
+  "invalidRequests": [
+    {
+      "path": "/api/v1/overview?asset=DOGE&market=upbit&unexpected=1",
+      "status": 400
+    },
+    {
+      "path": "/api/v1/overview?asset=BTC&asset=DOGE",
+      "status": 400
+    },
+    {
+      "path": "/api/v1/candles?limit=1001",
+      "status": 400
+    }
+  ],
+  "health": {
+    "checkedAt": "2026-09-19T18:36:36.060473+00:00",
+    "ok": true,
+    "issues": [],
+    "warnings": [],
+    "latencyMs": {
+      "status": 285.6,
+      "overview": 536.2,
+      "candles": 142.9,
+      "metrics": 132.4,
+      "overviewKRW": 421.3,
+      "binance1h": 177.8,
+      "upbit1h": 169.5,
+      "mvrv": 197.1,
+      "realized_price": 208.9,
+      "sopr_24h": 128.1,
+      "nupl": 95.2,
+      "mvrv_z": 93.6,
+      "sth_mvrv": 93.5,
+      "lth_mvrv": 103.9,
+      "sth_realized_price": 93.0,
+      "DOGE:binance": 48.7,
+      "DOGE:upbit": 271.2,
+      "ETH:binance": 409.5,
+      "ETH:upbit": 323.6,
+      "SOL:binance": 383.8,
+      "SOL:upbit": 420.2,
+      "XRP:binance": 563.2,
+      "XRP:upbit": 360.2,
+      "LINK:binance": 526.5,
+      "LINK:upbit": 403.2,
+      "ONDO:binance": 177.7,
+      "ONDO:upbit": 364.3,
+      "PEPE:binance": 493.9,
+      "PEPE:upbit": 337.1,
+      "dominance": 67.8
+    }
+  },
+  "runtime": {
+    "sampleCount": 58,
+    "maxCpuMs": 12,
+    "over10ms": [
+      {
+        "eventTimestamp": 1789842980057,
+        "cpuTime": 12,
+        "wallTime": 1102,
+        "outcome": "ok",
+        "path": "cron",
+        "version": "aadce5f8-cb32-4745-a5dd-5ae33fb00dda",
+        "status": null
+      }
+    ],
+    "outcomes": {
+      "ok": 58
+    },
+    "cron": [
+      {
+        "eventTimestamp": 1789842980057,
+        "cpuTime": 12,
+        "wallTime": 1102,
+        "outcome": "ok",
+        "path": "cron",
+        "version": "aadce5f8-cb32-4745-a5dd-5ae33fb00dda",
+        "status": null
+      },
+      {
+        "eventTimestamp": 1789843040058,
+        "cpuTime": 2,
+        "wallTime": 214,
+        "outcome": "ok",
+        "path": "cron",
+        "version": "aadce5f8-cb32-4745-a5dd-5ae33fb00dda",
+        "status": null
+      },
+      {
+        "eventTimestamp": 1789843100058,
+        "cpuTime": 2,
+        "wallTime": 200,
+        "outcome": "ok",
+        "path": "cron",
+        "version": "aadce5f8-cb32-4745-a5dd-5ae33fb00dda",
+        "status": null
+      }
+    ]
+  },
+  "browser": {
+    "firstPriceChartMs": 1721,
+    "measurement": "one navigation via legacy redirect; not a general performance guarantee",
+    "localViewportChecks": [
+      1440,
+      390
+    ],
+    "publicMobileWidth": 390,
+    "publicMobileDocumentWidth": 375,
+    "appConsoleErrors": 0
+  },
+  "d1QueryInsights": {
+    "scope": "This DB; trailing 1d; returned query analytics groups; not account billing totals or bulk import totals",
+    "groups": 41,
+    "totalRowsRead": 235901,
+    "totalRowsWritten": 1887,
+    "numberOfTimesRun": 6022
+  }
+}

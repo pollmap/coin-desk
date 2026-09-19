@@ -1,0 +1,1487 @@
+{
+  "checkedAt": "2026-09-19T18:08:14.899Z",
+  "source": "Local API backed by collected exchange OHLCV",
+  "requests": 46,
+  "checks": 20,
+  "results": [
+    {
+      "market": "binance",
+      "group": "priority-three",
+      "period": "1m",
+      "rows": [
+        {
+          "asset": "BTC",
+          "startPrice": 69334.79,
+          "endPrice": 80883.87,
+          "returnPct": 16.656976966397387,
+          "maxDrawdownPct": -6.922436799537146,
+          "annualVolatilityPct": 47.05078754563789,
+          "missingDays": 0,
+          "ignoredRows": 0,
+          "latestAvailable": 1789689600
+        },
+        {
+          "asset": "DOGE",
+          "startPrice": 0.07504,
+          "endPrice": 0.08747,
+          "returnPct": 16.564498933901927,
+          "maxDrawdownPct": -14.279597516591735,
+          "annualVolatilityPct": 79.94972949293029,
+          "missingDays": 0,
+          "ignoredRows": 0,
+          "latestAvailable": 1789689600
+        },
+        {
+          "asset": "ETH",
+          "startPrice": 2252.8,
+          "endPrice": 2612.14,
+          "returnPct": 15.95081676136363,
+          "maxDrawdownPct": -5.05437601200348,
+          "annualVolatilityPct": 53.577175399248176,
+          "missingDays": 0,
+          "ignoredRows": 0,
+          "latestAvailable": 1789689600
+        }
+      ],
+      "start": 1787097600,
+      "end": 1789689600,
+      "requestedStart": 1787097600,
+      "shortened": false,
+      "missingCommonDays": 0,
+      "observations": 31
+    },
+    {
+      "market": "binance",
+      "group": "priority-three",
+      "period": "3m",
+      "rows": [
+        {
+          "asset": "BTC",
+          "startPrice": 64298.01,
+          "endPrice": 80883.87,
+          "returnPct": 25.79529288698048,
+          "maxDrawdownPct": -8.823445702285348,
+          "annualVolatilityPct": 37.89929695416569,
+          "missingDays": 0,
+          "ignoredRows": 0,
+          "latestAvailable": 1789689600
+        },
+        {
+          "asset": "DOGE",
+          "startPrice": 0.0837,
+          "endPrice": 0.08747,
+          "returnPct": 4.504181600955803,
+          "maxDrawdownPct": -17.455197132616483,
+          "annualVolatilityPct": 56.57461208001791,
+          "missingDays": 0,
+          "ignoredRows": 0,
+          "latestAvailable": 1789689600
+        },
+        {
+          "asset": "ETH",
+          "startPrice": 1741.08,
+          "endPrice": 2612.14,
+          "returnPct": 50.02986651963148,
+          "maxDrawdownPct": -9.950145886461282,
+          "annualVolatilityPct": 54.40443209469875,
+          "missingDays": 0,
+          "ignoredRows": 0,
+          "latestAvailable": 1789689600
+        }
+      ],
+      "start": 1781913600,
+      "end": 1789689600,
+      "requestedStart": 1781913600,
+      "shortened": false,
+      "missingCommonDays": 0,
+      "observations": 91
+    },
+    {
+      "market": "binance",
+      "group": "priority-three",
+      "period": "1y",
+      "rows": [
+        {
+          "asset": "BTC",
+          "startPrice": 117073.53,
+          "endPrice": 80883.87,
+          "returnPct": -30.911906389087275,
+          "maxDrawdownPct": -52.971765913510616,
+          "annualVolatilityPct": 44.85633690321618,
+          "missingDays": 0,
+          "ignoredRows": 0,
+          "latestAvailable": 1789689600
+        },
+        {
+          "asset": "DOGE",
+          "startPrice": 0.27857,
+          "endPrice": 0.08747,
+          "returnPct": -68.60035179667588,
+          "maxDrawdownPct": -75.19833435043257,
+          "annualVolatilityPct": 72.02232527141734,
+          "missingDays": 0,
+          "ignoredRows": 0,
+          "latestAvailable": 1789689600
+        },
+        {
+          "asset": "ETH",
+          "startPrice": 4587.66,
+          "endPrice": 2612.14,
+          "returnPct": -43.06160439090952,
+          "maxDrawdownPct": -66.52782551702494,
+          "annualVolatilityPct": 64.33737926319255,
+          "missingDays": 0,
+          "ignoredRows": 0,
+          "latestAvailable": 1789689600
+        }
+      ],
+      "start": 1758153600,
+      "end": 1789689600,
+      "requestedStart": 1758153600,
+      "shortened": false,
+      "missingCommonDays": 0,
+      "observations": 366
+    },
+    {
+      "market": "binance",
+      "group": "priority-three",
+      "period": "3y",
+      "rows": [
+        {
+          "asset": "BTC",
+          "startPrice": 27210.26,
+          "endPrice": 80883.87,
+          "returnPct": 197.25504276695628,
+          "maxDrawdownPct": -52.971765913510616,
+          "annualVolatilityPct": 46.74054258971742,
+          "missingDays": 0,
+          "ignoredRows": 0,
+          "latestAvailable": 1789689600
+        },
+        {
+          "asset": "DOGE",
+          "startPrice": 0.06268,
+          "endPrice": 0.08747,
+          "returnPct": 39.550095724313984,
+          "maxDrawdownPct": -85.18494692827275,
+          "annualVolatilityPct": 87.30899489238512,
+          "missingDays": 0,
+          "ignoredRows": 0,
+          "latestAvailable": 1789689600
+        },
+        {
+          "asset": "ETH",
+          "startPrice": 1643.12,
+          "endPrice": 2612.14,
+          "returnPct": 58.974390184526996,
+          "maxDrawdownPct": -67.55345017766713,
+          "annualVolatilityPct": 66.18852117288415,
+          "missingDays": 0,
+          "ignoredRows": 0,
+          "latestAvailable": 1789689600
+        }
+      ],
+      "start": 1695081600,
+      "end": 1789689600,
+      "requestedStart": 1695081600,
+      "shortened": false,
+      "missingCommonDays": 0,
+      "observations": 1096
+    },
+    {
+      "market": "binance",
+      "group": "priority-three",
+      "period": "all",
+      "rows": [
+        {
+          "asset": "BTC",
+          "startPrice": 10970.73,
+          "endPrice": 80883.87,
+          "returnPct": 637.2697167827483,
+          "maxDrawdownPct": -76.62925431645935,
+          "annualVolatilityPct": 61.737817798560755,
+          "missingDays": 0,
+          "ignoredRows": 0,
+          "latestAvailable": 1789689600
+        },
+        {
+          "asset": "DOGE",
+          "startPrice": 0.0038701,
+          "endPrice": 0.08747,
+          "returnPct": 2160.1483165809673,
+          "maxDrawdownPct": -92.33133281145807,
+          "annualVolatilityPct": 125.62740448799362,
+          "missingDays": 0,
+          "ignoredRows": 0,
+          "latestAvailable": 1789689600
+        },
+        {
+          "asset": "ETH",
+          "startPrice": 287.47,
+          "endPrice": 2612.14,
+          "returnPct": 808.6652520262982,
+          "maxDrawdownPct": -79.30253453633334,
+          "annualVolatilityPct": 81.72762976750603,
+          "missingDays": 0,
+          "ignoredRows": 0,
+          "latestAvailable": 1789689600
+        }
+      ],
+      "start": 1562284800,
+      "end": 1789689600,
+      "requestedStart": null,
+      "shortened": false,
+      "missingCommonDays": 0,
+      "observations": 2633
+    },
+    {
+      "market": "binance",
+      "group": "all-eight",
+      "period": "1m",
+      "rows": [
+        {
+          "asset": "BTC",
+          "startPrice": 69334.79,
+          "endPrice": 80883.87,
+          "returnPct": 16.656976966397387,
+          "maxDrawdownPct": -6.922436799537146,
+          "annualVolatilityPct": 47.05078754563789,
+          "missingDays": 0,
+          "ignoredRows": 0,
+          "latestAvailable": 1789689600
+        },
+        {
+          "asset": "DOGE",
+          "startPrice": 0.07504,
+          "endPrice": 0.08747,
+          "returnPct": 16.564498933901927,
+          "maxDrawdownPct": -14.279597516591735,
+          "annualVolatilityPct": 79.94972949293029,
+          "missingDays": 0,
+          "ignoredRows": 0,
+          "latestAvailable": 1789689600
+        },
+        {
+          "asset": "ETH",
+          "startPrice": 2252.8,
+          "endPrice": 2612.14,
+          "returnPct": 15.95081676136363,
+          "maxDrawdownPct": -5.05437601200348,
+          "annualVolatilityPct": 53.577175399248176,
+          "missingDays": 0,
+          "ignoredRows": 0,
+          "latestAvailable": 1789689600
+        },
+        {
+          "asset": "SOL",
+          "startPrice": 85.38,
+          "endPrice": 112.72,
+          "returnPct": 32.02155071445303,
+          "maxDrawdownPct": -11.233278358072207,
+          "annualVolatilityPct": 70.94879264509471,
+          "missingDays": 0,
+          "ignoredRows": 0,
+          "latestAvailable": 1789689600
+        },
+        {
+          "asset": "XRP",
+          "startPrice": 1.106,
+          "endPrice": 1.3963,
+          "returnPct": 26.247739602169972,
+          "maxDrawdownPct": -15.594580373585886,
+          "annualVolatilityPct": 96.12383742757535,
+          "missingDays": 0,
+          "ignoredRows": 0,
+          "latestAvailable": 1789689600
+        },
+        {
+          "asset": "LINK",
+          "startPrice": 10.557,
+          "endPrice": 12.226,
+          "returnPct": 15.809415553661088,
+          "maxDrawdownPct": -17.72840625708456,
+          "annualVolatilityPct": 79.33872449767676,
+          "missingDays": 0,
+          "ignoredRows": 0,
+          "latestAvailable": 1789689600
+        },
+        {
+          "asset": "ONDO",
+          "startPrice": 0.3472,
+          "endPrice": 0.3987,
+          "returnPct": 14.832949308755762,
+          "maxDrawdownPct": -17.2883064516129,
+          "annualVolatilityPct": 87.62281711375938,
+          "missingDays": 0,
+          "ignoredRows": 0,
+          "latestAvailable": 1789689600
+        },
+        {
+          "asset": "PEPE",
+          "startPrice": 2.87e-06,
+          "endPrice": 3.82e-06,
+          "returnPct": 33.10104529616724,
+          "maxDrawdownPct": -21.359223300970886,
+          "annualVolatilityPct": 119.37780840198285,
+          "missingDays": 0,
+          "ignoredRows": 0,
+          "latestAvailable": 1789689600
+        }
+      ],
+      "start": 1787097600,
+      "end": 1789689600,
+      "requestedStart": 1787097600,
+      "shortened": false,
+      "missingCommonDays": 0,
+      "observations": 31
+    },
+    {
+      "market": "binance",
+      "group": "all-eight",
+      "period": "3m",
+      "rows": [
+        {
+          "asset": "BTC",
+          "startPrice": 64298.01,
+          "endPrice": 80883.87,
+          "returnPct": 25.79529288698048,
+          "maxDrawdownPct": -8.823445702285348,
+          "annualVolatilityPct": 37.89929695416569,
+          "missingDays": 0,
+          "ignoredRows": 0,
+          "latestAvailable": 1789689600
+        },
+        {
+          "asset": "DOGE",
+          "startPrice": 0.0837,
+          "endPrice": 0.08747,
+          "returnPct": 4.504181600955803,
+          "maxDrawdownPct": -17.455197132616483,
+          "annualVolatilityPct": 56.57461208001791,
+          "missingDays": 0,
+          "ignoredRows": 0,
+          "latestAvailable": 1789689600
+        },
+        {
+          "asset": "ETH",
+          "startPrice": 1741.08,
+          "endPrice": 2612.14,
+          "returnPct": 50.02986651963148,
+          "maxDrawdownPct": -9.950145886461282,
+          "annualVolatilityPct": 54.40443209469875,
+          "missingDays": 0,
+          "ignoredRows": 0,
+          "latestAvailable": 1789689600
+        },
+        {
+          "asset": "SOL",
+          "startPrice": 73.22,
+          "endPrice": 112.72,
+          "returnPct": 53.94700901393061,
+          "maxDrawdownPct": -12.61841146465873,
+          "annualVolatilityPct": 56.21417492232115,
+          "missingDays": 0,
+          "ignoredRows": 0,
+          "latestAvailable": 1789689600
+        },
+        {
+          "asset": "XRP",
+          "startPrice": 1.1499,
+          "endPrice": 1.3963,
+          "returnPct": 21.427950256544072,
+          "maxDrawdownPct": -15.594580373585886,
+          "annualVolatilityPct": 65.010189230178,
+          "missingDays": 0,
+          "ignoredRows": 0,
+          "latestAvailable": 1789689600
+        },
+        {
+          "asset": "LINK",
+          "startPrice": 7.987,
+          "endPrice": 12.226,
+          "returnPct": 53.07374483535747,
+          "maxDrawdownPct": -17.72840625708456,
+          "annualVolatilityPct": 61.62694072953276,
+          "missingDays": 0,
+          "ignoredRows": 0,
+          "latestAvailable": 1789689600
+        },
+        {
+          "asset": "ONDO",
+          "startPrice": 0.3436,
+          "endPrice": 0.3987,
+          "returnPct": 16.03608847497089,
+          "maxDrawdownPct": -22.235576923076916,
+          "annualVolatilityPct": 76.7476972623218,
+          "missingDays": 0,
+          "ignoredRows": 0,
+          "latestAvailable": 1789689600
+        },
+        {
+          "asset": "PEPE",
+          "startPrice": 2.83e-06,
+          "endPrice": 3.82e-06,
+          "returnPct": 34.98233215547704,
+          "maxDrawdownPct": -21.359223300970886,
+          "annualVolatilityPct": 87.82197512645375,
+          "missingDays": 0,
+          "ignoredRows": 0,
+          "latestAvailable": 1789689600
+        }
+      ],
+      "start": 1781913600,
+      "end": 1789689600,
+      "requestedStart": 1781913600,
+      "shortened": false,
+      "missingCommonDays": 0,
+      "observations": 91
+    },
+    {
+      "market": "binance",
+      "group": "all-eight",
+      "period": "1y",
+      "rows": [
+        {
+          "asset": "BTC",
+          "startPrice": 117073.53,
+          "endPrice": 80883.87,
+          "returnPct": -30.911906389087275,
+          "maxDrawdownPct": -52.971765913510616,
+          "annualVolatilityPct": 44.85633690321618,
+          "missingDays": 0,
+          "ignoredRows": 0,
+          "latestAvailable": 1789689600
+        },
+        {
+          "asset": "DOGE",
+          "startPrice": 0.27857,
+          "endPrice": 0.08747,
+          "returnPct": -68.60035179667588,
+          "maxDrawdownPct": -75.19833435043257,
+          "annualVolatilityPct": 72.02232527141734,
+          "missingDays": 0,
+          "ignoredRows": 0,
+          "latestAvailable": 1789689600
+        },
+        {
+          "asset": "ETH",
+          "startPrice": 4587.66,
+          "endPrice": 2612.14,
+          "returnPct": -43.06160439090952,
+          "maxDrawdownPct": -66.52782551702494,
+          "annualVolatilityPct": 64.33737926319255,
+          "missingDays": 0,
+          "ignoredRows": 0,
+          "latestAvailable": 1789689600
+        },
+        {
+          "asset": "SOL",
+          "startPrice": 247.5,
+          "endPrice": 112.72,
+          "returnPct": -54.45656565656566,
+          "maxDrawdownPct": -74.86868686868686,
+          "annualVolatilityPct": 68.863676848489,
+          "missingDays": 0,
+          "ignoredRows": 0,
+          "latestAvailable": 1789689600
+        },
+        {
+          "asset": "XRP",
+          "startPrice": 3.0735,
+          "endPrice": 1.3963,
+          "returnPct": -54.56970880104115,
+          "maxDrawdownPct": -67.67203513909223,
+          "annualVolatilityPct": 66.6930171869023,
+          "missingDays": 0,
+          "ignoredRows": 0,
+          "latestAvailable": 1789689600
+        },
+        {
+          "asset": "LINK",
+          "startPrice": 24.62,
+          "endPrice": 12.226,
+          "returnPct": -50.34118602761982,
+          "maxDrawdownPct": -70.75142160844841,
+          "annualVolatilityPct": 71.70280028961307,
+          "missingDays": 0,
+          "ignoredRows": 0,
+          "latestAvailable": 1789689600
+        },
+        {
+          "asset": "ONDO",
+          "startPrice": 1.0776,
+          "endPrice": 0.3987,
+          "returnPct": -63.0011135857461,
+          "maxDrawdownPct": -79.11098737936155,
+          "annualVolatilityPct": 90.32456310276031,
+          "missingDays": 0,
+          "ignoredRows": 0,
+          "latestAvailable": 1789689600
+        },
+        {
+          "asset": "PEPE",
+          "startPrice": 1.145e-05,
+          "endPrice": 3.82e-06,
+          "returnPct": -66.63755458515284,
+          "maxDrawdownPct": -79.65065502183405,
+          "annualVolatilityPct": 99.02340127805577,
+          "missingDays": 0,
+          "ignoredRows": 0,
+          "latestAvailable": 1789689600
+        }
+      ],
+      "start": 1758153600,
+      "end": 1789689600,
+      "requestedStart": 1758153600,
+      "shortened": false,
+      "missingCommonDays": 0,
+      "observations": 366
+    },
+    {
+      "market": "binance",
+      "group": "all-eight",
+      "period": "3y",
+      "rows": [
+        {
+          "asset": "BTC",
+          "startPrice": 83423.84,
+          "endPrice": 80883.87,
+          "returnPct": -3.044657258644534,
+          "maxDrawdownPct": -52.971765913510616,
+          "annualVolatilityPct": 41.30082390476462,
+          "missingDays": 0,
+          "ignoredRows": 0,
+          "latestAvailable": 1789689600
+        },
+        {
+          "asset": "DOGE",
+          "startPrice": 0.16004,
+          "endPrice": 0.08747,
+          "returnPct": -45.3449137715571,
+          "maxDrawdownPct": -76.12481857764877,
+          "annualVolatilityPct": 77.62059573657949,
+          "missingDays": 0,
+          "ignoredRows": 0,
+          "latestAvailable": 1789689600
+        },
+        {
+          "asset": "ETH",
+          "startPrice": 1566.85,
+          "endPrice": 2612.14,
+          "returnPct": 66.71283147716758,
+          "maxDrawdownPct": -67.55345017766713,
+          "annualVolatilityPct": 66.54735838266191,
+          "missingDays": 0,
+          "ignoredRows": 0,
+          "latestAvailable": 1789689600
+        },
+        {
+          "asset": "SOL",
+          "startPrice": 121.41,
+          "endPrice": 112.72,
+          "returnPct": -7.1575652746890706,
+          "maxDrawdownPct": -74.86868686868686,
+          "annualVolatilityPct": 69.04945479516941,
+          "missingDays": 0,
+          "ignoredRows": 0,
+          "latestAvailable": 1789689600
+        },
+        {
+          "asset": "XRP",
+          "startPrice": 2.0225,
+          "endPrice": 1.3963,
+          "returnPct": -30.96168108776266,
+          "maxDrawdownPct": -72.01442091031996,
+          "annualVolatilityPct": 65.5897994955855,
+          "missingDays": 0,
+          "ignoredRows": 0,
+          "latestAvailable": 1789689600
+        },
+        {
+          "asset": "LINK",
+          "startPrice": 12.64,
+          "endPrice": 12.226,
+          "returnPct": -3.275316455696198,
+          "maxDrawdownPct": -73.12056737588652,
+          "annualVolatilityPct": 75.01785817137478,
+          "missingDays": 0,
+          "ignoredRows": 0,
+          "latestAvailable": 1789689600
+        },
+        {
+          "asset": "ONDO",
+          "startPrice": 0.8938,
+          "endPrice": 0.3987,
+          "returnPct": -55.39270530319982,
+          "maxDrawdownPct": -80.30793456390516,
+          "annualVolatilityPct": 86.54871407582856,
+          "missingDays": 0,
+          "ignoredRows": 0,
+          "latestAvailable": 1789689600
+        },
+        {
+          "asset": "PEPE",
+          "startPrice": 6.94e-06,
+          "endPrice": 3.82e-06,
+          "returnPct": -44.95677233429395,
+          "maxDrawdownPct": -84.96774193548387,
+          "annualVolatilityPct": 100.61911518639907,
+          "missingDays": 0,
+          "ignoredRows": 0,
+          "latestAvailable": 1789689600
+        }
+      ],
+      "start": 1744329600,
+      "end": 1789689600,
+      "requestedStart": 1695081600,
+      "shortened": true,
+      "missingCommonDays": 0,
+      "observations": 526
+    },
+    {
+      "market": "binance",
+      "group": "all-eight",
+      "period": "all",
+      "rows": [
+        {
+          "asset": "BTC",
+          "startPrice": 83423.84,
+          "endPrice": 80883.87,
+          "returnPct": -3.044657258644534,
+          "maxDrawdownPct": -52.971765913510616,
+          "annualVolatilityPct": 41.30082390476462,
+          "missingDays": 0,
+          "ignoredRows": 0,
+          "latestAvailable": 1789689600
+        },
+        {
+          "asset": "DOGE",
+          "startPrice": 0.16004,
+          "endPrice": 0.08747,
+          "returnPct": -45.3449137715571,
+          "maxDrawdownPct": -76.12481857764877,
+          "annualVolatilityPct": 77.62059573657949,
+          "missingDays": 0,
+          "ignoredRows": 0,
+          "latestAvailable": 1789689600
+        },
+        {
+          "asset": "ETH",
+          "startPrice": 1566.85,
+          "endPrice": 2612.14,
+          "returnPct": 66.71283147716758,
+          "maxDrawdownPct": -67.55345017766713,
+          "annualVolatilityPct": 66.54735838266191,
+          "missingDays": 0,
+          "ignoredRows": 0,
+          "latestAvailable": 1789689600
+        },
+        {
+          "asset": "SOL",
+          "startPrice": 121.41,
+          "endPrice": 112.72,
+          "returnPct": -7.1575652746890706,
+          "maxDrawdownPct": -74.86868686868686,
+          "annualVolatilityPct": 69.04945479516941,
+          "missingDays": 0,
+          "ignoredRows": 0,
+          "latestAvailable": 1789689600
+        },
+        {
+          "asset": "XRP",
+          "startPrice": 2.0225,
+          "endPrice": 1.3963,
+          "returnPct": -30.96168108776266,
+          "maxDrawdownPct": -72.01442091031996,
+          "annualVolatilityPct": 65.5897994955855,
+          "missingDays": 0,
+          "ignoredRows": 0,
+          "latestAvailable": 1789689600
+        },
+        {
+          "asset": "LINK",
+          "startPrice": 12.64,
+          "endPrice": 12.226,
+          "returnPct": -3.275316455696198,
+          "maxDrawdownPct": -73.12056737588652,
+          "annualVolatilityPct": 75.01785817137478,
+          "missingDays": 0,
+          "ignoredRows": 0,
+          "latestAvailable": 1789689600
+        },
+        {
+          "asset": "ONDO",
+          "startPrice": 0.8938,
+          "endPrice": 0.3987,
+          "returnPct": -55.39270530319982,
+          "maxDrawdownPct": -80.30793456390516,
+          "annualVolatilityPct": 86.54871407582856,
+          "missingDays": 0,
+          "ignoredRows": 0,
+          "latestAvailable": 1789689600
+        },
+        {
+          "asset": "PEPE",
+          "startPrice": 6.94e-06,
+          "endPrice": 3.82e-06,
+          "returnPct": -44.95677233429395,
+          "maxDrawdownPct": -84.96774193548387,
+          "annualVolatilityPct": 100.61911518639907,
+          "missingDays": 0,
+          "ignoredRows": 0,
+          "latestAvailable": 1789689600
+        }
+      ],
+      "start": 1744329600,
+      "end": 1789689600,
+      "requestedStart": null,
+      "shortened": false,
+      "missingCommonDays": 0,
+      "observations": 526
+    },
+    {
+      "market": "upbit",
+      "group": "priority-three",
+      "period": "1m",
+      "rows": [
+        {
+          "asset": "BTC",
+          "startPrice": 95347000,
+          "endPrice": 110641000,
+          "returnPct": 16.040357850797605,
+          "maxDrawdownPct": -7.220460523945082,
+          "annualVolatilityPct": 43.31064570930342,
+          "missingDays": 0,
+          "ignoredRows": 0,
+          "latestAvailable": 1789689600
+        },
+        {
+          "asset": "DOGE",
+          "startPrice": 104,
+          "endPrice": 120,
+          "returnPct": 15.384615384615374,
+          "maxDrawdownPct": -14.0625,
+          "annualVolatilityPct": 72.77885854381391,
+          "missingDays": 0,
+          "ignoredRows": 0,
+          "latestAvailable": 1789689600
+        },
+        {
+          "asset": "ETH",
+          "startPrice": 3097000,
+          "endPrice": 3571000,
+          "returnPct": 15.305134000645793,
+          "maxDrawdownPct": -6.25717566016073,
+          "annualVolatilityPct": 49.343060144840344,
+          "missingDays": 0,
+          "ignoredRows": 0,
+          "latestAvailable": 1789689600
+        }
+      ],
+      "start": 1787097600,
+      "end": 1789689600,
+      "requestedStart": 1787097600,
+      "shortened": false,
+      "missingCommonDays": 0,
+      "observations": 31
+    },
+    {
+      "market": "upbit",
+      "group": "priority-three",
+      "period": "3m",
+      "rows": [
+        {
+          "asset": "BTC",
+          "startPrice": 97291000,
+          "endPrice": 110641000,
+          "returnPct": 13.721721433637235,
+          "maxDrawdownPct": -8.398515792827698,
+          "annualVolatilityPct": 33.344438798344655,
+          "missingDays": 0,
+          "ignoredRows": 0,
+          "latestAvailable": 1789689600
+        },
+        {
+          "asset": "DOGE",
+          "startPrice": 126,
+          "endPrice": 120,
+          "returnPct": -4.761904761904767,
+          "maxDrawdownPct": -22.619047619047617,
+          "annualVolatilityPct": 52.36642758777494,
+          "missingDays": 0,
+          "ignoredRows": 0,
+          "latestAvailable": 1789689600
+        },
+        {
+          "asset": "ETH",
+          "startPrice": 2635000,
+          "endPrice": 3571000,
+          "returnPct": 35.52182163187856,
+          "maxDrawdownPct": -9.60151802656547,
+          "annualVolatilityPct": 48.89254470883725,
+          "missingDays": 0,
+          "ignoredRows": 0,
+          "latestAvailable": 1789689600
+        }
+      ],
+      "start": 1781913600,
+      "end": 1789689600,
+      "requestedStart": 1781913600,
+      "shortened": false,
+      "missingCommonDays": 0,
+      "observations": 91
+    },
+    {
+      "market": "upbit",
+      "group": "priority-three",
+      "period": "1y",
+      "rows": [
+        {
+          "asset": "BTC",
+          "startPrice": 162478000,
+          "endPrice": 110641000,
+          "returnPct": -31.904011620034712,
+          "maxDrawdownPct": -49.93567813225025,
+          "annualVolatilityPct": 39.78098871211621,
+          "missingDays": 0,
+          "ignoredRows": 0,
+          "latestAvailable": 1789689600
+        },
+        {
+          "asset": "DOGE",
+          "startPrice": 387,
+          "endPrice": 120,
+          "returnPct": -68.9922480620155,
+          "maxDrawdownPct": -74.8062015503876,
+          "annualVolatilityPct": 64.18848766475446,
+          "missingDays": 0,
+          "ignoredRows": 0,
+          "latestAvailable": 1789689600
+        },
+        {
+          "asset": "ETH",
+          "startPrice": 6365000,
+          "endPrice": 3571000,
+          "returnPct": -43.896307934014146,
+          "maxDrawdownPct": -64.29856115107914,
+          "annualVolatilityPct": 57.06638252120636,
+          "missingDays": 0,
+          "ignoredRows": 0,
+          "latestAvailable": 1789689600
+        }
+      ],
+      "start": 1758153600,
+      "end": 1789689600,
+      "requestedStart": 1758153600,
+      "shortened": false,
+      "missingCommonDays": 0,
+      "observations": 366
+    },
+    {
+      "market": "upbit",
+      "group": "priority-three",
+      "period": "3y",
+      "rows": [
+        {
+          "asset": "BTC",
+          "startPrice": 36500000,
+          "endPrice": 110641000,
+          "returnPct": 203.1260273972603,
+          "maxDrawdownPct": -49.93567813225025,
+          "annualVolatilityPct": 41.13837384379321,
+          "missingDays": 0,
+          "ignoredRows": 0,
+          "latestAvailable": 1789689600
+        },
+        {
+          "asset": "DOGE",
+          "startPrice": 84,
+          "endPrice": 120,
+          "returnPct": 42.85714285714286,
+          "maxDrawdownPct": -85.02304147465438,
+          "annualVolatilityPct": 80.63467242555873,
+          "missingDays": 0,
+          "ignoredRows": 0,
+          "latestAvailable": 1789689600
+        },
+        {
+          "asset": "ETH",
+          "startPrice": 2205000,
+          "endPrice": 3571000,
+          "returnPct": 61.95011337868481,
+          "maxDrawdownPct": -64.29856115107914,
+          "annualVolatilityPct": 59.41641259894054,
+          "missingDays": 0,
+          "ignoredRows": 0,
+          "latestAvailable": 1789689600
+        }
+      ],
+      "start": 1695081600,
+      "end": 1789689600,
+      "requestedStart": 1695081600,
+      "shortened": false,
+      "missingCommonDays": 0,
+      "observations": 1096
+    },
+    {
+      "market": "upbit",
+      "group": "priority-three",
+      "period": "all",
+      "rows": [
+        {
+          "asset": "BTC",
+          "startPrice": 56500000,
+          "endPrice": 110641000,
+          "returnPct": 95.82477876106195,
+          "maxDrawdownPct": -74.12748915887622,
+          "annualVolatilityPct": 47.64205176276737,
+          "missingDays": 0,
+          "ignoredRows": 0,
+          "latestAvailable": 1789689600
+        },
+        {
+          "asset": "DOGE",
+          "startPrice": 64.9,
+          "endPrice": 120,
+          "returnPct": 84.89984591679504,
+          "maxDrawdownPct": -91.52727272727273,
+          "annualVolatilityPct": 100.50665364066774,
+          "missingDays": 0,
+          "ignoredRows": 0,
+          "latestAvailable": 1789689600
+        },
+        {
+          "asset": "ETH",
+          "startPrice": 1847000,
+          "endPrice": 3571000,
+          "returnPct": 93.34055224688684,
+          "maxDrawdownPct": -77.38156761412576,
+          "annualVolatilityPct": 66.11940511255827,
+          "missingDays": 0,
+          "ignoredRows": 0,
+          "latestAvailable": 1789689600
+        }
+      ],
+      "start": 1614124800,
+      "end": 1789689600,
+      "requestedStart": null,
+      "shortened": false,
+      "missingCommonDays": 0,
+      "observations": 2033
+    },
+    {
+      "market": "upbit",
+      "group": "all-eight",
+      "period": "1m",
+      "rows": [
+        {
+          "asset": "BTC",
+          "startPrice": 95347000,
+          "endPrice": 110641000,
+          "returnPct": 16.040357850797605,
+          "maxDrawdownPct": -7.220460523945082,
+          "annualVolatilityPct": 43.31064570930342,
+          "missingDays": 0,
+          "ignoredRows": 0,
+          "latestAvailable": 1789689600
+        },
+        {
+          "asset": "DOGE",
+          "startPrice": 104,
+          "endPrice": 120,
+          "returnPct": 15.384615384615374,
+          "maxDrawdownPct": -14.0625,
+          "annualVolatilityPct": 72.77885854381391,
+          "missingDays": 0,
+          "ignoredRows": 0,
+          "latestAvailable": 1789689600
+        },
+        {
+          "asset": "ETH",
+          "startPrice": 3097000,
+          "endPrice": 3571000,
+          "returnPct": 15.305134000645793,
+          "maxDrawdownPct": -6.25717566016073,
+          "annualVolatilityPct": 49.343060144840344,
+          "missingDays": 0,
+          "ignoredRows": 0,
+          "latestAvailable": 1789689600
+        },
+        {
+          "asset": "SOL",
+          "startPrice": 117300,
+          "endPrice": 154000,
+          "returnPct": 31.287297527706738,
+          "maxDrawdownPct": -12.599469496021221,
+          "annualVolatilityPct": 65.76549379114749,
+          "missingDays": 0,
+          "ignoredRows": 0,
+          "latestAvailable": 1789689600
+        },
+        {
+          "asset": "XRP",
+          "startPrice": 1520,
+          "endPrice": 1907,
+          "returnPct": 25.46052631578948,
+          "maxDrawdownPct": -16.155321188878236,
+          "annualVolatilityPct": 91.09585234699668,
+          "missingDays": 0,
+          "ignoredRows": 0,
+          "latestAvailable": 1789689600
+        },
+        {
+          "asset": "LINK",
+          "startPrice": 14490,
+          "endPrice": 16720,
+          "returnPct": 15.389924085576268,
+          "maxDrawdownPct": -17.555555555555557,
+          "annualVolatilityPct": 74.22404521968505,
+          "missingDays": 0,
+          "ignoredRows": 0,
+          "latestAvailable": 1789689600
+        },
+        {
+          "asset": "ONDO",
+          "startPrice": 478,
+          "endPrice": 545,
+          "returnPct": 14.016736401673647,
+          "maxDrawdownPct": -17.798165137614674,
+          "annualVolatilityPct": 83.72306855629643,
+          "missingDays": 0,
+          "ignoredRows": 0,
+          "latestAvailable": 1789689600
+        },
+        {
+          "asset": "PEPE",
+          "startPrice": 0.00394,
+          "endPrice": 0.00523,
+          "returnPct": 32.74111675126905,
+          "maxDrawdownPct": -21.592920353982294,
+          "annualVolatilityPct": 114.8296096983144,
+          "missingDays": 0,
+          "ignoredRows": 0,
+          "latestAvailable": 1789689600
+        }
+      ],
+      "start": 1787097600,
+      "end": 1789689600,
+      "requestedStart": 1787097600,
+      "shortened": false,
+      "missingCommonDays": 0,
+      "observations": 31
+    },
+    {
+      "market": "upbit",
+      "group": "all-eight",
+      "period": "3m",
+      "rows": [
+        {
+          "asset": "BTC",
+          "startPrice": 97291000,
+          "endPrice": 110641000,
+          "returnPct": 13.721721433637235,
+          "maxDrawdownPct": -8.398515792827698,
+          "annualVolatilityPct": 33.344438798344655,
+          "missingDays": 0,
+          "ignoredRows": 0,
+          "latestAvailable": 1789689600
+        },
+        {
+          "asset": "DOGE",
+          "startPrice": 126,
+          "endPrice": 120,
+          "returnPct": -4.761904761904767,
+          "maxDrawdownPct": -22.619047619047617,
+          "annualVolatilityPct": 52.36642758777494,
+          "missingDays": 0,
+          "ignoredRows": 0,
+          "latestAvailable": 1789689600
+        },
+        {
+          "asset": "ETH",
+          "startPrice": 2635000,
+          "endPrice": 3571000,
+          "returnPct": 35.52182163187856,
+          "maxDrawdownPct": -9.60151802656547,
+          "annualVolatilityPct": 48.89254470883725,
+          "missingDays": 0,
+          "ignoredRows": 0,
+          "latestAvailable": 1789689600
+        },
+        {
+          "asset": "SOL",
+          "startPrice": 110700,
+          "endPrice": 154000,
+          "returnPct": 39.11472448057813,
+          "maxDrawdownPct": -16.90821256038647,
+          "annualVolatilityPct": 51.40818722313002,
+          "missingDays": 0,
+          "ignoredRows": 0,
+          "latestAvailable": 1789689600
+        },
+        {
+          "asset": "XRP",
+          "startPrice": 1738,
+          "endPrice": 1907,
+          "returnPct": 9.72382048331415,
+          "maxDrawdownPct": -19.369627507163322,
+          "annualVolatilityPct": 60.433918598491196,
+          "missingDays": 0,
+          "ignoredRows": 0,
+          "latestAvailable": 1789689600
+        },
+        {
+          "asset": "LINK",
+          "startPrice": 12080,
+          "endPrice": 16720,
+          "returnPct": 38.41059602649006,
+          "maxDrawdownPct": -17.555555555555557,
+          "annualVolatilityPct": 56.806182436861484,
+          "missingDays": 0,
+          "ignoredRows": 0,
+          "latestAvailable": 1789689600
+        },
+        {
+          "asset": "ONDO",
+          "startPrice": 519,
+          "endPrice": 545,
+          "returnPct": 5.009633911368017,
+          "maxDrawdownPct": -25.704809286898843,
+          "annualVolatilityPct": 73.4810793607108,
+          "missingDays": 0,
+          "ignoredRows": 0,
+          "latestAvailable": 1789689600
+        },
+        {
+          "asset": "PEPE",
+          "startPrice": 0.0043,
+          "endPrice": 0.00523,
+          "returnPct": 21.627906976744192,
+          "maxDrawdownPct": -21.592920353982294,
+          "annualVolatilityPct": 83.4037563856967,
+          "missingDays": 0,
+          "ignoredRows": 0,
+          "latestAvailable": 1789689600
+        }
+      ],
+      "start": 1781913600,
+      "end": 1789689600,
+      "requestedStart": 1781913600,
+      "shortened": false,
+      "missingCommonDays": 0,
+      "observations": 91
+    },
+    {
+      "market": "upbit",
+      "group": "all-eight",
+      "period": "1y",
+      "rows": [
+        {
+          "asset": "BTC",
+          "startPrice": 162478000,
+          "endPrice": 110641000,
+          "returnPct": -31.904011620034712,
+          "maxDrawdownPct": -49.93567813225025,
+          "annualVolatilityPct": 39.78098871211621,
+          "missingDays": 0,
+          "ignoredRows": 0,
+          "latestAvailable": 1789689600
+        },
+        {
+          "asset": "DOGE",
+          "startPrice": 387,
+          "endPrice": 120,
+          "returnPct": -68.9922480620155,
+          "maxDrawdownPct": -74.8062015503876,
+          "annualVolatilityPct": 64.18848766475446,
+          "missingDays": 0,
+          "ignoredRows": 0,
+          "latestAvailable": 1789689600
+        },
+        {
+          "asset": "ETH",
+          "startPrice": 6365000,
+          "endPrice": 3571000,
+          "returnPct": -43.896307934014146,
+          "maxDrawdownPct": -64.29856115107914,
+          "annualVolatilityPct": 57.06638252120636,
+          "missingDays": 0,
+          "ignoredRows": 0,
+          "latestAvailable": 1789689600
+        },
+        {
+          "asset": "SOL",
+          "startPrice": 343800,
+          "endPrice": 154000,
+          "returnPct": -55.206515415939506,
+          "maxDrawdownPct": -72.48400232693426,
+          "annualVolatilityPct": 61.409864452909524,
+          "missingDays": 0,
+          "ignoredRows": 0,
+          "latestAvailable": 1789689600
+        },
+        {
+          "asset": "XRP",
+          "startPrice": 4270,
+          "endPrice": 1907,
+          "returnPct": -55.33957845433255,
+          "maxDrawdownPct": -67.3625608907446,
+          "annualVolatilityPct": 60.52546457765564,
+          "missingDays": 0,
+          "ignoredRows": 0,
+          "latestAvailable": 1789689600
+        },
+        {
+          "asset": "LINK",
+          "startPrice": 34170,
+          "endPrice": 16720,
+          "returnPct": -51.06818846941762,
+          "maxDrawdownPct": -67.92508047995318,
+          "annualVolatilityPct": 63.377119864677326,
+          "missingDays": 0,
+          "ignoredRows": 0,
+          "latestAvailable": 1789689600
+        },
+        {
+          "asset": "ONDO",
+          "startPrice": 1497,
+          "endPrice": 545,
+          "returnPct": -63.5938543754175,
+          "maxDrawdownPct": -77.82231128924516,
+          "annualVolatilityPct": 83.7704006945574,
+          "missingDays": 0,
+          "ignoredRows": 0,
+          "latestAvailable": 1789689600
+        },
+        {
+          "asset": "PEPE",
+          "startPrice": 0.0159,
+          "endPrice": 0.00523,
+          "returnPct": -67.1069182389937,
+          "maxDrawdownPct": -77.73584905660378,
+          "annualVolatilityPct": 92.61717782830475,
+          "missingDays": 0,
+          "ignoredRows": 0,
+          "latestAvailable": 1789689600
+        }
+      ],
+      "start": 1758153600,
+      "end": 1789689600,
+      "requestedStart": 1758153600,
+      "shortened": false,
+      "missingCommonDays": 0,
+      "observations": 366
+    },
+    {
+      "market": "upbit",
+      "group": "all-eight",
+      "period": "3y",
+      "rows": [
+        {
+          "asset": "BTC",
+          "startPrice": 123572000,
+          "endPrice": 110641000,
+          "returnPct": -10.464344673550642,
+          "maxDrawdownPct": -49.93567813225025,
+          "annualVolatilityPct": 38.38956859461714,
+          "missingDays": 0,
+          "ignoredRows": 0,
+          "latestAvailable": 1789689600
+        },
+        {
+          "asset": "DOGE",
+          "startPrice": 516.1,
+          "endPrice": 120,
+          "returnPct": -76.74869211393141,
+          "maxDrawdownPct": -85.02304147465438,
+          "annualVolatilityPct": 75.53308715461883,
+          "missingDays": 0,
+          "ignoredRows": 0,
+          "latestAvailable": 1789689600
+        },
+        {
+          "asset": "ETH",
+          "startPrice": 4331000,
+          "endPrice": 3571000,
+          "returnPct": -17.547910413299473,
+          "maxDrawdownPct": -64.29856115107914,
+          "annualVolatilityPct": 62.62993511041548,
+          "missingDays": 0,
+          "ignoredRows": 0,
+          "latestAvailable": 1789689600
+        },
+        {
+          "asset": "SOL",
+          "startPrice": 296450,
+          "endPrice": 154000,
+          "returnPct": -48.05194805194806,
+          "maxDrawdownPct": -75.74669914113575,
+          "annualVolatilityPct": 71.08635116158962,
+          "missingDays": 0,
+          "ignoredRows": 0,
+          "latestAvailable": 1789689600
+        },
+        {
+          "asset": "XRP",
+          "startPrice": 1095,
+          "endPrice": 1907,
+          "returnPct": 74.1552511415525,
+          "maxDrawdownPct": -71.07913669064749,
+          "annualVolatilityPct": 77.81623363417192,
+          "missingDays": 0,
+          "ignoredRows": 0,
+          "latestAvailable": 1789689600
+        },
+        {
+          "asset": "LINK",
+          "startPrice": 18400,
+          "endPrice": 16720,
+          "returnPct": -9.130434782608699,
+          "maxDrawdownPct": -73.84872345502266,
+          "annualVolatilityPct": 80.43520728085637,
+          "missingDays": 0,
+          "ignoredRows": 0,
+          "latestAvailable": 1789689600
+        },
+        {
+          "asset": "ONDO",
+          "startPrice": 1178,
+          "endPrice": 545,
+          "returnPct": -53.73514431239389,
+          "maxDrawdownPct": -88.64957264957265,
+          "annualVolatilityPct": 88.32894016310192,
+          "missingDays": 0,
+          "ignoredRows": 0,
+          "latestAvailable": 1789689600
+        },
+        {
+          "asset": "PEPE",
+          "startPrice": 0.02925,
+          "endPrice": 0.00523,
+          "returnPct": -82.11965811965813,
+          "maxDrawdownPct": -90.65469904963041,
+          "annualVolatilityPct": 99.93904745818492,
+          "missingDays": 0,
+          "ignoredRows": 0,
+          "latestAvailable": 1789689600
+        }
+      ],
+      "start": 1731542400,
+      "end": 1789689600,
+      "requestedStart": 1695081600,
+      "shortened": true,
+      "missingCommonDays": 0,
+      "observations": 674
+    },
+    {
+      "market": "upbit",
+      "group": "all-eight",
+      "period": "all",
+      "rows": [
+        {
+          "asset": "BTC",
+          "startPrice": 123572000,
+          "endPrice": 110641000,
+          "returnPct": -10.464344673550642,
+          "maxDrawdownPct": -49.93567813225025,
+          "annualVolatilityPct": 38.38956859461714,
+          "missingDays": 0,
+          "ignoredRows": 0,
+          "latestAvailable": 1789689600
+        },
+        {
+          "asset": "DOGE",
+          "startPrice": 516.1,
+          "endPrice": 120,
+          "returnPct": -76.74869211393141,
+          "maxDrawdownPct": -85.02304147465438,
+          "annualVolatilityPct": 75.53308715461883,
+          "missingDays": 0,
+          "ignoredRows": 0,
+          "latestAvailable": 1789689600
+        },
+        {
+          "asset": "ETH",
+          "startPrice": 4331000,
+          "endPrice": 3571000,
+          "returnPct": -17.547910413299473,
+          "maxDrawdownPct": -64.29856115107914,
+          "annualVolatilityPct": 62.62993511041548,
+          "missingDays": 0,
+          "ignoredRows": 0,
+          "latestAvailable": 1789689600
+        },
+        {
+          "asset": "SOL",
+          "startPrice": 296450,
+          "endPrice": 154000,
+          "returnPct": -48.05194805194806,
+          "maxDrawdownPct": -75.74669914113575,
+          "annualVolatilityPct": 71.08635116158962,
+          "missingDays": 0,
+          "ignoredRows": 0,
+          "latestAvailable": 1789689600
+        },
+        {
+          "asset": "XRP",
+          "startPrice": 1095,
+          "endPrice": 1907,
+          "returnPct": 74.1552511415525,
+          "maxDrawdownPct": -71.07913669064749,
+          "annualVolatilityPct": 77.81623363417192,
+          "missingDays": 0,
+          "ignoredRows": 0,
+          "latestAvailable": 1789689600
+        },
+        {
+          "asset": "LINK",
+          "startPrice": 18400,
+          "endPrice": 16720,
+          "returnPct": -9.130434782608699,
+          "maxDrawdownPct": -73.84872345502266,
+          "annualVolatilityPct": 80.43520728085637,
+          "missingDays": 0,
+          "ignoredRows": 0,
+          "latestAvailable": 1789689600
+        },
+        {
+          "asset": "ONDO",
+          "startPrice": 1178,
+          "endPrice": 545,
+          "returnPct": -53.73514431239389,
+          "maxDrawdownPct": -88.64957264957265,
+          "annualVolatilityPct": 88.32894016310192,
+          "missingDays": 0,
+          "ignoredRows": 0,
+          "latestAvailable": 1789689600
+        },
+        {
+          "asset": "PEPE",
+          "startPrice": 0.02925,
+          "endPrice": 0.00523,
+          "returnPct": -82.11965811965813,
+          "maxDrawdownPct": -90.65469904963041,
+          "annualVolatilityPct": 99.93904745818492,
+          "missingDays": 0,
+          "ignoredRows": 0,
+          "latestAvailable": 1789689600
+        }
+      ],
+      "start": 1731542400,
+      "end": 1789689600,
+      "requestedStart": null,
+      "shortened": false,
+      "missingCommonDays": 0,
+      "observations": 674
+    }
+  ],
+  "independentPython": {
+    "checkedRows": 110,
+    "maxAbsoluteErrorPercentagePoints": {
+      "returnPct": 0.0,
+      "maxDrawdownPct": 0.0,
+      "annualVolatilityPct": 1.5631940186722204e-13
+    },
+    "passed": true
+  }
+}

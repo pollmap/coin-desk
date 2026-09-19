@@ -1,12 +1,33 @@
 import type { Asset, Candle, Market, Quote } from '../shared/types';
 import { BASE_SERIES } from '../shared/catalog';
 import { DAY, validCandle } from '../shared/math';
+export function validateQuote(q: Quote): Quote {
+  const now = Math.floor(Date.now() / 1000);
+  const validChange =
+    q.change24h === null
+      ? typeof q.changeUnavailableReason === 'string' && q.changeUnavailableReason.length > 0
+      : Number.isFinite(q.change24h) && q.change24h > -100;
+  if (
+    ![q.price, q.volume24h, q.high24h, q.low24h, q.time].every(Number.isFinite) ||
+    !validChange ||
+    q.price <= 0 ||
+    q.volume24h < 0 ||
+    q.low24h <= 0 ||
+    q.low24h > q.price ||
+    q.high24h < q.price ||
+    !Number.isSafeInteger(q.time) ||
+    q.time > now + 60 ||
+    now - q.time > 300
+  )
+    throw new Error('Invalid or outdated quote');
+  return q;
+}
 export async function upstream(url: string): Promise<unknown> {
   const response = await fetch(url, {
     signal: AbortSignal.timeout(12000),
     headers: {
       Accept: 'application/json',
-      'User-Agent': 'BTCDesk/0.1 (public market data dashboard)',
+      'User-Agent': 'CoinDesk/0.3 (public market data dashboard)',
     },
   });
   if (!response.ok) {
@@ -36,13 +57,9 @@ export async function getQuote(asset: Asset, market: Market): Promise<Quote> {
       low24h: Number(d.lowPrice),
       time: Math.floor(Number(d.closeTime) / 1000),
       changeBasis: 'rolling24h' as const,
+      rangeBasis: 'rolling24h' as const,
     };
-    if (
-      ![q.price, q.change24h, q.volume24h, q.high24h, q.low24h, q.time].every(Number.isFinite) ||
-      q.price <= 0
-    )
-      throw new Error('Invalid quote');
-    return q;
+    return validateQuote(q);
   }
   const d = (
     (await upstream('https://api.upbit.com/v1/ticker?markets=KRW-' + asset)) as Record<
@@ -50,37 +67,52 @@ export async function getQuote(asset: Asset, market: Market): Promise<Quote> {
       number
     >[]
   )[0];
-  if (!d || !Number.isFinite(d.trade_price) || d.trade_price <= 0) throw new Error('Invalid quote');
+  if (!d || !Number.isFinite(d.trade_price) || d.trade_price <= 0 || !Number.isFinite(d.timestamp))
+    throw new Error('Invalid quote');
   const target = Math.floor(d.timestamp / 1000) - DAY;
-  const reference = (
-    (await upstream(
-      'https://api.upbit.com/v1/candles/minutes/1?market=KRW-' +
-        asset +
-        '&count=1&to=' +
-        encodeURIComponent(new Date(target * 1000).toISOString()),
-    )) as Record<string, number | string>[]
-  )[0];
-  const referencePrice = Number(reference?.trade_price),
-    referenceAt = Date.parse(String(reference?.candle_date_time_utc) + 'Z') / 1000;
-  if (
-    !Number.isFinite(referencePrice) ||
-    referencePrice <= 0 ||
-    !Number.isFinite(referenceAt) ||
-    target - referenceAt > 300 ||
-    referenceAt > target
-  )
-    throw new Error('24h reference minute unavailable');
-  return {
+  const quote = validateQuote({
     asset,
     price: d.trade_price,
-    change24h: (d.trade_price / referencePrice - 1) * 100,
+    change24h: null,
+    changeUnavailableReason:
+      '24시간 전 기준 시각의 5분 이내에 확정된 거래 분봉이 없어 등락률을 표시하지 않습니다.',
     volume24h: d.acc_trade_price_24h,
     high24h: d.high_price,
     low24h: d.low_price,
-    time: Math.floor(d.timestamp / 1000),
+    time: Math.floor((d.trade_timestamp ?? d.timestamp) / 1000),
     changeBasis: 'rolling24h-minute',
-    referenceAt,
-  };
+    rangeBasis: 'utc-day',
+    referenceAt: null,
+  });
+  try {
+    const reference = (
+      (await upstream(
+        'https://api.upbit.com/v1/candles/minutes/1?market=KRW-' +
+          asset +
+          '&count=1&to=' +
+          encodeURIComponent(new Date(Math.floor(target / 60) * 60000).toISOString()),
+      )) as Record<string, number | string>[]
+    )[0];
+    const referencePrice = Number(reference?.trade_price);
+    const referenceAt = Date.parse(String(reference?.candle_date_time_utc) + 'Z') / 1000;
+    quote.referenceAt = Number.isFinite(referenceAt) ? referenceAt : null;
+    if (
+      !Number.isFinite(referencePrice) ||
+      referencePrice <= 0 ||
+      !Number.isFinite(referenceAt) ||
+      target - referenceAt > 300 ||
+      referenceAt + 60 > target
+    )
+      return quote;
+    const change24h = (d.trade_price / referencePrice - 1) * 100;
+    if (!Number.isFinite(change24h) || change24h <= -100) return quote;
+    return validateQuote({ ...quote, change24h, changeUnavailableReason: undefined });
+  } catch {
+    return {
+      ...quote,
+      changeUnavailableReason: '24시간 전 비교 가격을 가져오지 못해 등락률을 표시하지 않습니다.',
+    };
+  }
 }
 export async function getRecentCandles(
   asset: Asset,
@@ -137,7 +169,18 @@ export async function getRecentCandles(
       };
     });
   }
-  if (!out.length || !out.every(validCandle) || new Set(out.map((c) => c.time)).size !== out.length)
+  if (
+    !out.length ||
+    !out.every(
+      (c) =>
+        validCandle(c) &&
+        Number.isSafeInteger(c.time) &&
+        c.time >= 0 &&
+        c.time % step === 0 &&
+        c.time <= Date.now() / 1000 + 60,
+    ) ||
+    new Set(out.map((c) => c.time)).size !== out.length
+  )
     throw new Error('OHLC validation failed');
   return out.sort((a, b) => a.time - b.time);
 }

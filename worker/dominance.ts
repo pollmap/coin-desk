@@ -1,7 +1,7 @@
 import { ASSETS } from '../shared/catalog';
 import type { Dominance } from '../shared/types';
 import { DAY } from '../shared/math';
-import { epoch, failure, readState, putState, success, type Env } from './storage';
+import { claimRefresh, epoch, failure, readState, putState, success, type Env } from './storage';
 const ids: Record<string, string> = {
   BTC: '90',
   DOGE: '2',
@@ -119,6 +119,8 @@ export function normalizeDominance(
       timeBasis: 'retrieved',
     };
   });
+  if (coins.reduce((sum, coin) => sum + coin.marketCap!, 0) > total)
+    throw new Error('Selected market caps exceed total market cap');
   if (stable) {
     if (
       !positive(stable.marketCap) ||
@@ -175,18 +177,22 @@ export async function updateDominance(env: Env): Promise<Dominance> {
 export async function getDominance(env: Env) {
   let value = await readState<Dominance | null>(env.DB, 'dominance', null);
   if (value?.calculationVersion !== DOMINANCE_VERSION) value = null;
-  const retry = await env.DB.prepare('SELECT next_attempt FROM ingestion WHERE key=?')
+  const retry = await env.DB.prepare('SELECT next_attempt,error FROM ingestion WHERE key=?')
     .bind('coinlore')
-    .first<{ next_attempt: number }>();
-  let warning: string | undefined;
+    .first<{ next_attempt: number; error: string | null }>();
+  let warning: string | undefined = retry?.error
+    ? '시장 비중 원천의 연결이 지연되어 마지막 정상 값을 표시합니다.'
+    : undefined;
   if (
     (!value ||
       epoch() - value.fetchedAt > 3600 ||
       (!value.coins.some((c) => c.id === 'STABLE') && epoch() - value.fetchedAt > 300)) &&
-    (retry?.next_attempt || 0) <= epoch()
+    (retry?.next_attempt || 0) <= epoch() &&
+    (await claimRefresh(env.DB, 'dominance', 300))
   ) {
     try {
       value = await updateDominance(env);
+      warning = undefined;
     } catch (e) {
       await failure(env.DB, 'coinlore', e);
       warning = '시장 비중 원천의 연결이 지연되어 마지막 정상 값을 표시합니다.';

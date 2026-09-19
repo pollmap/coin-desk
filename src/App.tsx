@@ -1,5 +1,13 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { Link, NavLink, Route, Routes, useParams, useSearchParams } from 'react-router-dom';
+import {
+  Link,
+  NavLink,
+  Route,
+  Routes,
+  useLocation,
+  useParams,
+  useSearchParams,
+} from 'react-router-dom';
 import {
   ArrowDownRight,
   ArrowUpRight,
@@ -23,6 +31,11 @@ import {
 } from 'lucide-react';
 import { ASSETS, METRICS } from '../shared/catalog';
 import { validIndicators } from '../shared/indicators';
+import { WorkspaceBar, CardPicker, usePersonalDesk } from './PersonalDesk';
+import { WatchlistPage } from './WatchlistPage';
+import { ComparePage } from './ComparePage';
+import { MetricsExplorer } from './MetricsExplorer';
+import { chartSettings, validCards } from '../shared/workspace';
 import { IndicatorEditor } from './IndicatorEditor';
 import { DominancePanel, DominancePage } from './DominancePanel';
 import type {
@@ -36,7 +49,7 @@ import type {
   SeriesResponse,
 } from '../shared/types';
 import { useData } from './hooks';
-import { dateLabel, json, metricValue, money, numeric, save, saved } from './lib';
+import { dateLabel, metricValue, money, numeric, save, saved } from './lib';
 import { PriceChart } from './PriceChart';
 import { MetricChart } from './MetricChart';
 const periods: { id: Period; label: string }[] = [
@@ -53,10 +66,9 @@ const intervals: { id: Interval; label: string }[] = [
   { id: '1w', label: '주' },
   { id: '1M', label: '월' },
 ];
-const defaultIndicators = ['sma200', 'sma200w'];
 function Loading({ message = '실제 데이터를 불러오고 있습니다…' }: { message?: string }) {
   return (
-    <div className="loading">
+    <div className="loading" role="status" aria-live="polite">
       <span className="loading-line" />
       {message}
     </div>
@@ -88,23 +100,7 @@ function Periods({ value, onChange }: { value: Period; onChange: (v: Period) => 
 }
 function usePreferences() {
   const [params, setParams] = useSearchParams();
-  const initial = useMemo(
-    () =>
-      saved<{
-        market: Market;
-        interval: Interval;
-        period: Period;
-        indicators: string[];
-        log: boolean;
-      }>('preferences', {
-        market: 'binance',
-        interval: '1d',
-        period: '3y',
-        indicators: defaultIndicators,
-        log: true,
-      }),
-    [],
-  );
+  const initial = useMemo(() => chartSettings(saved('preferences', {})), []);
   const market: Market =
     params.get('market') === 'upbit'
       ? 'upbit'
@@ -122,10 +118,9 @@ function usePreferences() {
     : initial.indicators;
   const indicators = useMemo(() => validIndicators(raw), [JSON.stringify(raw)]);
   const log = params.has('log') ? params.get('log') === '1' : initial.log;
-  useEffect(
-    () => save('preferences', { market, interval, period, indicators, log }),
-    [market, interval, period, indicators, log],
-  );
+  useEffect(() => {
+    save('preferences', { market, interval, period, indicators, log });
+  }, [market, interval, period, indicators, log]);
   function change(key: string, value: string) {
     setParams(
       (prev) => {
@@ -171,22 +166,25 @@ function MetricCard({ metric }: { metric: Metric }) {
               (metric.unit === 'USD'
                 ? money(diff, 'USD')
                 : numeric(diff * (metric.unit === '비율' ? 100 : 1), 3) +
-                  (metric.unit === '비율' ? '%p' : '×'))}
-          <small> 전일 대비</small>
+                  (metric.unit === '비율' ? '%p' : metric.unit === '배' ? '×' : ' Z'))}
+          <small>
+            {' '}
+            {latest && previous && latest.time - previous.time === 86400
+              ? '전일 대비'
+              : '이전 관측 대비'}
+          </small>
         </span>
       </div>
       <ErrorNotice message={error} retry={reload} />
-      {data ? <MetricChart series={data} metric={metric} /> : <Loading />}
+      {data ? (
+        <MetricChart series={data} metric={metric} />
+      ) : error ? (
+        <div className="empty-state">지표를 불러오지 못했습니다.</div>
+      ) : (
+        <Loading />
+      )}
       <div className="card-caption">
-        <span>
-          {metric.reference === undefined
-            ? 'Bitview 실현가격'
-            : metric.id === 'nupl'
-              ? '0 기준 · 미실현 손익'
-              : metric.id === 'sopr_24h'
-                ? '1 기준 · 최근 24시간'
-                : '1 기준 · 시가총액 / 실현시가총액'}
-        </span>
+        <span>{metric.formula}</span>
         {data?.meta.stale ? <span className="amber">갱신 지연</span> : null}
       </div>
     </article>
@@ -195,9 +193,21 @@ function MetricCard({ metric }: { metric: Metric }) {
 function PricePage({ workspace = false }: { workspace?: boolean }) {
   const route = useParams();
   const [params] = useSearchParams();
-  const asset = (route.asset || params.get('asset') || 'BTC').toUpperCase() as Asset;
+  const asset = (
+    route.asset ||
+    params.get('asset') ||
+    chartSettings({ asset: saved('lastAsset', 'BTC') }).asset
+  ).toUpperCase() as Asset;
   const coin = ASSETS.find((a) => a.id === asset);
   const { market, interval, period, indicators, log, change } = usePreferences();
+  const { desk, update: updateDesk } = usePersonalDesk();
+  const cards = params.has('cards')
+    ? validCards((params.get('cards') || '').split(','))
+    : desk.cards;
+  const [deskError, setDeskError] = useState('');
+  useEffect(() => {
+    if (coin) save('lastAsset', asset);
+  }, [asset, coin]);
   const [tool, setTool] = useState<'cursor' | 'horizontal' | 'trend'>('cursor');
   const [reset, setReset] = useState(0);
   const [copied, setCopied] = useState(false);
@@ -252,6 +262,7 @@ function PricePage({ workspace = false }: { workspace?: boolean }) {
       </div>
     );
   const q = quote.data?.quote;
+  const change24h = q?.change24h ?? null;
   const currency = market === 'upbit' ? 'KRW' : 'USDT';
   const dailyRows = interval === '1d' ? candles.data?.data : daily.data?.data;
   async function share() {
@@ -264,6 +275,7 @@ function PricePage({ workspace = false }: { workspace?: boolean }) {
         period,
         indicators: indicators.join(','),
         log: log ? '1' : '0',
+        cards: cards.join(','),
       }).toString();
       setShareUrl(link.href);
       await navigator.clipboard.writeText(link.href);
@@ -296,9 +308,15 @@ function PricePage({ workspace = false }: { workspace?: boolean }) {
           <p>BTC · DOGE · ETH부터, 관심 코인의 가격과 시장 비중을 함께 살펴보세요.</p>
         </div>
         <div className="heading-actions">
-          <span className={'status-pill ' + (quote.data?.meta.stale ? 'warn' : '')}>
+          <span className={'status-pill ' + (quote.error || quote.data?.meta.stale ? 'warn' : '')}>
             <i />
-            {quote.data?.meta.stale ? '시세 갱신 지연' : quote.data ? '데이터 연결' : '연결 중'}
+            {quote.error
+              ? '시세 연결 오류'
+              : quote.data?.meta.stale
+                ? '시세 갱신 지연'
+                : quote.data
+                  ? '데이터 연결'
+                  : '연결 중'}
           </span>
           <button className="icon-button" onClick={share} aria-label="현재 화면 링크 복사">
             {copied ? <Check size={18} /> : <Link2 size={18} />}
@@ -321,6 +339,7 @@ function PricePage({ workspace = false }: { workspace?: boolean }) {
                 period,
                 indicators: indicators.join(','),
                 log: log ? '1' : '0',
+                cards: cards.join(','),
               })
             }
           >
@@ -330,6 +349,18 @@ function PricePage({ workspace = false }: { workspace?: boolean }) {
           </Link>
         ))}
       </nav>
+      <WorkspaceBar
+        current={{
+          asset,
+          market,
+          interval,
+          period,
+          indicators,
+          log,
+          cards,
+          view: workspace ? 'chart' : 'dashboard',
+        }}
+      />
       {!workspace ? <DominancePanel compact /> : null}
       {shareUrl ? (
         <div className="share-box">
@@ -364,12 +395,16 @@ function PricePage({ workspace = false }: { workspace?: boolean }) {
                 ? '24시간 변동 · 전일 같은 시각의 1분봉 근사'
                 : '최근 24시간 변동'
             }
-            className={'change ' + ((q?.change24h || 0) >= 0 ? 'up' : 'down')}
+            className={'change ' + (change24h === null ? 'muted' : change24h >= 0 ? 'up' : 'down')}
           >
-            {q ? (q.change24h >= 0 ? '+' : '') + numeric(q.change24h) + '%' : '—'}
-            {q?.changeBasis === 'rolling24h-minute' ? <small>24H≈</small> : null}
-            {q ? (
-              q.change24h >= 0 ? (
+            {change24h !== null ? (change24h >= 0 ? '+' : '') + numeric(change24h) + '%' : '—'}
+            {q?.changeUnavailableReason ? (
+              <small>24H 계산 불가</small>
+            ) : q?.changeBasis === 'rolling24h-minute' ? (
+              <small>24H≈</small>
+            ) : null}
+            {change24h !== null ? (
+              change24h >= 0 ? (
                 <ArrowUpRight size={15} />
               ) : (
                 <ArrowDownRight size={15} />
@@ -383,7 +418,8 @@ function PricePage({ workspace = false }: { workspace?: boolean }) {
         </div>
         <div className="quote-stat">
           <span>
-            고가 / 저가 <small>{market === 'upbit' ? 'UTC 당일' : '24H'}</small>
+            고가 / 저가{' '}
+            <small>{q?.rangeBasis === 'utc-day' || market === 'upbit' ? 'UTC 당일' : '24H'}</small>
           </span>
           <b>{money(q?.high24h, currency)}</b>
           <small>{money(q?.low24h, currency)}</small>
@@ -410,6 +446,14 @@ function PricePage({ workspace = false }: { workspace?: boolean }) {
           </small>
         </div>
       </section>
+      {q?.changeUnavailableReason ? (
+        <p className="watch-note" role="status">
+          24시간 등락률: {q.changeUnavailableReason} 현재가·거래대금의 기준 시각은 아래에서 확인하세요.
+        </p>
+      ) : null}
+      <p className="watch-note">
+        가격 기준 {dateLabel(q?.time, true)} · 화면 60초 조회 / 공유 시세 약 3분 주기
+      </p>
       <ErrorNotice message={quote.error || quote.data?.meta.warning} retry={quote.reload} />
       <section className={'panel price-panel' + (expanded ? ' expanded' : '')} ref={fullscreen}>
         <div className="price-panel-heading">
@@ -423,12 +467,14 @@ function PricePage({ workspace = false }: { workspace?: boolean }) {
           <div className="market-switch">
             <button
               className={market === 'binance' ? 'active' : ''}
+              aria-pressed={market === 'binance'}
               onClick={() => change('market', 'binance')}
             >
               USDT
             </button>
             <button
               className={market === 'upbit' ? 'active' : ''}
+              aria-pressed={market === 'upbit'}
               onClick={() => change('market', 'upbit')}
             >
               KRW
@@ -551,13 +597,39 @@ function PricePage({ workspace = false }: { workspace?: boolean }) {
               회색 비교선은 Bitview <b>추정 USD 가격</b>입니다. 위 거래소 가격과 원천이 다릅니다.
             </span>
           </div>
+          <CardPicker
+            value={cards}
+            onChange={(next) => {
+              change('cards', next.join(','));
+              try {
+                updateDesk((d) => ({ ...d, cards: next }));
+                setDeskError('');
+              } catch (e) {
+                setDeskError(String(e instanceof Error ? e.message : e));
+              }
+            }}
+          />
+          {deskError ? (
+            <p role="alert" className="error-notice">
+              {deskError}
+            </p>
+          ) : null}
+          {!cards.length ? (
+            <div className="empty-state">
+              표시할 온체인 지표를 선택하거나 <Link to="/explore">지표 찾아보기</Link>에서 담아
+              보세요.
+            </div>
+          ) : null}
           <div className="metrics-grid">
-            {METRICS.slice(0, 4).map((m) => (
-              <MetricCard metric={m} key={m.id} />
-            ))}
+            {cards
+              .map((id) => METRICS.find((m) => m.id === id)!)
+              .filter(Boolean)
+              .map((m) => (
+                <MetricCard metric={m} key={m.id} />
+              ))}
           </div>
           <div className="more-metrics">
-            {METRICS.slice(4).map((m) => (
+            {METRICS.filter((m) => !cards.includes(m.id)).map((m) => (
               <Link key={m.id} to={'/metrics/' + m.id}>
                 <span className="metric-dot" style={{ background: m.color }} />
                 {m.title}
@@ -637,6 +709,8 @@ function MetricPage() {
         <ErrorNotice message={result.error || result.data?.meta.warning} retry={result.reload} />
         {result.data ? (
           <MetricChart series={result.data} metric={metric} period={period} large />
+        ) : result.error ? (
+          <div className="empty-state">지표 조회에 실패했습니다. 위의 다시 시도를 눌러 주세요.</div>
         ) : (
           <Loading />
         )}
@@ -685,85 +759,6 @@ function MetricPage() {
           온체인 값은 거래소 가격·집단 정의·정밀도에 따라 다른 사이트와 차이가 날 수 있습니다. 초기
           가격은 Bitview의 과거 자료, 이후 가격은 온체인 추정값을 사용합니다.
         </span>
-      </div>
-    </>
-  );
-}
-function CoinsPage() {
-  const status = useData<{ assets: Asset[] }>('/api/v1/status', false, 60000);
-  const [quotes, setQuotes] = useState<Record<string, Overview>>({});
-  useEffect(() => {
-    const assets = status.data?.assets;
-    if (!assets) return;
-    let active = true;
-    Promise.allSettled(
-      assets.map(
-        async (asset) => [asset, await json<Overview>('/api/v1/overview?asset=' + asset)] as const,
-      ),
-    ).then((rows) => {
-      if (active)
-        setQuotes(
-          Object.fromEntries(
-            rows
-              .filter((r) => r.status === 'fulfilled')
-              .map((r) => (r as PromiseFulfilledResult<readonly [Asset, Overview]>).value),
-          ),
-        );
-    });
-    return () => {
-      active = false;
-    };
-  }, [status.data]);
-  return (
-    <>
-      <div className="page-heading">
-        <div>
-          <div className="eyebrow">MARKET WATCH</div>
-          <h1>관심 코인</h1>
-          <p>비트코인 · 도지코인 · 이더리움과 5개 관심 자산</p>
-        </div>
-      </div>
-      <div className="panel coin-table-wrap">
-        <table className="coin-table">
-          <thead>
-            <tr>
-              <th>자산</th>
-              <th>가격 · USDT</th>
-              <th>24H 변동</th>
-              <th>분석</th>
-            </tr>
-          </thead>
-          <tbody>
-            {ASSETS.map((a) => {
-              const q = quotes[a.id]?.quote;
-              const enabled = status.data?.assets.includes(a.id);
-              return (
-                <tr key={a.id}>
-                  <td>
-                    <span className="coin-mini" style={{ color: a.color }}>
-                      {a.id === 'BTC' ? '₿' : a.id.slice(0, 1)}
-                    </span>
-                    <b>{a.id}</b>
-                    <span>{a.name}</span>
-                  </td>
-                  <td>{money(q?.price)}</td>
-                  <td className={(q?.change24h || 0) >= 0 ? 'up' : 'down'}>
-                    {q ? numeric(q.change24h) + '%' : '—'}
-                  </td>
-                  <td>
-                    {enabled ? (
-                      <Link to={'/chart/' + a.id}>
-                        차트 <ArrowUpRight size={14} />
-                      </Link>
-                    ) : (
-                      <span className="muted">데이터 연결 확인 중</span>
-                    )}
-                  </td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
       </div>
     </>
   );
@@ -848,8 +843,61 @@ function SourceDialog({ onClose }: { onClose: () => void }) {
   );
 }
 export default function App() {
+  const location = useLocation();
+  const [online, setOnline] = useState(navigator.onLine);
+  const [storageError, setStorageError] = useState(false);
+  useEffect(() => {
+    const connectivity = () => setOnline(navigator.onLine);
+    const storage = () => setStorageError(true);
+    window.addEventListener('online', connectivity);
+    window.addEventListener('offline', connectivity);
+    window.addEventListener('coin-desk-storage-error', storage);
+    return () => {
+      window.removeEventListener('online', connectivity);
+      window.removeEventListener('offline', connectivity);
+      window.removeEventListener('coin-desk-storage-error', storage);
+    };
+  }, []);
   const [sources, setSources] = useState(false);
   const [mobile, setMobile] = useState(false);
+  const [narrow, setNarrow] = useState(() => window.matchMedia('(max-width: 760px)').matches);
+  const sidebarRef = useRef<HTMLElement>(null);
+  const menuRef = useRef<HTMLButtonElement>(null);
+  useEffect(() => {
+    const media = window.matchMedia('(max-width: 760px)');
+    const resized = () => {
+      setNarrow(media.matches);
+      if (!media.matches) setMobile(false);
+    };
+    media.addEventListener('change', resized);
+    return () => media.removeEventListener('change', resized);
+  }, []);
+  useEffect(() => {
+    if (!narrow || !mobile) return;
+    const sidebar = sidebarRef.current!;
+    const focusable = () => [
+      ...sidebar.querySelectorAll<HTMLElement>('a[href],button:not([disabled])'),
+    ];
+    focusable()[0]?.focus();
+    const trap = (event: KeyboardEvent) => {
+      if (event.key !== 'Tab') return;
+      const items = focusable(),
+        first = items[0],
+        last = items.at(-1);
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last?.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first?.focus();
+      }
+    };
+    sidebar.addEventListener('keydown', trap);
+    return () => {
+      sidebar.removeEventListener('keydown', trap);
+      if (sidebar.contains(document.activeElement)) menuRef.current?.focus();
+    };
+  }, [narrow, mobile]);
   useEffect(() => {
     function escape(e: KeyboardEvent) {
       if (e.key === 'Escape') {
@@ -860,9 +908,29 @@ export default function App() {
     window.addEventListener('keydown', escape);
     return () => window.removeEventListener('keydown', escape);
   }, []);
+  useEffect(() => {
+    setMobile(false);
+  }, [location.pathname]);
   return (
     <div className="app">
-      <aside className={'sidebar ' + (mobile ? 'open' : '')}>
+      <a className="skip-link" href="#main-content">
+        본문으로 바로가기
+      </a>
+      <aside
+        ref={sidebarRef}
+        id="site-sidebar"
+        inert={narrow && !mobile}
+        className={'sidebar ' + (mobile ? 'open' : '')}
+      >
+        {narrow && mobile ? (
+          <button
+            className="sidebar-close"
+            onClick={() => setMobile(false)}
+            aria-label="탐색 메뉴 닫기"
+          >
+            <X size={20} />
+          </button>
+        ) : null}
         <Link to="/" className="brand" onClick={() => setMobile(false)}>
           <span className="brand-symbol">C</span>
           <b>
@@ -890,6 +958,14 @@ export default function App() {
           <NavLink to="/dominance">
             <Activity size={18} />
             시장 도미넌스
+          </NavLink>
+          <NavLink to="/compare">
+            <TrendingUp size={18} />
+            코인 성과 비교
+          </NavLink>
+          <NavLink to="/explore">
+            <Info size={18} />
+            지표 찾아보기
           </NavLink>
           <NavLink to="/coins">
             <Activity size={18} />
@@ -926,11 +1002,14 @@ export default function App() {
         </div>
       </aside>
       {mobile ? <div className="mobile-shade" onClick={() => setMobile(false)} /> : null}
-      <div className="main-shell">
+      <div className="main-shell" inert={narrow && mobile}>
         <header className="topbar">
           <button
             className="icon-button mobile-menu"
-            aria-label="메뉴 열기"
+            ref={menuRef}
+            aria-label={mobile ? '메뉴 닫기' : '메뉴 열기'}
+            aria-expanded={mobile}
+            aria-controls="site-sidebar"
             onClick={() => setMobile(!mobile)}
           >
             <Menu size={20} />
@@ -947,12 +1026,25 @@ export default function App() {
             </button>
           </div>
         </header>
-        <main>
+        {!online ? (
+          <div className="connection-banner" role="status">
+            인터넷 연결이 끊겼습니다. 보관된 값은 최신 시세가 아닐 수 있습니다.
+          </div>
+        ) : null}
+        {storageError ? (
+          <div className="connection-banner" role="status">
+            브라우저에 설정을 저장하지 못했습니다. 작업공간의 백업 기능으로 보관해 주세요.
+            <button onClick={() => setStorageError(false)}>닫기</button>
+          </div>
+        ) : null}
+        <main id="main-content" tabIndex={-1}>
           <Routes>
             <Route path="/" element={<PricePage />} />
             <Route path="/chart/:asset" element={<PricePage workspace />} />
             <Route path="/metrics/:metric" element={<MetricPage />} />
-            <Route path="/coins" element={<CoinsPage />} />
+            <Route path="/coins" element={<WatchlistPage />} />
+            <Route path="/compare" element={<ComparePage />} />
+            <Route path="/explore" element={<MetricsExplorer />} />
             <Route path="/dominance" element={<DominancePage />} />
             <Route
               path="*"
