@@ -1,7 +1,6 @@
-import { ASSETS } from '../shared/catalog';
 import { DAY, zStep, type ZState } from '../shared/math';
 import type { Asset, Market } from '../shared/types';
-import { bitviewPage, getQuote, getRecentCandles } from './providers';
+import { bitviewPage, getQuotes, getRecentCandles } from './providers';
 import {
   claimRefresh,
   epoch,
@@ -10,9 +9,21 @@ import {
   readState,
   success,
   QUOTE_REFRESH_SECONDS,
+  refreshLeaseStatement,
+  successStatement,
   type Env,
 } from './storage';
 import { updateDominance, updateStable } from './dominance';
+import { updateReference } from './reference-price';
+import {
+  cleanError,
+  enabledAssets,
+  jobPolicies,
+  selectJob,
+  type CronState,
+  type IngestionState,
+  type JobPolicy,
+} from './health';
 interface Build {
   generation: string;
   cursor: number;
@@ -237,109 +248,157 @@ export async function updatePrice(env: Env, asset: Asset, market: Market, interv
     ).bind(key, now, now, rows.at(-1)?.time ?? 0),
   ]);
 }
-export async function scheduled(env: Env) {
+export async function updateQuoteBatch(
+  env: Env,
+  assets: Asset[],
+  market: Market,
+  states: IngestionState[],
+) {
   const now = epoch();
-  const enabled = ASSETS.filter((a) => env.ENABLED_ASSETS.split(',').includes(a.id));
+  const candidates = assets.filter((asset) => {
+    const state = states.find((s) => s.key === 'quote:' + asset + ':' + market);
+    return (
+      (!state?.next_attempt || state.next_attempt <= now) &&
+      (!state?.last_success || now - state.last_success >= QUOTE_REFRESH_SECONDS)
+    );
+  });
+  if (!candidates.length) return false;
+  const claims = await env.DB.batch(
+    candidates.map((asset) =>
+      refreshLeaseStatement(env.DB, 'quote:' + asset + ':' + market, QUOTE_REFRESH_SECONDS, now),
+    ),
+  );
+  const selected = candidates.filter((_asset, i) => claims[i].meta.changes > 0);
+  if (!selected.length) return false;
+  const result = await getQuotes(selected, market);
+  const statements = result.quotes.flatMap((quote) => [
+    env.DB.prepare('INSERT OR REPLACE INTO snapshots(key,data,fetched_at) VALUES(?,?,?)').bind(
+      'quote:' + quote.asset + ':' + market,
+      JSON.stringify(quote),
+      epoch(),
+    ),
+    successStatement(env.DB, 'quote:' + quote.asset + ':' + market, quote.time),
+  ]);
+  if (statements.length) await env.DB.batch(statements);
+  for (const problem of result.errors)
+    await failure(env.DB, 'quote:' + problem.asset + ':' + market, problem.error);
+  return result.errors.length > 0;
+}
+
+async function maintenance(env: Env, now: number) {
+  const active = await readState(env.DB, 'onchain_generation', '');
   const build = await readState<Build | null>(env.DB, 'onchain_build', null);
-  const jobs: { key: string; every: number; maxLag?: number; run: () => Promise<unknown> }[] = [
-    { key: 'bitview', every: build ? 60 : 3600, maxLag: 3 * DAY, run: () => updateOnchain(env) },
-    { key: 'defillama', every: 21600, maxLag: 3 * DAY, run: () => updateStable(env) },
-    {
-      key: 'coinlore',
-      every: 3600,
-      maxLag: 7200,
-      run: async () =>
-        (await claimRefresh(env.DB, 'dominance', 300)) ? updateDominance(env) : undefined,
-    },
-  ];
-  for (const { id } of enabled)
-    for (const market of ['binance', 'upbit'] as Market[]) {
-      jobs.push(
-        {
-          key: id + ':' + market + ':1h',
-          every: 3600,
-          maxLag: 7200,
-          run: () => updatePrice(env, id, market, '1h'),
-        },
-        {
-          key: id + ':' + market + ':1d',
-          every: 3600,
-          maxLag: 2 * DAY,
-          run: () => updatePrice(env, id, market, '1d'),
-        },
-      );
-    }
-  jobs.push({
-    key: 'maintenance',
-    every: 3600,
-    run: async () => {
-      await env.DB.prepare(
-        'DELETE FROM candles WHERE rowid IN (SELECT rowid FROM candles WHERE interval=? AND time<? LIMIT 200)',
-      )
-        .bind('1h', now - 90 * DAY)
-        .run();
-      const active = await readState(env.DB, 'onchain_generation', '');
-      await env.DB.prepare(
-        'DELETE FROM price_archive WHERE rowid IN (SELECT rowid FROM price_archive WHERE interval=? AND end<? LIMIT 20)',
-      )
-        .bind('1h', now - 90 * DAY)
-        .run();
-      await env.DB.prepare(
-        'DELETE FROM onchain WHERE rowid IN (SELECT rowid FROM onchain WHERE generation!=? AND generation!=? LIMIT 200)',
-      )
-        .bind(active, build?.generation || '')
-        .run();
-      await success(env.DB, 'maintenance', now);
-    },
-  });
-  const states = (
-    await env.DB.prepare('SELECT * FROM ingestion').all<{
-      key: string;
-      last_attempt: number;
-      last_success: number;
-      data_as_of: number;
-      next_attempt: number;
-    }>()
-  ).results;
-  const eligible = jobs.filter((j) => {
-    const s = states.find((s) => s.key === j.key);
-    if (s?.next_attempt) return s.next_attempt <= now;
-    const every = s && j.maxLag && now - s.data_as_of > j.maxLag ? 60 : j.every;
-    return !s || ((s.next_attempt || 0) <= now && now - (s.last_attempt || 0) >= every);
-  });
-  if (eligible.length) {
-    const job = eligible.sort(
-      (a, b) =>
-        (states.find((s) => s.key === a.key)?.last_attempt || 0) -
-        (states.find((s) => s.key === b.key)?.last_attempt || 0),
-    )[0];
-    try {
-      await env.DB.prepare(
-        'INSERT INTO ingestion(key,last_attempt) VALUES(?,?) ON CONFLICT(key) DO UPDATE SET last_attempt=excluded.last_attempt',
-      )
-        .bind(job.key, now)
-        .run();
-      await job.run();
-    } catch (e) {
-      await failure(env.DB, job.key, e);
-    }
-    return;
+  await env.DB.batch([
+    env.DB.prepare(
+      'DELETE FROM candles WHERE rowid IN (SELECT rowid FROM candles WHERE interval=? AND time<? LIMIT 200)',
+    ).bind('1h', now - 90 * DAY),
+    env.DB.prepare(
+      'DELETE FROM price_archive WHERE rowid IN (SELECT rowid FROM price_archive WHERE interval=? AND end<? LIMIT 20)',
+    ).bind('1h', now - 90 * DAY),
+    env.DB.prepare(
+      'DELETE FROM onchain WHERE rowid IN (SELECT rowid FROM onchain WHERE generation!=? AND generation!=? LIMIT 200)',
+    ).bind(active, build?.generation || ''),
+    successStatement(env.DB, 'maintenance', now),
+  ]);
+}
+
+async function executeJob(env: Env, job: JobPolicy, states: IngestionState[]) {
+  if (job.kind === 'quote-batch') {
+    const partial = await updateQuoteBatch(env, job.assets!, job.market!, states);
+    // Batch completion is recorded separately from each actual quote's status/time.
+    await success(env.DB, job.key, epoch());
+    return partial;
   }
-  // One small quote refresh per invocation; page requests use the same persistent snapshot.
-  const market: Market = Math.floor(now / 60) % 2 ? 'upbit' : 'binance';
-  const asset = enabled[Math.floor(now / 120) % enabled.length]?.id;
-  if (!asset) return;
-  const quoteState = states.find((s) => s.key === 'quote:' + asset + ':' + market);
-  if (quoteState && quoteState.next_attempt > now) return;
-  if (quoteState?.last_success && now - quoteState.last_success < QUOTE_REFRESH_SECONDS) return;
-  if (!(await claimRefresh(env.DB, 'quote:' + asset + ':' + market, QUOTE_REFRESH_SECONDS))) return;
+  if (job.key === 'bitview') await updateOnchain(env);
+  else if (job.kind === 'reference')
+    await updateReference(
+      env,
+      job.assets![0] as (typeof import('./reference-price').REFERENCE_ASSETS)[number],
+    );
+  else if (job.key === 'defillama') await updateStable(env);
+  else if (job.key === 'coinlore') {
+    if (await claimRefresh(env.DB, 'dominance', 300)) await updateDominance(env);
+  } else if (job.key === 'maintenance') await maintenance(env, epoch());
+  else await updatePrice(env, job.assets![0], job.market!, job.interval!);
+  return false;
+}
+
+/** Cloudflare runs this independently of visitors. One bounded source job per minute. */
+export async function scheduled(env: Env, scheduledAt = epoch()) {
+  const now = epoch(),
+    tick = Math.floor(scheduledAt / 60),
+    runId = crypto.randomUUID();
+  const [previous, rows, build] = await Promise.all([
+    env.DB.prepare('SELECT * FROM cron_state WHERE id=1').first<CronState>(),
+    env.DB.prepare('SELECT * FROM ingestion').all<IngestionState>(),
+    readState<Build | null>(env.DB, 'onchain_build', null),
+  ]);
+  if (previous && (previous.lease_until > now || previous.last_tick >= tick)) return;
+  const interrupted = previous?.outcome === 'running' ? previous : null;
+  const retry = rows.results.find(
+    (row) => row.key === interrupted?.job && (row.last_success || 0) < interrupted.last_started,
+  );
+  if (retry) retry.next_attempt = now;
+  const job = selectJob(jobPolicies(enabledAssets(env), !!build), rows.results, now);
+  const slot = tick % 120;
+  // The run lease, bounded ledger, and selected-job attempt are one transaction.
+  // Conditional SELECTs keep duplicate deliveries from overwriting the winning run.
+  const initial = [
+    env.DB.prepare(
+      "INSERT INTO cron_state(id,run_id,last_tick,last_started,lease_until,job,outcome) VALUES(1,?,?,?,?,?,'running') ON CONFLICT(id) DO UPDATE SET run_id=excluded.run_id,last_tick=excluded.last_tick,last_started=excluded.last_started,lease_until=excluded.lease_until,job=excluded.job,outcome='running',error=NULL WHERE cron_state.lease_until<=? AND cron_state.last_tick<?",
+    ).bind(runId, tick, now, now + 120, job?.key ?? null, now, tick),
+  ];
+  if (interrupted)
+    initial.push(
+      env.DB.prepare(
+        "UPDATE cron_runs SET completed_at=?,outcome='interrupted',error=? WHERE run_id=? AND EXISTS(SELECT 1 FROM cron_state WHERE id=1 AND run_id=?)",
+      ).bind(
+        now,
+        '이전 실행이 완료되기 전에 중단되어 다시 예약했습니다.',
+        interrupted.run_id,
+        runId,
+      ),
+    );
+  if (retry)
+    initial.push(
+      env.DB.prepare(
+        'UPDATE ingestion SET next_attempt=? WHERE key=? AND EXISTS(SELECT 1 FROM cron_state WHERE id=1 AND run_id=?)',
+      ).bind(now, retry.key, runId),
+    );
+  initial.push(
+    env.DB.prepare(
+      "INSERT OR REPLACE INTO cron_runs(slot,run_id,started_at,job,outcome) SELECT ?,?,?,?,'running' FROM cron_state WHERE id=1 AND run_id=?",
+    ).bind(slot, runId, now, job?.key ?? null, runId),
+  );
+  if (job)
+    initial.push(
+      env.DB.prepare(
+        'INSERT INTO ingestion(key,last_attempt) SELECT ?,? FROM cron_state WHERE id=1 AND run_id=? ON CONFLICT(key) DO UPDATE SET last_attempt=excluded.last_attempt',
+      ).bind(job.key, now, runId),
+    );
+  const claimed = await env.DB.batch(initial);
+  if (!claimed[0].meta.changes) return;
+  let outcome = 'idle',
+    error: string | null = null;
   try {
-    const q = await getQuote(asset, market);
-    await env.DB.prepare('INSERT OR REPLACE INTO snapshots(key,data,fetched_at) VALUES(?,?,?)')
-      .bind('quote:' + asset + ':' + market, JSON.stringify(q), now)
-      .run();
-    await success(env.DB, 'quote:' + asset + ':' + market, q.time);
-  } catch (e) {
-    await failure(env.DB, 'quote:' + asset + ':' + market, e);
+    if (job) {
+      outcome = (await executeJob(env, job, rows.results)) ? 'partial' : 'ok';
+      if (outcome === 'partial')
+        error = '일부 자산의 시세를 갱신하지 못했습니다. 정상 자산은 저장했습니다.';
+    }
+  } catch (cause) {
+    outcome = 'error';
+    error = cleanError(cause);
+    if (job) await failure(env.DB, job.key, cause);
+  } finally {
+    const completed = epoch();
+    await env.DB.batch([
+      env.DB.prepare(
+        "UPDATE cron_state SET last_completed=?,last_succeeded=CASE WHEN ? IN ('ok','idle') THEN ? ELSE last_succeeded END,lease_until=0,outcome=?,error=? WHERE id=1 AND run_id=?",
+      ).bind(completed, outcome, completed, outcome, error, runId),
+      env.DB.prepare(
+        'UPDATE cron_runs SET completed_at=?,outcome=?,error=? WHERE slot=? AND run_id=?',
+      ).bind(completed, outcome, error, slot, runId),
+    ]);
   }
 }

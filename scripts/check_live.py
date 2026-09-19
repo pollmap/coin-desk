@@ -1,10 +1,14 @@
 """Read-only deployment smoke check and optional 48-hour observation log."""
-import argparse, datetime as dt, json, math, pathlib, time, urllib.request
+import argparse, datetime as dt, json, math, pathlib, time, urllib.request, urllib.error
 ROOT=pathlib.Path(__file__).resolve().parents[1]
-def get(base,path):
+def get(base,path,allow_unhealthy=False):
     started=time.perf_counter()
     request=urllib.request.Request(base.rstrip('/')+'/api/v1/'+path,headers={'User-Agent':'BTCDesk-Healthcheck/0.1','Accept':'application/json'})
-    with urllib.request.urlopen(request,timeout=25) as response:data=json.load(response)
+    try:
+        with urllib.request.urlopen(request,timeout=25) as response:data=json.load(response)
+    except urllib.error.HTTPError as error:
+        if not allow_unhealthy or error.code!=503:raise
+        data=json.load(error)
     return data,round((time.perf_counter()-started)*1000,1)
 def quote_issues(payload, asset, market, now):
     """Validate source timestamps as well as the collector's freshness flag."""
@@ -50,9 +54,9 @@ def check(base):
     for state in status['sources']:
         if state['key']=='maintenance' or state.get('active') is False or state['key'].startswith('quote:'):continue
         if state['error']:issues.append(state['key']+' collection error')
-        max_age=8*3600 if state['key']=='defillama' else 7200
+        max_age=max(7200,(state.get('expectedCadenceSeconds') or 3600)+3600)
         if not state['last_success'] or now-state['last_success']>max_age:issues.append(state['key']+' collector overdue')
-        source_lag=3*86400 if state['key'] in ['bitview','defillama'] else 2*86400 if state['key'].endswith(':1d') else 7200
+        source_lag=state.get('dataFreshnessLimitSeconds') or (3*86400 if state['key'] in ['bitview','defillama'] or state['key'].startswith('reference:') else 2*86400 if state['key'].endswith(':1d') else 7200)
         if not state.get('data_as_of') or now-state['data_as_of']>source_lag:issues.append(state['key']+' source data overdue')
     if not overview['metricsAsOf'] or now-overview['metricsAsOf']>3*86400:issues.append('onchain more than three days behind')
     values=overview['metrics']
@@ -75,7 +79,11 @@ def check(base):
         value=coin.get('value');cap=coin.get('marketCap');total=dominance.get('totalMarketCap')
         if not isinstance(value,(int,float)) or not math.isfinite(value) or not 0<=value<=100:issues.append(coin['id']+' invalid dominance')
         elif not cap or not total or abs(value-100*cap/total)>1e-8:issues.append(coin['id']+' dominance identity mismatch')
-    return {'checkedAt':dt.datetime.now(dt.timezone.utc).isoformat(),'base':base,'ok':not issues,'issues':issues,'warnings':warnings,'latencyMs':latency,'sourceState':status['sources'],'quoteAsOf':overview['meta']['dataAsOf'],'onchainAsOf':overview['metricsAsOf'],'dominanceAsOf':dominance['asOf'],'dominanceSource':dominance['source']}
+    health,latency['health']=get(base,'health',allow_unhealthy=True)
+    if not health.get('ok'):
+        issues.extend(reason['code']+':'+reason['key'] for reason in health.get('reasons',[]))
+        if not health.get('reasons'):issues.append('server automation health unavailable')
+    return {'checkedAt':dt.datetime.now(dt.timezone.utc).isoformat(),'base':base,'ok':not issues,'issues':issues,'warnings':warnings,'latencyMs':latency,'sourceState':health.get('sources',status['sources']),'automation':health.get('automation'),'coverage':health.get('coverage'),'quoteAsOf':overview['meta']['dataAsOf'],'onchainAsOf':overview['metricsAsOf'],'dominanceAsOf':dominance['asOf'],'dominanceSource':dominance['source']}
 def main():
     p=argparse.ArgumentParser();p.add_argument('--base',required=True);p.add_argument('--hours',type=float,default=0);p.add_argument('--interval',type=int,default=300);a=p.parse_args()
     if not a.base.startswith(('http://','https://')) or a.interval<60 or not 0<=a.hours<=48:raise ValueError('Invalid monitor options')

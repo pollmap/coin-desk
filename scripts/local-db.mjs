@@ -10,8 +10,13 @@ export function openDatabase(path = 'work/local.sqlite') {
     .filter((f) => f.endsWith('.sql'))
     .sort())
     sqlite.exec(readFileSync('migrations/' + file, 'utf8'));
+  const executions = new WeakMap();
   function prepare(sql, params = []) {
-    return {
+    const execute = () => {
+      const result = sqlite.prepare(sql).run(...params);
+      return { success: true, results: [], meta: { changes: Number(result.changes) } };
+    };
+    const statement = {
       bind(...values) {
         return prepare(sql, values);
       },
@@ -23,10 +28,11 @@ export function openDatabase(path = 'work/local.sqlite') {
         return { success: true, results: sqlite.prepare(sql).all(...params), meta: {} };
       },
       async run() {
-        const result = sqlite.prepare(sql).run(...params);
-        return { success: true, results: [], meta: { changes: Number(result.changes) } };
+        return execute();
       },
     };
+    executions.set(statement, execute);
+    return statement;
   }
   return {
     sqlite,
@@ -35,7 +41,13 @@ export function openDatabase(path = 'work/local.sqlite') {
       sqlite.exec('BEGIN');
       try {
         const results = [];
-        for (const stmt of statements) results.push(await stmt.run());
+        // Keep the synchronous SQLite transaction uninterrupted, matching D1's
+        // atomic batch. Awaiting each statement allowed another batch to BEGIN.
+        for (const stmt of statements) {
+          const execute = executions.get(stmt);
+          if (!execute) throw new Error('Batch statement belongs to another database');
+          results.push(execute());
+        }
         sqlite.exec('COMMIT');
         return results;
       } catch (e) {

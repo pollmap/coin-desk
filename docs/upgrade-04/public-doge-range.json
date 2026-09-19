@@ -1,0 +1,58 @@
+{
+  "charts": [
+    {
+      "asset": "DOGE",
+      "availableFrom": "1390435200",
+      "availableTo": "1789689600",
+      "chartGeneration": "1",
+      "chartKind": "long-history",
+      "chartReadyMs": "1002",
+      "observationCount": "4622",
+      "visibleFrom": "1390435200",
+      "visibleTo": "1789689600",
+      "width": 1142
+    },
+    {
+      "availableFrom": "1281916800",
+      "availableTo": "1789689600",
+      "chartGeneration": "1",
+      "metricAxis": "log",
+      "observationCount": "5878",
+      "visibleFrom": "1281916800",
+      "visibleTo": "1789689600",
+      "width": 562
+    },
+    {
+      "availableFrom": "1230940800",
+      "availableTo": "1789689600",
+      "chartGeneration": "1",
+      "metricAxis": "linear",
+      "observationCount": "6463",
+      "visibleFrom": "1230940800",
+      "visibleTo": "1789689600",
+      "width": 562
+    },
+    {
+      "availableFrom": "1230940800",
+      "availableTo": "1789689600",
+      "chartGeneration": "1",
+      "metricAxis": "linear",
+      "observationCount": "6463",
+      "visibleFrom": "1230940800",
+      "visibleTo": "1789689600",
+      "width": 562
+    },
+    {
+      "availableFrom": "1281916800",
+      "availableTo": "1789689600",
+      "chartGeneration": "1",
+      "metricAxis": "linear",
+      "observationCount": "5878",
+      "visibleFrom": "1281916800",
+      "visibleTo": "1789689600",
+      "width": 562
+    }
+  ],
+  "scroll": 1425,
+  "width": 1440
+}

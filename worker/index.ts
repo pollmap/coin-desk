@@ -25,6 +25,8 @@ import {
 import { scheduled } from './scheduled';
 import { candleHistory } from './candle-history';
 import { getDominance, DOMINANCE_VERSION } from './dominance';
+import { REFERENCE_ASSETS, REFERENCE_SOURCE, REFERENCE_VERSION } from './reference-price';
+import { operationStatus } from './health';
 const response = (body: unknown, status = 200) =>
   new Response(JSON.stringify(body), {
     status,
@@ -45,8 +47,10 @@ function canonicalRequest(request: Request) {
     overview: ['asset', 'market'],
     candles: ['asset', 'market', 'interval', 'from', 'to', 'limit'],
     series: ['asset', 'metric', 'from', 'to', 'limit'],
+    reference: ['asset', 'from', 'to', 'limit'],
     metrics: ['asset'],
     status: [],
+    health: [],
     dominance: [],
     'dominance/history': [],
   };
@@ -225,28 +229,20 @@ async function api(request: Request, env: Env): Promise<Response> {
       priceBasis: 'Bitview 추정 USD 가격',
       calculationVersion: CALC_VERSION,
     });
-  if (endpoint === 'status')
-    return response({
-      now: epoch(),
-      sources: (
-        await env.DB.prepare('SELECT * FROM ingestion ORDER BY key').all<{ key: string }>()
-      ).results.map((s) => ({
-        ...s,
-        active: s.key !== 'coingecko',
-        error:
-          'error' in s && s.error
-            ? String(s.error).match(/(?:HTTP|API)\s+\d{3}/)?.[0] ||
-              '원천 연결 또는 데이터 검증 오류'
-            : null,
-      })),
-      rebuilding: !!(await readState(env.DB, 'onchain_build', null)),
-      assets: env.ENABLED_ASSETS.split(','),
-      history: (
-        await env.DB.prepare("SELECT value FROM state WHERE key LIKE 'history:%'").all<{
-          value: string;
-        }>()
-      ).results.map((r) => JSON.parse(r.value)),
-    });
+  if (endpoint === 'status' || endpoint === 'health') {
+    const report = await operationStatus(env);
+    return endpoint === 'status'
+      ? response(report)
+      : response(
+          {
+            ...report.health,
+            automation: report.automation,
+            coverage: report.coverage,
+            sources: report.sources,
+          },
+          report.health.ok ? 200 : 503,
+        );
+  }
   if (!env.ENABLED_ASSETS.split(',').includes(asset))
     return response({ error: '아직 수집하지 않은 자산입니다.', code: 'NOT_ENABLED' }, 404);
   if (endpoint === 'overview') return response(await overview(env, asset, market));
@@ -254,6 +250,50 @@ async function api(request: Request, env: Env): Promise<Response> {
     to = number(q, 'to', epoch() + DAY),
     limit = number(q, 'limit', 1000, 1000);
   if (limit < 1 || from >= to) return response({ error: 'Invalid range' }, 400);
+  if (endpoint === 'reference') {
+    if (!(REFERENCE_ASSETS as readonly string[]).includes(asset))
+      return response({ error: '장기 USD 이력은 BTC·DOGE·ETH를 지원합니다.' }, 400);
+    const [rows, extent, state] = await Promise.all([
+      env.DB.prepare(
+        'SELECT time,value FROM reference_prices WHERE asset=? AND time>=? AND time<? ORDER BY time LIMIT ?',
+      )
+        .bind(asset, from, to, limit + 1)
+        .all<{ time: number; value: number }>(),
+      env.DB.prepare(
+        'SELECT (SELECT time FROM reference_prices WHERE asset=? ORDER BY time LIMIT 1) AS first,(SELECT time FROM reference_prices WHERE asset=? ORDER BY time DESC LIMIT 1) AS last',
+      )
+        .bind(asset, asset)
+        .first<{ first: number | null; last: number | null }>(),
+      env.DB.prepare('SELECT last_success,data_as_of,error FROM ingestion WHERE key=?')
+        .bind('reference:' + asset)
+        .first<{ last_success: number; data_as_of: number; error: string | null }>(),
+    ]);
+    const data = rows.results.slice(0, limit);
+    return response({
+      data,
+      price: [],
+      nextCursor: rows.results.length > limit ? data.at(-1)!.time + DAY : null,
+      meta: {
+        source: REFERENCE_SOURCE,
+        unit: 'USD',
+        market: asset + ' / USD reference',
+        dataAsOf: extent?.last ?? null,
+        fetchedAt: state?.last_success ?? null,
+        stale:
+          !state?.last_success ||
+          epoch() - state.last_success > 25200 ||
+          !extent?.last ||
+          epoch() - extent.last > 3 * DAY ||
+          !!state.error,
+        historyStart: extent?.first ?? null,
+        calculationVersion: REFERENCE_VERSION,
+        priceBasis: 'UTC 일별 종가 참조가격 · 거래소 OHLCV 아님',
+        warning: state?.error
+          ? '장기 USD 가격 갱신이 지연되고 있습니다. 마지막 정상 이력을 표시합니다.'
+          : undefined,
+      },
+    } satisfies SeriesResponse);
+  }
   if (endpoint === 'candles') {
     const interval = (q.get('interval') || '1d') as Interval;
     if (!['1h', '4h', '1d', '1w', '1M'].includes(interval))
@@ -295,7 +335,7 @@ async function api(request: Request, env: Env): Promise<Response> {
         ...meta(market, extent?.last ?? null, extent?.fetched ?? null),
         stale:
           !extent?.fetched ||
-          epoch() - extent.fetched > 7200 ||
+          epoch() - extent.fetched > (base === '1h' ? 7200 : 25200) ||
           !extent.last ||
           epoch() - extent.last > (base === '1h' ? 7200 : 2 * DAY),
         historyStart: extent?.first,
@@ -379,7 +419,8 @@ export default {
       if (request.method !== 'GET') return response({ error: 'Read-only API' }, 405);
       const canonical = canonicalRequest(request);
       const cache = (caches as unknown as { default: Cache }).default;
-      const cached = await cache.match(canonical).catch(() => undefined);
+      const liveStatus = /\/(health|status)$/.test(url.pathname);
+      const cached = liveStatus ? undefined : await cache.match(canonical).catch(() => undefined);
       if (cached) return cached;
       let pending = inFlight.get(env.DB);
       if (!pending) {
@@ -398,11 +439,11 @@ export default {
         }
         task = (async () => {
           const out = await api(canonical, env);
-          if (out.ok) {
+          if (out.ok && !liveStatus) {
             const clone = new Response(out.clone().body, out);
             clone.headers.set(
               'Cache-Control',
-              'public, max-age=' + (/overview|status/.test(url.pathname) ? 30 : 300),
+              'public, max-age=' + (url.pathname.endsWith('/overview') ? 30 : 300),
             );
             ctx.waitUntil(cache.put(canonical, clone).catch(() => undefined));
           }
@@ -426,6 +467,6 @@ export default {
     }
   },
   async scheduled(_event: ScheduledController, env: Env, ctx: ExecutionContext) {
-    ctx.waitUntil(scheduled(env));
+    ctx.waitUntil(scheduled(env, Math.floor(_event.scheduledTime / 1000)));
   },
 };

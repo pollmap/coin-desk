@@ -1,0 +1,31 @@
+{
+  "workerVersion": "75d81dc8-0ed7-4982-aa52-7f317e544506",
+  "observedAt": "2026-09-19T19:45:19.692731+00:00",
+  "procedure": "Initial history imported once; reference jobs made due for verification, then Cloudflare Cron fetched and committed all three providers independently. Recurring cadence is 6 hours.",
+  "runs": [
+    {
+      "runId": "a68ac1be-c713-4bc9-95fa-bb5449c54550",
+      "startedAt": 1789846940,
+      "completedAt": 1789846940,
+      "job": "reference:ETH",
+      "outcome": "ok",
+      "error": null
+    },
+    {
+      "runId": "8ad5fc92-4fa8-4975-8340-7c4edf3743dc",
+      "startedAt": 1789846880,
+      "completedAt": 1789846880,
+      "job": "reference:DOGE",
+      "outcome": "ok",
+      "error": null
+    },
+    {
+      "runId": "44b4b3ca-d306-4f3e-80ee-05f5e9484605",
+      "startedAt": 1789846820,
+      "completedAt": 1789846821,
+      "job": "reference:BTC",
+      "outcome": "ok",
+      "error": null
+    }
+  ]
+}

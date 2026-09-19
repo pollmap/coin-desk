@@ -1,0 +1,108 @@
+.explorer-page {
+  min-width: 0;
+}
+.explorer-questions {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+  margin-bottom: 20px;
+}
+.explorer-questions button {
+  display: grid;
+  align-content: start;
+  gap: 9px;
+  padding: 16px;
+  text-align: left;
+  border: 1px solid #2b394b;
+  border-radius: 7px;
+  background: #131c29;
+}
+.explorer-questions button[aria-pressed='true'] {
+  border-color: #bd9d60;
+  background: #24241f;
+}
+.explorer-questions span {
+  color: #e8bc7c;
+  font-size: 11px;
+}
+.explorer-questions strong {
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.7;
+  color: #dce5f1;
+}
+.explorer-questions small {
+  color: #a2b2c9;
+  font-size: 10px;
+  line-height: 1.7;
+}
+.explorer-questions button:focus-visible,
+.explorer-results-heading button:focus-visible {
+  outline: 2px solid #86b7f7;
+  outline-offset: 3px;
+}
+.explorer-page .explorer-toolbar label:first-child {
+  flex: 1;
+  min-width: 220px;
+}
+.explorer-page .explorer-toolbar input {
+  width: 100%;
+}
+.explorer-results-heading {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px 20px;
+  margin: -5px 0 18px;
+}
+.explorer-results-heading p {
+  flex: 1 1 400px;
+  font-size: 11px;
+  color: #a2b2c9;
+  line-height: 1.8;
+}
+.explorer-results-heading > div {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 12px;
+}
+.explorer-results-heading span {
+  color: #c1cde0;
+}
+.explorer-results-heading button {
+  min-height: 36px;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  color: #b7cdec;
+  font-size: 12px;
+}
+.explorer-page .library-card .metric-guide {
+  margin: 0 0 16px;
+}
+@media (max-width: 1100px) {
+  .explorer-questions {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (max-width: 600px) {
+  .explorer-questions {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+  .explorer-questions button {
+    padding: 12px 14px;
+    gap: 5px;
+  }
+  .explorer-page .explorer-toolbar label:first-child {
+    min-width: 0;
+  }
+  .explorer-page .explorer-toolbar label,
+  .explorer-page .explorer-toolbar select {
+    width: 100%;
+  }
+  .explorer-page .explorer-toolbar input {
+    min-width: 0;
+  }
+}

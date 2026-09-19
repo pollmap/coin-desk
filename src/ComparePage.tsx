@@ -11,27 +11,35 @@ import {
 import { ASSETS } from '../shared/catalog';
 import {
   compareCloses,
-  COMPARISON_PERIOD_DAYS,
+  parseComparisonRange,
   COMPARISON_VERSION,
   type ComparisonResult,
 } from '../shared/comparison';
-import type { Asset, CandleResponse, Market, Period } from '../shared/types';
+import type { Asset, CandleResponse, Market } from '../shared/types';
+import { PERIOD_OPTIONS, isRangePeriod, periodStart, type RangePeriod } from '../shared/ranges';
+import { createComparisonLoader } from './comparison-data';
 import { dateLabel, json, money, numeric, save, saved } from './lib';
 import './comparison.css';
 
 const DAY = 86400;
 const DEFAULT_ASSETS: Asset[] = ['BTC', 'DOGE', 'ETH'];
-const PERIODS: { id: Period; label: string }[] = [
-  { id: '1m', label: '1개월' },
-  { id: '3m', label: '3개월' },
-  { id: '1y', label: '1년' },
-  { id: '3y', label: '3년' },
-  { id: 'all', label: '전체' },
-];
-const cache = new Map<string, { value: CandleResponse; at: number }>();
+const dailyHistory = createComparisonLoader((url, signal) => json<CandleResponse>(url, signal));
 const utcDate = (time: number) => new Date(time * 1000).toISOString().slice(0, 10);
 const percentage = (value: number | null, signed = false) =>
   value === null ? '—' : (signed && value > 0 ? '+' : '') + numeric(value) + '%';
+
+/** Read the controls at submission time, including native date picker/autofill edits. */
+export function comparisonDateSubmission(
+  form: Pick<FormData, 'get'>,
+  now = Date.now() / 1000,
+): { from: string; to: string; error?: never } | { error: string } {
+  const from = form.get('from'),
+    to = form.get('to');
+  const checked = parseComparisonRange(from, to, now);
+  if (checked.error || !checked.range)
+    return { error: checked.error || '시작일과 종료일을 실제 날짜로 함께 입력해 주세요.' };
+  return { from: from as string, to: to as string };
+}
 
 function selectedAssets(value: unknown): Asset[] {
   const items = typeof value === 'string' ? value.split(',') : Array.isArray(value) ? value : [];
@@ -39,64 +47,20 @@ function selectedAssets(value: unknown): Asset[] {
   return valid.length >= 2 ? valid : DEFAULT_ASSETS;
 }
 
-/** Two assets at a time; each paginates sequentially against our stored daily API. */
-async function dailyHistory(
-  asset: Asset,
-  market: Market,
-  from: number,
-  to: number,
-  signal: AbortSignal,
-  force: boolean,
-) {
-  const key = [asset, market, from, to].join(':');
-  const hit = cache.get(key);
-  if (!force && hit && Date.now() - hit.at < 15 * 60000) return hit.value;
-  let result: CandleResponse | undefined;
-  let cursor = from;
-  for (let page = 0; page < 20; page++) {
-    const response = await json<CandleResponse>(
-      `/api/v1/candles?asset=${asset}&market=${market}&interval=1d&from=${cursor}&to=${to}&limit=1000`,
-      signal,
-    );
-    if (
-      !Array.isArray(response.data) ||
-      response.data.length > 1000 ||
-      !response.meta ||
-      response.data.some((candle) => !candle || typeof candle !== 'object') ||
-      (response.nextCursor !== null && !Number.isFinite(response.nextCursor))
-    )
-      throw new Error(asset + ' 일봉 응답 형식을 확인할 수 없습니다.');
-    if (!result) result = { ...response, data: [...response.data], meta: { ...response.meta } };
-    else {
-      result.data.push(...response.data);
-      result.meta.stale ||= response.meta.stale;
-      result.meta.warning ||= response.meta.warning;
-      result.meta.gapCount = (result.meta.gapCount || 0) + (response.meta.gapCount || 0);
-    }
-    if (response.nextCursor === null) {
-      result.data = [...new Map(result.data.map((candle) => [candle.time, candle])).values()].sort(
-        (a, b) => a.time - b.time,
-      );
-      result.nextCursor = null;
-      if (cache.size >= 80) cache.delete(cache.keys().next().value!);
-      if (!signal.aborted) cache.set(key, { value: result, at: Date.now() });
-      return result;
-    }
-    if (
-      !Number.isFinite(response.nextCursor) ||
-      response.nextCursor <= cursor ||
-      response.nextCursor >= to
-    )
-      throw new Error(asset + ' 데이터 페이지 경계를 확인할 수 없습니다.');
-    cursor = response.nextCursor;
-  }
-  throw new Error(asset + ' 비교 데이터가 조회 한도를 초과했습니다.');
-}
-
 function ComparisonChart({ comparison }: { comparison: ComparisonResult }) {
   const container = useRef<HTMLDivElement>(null);
   const chart = useRef<IChartApi | null>(null);
   const [hover, setHover] = useState<number | null>(null);
+  const values = useMemo(
+    () =>
+      new Map(
+        comparison.rows.map((row) => [
+          row.asset,
+          new Map(row.points.map((point) => [point.time, point.value])),
+        ]),
+      ),
+    [comparison],
+  );
   useEffect(() => {
     if (!container.current || !comparison.rows.length) return;
     const api = createChart(container.current, {
@@ -109,7 +73,11 @@ function ComparisonChart({ comparison }: { comparison: ComparisonResult }) {
       },
       grid: { vertLines: { color: '#1b2431' }, horzLines: { color: '#1b2431' } },
       rightPriceScale: { borderColor: '#293345', scaleMargins: { top: 0.08, bottom: 0.08 } },
-      timeScale: { borderColor: '#293345', lockVisibleTimeRangeOnResize: true },
+      timeScale: {
+        borderColor: '#293345',
+        lockVisibleTimeRangeOnResize: true,
+        minBarSpacing: 0.01,
+      },
       localization: {
         timeFormatter: (time: number) => utcDate(Number(time)) + ' UTC',
         priceFormatter: (value: number) => numeric(value),
@@ -149,8 +117,24 @@ function ComparisonChart({ comparison }: { comparison: ComparisonResult }) {
     api.subscribeCrosshairMove((event) =>
       setHover(typeof event.time === 'number' ? event.time : null),
     );
+    const node = container.current;
+    node.dataset.points = String(comparison.observations);
+    node.dataset.expectedFrom = String(comparison.start);
+    node.dataset.expectedTo = String(comparison.end);
+    const publishRange = () => {
+      const visible = api.timeScale().getVisibleRange();
+      const logical = api.timeScale().getVisibleLogicalRange();
+      node.dataset.visibleFrom = String(visible?.from ?? '');
+      node.dataset.visibleTo = String(visible?.to ?? '');
+      node.dataset.logicalFrom = String(logical?.from ?? '');
+      node.dataset.logicalTo = String(logical?.to ?? '');
+    };
+    api.timeScale().subscribeVisibleLogicalRangeChange(publishRange);
     api.timeScale().fitContent();
+    const frame = requestAnimationFrame(publishRange);
     return () => {
+      cancelAnimationFrame(frame);
+      api.timeScale().unsubscribeVisibleLogicalRangeChange(publishRange);
       chart.current = null;
       api.remove();
     };
@@ -164,7 +148,7 @@ function ComparisonChart({ comparison }: { comparison: ComparisonResult }) {
       </div>
       <div className="comparison-readout" aria-live="off">
         {comparison.rows.map((row) => {
-          const value = row.points.find((point) => point.time === visibleTime)?.value;
+          const value = values.get(row.asset)?.get(visibleTime ?? 0);
           return (
             <span key={row.asset}>
               <i style={{ background: ASSETS.find((asset) => asset.id === row.asset)!.color }} />
@@ -198,59 +182,106 @@ export function ComparePage() {
   const initial = useMemo(() => saved<Record<string, unknown>>('comparison', {}), []);
   const assets = selectedAssets(params.get('assets') ?? initial.assets);
   const market: Market = (params.get('market') ?? initial.market) === 'upbit' ? 'upbit' : 'binance';
-  const rawPeriod = params.get('period') ?? initial.period;
-  const period: Period = PERIODS.some((entry) => entry.id === rawPeriod)
-    ? (rawPeriod as Period)
-    : '1y';
+  const rawPeriod = params.get('period') ?? (initial.version === 2 ? initial.period : 'all');
+  const period: RangePeriod = isRangePeriod(rawPeriod) ? rawPeriod : 'all';
+  const hasUrlRange = params.has('from') || params.has('to');
+  const restoreRange = !hasUrlRange && !params.has('period') && initial.version === 2;
+  const fromValue =
+    params.get('from') ?? (restoreRange && typeof initial.from === 'string' ? initial.from : null);
+  const toValue =
+    params.get('to') ?? (restoreRange && typeof initial.to === 'string' ? initial.to : null);
+  const hasCustom = fromValue !== null || toValue !== null;
+  const parsed = useMemo(() => parseComparisonRange(fromValue, toValue), [fromValue, toValue]);
   const assetKey = assets.join(',');
-  const requestKey = [assetKey, market, period].join(':');
+  const requestKey = [assetKey, market, period, fromValue ?? '', toValue ?? ''].join(':');
   const [revision, setRevision] = useState(0);
   const [state, setState] = useState<{
     key: string;
     loading: boolean;
+    loaded: number;
     data: Partial<Record<Asset, CandleResponse>>;
     errors: string[];
-  }>({ key: '', loading: true, data: {}, errors: [] });
+  }>({ key: '', loading: true, loaded: 0, data: {}, errors: [] });
   const [shareUrl, setShareUrl] = useState('');
   const [shareNote, setShareNote] = useState('');
   const [lastRefresh, setLastRefresh] = useState(0);
   const [cooldown, setCooldown] = useState(false);
+  const [draftError, setDraftError] = useState('');
+  const dateForm = useRef<HTMLFormElement>(null);
+  const [helpOpen, setHelpOpen] = useState(false);
   const forcedKey = useRef<string | null>(null);
   useEffect(() => {
-    save('comparison', { assets: assetKey.split(','), market, period });
-  }, [assetKey, market, period]);
+    if (!parsed.error)
+      save('comparison', {
+        version: 2,
+        assets: assetKey.split(','),
+        market,
+        period,
+        from: fromValue,
+        to: toValue,
+      });
+  }, [assetKey, market, period, fromValue, toValue, parsed.error]);
+  useEffect(() => {
+    setDraftError('');
+  }, [fromValue, toValue, period]);
   useEffect(() => {
     const controller = new AbortController();
-    const to = Math.floor(Date.now() / 1000 / DAY) * DAY;
-    const from = period === 'all' ? 0 : to - (COMPARISON_PERIOD_DAYS[period] + 7) * DAY;
+    if (parsed.error) {
+      setState({ key: requestKey, loading: false, loaded: 0, data: {}, errors: [] });
+      return () => controller.abort();
+    }
+    const today = Math.floor(Date.now() / 1000 / DAY) * DAY;
+    const to = Math.min(today, parsed.range ? parsed.range.to + DAY : today);
+    const from =
+      parsed.range?.from ??
+      Math.max(0, period === 'all' ? 0 : periodStart(period, today - DAY) - 7 * DAY);
+    if (from >= to) {
+      setState({
+        key: requestKey,
+        loading: false,
+        loaded: 0,
+        data: {},
+        errors: [
+          '선택한 날짜에는 아직 확정된 일봉이 없습니다. 종료일을 포함해 두 개 이상의 확정 일봉이 필요합니다.',
+        ],
+      });
+      return () => controller.abort();
+    }
     const selected = assetKey.split(',') as Asset[];
-    setState({ key: requestKey, loading: true, data: {}, errors: [] });
+    setState((previous) => ({
+      key: requestKey,
+      loading: true,
+      loaded: 0,
+      data: previous.key === requestKey ? previous.data : {},
+      errors: [],
+    }));
     const timer = setTimeout(() => {
       const force = forcedKey.current === requestKey;
       forcedKey.current = null;
-      let next = 0;
+      const incoming: Partial<Record<Asset, CandleResponse>> = {};
+      const errors: string[] = [];
+      let next = 0,
+        loaded = 0;
       const run = async () => {
         while (next < selected.length && !controller.signal.aborted) {
           const asset = selected[next++];
           try {
-            const data = await dailyHistory(asset, market, from, to, controller.signal, force);
-            if (!controller.signal.aborted)
-              setState((previous) => ({ ...previous, data: { ...previous.data, [asset]: data } }));
+            incoming[asset] = await dailyHistory(asset, market, from, to, controller.signal, force);
+            loaded++;
+            if (!controller.signal.aborted) setState((previous) => ({ ...previous, loaded }));
           } catch (error) {
-            if (!controller.signal.aborted)
-              setState((previous) => ({
-                ...previous,
-                errors: [
-                  ...previous.errors,
-                  asset + ': ' + (error instanceof Error ? error.message : '조회 실패'),
-                ],
-              }));
+            errors.push(asset + ': ' + (error instanceof Error ? error.message : '조회 실패'));
           }
         }
       };
-      void Promise.all([run(), run()]).then(() => {
+      void Promise.all([run(), run(), run(), run()]).then(() => {
         if (!controller.signal.aborted) {
-          setState((previous) => ({ ...previous, loading: false }));
+          setState((previous) => ({
+            ...previous,
+            data: errors.length ? previous.data : incoming,
+            errors,
+            loading: false,
+          }));
           setLastRefresh(Date.now());
         }
       });
@@ -259,7 +290,7 @@ export function ComparePage() {
       clearTimeout(timer);
       controller.abort();
     };
-  }, [assetKey, market, period, revision, requestKey]);
+  }, [assetKey, market, period, revision, requestKey, parsed]);
   useEffect(() => {
     const timer = setInterval(() => {
       if (!document.hidden) setRevision((value) => value + 1);
@@ -274,34 +305,56 @@ export function ComparePage() {
   const active = state.key === requestKey;
   const loading = !active || state.loading;
   const comparison = useMemo(() => {
-    if (!active || state.loading || state.errors.length) return null;
+    const selected = assetKey.split(',') as Asset[];
+    if (!active || parsed.error || selected.some((asset) => !state.data[asset])) return null;
     return compareCloses(
-      (assetKey.split(',') as Asset[]).map((asset) => ({
+      selected.map((asset) => ({
         asset,
-        candles: state.data[asset]?.data || [],
+        candles: state.data[asset]!.data,
+        historyStart: state.data[asset]!.meta.historyStart,
       })),
       period,
+      Date.now() / 1000,
+      parsed.range,
     );
-  }, [active, state, assetKey, period]);
-  function change(next: Partial<{ assets: Asset[]; market: Market; period: Period }>) {
+  }, [active, state.data, assetKey, period, parsed]);
+  function change(
+    next: Partial<{
+      assets: Asset[];
+      market: Market;
+      period: RangePeriod;
+      from: string | null;
+      to: string | null;
+    }>,
+  ) {
     setShareUrl('');
     setShareNote('');
+    const from = next.from !== undefined ? next.from : next.period !== undefined ? null : fromValue;
+    const to = next.to !== undefined ? next.to : next.period !== undefined ? null : toValue;
     setParams(
       {
         assets: (next.assets ?? assets).join(','),
         market: next.market ?? market,
         period: next.period ?? period,
+        ...(from !== null ? { from } : {}),
+        ...(to !== null ? { to } : {}),
       },
       { replace: true },
     );
   }
   async function share() {
     const url = new URL(window.location.href);
-    url.search = new URLSearchParams({ assets: assetKey, market, period }).toString();
+    url.search = new URLSearchParams({
+      assets: assetKey,
+      market,
+      period,
+      ...(fromValue !== null ? { from: fromValue } : {}),
+      ...(toValue !== null ? { to: toValue } : {}),
+    }).toString();
     setShareUrl(url.href);
     try {
       await navigator.clipboard.writeText(url.href);
-      setShareNote('같은 코인·시장·기간의 링크를 복사했습니다.');
+      setShareNote('코인·시장·기간과 직접 선택한 날짜를 링크에 담았습니다.');
     } catch {
       setShareNote('아래 주소를 선택해 복사해 주세요.');
     }
@@ -339,7 +392,6 @@ export function ComparePage() {
   }
   const responses = active ? Object.values(state.data) : [];
   const hasStale = responses.some((response) => response.meta.stale);
-  const shortened = comparison?.shortened;
   return (
     <div className="comparison-page">
       <div className="page-heading">
@@ -391,21 +443,85 @@ export function ComparePage() {
             </select>
           </label>
           <div className="segments" aria-label="비교 기간">
-            {PERIODS.map((entry) => (
+            {PERIOD_OPTIONS.map((entry) => (
               <button
                 key={entry.id}
-                aria-pressed={period === entry.id}
-                className={period === entry.id ? 'selected' : ''}
-                onClick={() => change({ period: entry.id })}
+                aria-pressed={!hasCustom && period === entry.id}
+                className={!hasCustom && period === entry.id ? 'selected' : ''}
+                onClick={() => {
+                  dateForm.current?.reset();
+                  setDraftError('');
+                  change({ period: entry.id });
+                }}
               >
                 {entry.label}
               </button>
             ))}
           </div>
-          <button className="comparison-share" onClick={() => void share()}>
+          <button
+            className="comparison-share"
+            disabled={!!parsed.error}
+            onClick={() => void share()}
+          >
             비교 링크 복사
           </button>
         </div>
+        <form
+          key={[period, fromValue ?? '', toValue ?? ''].join(':')}
+          ref={dateForm}
+          className="comparison-date-range"
+          onSubmit={(event) => {
+            event.preventDefault();
+            const checked = comparisonDateSubmission(new FormData(event.currentTarget));
+            if (checked.error !== undefined) {
+              setDraftError(checked.error);
+              return;
+            }
+            setDraftError('');
+            change({ from: checked.from, to: checked.to });
+          }}
+        >
+          <label>
+            시작일 (UTC)
+            <input
+              type="date"
+              name="from"
+              defaultValue={fromValue || ''}
+              max={utcDate(Math.floor(Date.now() / 1000 / DAY) * DAY)}
+              onChange={() => setDraftError('')}
+              required
+            />
+          </label>
+          <label>
+            종료일 (UTC)
+            <input
+              type="date"
+              name="to"
+              defaultValue={toValue || ''}
+              max={utcDate(Math.floor(Date.now() / 1000 / DAY) * DAY)}
+              onChange={() => setDraftError('')}
+              required
+            />
+          </label>
+          <button type="submit" className={hasCustom ? 'selected' : ''}>
+            직접 기간 적용
+          </button>
+          {hasCustom ? (
+            <button type="button" onClick={() => change({ period })}>
+              직접 기간 해제
+            </button>
+          ) : (
+            <span>날짜를 지정하면 위 프리셋 대신 적용합니다.</span>
+          )}
+        </form>
+        {draftError || parsed.error ? (
+          <p className="comparison-date-error" role="alert">
+            {draftError || parsed.error}
+            {parsed.error ? (
+              <button onClick={() => change({ period })}>기본 기간으로 복원</button>
+            ) : null}
+          </p>
+        ) : null}
         {shareUrl ? (
           <div className="comparison-share-result">
             <span role="status">{shareNote}</span>
@@ -420,8 +536,8 @@ export function ComparePage() {
       </section>
       {loading ? (
         <div className="comparison-notice" role="status">
-          확정 일봉을 불러오고 있습니다… {active ? Object.keys(state.data).length : 0}/
-          {assets.length} 코인
+          확정 일봉을 불러오고 있습니다… {active ? state.loaded : 0}/{assets.length} 코인
+          {comparison?.rows.length ? ' · 마지막으로 완료된 비교를 유지합니다.' : ''}
         </div>
       ) : null}
       {!loading && state.errors.length ? (
@@ -430,7 +546,11 @@ export function ComparePage() {
             {state.errors.map((error) => (
               <p key={error}>{error}</p>
             ))}
-            <p>선택한 코인이 모두 준비되면 비교를 표시합니다.</p>
+            <p>
+              {comparison?.rows.length
+                ? '갱신에 실패해 마지막으로 완료된 비교를 유지합니다.'
+                : '선택한 코인이 모두 준비되면 비교를 표시합니다.'}
+            </p>
           </div>
         </div>
       ) : null}
@@ -445,6 +565,78 @@ export function ComparePage() {
           확인해 주세요.
         </div>
       ) : null}
+      {comparison ? (
+        <section className="comparison-coverage" aria-label="요청 기간과 실제 비교 범위">
+          <div>
+            <span>요청한 기간</span>
+            <strong>
+              {comparison.requestedStart !== null
+                ? utcDate(comparison.requestedStart)
+                : '거래소 공통 이력 시작'}{' '}
+              →{' '}
+              {comparison.requestedEnd !== null
+                ? utcDate(comparison.requestedEnd)
+                : '확정 일봉 마지막 날'}
+            </strong>
+          </div>
+          <div>
+            <span>실제로 비교하는 기간</span>
+            <strong>
+              {comparison.start !== null && comparison.end !== null
+                ? `${utcDate(comparison.start)} → ${utcDate(comparison.end)} UTC`
+                : '겹치는 확정 이력 부족'}
+            </strong>
+          </div>
+          {period === 'all' && !parsed.range && comparison.rows.length > 0 ? (
+            <p>
+              전체 비교는 선택한 모든 코인에 값이 있는 구간입니다.{' '}
+              {comparison.coverage.some((source) => source.first === comparison.start)
+                ? `${comparison.coverage
+                    .filter((source) => source.first === comparison.start)
+                    .map((source) => source.asset)
+                    .join(
+                      '·',
+                    )} 수집 이력이 ${utcDate(comparison.start!)}부터여서 이 날짜에서 함께 출발합니다.`
+                : `확정 종가가 처음 겹치는 ${utcDate(comparison.start!)}에서 함께 출발합니다.`}{' '}
+              코인 선택에 따라 비교 시작일이 달라집니다.
+            </p>
+          ) : null}
+          {comparison.shortened ? (
+            <p className="amber">
+              {comparison.coverage
+                .filter(
+                  (source) =>
+                    source.first !== null && source.first > (comparison.requestedStart ?? 0),
+                )
+                .map((source) => `${source.asset} 수집 이력은 ${utcDate(source.first!)}부터`)
+                .join(' · ') || '시작일에 모든 코인의 관측이 함께 존재하지 않습니다.'}
+              . 공통 관측이 시작되는 날을 100으로 맞췄습니다.
+            </p>
+          ) : null}
+          {comparison.endShortened ? (
+            <p className="amber">
+              요청한 종료일까지 확정 일봉이 모두 갖춰지지 않아 {utcDate(comparison.end!)}에서
+              마칩니다. 오늘 진행 중인 봉과 아직 확보하지 못한 날짜를 채워 넣지 않습니다.
+            </p>
+          ) : null}
+          <details>
+            <summary>코인별 수집 이력 보기</summary>
+            <ul>
+              {comparison.coverage.map((source) => (
+                <li key={source.asset}>
+                  <b>{source.asset}</b> 수집 시작{' '}
+                  {source.first === null ? '미확인' : utcDate(source.first)} · 이 조회의 마지막
+                  확정일 {source.last === null ? '없음' : utcDate(source.last)}
+                </li>
+              ))}
+            </ul>
+            <p>
+              거래소 제공·수집 이력이며 코인의 탄생일부터 확보한 가격이 아닙니다. Binance BTC 일봉은
+              2017년 8월부터입니다.
+            </p>
+          </details>
+        </section>
+      ) : null}
       {comparison?.rows.length ? (
         <>
           <section className="panel comparison-result">
@@ -458,12 +650,6 @@ export function ComparePage() {
               </div>
               <button onClick={download}>CSV 내려받기</button>
             </div>
-            {shortened ? (
-              <div className="comparison-notice amber">
-                선택한 기간 전체를 함께 비교할 수 없어 {utcDate(comparison.start!)}부터 표시합니다.
-                거래소 상장일·보유 이력의 차이를 반영한 실제 공통 기간입니다.
-              </div>
-            ) : null}
             {comparison.missingCommonDays > 0 ? (
               <div className="comparison-notice amber">
                 공통 기간 중 {comparison.missingCommonDays}일은 한 개 이상의 코인에 관측값이
@@ -484,6 +670,27 @@ export function ComparePage() {
               <h2>같은 기간의 수익과 변동</h2>
               <span>확정 일봉 종가 · {market === 'upbit' ? 'KRW' : 'USDT'}</span>
             </div>
+            <details
+              className="comparison-reading"
+              open={helpOpen}
+              onToggle={(event) => setHelpOpen(event.currentTarget.open)}
+            >
+              <summary>수익률·낙폭·변동성, 어떤 차이가 있나요?</summary>
+              <div>
+                <p>
+                  <b>수익률</b>시작에서 끝까지 얼마나 변했는지 봅니다. +20%라면 시작값 100이
+                  마지막에 120이 된 것입니다.
+                </p>
+                <p>
+                  <b>최대 낙폭</b>그 사이 얼마나 깊이 하락했는지 봅니다. −40%라면 기간 중 종가 고점
+                  100에서 이후 종가 60까지 내려간 적이 있다는 뜻입니다.
+                </p>
+                <p>
+                  <b>연환산 변동성</b>하루하루 가격 변화의 흔들림입니다. 높을수록 일간 움직임이
+                  컸으며, 미래 수익률이나 최대 손실 예상치는 아닙니다.
+                </p>
+              </div>
+            </details>
             <div
               className="comparison-table-scroll"
               tabIndex={0}
@@ -493,9 +700,24 @@ export function ComparePage() {
                 <thead>
                   <tr>
                     <th scope="col">코인</th>
-                    <th scope="col">기간 수익률</th>
-                    <th scope="col">최대 낙폭</th>
-                    <th scope="col">연환산 변동성</th>
+                    <th scope="col">
+                      <button aria-label="기간 수익률 의미 보기" onClick={() => setHelpOpen(true)}>
+                        기간 수익률 ⓘ
+                      </button>
+                    </th>
+                    <th scope="col">
+                      <button aria-label="최대 낙폭 의미 보기" onClick={() => setHelpOpen(true)}>
+                        최대 낙폭 ⓘ
+                      </button>
+                    </th>
+                    <th scope="col">
+                      <button
+                        aria-label="연환산 변동성 의미 보기"
+                        onClick={() => setHelpOpen(true)}
+                      >
+                        연환산 변동성 ⓘ
+                      </button>
+                    </th>
                     <th scope="col">시작 → 마지막 종가</th>
                   </tr>
                 </thead>
@@ -551,7 +773,7 @@ export function ComparePage() {
           수수료·세금·스테이킹 보상 제외
         </span>
         <button
-          disabled={loading || cooldown}
+          disabled={loading || cooldown || !!parsed.error}
           onClick={() => {
             forcedKey.current = requestKey;
             setRevision((value) => value + 1);
@@ -564,9 +786,10 @@ export function ComparePage() {
       <details className="panel comparison-method">
         <summary>비교 산식 · 데이터 원천 · 읽는 방법</summary>
         <p>
-          <b>공통 날짜:</b> 모든 선택 코인의 값이 있는 UTC 확정 일봉을 사용합니다.
-          1개월·3개월·1년·3년은 공통 최신일로부터 30·90·365·1,095일이며, 전체는 거래소에서 제공되는
-          공통 이력입니다. 상장일 이전 가격은 만들지 않습니다.
+          <b>공통 날짜:</b> 모든 선택 코인의 값이 있는 UTC 확정 일봉을 사용합니다. 1·3·6개월과
+          1·3·5년은 공통 최신 확정일에서 UTC 달력으로 역산하며 월말은 해당 월의 마지막 날로
+          맞춥니다. 올해는 해당 연도 1월 1일부터, 전체는 거래소의 공통 수집 이력입니다. 직접 지정한
+          시작·종료일은 UTC 날짜이며 두 날짜 모두 포함합니다. 상장일 이전 가격은 만들지 않습니다.
         </p>
         <p>
           <b>기준 100:</b> 해당일 종가 ÷ 공통 시작일 종가 × 100. 120은 시작 대비 +20%입니다.{' '}

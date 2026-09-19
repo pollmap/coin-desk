@@ -7,17 +7,19 @@ export interface Env {
 }
 export const epoch = () => Math.floor(Date.now() / 1000);
 export const QUOTE_REFRESH_SECONDS = 180;
+export function refreshLeaseStatement(db: D1Database, key: string, seconds: number, now = epoch()) {
+  return db
+    .prepare(
+      'INSERT INTO state(key,value) VALUES (?,?) ON CONFLICT(key) DO UPDATE SET value=excluded.value WHERE CAST(state.value AS INTEGER)<=?',
+    )
+    .bind('lease:' + key, String(now + seconds), now);
+}
 /** One bounded upstream refresh across concurrent requests and edge locations.
  * A rejected claim changes zero rows. Expiry also recovers abandoned refreshes.
  */
 export async function claimRefresh(db: D1Database, key: string, seconds: number) {
   const now = epoch();
-  const result = await db
-    .prepare(
-      'INSERT INTO state(key,value) VALUES (?,?) ON CONFLICT(key) DO UPDATE SET value=excluded.value WHERE CAST(state.value AS INTEGER)<=?',
-    )
-    .bind('lease:' + key, String(now + seconds), now)
-    .run();
+  const result = await refreshLeaseStatement(db, key, seconds, now).run();
   return result.meta.changes > 0;
 }
 export async function readState<T>(db: D1Database, key: string, fallback: T): Promise<T> {
@@ -47,12 +49,14 @@ export function dbCandle(r: Record<string, number>): Candle {
 }
 export async function success(db: D1Database, key: string, asOf: number) {
   const now = epoch();
-  await db
+  await successStatement(db, key, asOf, now).run();
+}
+export function successStatement(db: D1Database, key: string, asOf: number, now = epoch()) {
+  return db
     .prepare(
       'INSERT INTO ingestion(key,last_attempt,last_success,data_as_of,failures,error,next_attempt) VALUES (?,?,?,?,0,NULL,0) ON CONFLICT(key) DO UPDATE SET last_attempt=?,last_success=?,data_as_of=?,failures=0,error=NULL,next_attempt=0',
     )
-    .bind(key, now, now, asOf, now, now, asOf)
-    .run();
+    .bind(key, now, now, asOf, now, now, asOf);
 }
 export async function failure(db: D1Database, key: string, error: unknown) {
   const now = epoch();
