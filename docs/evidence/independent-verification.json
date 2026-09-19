@@ -1,0 +1,16 @@
+{
+  "checkedAt": "2026-09-19T17:33:08.120567+00:00",
+  "technicalCases": 8,
+  "onchainRows": 6470,
+  "validCapitalDays": 5878,
+  "zComparedDays": 5514,
+  "maxZAbsoluteError": 2.6645352591003757e-15,
+  "maxComputedMvrvAbsoluteError": 0.0,
+  "maxRawMvrvRelativeDifference": 0.496215806993386,
+  "maxRawMvrvRelativeDifferenceSince2015": 3.5665325124599936e-05,
+  "rawDifferenceExplanation": "Source MVRV uses rounded realized-price ratios. Display MVRV/NUPL recomputed from the source capitalization series; raw fields preserved.",
+  "localDatabaseBytes": 9785344,
+  "sqliteIntegrity": "ok",
+  "priceRows": 18384,
+  "invalidOHLC": 0
+}

@@ -1,0 +1,321 @@
+import { ASSETS, CALC_VERSION, METRICS } from '../shared/catalog';
+import { aggregate, bucket, DAY, rsi } from '../shared/math';
+import type {
+  Asset,
+  CandleResponse,
+  Interval,
+  Market,
+  Overview,
+  Provenance,
+  Quote,
+  SeriesResponse,
+} from '../shared/types';
+import { getQuote } from './providers';
+import { dbCandle, epoch, failure, readState, putState, success, type Env } from './storage';
+import { scheduled } from './scheduled';
+import { candleHistory } from './candle-history';
+import { getDominance, DOMINANCE_VERSION } from './dominance';
+const response = (body: unknown, status = 200) =>
+  new Response(JSON.stringify(body), {
+    status,
+    headers: {
+      'Content-Type': 'application/json; charset=utf-8',
+      'Cache-Control': 'no-store',
+      'X-Content-Type-Options': 'nosniff',
+    },
+  });
+function number(q: URLSearchParams, key: string, fallback: number, max = Number.MAX_SAFE_INTEGER) {
+  const s = q.get(key);
+  if (s === null) return fallback;
+  const n = Number(s);
+  if (!Number.isSafeInteger(n) || n < 0 || n > max) throw new Error('Invalid ' + key);
+  return n;
+}
+function selection(q: URLSearchParams) {
+  const asset = (q.get('asset') || 'BTC').toUpperCase() as Asset;
+  const market = (q.get('market') || 'binance') as Market;
+  if (!ASSETS.some((a) => a.id === asset) || !['binance', 'upbit'].includes(market))
+    throw new Error('Unknown asset or market');
+  return { asset, market };
+}
+const source = (market: Market) => (market === 'binance' ? 'Binance' : 'Upbit');
+function meta(market: Market, asOf: number | null, fetched: number | null): Provenance {
+  return {
+    source: source(market),
+    unit: market === 'binance' ? 'USDT' : 'KRW',
+    market,
+    dataAsOf: asOf,
+    fetchedAt: fetched,
+    stale: !fetched || epoch() - fetched > 7200,
+    calculationVersion: CALC_VERSION,
+  };
+}
+
+async function overview(env: Env, asset: Asset, market: Market): Promise<Overview> {
+  const key = 'quote:' + asset + ':' + market;
+  let saved = await env.DB.prepare('SELECT data,fetched_at FROM snapshots WHERE key=?')
+    .bind(key)
+    .first<{ data: string; fetched_at: number }>();
+  let quote: Quote | null = saved ? JSON.parse(saved.data) : null;
+  let warning: string | undefined;
+  const retry = await env.DB.prepare('SELECT next_attempt FROM ingestion WHERE key=?')
+    .bind(key)
+    .first<{ next_attempt: number }>();
+  if ((!saved || epoch() - saved.fetched_at >= 60) && (retry?.next_attempt || 0) <= epoch()) {
+    try {
+      quote = await getQuote(asset, market);
+      const persist = !saved || epoch() - saved.fetched_at >= 300 || !!retry?.next_attempt;
+      saved = { data: JSON.stringify(quote), fetched_at: epoch() };
+      if (persist) {
+        await env.DB.prepare('INSERT OR REPLACE INTO snapshots(key,data,fetched_at) VALUES(?,?,?)')
+          .bind(key, saved.data, saved.fetched_at)
+          .run();
+        await success(env.DB, key, quote.time);
+      }
+    } catch (e) {
+      warning = '시세 원천 연결이 지연되고 있습니다. 마지막 정상 값을 표시합니다.';
+      await failure(env.DB, key, e);
+    }
+  }
+  if ((retry?.next_attempt || 0) > epoch())
+    warning = '시세 원천 재시도 대기 중입니다. 마지막 정상 값을 표시합니다.';
+  const generation = await readState<string | null>(env.DB, 'onchain_generation', null);
+  const latest =
+    asset === 'BTC' && generation
+      ? await env.DB.prepare(
+          'SELECT time,data FROM onchain WHERE generation=? ORDER BY time DESC LIMIT 1',
+        )
+          .bind(generation)
+          .first<{ time: number; data: string }>()
+      : null;
+  const technicalKey = 'technical:' + asset + ':' + market;
+  const cachedTechnical = await readState<{
+    computedAt: number;
+    data: Overview['technical'];
+  } | null>(env.DB, technicalKey, null);
+  let technical = cachedTechnical?.data;
+  if (
+    !cachedTechnical ||
+    epoch() - cachedTechnical.computedAt > 3600 ||
+    Math.floor(epoch() / DAY) !== Math.floor(cachedTechnical.computedAt / DAY)
+  ) {
+    const daily = (
+      await env.DB.prepare(
+        'SELECT time,close FROM candles WHERE asset=? AND market=? AND interval=? AND close_time<=? ORDER BY time DESC LIMIT 500',
+      )
+        .bind(asset, market, '1d', epoch())
+        .all<{ time: number; close: number }>()
+    ).results.reverse();
+    const techRsi = rsi(daily.map((c) => ({ time: c.time, value: c.close }))).at(-1)?.value ?? null;
+    technical = {
+      rsi: techRsi,
+      sma200: daily.length >= 200 ? daily.slice(-200).reduce((s, c) => s + c.close, 0) / 200 : null,
+    };
+    await putState(env.DB, technicalKey, { computedAt: epoch(), data: technical });
+  }
+  return {
+    quote,
+    meta: {
+      ...meta(market, quote?.time ?? null, saved?.fetched_at ?? null),
+      stale: !!warning || !saved || epoch() - saved.fetched_at > 180,
+      warning,
+    },
+    metrics: latest ? JSON.parse(latest.data) : {},
+    metricsAsOf: latest?.time ?? null,
+    technical: technical!,
+    assets: ASSETS.filter((a) => env.ENABLED_ASSETS.split(',').includes(a.id)).map((a) => a.id),
+  };
+}
+
+async function api(request: Request, env: Env): Promise<Response> {
+  const url = new URL(request.url),
+    q = url.searchParams;
+  const { asset, market } = selection(q);
+  if (request.method !== 'GET') return response({ error: 'Read-only API' }, 405);
+  const endpoint = url.pathname.replace('/api/v1/', '');
+  if (endpoint === 'dominance') {
+    const data = await getDominance(env);
+    return data
+      ? response(data)
+      : response({ error: '시장 비중 데이터를 아직 가져오지 못했습니다.' }, 503);
+  }
+  if (endpoint === 'dominance/history') {
+    const rows = (
+      await env.DB.prepare(
+        'SELECT time,data FROM dominance_history ORDER BY time DESC LIMIT 1000',
+      ).all<{ time: number; data: string }>()
+    ).results.reverse();
+    const data = rows
+      .filter((r) => JSON.parse(r.data).calculationVersion === DOMINANCE_VERSION)
+      .map((r) => ({ time: r.time, coins: JSON.parse(r.data).coins }));
+    return response({
+      data,
+      source: 'CoinLore / DefiLlama',
+      unit: '%',
+      historyStart: data[0]?.time ?? null,
+    });
+  }
+  if (endpoint === 'metrics')
+    return response({
+      data: asset === 'BTC' ? METRICS : [],
+      asset,
+      priceBasis: 'Bitview 추정 USD 가격',
+      calculationVersion: CALC_VERSION,
+    });
+  if (endpoint === 'status')
+    return response({
+      now: epoch(),
+      sources: (
+        await env.DB.prepare('SELECT * FROM ingestion ORDER BY key').all<{ key: string }>()
+      ).results.map((s) => ({ ...s, active: s.key !== 'coingecko' })),
+      rebuilding: !!(await readState(env.DB, 'onchain_build', null)),
+      assets: env.ENABLED_ASSETS.split(','),
+      history: (
+        await env.DB.prepare("SELECT value FROM state WHERE key LIKE 'history:%'").all<{
+          value: string;
+        }>()
+      ).results.map((r) => JSON.parse(r.value)),
+    });
+  if (!env.ENABLED_ASSETS.split(',').includes(asset))
+    return response({ error: '아직 수집하지 않은 자산입니다.', code: 'NOT_ENABLED' }, 404);
+  if (endpoint === 'overview') return response(await overview(env, asset, market));
+  const from = number(q, 'from', 0),
+    to = number(q, 'to', epoch() + DAY),
+    limit = number(q, 'limit', 1000, 1000);
+  if (limit < 1 || from >= to) return response({ error: 'Invalid range' }, 400);
+  if (endpoint === 'candles') {
+    const interval = (q.get('interval') || '1d') as Interval;
+    if (!['1h', '4h', '1d', '1w', '1M'].includes(interval))
+      return response({ error: 'Invalid interval' }, 400);
+    const base = interval === '1h' || interval === '4h' ? '1h' : '1d';
+    const multiplier = interval === '4h' ? 4 : interval === '1w' ? 7 : interval === '1M' ? 31 : 1;
+    const cap = Math.min(4000, limit * multiplier + multiplier);
+    const rows = await candleHistory(
+      env,
+      asset,
+      market,
+      base,
+      bucket(base === '1h' ? Math.max(from, epoch() - 90 * DAY) : from, interval),
+      to,
+      cap,
+    );
+    const grouped = aggregate(rows.map(dbCandle), interval);
+    // A SQL page can end mid-week or mid-month; defer that bucket to the next page.
+    if (rows.length === cap) grouped.pop();
+    const data = grouped.slice(0, limit);
+    const extent =
+      (await readState<{
+        first: number | null;
+        last: number | null;
+        fetched: number | null;
+      } | null>(env.DB, 'history:' + asset + ':' + market + ':' + base, null)) ??
+      (await env.DB.prepare(
+        'SELECT MIN(time) AS first,MAX(time) AS last,MAX(fetched_at) AS fetched FROM candles WHERE asset=? AND market=? AND interval=?',
+      )
+        .bind(asset, market, base)
+        .first<{ first: number | null; last: number | null; fetched: number | null }>());
+    let gaps = 0;
+    for (let i = 1; i < rows.length; i++)
+      if (rows[i].time - rows[i - 1].time > (base === '1h' ? 3600 : DAY)) gaps++;
+    const more = grouped.length > limit || rows.length === cap;
+    return response({
+      data,
+      meta: {
+        ...meta(market, extent?.last ?? null, extent?.fetched ?? null),
+        historyStart: extent?.first,
+        gapCount: gaps,
+        warning: gaps
+          ? '원천에 거래가 없거나 누락된 구간이 있습니다. 임의 보간하지 않습니다.'
+          : undefined,
+      },
+      nextCursor: more && data.length ? data.at(-1)!.closeTime : null,
+    } satisfies CandleResponse);
+  }
+  if (endpoint === 'series') {
+    const id = q.get('metric') || 'mvrv';
+    const metric = METRICS.find((m) => m.id === id);
+    if (asset !== 'BTC' || !metric) return response({ error: 'Unsupported metric' }, 400);
+    const generation = await readState<string | null>(env.DB, 'onchain_generation', null);
+    if (!generation) return response({ error: '온체인 초기 수집 대기', code: 'NO_DATA' }, 503);
+    const rows = (
+      await env.DB.prepare(
+        'SELECT time,data,fetched_at FROM onchain WHERE generation=? AND time>=? AND time<? ORDER BY time LIMIT ?',
+      )
+        .bind(generation, from, to, limit + 1)
+        .all<{ time: number; data: string; fetched_at: number }>()
+    ).results;
+    const page = rows.slice(0, limit);
+    const data: SeriesResponse['data'] = [],
+      price: SeriesResponse['price'] = [];
+    for (const r of page) {
+      const d = JSON.parse(r.data) as Record<string, number | null>;
+      if (d[id] !== null && Number.isFinite(d[id])) data.push({ time: r.time, value: d[id]! });
+      if (d.price !== null && d.price > 0) price.push({ time: r.time, value: d.price });
+    }
+    const state = await env.DB.prepare(
+      'SELECT last_success,data_as_of,error FROM ingestion WHERE key=?',
+    )
+      .bind('bitview')
+      .first<{ last_success: number; data_as_of: number; error: string | null }>();
+    const rebuild = !!(await readState(env.DB, 'onchain_build', null));
+    return response({
+      data,
+      price,
+      meta: {
+        source: 'Bitview / BRK',
+        unit: metric.unit,
+        market: 'BTC / USD (onchain oracle)',
+        dataAsOf: state?.data_as_of ?? null,
+        fetchedAt: state?.last_success ?? null,
+        stale: rebuild || !state || epoch() - state.data_as_of > 3 * DAY || !!state.error,
+        calculationVersion: CALC_VERSION,
+        priceBasis: '추정 USD 가격 · Bitview onchain oracle',
+        sourceVersions: await readState(env.DB, 'onchain_versions', {}),
+        calculationStart: await readState<number | null>(env.DB, 'onchain_calculation_start', null),
+        historyStart: await readState<number | null>(env.DB, 'onchain_history_start', null),
+        warning: rebuild
+          ? '원천 버전 변경으로 재계산 중입니다. 이전 검증 데이터를 표시합니다.'
+          : state?.error
+            ? '온체인 갱신 지연'
+            : undefined,
+      },
+      nextCursor: rows.length > limit ? page.at(-1)!.time + DAY : null,
+    } satisfies SeriesResponse);
+  }
+  return response({ error: 'Not found' }, 404);
+}
+export default {
+  async fetch(request: Request, env: Env, ctx: ExecutionContext) {
+    if (!new URL(request.url).pathname.startsWith('/api/')) return env.ASSETS.fetch(request);
+    if (!new URL(request.url).pathname.startsWith('/api/v1/'))
+      return response({ error: 'Not found' }, 404);
+    try {
+      const cache = (caches as unknown as { default: Cache }).default;
+      const cached = request.method === 'GET' ? await cache.match(request) : undefined;
+      if (cached) return cached;
+      const out = await api(request, env);
+      if (out.ok) {
+        const clone = new Response(out.clone().body, out);
+        clone.headers.set(
+          'Cache-Control',
+          'public, max-age=' + (/overview|status/.test(new URL(request.url).pathname) ? 30 : 300),
+        );
+        ctx.waitUntil(cache.put(request, clone));
+      }
+      return out;
+    } catch (e) {
+      const message = String(e);
+      const bad = /Invalid|Unknown/.test(message);
+      return response(
+        {
+          error: bad ? message : '데이터 조회가 일시적으로 지연되고 있습니다.',
+          code: bad ? 'INVALID_REQUEST' : 'SOURCE_UNAVAILABLE',
+        },
+        bad ? 400 : 503,
+      );
+    }
+  },
+  async scheduled(_event: ScheduledController, env: Env, ctx: ExecutionContext) {
+    ctx.waitUntil(scheduled(env));
+  },
+};

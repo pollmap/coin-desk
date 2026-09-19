@@ -1,0 +1,99 @@
+{
+  "checkedAt": "2026-09-19T16:40:00.129953+00:00",
+  "base": "https://btc-desk.lch68-workers.workers.dev",
+  "ok": true,
+  "issues": [],
+  "latencyMs": {
+    "status": 740.4,
+    "overview": 897.8,
+    "candles": 618.6,
+    "metrics": 613.7,
+    "overviewKRW": 639.3,
+    "binance1h": 619.3,
+    "upbit1h": 657.2,
+    "mvrv": 837.5,
+    "realized_price": 737.6,
+    "sopr_24h": 638.4,
+    "nupl": 653.5,
+    "mvrv_z": 678.6,
+    "sth_mvrv": 750.5,
+    "lth_mvrv": 687.9,
+    "sth_realized_price": 749.7
+  },
+  "sourceState": [
+    {
+      "key": "BTC:binance:1d",
+      "last_attempt": 1789835181,
+      "last_success": 1789835181,
+      "data_as_of": 1789776000,
+      "error": null,
+      "failures": 0,
+      "next_attempt": 0
+    },
+    {
+      "key": "BTC:binance:1h",
+      "last_attempt": 1789835122,
+      "last_success": 1789835122,
+      "data_as_of": 1789833600,
+      "error": null,
+      "failures": 0,
+      "next_attempt": 0
+    },
+    {
+      "key": "BTC:upbit:1d",
+      "last_attempt": 1789835541,
+      "last_success": 1789835541,
+      "data_as_of": 1789776000,
+      "error": null,
+      "failures": 0,
+      "next_attempt": 0
+    },
+    {
+      "key": "BTC:upbit:1h",
+      "last_attempt": 1789835601,
+      "last_success": 1789835601,
+      "data_as_of": 1789833600,
+      "error": null,
+      "failures": 0,
+      "next_attempt": 0
+    },
+    {
+      "key": "bitview",
+      "last_attempt": 1789834461,
+      "last_success": 1789834461,
+      "data_as_of": 1789689600,
+      "error": null,
+      "failures": 0,
+      "next_attempt": 0
+    },
+    {
+      "key": "maintenance",
+      "last_attempt": 1789834340,
+      "last_success": 1789834340,
+      "data_as_of": 1789834340,
+      "error": null,
+      "failures": 0,
+      "next_attempt": 0
+    },
+    {
+      "key": "quote:BTC:binance",
+      "last_attempt": 1789835900,
+      "last_success": 1789835900,
+      "data_as_of": 1789835900,
+      "error": null,
+      "failures": 0,
+      "next_attempt": 0
+    },
+    {
+      "key": "quote:BTC:upbit",
+      "last_attempt": 1789835960,
+      "last_success": 1789835960,
+      "data_as_of": 1789835960,
+      "error": null,
+      "failures": 0,
+      "next_attempt": 0
+    }
+  ],
+  "quoteAsOf": 1789835987,
+  "onchainAsOf": 1789689600
+}
