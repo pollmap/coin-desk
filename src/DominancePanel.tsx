@@ -1,6 +1,12 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { createChart, LineSeries, ColorType, type UTCTimestamp } from 'lightweight-charts';
+import {
+  createChart,
+  LineSeries,
+  ColorType,
+  TickMarkType,
+  type UTCTimestamp,
+} from 'lightweight-charts';
 import { ASSETS } from '../shared/catalog';
 import type { Dominance } from '../shared/types';
 import { useData } from './hooks';
@@ -80,9 +86,29 @@ export function DominancePage() {
   }>('/api/v1/dominance/history', false, 300000);
   const [selected, setSelected] = useState('BTC');
   const ref = useRef<HTMLDivElement>(null);
+  const lastView = useRef<{ selected: string; from: UTCTimestamp; to: UTCTimestamp } | null>(null);
   const rows = history.data?.data;
+  const points = useMemo(
+    () =>
+      [
+        ...new Map(
+          (rows || []).flatMap((row) => {
+            const coin = row.coins.find((c) => c.id === selected);
+            return coin &&
+              Number.isFinite(coin.value) &&
+              Number.isSafeInteger(row.time) &&
+              row.time > 0
+              ? [[row.time, { time: row.time as UTCTimestamp, value: coin.value }] as const]
+              : [];
+          }),
+        ).values(),
+      ].sort((a, b) => a.time - b.time),
+    [rows, selected],
+  );
+  const selectedLabel = selected === 'STABLE' ? '스테이블코인 전체 ≈' : selected + '.D';
+  const latest = points.at(-1);
   useEffect(() => {
-    if (!ref.current || !rows || rows.length < 2) return;
+    if (!ref.current || points.length < 2) return;
     const chart = createChart(ref.current, {
       autoSize: true,
       height: 350,
@@ -92,7 +118,28 @@ export function DominancePage() {
         attributionLogo: true,
       },
       grid: { vertLines: { color: '#1b2431' }, horzLines: { color: '#1b2431' } },
-      timeScale: { timeVisible: true, lockVisibleTimeRangeOnResize: true },
+      timeScale: {
+        timeVisible: true,
+        lockVisibleTimeRangeOnResize: true,
+        tickMarkFormatter: (time: number, type: TickMarkType) =>
+          new Intl.DateTimeFormat('ko-KR', {
+            timeZone: 'Asia/Seoul',
+            ...(type === TickMarkType.Year
+              ? { year: 'numeric' as const }
+              : type === TickMarkType.Month
+                ? { year: 'numeric' as const, month: 'short' as const }
+                : type === TickMarkType.DayOfMonth
+                  ? { month: '2-digit' as const, day: '2-digit' as const }
+                  : {
+                      hour: '2-digit' as const,
+                      minute: '2-digit' as const,
+                      hour12: false,
+                      ...(type === TickMarkType.TimeWithSeconds
+                        ? { second: '2-digit' as const }
+                        : {}),
+                    }),
+          }).format(new Date(Number(time) * 1000)),
+      },
       localization: { timeFormatter: (t: number) => dateLabel(Number(t), true) },
     });
     const line = chart.addSeries(LineSeries, {
@@ -100,15 +147,26 @@ export function DominancePage() {
       lineWidth: 2,
       priceFormat: { type: 'custom', formatter: (v: number) => numeric(v, 3) + '%' },
     });
-    line.setData(
-      rows.flatMap((r) => {
-        const c = r.coins.find((c) => c.id === selected);
-        return c ? [{ time: r.time as UTCTimestamp, value: c.value }] : [];
-      }),
-    );
-    chart.timeScale().fitContent();
-    return () => chart.remove();
-  }, [rows, selected]);
+    line.setData(points);
+    const prior = lastView.current;
+    if (
+      prior?.selected === selected &&
+      prior.to >= points[0].time &&
+      prior.from <= points.at(-1)!.time
+    )
+      chart.timeScale().setVisibleRange({ from: prior.from, to: prior.to });
+    else chart.timeScale().fitContent();
+    return () => {
+      const range = chart.timeScale().getVisibleRange();
+      if (range)
+        lastView.current = {
+          selected,
+          from: Number(range.from) as UTCTimestamp,
+          to: Number(range.to) as UTCTimestamp,
+        };
+      chart.remove();
+    };
+  }, [points, selected]);
   return (
     <>
       <div className="page-heading">
@@ -134,11 +192,18 @@ export function DominancePage() {
             ))}
           </select>
         </div>
-        {(rows?.length || 0) >= 2 ? (
+        {latest ? (
+          <p className="dominance-basis">
+            {selectedLabel} 최신 관측 {numeric(latest.value, latest.value < 1 ? 3 : 2)}% ·{' '}
+            {dateLabel(latest.time, true)} · {points.length.toLocaleString()}회 관측
+          </p>
+        ) : null}
+        {points.length >= 2 ? (
           <div ref={ref} role="img" aria-label={selected + ' 도미넌스 이력'} />
         ) : (
           <div className="empty-state">
-            첫 관측값을 확보한 후 이력을 쌓고 있습니다. 두 번째 관측부터 차트가 표시됩니다.
+            {selectedLabel}의 실제 관측은 현재 {points.length}개입니다. 해당 자산의 두 번째 관측부터
+            차트가 표시됩니다.
           </div>
         )}
         {history.error ? (
@@ -147,8 +212,8 @@ export function DominancePage() {
           </p>
         ) : null}
         <div className="source-line">
-          첫 관측 {dateLabel(history.data?.historyStart, true)} · 실제 수집한 최근 1,000회 관측 ·
-          매시간 갱신
+          표시 이력 시작 {dateLabel(points[0]?.time, true)} · 실제 수집한 최근 1,000회 관측 · 시간축
+          KST · 매시간 갱신
         </div>
       </section>
       <section className="metric-explanation">

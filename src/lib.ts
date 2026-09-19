@@ -64,18 +64,57 @@ export function saved<T>(key: string, fallback: T): T {
     return fallback;
   }
 }
-export function save(key: string, value: unknown) {
+export function save(key: string, value: unknown): boolean {
   try {
     localStorage.setItem('btc-desk.v1.' + key, JSON.stringify(value));
+    return true;
   } catch {
-    /* Private-mode storage may be unavailable. */
+    window.dispatchEvent(new Event('coin-desk-storage-error'));
+    return false;
   }
 }
 export async function json<T>(url: string, signal?: AbortSignal): Promise<T> {
-  const r = await fetch(url, { signal });
-  const data = (await r.json()) as { error?: string };
-  if (!r.ok) throw new Error(data.error || '데이터를 불러오지 못했습니다.');
-  return data as T;
+  const controller = new AbortController();
+  let timedOut = false;
+  const abort = () => controller.abort();
+  if (signal?.aborted) controller.abort();
+  signal?.addEventListener('abort', abort, { once: true });
+  const timer = setTimeout(() => {
+    timedOut = true;
+    controller.abort();
+  }, 20000);
+  try {
+    const r = await fetch(url, { signal: controller.signal });
+    if (!r.headers.get('content-type')?.includes('application/json')) {
+      throw new Error(
+        r.status === 429
+          ? '요청이 많습니다. 잠시 후 다시 확인해 주세요.'
+          : '데이터 서버 응답을 확인할 수 없습니다. 잠시 후 다시 시도해 주세요.',
+      );
+    }
+    let data: { error?: string } | null;
+    try {
+      data = (await r.json()) as { error?: string } | null;
+    } catch (error) {
+      // Preserve caller/timeout cancellation while hiding parser fragments from bad proxies.
+      if (controller.signal.aborted) throw error;
+      throw new Error('데이터 서버의 JSON 응답이 손상되었습니다. 잠시 후 다시 시도해 주세요.');
+    }
+    if (!r.ok)
+      throw new Error(
+        typeof data?.error === 'string'
+          ? data.error.slice(0, 250)
+          : '데이터를 불러오지 못했습니다.',
+      );
+    if (!data || typeof data !== 'object') throw new Error('올바른 데이터 응답이 아닙니다.');
+    return data as T;
+  } catch (e) {
+    if (timedOut) throw new Error('응답이 20초를 넘었습니다. 다시 시도해 주세요.');
+    throw e;
+  } finally {
+    clearTimeout(timer);
+    signal?.removeEventListener('abort', abort);
+  }
 }
 export async function pages<T extends CandleResponse | SeriesResponse>(
   url: string,

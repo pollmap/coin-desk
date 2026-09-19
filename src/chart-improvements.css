@@ -1,0 +1,158 @@
+.financial-chart:focus-visible {
+  outline: 2px solid #70b8db;
+  outline-offset: -2px;
+}
+.chart-keyboard-status {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+.chart-observation-date {
+  color: #a6b3c6;
+}
+.chart-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  border-top: 1px solid #273040;
+}
+.chart-actions button,
+.chart-range-editor button,
+.drawing-manager button {
+  font-size: 12px;
+  padding: 7px 10px;
+  border: 1px solid #344154;
+  border-radius: 5px;
+  background: #17202d;
+  color: #c4cedd;
+  cursor: pointer;
+  min-height: 34px;
+}
+.chart-actions button:hover,
+.drawing-manager button:hover {
+  border-color: #70b8db;
+  color: #fff;
+}
+.chart-range-editor {
+  padding: 4px 14px 10px;
+  color: #a6b3c6;
+  font-size: 12px;
+}
+.chart-range-editor summary {
+  cursor: pointer;
+  padding: 6px 0;
+}
+.chart-range-editor form,
+.drawing-manager form {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  gap: 10px;
+  padding-top: 8px;
+}
+.chart-range-editor label,
+.drawing-manager label {
+  display: grid;
+  gap: 5px;
+  color: #a6b3c6;
+  font-size: 12px;
+}
+.chart-range-editor input,
+.drawing-manager input {
+  padding: 7px 9px;
+  background: #101722;
+  border: 1px solid #344154;
+  border-radius: 5px;
+  color: #e0e7f1;
+  min-width: 0;
+  max-width: 210px;
+  color-scheme: dark;
+}
+.drawing-manager {
+  margin: 0 14px 10px;
+  padding: 10px;
+  border: 1px solid #344154;
+  border-radius: 6px;
+}
+.drawing-manager p {
+  margin: 8px 0;
+  color: #a6b3c6;
+  font-size: 12px;
+  line-height: 1.5;
+}
+.drawing-manager .chart-actions {
+  margin-top: 10px;
+  padding: 8px 0;
+}
+.drawing-manager ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  max-height: 230px;
+  overflow: auto;
+}
+.drawing-manager li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 0;
+  font-size: 12px;
+  color: #c4cedd;
+}
+.drawing-manager li span {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.metric-observation {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 16px;
+}
+.metric-observation b {
+  color: #d9e3f1;
+  font-weight: 500;
+}
+.selected-indicator-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 8px 0;
+}
+.selected-indicator-list button {
+  font-size: 12px;
+}
+.indicator-feedback {
+  padding: 6px 14px;
+  font-size: 12px;
+  color: #efb765;
+}
+@media (max-width: 600px) {
+  .chart-actions {
+    padding: 8px;
+    gap: 5px;
+  }
+  .chart-actions button,
+  .chart-range-editor button,
+  .drawing-manager button {
+    min-height: 40px;
+  }
+  .chart-range-editor {
+    padding-inline: 8px;
+  }
+  .chart-range-editor label {
+    flex: 1 1 125px;
+  }
+  .chart-range-editor input {
+    max-width: 100%;
+    width: 100%;
+  }
+  .drawing-manager {
+    margin-inline: 8px;
+  }
+}

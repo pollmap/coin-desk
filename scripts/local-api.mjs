@@ -19,7 +19,16 @@ if (process.argv.includes('--seed')) {
   process.exit(0);
 }
 globalThis.caches = { default: memoryCache() };
-const vite = await viteServer({ server: { middlewareMode: true, hmr: false }, appType: 'custom' });
+// The API only transforms Worker/shared TypeScript. Keep its watcher and optimizer
+// independent of the browser's React plugins, proxy rules, and Vite config restarts.
+const vite = await viteServer({
+  configFile: false,
+  cacheDir: 'node_modules/.vite-api',
+  publicDir: false,
+  optimizeDeps: { noDiscovery: true, include: [] },
+  server: { middlewareMode: true, hmr: false, ws: false },
+  appType: 'custom',
+});
 const env = {
   DB,
   BITVIEW_BASE_URL: 'https://bitview.space',

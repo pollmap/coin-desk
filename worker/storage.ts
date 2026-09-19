@@ -6,6 +6,20 @@ export interface Env {
   ENABLED_ASSETS: string;
 }
 export const epoch = () => Math.floor(Date.now() / 1000);
+export const QUOTE_REFRESH_SECONDS = 180;
+/** One bounded upstream refresh across concurrent requests and edge locations.
+ * A rejected claim changes zero rows. Expiry also recovers abandoned refreshes.
+ */
+export async function claimRefresh(db: D1Database, key: string, seconds: number) {
+  const now = epoch();
+  const result = await db
+    .prepare(
+      'INSERT INTO state(key,value) VALUES (?,?) ON CONFLICT(key) DO UPDATE SET value=excluded.value WHERE CAST(state.value AS INTEGER)<=?',
+    )
+    .bind('lease:' + key, String(now + seconds), now)
+    .run();
+  return result.meta.changes > 0;
+}
 export async function readState<T>(db: D1Database, key: string, fallback: T): Promise<T> {
   const row = await db
     .prepare('SELECT value FROM state WHERE key=?')

@@ -2,7 +2,16 @@ import { ASSETS } from '../shared/catalog';
 import { DAY, zStep, type ZState } from '../shared/math';
 import type { Asset, Market } from '../shared/types';
 import { bitviewPage, getQuote, getRecentCandles } from './providers';
-import { epoch, failure, putState, readState, success, type Env } from './storage';
+import {
+  claimRefresh,
+  epoch,
+  failure,
+  putState,
+  readState,
+  success,
+  QUOTE_REFRESH_SECONDS,
+  type Env,
+} from './storage';
 import { updateDominance, updateStable } from './dominance';
 interface Build {
   generation: string;
@@ -41,7 +50,7 @@ async function writeOnchain(
     row.data.nupl = mc && rc && mc > 0 && rc > 0 ? (mc - rc) / mc : null;
     statements.push(
       env.DB.prepare(
-        'INSERT OR REPLACE INTO onchain(generation,time,data,n,mean,m2,fetched_at) VALUES(?,?,?,?,?,?,?)',
+        'INSERT INTO onchain(generation,time,data,n,mean,m2,fetched_at) VALUES(?,?,?,?,?,?,?) ON CONFLICT(generation,time) DO UPDATE SET data=excluded.data,n=excluded.n,mean=excluded.mean,m2=excluded.m2,fetched_at=excluded.fetched_at WHERE onchain.data!=excluded.data OR onchain.n!=excluded.n OR onchain.mean!=excluded.mean OR onchain.m2!=excluded.m2',
       ).bind(generation, row.time, JSON.stringify(row.data), s.n, s.mean, s.m2, epoch()),
     );
   }
@@ -174,11 +183,40 @@ export async function updatePrice(env: Env, asset: Asset, market: Market, interv
     rows: number | null;
     archived?: boolean;
   } | null>(env.DB, 'history:' + asset + ':' + market + ':' + interval, null);
-  await rawSample(env, asset + ':' + market + ':' + interval, { normalizedSourceSample: rows });
-  await env.DB.batch(
-    rows.map((c) =>
+  const key = asset + ':' + market + ':' + interval;
+  const historyKey = 'history:' + key;
+  const historyStatement = priorHistory?.archived
+    ? env.DB.prepare(
+        "INSERT OR REPLACE INTO state(key,value) SELECT ?,json_object('first',?,'last',MAX(time),'rows',?,'archived',json('true'),'asset',?,'market',?,'interval',?,'fetched',?) FROM candles WHERE asset=? AND market=? AND interval=?",
+      ).bind(
+        historyKey,
+        interval === '1h'
+          ? Math.max(priorHistory.first, Math.ceil((now - 90 * DAY) / 3600) * 3600)
+          : priorHistory.first,
+        // Rolling archives expire in chunks; do not publish an uncounted total.
+        interval === '1h' || priorHistory.rows === null
+          ? null
+          : priorHistory.rows + rows.filter((c) => c.time > priorHistory.last).length,
+        asset,
+        market,
+        interval,
+        now,
+        asset,
+        market,
+        interval,
+      )
+    : env.DB.prepare(
+        "INSERT OR REPLACE INTO state(key,value) SELECT ?,json_object('first',MIN(time),'last',MAX(time),'rows',COUNT(*),'asset',?,'market',?,'interval',?,'fetched',?) FROM candles WHERE asset=? AND market=? AND interval=?",
+      ).bind(historyKey, asset, market, interval, now, asset, market, interval);
+  // D1 executes a batch as one ordered transaction. Metadata observes the preceding
+  // upserts and a failure keeps the previous raw sample, history, and success state.
+  await env.DB.batch([
+    env.DB.prepare(
+      'INSERT OR REPLACE INTO raw_samples(id,source,fetched_at,body) VALUES(?,?,?,?)',
+    ).bind(key, key, now, JSON.stringify({ normalizedSourceSample: rows })),
+    ...rows.map((c) =>
       env.DB.prepare(
-        'INSERT OR REPLACE INTO candles(asset,market,interval,time,open,high,low,close,volume,close_time,fetched_at) VALUES (?,?,?,?,?,?,?,?,?,?,?)',
+        'INSERT INTO candles(asset,market,interval,time,open,high,low,close,volume,close_time,fetched_at) VALUES (?,?,?,?,?,?,?,?,?,?,?) ON CONFLICT(asset,market,interval,time) DO UPDATE SET open=excluded.open,high=excluded.high,low=excluded.low,close=excluded.close,volume=excluded.volume,close_time=excluded.close_time,fetched_at=excluded.fetched_at WHERE candles.open!=excluded.open OR candles.high!=excluded.high OR candles.low!=excluded.low OR candles.close!=excluded.close OR candles.volume!=excluded.volume OR candles.close_time!=excluded.close_time',
       ).bind(
         asset,
         market,
@@ -193,34 +231,11 @@ export async function updatePrice(env: Env, asset: Asset, market: Market, interv
         now,
       ),
     ),
-  );
-  await success(env.DB, asset + ':' + market + ':' + interval, rows.at(-1)?.time ?? 0);
-  const history = await env.DB.prepare(
-    'SELECT MIN(time) AS first,MAX(time) AS last,COUNT(*) AS rows FROM candles WHERE asset=? AND market=? AND interval=?',
-  )
-    .bind(asset, market, interval)
-    .first();
-  await putState(env.DB, 'history:' + asset + ':' + market + ':' + interval, {
-    ...history,
-    ...(priorHistory?.archived
-      ? {
-          archived: true,
-          first:
-            interval === '1h'
-              ? Math.max(priorHistory.first, Math.ceil((now - 90 * DAY) / 3600) * 3600)
-              : priorHistory.first,
-          // Rolling archives expire in chunks; do not publish an uncounted total.
-          rows:
-            interval === '1h' || priorHistory.rows === null
-              ? null
-              : priorHistory.rows + rows.filter((c) => c.time > priorHistory.last).length,
-        }
-      : {}),
-    asset,
-    market,
-    interval,
-    fetched: now,
-  });
+    historyStatement,
+    env.DB.prepare(
+      'INSERT INTO ingestion(key,last_attempt,last_success,data_as_of,failures,error,next_attempt) VALUES (?,?,?,?,0,NULL,0) ON CONFLICT(key) DO UPDATE SET last_attempt=excluded.last_attempt,last_success=excluded.last_success,data_as_of=excluded.data_as_of,failures=0,error=NULL,next_attempt=0',
+    ).bind(key, now, now, rows.at(-1)?.time ?? 0),
+  ]);
 }
 export async function scheduled(env: Env) {
   const now = epoch();
@@ -229,7 +244,13 @@ export async function scheduled(env: Env) {
   const jobs: { key: string; every: number; maxLag?: number; run: () => Promise<unknown> }[] = [
     { key: 'bitview', every: build ? 60 : 3600, maxLag: 3 * DAY, run: () => updateOnchain(env) },
     { key: 'defillama', every: 21600, maxLag: 3 * DAY, run: () => updateStable(env) },
-    { key: 'coinlore', every: 3600, maxLag: 7200, run: () => updateDominance(env) },
+    {
+      key: 'coinlore',
+      every: 3600,
+      maxLag: 7200,
+      run: async () =>
+        (await claimRefresh(env.DB, 'dominance', 300)) ? updateDominance(env) : undefined,
+    },
   ];
   for (const { id } of enabled)
     for (const market of ['binance', 'upbit'] as Market[]) {
@@ -310,6 +331,8 @@ export async function scheduled(env: Env) {
   if (!asset) return;
   const quoteState = states.find((s) => s.key === 'quote:' + asset + ':' + market);
   if (quoteState && quoteState.next_attempt > now) return;
+  if (quoteState?.last_success && now - quoteState.last_success < QUOTE_REFRESH_SECONDS) return;
+  if (!(await claimRefresh(env.DB, 'quote:' + asset + ':' + market, QUOTE_REFRESH_SECONDS))) return;
   try {
     const q = await getQuote(asset, market);
     await env.DB.prepare('INSERT OR REPLACE INTO snapshots(key,data,fetched_at) VALUES(?,?,?)')

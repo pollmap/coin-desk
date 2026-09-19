@@ -80,3 +80,32 @@ export function validIndicators(input: unknown): string[] {
     })
     .slice(0, 10);
 }
+
+/** Preset aliases and an equivalent custom period refer to the same chart line. */
+export function indicatorIdentity(id: string): string | null {
+  const s = indicatorSpec(id);
+  return s ? `${s.kind}:${s.period}:${s.basis}${s.kind === 'bb' ? ':' + s.multiplier : ''}` : null;
+}
+
+export function addIndicator(
+  input: string[],
+  candidate: string,
+  replaceId?: string,
+): { value: string[]; error?: string } {
+  const spec = indicatorSpec(candidate);
+  if (!spec)
+    return { value: input, error: '기간은 2~1,000의 정수, 표준편차 배수는 0.5~5로 입력하세요.' };
+  const identity = indicatorIdentity(candidate);
+  const remaining = validIndicators(input).filter(
+    (id) =>
+      id !== replaceId &&
+      indicatorIdentity(id) !== identity &&
+      !(['rsi', 'bb', 'macd'].includes(spec.kind) && indicatorSpec(id)?.kind === spec.kind),
+  );
+  if (remaining.length >= 10)
+    return {
+      value: input,
+      error: '지표는 최대 10개까지 표시할 수 있습니다. 기존 지표를 제거하거나 수정하세요.',
+    };
+  return { value: validIndicators([...remaining, candidate]) };
+}

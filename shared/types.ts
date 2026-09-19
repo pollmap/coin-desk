@@ -45,13 +45,15 @@ export interface CandleResponse {
 export interface Quote {
   asset: Asset;
   price: number;
-  change24h: number;
+  change24h: number | null;
+  changeUnavailableReason?: string;
   volume24h: number;
   high24h: number;
   low24h: number;
   time: number;
   changeBasis?: 'rolling24h' | 'rolling24h-minute';
-  referenceAt?: number;
+  referenceAt?: number | null;
+  rangeBasis?: 'rolling24h' | 'utc-day';
 }
 export interface Overview {
   quote: Quote | null;
