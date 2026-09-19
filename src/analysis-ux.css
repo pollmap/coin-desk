@@ -1,0 +1,176 @@
+.metric-guide {
+  border: 1px solid var(--border, #26303c);
+  border-radius: 8px;
+  background: var(--panel, #111721);
+  margin: 14px 0;
+}
+.metric-guide summary {
+  cursor: pointer;
+  padding: 14px 16px;
+  color: var(--text, #dbe2ed);
+  font-size: 13px;
+  line-height: 1.6;
+}
+.metric-guide summary > span {
+  color: #e8b771;
+  margin-right: 14px;
+  font-weight: 700;
+}
+.guide-columns {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 22px;
+  padding: 4px 18px 18px;
+}
+.guide-columns h3 {
+  font-size: 12px;
+  color: #e8b771;
+  margin: 0 0 8px;
+}
+.guide-columns p {
+  color: #b4bfd0;
+  font-size: 12px;
+  line-height: 1.8;
+  margin: 0 0 10px;
+}
+.guide-columns a {
+  color: #9bb8f4;
+  font-size: 12px;
+}
+.guide-example {
+  border-left: 2px solid #465164;
+  padding-left: 10px;
+}
+.guide-related {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.library-card .metric-guide {
+  background: transparent;
+  margin: 0 0 14px;
+}
+.library-card .guide-columns {
+  grid-template-columns: 1fr;
+  gap: 12px;
+}
+.library-card .metric-guide summary {
+  padding: 10px;
+}
+.learning-paths {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+  margin: 0 0 18px;
+}
+.learning-paths button {
+  background: #151d29;
+  border: 1px solid #2b3748;
+  color: #c6d3e7;
+  padding: 14px;
+  text-align: left;
+  border-radius: 8px;
+  cursor: pointer;
+}
+.learning-paths button b {
+  display: block;
+  font-size: 13px;
+  margin-bottom: 6px;
+  color: #eee3d2;
+}
+.learning-paths button span {
+  font-size: 12px;
+  line-height: 1.6;
+}
+.library-selection {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  margin: 0 0 16px;
+  color: #aebed4;
+  font-size: 12px;
+}
+.library-selection select {
+  background: #1a2432;
+  color: #dbe2ed;
+  border: 1px solid #334155;
+  border-radius: 5px;
+  padding: 8px;
+}
+.coverage-strip {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 10px 14px;
+  border-top: 1px solid #26303c;
+  color: #aebad0;
+  font-size: 11px;
+  line-height: 1.6;
+}
+.coverage-strip a {
+  color: #9bb8f4;
+}
+.period-note {
+  color: #94a3b8;
+  font-size: 11px;
+  margin: 6px 0;
+}
+.lazy-region {
+  min-height: 320px;
+}
+.server-link {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #adbfda;
+  font-size: 11px;
+  text-decoration: none;
+  padding: 7px 9px;
+  border: 1px solid #334155;
+  border-radius: 5px;
+}
+.server-link i {
+  background: #71b3d5;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+}
+.metric-guide :focus-visible,
+.learning-paths :focus-visible {
+  outline: 2px solid #86b7f7;
+  outline-offset: 3px;
+}
+@media (max-width: 1000px) {
+  .guide-columns {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+  .learning-paths {
+    grid-template-columns: 1fr;
+  }
+}
+@media (max-width: 760px) {
+  .metric-guide summary {
+    min-height: 44px;
+    padding: 12px;
+  }
+  .guide-columns {
+    padding: 0 12px 14px;
+  }
+  .server-link {
+    font-size: 10px;
+  }
+  .topbar-subtitle {
+    display: none;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}

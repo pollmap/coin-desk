@@ -48,18 +48,7 @@ export async function getQuote(asset: Asset, market: Market): Promise<Quote> {
       string,
       string | number
     >;
-    const q = {
-      asset,
-      price: Number(d.lastPrice),
-      change24h: Number(d.priceChangePercent),
-      volume24h: Number(d.quoteVolume),
-      high24h: Number(d.highPrice),
-      low24h: Number(d.lowPrice),
-      time: Math.floor(Number(d.closeTime) / 1000),
-      changeBasis: 'rolling24h' as const,
-      rangeBasis: 'rolling24h' as const,
-    };
-    return validateQuote(q);
+    return binanceQuote(asset, d);
   }
   const d = (
     (await upstream('https://api.upbit.com/v1/ticker?markets=KRW-' + asset)) as Record<
@@ -67,6 +56,22 @@ export async function getQuote(asset: Asset, market: Market): Promise<Quote> {
       number
     >[]
   )[0];
+  return upbitQuote(asset, d);
+}
+function binanceQuote(asset: Asset, d: Record<string, unknown>): Quote {
+  return validateQuote({
+    asset,
+    price: Number(d.lastPrice),
+    change24h: Number(d.priceChangePercent),
+    volume24h: Number(d.quoteVolume),
+    high24h: Number(d.highPrice),
+    low24h: Number(d.lowPrice),
+    time: Math.floor(Number(d.closeTime) / 1000),
+    changeBasis: 'rolling24h',
+    rangeBasis: 'rolling24h',
+  });
+}
+async function upbitQuote(asset: Asset, d: Record<string, number>): Promise<Quote> {
   if (!d || !Number.isFinite(d.trade_price) || d.trade_price <= 0 || !Number.isFinite(d.timestamp))
     throw new Error('Invalid quote');
   const target = Math.floor(d.timestamp / 1000) - DAY;
@@ -113,6 +118,46 @@ export async function getQuote(asset: Asset, market: Market): Promise<Quote> {
       changeUnavailableReason: '24시간 전 비교 가격을 가져오지 못해 등락률을 표시하지 않습니다.',
     };
   }
+}
+/** A single ticker request for a bounded group; one bad asset never discards its peers. */
+export async function getQuotes(assets: Asset[], market: Market) {
+  if (!assets.length || assets.length > 4 || new Set(assets).size !== assets.length)
+    throw new Error('Invalid quote batch size');
+  let rows: Record<string, unknown>[];
+  try {
+    const raw =
+      market === 'binance'
+        ? await binanceRequest('ticker.24hr', { symbols: assets.map((asset) => asset + 'USDT') })
+        : await upstream(
+            'https://api.upbit.com/v1/ticker?markets=' +
+              assets.map((asset) => 'KRW-' + asset).join(','),
+          );
+    if (!Array.isArray(raw)) throw new Error('Invalid batch ticker response');
+    rows = raw;
+  } catch (error) {
+    return { quotes: [] as Quote[], errors: assets.map((asset) => ({ asset, error })) };
+  }
+  const results = await Promise.all(
+    assets.map(async (asset) => {
+      try {
+        const matches = rows.filter((row) =>
+          market === 'binance' ? row.symbol === asset + 'USDT' : row.market === 'KRW-' + asset,
+        );
+        if (matches.length !== 1) throw new Error('Missing or duplicate batch ticker');
+        const quote =
+          market === 'binance'
+            ? binanceQuote(asset, matches[0])
+            : await upbitQuote(asset, matches[0] as Record<string, number>);
+        return { quote };
+      } catch (error) {
+        return { asset, error };
+      }
+    }),
+  );
+  return {
+    quotes: results.flatMap((row) => (row.quote ? [row.quote] : [])),
+    errors: results.flatMap((row) => (row.asset ? [{ asset: row.asset, error: row.error }] : [])),
+  };
 }
 export async function getRecentCandles(
   asset: Asset,
@@ -188,7 +233,7 @@ export async function getRecentCandles(
 // Each job opens one bounded request and closes the connection after its response.
 export function binanceRequest(
   method: 'ticker.24hr' | 'klines',
-  params: Record<string, string | number>,
+  params: Record<string, string | number | string[]>,
 ): Promise<unknown> {
   return new Promise((resolve, reject) => {
     const socket = new WebSocket('wss://ws-api.binance.com:443/ws-api/v3');

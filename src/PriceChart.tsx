@@ -21,6 +21,8 @@ import {
 import { indicatorSpec } from '../shared/indicators';
 import type { Candle, Drawing, Interval, Period, Point } from '../shared/types';
 import { dateLabel, money, priceDigits, periodStart, save, saved } from './lib';
+import { ChartRangeControl } from './ChartRangeControl';
+import { zoomChartRange } from './chart-range';
 import './chart-improvements.css';
 const EMPTY: Candle[] = [];
 const ts = (t: number) => t as UTCTimestamp;
@@ -37,6 +39,7 @@ interface Props {
   large?: boolean;
   tool: 'cursor' | 'horizontal' | 'trend';
   onToolDone: () => void;
+  onPeriodChange?: (period: Period) => void;
 }
 export const PriceChart = memo(function PriceChart({
   candles,
@@ -50,6 +53,7 @@ export const PriceChart = memo(function PriceChart({
   large = false,
   tool,
   onToolDone,
+  onPeriodChange,
 }: Props) {
   const container = useRef<HTMLDivElement>(null);
   const chartRef = useRef<IChartApi | null>(null);
@@ -58,6 +62,8 @@ export const PriceChart = memo(function PriceChart({
   const doneRef = useRef(onToolDone);
   toolRef.current = tool;
   doneRef.current = onToolDone;
+  const settingsRef = useRef({ period, log });
+  settingsRef.current = { period, log };
   const [drawings, setDrawings] = useState<Drawing[]>(() =>
     validDrawings(saved('drawings.' + scope, [])),
   );
@@ -69,8 +75,6 @@ export const PriceChart = memo(function PriceChart({
   const [hint, setHint] = useState('');
   const [keyboardValue, setKeyboardValue] = useState('');
   const [linePrice, setLinePrice] = useState('');
-  const [rangeStart, setRangeStart] = useState('');
-  const [rangeEnd, setRangeEnd] = useState('');
   const [drawingList, setDrawingList] = useState(false);
   const candlesByTime = useMemo(() => new Map(candles.map((c) => [c.time, c])), [candles]);
   useEffect(() => {
@@ -80,8 +84,6 @@ export const PriceChart = memo(function PriceChart({
     pending.current = null;
     setHover(null);
     setKeyboardValue('');
-    setRangeStart('');
-    setRangeEnd('');
   }, [scope]);
   const calculated = useMemo(
     () => calculateIndicators(candles, daily, indicators),
@@ -110,11 +112,13 @@ export const PriceChart = memo(function PriceChart({
       grid: { vertLines: { color: '#1b2431' }, horzLines: { color: '#1b2431' } },
       rightPriceScale: {
         borderVisible: false,
-        mode: log ? PriceScaleMode.Logarithmic : PriceScaleMode.Normal,
+        mode: settingsRef.current.log ? PriceScaleMode.Logarithmic : PriceScaleMode.Normal,
         scaleMargins: { top: 0.1, bottom: 0.12 },
       },
       timeScale: {
         lockVisibleTimeRangeOnResize: true,
+        // Keep multi-year history visible even on narrow screens; zoom remains available.
+        minBarSpacing: 0.01,
         borderColor: '#273040',
         timeVisible: interval === '1h' || interval === '4h',
         rightOffset: 5,
@@ -140,6 +144,14 @@ export const PriceChart = memo(function PriceChart({
     });
     chartRef.current = chart;
     const surface = container.current;
+    surface.dataset.observationCount = String(candles.length);
+    surface.dataset.availableFrom = String(candles[0].time);
+    surface.dataset.availableTo = String(candles.at(-1)!.time);
+    chart.timeScale().subscribeVisibleTimeRangeChange((range) => {
+      if (!range) return;
+      surface.dataset.visibleFrom = String(Number(range.from));
+      surface.dataset.visibleTo = String(Number(range.to));
+    });
     let readyFrame = requestAnimationFrame(() => {
       readyFrame = requestAnimationFrame(() => {
         surface.dataset.chartReadyMs = String(Math.round(performance.now()));
@@ -160,7 +172,15 @@ export const PriceChart = memo(function PriceChart({
       priceLineColor: '#657284',
     });
     candlesRef.current = main;
-    main.setData(candles.map((c) => ({ ...c, time: ts(c.time) })));
+    main.setData(
+      candles.map((c) => ({
+        time: ts(c.time),
+        open: c.open,
+        high: c.high,
+        low: c.low,
+        close: c.close,
+      })),
+    );
     const volume = chart.addSeries(
       HistogramSeries,
       { priceFormat: { type: 'volume' }, priceLineVisible: false, lastValueVisible: false },
@@ -266,12 +286,14 @@ export const PriceChart = memo(function PriceChart({
           .setData(lineData(points));
       }
     }
-    const viewKey = scope + ':' + period;
+    const viewKey = scope + ':' + settingsRef.current.period;
     const prior = lastView.current;
-    const visible = candles.filter((c) => c.time >= periodStart(period, candles.at(-1)!.time));
+    const visible = candles.filter(
+      (c) => c.time >= periodStart(settingsRef.current.period, candles.at(-1)!.time),
+    );
     if (prior?.key === viewKey && prior.to >= candles[0].time && prior.from <= candles.at(-1)!.time)
       chart.timeScale().setVisibleRange({ from: prior.from, to: prior.to });
-    else if (visible.length > 1)
+    else if (visible.length)
       chart
         .timeScale()
         .setVisibleRange({ from: ts(visible[0].time), to: ts(visible.at(-1)!.time) });
@@ -342,14 +364,33 @@ export const PriceChart = memo(function PriceChart({
     return () => {
       const range = chart.timeScale().getVisibleRange();
       if (range)
-        lastView.current = { key: viewKey, from: ts(Number(range.from)), to: ts(Number(range.to)) };
+        lastView.current = {
+          key: scope + ':' + settingsRef.current.period,
+          from: ts(Number(range.from)),
+          to: ts(Number(range.to)),
+        };
       cancelAnimationFrame(readyFrame);
       chart.remove();
       chartRef.current = null;
       candlesRef.current = null;
       redraw.current = null;
     };
-  }, [candles, candlesByTime, calculated, interval, large, log, period, scope, unit, indicators]);
+  }, [candles, candlesByTime, calculated, interval, large, scope, unit, indicators]);
+  useEffect(() => {
+    candlesRef.current
+      ?.priceScale()
+      .applyOptions({ mode: log ? PriceScaleMode.Logarithmic : PriceScaleMode.Normal });
+  }, [log]);
+  useEffect(() => {
+    const last = candles.at(-1)?.time;
+    if (last === undefined) return;
+    const visible = candles.filter((c) => c.time >= periodStart(period, last));
+    if (visible.length)
+      chartRef.current
+        ?.timeScale()
+        .setVisibleRange({ from: ts(visible[0].time), to: ts(visible.at(-1)!.time) });
+    // Period and market changes intentionally reset the viewport; data refreshes do not.
+  }, [period, scope]);
   useEffect(() => {
     pending.current = null;
     setHint(
@@ -369,19 +410,16 @@ export const PriceChart = memo(function PriceChart({
     const scale = chartRef.current?.timeScale();
     const range = scale?.getVisibleLogicalRange();
     if (!scale || !range) return;
-    const center = (range.from + range.to) / 2;
-    const half = Math.max(5, ((range.to - range.from) * factor) / 2);
-    scale.setVisibleLogicalRange({ from: center - half, to: center + half });
+    const next = zoomChartRange(range, factor);
+    if (next) scale.setVisibleLogicalRange(next);
   }
   function resetView() {
     const visible = candles.filter((c) => c.time >= periodStart(period, candles.at(-1)!.time));
-    if (visible.length > 1)
+    if (visible.length)
       chartRef.current
         ?.timeScale()
         .setVisibleRange({ from: ts(visible[0].time), to: ts(visible.at(-1)!.time) });
     else chartRef.current?.timeScale().fitContent();
-    setRangeStart('');
-    setRangeEnd('');
     setHint('선택한 조회 기간으로 차트를 맞췄습니다.');
   }
   function exportCsv() {
@@ -438,16 +476,21 @@ export const PriceChart = memo(function PriceChart({
             calculated[id]?.map(
               (series) => pointAtOrBefore(series, display?.time ?? Infinity)?.value,
             ) || [];
+          const lineLabels =
+            spec?.kind === 'macd'
+              ? ['MACD', '신호 9', '히스토그램']
+              : spec?.kind === 'bb'
+                ? ['중심', '상단', '하단']
+                : ['값'];
           return (
-            <span key={id} style={{ color: spec?.color }}>
-              {spec?.label}
-              <b>
-                {current
-                  .map((v) =>
-                    v === undefined ? '—' : spec?.kind === 'rsi' ? v.toFixed(1) : money(v, unit),
-                  )
-                  .join(' / ')}
-              </b>
+            <span key={id} className="indicator-observation" style={{ color: spec?.color }}>
+              <span>{spec?.label}</span>
+              {current.map((v, index) => (
+                <b key={index} title={lineLabels[index]}>
+                  <small>{current.length > 1 ? lineLabels[index] + ' ' : ''}</small>
+                  {v === undefined ? '—' : spec?.kind === 'rsi' ? v.toFixed(1) : money(v, unit)}
+                </b>
+              ))}
             </span>
           );
         })}
@@ -514,55 +557,20 @@ export const PriceChart = memo(function PriceChart({
           그린 선 관리 {drawings.length ? `(${drawings.length})` : ''}
         </button>
       </div>
-      <details className="chart-range-editor">
-        <summary>날짜 범위 직접 선택</summary>
-        <form
-          onSubmit={(e) => {
-            e.preventDefault();
-            const start = Date.parse(rangeStart + 'T00:00:00+09:00') / 1000;
-            const end = Date.parse(rangeEnd + 'T00:00:00+09:00') / 1000 + 86400;
-            if (!Number.isFinite(start) || !Number.isFinite(end) || start >= end) {
-              setHint('시작일과 종료일을 올바르게 입력하세요.');
-              return;
-            }
-            const rows = candles.filter((c) => c.time >= start && c.time < end);
-            if (!rows.length) {
-              setHint('선택한 기간에 수집된 봉이 없습니다. 시간봉은 최근 90일만 제공합니다.');
-              return;
-            }
-            if (rows.length === 1) {
-              const index = candles.findIndex((c) => c.time === rows[0].time);
-              chartRef.current
-                ?.timeScale()
-                .setVisibleLogicalRange({ from: index - 1, to: index + 1 });
-            } else
-              chartRef.current
-                ?.timeScale()
-                .setVisibleRange({ from: ts(rows[0].time), to: ts(rows.at(-1)!.time) });
-            setHint('KST 기준 시작 시각이 선택한 날짜에 포함되는 실제 봉을 표시합니다.');
-          }}
-        >
-          <label>
-            시작일 (KST)
-            <input
-              type="date"
-              value={rangeStart}
-              onChange={(e) => setRangeStart(e.target.value)}
-              required
-            />
-          </label>
-          <label>
-            종료일 (KST)
-            <input
-              type="date"
-              value={rangeEnd}
-              onChange={(e) => setRangeEnd(e.target.value)}
-              required
-            />
-          </label>
-          <button type="submit">기간 적용</button>
-        </form>
-      </details>
+      <ChartRangeControl
+        rows={candles}
+        resetKey={scope + ':' + period}
+        hourly={interval === '1h' || interval === '4h'}
+        onApply={(selection) => {
+          chartRef.current
+            ?.timeScale()
+            .setVisibleRange({ from: ts(selection.from), to: ts(selection.to) });
+        }}
+        onReset={() => {
+          chartRef.current?.timeScale().fitContent();
+          onPeriodChange?.('all');
+        }}
+      />
       {drawingList ? (
         <section className="drawing-manager" aria-label="저장된 선 관리">
           <form

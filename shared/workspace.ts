@@ -1,4 +1,5 @@
 import { ASSETS, METRICS } from './catalog';
+import { isRangePeriod } from './ranges';
 import { validIndicators } from './indicators';
 import type { Asset, Interval, Market, Period } from './types';
 
@@ -48,9 +49,7 @@ export function chartSettings(value: unknown): ChartSettings {
     interval: ['1h', '4h', '1d', '1w', '1M'].includes(String(v.interval))
       ? (v.interval as Interval)
       : '1d',
-    period: ['1m', '3m', '1y', '3y', 'all'].includes(String(v.period))
-      ? (v.period as Period)
-      : '3y',
+    period: isRangePeriod(v.period) ? (v.period as Period) : 'all',
     indicators: Array.isArray(v.indicators) ? validIndicators(v.indicators) : ['sma200', 'sma200w'],
     log: typeof v.log === 'boolean' ? v.log : true,
   };
@@ -107,7 +106,7 @@ export function importDesk(text: string): PersonalDesk {
       !ASSETS.some((a) => a.id === w.asset) ||
       !['binance', 'upbit'].includes(String(w.market)) ||
       !['1h', '4h', '1d', '1w', '1M'].includes(String(w.interval)) ||
-      !['1m', '3m', '1y', '3y', 'all'].includes(String(w.period)) ||
+      !isRangePeriod(w.period) ||
       !['dashboard', 'chart'].includes(String(w.view)) ||
       typeof w.log !== 'boolean' ||
       !Array.isArray(w.indicators) ||

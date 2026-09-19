@@ -11,23 +11,46 @@ import {
 } from 'lightweight-charts';
 import type { Metric, Period, SeriesResponse } from '../shared/types';
 import { dateLabel, metricValue, money, periodStart } from './lib';
+import { ChartRangeControl } from './ChartRangeControl';
+import { zoomChartRange } from './chart-range';
 import './chart-improvements.css';
 export const MetricChart = memo(function MetricChart({
   series,
   metric,
   period = 'all',
   large = false,
+  onPeriodChange,
 }: {
   series: SeriesResponse;
   metric: Metric;
   period?: Period;
   large?: boolean;
+  onPeriodChange?: (period: Period) => void;
 }) {
   const container = useRef<HTMLDivElement>(null);
   const chartRef = useRef<IChartApi | null>(null);
   const metricRef = useRef<ISeriesApi<'Line'> | null>(null);
+  const priceRef = useRef<ISeriesApi<'Line'> | null>(null);
   const lastView = useRef<{ key: string; from: UTCTimestamp; to: UTCTimestamp } | null>(null);
   const [showPrice, setShowPrice] = useState(true);
+  const [axisChoice, setAxisChoice] = useState<{ metric: string; log: boolean } | null>(null);
+  const positiveHistory = useMemo(
+    () =>
+      series.data.length > 0 && series.data.every((p) => Number.isFinite(p.value) && p.value > 0),
+    [series.data],
+  );
+  const logUnavailable = !series.data.length
+    ? '관측 데이터가 없어 로그축을 사용할 수 없습니다.'
+    : !positiveHistory
+      ? '전체 이력에 0 또는 음수가 있어 선형축으로 표시합니다.'
+      : metric.reference !== undefined && metric.reference <= 0
+        ? '0 또는 음수 기준선을 보존하기 위해 선형축으로 표시합니다.'
+        : '';
+  const defaultLog = ['mvrv', 'sth_mvrv', 'lth_mvrv'].includes(metric.id);
+  const metricLog =
+    !logUnavailable && (axisChoice?.metric === metric.id ? axisChoice.log : defaultLog);
+  const settingsRef = useRef({ period, showPrice, metricLog });
+  settingsRef.current = { period, showPrice, metricLog };
   const [keyboardValue, setKeyboardValue] = useState('');
   const [hover, setHover] = useState<{ time: number; value: number } | null>(null);
   const priceByTime = useMemo(
@@ -52,27 +75,46 @@ export const MetricChart = memo(function MetricChart({
       leftPriceScale: {
         visible: true,
         borderVisible: false,
+        mode: settingsRef.current.metricLog ? PriceScaleMode.Logarithmic : PriceScaleMode.Normal,
         scaleMargins: { top: 0.13, bottom: 0.1 },
       },
       rightPriceScale: {
-        visible: large && showPrice,
+        visible: large && settingsRef.current.showPrice,
         borderVisible: false,
         mode: PriceScaleMode.Logarithmic,
         scaleMargins: { top: 0.12, bottom: 0.12 },
       },
-      timeScale: { borderVisible: false, lockVisibleTimeRangeOnResize: true },
+      timeScale: {
+        borderVisible: false,
+        lockVisibleTimeRangeOnResize: true,
+        // The default 0.5px clips 5,880 daily observations to ~900 on a 450px chart.
+        // A full cycle overview must fit the actual history before the user zooms in.
+        minBarSpacing: 0.01,
+      },
       localization: { locale: 'ko-KR', timeFormatter: (time: number) => dateLabel(Number(time)) },
     });
     chartRef.current = chart;
+    const surface = container.current;
+    surface.dataset.chartGeneration = String(Number(surface.dataset.chartGeneration || 0) + 1);
+    surface.dataset.observationCount = String(series.data.length);
+    surface.dataset.metricAxis = settingsRef.current.metricLog ? 'log' : 'linear';
+    surface.dataset.availableFrom = String(series.data[0].time);
+    surface.dataset.availableTo = String(series.data.at(-1)!.time);
+    chart.timeScale().subscribeVisibleTimeRangeChange((range) => {
+      if (!range) return;
+      surface.dataset.visibleFrom = String(Number(range.from));
+      surface.dataset.visibleTo = String(Number(range.to));
+    });
     const price = chart.addSeries(LineSeries, {
       color: large ? '#8090a880' : '#69778c65',
       lineWidth: 1,
       priceScaleId: 'right',
       priceLineVisible: false,
       lastValueVisible: false,
-      visible: showPrice,
+      visible: settingsRef.current.showPrice,
       priceFormat: { type: 'custom', formatter: (v: number) => money(v, 'USD') },
     });
+    priceRef.current = price;
     price.setData(series.price.map((p) => ({ time: p.time as UTCTimestamp, value: p.value })));
     const line = chart.addSeries(LineSeries, {
       color: metric.color,
@@ -102,9 +144,9 @@ export const MetricChart = memo(function MetricChart({
         title: '',
       });
     const visible = series.data.filter(
-      (p) => p.time >= periodStart(period, series.data.at(-1)!.time),
+      (p) => p.time >= periodStart(settingsRef.current.period, series.data.at(-1)!.time),
     );
-    const viewKey = metric.id + ':' + period;
+    const viewKey = metric.id + ':' + settingsRef.current.period;
     const prior = lastView.current;
     if (
       prior?.key === viewKey &&
@@ -112,7 +154,7 @@ export const MetricChart = memo(function MetricChart({
       prior.from <= series.data.at(-1)!.time
     )
       chart.timeScale().setVisibleRange({ from: prior.from, to: prior.to });
-    else if (visible.length > 1)
+    else if (visible.length)
       chart.timeScale().setVisibleRange({
         from: visible[0].time as UTCTimestamp,
         to: visible.at(-1)!.time as UTCTimestamp,
@@ -127,22 +169,46 @@ export const MetricChart = memo(function MetricChart({
       const range = chart.timeScale().getVisibleRange();
       if (range)
         lastView.current = {
-          key: viewKey,
+          key: metric.id + ':' + settingsRef.current.period,
           from: Number(range.from) as UTCTimestamp,
           to: Number(range.to) as UTCTimestamp,
         };
       chart.remove();
       chartRef.current = null;
       metricRef.current = null;
+      priceRef.current = null;
     };
-  }, [series, metric, period, large, showPrice]);
+  }, [series.data, series.price, metric, large]);
+  useEffect(() => {
+    priceRef.current?.applyOptions({ visible: showPrice });
+    chartRef.current?.priceScale('right').applyOptions({ visible: large && showPrice });
+  }, [showPrice, large]);
+  useEffect(() => {
+    // Change only the vertical scale: retain every observation, reference line,
+    // crosshair series, and the user's current horizontal viewing range.
+    chartRef.current?.priceScale('left').applyOptions({
+      mode: metricLog ? PriceScaleMode.Logarithmic : PriceScaleMode.Normal,
+      autoScale: true,
+    });
+    if (container.current) container.current.dataset.metricAxis = metricLog ? 'log' : 'linear';
+  }, [metricLog]);
+  useEffect(() => {
+    const last = series.data.at(-1)?.time;
+    if (last === undefined) return;
+    const points = series.data.filter((p) => p.time >= periodStart(period, last));
+    if (points.length)
+      chartRef.current?.timeScale().setVisibleRange({
+        from: points[0].time as UTCTimestamp,
+        to: points.at(-1)!.time as UTCTimestamp,
+      });
+    // Refreshing observations keeps the user's viewport; changing the chosen period resets it.
+  }, [period, metric.id]);
   function zoom(factor: number) {
     const scale = chartRef.current?.timeScale();
     const range = scale?.getVisibleLogicalRange();
     if (!scale || !range) return;
-    const center = (range.from + range.to) / 2;
-    const half = Math.max(5, ((range.to - range.from) * factor) / 2);
-    scale.setVisibleLogicalRange({ from: center - half, to: center + half });
+    const next = zoomChartRange(range, factor);
+    if (next) scale.setVisibleLogicalRange(next);
   }
   return (
     <>
@@ -153,7 +219,7 @@ export const MetricChart = memo(function MetricChart({
         className="financial-chart"
         aria-label={
           metric.title +
-          ' 및 Bitview 추정 USD 가격 차트' +
+          `, 왼쪽 지표축 ${metricLog ? '로그' : '선형'}, Bitview 추정 USD 가격 차트` +
           (large ? '. 좌우 화살표로 날짜별 값 확인' : '')
         }
         onKeyDown={
@@ -201,6 +267,38 @@ export const MetricChart = memo(function MetricChart({
           {keyboardValue}
         </span>
       ) : null}
+      <div className="chart-actions" aria-label={metric.title + ' 지표축 설정'}>
+        <span className="muted">왼쪽 지표축 · {metricLog ? '로그' : '선형'}</span>
+        <button
+          aria-pressed={metricLog}
+          disabled={!!logUnavailable}
+          title={
+            logUnavailable ||
+            '같은 배율의 변화가 같은 높이로 보입니다. 원래 지표 값은 그대로입니다.'
+          }
+          style={metricLog ? { borderColor: metric.color } : undefined}
+          onClick={() => setAxisChoice({ metric: metric.id, log: true })}
+        >
+          로그
+        </button>
+        <button
+          aria-pressed={!metricLog}
+          title="같은 수치의 차이가 같은 높이로 보입니다."
+          style={!metricLog ? { borderColor: metric.color } : undefined}
+          onClick={() => setAxisChoice({ metric: metric.id, log: false })}
+        >
+          선형
+        </button>
+        {logUnavailable ? (
+          <small className="muted">{logUnavailable}</small>
+        ) : large ? (
+          <small className="muted">
+            {metricLog
+              ? '동일 배율 = 동일 높이 · 초기 큰 값도 모두 포함'
+              : '동일 수치 차이 = 동일 높이'}
+          </small>
+        ) : null}
+      </div>
       {large ? (
         <>
           <div className="metric-hover metric-observation" aria-live="off">
@@ -226,7 +324,7 @@ export const MetricChart = memo(function MetricChart({
                 const points = series.data.filter(
                   (p) => p.time >= periodStart(period, series.data.at(-1)!.time),
                 );
-                if (points.length > 1)
+                if (points.length)
                   chartRef.current?.timeScale().setVisibleRange({
                     from: points[0].time as UTCTimestamp,
                     to: points.at(-1)!.time as UTCTimestamp,
@@ -239,6 +337,24 @@ export const MetricChart = memo(function MetricChart({
               BTC 추정 가격 {showPrice ? '숨기기' : '표시'}
             </button>
           </div>
+          <ChartRangeControl
+            rows={series.data}
+            resetKey={metric.id + ':' + period}
+            onApply={(selection) => {
+              chartRef.current?.timeScale().setVisibleRange({
+                from: selection.from as UTCTimestamp,
+                to: selection.to as UTCTimestamp,
+              });
+            }}
+            onReset={() => {
+              if (series.data.length)
+                chartRef.current?.timeScale().setVisibleRange({
+                  from: series.data[0].time as UTCTimestamp,
+                  to: series.data.at(-1)!.time as UTCTimestamp,
+                });
+              onPeriodChange?.('all');
+            }}
+          />
         </>
       ) : null}
     </>

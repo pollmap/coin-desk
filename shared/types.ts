@@ -1,7 +1,7 @@
 export type Asset = 'BTC' | 'ETH' | 'DOGE' | 'SOL' | 'XRP' | 'LINK' | 'ONDO' | 'PEPE';
 export type Market = 'binance' | 'upbit';
 export type Interval = '1h' | '4h' | '1d' | '1w' | '1M';
-export type Period = '1m' | '3m' | '1y' | '3y' | 'all';
+export type Period = import('./ranges').RangePeriod;
 export interface Candle {
   time: number;
   open: number;

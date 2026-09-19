@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { lazy, Suspense, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import {
   Link,
   NavLink,
@@ -32,12 +32,35 @@ import {
 import { ASSETS, METRICS } from '../shared/catalog';
 import { validIndicators } from '../shared/indicators';
 import { WorkspaceBar, CardPicker, usePersonalDesk } from './PersonalDesk';
-import { WatchlistPage } from './WatchlistPage';
-import { ComparePage } from './ComparePage';
-import { MetricsExplorer } from './MetricsExplorer';
+const WatchlistPage = lazy(() =>
+  import('./WatchlistPage').then((m) => ({ default: m.WatchlistPage })),
+);
+const ComparePage = lazy(() => import('./ComparePage').then((m) => ({ default: m.ComparePage })));
+const MetricsExplorer = lazy(() =>
+  import('./MetricsExplorer').then((m) => ({ default: m.MetricsExplorer })),
+);
 import { chartSettings, validCards } from '../shared/workspace';
 import { IndicatorEditor } from './IndicatorEditor';
-import { DominancePanel, DominancePage } from './DominancePanel';
+const DominancePanel = lazy(() =>
+  import('./DominancePanel').then((m) => ({ default: m.DominancePanel })),
+);
+const DominancePage = lazy(() =>
+  import('./DominancePanel').then((m) => ({ default: m.DominancePage })),
+);
+const DataStatusPage = lazy(() =>
+  import('./DataStatusPage').then((m) => ({ default: m.DataStatusPage })),
+);
+const AutomationSummary = lazy(() =>
+  import('./DataStatusPage').then((m) => ({ default: m.AutomationSummary })),
+);
+const LongHistoryPanel = lazy(() =>
+  import('./LongHistoryPanel').then((m) => ({ default: m.LongHistoryPanel })),
+);
+import { MetricGuide } from './MetricGuide';
+import { DeferredMount } from './DeferredMount';
+import { PERIOD_OPTIONS } from '../shared/ranges';
+import './analysis-ux.css';
+import './data-status.css';
 import type {
   Asset,
   CandleResponse,
@@ -50,15 +73,9 @@ import type {
 } from '../shared/types';
 import { useData } from './hooks';
 import { dateLabel, metricValue, money, numeric, save, saved } from './lib';
-import { PriceChart } from './PriceChart';
-import { MetricChart } from './MetricChart';
-const periods: { id: Period; label: string }[] = [
-  { id: '1m', label: '1개월' },
-  { id: '3m', label: '3개월' },
-  { id: '1y', label: '1년' },
-  { id: '3y', label: '3년' },
-  { id: 'all', label: '전체' },
-];
+const PriceChart = lazy(() => import('./PriceChart').then((m) => ({ default: m.PriceChart })));
+const MetricChart = lazy(() => import('./MetricChart').then((m) => ({ default: m.MetricChart })));
+const periods = PERIOD_OPTIONS;
 const intervals: { id: Interval; label: string }[] = [
   { id: '1h', label: '1시간' },
   { id: '4h', label: '4시간' },
@@ -100,7 +117,12 @@ function Periods({ value, onChange }: { value: Period; onChange: (v: Period) => 
 }
 function usePreferences() {
   const [params, setParams] = useSearchParams();
-  const initial = useMemo(() => chartSettings(saved('preferences', {})), []);
+  const initial = useMemo(() => {
+    const previous = chartSettings(saved('preferences', {}));
+    return saved('history-default-version', 0) >= 4
+      ? previous
+      : { ...previous, period: 'all' as Period };
+  }, []);
   const market: Market =
     params.get('market') === 'upbit'
       ? 'upbit'
@@ -112,7 +134,7 @@ function usePreferences() {
   const int = params.get('interval') || initial.interval;
   const interval = intervals.some((i) => i.id === int) ? (int as Interval) : '1d';
   const p = params.get('period') || initial.period;
-  const period = periods.some((x) => x.id === p) ? (p as Period) : '3y';
+  const period = periods.some((x) => x.id === p) ? (p as Period) : 'all';
   const raw = params.has('indicators')
     ? (params.get('indicators') || '').split(',')
     : initial.indicators;
@@ -120,6 +142,7 @@ function usePreferences() {
   const log = params.has('log') ? params.get('log') === '1' : initial.log;
   useEffect(() => {
     save('preferences', { market, interval, period, indicators, log });
+    save('history-default-version', 4);
   }, [market, interval, period, indicators, log]);
   function change(key: string, value: string) {
     setParams(
@@ -138,10 +161,18 @@ function usePreferences() {
   }
   return { market, interval, period, indicators, log, change };
 }
-function MetricCard({ metric }: { metric: Metric }) {
-  const from = useMemo(() => Math.floor(Date.now() / 86400000) * 86400 - 365 * 86400, []);
+function MetricCard({
+  metric,
+  period,
+  onPeriodChange,
+}: {
+  metric: Metric;
+  period: Period;
+  onPeriodChange: (p: Period) => void;
+}) {
   const { data, error, reload } = useData<SeriesResponse>(
-    '/api/v1/series?metric=' + metric.id + '&limit=1000&from=' + from,
+    '/api/v1/series?metric=' + metric.id + '&limit=1000',
+    true,
   );
   const latest = data?.data.at(-1);
   const previous = data?.data.at(-2);
@@ -177,16 +208,27 @@ function MetricCard({ metric }: { metric: Metric }) {
       </div>
       <ErrorNotice message={error} retry={reload} />
       {data ? (
-        <MetricChart series={data} metric={metric} />
+        <Suspense fallback={<Loading />}>
+          <MetricChart
+            series={data}
+            metric={metric}
+            period={period}
+            onPeriodChange={onPeriodChange}
+          />
+        </Suspense>
       ) : error ? (
         <div className="empty-state">지표를 불러오지 못했습니다.</div>
       ) : (
         <Loading />
       )}
       <div className="card-caption">
-        <span>{metric.formula}</span>
+        <span>
+          {dateLabel(data?.data[0]?.time)}부터 · {data?.data.length.toLocaleString() || '—'}개 일별
+          관측
+        </span>
         {data?.meta.stale ? <span className="amber">갱신 지연</span> : null}
       </div>
+      <MetricGuide id={metric.id} />
     </article>
   );
 }
@@ -200,6 +242,8 @@ function PricePage({ workspace = false }: { workspace?: boolean }) {
   ).toUpperCase() as Asset;
   const coin = ASSETS.find((a) => a.id === asset);
   const { market, interval, period, indicators, log, change } = usePreferences();
+  const hasLongHistory = ['BTC', 'DOGE', 'ETH'].includes(asset);
+  const historical = !workspace && hasLongHistory && params.get('view') !== 'exchange';
   const { desk, update: updateDesk } = usePersonalDesk();
   const cards = params.has('cards')
     ? validCards((params.get('cards') || '').split(','))
@@ -234,17 +278,19 @@ function PricePage({ workspace = false }: { workspace?: boolean }) {
     60000,
   );
   const candles = useData<CandleResponse>(
-    '/api/v1/candles?asset=' +
-      asset +
-      '&market=' +
-      market +
-      '&interval=' +
-      interval +
-      '&limit=1000',
+    historical
+      ? null
+      : '/api/v1/candles?asset=' +
+          asset +
+          '&market=' +
+          market +
+          '&interval=' +
+          interval +
+          '&limit=1000',
     true,
   );
   const daily = useData<CandleResponse>(
-    interval === '1d'
+    historical || interval === '1d'
       ? null
       : '/api/v1/candles?asset=' + asset + '&market=' + market + '&interval=1d&limit=1000',
     true,
@@ -276,6 +322,7 @@ function PricePage({ workspace = false }: { workspace?: boolean }) {
         indicators: indicators.join(','),
         log: log ? '1' : '0',
         cards: cards.join(','),
+        view: historical ? 'history' : 'exchange',
       }).toString();
       setShareUrl(link.href);
       await navigator.clipboard.writeText(link.href);
@@ -305,7 +352,11 @@ function PricePage({ workspace = false }: { workspace?: boolean }) {
         <div>
           <div className="eyebrow">{workspace ? 'CHART WORKSPACE' : 'YOUR MARKET DESK'}</div>
           <h1>{coin.name + (workspace ? ' 차트' : ' 대시보드')}</h1>
-          <p>BTC · DOGE · ETH부터, 관심 코인의 가격과 시장 비중을 함께 살펴보세요.</p>
+          <p>
+            {historical
+              ? '초기 가격부터 현재까지 전체 흐름을 조망하고, 궁금한 구간을 확대하세요.'
+              : '거래소 가격·기술지표를 원하는 기간과 설정으로 살펴보세요.'}
+          </p>
         </div>
         <div className="heading-actions">
           <span className={'status-pill ' + (quote.error || quote.data?.meta.stale ? 'warn' : '')}>
@@ -349,19 +400,20 @@ function PricePage({ workspace = false }: { workspace?: boolean }) {
           </Link>
         ))}
       </nav>
-      <WorkspaceBar
-        current={{
-          asset,
-          market,
-          interval,
-          period,
-          indicators,
-          log,
-          cards,
-          view: workspace ? 'chart' : 'dashboard',
-        }}
-      />
-      {!workspace ? <DominancePanel compact /> : null}
+      {!historical && (
+        <WorkspaceBar
+          current={{
+            asset,
+            market,
+            interval,
+            period,
+            indicators,
+            log,
+            cards,
+            view: workspace ? 'chart' : 'dashboard',
+          }}
+        />
+      )}
       {shareUrl ? (
         <div className="share-box">
           <label htmlFor="share-link">
@@ -377,6 +429,50 @@ function PricePage({ workspace = false }: { workspace?: boolean }) {
           <button onClick={() => setShareUrl('')}>닫기</button>
         </div>
       ) : null}
+      {!workspace && hasLongHistory ? (
+        <div className="history-view-tabs" aria-label="가격 자료 선택">
+          <button
+            className={historical ? 'selected' : ''}
+            aria-pressed={historical}
+            onClick={() => change('view', 'history')}
+          >
+            전체 USD 이력
+          </button>
+          <button
+            className={!historical ? 'selected' : ''}
+            aria-pressed={!historical}
+            onClick={() => change('view', 'exchange')}
+          >
+            거래소 캔들·기술지표
+          </button>
+          <Link to={'/chart/' + asset + '?period=all&market=' + market}>차트 작업공간 ↗</Link>
+        </div>
+      ) : null}
+      {historical ? (
+        <Suspense fallback={<Loading message="초기 가격부터 전체 흐름을 준비하고 있습니다…" />}>
+          <LongHistoryPanel
+            asset={asset}
+            period={period}
+            log={log}
+            onPeriodChange={(p) => change('period', p)}
+            onLogChange={() => change('log', log ? '0' : '1')}
+          />
+        </Suspense>
+      ) : null}
+      {historical && (
+        <WorkspaceBar
+          current={{
+            asset,
+            market,
+            interval,
+            period,
+            indicators,
+            log,
+            cards,
+            view: workspace ? 'chart' : 'dashboard',
+          }}
+        />
+      )}
       <section className="quote-strip" aria-label="시장 요약">
         <div className="quote-primary">
           <span className="coin-mark" style={{ background: coin.color }}>
@@ -448,138 +544,157 @@ function PricePage({ workspace = false }: { workspace?: boolean }) {
       </section>
       {q?.changeUnavailableReason ? (
         <p className="watch-note" role="status">
-          24시간 등락률: {q.changeUnavailableReason} 현재가·거래대금의 기준 시각은 아래에서 확인하세요.
+          24시간 등락률: {q.changeUnavailableReason} 현재가·거래대금의 기준 시각은 아래에서
+          확인하세요.
         </p>
       ) : null}
       <p className="watch-note">
         가격 기준 {dateLabel(q?.time, true)} · 화면 60초 조회 / 공유 시세 약 3분 주기
       </p>
       <ErrorNotice message={quote.error || quote.data?.meta.warning} retry={quote.reload} />
-      <section className={'panel price-panel' + (expanded ? ' expanded' : '')} ref={fullscreen}>
-        <div className="price-panel-heading">
-          <div>
-            <span className="metric-dot orange" />
-            <h2>{coin.name} 가격</h2>
-            <span className="market-tag">
-              {market === 'binance' ? 'BINANCE' : 'UPBIT'} · {currency}
+      {workspace && hasLongHistory ? (
+        <p className="coverage-strip">
+          <Link to={'/?asset=' + asset + '&period=all&view=history'}>
+            {asset} 초기 가격부터 전체 USD 이력 보기 ↗
+          </Link>
+          <span>아래 캔들은 해당 거래소 상장 이후 자료입니다.</span>
+        </p>
+      ) : null}
+      {!historical && (
+        <section className={'panel price-panel' + (expanded ? ' expanded' : '')} ref={fullscreen}>
+          <div className="price-panel-heading">
+            <div>
+              <span className="metric-dot orange" />
+              <h2>{coin.name} 가격</h2>
+              <span className="market-tag">
+                {market === 'binance' ? 'BINANCE' : 'UPBIT'} · {currency}
+              </span>
+            </div>
+            <div className="market-switch">
+              <button
+                className={market === 'binance' ? 'active' : ''}
+                aria-pressed={market === 'binance'}
+                onClick={() => change('market', 'binance')}
+              >
+                USDT
+              </button>
+              <button
+                className={market === 'upbit' ? 'active' : ''}
+                aria-pressed={market === 'upbit'}
+                onClick={() => change('market', 'upbit')}
+              >
+                KRW
+              </button>
+            </div>
+          </div>
+          <div className="chart-toolbar">
+            <div className="segments intervals">
+              {intervals.map((i) => (
+                <button
+                  key={i.id}
+                  aria-pressed={interval === i.id}
+                  className={interval === i.id ? 'selected' : ''}
+                  onClick={() => change('interval', i.id)}
+                >
+                  {i.label}
+                </button>
+              ))}
+            </div>
+            <span className="toolbar-divider" />
+            <button
+              className={'text-button ' + (log ? 'active' : '')}
+              aria-pressed={log}
+              onClick={() => change('log', log ? '0' : '1')}
+            >
+              로그
+            </button>
+            <div className="drawing-tools">
+              <button
+                className={'icon-button ' + (tool === 'cursor' ? 'active' : '')}
+                aria-label="차트 이동"
+                onClick={() => setTool('cursor')}
+              >
+                <MousePointer2 size={16} />
+              </button>
+              <button
+                className={'icon-button ' + (tool === 'horizontal' ? 'active' : '')}
+                aria-label="수평선 그리기"
+                onClick={() => setTool('horizontal')}
+              >
+                <Minus size={17} />
+              </button>
+              <button
+                className={'icon-button ' + (tool === 'trend' ? 'active' : '')}
+                aria-label="추세선 그리기"
+                onClick={() => setTool('trend')}
+              >
+                <TrendingUp size={17} />
+              </button>
+            </div>
+            <div className="toolbar-spacer" />
+            <Periods value={period} onChange={(p) => change('period', p)} />
+            <button
+              className="icon-button expand"
+              aria-label="차트 전체화면"
+              aria-pressed={expanded}
+              onClick={() => void expand()}
+            >
+              <Expand size={16} />
+            </button>
+          </div>
+          <IndicatorEditor value={indicators} onChange={(v) => change('indicators', v.join(','))} />
+          <ErrorNotice
+            message={candles.error || daily.error}
+            retry={() => {
+              candles.reload();
+              daily.reload();
+            }}
+          />
+          {candles.data?.data.length ? (
+            <Suspense fallback={<Loading />}>
+              <PriceChart
+                key={reset}
+                candles={candles.data.data}
+                daily={dailyRows}
+                interval={interval}
+                period={period}
+                onPeriodChange={(p) => change('period', p)}
+                indicators={indicators}
+                log={log}
+                scope={asset + '.' + market + '.' + interval}
+                unit={currency}
+                large={workspace || expanded}
+                tool={tool}
+                onToolDone={done}
+              />
+            </Suspense>
+          ) : candles.loading ? (
+            <Loading message="거래소 가격 이력을 불러오고 있습니다…" />
+          ) : (
+            <div className="empty-state">수집된 가격 이력이 없습니다.</div>
+          )}
+          <div className="source-line">
+            <span>
+              출처 {market === 'binance' ? 'Binance' : 'Upbit'} ·{' '}
+              {candles.data?.meta.historyStart
+                ? dateLabel(candles.data.meta.historyStart) + '부터'
+                : ''}
+              {candles.data?.meta.gapCount
+                ? ' · 원천 데이터 공백 ' + candles.data.meta.gapCount + '곳'
+                : ''}
+            </span>
+            <span className={candles.data?.meta.stale ? 'amber' : ''}>
+              {candles.data?.meta.stale ? '수집 지연 · ' : ''}
+              {dateLabel(candles.data?.meta.fetchedAt, true)}
             </span>
           </div>
-          <div className="market-switch">
-            <button
-              className={market === 'binance' ? 'active' : ''}
-              aria-pressed={market === 'binance'}
-              onClick={() => change('market', 'binance')}
-            >
-              USDT
-            </button>
-            <button
-              className={market === 'upbit' ? 'active' : ''}
-              aria-pressed={market === 'upbit'}
-              onClick={() => change('market', 'upbit')}
-            >
-              KRW
-            </button>
-          </div>
-        </div>
-        <div className="chart-toolbar">
-          <div className="segments intervals">
-            {intervals.map((i) => (
-              <button
-                key={i.id}
-                aria-pressed={interval === i.id}
-                className={interval === i.id ? 'selected' : ''}
-                onClick={() => change('interval', i.id)}
-              >
-                {i.label}
-              </button>
-            ))}
-          </div>
-          <span className="toolbar-divider" />
-          <button
-            className={'text-button ' + (log ? 'active' : '')}
-            aria-pressed={log}
-            onClick={() => change('log', log ? '0' : '1')}
-          >
-            로그
-          </button>
-          <div className="drawing-tools">
-            <button
-              className={'icon-button ' + (tool === 'cursor' ? 'active' : '')}
-              aria-label="차트 이동"
-              onClick={() => setTool('cursor')}
-            >
-              <MousePointer2 size={16} />
-            </button>
-            <button
-              className={'icon-button ' + (tool === 'horizontal' ? 'active' : '')}
-              aria-label="수평선 그리기"
-              onClick={() => setTool('horizontal')}
-            >
-              <Minus size={17} />
-            </button>
-            <button
-              className={'icon-button ' + (tool === 'trend' ? 'active' : '')}
-              aria-label="추세선 그리기"
-              onClick={() => setTool('trend')}
-            >
-              <TrendingUp size={17} />
-            </button>
-          </div>
-          <div className="toolbar-spacer" />
-          <Periods value={period} onChange={(p) => change('period', p)} />
-          <button
-            className="icon-button expand"
-            aria-label="차트 전체화면"
-            aria-pressed={expanded}
-            onClick={() => void expand()}
-          >
-            <Expand size={16} />
-          </button>
-        </div>
-        <IndicatorEditor value={indicators} onChange={(v) => change('indicators', v.join(','))} />
-        <ErrorNotice
-          message={candles.error || daily.error}
-          retry={() => {
-            candles.reload();
-            daily.reload();
-          }}
-        />
-        {candles.data?.data.length ? (
-          <PriceChart
-            key={reset}
-            candles={candles.data.data}
-            daily={dailyRows}
-            interval={interval}
-            period={period}
-            indicators={indicators}
-            log={log}
-            scope={asset + '.' + market + '.' + interval}
-            unit={currency}
-            large={workspace || expanded}
-            tool={tool}
-            onToolDone={done}
-          />
-        ) : candles.loading ? (
-          <Loading message="거래소 가격 이력을 불러오고 있습니다…" />
-        ) : (
-          <div className="empty-state">수집된 가격 이력이 없습니다.</div>
-        )}
-        <div className="source-line">
-          <span>
-            출처 {market === 'binance' ? 'Binance' : 'Upbit'} ·{' '}
-            {candles.data?.meta.historyStart
-              ? dateLabel(candles.data.meta.historyStart) + '부터'
-              : ''}
-            {candles.data?.meta.gapCount
-              ? ' · 원천 데이터 공백 ' + candles.data.meta.gapCount + '곳'
-              : ''}
-          </span>
-          <span className={candles.data?.meta.stale ? 'amber' : ''}>
-            {candles.data?.meta.stale ? '수집 지연 · ' : ''}
-            {dateLabel(candles.data?.meta.fetchedAt, true)}
-          </span>
-        </div>
-      </section>
+        </section>
+      )}
+      {!workspace ? (
+        <Suspense fallback={<Loading />}>
+          <DominancePanel compact />
+        </Suspense>
+      ) : null}
       {asset === 'BTC' || !workspace ? (
         <>
           <div className="section-heading">
@@ -594,7 +709,8 @@ function PricePage({ workspace = false }: { workspace?: boolean }) {
           <div className="onchain-note">
             <Info size={14} />
             <span>
-              회색 비교선은 Bitview <b>추정 USD 가격</b>입니다. 위 거래소 가격과 원천이 다릅니다.
+              회색 비교선은 Bitview <b>추정 USD 가격</b>입니다. 장기 USD 참조가격·거래소 가격과
+              원천이 다릅니다.
             </span>
           </div>
           <CardPicker
@@ -625,7 +741,13 @@ function PricePage({ workspace = false }: { workspace?: boolean }) {
               .map((id) => METRICS.find((m) => m.id === id)!)
               .filter(Boolean)
               .map((m) => (
-                <MetricCard metric={m} key={m.id} />
+                <DeferredMount key={m.id}>
+                  <MetricCard
+                    metric={m}
+                    period={period}
+                    onPeriodChange={(p) => change('period', p)}
+                  />
+                </DeferredMount>
               ))}
           </div>
           <div className="more-metrics">
@@ -708,7 +830,25 @@ function MetricPage() {
         </div>
         <ErrorNotice message={result.error || result.data?.meta.warning} retry={result.reload} />
         {result.data ? (
-          <MetricChart series={result.data} metric={metric} period={period} large />
+          <Suspense fallback={<Loading />}>
+            <MetricChart
+              series={result.data}
+              metric={metric}
+              period={period}
+              large
+              onPeriodChange={(v) => {
+                save('metric.period.' + id, v);
+                setParams(
+                  (prev) => {
+                    const next = new URLSearchParams(prev);
+                    next.set('period', v);
+                    return next;
+                  },
+                  { replace: true },
+                );
+              }}
+            />
+          </Suspense>
         ) : result.error ? (
           <div className="empty-state">지표 조회에 실패했습니다. 위의 다시 시도를 눌러 주세요.</div>
         ) : (
@@ -722,6 +862,7 @@ function MetricPage() {
           </span>
         </div>
       </section>
+      <MetricGuide id={metric.id} expanded />
       <section className="metric-explanation">
         <div>
           <div className="eyebrow">ABOUT THIS METRIC</div>
@@ -784,16 +925,6 @@ function SourceDialog({ onClose }: { onClose: () => void }) {
       first?.focus();
     }
   }
-  const state = useData<{
-    sources: {
-      key: string;
-      last_success: number;
-      data_as_of: number;
-      error: string | null;
-      active?: boolean;
-    }[];
-    rebuilding: boolean;
-  }>('/api/v1/status', false, 60000);
   return (
     <div className="modal-backdrop" onClick={onClose}>
       <section
@@ -812,21 +943,12 @@ function SourceDialog({ onClose }: { onClose: () => void }) {
           </button>
         </div>
         <p>원천의 기준 시각과 수집 시각을 구분합니다. 온체인 가격은 추정 USD 가격입니다.</p>
-        <ErrorNotice message={state.error} retry={state.reload} />
-        {state.data?.sources
-          .filter((s) => s.active !== false)
-          .map((s) => (
-            <div className="source-row" key={s.key}>
-              <b>{s.key}</b>
-              <span>{dateLabel(s.last_success, true)}</span>
-              <small className={s.error ? 'amber' : ''}>
-                {s.error || '데이터 기준 ' + dateLabel(s.data_as_of, true)}
-              </small>
-            </div>
-          ))}
-        {state.data?.rebuilding ? (
-          <p className="amber">원천 버전 변경으로 온체인 이력을 재계산하고 있습니다.</p>
-        ) : null}
+        <Suspense fallback={<Loading />}>
+          <AutomationSummary />
+        </Suspense>
+        <Link className="desk-button" to="/status" onClick={onClose}>
+          전체 수집 상태·제공 기간 확인 ↗
+        </Link>
         <div className="dialog-links">
           <a href="https://bitview.space" target="_blank" rel="noreferrer">
             Bitview
@@ -947,14 +1069,14 @@ export default function App() {
             <ChartNoAxesCombined size={18} />
             차트 분석
           </NavLink>
-          <NavLink to="/chart/DOGE">
+          <Link to="/?asset=DOGE&period=all">
             <span className="nav-dot" style={{ background: '#c4a34d' }} />
             도지코인 DOGE
-          </NavLink>
-          <NavLink to="/chart/ETH">
+          </Link>
+          <Link to="/?asset=ETH&period=all">
             <span className="nav-dot" style={{ background: '#899cff' }} />
             이더리움 ETH
-          </NavLink>
+          </Link>
           <NavLink to="/dominance">
             <Activity size={18} />
             시장 도미넌스
@@ -970,6 +1092,10 @@ export default function App() {
           <NavLink to="/coins">
             <Activity size={18} />
             관심 코인
+          </NavLink>
+          <NavLink to="/status">
+            <Database size={18} />
+            데이터·자동 갱신
           </NavLink>
         </nav>
         <div className="sidebar-label">BITCOIN ON-CHAIN</div>
@@ -1038,23 +1164,26 @@ export default function App() {
           </div>
         ) : null}
         <main id="main-content" tabIndex={-1}>
-          <Routes>
-            <Route path="/" element={<PricePage />} />
-            <Route path="/chart/:asset" element={<PricePage workspace />} />
-            <Route path="/metrics/:metric" element={<MetricPage />} />
-            <Route path="/coins" element={<WatchlistPage />} />
-            <Route path="/compare" element={<ComparePage />} />
-            <Route path="/explore" element={<MetricsExplorer />} />
-            <Route path="/dominance" element={<DominancePage />} />
-            <Route
-              path="*"
-              element={
-                <div className="empty-state">
-                  페이지를 찾지 못했습니다. <Link to="/">대시보드로 이동</Link>
-                </div>
-              }
-            />
-          </Routes>
+          <Suspense fallback={<Loading />}>
+            <Routes>
+              <Route path="/" element={<PricePage />} />
+              <Route path="/chart/:asset" element={<PricePage workspace />} />
+              <Route path="/metrics/:metric" element={<MetricPage />} />
+              <Route path="/coins" element={<WatchlistPage />} />
+              <Route path="/compare" element={<ComparePage />} />
+              <Route path="/explore" element={<MetricsExplorer />} />
+              <Route path="/dominance" element={<DominancePage />} />
+              <Route path="/status" element={<DataStatusPage />} />
+              <Route
+                path="*"
+                element={
+                  <div className="empty-state">
+                    페이지를 찾지 못했습니다. <Link to="/">대시보드로 이동</Link>
+                  </div>
+                }
+              />
+            </Routes>
+          </Suspense>
         </main>
         <footer>
           <span>

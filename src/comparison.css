@@ -91,6 +91,126 @@
 .comparison-options .segments {
   flex: 1;
   justify-content: center;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+.comparison-date-range {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  gap: 10px;
+  margin-top: 15px;
+  padding-top: 14px;
+  border-top: 1px solid #293345;
+}
+.comparison-date-range label {
+  display: grid;
+  gap: 5px;
+  color: #a1aec0;
+  font-size: 11px;
+}
+.comparison-date-range input {
+  min-width: 0;
+  color: #dce3ed;
+  color-scheme: dark;
+  background: #17202d;
+  padding: 8px;
+  border: 1px solid #354155;
+  border-radius: 4px;
+  font: inherit;
+}
+.comparison-date-range button {
+  border: 1px solid #354155;
+  padding: 8px 11px;
+  border-radius: 4px;
+}
+.comparison-date-range button.selected {
+  border-color: #c4a34d;
+  color: #edd19d;
+  background: #282718;
+}
+.comparison-date-range > span {
+  font-size: 11px;
+  color: #a1aec0;
+  padding-bottom: 7px;
+}
+.comparison-date-error {
+  color: #edb071;
+  margin-top: 10px;
+  line-height: 1.7;
+}
+.comparison-date-error button {
+  margin-left: 10px;
+  text-decoration: underline;
+}
+.comparison-coverage {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px 20px;
+  padding: 15px 18px;
+  margin: 14px 0;
+  border: 1px solid #2b394b;
+  border-radius: 6px;
+  background: #141d29;
+}
+.comparison-coverage > div {
+  min-width: 0;
+  display: grid;
+  gap: 6px;
+}
+.comparison-coverage > div > span {
+  font-size: 11px;
+  color: #a1aec0;
+}
+.comparison-coverage strong {
+  font-size: 12px;
+  line-height: 1.5;
+}
+.comparison-coverage > p,
+.comparison-coverage > details {
+  grid-column: 1/-1;
+  font-size: 11px;
+  line-height: 1.8;
+}
+.comparison-coverage summary {
+  cursor: pointer;
+  color: #adc1da;
+}
+.comparison-coverage ul {
+  padding-left: 18px;
+  margin: 7px 0;
+}
+.comparison-coverage details p {
+  color: #a1aec0;
+}
+.comparison-reading {
+  padding: 0 18px 15px;
+  font-size: 12px;
+}
+.comparison-reading summary {
+  cursor: pointer;
+  color: #bdcde1;
+}
+.comparison-reading > div {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+  margin-top: 12px;
+}
+.comparison-reading p {
+  line-height: 1.8;
+  color: #a1aec0;
+  font-size: 11px;
+}
+.comparison-reading b {
+  display: block;
+  margin-bottom: 4px;
+  color: #dce3ed;
+}
+.comparison-statistics th button {
+  padding: 0;
+  color: inherit;
+  font-size: inherit;
 }
 .comparison-share-result {
   display: grid;
@@ -275,6 +395,25 @@
     order: 2;
     flex-basis: 100%;
     justify-content: space-between;
+  }
+  .comparison-options .segments button {
+    flex: 0 0 calc(25% - 4px);
+    padding: 7px 2px;
+  }
+  .comparison-date-range {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .comparison-date-range > span {
+    grid-column: 1/-1;
+  }
+  .comparison-coverage {
+    grid-template-columns: 1fr;
+    padding: 13px;
+  }
+  .comparison-reading > div {
+    grid-template-columns: 1fr;
+    gap: 10px;
   }
   .comparison-share {
     width: 100%;

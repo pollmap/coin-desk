@@ -4,6 +4,7 @@ vi.mock('../worker/providers', () => ({
   bitviewPage: vi.fn(),
   getRecentCandles: vi.fn(),
   getQuote: vi.fn(),
+  getQuotes: vi.fn(),
 }));
 import { bitviewPage, getRecentCandles } from '../worker/providers';
 import { scheduled, updatePrice } from '../worker/scheduled';
@@ -21,6 +22,9 @@ beforeEach(() => {
     'BTC:upbit:1h',
     'BTC:upbit:1d',
     'maintenance',
+    'quotes:binance:0',
+    'quotes:upbit:0',
+    'reference:BTC',
   ])
     DB.sqlite
       .prepare('INSERT INTO ingestion(key,last_attempt,last_success,data_as_of) VALUES(?,?,?,?)')
@@ -51,7 +55,7 @@ it('a source rebuild keeps published generation until complete', async () => {
     finished: false,
     raw: [],
   });
-  await scheduled(env);
+  await scheduled(env, now - 60);
   expect(
     JSON.parse(
       (await DB.prepare('SELECT value FROM state WHERE key=?').bind('onchain_generation').first())

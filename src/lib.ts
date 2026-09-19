@@ -1,4 +1,5 @@
-import type { CandleResponse, Period, SeriesResponse } from '../shared/types';
+import type { CandleResponse, SeriesResponse } from '../shared/types';
+export { periodStart } from '../shared/ranges';
 export function priceDigits(value: number, unit = 'USDT'): number {
   const magnitude = Math.abs(value);
   return magnitude === 0
@@ -51,11 +52,6 @@ export function dateLabel(t: number | null | undefined, withTime = false) {
       ...(withTime ? { hour: '2-digit', minute: '2-digit' } : {}),
     }).format(new Date(t * 1000)) + (withTime ? ' KST' : '')
   );
-}
-export function periodStart(period: Period, last = Date.now() / 1000) {
-  return period === 'all'
-    ? 0
-    : last - { '1m': 30, '3m': 90, '1y': 365, '3y': 365 * 3 }[period] * 86400;
 }
 export function saved<T>(key: string, fallback: T): T {
   try {
