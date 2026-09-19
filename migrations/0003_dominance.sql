@@ -1,0 +1,3 @@
+CREATE TABLE IF NOT EXISTS dominance_history (
+ time INTEGER PRIMARY KEY, data TEXT NOT NULL, fetched_at INTEGER NOT NULL
+);

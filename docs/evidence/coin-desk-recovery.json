@@ -1,0 +1,39 @@
+{
+  "verifiedAt": "20260919T172250Z",
+  "backupRestoreIdentical": true,
+  "tables": {
+    "candles": {
+      "rows": 18384,
+      "sha256": "d4367a6e9ec0c2f698644316b328fa20d4649c0e14472fa5f0fd3c09b4a97002"
+    },
+    "price_archive": {
+      "rows": 248,
+      "sha256": "682e0478d37bde6784430b8c81e6bef107488d438f30a69cc89538fa1a676300"
+    },
+    "onchain": {
+      "rows": 12740,
+      "sha256": "0e262ba3d5ad6f5419764e643648647b7f05326ff6a11a0d6473953620d33b77"
+    },
+    "state": {
+      "rows": 41,
+      "sha256": "28c58cabc40608e01685f0748630b3fa2da1e92b4b50c589380bf3e032396e4d"
+    },
+    "ingestion": {
+      "rows": 51,
+      "sha256": "3cf0bde095f4f71720f05e8aff6a46aa87fea6fb7d2a5811c9b08c70403cddb1"
+    },
+    "snapshots": {
+      "rows": 14,
+      "sha256": "db03bb414429af2efdac0fec1070c7432e4315bb3dcc5d7411b4d66b59e4e58d"
+    },
+    "raw_samples": {
+      "rows": 7,
+      "sha256": "6a9b0ea053ecea6e11047c3cadc3fc204a2a870cf48b7ac512c705a363d26f4b"
+    },
+    "dominance_history": {
+      "rows": 2,
+      "sha256": "2e65ee43c8a2e7961f75b441637dc04fb0adc2ba286f0e0815da6ac0f0dd7853"
+    }
+  },
+  "liveDatabaseOverwritten": false
+}

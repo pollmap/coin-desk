@@ -1,0 +1,203 @@
+{
+  "verifiedAt": "2026-09-19T17:17:04.441283+00:00",
+  "base": "https://coin-desk.pages.dev",
+  "ok": true,
+  "series": [
+    {
+      "series": "DOGE:binance:1d",
+      "matchedClosedCandles": 2633,
+      "maxAbsoluteDifference": 0,
+      "requests": 3,
+      "historyStart": 1562284800
+    },
+    {
+      "series": "DOGE:binance:1h",
+      "matchedClosedCandles": 2159,
+      "maxAbsoluteDifference": 0,
+      "requests": 3,
+      "historyStart": 1782061200
+    },
+    {
+      "series": "DOGE:upbit:1d",
+      "matchedClosedCandles": 2033,
+      "maxAbsoluteDifference": 0,
+      "requests": 3,
+      "historyStart": 1614124800
+    },
+    {
+      "series": "DOGE:upbit:1h",
+      "matchedClosedCandles": 2155,
+      "maxAbsoluteDifference": 0,
+      "requests": 3,
+      "historyStart": 1782061200
+    },
+    {
+      "series": "ETH:binance:1d",
+      "matchedClosedCandles": 3320,
+      "maxAbsoluteDifference": 0,
+      "requests": 4,
+      "historyStart": 1502928000
+    },
+    {
+      "series": "ETH:binance:1h",
+      "matchedClosedCandles": 2159,
+      "maxAbsoluteDifference": 0,
+      "requests": 3,
+      "historyStart": 1782061200
+    },
+    {
+      "series": "ETH:upbit:1d",
+      "matchedClosedCandles": 3278,
+      "maxAbsoluteDifference": 0,
+      "requests": 4,
+      "historyStart": 1506297600
+    },
+    {
+      "series": "ETH:upbit:1h",
+      "matchedClosedCandles": 2156,
+      "maxAbsoluteDifference": 0,
+      "requests": 3,
+      "historyStart": 1782061200
+    },
+    {
+      "series": "LINK:binance:1d",
+      "matchedClosedCandles": 2803,
+      "maxAbsoluteDifference": 0,
+      "requests": 3,
+      "historyStart": 1547596800
+    },
+    {
+      "series": "LINK:binance:1h",
+      "matchedClosedCandles": 2159,
+      "maxAbsoluteDifference": 0,
+      "requests": 3,
+      "historyStart": 1782061200
+    },
+    {
+      "series": "LINK:upbit:1d",
+      "matchedClosedCandles": 2237,
+      "maxAbsoluteDifference": 0,
+      "requests": 3,
+      "historyStart": 1596499200
+    },
+    {
+      "series": "LINK:upbit:1h",
+      "matchedClosedCandles": 2155,
+      "maxAbsoluteDifference": 0,
+      "requests": 3,
+      "historyStart": 1782061200
+    },
+    {
+      "series": "ONDO:binance:1d",
+      "matchedClosedCandles": 526,
+      "maxAbsoluteDifference": 0,
+      "requests": 1,
+      "historyStart": 1744329600
+    },
+    {
+      "series": "ONDO:binance:1h",
+      "matchedClosedCandles": 2159,
+      "maxAbsoluteDifference": 0,
+      "requests": 3,
+      "historyStart": 1782061200
+    },
+    {
+      "series": "ONDO:upbit:1d",
+      "matchedClosedCandles": 827,
+      "maxAbsoluteDifference": 0,
+      "requests": 1,
+      "historyStart": 1718323200
+    },
+    {
+      "series": "ONDO:upbit:1h",
+      "matchedClosedCandles": 2155,
+      "maxAbsoluteDifference": 0,
+      "requests": 3,
+      "historyStart": 1782061200
+    },
+    {
+      "series": "PEPE:binance:1d",
+      "matchedClosedCandles": 1233,
+      "maxAbsoluteDifference": 0,
+      "requests": 2,
+      "historyStart": 1683244800
+    },
+    {
+      "series": "PEPE:binance:1h",
+      "matchedClosedCandles": 2159,
+      "maxAbsoluteDifference": 0,
+      "requests": 3,
+      "historyStart": 1782061200
+    },
+    {
+      "series": "PEPE:upbit:1d",
+      "matchedClosedCandles": 674,
+      "maxAbsoluteDifference": 0,
+      "requests": 1,
+      "historyStart": 1731542400
+    },
+    {
+      "series": "PEPE:upbit:1h",
+      "matchedClosedCandles": 2155,
+      "maxAbsoluteDifference": 0,
+      "requests": 3,
+      "historyStart": 1782061200
+    },
+    {
+      "series": "SOL:binance:1d",
+      "matchedClosedCandles": 2230,
+      "maxAbsoluteDifference": 0,
+      "requests": 3,
+      "historyStart": 1597104000
+    },
+    {
+      "series": "SOL:binance:1h",
+      "matchedClosedCandles": 2159,
+      "maxAbsoluteDifference": 0,
+      "requests": 3,
+      "historyStart": 1782061200
+    },
+    {
+      "series": "SOL:upbit:1d",
+      "matchedClosedCandles": 1800,
+      "maxAbsoluteDifference": 0,
+      "requests": 2,
+      "historyStart": 1634256000
+    },
+    {
+      "series": "SOL:upbit:1h",
+      "matchedClosedCandles": 2155,
+      "maxAbsoluteDifference": 0,
+      "requests": 3,
+      "historyStart": 1782061200
+    },
+    {
+      "series": "XRP:binance:1d",
+      "matchedClosedCandles": 3060,
+      "maxAbsoluteDifference": 0,
+      "requests": 4,
+      "historyStart": 1525392000
+    },
+    {
+      "series": "XRP:binance:1h",
+      "matchedClosedCandles": 2159,
+      "maxAbsoluteDifference": 0,
+      "requests": 3,
+      "historyStart": 1782061200
+    },
+    {
+      "series": "XRP:upbit:1d",
+      "matchedClosedCandles": 3278,
+      "maxAbsoluteDifference": 0,
+      "requests": 4,
+      "historyStart": 1506297600
+    },
+    {
+      "series": "XRP:upbit:1h",
+      "matchedClosedCandles": 2156,
+      "maxAbsoluteDifference": 0,
+      "requests": 3,
+      "historyStart": 1782061200
+    }
+  ]
+}

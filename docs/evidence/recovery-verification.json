@@ -1,0 +1,31 @@
+{
+  "verifiedAt": "20260919T155959Z",
+  "backupRestoreIdentical": true,
+  "tables": {
+    "candles": {
+      "rows": 10922,
+      "sha256": "fa769525b2872085ae67abd97e85135bbb2d5b1d0cc2d4e6c138cc14c40dc2ba"
+    },
+    "onchain": {
+      "rows": 12940,
+      "sha256": "0579af999d72c294c17c6ca4bd7fb5b1600ccbf1c2894a71d6652da11f12b386"
+    },
+    "state": {
+      "rows": 4,
+      "sha256": "20db7603bd234e7e5e907c2e15a1ab66f345ea139a570feedc8cf992c17dae9a"
+    },
+    "ingestion": {
+      "rows": 8,
+      "sha256": "21f9314689d65f54f37cb8ffff3a654f166254b8e0f9d36815437f9cafc02334"
+    },
+    "snapshots": {
+      "rows": 2,
+      "sha256": "e2730389d6eaabe42a32a199f8826153c1d7e0bc4b3a54d2f333fe5fdf2d6d24"
+    },
+    "raw_samples": {
+      "rows": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    }
+  },
+  "liveDatabaseOverwritten": false
+}
