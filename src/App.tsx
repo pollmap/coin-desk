@@ -1,3 +1,6 @@
+import { DeskNavigation, DeskTopbar } from './DeskNavigation';
+import { MetricInfoTabs } from './MetricInfoTabs';
+import { ThresholdMeter } from './ThresholdMeter';
 import { lazy, Suspense, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import {
   Link,
@@ -404,18 +407,21 @@ function PricePage({ workspace = false }: { workspace?: boolean }) {
         ))}
       </nav>
       {!historical && (
-        <WorkspaceBar
-          current={{
-            asset,
-            market,
-            interval,
-            period,
-            indicators,
-            log,
-            cards,
-            view: workspace ? 'chart' : 'dashboard',
-          }}
-        />
+        <details className="workspace-fold">
+          <summary>작업공간 저장 · 불러오기</summary>
+          <WorkspaceBar
+            current={{
+              asset,
+              market,
+              interval,
+              period,
+              indicators,
+              log,
+              cards,
+              view: workspace ? 'chart' : 'dashboard',
+            }}
+          />
+        </details>
       )}
       {shareUrl ? (
         <div className="share-box">
@@ -432,59 +438,6 @@ function PricePage({ workspace = false }: { workspace?: boolean }) {
           <button onClick={() => setShareUrl('')}>닫기</button>
         </div>
       ) : null}
-      {!workspace && hasLongHistory ? (
-        <div className="history-view-tabs" aria-label="가격 자료 선택">
-          <button
-            className={historical ? 'selected' : ''}
-            aria-pressed={historical}
-            onClick={() => change('view', 'history')}
-          >
-            전체 USD 이력
-          </button>
-          <button
-            className={!historical ? 'selected' : ''}
-            aria-pressed={!historical}
-            onClick={() => change('view', 'exchange')}
-          >
-            거래소 캔들·기술지표
-          </button>
-          <Link to={'/chart/' + asset + '?period=all&market=' + market}>차트 작업공간 ↗</Link>
-        </div>
-      ) : null}
-      {historical ? (
-        <Suspense fallback={<Loading message="초기 가격부터 전체 흐름을 준비하고 있습니다…" />}>
-          <LongHistoryPanel
-            asset={asset}
-            period={period}
-            log={log}
-            onPeriodChange={(p) => change('period', p)}
-            onLogChange={() => change('log', log ? '0' : '1')}
-          />
-        </Suspense>
-      ) : null}
-      {hasLongHistory ? (
-        <div className="network-entry">
-          <div>
-            {asset}의 가격과 온체인을 함께 살펴보세요.
-            <small>MVRV · 주소 활동 · 거래 수 · 공급량 · 원천별 전체 이력</small>
-          </div>
-          <Link to={`/onchain/${asset}?period=all`}>{asset} 온체인 전체 보기 ↗</Link>
-        </div>
-      ) : null}
-      {historical && (
-        <WorkspaceBar
-          current={{
-            asset,
-            market,
-            interval,
-            period,
-            indicators,
-            log,
-            cards,
-            view: workspace ? 'chart' : 'dashboard',
-          }}
-        />
-      )}
       <section className="quote-strip" aria-label="시장 요약">
         <div className="quote-primary">
           <span className="coin-mark" style={{ background: coin.color }}>
@@ -554,6 +507,60 @@ function PricePage({ workspace = false }: { workspace?: boolean }) {
           </small>
         </div>
       </section>
+      {!workspace && hasLongHistory ? (
+        <div className="history-view-tabs" aria-label="가격 자료 선택">
+          <button
+            className={historical ? 'selected' : ''}
+            aria-pressed={historical}
+            onClick={() => change('view', 'history')}
+          >
+            전체 USD 이력
+          </button>
+          <button
+            className={!historical ? 'selected' : ''}
+            aria-pressed={!historical}
+            onClick={() => change('view', 'exchange')}
+          >
+            거래소 캔들·기술지표
+          </button>
+          <Link to={'/chart/' + asset + '?period=all&market=' + market}>차트 작업공간 ↗</Link>
+        </div>
+      ) : null}
+      {historical ? (
+        <Suspense fallback={<Loading message="초기 가격부터 전체 흐름을 준비하고 있습니다…" />}>
+          <LongHistoryPanel
+            asset={asset}
+            period={period}
+            log={log}
+            onPeriodChange={(p) => change('period', p)}
+            onLogChange={() => change('log', log ? '0' : '1')}
+          />
+        </Suspense>
+      ) : null}
+      {hasLongHistory && historical ? (
+        <div className="network-entry">
+          <div>
+            {asset}의 가격과 온체인을 함께 살펴보세요.
+            <small>MVRV · 주소 활동 · 거래 수 · 공급량 · 원천별 전체 이력</small>
+          </div>
+          <Link to={`/onchain/${asset}?period=all`}>{asset} 온체인 전체 보기 ↗</Link>
+        </div>
+      ) : null}
+      {historical && (
+        <WorkspaceBar
+          current={{
+            asset,
+            market,
+            interval,
+            period,
+            indicators,
+            log,
+            cards,
+            view: workspace ? 'chart' : 'dashboard',
+          }}
+        />
+      )}
+
       {q?.changeUnavailableReason ? (
         <p className="watch-note" role="status">
           24시간 등락률: {q.changeUnavailableReason} 현재가·거래대금의 기준 시각은 아래에서
@@ -807,13 +814,16 @@ function MetricPage() {
         </div>
         <span className="data-label">BTC · 일별</span>
       </div>
-      <div className="metric-tabs">
-        {METRICS.map((m) => (
-          <NavLink key={m.id} to={'/metrics/' + m.id}>
-            {m.title}
-          </NavLink>
-        ))}
-      </div>
+      <details className="metric-switcher">
+        <summary>지표 변경 · {metric.title}</summary>
+        <div className="metric-tabs">
+          {METRICS.map((m) => (
+            <NavLink key={m.id} to={'/metrics/' + m.id}>
+              {m.title}
+            </NavLink>
+          ))}
+        </div>
+      </details>
       <section className="panel detail-panel">
         <div className="metric-detail-top">
           <div>
@@ -830,6 +840,7 @@ function MetricPage() {
             }}
           />
         </div>
+        <ThresholdMeter id={metric.id} value={latest?.value} unit={metric.unit} />
         <div className="chart-legend">
           <span>
             <i style={{ background: metric.color }} />
@@ -874,38 +885,7 @@ function MetricPage() {
           </span>
         </div>
       </section>
-      <MetricGuide id={metric.id} expanded showThresholds={false} />
-      <section className="metric-explanation">
-        <div>
-          <div className="eyebrow">ABOUT THIS METRIC</div>
-          <h2>이 지표는 무엇을 보여주나요?</h2>
-          <p>{metric.description}</p>
-          <div className="formula">
-            <span>계산 기준</span>
-            {metric.formula}
-          </div>
-        </div>
-        <aside>
-          <h3>데이터 정보</h3>
-          <dl>
-            <dt>자산</dt>
-            <dd>Bitcoin · BTC</dd>
-            <dt>관측 주기</dt>
-            <dd>UTC 일별 · 확정 관측값</dd>
-            <dt>비교 가격</dt>
-            <dd>Bitview 추정 USD 가격</dd>
-            <dt>가져온 값</dt>
-            <dd>{result.data?.data.length.toLocaleString() || '—'}개</dd>
-            <dt>계산 버전</dt>
-            <dd>{result.data?.meta.calculationVersion || '—'}</dd>
-            <dt>첫 유효 관측</dt>
-            <dd>{dateLabel(result.data?.data[0]?.time)}</dd>
-          </dl>
-          <a href={metric.source} target="_blank" rel="noreferrer">
-            원천·산식 보기 <ExternalLink size={13} />
-          </a>
-        </aside>
-      </section>
+      <MetricInfoTabs key={metric.id} metric={metric} series={result.data} />
       <div className="onchain-note">
         <Info size={15} />
         <span>
@@ -913,6 +893,39 @@ function MetricPage() {
           가격은 Bitview의 과거 자료, 이후 가격은 온체인 추정값을 사용합니다.
         </span>
       </div>
+    </>
+  );
+}
+function WorkspacePage() {
+  const preferences = chartSettings(saved('preferences', {}));
+  const asset = saved<Asset>('lastAsset', 'BTC');
+  const { desk } = usePersonalDesk();
+  return (
+    <>
+      <div className="page-heading">
+        <div>
+          <div className="eyebrow">MY WORKSPACE</div>
+          <h1>내 작업공간</h1>
+          <p>저장한 차트 설정을 불러오고 다른 브라우저로 옮겨 보세요.</p>
+        </div>
+      </div>
+      <section className="panel workspace-page">
+        <WorkspaceBar
+          current={{
+            ...preferences,
+            asset: ASSETS.some((a) => a.id === asset) ? asset : 'BTC',
+            cards: desk.cards,
+            view: 'chart',
+          }}
+        />
+        <Link className="desk-button" to={'/chart/' + asset}>
+          차트 작업공간 열기 ↗
+        </Link>
+        <p className="muted">
+          설정은 이 브라우저에만 저장됩니다. 공유 링크에는 화면 설정만 포함되며 개인 메모는 전송하지
+          않습니다.
+        </p>
+      </section>
     </>
   );
 }
@@ -992,6 +1005,7 @@ export default function App() {
       window.removeEventListener('coin-desk-storage-error', storage);
     };
   }, []);
+  const [collapsed, setCollapsed] = useState(() => saved('sidebar-collapsed', false));
   const [sources, setSources] = useState(false);
   const [mobile, setMobile] = useState(false);
   const [narrow, setNarrow] = useState(() => window.matchMedia('(max-width: 760px)').matches);
@@ -1010,7 +1024,7 @@ export default function App() {
     if (!narrow || !mobile) return;
     const sidebar = sidebarRef.current!;
     const focusable = () => [
-      ...sidebar.querySelectorAll<HTMLElement>('a[href],button:not([disabled])'),
+      ...sidebar.querySelectorAll<HTMLElement>('a[href],button:not([disabled]),input,summary'),
     ];
     focusable()[0]?.focus();
     const trap = (event: KeyboardEvent) => {
@@ -1044,9 +1058,9 @@ export default function App() {
   }, []);
   useEffect(() => {
     setMobile(false);
-  }, [location.pathname]);
+  }, [location.pathname, location.search]);
   return (
-    <div className="app">
+    <div className={'app ' + (collapsed ? 'nav-collapsed' : '')}>
       <a className="skip-link" href="#main-content">
         본문으로 바로가기
       </a>
@@ -1067,8 +1081,15 @@ export default function App() {
         ) : null}
         <Link to="/" className="brand" onClick={() => setMobile(false)}>
           <img
-            className="brand-symbol"
+            className="brand-symbol brand-wordmark-dark"
             src="/brand/coin-desk-mark.svg"
+            alt=""
+            width="32"
+            height="32"
+          />
+          <img
+            className="brand-symbol brand-wordmark-light"
+            src="/brand/coin-desk-mark-light.svg"
             alt=""
             width="32"
             height="32"
@@ -1077,77 +1098,7 @@ export default function App() {
             Coin<span>Desk</span>
           </b>
         </Link>
-        <div className="sidebar-label">WORKSPACE</div>
-        <nav onClick={() => setMobile(false)}>
-          <NavLink to="/" end>
-            <LayoutDashboard size={18} />
-            대시보드
-          </NavLink>
-          <NavLink to="/chart/BTC">
-            <ChartNoAxesCombined size={18} />
-            차트 분석
-          </NavLink>
-          <Link to="/?asset=DOGE&period=all">
-            <span className="nav-dot" style={{ background: '#c4a34d' }} />
-            도지코인 DOGE
-          </Link>
-          <Link to="/?asset=ETH&period=all">
-            <span className="nav-dot" style={{ background: '#899cff' }} />
-            이더리움 ETH
-          </Link>
-          <NavLink to="/dominance">
-            <Activity size={18} />
-            시장 도미넌스
-          </NavLink>
-          <NavLink to="/compare">
-            <TrendingUp size={18} />
-            코인 성과 비교
-          </NavLink>
-          <NavLink to="/explore">
-            <Info size={18} />
-            지표 찾아보기
-          </NavLink>
-          <NavLink to="/onchain/DOGE">
-            <Activity size={18} />
-            코인별 온체인
-          </NavLink>
-          <NavLink to="/coins">
-            <Activity size={18} />
-            관심 코인
-          </NavLink>
-          <NavLink to="/status">
-            <Database size={18} />
-            데이터·자동 갱신
-          </NavLink>
-        </nav>
-        <div className="sidebar-label">BITCOIN ON-CHAIN</div>
-        <nav className="metrics-nav" onClick={() => setMobile(false)}>
-          {METRICS.map((m) => (
-            <NavLink to={'/metrics/' + m.id} key={m.id}>
-              <span className="nav-dot" style={{ background: m.color }} />
-              {m.title}
-            </NavLink>
-          ))}
-        </nav>
-        <div className="sidebar-bottom">
-          <div className="sidebar-note">
-            <span className="small-btc">₿</span>
-            <div>
-              <b>BTC · DOGE · ETH</b>
-              <p>나의 차트, 나의 대시보드.</p>
-            </div>
-          </div>
-          <button
-            onClick={() => {
-              setSources(true);
-              setMobile(false);
-            }}
-          >
-            <Database size={15} />
-            데이터 연결 상태
-            <ChevronRight size={14} />
-          </button>
-        </div>
+        <DeskNavigation onNavigate={() => setMobile(false)} />
       </aside>
       {mobile ? <div className="mobile-shade" onClick={() => setMobile(false)} /> : null}
       <div className="main-shell" inert={narrow && mobile}>
@@ -1162,17 +1113,23 @@ export default function App() {
           >
             <Menu size={20} />
           </button>
-          <span className="breadcrumb">
-            Workspace <ChevronRight size={13} />
-            <b>Coin Desk</b>
-          </span>
-          <div>
-            <span className="topbar-subtitle">FREE & OPEN DATA</span>
-            <button className="source-button" onClick={() => setSources(true)}>
-              <Database size={13} />
-              데이터 출처
-            </button>
-          </div>
+          <DeskTopbar
+            collapsed={collapsed}
+            onCollapse={() =>
+              setCollapsed((v) => {
+                save('sidebar-collapsed', !v);
+                return !v;
+              })
+            }
+          />
+          <button
+            className="source-button"
+            onClick={() => setSources(true)}
+            aria-label="데이터 출처"
+          >
+            <Database size={15} />
+            <span>출처</span>
+          </button>
         </header>
         {!online ? (
           <div className="connection-banner" role="status">
@@ -1192,6 +1149,7 @@ export default function App() {
               <Route path="/chart/:asset" element={<PricePage workspace />} />
               <Route path="/metrics/:metric" element={<MetricPage />} />
               <Route path="/coins" element={<WatchlistPage />} />
+              <Route path="/workspace" element={<WorkspacePage />} />
               <Route path="/compare" element={<ComparePage />} />
               <Route path="/explore" element={<MetricsExplorer />} />
               <Route path="/dominance" element={<DominancePage />} />

@@ -1,6 +1,7 @@
+import { ChartNavigator, ChartTools } from './ChartNavigator';
+import { createDeskChart as createChart } from './chart-theme';
 import { memo, useEffect, useMemo, useRef, useState } from 'react';
 import {
-  createChart,
   LineSeries,
   ColorType,
   PriceScaleMode,
@@ -117,7 +118,7 @@ export const MetricChart = memo(function MetricChart({
       surface.dataset.visibleTo = String(Number(range.to));
     });
     const price = chart.addSeries(LineSeries, {
-      color: large ? '#8090a880' : '#69778c65',
+      color: large ? '#93a4b3' : '#81909d',
       lineWidth: 1,
       priceScaleId: metric.unit === 'USD' ? 'left' : 'right',
       priceLineVisible: false,
@@ -314,6 +315,23 @@ export const MetricChart = memo(function MetricChart({
           {keyboardValue}
         </span>
       ) : null}
+      {large ? (
+        <>
+          <ChartNavigator
+            rows={series.data}
+            chart={chartRef}
+            label={metric.title}
+            log={metricLog}
+          />
+          <ChartTools
+            chart={chartRef}
+            rows={series.data}
+            label={metric.title}
+            unit={metric.unit}
+            source={series.meta.source}
+          />
+        </>
+      ) : null}
       <div className="chart-actions" aria-label={metric.title + ' 지표축 설정'}>
         <span className="muted">
           {metric.unit === 'USD' ? '공통 USD 축' : '왼쪽 지표축'} · {metricLog ? '로그' : '선형'}
@@ -353,19 +371,23 @@ export const MetricChart = memo(function MetricChart({
           </small>
         ) : null}
       </div>
-      <ThresholdLegend
-        id={metric.id}
-        point={display}
-        comparison={
-          display && priceByTime.has(display.time)
-            ? { time: display.time, value: priceByTime.get(display.time)! }
-            : undefined
-        }
-        readingLabel={hover ? '선택 관측' : '최근 관측'}
-        compact={!large}
-        stale={series.meta.stale}
-        dataSource={series.meta.source}
-      />
+      <details className="threshold-details">
+        <summary>기준 구간 · 출처와 해석의 한계</summary>
+        <ThresholdLegend
+          id={metric.id}
+          point={display}
+          comparison={
+            display && priceByTime.has(display.time)
+              ? { time: display.time, value: priceByTime.get(display.time)! }
+              : undefined
+          }
+          readingLabel={hover ? '선택 관측' : '최근 관측'}
+          compact={!large}
+          stale={series.meta.stale}
+          dataSource={series.meta.source}
+          showReading={false}
+        />
+      </details>
       {large ? (
         <>
           <div className="metric-hover metric-observation" aria-live="off">

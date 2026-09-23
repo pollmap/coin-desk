@@ -1,6 +1,7 @@
+import { ChartNavigator, ChartTools } from './ChartNavigator';
+import { createDeskChart as createChart } from './chart-theme';
 import { memo, useEffect, useMemo, useRef, useState } from 'react';
 import {
-  createChart,
   LineSeries,
   ColorType,
   PriceScaleMode,
@@ -244,6 +245,14 @@ export const LongHistoryChart = memo(function LongHistoryChart({
       <span className="chart-keyboard-status" role="status">
         {keyboardMessage}
       </span>
+      <ChartNavigator rows={points} chart={chartRef} label={asset} log={log} />
+      <ChartTools
+        chart={chartRef}
+        rows={points}
+        label={asset}
+        unit={'USD'}
+        source={series.meta.source}
+      />
       <div className="chart-actions" aria-label="장기 가격 차트 조작">
         <button onClick={() => zoom(1 / 1.4)} aria-label="장기 가격 차트 확대">
           ＋ 확대

@@ -1,11 +1,14 @@
+import { ChartNavigator, ChartTools } from './ChartNavigator';
+import { ChartRangeControl } from './ChartRangeControl';
+import { createDeskChart as createChart } from './chart-theme';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import {
-  createChart,
   LineSeries,
   ColorType,
   TickMarkType,
   type UTCTimestamp,
+  type IChartApi,
 } from 'lightweight-charts';
 import { ASSETS } from '../shared/catalog';
 import type { Dominance } from '../shared/types';
@@ -86,6 +89,7 @@ export function DominancePage() {
   }>('/api/v1/dominance/history', false, 300000);
   const [selected, setSelected] = useState('BTC');
   const ref = useRef<HTMLDivElement>(null);
+  const apiRef = useRef<IChartApi | null>(null);
   const lastView = useRef<{ selected: string; from: UTCTimestamp; to: UTCTimestamp } | null>(null);
   const rows = history.data?.data;
   const points = useMemo(
@@ -107,6 +111,7 @@ export function DominancePage() {
   );
   const selectedLabel = selected === 'STABLE' ? '스테이블코인 전체 ≈' : selected + '.D';
   const latest = points.at(-1);
+  const previous = points.at(-2);
   useEffect(() => {
     if (!ref.current || points.length < 2) return;
     const chart = createChart(ref.current, {
@@ -142,6 +147,7 @@ export function DominancePage() {
       },
       localization: { timeFormatter: (t: number) => dateLabel(Number(t), true) },
     });
+    apiRef.current = chart;
     const line = chart.addSeries(LineSeries, {
       color: colors[selected],
       lineWidth: 2,
@@ -164,6 +170,7 @@ export function DominancePage() {
           from: Number(range.from) as UTCTimestamp,
           to: Number(range.to) as UTCTimestamp,
         };
+      apiRef.current = null;
       chart.remove();
     };
   }, [points, selected]);
@@ -195,7 +202,10 @@ export function DominancePage() {
         {latest ? (
           <p className="dominance-basis">
             {selectedLabel} 최신 관측 {numeric(latest.value, latest.value < 1 ? 3 : 2)}% ·{' '}
-            {dateLabel(latest.time, true)} · {points.length.toLocaleString()}회 관측
+            {dateLabel(latest.time, true)} · {points.length.toLocaleString()}회 관측{' '}
+            {previous
+              ? ` · 직전 관측 대비 ${numeric(latest.value - previous.value, 3)}%p (${dateLabel(previous.time, true)})`
+              : ''}
           </p>
         ) : null}
         {points.length >= 2 ? (
@@ -206,6 +216,28 @@ export function DominancePage() {
             차트가 표시됩니다.
           </div>
         )}
+        {points.length >= 2 ? (
+          <>
+            <ChartNavigator rows={points} chart={apiRef} label={selectedLabel} />
+            <ChartTools
+              rows={points}
+              chart={apiRef}
+              label={selectedLabel}
+              unit="percent"
+              source={selected === 'STABLE' ? 'DefiLlama / CoinLore (approximate)' : 'CoinLore'}
+            />
+            <ChartRangeControl
+              rows={points}
+              resetKey={selected}
+              onApply={(r) =>
+                apiRef.current
+                  ?.timeScale()
+                  .setVisibleRange({ from: r.from as UTCTimestamp, to: r.to as UTCTimestamp })
+              }
+              onReset={() => apiRef.current?.timeScale().fitContent()}
+            />
+          </>
+        ) : null}
         {history.error ? (
           <p className="amber" role="alert">
             {history.error} <button onClick={history.reload}>다시 시도</button>

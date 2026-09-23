@@ -23,4 +23,8 @@ for (const fixture of fixtures)
     compare(m.line, 'macd');
     compare(m.signal, 'signal');
     compare(m.histogram, 'histogram');
+    const custom = macd(points, 8, 21, 5);
+    compare(custom.line, 'macdCustom');
+    compare(custom.signal, 'signalCustom');
+    compare(custom.histogram, 'histogramCustom');
   });

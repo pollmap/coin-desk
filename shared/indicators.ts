@@ -5,6 +5,8 @@ export interface IndicatorSpec {
   period: number;
   basis: 'bar' | 'd' | 'w';
   multiplier: number;
+  slowPeriod?: number;
+  signalPeriod?: number;
   label: string;
   color: string;
 }
@@ -19,6 +21,32 @@ const aliases: Record<string, string> = {
 };
 export function indicatorSpec(id: string): IndicatorSpec | null {
   if (typeof id !== 'string' || id.length > 40) return null;
+  const normalized = aliases[id] || id;
+  if (normalized.startsWith('macd:')) {
+    const parts = normalized.split(':');
+    const fast = Number(parts[1]),
+      slow = Number(parts[3] ?? 26),
+      signal = Number(parts[4] ?? 9);
+    if (
+      ![3, 5].includes(parts.length) ||
+      parts[2] !== 'bar' ||
+      ![parts[1], parts[3] ?? '26', parts[4] ?? '9'].every((v) => /^\d+$/.test(v)) ||
+      ![fast, slow, signal].every((v) => Number.isInteger(v) && v >= 2 && v <= 1000) ||
+      fast >= slow
+    )
+      return null;
+    return {
+      id,
+      kind: 'macd',
+      period: fast,
+      slowPeriod: slow,
+      signalPeriod: signal,
+      basis: 'bar',
+      multiplier: 2,
+      label: `MACD ${fast}·${slow}·${signal}`,
+      color: '#55c4ba',
+    };
+  }
   const [kind, p, basis = 'bar', k = '2', extra] = (aliases[id] || id).split(':');
   const period = Number(p),
     multiplier = Number(k);
@@ -84,7 +112,9 @@ export function validIndicators(input: unknown): string[] {
 /** Preset aliases and an equivalent custom period refer to the same chart line. */
 export function indicatorIdentity(id: string): string | null {
   const s = indicatorSpec(id);
-  return s ? `${s.kind}:${s.period}:${s.basis}${s.kind === 'bb' ? ':' + s.multiplier : ''}` : null;
+  return s
+    ? `${s.kind}:${s.period}:${s.basis}${s.kind === 'bb' ? ':' + s.multiplier : s.kind === 'macd' ? ':' + s.slowPeriod + ':' + s.signalPeriod : ''}`
+    : null;
 }
 
 export function addIndicator(
@@ -94,7 +124,10 @@ export function addIndicator(
 ): { value: string[]; error?: string } {
   const spec = indicatorSpec(candidate);
   if (!spec)
-    return { value: input, error: '기간은 2~1,000의 정수, 표준편차 배수는 0.5~5로 입력하세요.' };
+    return {
+      value: input,
+      error: '기간은 2~1,000 정수, MACD 단기는 장기보다 작게, 표준편차 배수는 0.5~5로 입력하세요.',
+    };
   const identity = indicatorIdentity(candidate);
   const remaining = validIndicators(input).filter(
     (id) =>

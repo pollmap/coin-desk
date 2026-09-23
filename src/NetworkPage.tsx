@@ -1,3 +1,6 @@
+import { NetworkInfoTabs } from './NetworkInfoTabs';
+import { ThresholdMeter } from './ThresholdMeter';
+import { useMemo } from 'react';
 import { Link, useParams, useSearchParams } from 'react-router-dom';
 import { ASSETS } from '../shared/catalog';
 import {
@@ -33,6 +36,15 @@ export function NetworkPage() {
     900000,
   );
   const first = result.data?.data[0];
+  const reference = useData<SeriesResponse>(
+    supported && metric ? `/api/v1/reference?asset=${asset}&limit=1000` : null,
+    true,
+    900000,
+  );
+  const comparedSeries = useMemo(
+    () => (result.data ? { ...result.data, price: reference.data?.data ?? [] } : undefined),
+    [result.data, reference.data],
+  );
   const latest = result.data?.data.at(-1);
   const unit = networkUnit(asset, requested);
   function change(key: string, value: string) {
@@ -95,7 +107,10 @@ export function NetworkPage() {
         </section>
       ) : (
         <>
-          <section className="panel network-picker" aria-label="온체인 지표 선택">
+          <details className="panel network-picker" aria-label="온체인 지표 선택">
+            <summary>
+              지표 변경 · {metric?.title || requested} <span>{metrics.length}개 지표</span>
+            </summary>
             <div>
               <h2>보고 싶은 지표</h2>
               <span>{metrics.length}개 지표 · Coin Metrics</span>
@@ -112,7 +127,7 @@ export function NetworkPage() {
                 </button>
               ))}
             </div>
-          </section>
+          </details>
           {!metric ? (
             <div className="error-notice" role="alert">
               {asset}에서 지원하지 않는 지표입니다.
@@ -137,6 +152,7 @@ export function NetworkPage() {
                   </div>
                   <PeriodPicker value={period} onChange={(value) => change('period', value)} />
                 </div>
+                <ThresholdMeter id={'network_' + metric.id} value={latest?.value} unit={unit} />
                 <div className="network-coverage" aria-label="온체인 실제 제공 범위">
                   <div>
                     <span>제공 시작일</span>
@@ -159,7 +175,7 @@ export function NetworkPage() {
                 ) : null}
                 {result.data?.data.length ? (
                   <NetworkChart
-                    series={result.data}
+                    series={comparedSeries!}
                     asset={asset}
                     metric={metric.id}
                     title={metric.title}
@@ -178,6 +194,18 @@ export function NetworkPage() {
                 )}
                 <div className="coverage-strip">
                   <span>
+                    가격 비교: Coin Metrics USD 참조가격{' '}
+                    {reference.error
+                      ? '· 조회 실패'
+                      : reference.data?.meta.stale
+                        ? '· 갱신 지연'
+                        : ''}{' '}
+                    · {dateLabel(reference.data?.data.at(-1)?.time)}
+                    {reference.error && (
+                      <button onClick={reference.reload}>가격 다시 불러오기</button>
+                    )}
+                  </span>
+                  <span>
                     {metric.derived
                       ? '동일 원천에서 역산한 파생값'
                       : `원천 지표 · ${metric.sourceMetric}`}{' '}
@@ -194,50 +222,12 @@ export function NetworkPage() {
                   </p>
                 ) : null}
               </section>
-              <section className="panel network-guide">
-                <h2>{metric.title}, 어떻게 읽나요?</h2>
-                <p>{metric.description}</p>
-                <div className="network-formula">{metric.formula}</div>
-                {metric.id === 'mvrv' ? (
-                  <div className="network-reference">
-                    <strong>
-                      {latest
-                        ? latest.value < 1
-                          ? '최근 관측: 1 미만 · 실현 가치 아래'
-                          : latest.value === 1
-                            ? '최근 관측: 1 · 두 평가액 일치'
-                            : '최근 관측: 1 초과 · 실현 가치 위'
-                        : '참고선: 1'}
-                    </strong>
-                    <p>
-                      <b>1 미만</b>이면 원장 공급 기준 시가총액이 실현시가총액보다 작습니다.{' '}
-                      <b>1 초과</b>는 그 반대입니다. 고평가 참고 수준은 코인과 시기마다 다르며,
-                      BTC의 과거 고점 기준을 모든 코인에 그대로 사용할 수 없습니다.
-                    </p>
-                  </div>
-                ) : null}
-                {metric.id === 'nupl' ? (
-                  <p>
-                    0% 아래는 순미실현 손실, 0% 위는 순미실현 이익입니다. MVRV에서 역산했으므로
-                    MVRV와 서로 독립된 신호는 아닙니다.
-                  </p>
-                ) : null}
-                <div className="network-links">
-                  <a href={metric.source} target="_blank" rel="noreferrer">
-                    정의·체인별 집계 규칙 ↗
-                  </a>
-                  <a
-                    href="https://github.com/coinmetrics/data/blob/master/LICENSE"
-                    target="_blank"
-                    rel="noreferrer"
-                  >
-                    Coin Metrics · CC BY-NC 4.0 ↗
-                  </a>
-                  {asset === 'BTC' ? (
-                    <Link to="/metrics/mvrv?period=all">Bitview BTC 지표와 별도로 보기 ↗</Link>
-                  ) : null}
-                </div>
-              </section>
+              <NetworkInfoTabs
+                key={asset + metric.id}
+                asset={asset}
+                metric={metric}
+                series={result.data}
+              />
             </>
           )}
         </>

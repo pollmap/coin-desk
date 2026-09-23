@@ -32,12 +32,14 @@ export interface Provenance {
   calculationStart?: number | null;
 }
 export interface SeriesResponse {
+  range?: { from: number; to: number };
   data: Point[];
   price: Point[];
   meta: Provenance;
   nextCursor: number | null;
 }
 export interface CandleResponse {
+  range?: { from: number; to: number };
   data: Candle[];
   meta: Provenance;
   nextCursor: number | null;

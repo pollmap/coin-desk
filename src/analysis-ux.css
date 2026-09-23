@@ -1,13 +1,13 @@
 .metric-guide {
-  border: 1px solid var(--border, #26303c);
+  border: 1px solid var(--border, var(--border));
   border-radius: 8px;
-  background: var(--panel, #111721);
+  background: var(--panel, var(--panel));
   margin: 14px 0;
 }
 .metric-guide summary {
   cursor: pointer;
   padding: 14px 16px;
-  color: var(--text, #dbe2ed);
+  color: var(--text, var(--text));
   font-size: 13px;
   line-height: 1.6;
 }
@@ -28,7 +28,7 @@
   margin: 0 0 8px;
 }
 .guide-columns p {
-  color: #b4bfd0;
+  color: var(--text);
   font-size: 12px;
   line-height: 1.8;
   margin: 0 0 10px;
@@ -38,7 +38,7 @@
   font-size: 12px;
 }
 .guide-example {
-  border-left: 2px solid #465164;
+  border-left: 2px solid var(--border);
   padding-left: 10px;
 }
 .guide-related {
@@ -64,9 +64,9 @@
   margin: 0 0 18px;
 }
 .learning-paths button {
-  background: #151d29;
-  border: 1px solid #2b3748;
-  color: #c6d3e7;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--text);
   padding: 14px;
   text-align: left;
   border-radius: 8px;
@@ -87,13 +87,13 @@
   gap: 10px;
   align-items: center;
   margin: 0 0 16px;
-  color: #aebed4;
+  color: var(--text);
   font-size: 12px;
 }
 .library-selection select {
-  background: #1a2432;
-  color: #dbe2ed;
-  border: 1px solid #334155;
+  background: var(--surface);
+  color: var(--text);
+  border: 1px solid var(--border);
   border-radius: 5px;
   padding: 8px;
 }
@@ -103,8 +103,8 @@
   flex-wrap: wrap;
   gap: 8px;
   padding: 10px 14px;
-  border-top: 1px solid #26303c;
-  color: #aebad0;
+  border-top: 1px solid var(--border);
+  color: var(--text);
   font-size: 11px;
   line-height: 1.6;
 }
@@ -112,7 +112,7 @@
   color: #9bb8f4;
 }
 .period-note {
-  color: #94a3b8;
+  color: var(--muted);
   font-size: 11px;
   margin: 6px 0;
 }
@@ -123,11 +123,11 @@
   display: flex;
   align-items: center;
   gap: 6px;
-  color: #adbfda;
+  color: var(--text);
   font-size: 11px;
   text-decoration: none;
   padding: 7px 9px;
-  border: 1px solid #334155;
+  border: 1px solid var(--border);
   border-radius: 5px;
 }
 .server-link i {

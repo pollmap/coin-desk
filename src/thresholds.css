@@ -1,7 +1,7 @@
 .threshold-legend {
   padding: 12px 16px;
-  border-top: 1px solid #263040;
-  color: #a4b1c5;
+  border-top: 1px solid var(--border);
+  color: var(--muted);
   font-size: 12px;
 }
 .threshold-summary {
@@ -11,13 +11,13 @@
   gap: 5px 12px;
   min-height: 46px;
   padding: 9px 16px;
-  border-top: 1px solid #263040;
-  background: #141d29;
-  color: #9dacbf;
+  border-top: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--muted);
   font-size: 11px;
 }
 .threshold-summary b {
-  color: #e2eaf6;
+  color: var(--text);
   font-variant-numeric: tabular-nums;
   font-size: 14px;
 }
@@ -28,7 +28,7 @@
 .threshold-summary small {
   margin-left: auto;
   font-size: 10px;
-  color: #bbc6d7;
+  color: var(--text);
 }
 @media (max-width: 600px) {
   .threshold-summary {
@@ -50,7 +50,7 @@
   margin-bottom: 10px;
 }
 .threshold-current > span:first-child {
-  color: #8fa1b9;
+  color: var(--muted);
   font-size: 11px;
 }
 .threshold-current strong {
@@ -58,7 +58,7 @@
   font-weight: 600;
 }
 .threshold-current > b {
-  color: #e5edf7;
+  color: var(--text);
   font-variant-numeric: tabular-nums;
 }
 .threshold-band-legend {
@@ -75,13 +75,13 @@
   align-items: center;
   gap: 5px;
   padding: 6px 8px;
-  border: 1px solid #2e3a4c;
+  border: 1px solid var(--border);
   border-radius: 5px;
-  background: #151e2b;
+  background: var(--surface);
 }
 .threshold-band-legend li[data-active] {
   border-color: var(--zone-color);
-  background: #1b2735;
+  background: var(--surface);
 }
 .threshold-band-legend i {
   width: 7px;
@@ -90,7 +90,7 @@
   background: var(--zone-color);
 }
 .threshold-band-legend b {
-  color: #d4deeb;
+  color: var(--text);
   font-weight: 500;
   font-variant-numeric: tabular-nums;
 }
@@ -107,7 +107,7 @@
 }
 .threshold-note,
 .threshold-comparison {
-  color: #95a3b7;
+  color: var(--muted);
   line-height: 1.65;
   margin: 8px 0 0;
   font-size: 11px;
@@ -131,11 +131,11 @@
   flex-basis: 100%;
 }
 .threshold-technical {
-  border-top: 1px solid #263040;
+  border-top: 1px solid var(--border);
 }
 .threshold-technical summary {
   padding: 11px 14px;
-  color: #b7c7da;
+  color: var(--text);
   font-size: 12px;
   cursor: pointer;
 }

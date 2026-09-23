@@ -14,13 +14,16 @@ export function IndicatorEditor({
     [kind, setKind] = useState('sma'),
     [period, setPeriod] = useState('20'),
     [basis, setBasis] = useState('d'),
-    [multiplier, setMultiplier] = useState('2');
+    [multiplier, setMultiplier] = useState('2'),
+    [slowPeriod, setSlowPeriod] = useState('26'),
+    [signalPeriod, setSignalPeriod] = useState('9');
   const [error, setError] = useState('');
   const [editing, setEditing] = useState<string | undefined>();
   const [feedback, setFeedback] = useState('');
   const [panel, setPanel] = useState<'presets' | 'edit' | 'active'>('presets');
   const editorId = useId();
   const periodInput = useRef<HTMLInputElement>(null);
+  const toggleButton = useRef<HTMLButtonElement>(null);
   const tabs = [
     { id: 'presets', label: '프리셋' },
     { id: 'edit', label: '직접 설정' },
@@ -35,12 +38,14 @@ export function IndicatorEditor({
     setPeriod(nextKind === 'rsi' ? '14' : nextKind === 'macd' ? '12' : '20');
     setBasis(['sma', 'ema'].includes(nextKind) ? 'd' : 'bar');
     setMultiplier('2');
+    setSlowPeriod('26');
+    setSignalPeriod('9');
     setError('');
   }
   function add() {
     const id =
       kind === 'macd'
-        ? 'macd'
+        ? `macd:${period}:bar:${slowPeriod}:${signalPeriod}`
         : `${kind}:${period}:${['sma', 'ema'].includes(kind) ? basis : 'bar'}${kind === 'bb' ? ':' + multiplier : ''}`;
     const result = addIndicator(value, id, editing);
     if (result.error) {
@@ -114,6 +119,7 @@ export function IndicatorEditor({
           ))}
         <button
           className="indicator-config"
+          ref={toggleButton}
           aria-expanded={open}
           aria-controls={editorId}
           onClick={() => setOpen(!open)}
@@ -125,7 +131,27 @@ export function IndicatorEditor({
         </span>
       </div>
       {open ? (
-        <section id={editorId} className="indicator-editor" aria-label="기술지표 설정">
+        <section
+          id={editorId}
+          className="indicator-editor"
+          aria-label="기술지표 설정"
+          onKeyDown={(event) => {
+            if (event.key === 'Escape') {
+              setOpen(false);
+              toggleButton.current?.focus();
+            }
+          }}
+        >
+          <button
+            className="indicator-close"
+            onClick={() => {
+              setOpen(false);
+              toggleButton.current?.focus();
+            }}
+            aria-label="지표 설정 닫기"
+          >
+            닫기 ×
+          </button>
           <div
             className="indicator-tabs"
             role="tablist"
@@ -211,6 +237,8 @@ export function IndicatorEditor({
                             setPeriod(String(spec.period));
                             setBasis(spec.basis);
                             setMultiplier(String(spec.multiplier));
+                            setSlowPeriod(String(spec.slowPeriod ?? 26));
+                            setSignalPeriod(String(spec.signalPeriod ?? 9));
                             setError('');
                             setFeedback(`${spec.label} 값을 바꾼 후 수정 적용을 누르세요.`);
                             setPanel('edit');
@@ -259,12 +287,12 @@ export function IndicatorEditor({
                       <option value="ema">지수 이동평균 EMA</option>
                       <option value="rsi">RSI</option>
                       <option value="bb">볼린저밴드</option>
-                      <option value="macd">MACD 12·26·9</option>
+                      <option value="macd">MACD</option>
                     </select>
                   </label>
-                  {kind !== 'macd' ? (
+                  {
                     <label>
-                      기간
+                      {kind === 'macd' ? '단기 EMA 기간' : '기간'}
                       <input
                         type="number"
                         min="2"
@@ -276,6 +304,34 @@ export function IndicatorEditor({
                         onChange={(e) => setPeriod(e.target.value)}
                       />
                     </label>
+                  }
+                  {kind === 'macd' ? (
+                    <>
+                      <label>
+                        장기 EMA 기간
+                        <input
+                          type="number"
+                          min="2"
+                          max="1000"
+                          step="1"
+                          required
+                          value={slowPeriod}
+                          onChange={(e) => setSlowPeriod(e.target.value)}
+                        />
+                      </label>
+                      <label>
+                        신호 EMA 기간
+                        <input
+                          type="number"
+                          min="2"
+                          max="1000"
+                          step="1"
+                          required
+                          value={signalPeriod}
+                          onChange={(e) => setSignalPeriod(e.target.value)}
+                        />
+                      </label>
+                    </>
                   ) : null}
                   {['sma', 'ema'].includes(kind) ? (
                     <label>

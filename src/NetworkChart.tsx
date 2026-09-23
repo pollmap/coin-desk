@@ -1,7 +1,8 @@
+import { ChartNavigator, ChartTools } from './ChartNavigator';
+import { createDeskChart as createChart } from './chart-theme';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import {
   ColorType,
-  createChart,
   LineSeries,
   PriceScaleMode,
   TickMarkType,
@@ -50,6 +51,8 @@ export function NetworkChart({
   const surface = useRef<HTMLDivElement>(null);
   const chart = useRef<IChartApi | null>(null);
   const line = useRef<ISeriesApi<'Line'> | null>(null);
+  const priceLine = useRef<ISeriesApi<'Line'> | null>(null);
+  const [showPrice, setShowPrice] = useState(true);
   const bands = useRef<ThresholdBands | null>(null);
   const boundaries = useRef<IPriceLine[]>([]);
   const lastView = useRef<{ key: string; from: UTCTimestamp; to: UTCTimestamp } | null>(null);
@@ -112,6 +115,14 @@ export function NetworkChart({
       localization: { locale: 'ko-KR', timeFormatter: (time: number) => dateLabel(Number(time)) },
     });
     chart.current = api;
+    priceLine.current = api.addSeries(LineSeries, {
+      color: '#93a4b3',
+      lineWidth: 1,
+      priceScaleId: unit === 'USD' ? 'right' : 'left',
+      priceLineVisible: false,
+      lastValueVisible: false,
+      priceFormat: { type: 'custom', formatter: (v: number) => money(v, 'USD') },
+    });
     const plot = api.addSeries(LineSeries, {
       color: '#70d4c4',
       lineWidth: 2,
@@ -178,6 +189,18 @@ export function NetworkChart({
       boundaries.current = [];
     };
   }, [points, asset, metric, unit, definition]);
+  useEffect(() => {
+    priceLine.current?.setData(series.price.map((p) => ({ time: ts(p.time), value: p.value })));
+    priceLine.current?.applyOptions({ visible: showPrice });
+    if (unit !== 'USD')
+      chart.current
+        ?.priceScale('left')
+        .applyOptions({
+          visible: showPrice && !!series.price.length,
+          mode: PriceScaleMode.Logarithmic,
+          borderVisible: false,
+        });
+  }, [series.price, showPrice, points, asset, metric, unit]);
   useEffect(() => {
     const visible = points.filter(
       (point) => point.time >= periodStart(period, points.at(-1)?.time),
@@ -291,7 +314,22 @@ export function NetworkChart({
             );
         }}
       />
+      <ChartNavigator rows={series.data} chart={chart} label={title} log={log && logAllowed} />
+      <ChartTools
+        chart={chart}
+        rows={series.data}
+        label={title}
+        unit={unit}
+        source={series.meta.source}
+      />
       <div className="chart-actions">
+        <button
+          aria-pressed={showPrice}
+          disabled={!series.price.length}
+          onClick={() => setShowPrice((v) => !v)}
+        >
+          USD 가격 {showPrice ? '숨기기' : '표시'}
+        </button>
         <button onClick={() => zoom(1 / 1.4)}>＋ 확대</button>
         <button onClick={() => zoom(1.4)}>− 축소</button>
         <button onClick={all}>전체 이력 보기</button>

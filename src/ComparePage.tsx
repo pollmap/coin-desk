@@ -1,8 +1,9 @@
+import { ChartNavigator, ChartTools } from './ChartNavigator';
+import { createDeskChart as createChart } from './chart-theme';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import {
   ColorType,
-  createChart,
   LineSeries,
   LineStyle,
   type IChartApi,
@@ -47,7 +48,13 @@ function selectedAssets(value: unknown): Asset[] {
   return valid.length >= 2 ? valid : DEFAULT_ASSETS;
 }
 
-function ComparisonChart({ comparison }: { comparison: ComparisonResult }) {
+function ComparisonChart({
+  comparison,
+  onExport,
+}: {
+  comparison: ComparisonResult;
+  onExport: () => void;
+}) {
   const container = useRef<HTMLDivElement>(null);
   const chart = useRef<IChartApi | null>(null);
   const [hover, setHover] = useState<number | null>(null);
@@ -169,6 +176,23 @@ function ComparisonChart({ comparison }: { comparison: ComparisonResult }) {
         role="img"
         aria-label="같은 날짜를 100으로 맞춘 코인 성과 비교 차트. 정확한 수치는 아래 표에서 확인할 수 있습니다."
       />
+      {comparison.rows[0] ? (
+        <>
+          <ChartNavigator
+            chart={chart}
+            rows={comparison.rows[0].points}
+            label={comparison.rows[0].asset + ' 비교 기간'}
+          />
+          <ChartTools
+            chart={chart}
+            rows={comparison.rows[0].points}
+            label="코인 성과 비교"
+            unit="기준값 100"
+            source="선택 거래소 확정 종가"
+            onExport={onExport}
+          />
+        </>
+      ) : null}
       <p className="comparison-caption">
         확대·이동해도 기준일과 아래 표의 분석 기간은 고정됩니다. 차트의 십자선으로 같은 날짜를
         비교하세요.
@@ -663,7 +687,7 @@ export function ComparePage() {
                 비교를 마칩니다.
               </div>
             ) : null}
-            <ComparisonChart comparison={comparison} />
+            <ComparisonChart comparison={comparison} onExport={download} />
           </section>
           <section className="panel comparison-statistics">
             <div className="panel-title">
@@ -760,6 +784,7 @@ export function ComparePage() {
                 </tbody>
               </table>
             </div>
+
             <p className="comparison-caption">
               변동성은 최소 20개의 연속 일간 수익률이 필요합니다. 최대 낙폭은 이 기간의 종가
               고점에서 이후 종가 저점까지의 하락률이며 장중 낙폭은 포함하지 않습니다.

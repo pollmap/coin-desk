@@ -5,18 +5,18 @@
   gap: 7px;
   padding: 9px 12px;
   min-height: 36px;
-  border: 1px solid #354052;
-  background: #18212e;
+  border: 1px solid var(--border);
+  background: var(--surface);
   border-radius: 7px;
-  color: #dce4ef;
+  color: var(--text);
   font-size: 12px;
   cursor: pointer;
   text-decoration: none;
 }
 .desk-button:hover,
 .desk-button[aria-pressed='true'] {
-  background: #27354a;
-  border-color: #687b99;
+  background: var(--surface);
+  border-color: var(--border);
   color: #fff;
 }
 .desk-button.primary {
@@ -41,8 +41,8 @@
 .desk-editor {
   margin-top: 10px;
   padding: 16px;
-  background: #141c28;
-  border: 1px solid #344053;
+  background: var(--surface);
+  border: 1px solid var(--border);
   border-radius: 8px;
   text-align: left;
   max-width: 100%;
@@ -51,7 +51,7 @@
 .watch-note {
   font-size: 12px;
   line-height: 1.7;
-  color: #a8b7cc;
+  color: var(--muted);
 }
 .watch-note {
   margin: 14px 0;
@@ -69,15 +69,15 @@
   flex-direction: column;
   gap: 7px;
   font-size: 12px;
-  color: #b2c1d5;
+  color: var(--text);
 }
 .workspace-save input,
 .explorer-toolbar input,
 .explorer-toolbar select,
 .settings-transfer textarea {
-  border: 1px solid #46556d;
-  background: #0c131e;
-  color: #e5edf7;
+  border: 1px solid var(--border);
+  background: var(--panel);
+  color: var(--text);
   padding: 10px 12px;
   border-radius: 6px;
   min-height: 40px;
@@ -85,7 +85,7 @@
 }
 .settings-transfer {
   margin-top: 15px;
-  border-top: 1px solid #364153;
+  border-top: 1px solid var(--border);
   padding-top: 15px;
 }
 .settings-transfer label {
@@ -107,9 +107,9 @@
 .saved-workspaces > div {
   display: flex;
   align-items: stretch;
-  border: 1px solid #3c4a60;
+  border: 1px solid var(--border);
   border-radius: 7px;
-  background: #1b2636;
+  background: var(--surface);
   overflow: hidden;
   max-width: 100%;
 }
@@ -118,25 +118,25 @@
   align-items: center;
   gap: 8px;
   padding: 12px;
-  color: #dce8f8;
+  color: var(--text);
   min-width: 0;
   flex-wrap: wrap;
 }
 .saved-workspaces small {
-  color: #acbad0;
+  color: var(--text);
 }
 .saved-workspaces button {
   padding: 10px;
   background: transparent;
   border: 0;
-  color: #bdc9d9;
+  color: var(--text);
   cursor: pointer;
 }
 .desk-message {
   font-size: 13px;
   color: #e5bc79;
   padding: 10px 12px;
-  background: #201e1b;
+  background: var(--surface);
   border-left: 3px solid #e5bc79;
   line-height: 1.6;
 }
@@ -178,10 +178,10 @@
   font-size: 12px;
 }
 .card-order button {
-  background: #243246;
-  border: 1px solid #4c5b72;
+  background: var(--surface);
+  border: 1px solid var(--border);
   border-radius: 4px;
-  color: #dce8f8;
+  color: var(--text);
   padding: 4px;
   cursor: pointer;
 }
@@ -219,37 +219,37 @@
 }
 .watch-table th {
   font-size: 11px;
-  color: #abb9ce;
+  color: var(--text);
   text-align: left;
   padding: 15px 12px;
-  background: #171f2d;
+  background: var(--surface);
 }
 .watch-table td {
   padding: 16px 12px;
-  border-top: 1px solid #293547;
+  border-top: 1px solid var(--border);
   vertical-align: middle;
 }
 .watch-table td small {
   display: block;
   font-size: 10px;
-  color: #a2b2c9;
+  color: var(--muted);
   margin-top: 4px;
 }
 .watch-table td .amber {
   color: #e9b369;
 }
 .watch-table td a {
-  color: #d8e6fa;
+  color: var(--text);
 }
 .watch-table tr:hover {
-  background: #172231;
+  background: var(--surface);
 }
 .star-button {
   padding: 9px;
   border: 0;
   border-radius: 5px;
   background: transparent;
-  color: #8c9aaf;
+  color: var(--muted);
   cursor: pointer;
 }
 .star-button[aria-pressed='true'] {
@@ -282,7 +282,7 @@
 }
 .library-card p {
   font-size: 13px;
-  color: #becbdb;
+  color: var(--text);
   line-height: 1.8;
 }
 .library-card .formula {
@@ -292,7 +292,7 @@
 }
 .library-source {
   display: inline-block;
-  color: #aebfd9;
+  color: var(--text);
   font-size: 11px;
   margin-top: 15px;
 }
@@ -400,7 +400,7 @@ textarea:focus-visible {
   right: 8px;
   top: 12px;
   padding: 8px;
-  color: #b9c5d8;
+  color: var(--text);
 }
 .watch-scroll-hint {
   display: none;
@@ -408,7 +408,7 @@ textarea:focus-visible {
 @media (max-width: 1000px) {
   .watch-scroll-hint {
     display: block;
-    color: #a9b7c9;
+    color: var(--muted);
     font-size: 11px;
   }
 }

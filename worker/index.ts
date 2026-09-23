@@ -283,7 +283,10 @@ async function api(request: Request, env: Env): Promise<Response> {
     const metric = q.get('metric') || 'mvrv';
     if (!networkMetric(asset, metric))
       throw new RequestError('해당 자산에서 지원하지 않는 온체인 지표입니다.');
-    return response(await readNetworkSeries(env.DB, asset, metric, from, to, limit));
+    return response({
+      ...(await readNetworkSeries(env.DB, asset, metric, from, to, limit)),
+      range: { from, to },
+    });
   }
   if (endpoint === 'reference') {
     if (!(REFERENCE_ASSETS as readonly string[]).includes(asset))
@@ -307,6 +310,7 @@ async function api(request: Request, env: Env): Promise<Response> {
     return response({
       data,
       price: [],
+      range: { from, to },
       nextCursor: rows.results.length > limit ? data.at(-1)!.time + DAY : null,
       meta: {
         source: REFERENCE_SOURCE,
@@ -367,6 +371,7 @@ async function api(request: Request, env: Env): Promise<Response> {
     return response({
       data,
       meta: {
+        // The resolved range is also returned below for clock-independent pagination.
         ...meta(market, extent?.last ?? null, extent?.fetched ?? null),
         stale:
           !extent?.fetched ||
@@ -379,6 +384,7 @@ async function api(request: Request, env: Env): Promise<Response> {
           ? '원천에 거래가 없거나 누락된 구간이 있습니다. 임의 보간하지 않습니다.'
           : undefined,
       },
+      range: { from, to },
       nextCursor: more && data.length ? data.at(-1)!.closeTime : null,
     } satisfies CandleResponse);
   }
@@ -412,6 +418,7 @@ async function api(request: Request, env: Env): Promise<Response> {
     return response({
       data,
       price,
+      range: { from, to },
       meta: {
         source: 'Bitview / BRK',
         unit: metric.unit,

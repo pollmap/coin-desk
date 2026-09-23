@@ -1,8 +1,8 @@
 .automation-summary {
   padding: 18px;
-  border: 1px solid #33465a;
+  border: 1px solid var(--border);
   border-radius: 8px;
-  background: #111d29;
+  background: var(--surface);
   margin: 0 0 18px;
 }
 .automation-state {
@@ -17,7 +17,7 @@
 .automation-summary p,
 .server-schedule p,
 .server-runs p {
-  color: #afbdcf;
+  color: var(--text);
   line-height: 1.8;
   font-size: 12px;
 }
@@ -31,13 +31,13 @@
   margin: 18px 0;
 }
 .automation-facts dt {
-  color: #899db7;
+  color: var(--muted);
   font-size: 11px;
   margin-bottom: 8px;
 }
 .automation-facts dd {
   margin: 0;
-  color: #d0def0;
+  color: var(--text);
   font-size: 12px;
 }
 .server-schedule,
@@ -82,20 +82,20 @@
   display: grid;
   gap: 7px;
   font-size: 11px;
-  color: #b4c2d7;
+  color: var(--text);
 }
 .status-filters input,
 .status-filters select {
   padding: 10px;
-  background: #162130;
-  color: #dfebfa;
-  border: 1px solid #354256;
+  background: var(--surface);
+  color: var(--text);
+  border: 1px solid var(--border);
   border-radius: 5px;
 }
 .status-filters span {
   padding: 10px;
   font-size: 12px;
-  color: #9bacbf;
+  color: var(--muted);
 }
 .status-table-wrap {
   overflow-x: auto;
@@ -110,20 +110,20 @@
 .status-table th,
 .status-table td {
   padding: 13px 15px;
-  border-bottom: 1px solid #273242;
+  border-bottom: 1px solid var(--border);
   vertical-align: top;
   font-variant-numeric: tabular-nums;
 }
 .status-table thead {
-  color: #a5b4c8;
-  background: #182231;
+  color: var(--muted);
+  background: var(--surface);
 }
 .status-table tbody th {
   font-weight: 500;
 }
 .status-table small {
   display: block;
-  color: #8296b1;
+  color: var(--muted);
   font-size: 11px;
   line-height: 1.7;
   margin-top: 3px;
@@ -140,7 +140,7 @@
   grid-template-columns: 220px 1fr 140px;
   gap: 12px;
   padding: 10px 0;
-  border-bottom: 1px solid #263140;
+  border-bottom: 1px solid var(--border);
   font-size: 12px;
 }
 .server-runs li b {
@@ -173,7 +173,7 @@
   flex-wrap: wrap;
 }
 .history-origin {
-  color: #adbfda;
+  color: var(--text);
   font-size: 12px;
   line-height: 1.7;
   margin: 6px 20px 14px;
@@ -187,9 +187,9 @@
 }
 .history-view-tabs button {
   padding: 11px 16px;
-  border: 1px solid #344153;
+  border: 1px solid var(--border);
   border-radius: 6px;
-  color: #a9bcd5;
+  color: var(--text);
 }
 .history-view-tabs button.selected {
   background: #2c261c;
@@ -198,7 +198,7 @@
 }
 .history-view-tabs a {
   padding: 10px;
-  color: #adbfda;
+  color: var(--text);
   font-size: 12px;
 }
 @media (max-width: 900px) {
