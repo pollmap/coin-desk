@@ -25,16 +25,19 @@ export const LongHistoryChart = memo(function LongHistoryChart({
   period,
   log,
   onPeriodChange,
+  overlays = [],
 }: {
   series: SeriesResponse;
   asset: Asset;
   period: Period;
   log: boolean;
   onPeriodChange?: (period: Period) => void;
+  overlays?: { id: string; color: string; points: { time: number; value: number }[] }[];
 }) {
   const surfaceRef = useRef<HTMLDivElement>(null);
   const chartRef = useRef<IChartApi | null>(null);
   const lineRef = useRef<ISeriesApi<'Line'> | null>(null);
+  const overlayRefs = useRef<ISeriesApi<'Line'>[]>([]);
   const settings = useRef({ period, log });
   settings.current = { period, log };
   const previous = useRef<{ key: string; from: number; to: number } | null>(null);
@@ -129,6 +132,31 @@ export const LongHistoryChart = memo(function LongHistoryChart({
       lineRef.current = null;
     };
   }, [points, asset, color]);
+
+  useEffect(() => {
+    const chart = chartRef.current;
+    if (!chart) return;
+    for (const item of overlayRefs.current) chart.removeSeries(item);
+    overlayRefs.current = overlays
+      .filter((item) => item.points.length)
+      .map((item) => {
+        const line = chart.addSeries(LineSeries, {
+          color: item.color,
+          lineWidth: 1,
+          priceLineVisible: false,
+          lastValueVisible: false,
+          title: item.id,
+        });
+        line.setData(item.points.map((point) => ({ time: ts(point.time), value: point.value })));
+        return line;
+      });
+    return () => {
+      if (chartRef.current === chart) {
+        for (const item of overlayRefs.current) chart.removeSeries(item);
+      }
+      overlayRefs.current = [];
+    };
+  }, [overlays, points]);
 
   useEffect(() => {
     lineRef.current

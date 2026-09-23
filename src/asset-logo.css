@@ -1,0 +1,14 @@
+.asset-logo {
+  display: inline-flex;
+  flex: none;
+  object-fit: contain;
+  border-radius: 50%;
+  vertical-align: middle;
+}
+.asset-logo.fallback {
+  align-items: center;
+  justify-content: center;
+  color: #101719;
+  font-weight: 800;
+  font-size: 11px;
+}

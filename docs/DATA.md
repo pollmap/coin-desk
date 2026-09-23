@@ -171,3 +171,17 @@ Cloudflare Cron은 방문자·PC와 독립적으로 매분 작업 하나를 실�
 `candles`, `series`, `reference`, `network`의 페이지 응답에는 기존 필드와 함께 `range: { from, to }`를 반환합니다. 단위는 UTC Unix 초이며 `from`은 포함, `to`는 제외입니다. 최초 요청에서 종료일을 생략하면 서버가 이를 확정합니다. 후속 병렬 구간은 그 범위 안에서만 생성합니다. 각 후속 응답의 `range`는 해당 하위 요청의 범위이며 클라이언트가 처음 확정한 전체 범위를 덮어쓰지 않습니다.
 
 구버전 캐시에 `range`가 없으면 브라우저 시각으로 `to`를 만들지 않고 `nextCursor`를 순차 추적합니다. 페이지 실패를 전체 조회 완료로 승격하지 않습니다. 명시적으로 잘못된 미래 날짜를 전달하면 기존 서버 검증이 거절하며, 화면에는 한국어 오류와 재시도 방법을 표시합니다. 서버를 먼저 배포한 뒤 프런트엔드를 배포합니다.
+
+## 0.7 분석 확장 데이터 계약
+
+첫 화면의 BTC·DOGE·ETH 카드에는 선택한 시장의 현재가·24시간 변화와 **실제 체결 또는 관측 시각**을 표시합니다. 큰 전체 이력 차트는 Coin Metrics `PriceUSD` 일별 참조가격이며 거래소 캔들과 연결하지 않습니다. SOL·XRP·LINK·ONDO·PEPE는 접힌 영역과 기존 차트·비교에서 계속 조회할 수 있습니다.
+
+BTC 사이클 선은 확보한 USD 참조가격의 **확정된 UTC 일별 종가**로 계산합니다. 200주선은 완성된 주봉 종가 200개, 2년선은 일별 종가 730개와 그 평균의 5배, Pi Cycle은 111일 평균과 350일 평균의 2배입니다. 필요한 과거 표본이 없으면 그 시점의 선을 생략합니다. 고점 대비 낙폭은 해당 날짜까지 관측된 종가 최고값을 분모로 계산하므로 미래 가격을 과거 기준에 넣지 않습니다. 이 선들은 차트 참고선이며 일정한 주기의 재현이나 수익을 보증하지 않습니다.
+
+DOGE/BTC·ETH/BTC 상대가격은 같은 UTC 날짜에 모두 관측된 **USD 참조가격의 비율**입니다. 거래소의 DOGE/BTC·ETH/BTC 체결 시세가 아닙니다. 상대 성과는 공통 첫 날짜를 100으로 정규화합니다. 30·90일 상관관계는 양쪽 자산의 공통·연속 날짜별 로그수익률로 계산하며 결측 날짜를 메우지 않습니다. 최고점 대비 낙폭은 각각의 실제 관측 종가 최고값을 기준으로 합니다.
+
+Coin Metrics Community의 추가 네트워크 지표는 `GET /api/v1/network`의 기존 시계열 계약에 포함됩니다. BTC·ETH의 `exchange_inflow`=`FlowInExNtv`, `exchange_outflow`=`FlowOutExNtv`, `exchange_balance`=`SplyExNtv`이며 단위는 해당 자산 수량입니다. `exchange_netflow`는 **같은 날짜의 원본 유입−유출을 십진수로 뺀 계산값**입니다. DOGE의 `blocks`=`BlkCnt`, `issuance`=`IssTotNtv`도 포함합니다. 지원 여부는 자산별로 등록하며 미지원 자산에 다른 코인의 값을 대입하지 않습니다. 거래소 주소 식별 범위는 원천에 의존하고 변경될 수 있으므로 `sourceStatus`(`reviewed` 또는 `flash`)와 수집 시각을 함께 제공하며 결측일은 생략합니다.
+
+`GET /api/v1/derivatives?asset=BTC|DOGE|ETH&metric=funding|open_interest&from=&to=&limit=`는 Binance **USDⓈ-M USDT 무기한 계약 한 거래소**의 관측값만 조회합니다. `funding`은 원본 정산 비율에 100을 곱한 `%` 값이고, `open_interest`는 원본 `sumOpenInterestValue`의 **USDT 명목 가치**입니다. 응답에는 `data`, `price: []`, `range: {from,to}`, `nextCursor`, `meta.source/unit/market/dataAsOf/fetchedAt/historyStart/stale/calculationVersion/warning`을 포함합니다. 범위는 UTC Unix 초의 시작 포함·끝 제외이고, 커서는 마지막 반환 관측 이후입니다. 펀딩비는 실제 제공 첫 날짜부터 페이지 단위로 백필하며 미결제약정은 원천이 제공하는 최근 범위부터 축적합니다. 원천이 차단되거나 값이 없으면 빈 배열과 오류·지연 설명을 반환하고 시세를 추정하지 않습니다. 2026-09-23 공개 Worker에서는 Binance 선물 원천이 HTTP 403을 반환해 두 시계열 모두 **원천 연결 대기** 상태입니다.
+
+`GET /api/v1/network-live?asset=BTC`는 mempool.space의 마지막 정상 관측을 반환합니다. 미확인 거래 건수·가상 바이트와 권장 수수료(`sat/vB`)의 **현재 추정치**로, 확정된 온체인 일별 기록과 별개입니다. 서버 Cron의 15분 목표 주기로 확인하고 실제 관측·수집 시각과 지연 여부를 표시합니다. 브라우저 방문이 수집을 시작하지 않습니다. 운영 상태와 원천별 실패·갱신 시각은 `/api/v1/status`와 `/api/v1/health`에서 확인합니다.

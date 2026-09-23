@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import { Star, RefreshCw } from 'lucide-react';
 import { ASSETS } from '../shared/catalog';
+import { AssetLogo } from './AssetLogo';
 import type { Asset, Market, Overview } from '../shared/types';
 import { dateLabel, json, money, numeric } from './lib';
 import { usePersonalDesk } from './PersonalDesk';
@@ -225,7 +226,7 @@ export function WatchlistPage() {
                     </button>
                   </td>
                   <td>
-                    <b style={{ color: a.color }}>{a.id}</b>
+                    <AssetLogo asset={a.id} size={22} /> <b style={{ color: a.color }}>{a.id}</b>
                     <small>{a.name}</small>
                   </td>
                   <td>

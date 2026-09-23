@@ -17,6 +17,11 @@ const category = (id: string) =>
       : '밸류에이션';
 const questions = [
   {
+    category: '사이클',
+    question: '과거 장기 추세선에서 가격은 어디에 있나요?',
+    hint: '200주선 · 2년선 · Pi Cycle · 고점 대비 낙폭',
+  },
+  {
     category: '밸류에이션',
     question: '현재 평가와 마지막 이동 가치는 얼마나 다른가요?',
     hint: 'MVRV · 실현가격 · MVRV-Z',
@@ -35,6 +40,16 @@ const questions = [
     category: '기술지표',
     question: '추세·상대 강도·변동 폭은 어떻게 달라졌나요?',
     hint: '이동평균 · RSI · 볼린저밴드 · MACD',
+  },
+  {
+    category: '네트워크',
+    question: '코인이 실제로 얼마나 이동하고 발행되나요?',
+    hint: '거래소 유입·유출 · 블록 · 신규 발행',
+  },
+  {
+    category: '선물',
+    question: '선물 포지션과 펀딩비는 어떻게 변하나요?',
+    hint: 'Binance 펀딩비 · 미결제약정',
   },
 ];
 const guideText = (id: string) => {
@@ -76,6 +91,36 @@ const technical = [
     formula: 'MACD = EMA12 − EMA26; 신호선 = MACD의 EMA9; 히스토그램 = MACD − 신호선',
   },
 ];
+const expanded = [
+  {
+    category: '사이클',
+    title: 'BTC 사이클 기준선',
+    description: '200주선, 2년선·5배선, Pi Cycle과 고점 대비 낙폭을 전체 가격 이력에 표시합니다.',
+    formula: '확정 USD 일별 종가의 111·350·730일 단순평균 및 완료된 200주의 종가 평균',
+    to: '/?asset=BTC&period=all#btc-cycle',
+    source: 'https://www.lookintobitcoin.com/charts/market-cycle-charts/',
+  },
+  ...(['BTC', 'DOGE', 'ETH'] as const).map((coin) => ({
+    category: '네트워크',
+    title: coin + ' 온체인 활동',
+    description:
+      coin === 'DOGE'
+        ? '블록 수·신규 발행량, MVRV와 주소·거래 활동을 출시 초기부터 확인합니다.'
+        : '거래소 유입·유출·보유량, MVRV와 주소·거래 활동을 실제 제공 구간에서 확인합니다.',
+    formula: 'Coin Metrics Community 일별 원천값 · 순유입은 유입−유출 계산값',
+    to: '/onchain/' + coin + '?period=all',
+    source: 'https://docs.coinmetrics.io/network-data/network-data-overview/',
+  })),
+  ...(['BTC', 'DOGE', 'ETH'] as const).map((coin) => ({
+    category: '선물',
+    title: coin + ' 펀딩비·미결제약정',
+    description: 'Binance USDT 무기한 선물 한 거래소의 실제 확보 이력을 가격과 비교합니다.',
+    formula: '펀딩비 = 정산 비율(%) · 미결제약정 = 계약의 USDT 가치',
+    to: '/?asset=' + coin + '&period=all#derivatives',
+    source:
+      'https://developers.binance.com/docs/derivatives/usds-margined-futures/market-data/rest-api/Get-Funding-Rate-History',
+  })),
+];
 export function MetricsExplorer() {
   const [search, setSearch] = useState(''),
     [filter, setFilter] = useState('전체'),
@@ -98,6 +143,14 @@ export function MetricsExplorer() {
     (m) =>
       (filter === '전체' || filter === '기술지표') &&
       [m.id, m.title, m.description, m.formula, guideText(m.guide)]
+        .join(' ')
+        .toLowerCase()
+        .includes(needle),
+  );
+  const additional = expanded.filter(
+    (item) =>
+      (filter === '전체' || filter === item.category) &&
+      [item.category, item.title, item.description, item.formula]
         .join(' ')
         .toLowerCase()
         .includes(needle),
@@ -163,9 +216,11 @@ export function MetricsExplorer() {
         <label>
           분류
           <select value={filter} onChange={(e) => setFilter(e.target.value)}>
-            {['전체', '밸류에이션', '보유자', '손익', '기술지표'].map((x) => (
-              <option key={x}>{x}</option>
-            ))}
+            {['전체', '사이클', '밸류에이션', '보유자', '손익', '네트워크', '선물', '기술지표'].map(
+              (x) => (
+                <option key={x}>{x}</option>
+              ),
+            )}
           </select>
         </label>
         <Link className="desk-button" to="/">
@@ -174,12 +229,12 @@ export function MetricsExplorer() {
       </div>
       <div className="explorer-results-heading">
         <p id="explorer-search-hint">
-          질문·활용 설명·산식도 검색합니다. 온체인은 BTC, 기술지표는 선택한 코인의 Binance USDT 전체
-          이력을 엽니다.
+          질문·활용 설명·산식도 검색합니다. 온체인 활동은 해당 코인의 실제 제공 이력을, 기술지표는
+          선택한 코인의 Binance USDT 전체 이력을 엽니다.
         </p>
         <div>
           <span role="status" aria-live="polite">
-            {onchain.length + tech.length}개 지표 · {filter}
+            {onchain.length + tech.length + additional.length}개 분석 항목 · {filter}
           </span>
           {needle || filter !== '전체' ? (
             <button
@@ -263,13 +318,29 @@ export function MetricsExplorer() {
             </Link>
           </article>
         ))}
+        {additional.map((item) => (
+          <article className="panel library-card" key={item.title}>
+            <span className="micro-label">{item.category}</span>
+            <h2>{item.title}</h2>
+            <p>{item.description}</p>
+            <div className="formula">{item.formula}</div>
+            <div className="workspace-actions">
+              <Link className="desk-button" to={item.to}>
+                실제 차트 열기 ↗
+              </Link>
+              <a className="library-source" href={item.source} target="_blank" rel="noreferrer">
+                원천·정의 보기 ↗
+              </a>
+            </div>
+          </article>
+        ))}
       </div>
-      {!onchain.length && !tech.length ? (
+      {!onchain.length && !tech.length && !additional.length ? (
         <div className="empty-state">검색된 지표가 없습니다. 검색어와 분류를 바꿔 보세요.</div>
       ) : null}
       <p className="watch-note">
-        온체인은 Bitview 기준 BTC 데이터입니다. 지표의 기준선은 관측을 비교하기 위한 값이며 단독
-        매매 신호로 해석하지 않습니다. 가격·지표 차트에서 출처와 실제 기준일을 함께 확인하세요.
+        BTC 전용 지표는 Bitview, 코인별 네트워크는 Coin Metrics Community, 선물은 Binance가
+        원천입니다. 기준선은 관측을 비교하기 위한 값이며 단독 매매 신호로 해석하지 않습니다.
       </p>
     </div>
   );

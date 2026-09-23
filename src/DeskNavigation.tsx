@@ -17,8 +17,17 @@ import { ASSETS, METRICS } from '../shared/catalog';
 import { NETWORK_METRICS, isNetworkAsset, networkMetric } from '../shared/network-catalog';
 import type { Asset } from '../shared/types';
 import { saved, save } from './lib';
+import { AssetLogo } from './AssetLogo';
 
 const groups = [
+  {
+    label: '사이클',
+    items: [
+      { title: 'BTC 이동평균·Pi Cycle', to: '/?asset=BTC&period=all#btc-cycle' },
+      { title: 'DOGE / BTC 상대 성과', to: '/?asset=DOGE&period=all' },
+      { title: 'ETH / BTC 상대 성과', to: '/?asset=ETH&period=all' },
+    ],
+  },
   {
     label: '시장',
     items: [
@@ -48,10 +57,17 @@ const groups = [
     ),
   },
   {
-    label: '네트워크 활동',
+    label: '네트워크',
     items: ['BTC', 'DOGE', 'ETH'].map((asset) => ({
       title: asset + ' 온체인',
       to: '/onchain/' + asset,
+    })),
+  },
+  {
+    label: '선물',
+    items: ['BTC', 'DOGE', 'ETH'].map((asset) => ({
+      title: asset + ' 펀딩비·미결제약정',
+      to: '/?asset=' + asset + '&period=all#derivatives',
     })),
   },
 ];
@@ -70,6 +86,7 @@ export function DeskNavigation({ onNavigate }: { onNavigate: () => void }) {
       [
         ...ASSETS.map((a) => ({
           title: `${a.id} · ${a.name}`,
+          asset: a.id,
           aliases: a.name + a.id,
           to: `/?asset=${a.id}&period=all`,
           type: '코인',
@@ -109,7 +126,10 @@ export function DeskNavigation({ onNavigate }: { onNavigate: () => void }) {
           <span className="sidebar-label">검색 결과 {results.length}</span>
           {results.map((r) => (
             <Link key={r.to} to={r.to}>
-              <span>{r.title}</span>
+              <span>
+                {'asset' in r && r.asset ? <AssetLogo asset={r.asset as Asset} size={18} /> : null}{' '}
+                {r.title}
+              </span>
               <small>{r.type}</small>
             </Link>
           ))}
@@ -213,7 +233,7 @@ export function DeskTopbar({
       <div className="topbar-coins">
         {ASSETS.slice(0, 3).map((a) => (
           <Link key={a.id} to={`/?asset=${a.id}`}>
-            <i style={{ background: a.color }} />
+            <AssetLogo asset={a.id} size={18} />
             {a.id}
           </Link>
         ))}

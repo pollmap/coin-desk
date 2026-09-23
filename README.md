@@ -5,7 +5,7 @@
 
 **BTC·DOGE·ETH를 중심으로 8개 코인의 가격과 5개 코인의 온체인을 분석하는 한국어 대시보드입니다.** 무료 공개 데이터를 수집하고 출처·기준일·계산식을 함께 표시합니다. 관심 코인을 비교하고, 지표와 기간을 조절한 뒤 나만의 구성을 작업공간으로 저장할 수 있습니다.
 
-현재 소스는 **0.6.0**입니다. 검색·분류 탐색, 전체 이력 미니 차트, 현재 값과 실제 기준 구간, 설명 탭, 밝은/어두운 테마와 새 브랜드를 통합했습니다. 브라우저 시계 때문에 전체 이력 조회가 실패하던 `Invalid to`도 서버 확정 범위로 수정했습니다. [0.6 변경·검증 기록](docs/UPGRADE06.md), [BTC MVRV](https://coin-desk.pages.dev/metrics/mvrv?period=all), [DOGE 온체인](https://coin-desk.pages.dev/onchain/DOGE?period=all), [브랜드 자산](https://coin-desk.pages.dev/brand)을 확인하세요. 수집은 방문자와 독립적인 Cloudflare Cron에서 계속 실행됩니다. 무료 CPU 한도의 장기 충족과 48시간 운영 관찰은 이번 개편의 단기 검증과 구분합니다.
+현재 소스는 **0.7.0**입니다. 첫 화면에 BTC·DOGE·ETH의 가격·등락률·기준일을 함께 보여주고, 선택한 한 코인의 전체 USD 이력을 큰 차트로 엽니다. 다른 5개 코인은 펼침 메뉴에 둡니다. 8개 로고, BTC 사이클 기준선, DOGE·ETH의 BTC 대비 성과·상관관계, 코인별 네트워크 지표, Binance 선물 패널과 BTC 네트워크 현황을 추가했습니다. **선물 원천은 현재 배포 서버에서 HTTP 403으로 차단되어 실제 이력 없이 ‘원천 연결 대기’로 표시됩니다.** [0.7 변경·검증 기록](docs/UPGRADE07.md), [로고 출처](docs/COIN_LOGOS.md), [BTC MVRV](https://coin-desk.pages.dev/metrics/mvrv?period=all), [DOGE 온체인](https://coin-desk.pages.dev/onchain/DOGE?period=all)을 확인하세요. 수집은 방문자와 독립적인 Cloudflare Cron에서 실행됩니다. 48시간 운영 관찰은 배포 직후의 단기 검증과 구분합니다.
 
 ![Coin Desk 개편 온체인 화면](docs/upgrade-06/public-doge-dashboard.png)
 
@@ -19,7 +19,7 @@
 |---|---|
 | 탐색·화면 | 한글·영문 코인/지표 검색, 분류별 사이드바, BTC·DOGE·ETH 바로가기, 접기·모바일 서랍, 다크/라이트 테마 |
 | 이력 탐색 | 전체 이력 미니 차트와 범위 슬라이더, 공통 전체화면·공유·CSV, 설명 탭 |
-| 관심 자산 | **BTC → DOGE → ETH** 우선 배치, SOL·XRP·LINK·ONDO·PEPE 포함 |
+| 관심 자산 | **BTC → DOGE → ETH** 가격·등락률·기준일을 첫 화면에 병렬 표시, SOL·XRP·LINK·ONDO·PEPE는 펼침 메뉴; 8개 코인 로고와 출처 고지 |
 | 관심 코인 `/coins` | 별표 즐겨찾기·검색, 즐겨찾기/상승률/하락률/거래대금 정렬, RSI 14·200일선 대비 가격 위치 |
 | 실제 거래소 가격 | 8개 모두 Binance USDT / Upbit KRW, 환율 환산 없이 시장 전환 |
 | 장기 조망 `/` | BTC 2010년·DOGE 2014년·ETH 2015년부터의 Coin Metrics USD 일별 참조가격, 전체 기간 우선·로그축 |
@@ -29,10 +29,14 @@
 | 프리셋 | 기본 200일/200주, 매직 라인 128·200·365일/200주, 단기 EMA 20·50 + RSI + MACD |
 | 기술지표 | RSI 기간 변경, 볼린저밴드 기간·표준편차 배수 변경, MACD 단기·장기·신호 기간 변경(기본 12·26·9); 기존 지표 수정·날짜별 값 표시 |
 | BTC 온체인 | MVRV, 실현가격, SOPR 24h, NUPL, MVRV-Z, STH·LTH MVRV, STH 실현가격 |
-| 코인별 온체인 `/onchain/:asset` | BTC·DOGE·ETH·XRP·LINK의 MVRV·활성 주소·잔고 주소·거래·전송·공급·시총·수수료·해시와 역산 지표, 총 56개 시계열 |
+| 코인별 온체인 `/onchain/:asset` | BTC·DOGE·ETH·XRP·LINK의 MVRV·주소·거래·공급·시총·수수료 등 **70개 시계열**. BTC·ETH 거래소 유입·유출·보유량과 계산 순유입, DOGE 블록·발행량 포함 |
+| BTC 사이클 | 전체 USD 가격에 200주선, 2년선·5배선, Pi Cycle 111일·350일 2배선, 고점 대비 낙폭을 선택해 표시 |
+| 상대 분석 | DOGE·ETH의 BTC 대비 참조가격 비율, 공통 시작일=100 성과, USD 종가 낙폭, 연속 UTC 30·90일 로그수익률 상관 |
+| 선물 | BTC·DOGE·ETH Binance USDT 무기한 선물의 펀딩비·미결제약정 조회 화면·CSV·원천 확보 범위. 현재 배포 Worker에서 원천 403으로 실제 이력은 연결 대기 |
+| BTC 네트워크 현황 | mempool.space의 권장 수수료·미확인 거래 규모; 서버가 15분 간격으로 수집 |
 | 지표 참고 구간 | BTC MVRV 1·3.7, NUPL 0·25·50·75%, RSI 30·70 등 출처별 참고선·색 구간·현재 위치. 알트 MVRV에는 1 평가 기준만 적용 |
 | 브랜드 `/brand` | 심볼·워드마크 SVG, PNG·ICO 파비콘, Apple 아이콘, 공유 썸네일·Open Graph |
-| 지표 탐색 `/explore` | 질문별 빠른 탐색·활용 설명 검색, 12개 지표의 읽는 방법·함께 볼 것·해석 한계, 기술지표 적용 코인 선택, 대시보드 담기 |
+| 지표 탐색 `/explore` | 사이클·밸류에이션·손익·보유자·네트워크·선물·기술지표 분류, 활용 설명·산식 검색, 실제 차트 진입 |
 | 시장 비중 | 8개 코인 도미넌스, USDT.D·USDC.D, 스테이블코인 전체 근사 비중과 누적 관측 차트 |
 | 개인 설정 | 마지막 코인 복원, 이름 붙인 작업공간 최대 12개, 즐겨찾기·카드·작업공간 JSON 백업·가져오기, URL 공유 |
 | 차트 메모 | 수평선·추세선 그리기, 가격 입력으로 수평선 추가, 자산·시장·봉별 저장·복원·선별 삭제·마지막 선 실행 취소 |
@@ -66,6 +70,10 @@
 | 거래소 가격·거래량 | Binance 공개 REST/WebSocket, Upbit 공개 REST | 각 거래소가 제공하는 일봉 전체, 최근 90일 시간봉 |
 | BTC·DOGE·ETH·XRP·LINK 장기 가격 | Coin Metrics Community `PriceUSD` | 실제 확보된 USD 일별 종가 참조가격; 거래소 OHLCV와 별도 |
 | BTC 온체인 | Bitview / Bitcoin Research Kit | 확정 일별 관측, 같은 원천의 **추정 USD 가격**과 비교 |
+| BTC·ETH 거래소 온체인 | Coin Metrics Community `FlowInExNtv`·`FlowOutExNtv`·`SplyExNtv` | 원천의 거래소 주소 식별 범위; 순유입은 같은 날 유입−유출의 **계산값**. 분류 변경으로 과거 수정 가능 |
+| DOGE 블록·발행 | Coin Metrics Community `BlkCnt`·`IssTotNtv` | 확정 UTC 일별 원천값; 가격이나 거래소 수요로 해석하지 않음 |
+| Binance 선물 | USDⓈ-M Futures 공개 REST | BTC·DOGE·ETH USDT 무기한 계약 한 거래소의 펀딩비(%)·미결제약정 가치(USDT); 실제 확보 시작일 표시 |
+| BTC 네트워크 현황 | mempool.space 공개 API | 권장 수수료(sat/vB)와 미확인 거래 수·가상 크기; 관측 시각과 지연 상태 표시 |
 | 코인·USDT·USDC 도미넌스 | CoinLore 개별·전체 시가총액 | 같은 제공자의 개별 시가총액 / 전체 시가총액 × 100 |
 | 스테이블코인 전체 ≈ | DefiLlama 일별 USD 총액 / CoinLore 전체 시가총액 | **서로 다른 원천·시점의 근사 비중**; 일별 기준일을 별도 표시 |
 
@@ -114,6 +122,8 @@ BTC 수집·검산 자료, 추가 자산 자료와 장기 참조가격을 분리
 | `python scripts/check_live.py --base https://coin-desk.pages.dev` | 공개 8개 코인·양쪽 시장·BTC 지표·도미넌스 상태 확인 |
 | `python scripts/check_assets.py --base https://coin-desk.pages.dev` | 추가 자산 수집본과 공개 페이지별 OHLCV 전체 비교 |
 | `python scripts/backup_check.py` | 로컬 DB 백업→별도 파일 복구, 테이블 해시 비교 |
+
+새 온체인 지표를 포함해 재수집할 때는 `python scripts/bootstrap_network.py --assets BTC,DOGE,ETH` 뒤 `node scripts/import_network.mjs BTC,DOGE,ETH`를 실행합니다. 선물·BTC 네트워크 현황은 로컬 API의 정기 작업 또는 배포된 Cloudflare Cron이 **실제로 받은 값부터** 축적합니다. Binance 미결제약정 과거 범위는 원천이 제공하는 최근 약 1개월로 제한되며, 더 오래된 값을 생성하지 않습니다.
 | `python scripts/package_release.py` | 인증·캐시·DB를 제외한 재현용 소스 ZIP 생성 |
 
 ## 구조와 무료 운영

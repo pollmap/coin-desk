@@ -29,6 +29,7 @@ export interface Provenance {
   warning?: string;
   gapCount?: number;
   sourceVersions?: Record<string, number>;
+  sourceStatus?: string;
   calculationStart?: number | null;
 }
 export interface SeriesResponse {

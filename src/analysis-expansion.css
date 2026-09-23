@@ -1,0 +1,227 @@
+.main-asset-deck {
+  margin: 0 0 13px;
+}
+.featured-assets {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}
+.featured-asset {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 5px 10px;
+  min-width: 0;
+  padding: 12px 14px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--panel);
+}
+.featured-asset.selected {
+  border-color: var(--accent);
+  background: var(--accent-bg);
+}
+.featured-asset:hover {
+  border-color: var(--accent);
+}
+.featured-title {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  min-width: 0;
+}
+.featured-title span {
+  display: grid;
+}
+.featured-title b {
+  font-size: 15px;
+}
+.featured-title small,
+.featured-asof {
+  color: var(--muted);
+  font-size: 11px;
+}
+.featured-asset > strong {
+  font-size: 18px;
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+}
+.featured-change {
+  font-size: 13px;
+  font-weight: 700;
+}
+.featured-change.up {
+  color: var(--up);
+}
+.featured-change.down {
+  color: var(--down);
+}
+.featured-asof {
+  text-align: right;
+}
+.secondary-assets {
+  margin-top: 7px;
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  background: var(--panel);
+}
+.secondary-assets summary {
+  cursor: pointer;
+  padding: 9px 12px;
+  font-weight: 700;
+}
+.secondary-assets summary span {
+  margin-left: 9px;
+  color: var(--muted);
+  font-weight: 400;
+  font-size: 11px;
+}
+.secondary-assets nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  padding: 1px 10px 10px;
+}
+.secondary-assets a {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 9px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+}
+.secondary-assets a.selected {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+.secondary-assets a span {
+  color: var(--muted);
+  font-size: 11px;
+}
+@media (max-width: 760px) {
+  .featured-assets {
+    grid-template-columns: 1fr;
+  }
+  .featured-asset {
+    grid-template-columns: 1fr auto;
+  }
+  .secondary-assets summary span {
+    display: block;
+    margin: 2px 0 0;
+  }
+}
+.cycle-controls {
+  margin: 8px 0 12px;
+  padding: 8px 10px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+}
+.cycle-controls summary {
+  cursor: pointer;
+  font-weight: 700;
+}
+.cycle-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px 16px;
+  margin-top: 10px;
+}
+.cycle-options label {
+  white-space: nowrap;
+}
+.cycle-controls p {
+  color: var(--muted);
+  line-height: 1.6;
+}
+.relative-panel {
+  margin: 12px 0;
+  padding: 14px;
+}
+.relative-panel > p {
+  color: var(--muted);
+}
+.relative-panel .panel-title {
+  display: flex;
+  justify-content: space-between;
+}
+.relative-panel .panel-title span {
+  color: var(--muted);
+  font-size: 11px;
+}
+.relative-stats {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+  margin: 12px 0;
+}
+.relative-stats > div {
+  display: grid;
+  gap: 3px;
+  padding: 9px;
+  border: 1px solid var(--border);
+  border-radius: 5px;
+}
+.relative-stats small,
+.relative-stats span {
+  color: var(--muted);
+  font-size: 11px;
+}
+.relative-stats b {
+  font-size: 17px;
+}
+.relative-chart {
+  min-height: 260px;
+  margin: 8px 0;
+}
+@media (max-width: 760px) {
+  .relative-stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+.derivatives-panel,
+.mempool-panel {
+  margin: 12px 0;
+  padding: 14px;
+}
+.derivatives-panel .panel-title,
+.mempool-panel .panel-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.derivatives-panel .panel-title small,
+.mempool-panel .panel-title small {
+  color: var(--muted);
+}
+.derivatives-toolbar {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px 14px;
+  margin: 11px 0;
+}
+.derivatives-toolbar label {
+  white-space: nowrap;
+}
+.derivatives-latest {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  margin: 9px 0;
+}
+.derivatives-latest strong {
+  font-size: 19px;
+}
+.derivatives-latest span {
+  color: var(--muted);
+  font-size: 11px;
+}
+.derivatives-chart {
+  min-height: 300px;
+}
+@media (max-width: 760px) {
+  .derivatives-toolbar .segments {
+    max-width: 100%;
+    overflow: auto;
+  }
+}

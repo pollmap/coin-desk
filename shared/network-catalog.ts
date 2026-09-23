@@ -3,7 +3,7 @@ import type { Asset } from './types';
 export const NETWORK_ASSETS = ['BTC', 'DOGE', 'ETH', 'XRP', 'LINK'] as const;
 export type NetworkAsset = (typeof NETWORK_ASSETS)[number];
 export const NETWORK_SOURCE = 'Coin Metrics Community · CC BY-NC 4.0';
-export const NETWORK_VERSION = 'coinmetrics-network-monthly-v1';
+export const NETWORK_VERSION = 'coinmetrics-network-monthly-v2';
 export const NETWORK_HISTORY: Record<NetworkAsset, string> = {
   BTC: '2009-01-03',
   DOGE: '2013-12-08',
@@ -123,6 +123,72 @@ export const NETWORK_METRICS: readonly NetworkMetric[] = [
       '난이도와 블록 간격으로 추정한 하루 평균 채굴 연산량입니다. BTC와 DOGE의 해시 함수가 달라 수치 크기만으로 보안을 직접 비교하지 않습니다.',
     formula: '원천의 난이도·블록 생성 간격 기반 추정 · 1 TH/s = 초당 10¹² 해시',
     source: definition + 'mining/hash-rate',
+  },
+  {
+    id: 'blocks',
+    title: '하루 생성 블록',
+    unit: '블록 / 일',
+    sourceMetric: 'BlkCnt',
+    assets: ['BTC', 'DOGE', 'ETH'],
+    description:
+      'UTC 하루에 생성된 블록 수입니다. 체인별 블록 간격과 합의 방식이 달라 수치 크기를 직접 비교하지 않습니다.',
+    formula: 'Coin Metrics BlkCnt · UTC 일별 블록 수',
+    source: definition + 'blocks/blocks',
+  },
+  {
+    id: 'issuance',
+    title: '신규 발행량',
+    unit: '자산 단위 / 일',
+    sourceMetric: 'IssTotNtv',
+    assets: ['BTC', 'DOGE', 'ETH'],
+    description:
+      'UTC 하루 동안 새로 발행된 자산의 수량입니다. 거래소 매수세나 순유입량이 아닙니다.',
+    formula: 'Coin Metrics IssTotNtv · 신규 발행 자산 수량',
+    source: definition + 'supply/total-issued-supply',
+  },
+  {
+    id: 'exchange_inflow',
+    title: '거래소 유입',
+    unit: '자산 단위 / 일',
+    sourceMetric: 'FlowInExNtv',
+    assets: ['BTC', 'ETH'],
+    description:
+      '원천이 거래소로 식별한 주소에 하루 동안 유입된 수량입니다. 거래소 주소 분류가 바뀌면 과거 값도 수정될 수 있습니다. 전체 거래소와 모든 지갑을 완전히 포괄하지 않습니다.',
+    formula: 'Coin Metrics FlowInExNtv',
+    source: definition + 'exchange/exchange-flows',
+  },
+  {
+    id: 'exchange_outflow',
+    title: '거래소 유출',
+    unit: '자산 단위 / 일',
+    sourceMetric: 'FlowOutExNtv',
+    assets: ['BTC', 'ETH'],
+    description:
+      '원천이 거래소로 식별한 주소에서 하루 동안 유출된 수량입니다. 분류 변경으로 과거 값이 수정될 수 있습니다.',
+    formula: 'Coin Metrics FlowOutExNtv',
+    source: definition + 'exchange/exchange-flows',
+  },
+  {
+    id: 'exchange_balance',
+    title: '거래소 보유량',
+    unit: '자산 단위',
+    sourceMetric: 'SplyExNtv',
+    assets: ['BTC', 'ETH'],
+    description:
+      '원천이 거래소로 식별한 주소들의 추정 보유량입니다. 거래소 전체 보유량의 확정치가 아니며 주소 분류에 따라 수정될 수 있습니다.',
+    formula: 'Coin Metrics SplyExNtv',
+    source: definition + 'exchange/exchange-supply',
+  },
+  {
+    id: 'exchange_netflow',
+    title: '거래소 순유입 · 계산',
+    unit: '자산 단위 / 일',
+    derived: true,
+    assets: ['BTC', 'ETH'],
+    description:
+      '같은 원천의 하루 거래소 유입량에서 유출량을 뺀 계산값입니다. 양수는 순유입이고 음수는 순유출입니다. 주소 분류 변경 시 다시 계산됩니다.',
+    formula: 'FlowInExNtv − FlowOutExNtv',
+    source: definition + 'exchange/exchange-flows',
   },
   {
     id: 'realized_cap',
