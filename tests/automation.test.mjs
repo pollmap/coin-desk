@@ -226,6 +226,16 @@ it('a due BTC fee snapshot is not starved by repeated blocked futures retries', 
   ];
   expect(selectJob([futures, mempool], states, now)).toEqual(mempool);
 });
+it('a due quote batch runs before optional futures retries within its ten-minute health window', () => {
+  const policies = jobPolicies(['BTC'], false);
+  const quote = policies.find((job) => job.key === 'quotes:binance:0');
+  const futures = policies.find((job) => job.key === 'derivatives:BTC:funding');
+  const states = [
+    { key: quote.key, last_attempt: now - 481, data_as_of: now - 481, next_attempt: 0 },
+    { key: futures.key, last_attempt: now - 300, data_as_of: null, next_attempt: now - 180 },
+  ];
+  expect(selectJob([futures, quote], states, now)).toEqual(quote);
+});
 it('source backoff does not stop another eligible source and remains visible', async () => {
   ready();
   source('quotes:binance:0', now - 900);

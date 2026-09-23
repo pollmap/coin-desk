@@ -139,10 +139,11 @@ export function selectJob(jobs: JobPolicy[], states: IngestionState[], now: numb
     .map((job) => ({ job, due: dueAt(job, states, now) }))
     .filter((item) => item.due <= now)
     .sort((a, b) => a.due - b.due);
-  // Hard overdue quotes and a due BTC fee snapshot are served before optional
-  // futures retries, so a blocked derivatives origin cannot starve live data.
+  // A quote batch needs its next minute slot once due. Waiting another two
+  // minutes can push a healthy 8-minute cycle beyond the 10-minute health limit.
+  // Other sources still use the remaining slots between quote batches.
   return (
-    eligible.find((item) => item.job.kind === 'quote-batch' && now - item.due >= 120) ||
+    eligible.find((item) => item.job.kind === 'quote-batch') ||
     eligible.find((item) => item.job.kind === 'mempool') ||
     eligible[0]
   )?.job;
