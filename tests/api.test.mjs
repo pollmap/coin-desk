@@ -52,6 +52,88 @@ const call = async (path, method = 'GET') => {
   );
   return { status: response.status, data: await response.json() };
 };
+it('overview bypasses stale edge responses after the server updates its snapshot', async () => {
+  const now = Math.floor(Date.now() / 1000);
+  const quote = { asset: 'BTC', price: 120, time: now };
+  DB.sqlite
+    .prepare('INSERT INTO snapshots VALUES(?,?,?)')
+    .run('quote:BTC:binance', JSON.stringify(quote), now);
+  const match = vi
+    .spyOn(caches.default, 'match')
+    .mockResolvedValue(
+      new Response(JSON.stringify({ quote: { price: 99 }, meta: { stale: true } })),
+    );
+  const out = await call('overview');
+  expect(out.status).toBe(200);
+  expect(out.data.quote.price).toBe(120);
+  expect(out.data.meta.stale).toBe(false);
+  expect(match).not.toHaveBeenCalled();
+});
+
+it('exhausted D1 writes keep stored prices readable and explicitly delayed', async () => {
+  const now = Math.floor(Date.now() / 1000);
+  DB.sqlite
+    .prepare('INSERT INTO snapshots VALUES(?,?,?)')
+    .run(
+      'quote:BTC:binance',
+      JSON.stringify({ asset: 'BTC', price: 120, time: now - 600 }),
+      now - 600,
+    );
+  DB.sqlite.exec(
+    "CREATE TRIGGER deny_state_write BEFORE INSERT ON state BEGIN SELECT RAISE(FAIL, 'D1_ERROR: daily row write limit'); END",
+  );
+  const out = await call('overview');
+  expect(out.status).toBe(200);
+  expect(out.data.quote.price).toBe(120);
+  expect(out.data.meta.stale).toBe(true);
+  expect(out.data.meta.warning).toContain('저장·갱신');
+  expect(out.data.technical).toBeDefined();
+});
+
+it('a failed failure-log write does not hide the last good quote', async () => {
+  DB.sqlite
+    .prepare('INSERT INTO snapshots VALUES(?,?,?)')
+    .run('quote:BTC:binance', JSON.stringify({ asset: 'BTC', price: 120, time: 100 }), 100);
+  DB.sqlite.exec(
+    "CREATE TRIGGER deny_error_write BEFORE INSERT ON ingestion BEGIN SELECT RAISE(FAIL, 'D1_ERROR: daily row write limit'); END",
+  );
+  mockSocket(429, {});
+  const out = await call('overview');
+  expect(out.status).toBe(200);
+  expect(out.data.quote.price).toBe(120);
+  expect(out.data.meta.stale).toBe(true);
+  vi.unstubAllGlobals();
+});
+
+it('a collector winning the refresh lease is re-read before returning the quote', async () => {
+  const now = Math.floor(Date.now() / 1000);
+  DB.sqlite
+    .prepare('INSERT INTO snapshots VALUES(?,?,?)')
+    .run(
+      'quote:BTC:binance',
+      JSON.stringify({ asset: 'BTC', price: 99, time: now - 600 }),
+      now - 600,
+    );
+  DB.sqlite
+    .prepare('INSERT INTO state VALUES(?,?)')
+    .run('lease:quote:BTC:binance', String(now + 180));
+  const prepare = DB.prepare.bind(DB);
+  let advanced = false;
+  vi.spyOn(DB, 'prepare').mockImplementation((sql) => {
+    if (!advanced && sql.startsWith('INSERT INTO state(key,value) VALUES (?,?) ON CONFLICT')) {
+      advanced = true;
+      DB.sqlite
+        .prepare('UPDATE snapshots SET data=?,fetched_at=?')
+        .run(JSON.stringify({ asset: 'BTC', price: 120, time: now }), now);
+    }
+    return prepare(sql);
+  });
+  const out = await call('overview');
+  expect(advanced).toBe(true);
+  expect(out.data.quote.price).toBe(120);
+  expect(out.data.meta.stale).toBe(false);
+});
+
 function insert(rows) {
   const stmt = DB.sqlite.prepare('INSERT INTO candles VALUES(?,?,?,?,?,?,?,?,?,?,?)');
   for (const c of rows)

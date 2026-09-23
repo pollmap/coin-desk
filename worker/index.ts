@@ -126,21 +126,36 @@ async function overview(env: Env, asset: Asset, market: Market): Promise<Overvie
   const retry = await env.DB.prepare('SELECT next_attempt FROM ingestion WHERE key=?')
     .bind(key)
     .first<{ next_attempt: number }>();
-  if (
-    (!saved || epoch() - saved.fetched_at >= QUOTE_REFRESH_SECONDS) &&
-    (retry?.next_attempt || 0) <= epoch() &&
-    (await claimRefresh(env.DB, key, QUOTE_REFRESH_SECONDS))
-  ) {
-    try {
-      quote = await getQuote(asset, market);
-      saved = { data: JSON.stringify(quote), fetched_at: epoch() };
-      await env.DB.prepare('INSERT OR REPLACE INTO snapshots(key,data,fetched_at) VALUES(?,?,?)')
-        .bind(key, saved.data, saved.fetched_at)
-        .run();
-      await success(env.DB, key, quote.time);
-    } catch (e) {
-      warning = '시세 원천 연결이 지연되고 있습니다. 마지막 정상 값을 표시합니다.';
-      await failure(env.DB, key, e);
+  try {
+    if (
+      (!saved || epoch() - saved.fetched_at >= QUOTE_REFRESH_SECONDS) &&
+      (retry?.next_attempt || 0) <= epoch() &&
+      (await claimRefresh(env.DB, key, QUOTE_REFRESH_SECONDS))
+    ) {
+      try {
+        quote = await getQuote(asset, market);
+        saved = { data: JSON.stringify(quote), fetched_at: epoch() };
+        await env.DB.prepare('INSERT OR REPLACE INTO snapshots(key,data,fetched_at) VALUES(?,?,?)')
+          .bind(key, saved.data, saved.fetched_at)
+          .run();
+        await success(env.DB, key, quote.time);
+      } catch (e) {
+        warning = '시세 원천 연결이 지연되고 있습니다. 마지막 정상 값을 표시합니다.';
+        await failure(env.DB, key, e).catch(() => undefined);
+      }
+    }
+  } catch {
+    // A quota/lease write failure must not prevent reading the saved market data.
+    warning = '서버 저장·갱신이 지연되고 있습니다. 마지막 정상 값을 표시합니다.';
+  }
+  if (saved && epoch() - saved.fetched_at >= QUOTE_REFRESH_SECONDS) {
+    // A scheduled refresh may have won the lease after our initial snapshot read.
+    const latestSaved = await env.DB.prepare('SELECT data,fetched_at FROM snapshots WHERE key=?')
+      .bind(key)
+      .first<{ data: string; fetched_at: number }>();
+    if (latestSaved && latestSaved.fetched_at > saved.fetched_at) {
+      saved = latestSaved;
+      quote = JSON.parse(latestSaved.data);
     }
   }
   if ((retry?.next_attempt || 0) > epoch())
@@ -177,7 +192,10 @@ async function overview(env: Env, asset: Asset, market: Market): Promise<Overvie
       rsi: techRsi,
       sma200: daily.length >= 200 ? daily.slice(-200).reduce((s, c) => s + c.close, 0) / 200 : null,
     };
-    await putState(env.DB, technicalKey, { computedAt: epoch(), data: technical });
+    // Derived-result caching is optional; read access must survive exhausted writes.
+    await putState(env.DB, technicalKey, { computedAt: epoch(), data: technical }).catch(
+      () => undefined,
+    );
   }
   return {
     quote,
@@ -436,7 +454,9 @@ export default {
       if (request.method !== 'GET') return response({ error: 'Read-only API' }, 405);
       const canonical = canonicalRequest(request);
       const cache = (caches as unknown as { default: Cache }).default;
-      const liveStatus = /\/(health|status)$/.test(url.pathname);
+      // Quotes already share durable snapshots and refresh leases. An extra edge
+      // cache can keep an old/stale response after the scheduled collector commits.
+      const liveStatus = /\/(health|status|overview)$/.test(url.pathname);
       const cached = liveStatus ? undefined : await cache.match(canonical).catch(() => undefined);
       if (cached) return cached;
       let pending = inFlight.get(env.DB);
