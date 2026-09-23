@@ -14,7 +14,7 @@ export function DeferredMount({ children }: { children: ReactNode }) {
           observer.disconnect();
         }
       },
-      { rootMargin: '500px' },
+      { rootMargin: '160px' },
     );
     if (ref.current) observer.observe(ref.current);
     return () => observer.disconnect();

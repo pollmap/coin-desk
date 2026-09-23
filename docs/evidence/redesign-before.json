@@ -1,0 +1,759 @@
+{
+  "checkedAt": "2026-09-23T03:32:54.971Z",
+  "base": "https://coin-desk.pages.dev",
+  "histories": [
+    {
+      "label": "BTC-price",
+      "count": 5911,
+      "first": {
+        "time": 1279411200,
+        "value": 0.08584
+      },
+      "last": {
+        "time": 1790035200,
+        "value": 86205.2717985915
+      },
+      "samples": [
+        {
+          "time": 1279411200,
+          "value": 0.08584
+        },
+        {
+          "time": 1534723200,
+          "value": 6272.95272881356
+        },
+        {
+          "time": 1790035200,
+          "value": 86205.2717985915
+        }
+      ],
+      "sha256": "dd0e2c984d4121034f9b2cdcb33970afc53ec83c374521fe3771bd5edc7a85f3",
+      "range": null,
+      "source": "Coin Metrics Community · PriceUSD",
+      "asOf": 1790035200
+    },
+    {
+      "label": "DOGE-price",
+      "count": 4626,
+      "first": {
+        "time": 1390435200,
+        "value": 0.001540752607872
+      },
+      "last": {
+        "time": 1790035200,
+        "value": 0.100394330890078
+      },
+      "samples": [
+        {
+          "time": 1390435200,
+          "value": 0.001540752607872
+        },
+        {
+          "time": 1590278400,
+          "value": 0.00244388083892483
+        },
+        {
+          "time": 1790035200,
+          "value": 0.100394330890078
+        }
+      ],
+      "sha256": "55ef723ea6195538ddf747f00951a1ca8719e67ef655bdd8408e16fa6cb2616f",
+      "range": null,
+      "source": "Coin Metrics Community · PriceUSD",
+      "asOf": 1790035200
+    },
+    {
+      "label": "ETH-price",
+      "count": 4064,
+      "first": {
+        "time": 1438992000,
+        "value": 1.19999
+      },
+      "last": {
+        "time": 1790035200,
+        "value": 2754.95073585622
+      },
+      "samples": [
+        {
+          "time": 1438992000,
+          "value": 1.19999
+        },
+        {
+          "time": 1614556800,
+          "value": 1563.23598036236
+        },
+        {
+          "time": 1790035200,
+          "value": 2754.95073585622
+        }
+      ],
+      "sha256": "81dc6fc3fc2c7aaa7b2ba24bf14125d668b05956fb3017aea3ff3ac2859bed3b",
+      "range": null,
+      "source": "Coin Metrics Community · PriceUSD",
+      "asOf": 1790035200
+    },
+    {
+      "label": "BTC-mvrv",
+      "count": 5882,
+      "first": {
+        "time": 1281916800,
+        "value": 75.37391152440335
+      },
+      "last": {
+        "time": 1790035200,
+        "value": 1.6117401314809514
+      },
+      "samples": [
+        {
+          "time": 1281916800,
+          "value": 75.37391152440335
+        },
+        {
+          "time": 1536019200,
+          "value": 1.4416153313384954
+        },
+        {
+          "time": 1790035200,
+          "value": 1.6117401314809514
+        }
+      ],
+      "sha256": "f5b72ef09773729587f6c1ddf37ecd4863905cf1bbad96d20389252be2a833b8",
+      "range": null,
+      "source": "Bitview / BRK",
+      "asOf": 1790035200
+    },
+    {
+      "label": "DOGE-mvrv",
+      "count": 4626,
+      "first": {
+        "time": 1390435200,
+        "value": 10.30827487
+      },
+      "last": {
+        "time": 1790035200,
+        "value": 0.8501975453595891
+      },
+      "samples": [
+        {
+          "time": 1390435200,
+          "value": 10.30827487
+        },
+        {
+          "time": 1590278400,
+          "value": 0.9951832
+        },
+        {
+          "time": 1790035200,
+          "value": 0.8501975453595891
+        }
+      ],
+      "sha256": "d17a992cefe3f4414b95f08df431775369d9d00de88698f0da7646671abe919e",
+      "range": null,
+      "source": "Coin Metrics Community · CC BY-NC 4.0",
+      "asOf": 1790035200
+    },
+    {
+      "label": "ETH-mvrv",
+      "count": 4063,
+      "first": {
+        "time": 1438992000,
+        "value": 5.78278879
+      },
+      "last": {
+        "time": 1789948800,
+        "value": 1.2001293748582642
+      },
+      "samples": [
+        {
+          "time": 1438992000,
+          "value": 5.78278879
+        },
+        {
+          "time": 1614470400,
+          "value": 1.67265649529
+        },
+        {
+          "time": 1789948800,
+          "value": 1.2001293748582642
+        }
+      ],
+      "sha256": "5c4b020148313e464e30020f0d485d2cddea4ab97ce603e955e0a94837a1278e",
+      "range": null,
+      "source": "Coin Metrics Community · CC BY-NC 4.0",
+      "asOf": 1789948800
+    }
+  ],
+  "automation": {
+    "runner": "Cloudflare Cron",
+    "independentOfVisitors": true,
+    "tickSeconds": 60,
+    "lastStartedAt": 1790134340,
+    "lastCompletedAt": 1790134340,
+    "lastSucceededAt": 1790134340,
+    "lastJob": null,
+    "lastRunStatus": "idle",
+    "lastError": null,
+    "leaseUntil": null,
+    "stalled": false,
+    "nextTickAt": 1790134380,
+    "cadence": {
+      "quoteBackgroundTargetSeconds": 480,
+      "quoteBackgroundDelaySeconds": 600,
+      "quoteOnDemandMinSeconds": 180,
+      "hourlyCandlesSeconds": 3600,
+      "dailyCandlesSeconds": 21600,
+      "dailyUtcBoundaryRefresh": true
+    },
+    "jobs": [
+      {
+        "key": "bitview",
+        "kind": "onchain",
+        "cadenceSeconds": 3600,
+        "dueAt": 1790136321
+      },
+      {
+        "key": "defillama",
+        "kind": "stablecoins",
+        "cadenceSeconds": 21600,
+        "dueAt": 1790146760
+      },
+      {
+        "key": "coinlore",
+        "kind": "dominance",
+        "cadenceSeconds": 3600,
+        "dueAt": 1790135902
+      },
+      {
+        "key": "maintenance",
+        "kind": "maintenance",
+        "cadenceSeconds": 3600,
+        "dueAt": 1790135960
+      },
+      {
+        "key": "reference:BTC",
+        "kind": "reference",
+        "cadenceSeconds": 21600,
+        "dueAt": 1790150180,
+        "assets": ["BTC"]
+      },
+      {
+        "key": "reference:DOGE",
+        "kind": "reference",
+        "cadenceSeconds": 21600,
+        "dueAt": 1790150426,
+        "assets": ["DOGE"]
+      },
+      {
+        "key": "reference:ETH",
+        "kind": "reference",
+        "cadenceSeconds": 21600,
+        "dueAt": 1790150840,
+        "assets": ["ETH"]
+      },
+      {
+        "key": "reference:XRP",
+        "kind": "reference",
+        "cadenceSeconds": 21600,
+        "dueAt": 1790151740,
+        "assets": ["XRP"]
+      },
+      {
+        "key": "reference:LINK",
+        "kind": "reference",
+        "cadenceSeconds": 21600,
+        "dueAt": 1790151920,
+        "assets": ["LINK"]
+      },
+      {
+        "key": "network:BTC",
+        "kind": "network",
+        "cadenceSeconds": 21600,
+        "dueAt": 1790152340,
+        "assets": ["BTC"]
+      },
+      {
+        "key": "network:DOGE",
+        "kind": "network",
+        "cadenceSeconds": 21600,
+        "dueAt": 1790154260,
+        "assets": ["DOGE"]
+      },
+      {
+        "key": "network:ETH",
+        "kind": "network",
+        "cadenceSeconds": 21600,
+        "dueAt": 1790152640,
+        "assets": ["ETH"]
+      },
+      {
+        "key": "network:XRP",
+        "kind": "network",
+        "cadenceSeconds": 21600,
+        "dueAt": 1790153000,
+        "assets": ["XRP"]
+      },
+      {
+        "key": "network:LINK",
+        "kind": "network",
+        "cadenceSeconds": 21600,
+        "dueAt": 1790153660,
+        "assets": ["LINK"]
+      },
+      {
+        "key": "quotes:binance:0",
+        "kind": "quote-batch",
+        "cadenceSeconds": 480,
+        "dueAt": 1790134521,
+        "assets": ["BTC", "DOGE", "ETH", "SOL"],
+        "market": "binance"
+      },
+      {
+        "key": "quotes:binance:1",
+        "kind": "quote-batch",
+        "cadenceSeconds": 480,
+        "dueAt": 1790134641,
+        "assets": ["XRP", "LINK", "ONDO", "PEPE"],
+        "market": "binance"
+      },
+      {
+        "key": "BTC:binance:1h",
+        "kind": "price",
+        "cadenceSeconds": 3600,
+        "dueAt": 1790136102,
+        "assets": ["BTC"],
+        "market": "binance"
+      },
+      {
+        "key": "BTC:binance:1d",
+        "kind": "price",
+        "cadenceSeconds": 21600,
+        "dueAt": 1790143340,
+        "assets": ["BTC"],
+        "market": "binance"
+      },
+      {
+        "key": "DOGE:binance:1h",
+        "kind": "price",
+        "cadenceSeconds": 3600,
+        "dueAt": 1790137825,
+        "assets": ["DOGE"],
+        "market": "binance"
+      },
+      {
+        "key": "DOGE:binance:1d",
+        "kind": "price",
+        "cadenceSeconds": 21600,
+        "dueAt": 1790143460,
+        "assets": ["DOGE"],
+        "market": "binance"
+      },
+      {
+        "key": "ETH:binance:1h",
+        "kind": "price",
+        "cadenceSeconds": 3600,
+        "dueAt": 1790134400,
+        "assets": ["ETH"],
+        "market": "binance"
+      },
+      {
+        "key": "ETH:binance:1d",
+        "kind": "price",
+        "cadenceSeconds": 21600,
+        "dueAt": 1790143580,
+        "assets": ["ETH"],
+        "market": "binance"
+      },
+      {
+        "key": "SOL:binance:1h",
+        "kind": "price",
+        "cadenceSeconds": 3600,
+        "dueAt": 1790134520,
+        "assets": ["SOL"],
+        "market": "binance"
+      },
+      {
+        "key": "SOL:binance:1d",
+        "kind": "price",
+        "cadenceSeconds": 21600,
+        "dueAt": 1790143640,
+        "assets": ["SOL"],
+        "market": "binance"
+      },
+      {
+        "key": "XRP:binance:1h",
+        "kind": "price",
+        "cadenceSeconds": 3600,
+        "dueAt": 1790134880,
+        "assets": ["XRP"],
+        "market": "binance"
+      },
+      {
+        "key": "XRP:binance:1d",
+        "kind": "price",
+        "cadenceSeconds": 21600,
+        "dueAt": 1790143760,
+        "assets": ["XRP"],
+        "market": "binance"
+      },
+      {
+        "key": "LINK:binance:1h",
+        "kind": "price",
+        "cadenceSeconds": 3600,
+        "dueAt": 1790135300,
+        "assets": ["LINK"],
+        "market": "binance"
+      },
+      {
+        "key": "LINK:binance:1d",
+        "kind": "price",
+        "cadenceSeconds": 21600,
+        "dueAt": 1790143820,
+        "assets": ["LINK"],
+        "market": "binance"
+      },
+      {
+        "key": "ONDO:binance:1h",
+        "kind": "price",
+        "cadenceSeconds": 3600,
+        "dueAt": 1790135361,
+        "assets": ["ONDO"],
+        "market": "binance"
+      },
+      {
+        "key": "ONDO:binance:1d",
+        "kind": "price",
+        "cadenceSeconds": 21600,
+        "dueAt": 1790143880,
+        "assets": ["ONDO"],
+        "market": "binance"
+      },
+      {
+        "key": "PEPE:binance:1h",
+        "kind": "price",
+        "cadenceSeconds": 3600,
+        "dueAt": 1790135600,
+        "assets": ["PEPE"],
+        "market": "binance"
+      },
+      {
+        "key": "PEPE:binance:1d",
+        "kind": "price",
+        "cadenceSeconds": 21600,
+        "dueAt": 1790144000,
+        "assets": ["PEPE"],
+        "market": "binance"
+      },
+      {
+        "key": "quotes:upbit:0",
+        "kind": "quote-batch",
+        "cadenceSeconds": 480,
+        "dueAt": 1790134341,
+        "assets": ["BTC", "DOGE", "ETH", "SOL"],
+        "market": "upbit"
+      },
+      {
+        "key": "quotes:upbit:1",
+        "kind": "quote-batch",
+        "cadenceSeconds": 480,
+        "dueAt": 1790134401,
+        "assets": ["XRP", "LINK", "ONDO", "PEPE"],
+        "market": "upbit"
+      },
+      {
+        "key": "BTC:upbit:1h",
+        "kind": "price",
+        "cadenceSeconds": 3600,
+        "dueAt": 1790136200,
+        "assets": ["BTC"],
+        "market": "upbit"
+      },
+      {
+        "key": "BTC:upbit:1d",
+        "kind": "price",
+        "cadenceSeconds": 21600,
+        "dueAt": 1790144120,
+        "assets": ["BTC"],
+        "market": "upbit"
+      },
+      {
+        "key": "DOGE:upbit:1h",
+        "kind": "price",
+        "cadenceSeconds": 3600,
+        "dueAt": 1790137880,
+        "assets": ["DOGE"],
+        "market": "upbit"
+      },
+      {
+        "key": "DOGE:upbit:1d",
+        "kind": "price",
+        "cadenceSeconds": 21600,
+        "dueAt": 1790144240,
+        "assets": ["DOGE"],
+        "market": "upbit"
+      },
+      {
+        "key": "ETH:upbit:1h",
+        "kind": "price",
+        "cadenceSeconds": 3600,
+        "dueAt": 1790134700,
+        "assets": ["ETH"],
+        "market": "upbit"
+      },
+      {
+        "key": "ETH:upbit:1d",
+        "kind": "price",
+        "cadenceSeconds": 21600,
+        "dueAt": 1790144300,
+        "assets": ["ETH"],
+        "market": "upbit"
+      },
+      {
+        "key": "SOL:upbit:1h",
+        "kind": "price",
+        "cadenceSeconds": 3600,
+        "dueAt": 1790134820,
+        "assets": ["SOL"],
+        "market": "upbit"
+      },
+      {
+        "key": "SOL:upbit:1d",
+        "kind": "price",
+        "cadenceSeconds": 21600,
+        "dueAt": 1790144420,
+        "assets": ["SOL"],
+        "market": "upbit"
+      },
+      {
+        "key": "XRP:upbit:1h",
+        "kind": "price",
+        "cadenceSeconds": 3600,
+        "dueAt": 1790135060,
+        "assets": ["XRP"],
+        "market": "upbit"
+      },
+      {
+        "key": "XRP:upbit:1d",
+        "kind": "price",
+        "cadenceSeconds": 21600,
+        "dueAt": 1790144480,
+        "assets": ["XRP"],
+        "market": "upbit"
+      },
+      {
+        "key": "LINK:upbit:1h",
+        "kind": "price",
+        "cadenceSeconds": 3600,
+        "dueAt": 1790135180,
+        "assets": ["LINK"],
+        "market": "upbit"
+      },
+      {
+        "key": "LINK:upbit:1d",
+        "kind": "price",
+        "cadenceSeconds": 21600,
+        "dueAt": 1790144540,
+        "assets": ["LINK"],
+        "market": "upbit"
+      },
+      {
+        "key": "ONDO:upbit:1h",
+        "kind": "price",
+        "cadenceSeconds": 3600,
+        "dueAt": 1790135480,
+        "assets": ["ONDO"],
+        "market": "upbit"
+      },
+      {
+        "key": "ONDO:upbit:1d",
+        "kind": "price",
+        "cadenceSeconds": 21600,
+        "dueAt": 1790144660,
+        "assets": ["ONDO"],
+        "market": "upbit"
+      },
+      {
+        "key": "PEPE:upbit:1h",
+        "kind": "price",
+        "cadenceSeconds": 3600,
+        "dueAt": 1790135720,
+        "assets": ["PEPE"],
+        "market": "upbit"
+      },
+      {
+        "key": "PEPE:upbit:1d",
+        "kind": "price",
+        "cadenceSeconds": 21600,
+        "dueAt": 1790144780,
+        "assets": ["PEPE"],
+        "market": "upbit"
+      }
+    ],
+    "recentRuns": [
+      {
+        "runId": "f9705e27-7c55-4e8c-adf5-bc3065ab490b",
+        "startedAt": 1790134340,
+        "completedAt": 1790134340,
+        "job": null,
+        "outcome": "idle",
+        "error": null
+      },
+      {
+        "runId": "03106403-e55a-4d66-994d-f04de5828631",
+        "startedAt": 1790134280,
+        "completedAt": 1790134281,
+        "job": "DOGE:upbit:1h",
+        "outcome": "ok",
+        "error": null
+      },
+      {
+        "runId": "6d97c5cf-fce1-4b3d-9cd2-a06cc2d03e04",
+        "startedAt": 1790134225,
+        "completedAt": 1790134226,
+        "job": "DOGE:binance:1h",
+        "outcome": "ok",
+        "error": null
+      },
+      {
+        "runId": "c190219a-3877-47ca-b485-66055f844f19",
+        "startedAt": 1790134160,
+        "completedAt": 1790134161,
+        "job": "quotes:binance:1",
+        "outcome": "ok",
+        "error": null
+      },
+      {
+        "runId": "9e0d3006-f3f2-460f-9b32-6afc64b375b5",
+        "startedAt": 1790134100,
+        "completedAt": 1790134100,
+        "job": null,
+        "outcome": "idle",
+        "error": null
+      },
+      {
+        "runId": "8a56cf1d-9bfb-4193-a0e2-8510fe6643bf",
+        "startedAt": 1790134040,
+        "completedAt": 1790134041,
+        "job": "quotes:binance:0",
+        "outcome": "ok",
+        "error": null
+      },
+      {
+        "runId": "40090bf7-e45d-488f-a818-1abdbdcedca6",
+        "startedAt": 1790133980,
+        "completedAt": 1790133980,
+        "job": null,
+        "outcome": "idle",
+        "error": null
+      },
+      {
+        "runId": "80afa33d-5e37-4bac-962f-f7437c202f7f",
+        "startedAt": 1790133920,
+        "completedAt": 1790133921,
+        "job": "quotes:upbit:1",
+        "outcome": "ok",
+        "error": null
+      },
+      {
+        "runId": "4c892d7c-da9c-4c89-ad98-f7b3e9d42a93",
+        "startedAt": 1790133860,
+        "completedAt": 1790133861,
+        "job": "quotes:upbit:0",
+        "outcome": "ok",
+        "error": null
+      },
+      {
+        "runId": "67e63a43-b37b-4492-8736-3147bcbd6866",
+        "startedAt": 1790133800,
+        "completedAt": 1790133800,
+        "job": null,
+        "outcome": "idle",
+        "error": null
+      },
+      {
+        "runId": "9572a5d8-255c-4f2a-907f-64d57924e483",
+        "startedAt": 1790133740,
+        "completedAt": 1790133740,
+        "job": null,
+        "outcome": "idle",
+        "error": null
+      },
+      {
+        "runId": "aa5f70e1-17a8-49db-b6ea-d4e59a7ff65d",
+        "startedAt": 1790133680,
+        "completedAt": 1790133680,
+        "job": null,
+        "outcome": "idle",
+        "error": null
+      },
+      {
+        "runId": "28287ad8-3cd3-4558-a314-0d06103bc7fc",
+        "startedAt": 1790133620,
+        "completedAt": 1790133621,
+        "job": "quotes:binance:1",
+        "outcome": "ok",
+        "error": null
+      },
+      {
+        "runId": "1c6010cb-0af7-4641-8ad3-742f41880c84",
+        "startedAt": 1790133560,
+        "completedAt": 1790133560,
+        "job": null,
+        "outcome": "idle",
+        "error": null
+      },
+      {
+        "runId": "38a0eee2-9025-4981-8f33-10bc42c723d3",
+        "startedAt": 1790133500,
+        "completedAt": 1790133501,
+        "job": "quotes:binance:0",
+        "outcome": "ok",
+        "error": null
+      },
+      {
+        "runId": "2aad22b0-9d47-4ade-9e53-72c2c90d5ce2",
+        "startedAt": 1790133440,
+        "completedAt": 1790133440,
+        "job": null,
+        "outcome": "idle",
+        "error": null
+      },
+      {
+        "runId": "3fe7467d-a735-4bd2-aede-23dcae02f181",
+        "startedAt": 1790133380,
+        "completedAt": 1790133381,
+        "job": "quotes:upbit:1",
+        "outcome": "ok",
+        "error": null
+      },
+      {
+        "runId": "0ce06867-47a1-4d0a-bce2-c69c2c8ffe3c",
+        "startedAt": 1790133320,
+        "completedAt": 1790133321,
+        "job": "quotes:upbit:0",
+        "outcome": "ok",
+        "error": null
+      },
+      {
+        "runId": "83591b63-18ac-4bf4-b3a3-677280ebe64d",
+        "startedAt": 1790133260,
+        "completedAt": 1790133260,
+        "job": null,
+        "outcome": "idle",
+        "error": null
+      },
+      {
+        "runId": "437ad2de-32b3-41f8-aef2-6d09c86d64b7",
+        "startedAt": 1790133200,
+        "completedAt": 1790133200,
+        "job": null,
+        "outcome": "idle",
+        "error": null
+      }
+    ]
+  },
+  "health": {
+    "ok": true,
+    "reasons": [],
+    "checkedAt": 1790134374
+  }
+}

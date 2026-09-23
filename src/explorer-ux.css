@@ -13,13 +13,13 @@
   gap: 9px;
   padding: 16px;
   text-align: left;
-  border: 1px solid #2b394b;
+  border: 1px solid var(--border);
   border-radius: 7px;
-  background: #131c29;
+  background: var(--surface);
 }
 .explorer-questions button[aria-pressed='true'] {
   border-color: #bd9d60;
-  background: #24241f;
+  background: var(--surface);
 }
 .explorer-questions span {
   color: #e8bc7c;
@@ -29,10 +29,10 @@
   font-size: 13px;
   font-weight: 500;
   line-height: 1.7;
-  color: #dce5f1;
+  color: var(--text);
 }
 .explorer-questions small {
-  color: #a2b2c9;
+  color: var(--muted);
   font-size: 10px;
   line-height: 1.7;
 }
@@ -59,7 +59,7 @@
 .explorer-results-heading p {
   flex: 1 1 400px;
   font-size: 11px;
-  color: #a2b2c9;
+  color: var(--muted);
   line-height: 1.8;
 }
 .explorer-results-heading > div {
@@ -69,13 +69,13 @@
   font-size: 12px;
 }
 .explorer-results-heading span {
-  color: #c1cde0;
+  color: var(--text);
 }
 .explorer-results-heading button {
   min-height: 36px;
   text-decoration: underline;
   text-underline-offset: 3px;
-  color: #b7cdec;
+  color: var(--text);
   font-size: 12px;
 }
 .explorer-page .library-card .metric-guide {

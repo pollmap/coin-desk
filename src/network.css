@@ -18,7 +18,7 @@
 }
 .network-picker span {
   font-size: 12px;
-  color: #94a4b8;
+  color: var(--muted);
 }
 .network-metrics {
   display: flex;
@@ -28,16 +28,16 @@
 }
 .network-metrics button {
   padding: 9px 12px;
-  border: 1px solid #2d3c4d;
+  border: 1px solid var(--border);
   border-radius: 6px;
-  background: #121c29;
-  color: #bcc8d7;
+  background: var(--surface);
+  color: var(--text);
   font-size: 12px;
 }
 .network-metrics button.selected {
   color: #8eebdb;
   border-color: #53948a;
-  background: #193333;
+  background: var(--surface);
 }
 .network-main > .metric-detail-top {
   padding: 22px;
@@ -52,7 +52,7 @@
   margin: 0 22px 16px;
   gap: 14px;
   padding: 14px;
-  background: #0e1722;
+  background: var(--panel);
   border-radius: 8px;
 }
 .network-coverage span,
@@ -61,7 +61,7 @@
 }
 .network-coverage span {
   font-size: 11px;
-  color: #92a4ba;
+  color: var(--muted);
   margin-bottom: 6px;
 }
 .network-coverage b {
@@ -74,7 +74,7 @@
   justify-content: space-between;
   gap: 10px;
   padding: 10px 20px;
-  color: #a6b7c9;
+  color: var(--muted);
   font-size: 12px;
 }
 .network-chart-readout b {
@@ -85,10 +85,10 @@
 .network-unavailable p {
   font-size: 13px;
   line-height: 1.9;
-  color: #b4c1d2;
+  color: var(--text);
 }
 .network-formula {
-  background: #0d1722;
+  background: var(--panel);
   padding: 14px;
   border-radius: 6px;
   color: #e8bd83;
@@ -101,7 +101,7 @@
   border-left: 3px solid #f2ba72;
   padding: 12px 16px;
   margin: 18px 0;
-  background: #182026;
+  background: var(--surface);
 }
 .network-reference strong {
   color: #f2ba72;
@@ -126,7 +126,7 @@
   font-size: 12px;
   line-height: 1.7;
   margin: 12px 20px;
-  color: #a6b7c9;
+  color: var(--muted);
 }
 .network-entry {
   display: flex;
@@ -135,17 +135,17 @@
   gap: 14px;
   padding: 15px 18px;
   margin: 18px 0;
-  border: 1px solid #2b4d49;
-  background: #122320;
+  border: 1px solid var(--border);
+  background: var(--surface);
   border-radius: 9px;
 }
 .network-entry div {
   font-size: 13px;
-  color: #c6e7df;
+  color: var(--text);
 }
 .network-entry small {
   display: block;
-  color: #9bb6b2;
+  color: var(--muted);
   margin-top: 5px;
   font-size: 11px;
 }

@@ -36,7 +36,7 @@ export function calculateIndicators(
       out[id] = [b.middle, b.upper, b.lower];
     } else if (spec.kind === 'rsi') out[id] = [rsi(closes, spec.period)];
     else if (spec.kind === 'macd') {
-      const m = macd(closes);
+      const m = macd(closes, spec.period, spec.slowPeriod, spec.signalPeriod);
       out[id] = [m.line, m.signal, m.histogram];
     } else {
       const input = spec.basis === 'w' ? weekly : spec.basis === 'd' ? dailyPoints : closes;

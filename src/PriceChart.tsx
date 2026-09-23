@@ -1,6 +1,7 @@
+import { ChartNavigator } from './ChartNavigator';
+import { createDeskChart as createChart } from './chart-theme';
 import { memo, useEffect, useMemo, useRef, useState } from 'react';
 import {
-  createChart,
   CandlestickSeries,
   HistogramSeries,
   LineSeries,
@@ -83,6 +84,10 @@ export const PriceChart = memo(function PriceChart({
   const [keyboardValue, setKeyboardValue] = useState('');
   const [linePrice, setLinePrice] = useState('');
   const [drawingList, setDrawingList] = useState(false);
+  const navigatorRows = useMemo(
+    () => candles.map((c) => ({ time: c.time, value: c.close })),
+    [candles],
+  );
   const candlesByTime = useMemo(() => new Map(candles.map((c) => [c.time, c])), [candles]);
   useEffect(() => {
     const d = validDrawings(saved('drawings.' + scope, []));
@@ -293,7 +298,7 @@ export const PriceChart = memo(function PriceChart({
                   lineStyle: LineStyle.Dashed,
                   lineVisible: settingsRef.current.showThresholds,
                   axisLabelVisible: settingsRef.current.showThresholds,
-                  title: 'EMA12 = EMA26',
+                  title: `EMA${definition.period} = EMA${definition.slowPeriod}`,
                 }),
               );
           }
@@ -512,7 +517,7 @@ export const PriceChart = memo(function PriceChart({
             ) || [];
           const lineLabels =
             spec?.kind === 'macd'
-              ? ['MACD', '신호 9', '히스토그램']
+              ? ['MACD', `신호 ${spec.signalPeriod}`, '히스토그램']
               : spec?.kind === 'bb'
                 ? ['중심', '상단', '하단']
                 : ['값'];
@@ -531,7 +536,11 @@ export const PriceChart = memo(function PriceChart({
                 </small>
               ) : null}
               {spec?.kind === 'bb' ? <small>변동성 범위 · ±{spec.multiplier}σ</small> : null}
-              {spec?.kind === 'macd' ? <small>0 = EMA12와 EMA26 같음</small> : null}
+              {spec?.kind === 'macd' ? (
+                <small>
+                  0 = EMA{spec.period}와 EMA{spec.slowPeriod} 같음
+                </small>
+              ) : null}
             </span>
           );
         })}
@@ -585,6 +594,7 @@ export const PriceChart = memo(function PriceChart({
       <span className="chart-keyboard-status" role="status">
         {keyboardValue}
       </span>
+      <ChartNavigator rows={navigatorRows} chart={chartRef} label="가격 차트" log={log} />
       <div className="chart-actions" aria-label="차트 조작">
         <button onClick={() => zoom(1 / 1.4)} aria-label="차트 확대">
           ＋ 확대
@@ -640,10 +650,10 @@ export const PriceChart = memo(function PriceChart({
           ) : null}
           {indicators.some((id) => indicatorSpec(id)?.kind === 'macd') ? (
             <div className="threshold-legend">
-              <b>MACD 0: EMA12 = EMA26</b>
+              <b>MACD 0: 단기 EMA = 장기 EMA</b>
               <p className="threshold-note">
                 MACD선의 0 위·아래는 단기·장기 평균의 위치를, 히스토그램의 0 위·아래는 MACD와 신호
-                EMA9의 위치를 뜻합니다. 고정 과열·과매도 경계는 없습니다.
+                EMA의 위치를 뜻합니다. 고정 과열·과매도 경계는 없습니다.
               </p>
               <div className="threshold-sources">
                 <a

@@ -99,7 +99,7 @@ export async function json<T>(url: string, signal?: AbortSignal): Promise<T> {
     if (!r.ok)
       throw new Error(
         typeof data?.error === 'string'
-          ? data.error.slice(0, 250)
+          ? friendlyError(data.error)
           : '데이터를 불러오지 못했습니다.',
       );
     if (!data || typeof data !== 'object') throw new Error('올바른 데이터 응답이 아닙니다.');
@@ -112,6 +112,13 @@ export async function json<T>(url: string, signal?: AbortSignal): Promise<T> {
     signal?.removeEventListener('abort', abort);
   }
 }
+export function friendlyError(message: string): string {
+  if (/Invalid (to|from|range)/i.test(message))
+    return '조회 기간을 확인할 수 없습니다. 전체 기간을 다시 선택해 주세요.';
+  if (/Invalid|Unsupported|Not found/i.test(message))
+    return '지원하지 않는 조회 조건입니다. 코인과 지표를 다시 선택해 주세요.';
+  return message.slice(0, 250);
+}
 export async function pages<T extends CandleResponse | SeriesResponse>(
   url: string,
   signal?: AbortSignal,
@@ -123,7 +130,10 @@ export async function pages<T extends CandleResponse | SeriesResponse>(
   if (first.nextCursor === null) return first;
   const interval = base.searchParams.get('interval') || '1d';
   const span = (interval === '1h' || interval === '4h' ? 3600 : 86400) * 900;
-  const end = Number(base.searchParams.get('to') || Math.floor(Date.now() / 1000) + 86400);
+  // Older cached responses have no range. Follow their cursor without inventing
+  // a client-clock upper bound; new responses allow parallel bounded windows.
+  if (!first.range && !base.searchParams.has('to')) return sequentialPages<T>(url, signal, first);
+  const end = first.range?.to ?? Number(base.searchParams.get('to'));
   const windows: string[] = [];
   for (let start = first.nextCursor; start < end; start += span) {
     if (windows.length >= 40) throw new Error('조회 가능한 데이터 범위를 초과했습니다.');
@@ -157,9 +167,10 @@ export async function pages<T extends CandleResponse | SeriesResponse>(
 async function sequentialPages<T extends CandleResponse | SeriesResponse>(
   url: string,
   signal?: AbortSignal,
+  seed?: T,
 ): Promise<T> {
-  let result: T | undefined;
-  let cursor = 0;
+  let result: T | undefined = seed;
+  let cursor = seed?.nextCursor ?? 0;
   for (let i = 0; i < 40; i++) {
     const pageUrl = new URL(url, 'https://btc-desk.invalid');
     if (cursor) pageUrl.searchParams.set('from', String(cursor));

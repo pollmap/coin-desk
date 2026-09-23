@@ -31,6 +31,9 @@ def reference(values):
     fast=ema(values,12)[14:];slow=ema(values,26)
     line=[f-s for f,s in zip(fast,slow)];signal=ema(line,9)
     expected.update(macd=line,signal=signal,histogram=[v-s for v,s in zip(line[8:],signal)])
+    custom_fast=ema(values,8)[13:];custom_slow=ema(values,21)
+    custom_line=[f-s for f,s in zip(custom_fast,custom_slow)];custom_signal=ema(custom_line,5)
+    expected.update(macdCustom=custom_line,signalCustom=custom_signal,histogramCustom=[v-s for v,s in zip(custom_line[4:],custom_signal)])
     return {k:[float(v) for v in seq] for k,seq in expected.items()}
 def main():
     p=argparse.ArgumentParser();p.add_argument('--write',action='store_true');a=p.parse_args()

@@ -4,7 +4,7 @@
 }
 .brand-showcase p,
 .brand-preview p {
-  color: #a4b0c0;
+  color: var(--muted);
   font-size: 13px;
   line-height: 1.8;
 }
@@ -22,7 +22,7 @@
   padding: 15px;
   border-radius: 8px;
   font-size: 12px;
-  border: 1px solid #33404f;
+  border: 1px solid var(--border);
 }
 .brand-downloads {
   display: flex;
@@ -30,13 +30,13 @@
   flex-wrap: wrap;
 }
 .brand-downloads a {
-  border: 1px solid #344355;
+  border: 1px solid var(--border);
   border-radius: 6px;
   padding: 10px 14px;
   font-size: 12px;
 }
 .brand-downloads a:hover {
-  background: #203031;
+  background: var(--surface);
 }
 .brand-preview {
   margin-top: 20px;

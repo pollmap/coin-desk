@@ -96,10 +96,20 @@ export function ema(points: Point[], period: number): Point[] {
   }
   return out;
 }
-export function macd(points: Point[]) {
-  const fast = new Map(ema(points, 12).map((p) => [p.time, p.value]));
-  const line = ema(points, 26).map((p) => ({ time: p.time, value: fast.get(p.time)! - p.value }));
-  const signal = ema(line, 9),
+export function macd(points: Point[], fastPeriod = 12, slowPeriod = 26, signalPeriod = 9) {
+  if (
+    ![fastPeriod, slowPeriod, signalPeriod].every(
+      (v) => Number.isInteger(v) && v >= 2 && v <= 1000,
+    ) ||
+    fastPeriod >= slowPeriod
+  )
+    return { line: [], signal: [], histogram: [] };
+  const fast = new Map(ema(points, fastPeriod).map((p) => [p.time, p.value]));
+  const line = ema(points, slowPeriod).map((p) => ({
+    time: p.time,
+    value: fast.get(p.time)! - p.value,
+  }));
+  const signal = ema(line, signalPeriod),
     byTime = new Map(signal.map((p) => [p.time, p.value]));
   const histogram = line
     .filter((p) => byTime.has(p.time))

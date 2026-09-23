@@ -21,13 +21,13 @@
   margin-left: 8px;
   font-size: 12px;
   font-weight: 400;
-  color: #a1aec0;
+  color: var(--muted);
 }
 .comparison-control-heading button,
 .comparison-share,
 .comparison-refresh button,
 .comparison-chart-toolbar button {
-  border: 1px solid #354155;
+  border: 1px solid var(--border);
   border-radius: 5px;
   padding: 7px 10px;
   font-size: 12px;
@@ -43,7 +43,7 @@
   align-items: center;
   flex-wrap: wrap;
   gap: 5px;
-  border: 1px solid #303b4c;
+  border: 1px solid var(--border);
   border-radius: 5px;
   min-height: 53px;
   padding: 9px;
@@ -51,7 +51,7 @@
   opacity: 0.65;
 }
 .comparison-assets button[aria-pressed='true'] {
-  background: #202a38;
+  background: var(--surface);
   border-color: #8093ad;
   opacity: 1;
 }
@@ -62,7 +62,7 @@
 .comparison-assets button span {
   flex-basis: 100%;
   font-size: 10px;
-  color: #b0bdce;
+  color: var(--text);
 }
 .comparison-assets i,
 .comparison-readout i,
@@ -77,14 +77,14 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  color: #a1aec0;
+  color: var(--muted);
   font-size: 12px;
 }
 .comparison-options select {
   padding: 7px;
-  background: #18212e;
-  color: #dce3ed;
-  border: 1px solid #354155;
+  background: var(--surface);
+  color: var(--text);
+  border: 1px solid var(--border);
   border-radius: 4px;
   min-height: 34px;
 }
@@ -101,26 +101,26 @@
   gap: 10px;
   margin-top: 15px;
   padding-top: 14px;
-  border-top: 1px solid #293345;
+  border-top: 1px solid var(--border);
 }
 .comparison-date-range label {
   display: grid;
   gap: 5px;
-  color: #a1aec0;
+  color: var(--muted);
   font-size: 11px;
 }
 .comparison-date-range input {
   min-width: 0;
-  color: #dce3ed;
+  color: var(--text);
   color-scheme: dark;
-  background: #17202d;
+  background: var(--surface);
   padding: 8px;
-  border: 1px solid #354155;
+  border: 1px solid var(--border);
   border-radius: 4px;
   font: inherit;
 }
 .comparison-date-range button {
-  border: 1px solid #354155;
+  border: 1px solid var(--border);
   padding: 8px 11px;
   border-radius: 4px;
 }
@@ -131,7 +131,7 @@
 }
 .comparison-date-range > span {
   font-size: 11px;
-  color: #a1aec0;
+  color: var(--muted);
   padding-bottom: 7px;
 }
 .comparison-date-error {
@@ -149,9 +149,9 @@
   gap: 10px 20px;
   padding: 15px 18px;
   margin: 14px 0;
-  border: 1px solid #2b394b;
+  border: 1px solid var(--border);
   border-radius: 6px;
-  background: #141d29;
+  background: var(--surface);
 }
 .comparison-coverage > div {
   min-width: 0;
@@ -160,7 +160,7 @@
 }
 .comparison-coverage > div > span {
   font-size: 11px;
-  color: #a1aec0;
+  color: var(--muted);
 }
 .comparison-coverage strong {
   font-size: 12px;
@@ -174,14 +174,14 @@
 }
 .comparison-coverage summary {
   cursor: pointer;
-  color: #adc1da;
+  color: var(--text);
 }
 .comparison-coverage ul {
   padding-left: 18px;
   margin: 7px 0;
 }
 .comparison-coverage details p {
-  color: #a1aec0;
+  color: var(--muted);
 }
 .comparison-reading {
   padding: 0 18px 15px;
@@ -189,7 +189,7 @@
 }
 .comparison-reading summary {
   cursor: pointer;
-  color: #bdcde1;
+  color: var(--text);
 }
 .comparison-reading > div {
   display: grid;
@@ -199,13 +199,13 @@
 }
 .comparison-reading p {
   line-height: 1.8;
-  color: #a1aec0;
+  color: var(--muted);
   font-size: 11px;
 }
 .comparison-reading b {
   display: block;
   margin-bottom: 4px;
-  color: #dce3ed;
+  color: var(--text);
 }
 .comparison-statistics th button {
   padding: 0;
@@ -216,20 +216,20 @@
   display: grid;
   gap: 8px;
   margin-top: 14px;
-  color: #a6c3b7;
+  color: var(--muted);
 }
 .comparison-share-result input {
   padding: 8px;
   min-width: 0;
   width: 100%;
-  color: #dce3ed;
-  background: #0c1119;
-  border: 1px solid #354155;
+  color: var(--text);
+  background: var(--panel);
+  border: 1px solid var(--border);
   border-radius: 4px;
 }
 .comparison-notice {
   padding: 12px 16px;
-  background: #17202d;
+  background: var(--surface);
   margin-bottom: 14px;
   line-height: 1.7;
   border-left: 2px solid #526d92;
@@ -244,12 +244,12 @@
   gap: 12px;
 }
 .comparison-result .panel-title p {
-  color: #a1aec0;
+  color: var(--muted);
   font-size: 12px;
   margin-top: 5px;
 }
 .comparison-result .panel-title button {
-  border: 1px solid #354155;
+  border: 1px solid var(--border);
   border-radius: 5px;
   padding: 7px 10px;
   white-space: nowrap;
@@ -259,7 +259,7 @@
 }
 .comparison-chart-toolbar {
   padding: 2px 18px 10px;
-  color: #a1aec0;
+  color: var(--muted);
   font-size: 12px;
 }
 .comparison-readout {
@@ -284,7 +284,7 @@
 }
 .comparison-caption {
   padding: 12px 18px;
-  color: #a1aec0;
+  color: var(--muted);
   font-size: 11px;
   line-height: 1.7;
 }
@@ -301,11 +301,11 @@
 .comparison-statistics td,
 .comparison-statistics th {
   padding: 13px 18px;
-  border-top: 1px solid #242d3b;
+  border-top: 1px solid var(--border);
   white-space: nowrap;
 }
 .comparison-statistics thead th {
-  color: #a1aec0;
+  color: var(--muted);
   font-size: 11px;
   font-weight: 500;
 }
@@ -313,7 +313,7 @@
   text-align: left;
   position: sticky;
   left: 0;
-  background: #111721;
+  background: var(--panel);
   z-index: 1;
 }
 .comparison-statistics th a {
@@ -326,19 +326,19 @@
 }
 .comparison-statistics td:last-child {
   font-size: 11px;
-  color: #b7c3d4;
+  color: var(--text);
 }
 .comparison-statistics td:last-child span {
   margin: 0 6px;
-  color: #7e8b9f;
+  color: var(--muted);
 }
 .comparison-statistics .panel-title > span {
-  color: #a1aec0;
+  color: var(--muted);
   font-size: 11px;
 }
 .comparison-refresh {
   margin: 16px 0;
-  color: #a1aec0;
+  color: var(--muted);
   font-size: 11px;
   line-height: 1.7;
 }
@@ -352,18 +352,18 @@
 .comparison-method summary {
   cursor: pointer;
   font-weight: 600;
-  color: #c2ccdb;
+  color: var(--text);
 }
 .comparison-method p,
 .comparison-method ul {
   margin: 12px 0 0;
-  color: #a1aec0;
+  color: var(--muted);
   font-size: 12px;
 }
 .comparison-method a {
   text-decoration: underline;
   text-underline-offset: 3px;
-  color: #b8c9e5;
+  color: var(--text);
 }
 @media (max-width: 1000px) {
   .comparison-assets {
