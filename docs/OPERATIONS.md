@@ -1,10 +1,16 @@
 # Coin Desk 실행·배포·복구 안내
 
-기준일: 2026-09-20 KST. 공개 주소: [coin-desk.pages.dev](https://coin-desk.pages.dev). 소스: [pollmap/coin-desk](https://github.com/pollmap/coin-desk).
+기준일: 2026-09-23 KST. 공개 주소: [coin-desk.pages.dev](https://coin-desk.pages.dev). 소스: [pollmap/coin-desk](https://github.com/pollmap/coin-desk).
 
-## 0.5.0 현재 운영 기준
+## 0.7.0 현재 운영 기준
 
-현재 버전은 **0.5.0**입니다. [0.5 릴리스](UPGRADE05.md)와 [무료 원천·산식 조사](RESEARCH05.md)를 기준으로 운영합니다. `0006_network.sql`을 적용해 `network_months`, `network_coverage`를 추가했습니다. 5개 코인의 56개 온체인 시계열과 5개 장기 참조가격 작업은 Cloudflare Cron에서 갱신하며 상태 화면은 원천 62개를 검사합니다. 초기 적재는 `bootstrap_network.py` → `import_network.mjs`, 전량 대조는 `verify_network.py`를 사용합니다. 백업·복원 도구는 새 테이블까지 포함합니다.
+[0.7 확장·검증 기록](UPGRADE07.md)을 기준으로 운영합니다. `0007_derivatives.sql`은 Worker 배포 전에 원격 D1에 적용합니다. BTC·DOGE·ETH는 새 Coin Metrics 지표를 포함해 `python scripts/bootstrap_network.py --assets BTC,DOGE,ETH`로 원본을 받고, `node scripts/import_network.mjs BTC,DOGE,ETH`로 로컬 검증합니다. 원격에는 세 자산별 `work/network/<ASSET>.sql`을 순서대로 적용합니다. 원본·SQL은 `work/`에 보관하며 Git에 넣지 않습니다.
+
+Cloudflare Cron은 방문자 없이 매분 작업 하나를 실행합니다. mempool.space는 15분, 선물 6개 작업은 매시간 목표로 갱신하고 Binance 최초 펀딩비 이력은 페이지별 체크포인트로 축적합니다. 미결제약정은 제공되는 최근 범위부터 시작합니다. 선물 원천 접근이 배포 환경에서 실패하면 `/status`의 `derivatives:*` 오류를 확인하고 화면에는 원천 연결 대기·마지막 정상값만 표시합니다. 임의 가격이나 선물 수치를 채우지 않습니다. 48시간 관찰은 배포 직후 별도 진행합니다.
+
+## 0.5.0 도입 기록
+
+0.5.0에서는 [릴리스 기록](UPGRADE05.md)과 [무료 원천·산식 조사](RESEARCH05.md)를 기준으로 `0006_network.sql`을 적용해 `network_months`, `network_coverage`를 추가했습니다. 당시 5개 코인의 56개 온체인 시계열과 5개 장기 참조가격 작업을 Cloudflare Cron에서 갱신했습니다. 초기 적재는 `bootstrap_network.py` → `import_network.mjs`, 전량 대조는 `verify_network.py`를 사용했습니다.
 
 ## 0.4.0 도입 기록
 

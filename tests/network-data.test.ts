@@ -8,6 +8,7 @@ import {
   networkMonth,
   networkSourceMetrics,
   parseNetwork,
+  decimalDifference,
   readNetworkSeries,
   updateNetworkData,
 } from '../worker/network-data';
@@ -34,12 +35,17 @@ const raw = (time: number, asset: NetworkAsset = 'BTC', changes: Record<string, 
 });
 
 describe('free network metric definitions and normalization', () => {
+  it('subtracts large exchange decimals before float conversion', () => {
+    expect(decimalDifference('593183.075487895027779039', '593197.4758625682507349'))
+      .toBeCloseTo(-14.400374673222956, 12);
+    expect(decimalDifference('1.20', '1.2')).toBe(0);
+  });
   it('registers actual free availability and chain-specific units, without inventing unsupported token fees', () => {
     expect(
       ['BTC', 'DOGE', 'ETH', 'XRP', 'LINK'].map(
         (asset) => networkMetrics(asset as NetworkAsset).length,
       ),
-    ).toEqual([12, 12, 11, 11, 10]);
+    ).toEqual([18, 14, 17, 11, 10]);
     expect(networkMetrics('SOL')).toEqual([]);
     expect(networkUnit('DOGE', 'fees_native')).toBe('DOGE / 일');
     expect(networkUnit('BTC', 'hashrate')).toBe('TH/s');

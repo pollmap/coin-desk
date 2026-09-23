@@ -17,12 +17,17 @@ import urllib.request
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 FIELDS = {'mvrv': 'CapMVRVCur', 'active_addresses': 'AdrActCnt', 'balance_addresses': 'AdrBalCnt',
           'transactions': 'TxCnt', 'transfers': 'TxTfrCnt', 'supply': 'SplyCur', 'market_cap': 'CapMrktCurUSD',
-          'fees_native': 'FeeTotNtv', 'hashrate': 'HashRate'}
+          'fees_native': 'FeeTotNtv', 'hashrate': 'HashRate', 'blocks': 'BlkCnt',
+          'issuance': 'IssTotNtv', 'exchange_inflow': 'FlowInExNtv',
+          'exchange_outflow': 'FlowOutExNtv', 'exchange_balance': 'SplyExNtv'}
 
 def expected_value(row, metric):
     if metric in FIELDS:
         raw = row.get(FIELDS[metric])
         return None if raw is None else float(raw)
+    if metric == 'exchange_netflow':
+        inflow, outflow = row.get('FlowInExNtv'), row.get('FlowOutExNtv')
+        return None if inflow is None or outflow is None else float(Decimal(inflow) - Decimal(outflow))
     mvrv = row.get('CapMVRVCur')
     if mvrv is None or Decimal(mvrv) <= 0:
         return None
@@ -98,7 +103,9 @@ def main():
             assert len(actual_price) == len(got_price), 'Duplicate price overlay dates'
             assert set(got) == set(expected), 'Missing or fabricated observations'
             assert set(got_price) == set(expected_price), 'Price overlay alignment mismatch'
-            assert all(math.isclose(value, got[stamp], rel_tol=1e-12, abs_tol=1e-13) for stamp, value in expected.items()), 'Source/Decimal calculation mismatch'
+            mismatch = next(((stamp, value, got[stamp]) for stamp, value in expected.items()
+                             if not math.isclose(value, got[stamp], rel_tol=1e-12, abs_tol=1e-13)), None)
+            assert mismatch is None, f'Source/Decimal calculation mismatch: {asset} {metric} {mismatch}'
             assert all(math.isclose(value, got_price[stamp], rel_tol=1e-12, abs_tol=1e-13) for stamp, value in expected_price.items()), 'Price source mismatch'
             asset_report['metrics'][metric] = {'matched': len(got), 'pages': page + 1, 'first': audit['metrics'][metric]['first'], 'last': audit['metrics'][metric]['last']}
         asset_report['seconds'] = round(time.monotonic() - begin, 3)

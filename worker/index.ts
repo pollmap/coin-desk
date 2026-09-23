@@ -29,6 +29,8 @@ import { REFERENCE_ASSETS, REFERENCE_SOURCE, REFERENCE_VERSION } from './referen
 import { operationStatus } from './health';
 import { NETWORK_ASSETS, NETWORK_METRICS, networkMetric } from '../shared/network-catalog';
 import { readNetworkSeries } from './network-data';
+import { derivativeAsset, derivativeMetric, readDerivativeSeries } from './derivatives';
+import type { MempoolSnapshot } from './mempool';
 const response = (body: unknown, status = 200) =>
   new Response(JSON.stringify(body), {
     status,
@@ -51,6 +53,8 @@ function canonicalRequest(request: Request) {
     series: ['asset', 'metric', 'from', 'to', 'limit'],
     reference: ['asset', 'from', 'to', 'limit'],
     network: ['asset', 'metric', 'from', 'to', 'limit'],
+    derivatives: ['asset', 'metric', 'from', 'to', 'limit'],
+    'network-live': ['asset'],
     'network-catalog': ['asset'],
     metrics: ['asset'],
     status: [],
@@ -272,6 +276,26 @@ async function api(request: Request, env: Env): Promise<Response> {
           report.health.ok ? 200 : 503,
         );
   }
+  if (endpoint === 'network-live') {
+    if (asset !== 'BTC') return response({ error: 'BTC 네트워크만 지원합니다.' }, 400);
+    const [snapshot, state] = await Promise.all([
+      env.DB.prepare('SELECT data,fetched_at FROM snapshots WHERE key=?').bind('mempool:BTC')
+        .first<{ data: string; fetched_at: number }>(),
+      env.DB.prepare('SELECT error FROM ingestion WHERE key=?').bind('mempool:BTC')
+        .first<{ error: string | null }>(),
+    ]);
+    if (!snapshot) return response({ error: 'BTC 네트워크 현황의 첫 수집을 기다리고 있습니다.', code: 'NO_DATA' }, 503);
+    return response({
+      data: JSON.parse(snapshot.data) as MempoolSnapshot,
+      meta: {
+        source: 'mempool.space', unit: 'sat/vB · 거래 건 · vB', market: 'Bitcoin mempool',
+        dataAsOf: snapshot.fetched_at, fetchedAt: snapshot.fetched_at,
+        stale: epoch() - snapshot.fetched_at > 1800 || !!state?.error,
+        calculationVersion: 'mempool-public-snapshot-v1',
+        warning: state?.error ? '최근 수집 실패로 마지막 정상 현황을 표시합니다.' : undefined,
+      } satisfies Provenance,
+    });
+  }
   if (!env.ENABLED_ASSETS.split(',').includes(asset))
     return response({ error: '아직 수집하지 않은 자산입니다.', code: 'NOT_ENABLED' }, 404);
   if (endpoint === 'overview') return response(await overview(env, asset, market));
@@ -287,6 +311,12 @@ async function api(request: Request, env: Env): Promise<Response> {
       ...(await readNetworkSeries(env.DB, asset, metric, from, to, limit)),
       range: { from, to },
     });
+  }
+  if (endpoint === 'derivatives') {
+    const metric = q.get('metric') || 'funding';
+    if (!derivativeAsset(asset) || !derivativeMetric(metric))
+      return response({ error: 'BTC·DOGE·ETH의 Binance 선물 지표만 지원합니다.' }, 400);
+    return response(await readDerivativeSeries(env.DB, asset, metric, from, to, limit));
   }
   if (endpoint === 'reference') {
     if (!(REFERENCE_ASSETS as readonly string[]).includes(asset))

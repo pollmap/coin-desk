@@ -216,6 +216,16 @@ it('UTC day rollover refreshes the previous day and new daily candle before the 
   expect(dueAt(job, [state], start + 60)).toBe(start);
   expect(selectJob([job], [state], start + 60)).toEqual(job);
 });
+it('a due BTC fee snapshot is not starved by repeated blocked futures retries', () => {
+  const policies = jobPolicies(['BTC'], false);
+  const mempool = policies.find((job) => job.key === 'mempool:BTC');
+  const futures = policies.find((job) => job.key === 'derivatives:BTC:funding');
+  const states = [
+    { key: mempool.key, last_attempt: now - 901, data_as_of: now - 901, next_attempt: 0 },
+    { key: futures.key, last_attempt: now - 300, data_as_of: null, next_attempt: now - 180 },
+  ];
+  expect(selectJob([futures, mempool], states, now)).toEqual(mempool);
+});
 it('source backoff does not stop another eligible source and remains visible', async () => {
   ready();
   source('quotes:binance:0', now - 900);
@@ -310,8 +320,23 @@ it('a fresh network collector cannot conceal a missing or outdated individual me
   expect(delayed.sources.find((row) => row.key === 'network:DOGE')).toMatchObject({
     status: 'delayed',
     dataAgeSeconds: 4 * DAY,
-    coverage: { metrics: 12, expectedMetrics: 12, oldestMetricAsOf: now - 4 * DAY },
+    coverage: { metrics: 14, expectedMetrics: 14, oldestMetricAsOf: now - 4 * DAY },
   });
+});
+it('a blocked optional futures feed stays visible without declaring core market data unavailable', async () => {
+  ready();
+  await scheduled(env);
+  DB.sqlite.prepare(
+    "UPDATE ingestion SET error='HTTP 403',last_success=NULL,data_as_of=NULL WHERE key='derivatives:BTC:funding'",
+  ).run();
+  DB.sqlite.prepare(
+    "UPDATE cron_state SET outcome='error',job='derivatives:BTC:funding',error='HTTP 403' WHERE id=1",
+  ).run();
+  const report = await operationStatus(env);
+  expect(report.sources.find((row) => row.key === 'derivatives:BTC:funding'))
+    .toMatchObject({ status: 'missing', error: 'HTTP 403' });
+  expect(report.health.reasons.some((row) => row.key === 'derivatives:BTC:funding')).toBe(false);
+  expect(report.health.ok).toBe(true);
 });
 it('status bypasses old cached responses and reflects DB changes immediately without writing or refreshing sources', async () => {
   ready();

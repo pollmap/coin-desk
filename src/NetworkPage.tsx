@@ -15,6 +15,7 @@ import { useData } from './hooks';
 import { dateLabel } from './lib';
 import { PeriodPicker } from './PeriodPicker';
 import { NetworkChart, networkValue } from './NetworkChart';
+import { AssetLogo } from './AssetLogo';
 import './network.css';
 
 export function NetworkPage() {
@@ -84,7 +85,7 @@ export function NetworkPage() {
             className={item.id === asset ? 'selected' : ''}
             to={`/onchain/${item.id}?metric=${networkMetric(item.id, requested) ? requested : 'mvrv'}&period=${period}`}
           >
-            <i style={{ background: item.color }} />
+            <AssetLogo asset={item.id} size={19} />
             <b>{item.id}</b>
             <span>{item.name}</span>
           </Link>
@@ -149,6 +150,9 @@ export function NetworkPage() {
                           ? '전체 이력 불러오는 중'
                           : '관측 없음'}
                     </span>
+                    {result.data?.meta.sourceStatus ? (
+                      <span>원천 관측 상태: {result.data.meta.sourceStatus}</span>
+                    ) : null}
                   </div>
                   <PeriodPicker value={period} onChange={(value) => change('period', value)} />
                 </div>

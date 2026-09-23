@@ -10,6 +10,7 @@ import {
   type UTCTimestamp,
 } from 'lightweight-charts';
 import { ASSETS } from '../shared/catalog';
+import { AssetLogo } from './AssetLogo';
 import {
   compareCloses,
   parseComparisonRange,
@@ -158,7 +159,7 @@ function ComparisonChart({
           const value = values.get(row.asset)?.get(visibleTime ?? 0);
           return (
             <span key={row.asset}>
-              <i style={{ background: ASSETS.find((asset) => asset.id === row.asset)!.color }} />
+              <AssetLogo asset={row.asset} size={16} />
               <b>{row.asset}</b> {value === undefined ? '관측 없음' : numeric(value)}
               {value !== undefined ? (
                 <small className={value >= 100 ? 'up' : 'down'}>
@@ -449,7 +450,7 @@ export function ComparePage() {
                 })
               }
             >
-              <i style={{ background: asset.color }} />
+              <AssetLogo asset={asset.id} size={19} />
               <b>{asset.id}</b>
               <span>{asset.name}</span>
             </button>

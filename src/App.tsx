@@ -1,4 +1,6 @@
 import { DeskNavigation, DeskTopbar } from './DeskNavigation';
+import { AssetLogo } from './AssetLogo';
+import { MainAssetDeck } from './MainAssetDeck';
 import { MetricInfoTabs } from './MetricInfoTabs';
 import { ThresholdMeter } from './ThresholdMeter';
 import { lazy, Suspense, useCallback, useEffect, useMemo, useRef, useState } from 'react';
@@ -59,6 +61,9 @@ const AutomationSummary = lazy(() =>
 const LongHistoryPanel = lazy(() =>
   import('./LongHistoryPanel').then((m) => ({ default: m.LongHistoryPanel })),
 );
+const RelativeAnalysisPanel = lazy(() => import('./RelativeAnalysisPanel').then((m) => ({ default: m.RelativeAnalysisPanel })));
+const DerivativesPanel = lazy(() => import('./DerivativesPanel').then((m) => ({ default: m.DerivativesPanel })));
+const MempoolPanel = lazy(() => import('./MempoolPanel').then((m) => ({ default: m.MempoolPanel })));
 const NetworkPage = lazy(() => import('./NetworkPage').then((m) => ({ default: m.NetworkPage })));
 const BrandPage = lazy(() => import('./BrandPage').then((m) => ({ default: m.BrandPage })));
 import { MetricGuide } from './MetricGuide';
@@ -380,7 +385,7 @@ function PricePage({ workspace = false }: { workspace?: boolean }) {
           </button>
         </div>
       </div>
-      <nav className="asset-switcher" aria-label="분석 코인 선택">
+      {workspace ? <nav className="asset-switcher" aria-label="분석 코인 선택">
         {ASSETS.map((a) => (
           <Link
             key={a.id}
@@ -400,12 +405,15 @@ function PricePage({ workspace = false }: { workspace?: boolean }) {
               })
             }
           >
-            <i style={{ background: a.color }} />
+            <AssetLogo asset={a.id} size={19} />
             <b>{a.id}</b>
             <span>{a.name}</span>
           </Link>
         ))}
-      </nav>
+      </nav> : <MainAssetDeck asset={asset} market={market} href={(next) => '/' + '?' + new URLSearchParams({
+        asset: next, market, interval, period, indicators: indicators.join(','),
+        log: log ? '1' : '0', cards: cards.join(','),
+      })} />}
       {!historical && (
         <details className="workspace-fold">
           <summary>작업공간 저장 · 불러오기</summary>
@@ -440,9 +448,7 @@ function PricePage({ workspace = false }: { workspace?: boolean }) {
       ) : null}
       <section className="quote-strip" aria-label="시장 요약">
         <div className="quote-primary">
-          <span className="coin-mark" style={{ background: coin.color }}>
-            {asset === 'BTC' ? '₿' : asset.slice(0, 1)}
-          </span>
+          <AssetLogo asset={asset} size={30} />
           <div>
             <div className="quote-symbol">
               {asset}
@@ -536,6 +542,11 @@ function PricePage({ workspace = false }: { workspace?: boolean }) {
             onLogChange={() => change('log', log ? '0' : '1')}
           />
         </Suspense>
+      ) : null}
+      {historical && (asset === 'DOGE' || asset === 'ETH') ? (
+        <DeferredMount><Suspense fallback={<Loading message="BTC 대비 상대 분석을 준비하고 있습니다…" />}>
+          <RelativeAnalysisPanel asset={asset} />
+        </Suspense></DeferredMount>
       ) : null}
       {hasLongHistory && historical ? (
         <div className="network-entry">
@@ -709,12 +720,22 @@ function PricePage({ workspace = false }: { workspace?: boolean }) {
           </div>
         </section>
       )}
+      {(asset === 'BTC' || asset === 'DOGE' || asset === 'ETH') ? (
+        <DeferredMount><Suspense fallback={<Loading message="선물 시장을 준비하고 있습니다…" />}>
+          <DerivativesPanel asset={asset} />
+        </Suspense></DeferredMount>
+      ) : null}
+      {asset === 'BTC' && !workspace ? (
+        <DeferredMount><Suspense fallback={<Loading message="BTC 네트워크 현황을 준비하고 있습니다…" />}>
+          <MempoolPanel />
+        </Suspense></DeferredMount>
+      ) : null}
       {!workspace ? (
         <Suspense fallback={<Loading />}>
           <DominancePanel compact />
         </Suspense>
       ) : null}
-      {asset === 'BTC' || !workspace ? (
+      {asset === 'BTC' ? (
         <>
           <div className="section-heading">
             <div>

@@ -17,6 +17,8 @@ import { updateDominance, updateStable } from './dominance';
 import { updateReference } from './reference-price';
 import { updateNetworkData } from './network-data';
 import { isNetworkAsset } from '../shared/network-catalog';
+import { derivativeAsset, derivativeMetric, updateDerivatives } from './derivatives';
+import { updateMempool } from './mempool';
 import {
   cleanError,
   enabledAssets,
@@ -312,6 +314,13 @@ async function executeJob(env: Env, job: JobPolicy, states: IngestionState[]) {
     return partial;
   }
   if (job.key === 'bitview') await updateOnchain(env);
+  else if (job.kind === 'mempool') await updateMempool(env);
+  else if (job.kind === 'derivatives') {
+    const asset = job.assets![0];
+    const metric = job.key.split(':')[2];
+    if (!derivativeAsset(asset) || !derivativeMetric(metric)) throw new Error('Unsupported derivatives job');
+    await updateDerivatives(env, asset, metric);
+  }
   else if (job.kind === 'network') {
     const asset = job.assets![0];
     if (!isNetworkAsset(asset)) throw new Error('Unsupported network job');

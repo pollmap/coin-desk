@@ -4,6 +4,7 @@ import type { Asset, Market } from '../shared/types';
 import { epoch, QUOTE_REFRESH_SECONDS, type Env } from './storage';
 import { REFERENCE_ASSETS } from './reference-price';
 import { NETWORK_ASSETS, networkMetrics } from '../shared/network-catalog';
+import { DERIVATIVE_ASSETS, DERIVATIVE_METRICS } from './derivatives';
 
 export const BACKGROUND_QUOTE_SECONDS = 480;
 export const DAILY_REFRESH_SECONDS = 21600;
@@ -26,7 +27,9 @@ export interface JobPolicy {
     | 'stablecoins'
     | 'maintenance'
     | 'reference'
-    | 'network';
+    | 'network'
+    | 'derivatives'
+    | 'mempool';
   every: number;
   maxLag: number;
   assets?: Asset[];
@@ -57,7 +60,18 @@ export function jobPolicies(assets: Asset[], rebuilding: boolean): JobPolicy[] {
     { key: 'defillama', kind: 'stablecoins', every: 21600, maxLag: 3 * DAY },
     { key: 'coinlore', kind: 'dominance', every: 3600, maxLag: 7200 },
     { key: 'maintenance', kind: 'maintenance', every: 3600, maxLag: 7200 },
+    { key: 'mempool:BTC', kind: 'mempool', every: 900, maxLag: 1800 },
   ];
+  for (const asset of DERIVATIVE_ASSETS)
+    if (assets.includes(asset))
+      for (const metric of DERIVATIVE_METRICS)
+        jobs.push({
+          key: `derivatives:${asset}:${metric}`,
+          kind: 'derivatives',
+          every: 3600,
+          maxLag: metric === 'funding' ? 36 * 3600 : 3 * 3600,
+          assets: [asset],
+        });
   for (const asset of REFERENCE_ASSETS)
     if (assets.includes(asset))
       jobs.push({
@@ -125,9 +139,12 @@ export function selectJob(jobs: JobPolicy[], states: IngestionState[], now: numb
     .map((job) => ({ job, due: dueAt(job, states, now) }))
     .filter((item) => item.due <= now)
     .sort((a, b) => a.due - b.due);
-  // Hard overdue quote deadlines prevent history recovery from starving current prices.
+  // Hard overdue quotes and a due BTC fee snapshot are served before optional
+  // futures retries, so a blocked derivatives origin cannot starve live data.
   return (
-    eligible.find((item) => item.job.kind === 'quote-batch' && now - item.due >= 120) || eligible[0]
+    eligible.find((item) => item.job.kind === 'quote-batch' && now - item.due >= 120) ||
+    eligible.find((item) => item.job.kind === 'mempool') ||
+    eligible[0]
   )?.job;
 }
 
@@ -254,14 +271,21 @@ export async function operationStatus(env: Env) {
       key: 'automation',
       message: '서버 자동 갱신 실행을 3분 이내에 확인하지 못했습니다.',
     });
-  if (state?.outcome === 'error')
+  const supplemental = (key: string | null | undefined) =>
+    !!key && (key.startsWith('derivatives:') || key === 'mempool:BTC');
+  if (state?.outcome === 'error' && !supplemental(state.job))
     reasons.push({
       code: 'CRON_JOB_ERROR',
       key: state.job || 'automation',
       message: '최근 자동 갱신 작업이 실패하여 다음 재시도를 기다리고 있습니다.',
     });
   for (const source of sources)
-    if (source.active && source.status !== 'ok' && source.key !== 'maintenance')
+    if (
+      source.active &&
+      source.status !== 'ok' &&
+      source.key !== 'maintenance' &&
+      !supplemental(source.key)
+    )
       reasons.push({
         code: 'SOURCE_' + source.status.toUpperCase(),
         key: source.key,

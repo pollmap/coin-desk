@@ -8,6 +8,7 @@ import datetime as dt
 import hashlib
 import json
 import math
+from decimal import Decimal, localcontext
 import pathlib
 import time
 import urllib.error
@@ -23,12 +24,17 @@ FIELDS = {
     'price': 'PriceUSD', 'mvrv': 'CapMVRVCur', 'active_addresses': 'AdrActCnt',
     'balance_addresses': 'AdrBalCnt', 'transactions': 'TxCnt', 'transfers': 'TxTfrCnt',
     'supply': 'SplyCur', 'market_cap': 'CapMrktCurUSD', 'fees_native': 'FeeTotNtv', 'hashrate': 'HashRate',
+    'blocks': 'BlkCnt', 'issuance': 'IssTotNtv',
+    'exchange_inflow': 'FlowInExNtv', 'exchange_outflow': 'FlowOutExNtv',
+    'exchange_balance': 'SplyExNtv',
 }
 
 def fields_for(asset):
     return {key: value for key, value in FIELDS.items()
             if (key != 'fees_native' or asset != 'LINK') and
-            (key != 'hashrate' or asset in ['BTC', 'DOGE'])}
+            (key != 'hashrate' or asset in ['BTC', 'DOGE']) and
+            (key not in ['blocks', 'issuance'] or asset in ['BTC', 'DOGE', 'ETH']) and
+            (key not in ['exchange_inflow', 'exchange_outflow', 'exchange_balance'] or asset in ['BTC', 'ETH'])}
 
 def stamp(value):
     return int(dt.datetime.fromisoformat(value.replace('Z', '+00:00')).timestamp())
@@ -46,7 +52,7 @@ def normalize(body, asset, fetched_at):
             raise ValueError('Invalid or duplicate UTC date')
         instant = int(instant)
         seen.add(instant)
-        values = {}
+        values, statuses = {}, {}
         for key, field in fields.items():
             if field not in raw:
                 raise ValueError('Missing field ' + field)
@@ -59,6 +65,12 @@ def normalize(body, asset, fetched_at):
             if not math.isfinite(number) or number < 0 or (key == 'price' and number == 0):
                 raise ValueError('Invalid source value ' + field)
             values[key] = number
+            if isinstance(raw.get(field + '-status'), str):
+                statuses[key] = raw[field + '-status']
+        if 'exchange_inflow' in values and 'exchange_outflow' in values:
+            with localcontext() as context:
+                context.prec = 50
+                values['exchange_netflow'] = float(Decimal(str(raw['FlowInExNtv'])) - Decimal(str(raw['FlowOutExNtv'])))
         mvrv = values.get('mvrv', 0)
         if mvrv > 0:
             if 'market_cap' in values:
@@ -69,7 +81,10 @@ def normalize(body, asset, fetched_at):
         if not all(math.isfinite(value) for value in values.values()):
             raise ValueError('Non-finite derived value')
         if instant + DAY <= fetched_at:
-            rows.append({'time': instant, 'values': values})
+            row = {'time': instant, 'values': values}
+            if statuses:
+                row['statuses'] = statuses
+            rows.append(row)
     rows.sort(key=lambda row: row['time'])
     if not rows or rows[0]['time'] != stamp(HISTORY[asset] + 'T00:00:00Z'):
         raise ValueError('Source did not return the documented complete network start')
@@ -132,7 +147,7 @@ def collect(asset, folder, reuse=False):
     (folder / (asset + '.sql')).write_text('\n'.join(sql) + '\n', encoding='utf-8')
     audit = {
         'asset': asset, 'url': url, 'source': 'Coin Metrics Community', 'license': 'CC BY-NC 4.0',
-        'version': 'coinmetrics-network-monthly-v1', 'fetchedAt': fetched_at,
+        'version': 'coinmetrics-network-monthly-v2', 'fetchedAt': fetched_at,
         'sha256': hashlib.sha256(raw).hexdigest(), 'dailyRows': len(rows), 'monthRows': len(months),
         'maximumInitialRowWrites': len(months) + len(coverage) + 2,
         'first': HISTORY[asset], 'last': dt.datetime.fromtimestamp(last, dt.timezone.utc).date().isoformat(),
