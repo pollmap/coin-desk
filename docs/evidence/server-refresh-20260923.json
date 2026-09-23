@@ -1,0 +1,2227 @@
+{
+  "checkedAt": "2026-09-23T02:49:57.184604+00:00",
+  "base": "https://coin-desk.pages.dev",
+  "ok": true,
+  "issues": [],
+  "warnings": [],
+  "latencyMs": {
+    "status": 255.7,
+    "overview": 539.0,
+    "candles": 117.3,
+    "metrics": 109.3,
+    "overviewKRW": 351.3,
+    "binance1h": 120.5,
+    "upbit1h": 115.9,
+    "mvrv": 159.8,
+    "realized_price": 181.4,
+    "sopr_24h": 204.5,
+    "nupl": 153.6,
+    "mvrv_z": 187.9,
+    "sth_mvrv": 173.3,
+    "lth_mvrv": 168.6,
+    "sth_realized_price": 176.8,
+    "DOGE:binance": 514.2,
+    "DOGE:upbit": 293.9,
+    "ETH:binance": 436.7,
+    "ETH:upbit": 330.5,
+    "SOL:binance": 493.8,
+    "SOL:upbit": 357.8,
+    "XRP:binance": 525.3,
+    "XRP:upbit": 361.8,
+    "LINK:binance": 515.3,
+    "LINK:upbit": 323.2,
+    "ONDO:binance": 470.7,
+    "ONDO:upbit": 304.0,
+    "PEPE:binance": 461.8,
+    "PEPE:upbit": 296.1,
+    "network:BTC": 144.9,
+    "network:DOGE": 119.2,
+    "network:ETH": 132.6,
+    "network:XRP": 150.6,
+    "network:LINK": 134.1,
+    "dominance": 171.4,
+    "health": 239.3
+  },
+  "sourceState": [
+    {
+      "key": "bitview",
+      "last_attempt": 1790128941,
+      "last_success": 1790128941,
+      "data_as_of": 1790035200,
+      "error": null,
+      "failures": 0,
+      "next_attempt": 0,
+      "active": true,
+      "status": "ok",
+      "collectorAgeSeconds": 2855,
+      "dataAgeSeconds": 96596,
+      "liveStale": false,
+      "expectedCadenceSeconds": 3600,
+      "dataFreshnessLimitSeconds": 259200,
+      "nextDueAt": 1790132541,
+      "retryAt": null,
+      "coverage": null
+    },
+    {
+      "key": "defillama",
+      "last_attempt": 1790125160,
+      "last_success": 1790125160,
+      "data_as_of": 1790035200,
+      "error": null,
+      "failures": 0,
+      "next_attempt": 0,
+      "active": true,
+      "status": "ok",
+      "collectorAgeSeconds": 6636,
+      "dataAgeSeconds": 96596,
+      "liveStale": false,
+      "expectedCadenceSeconds": 21600,
+      "dataFreshnessLimitSeconds": 259200,
+      "nextDueAt": 1790146760,
+      "retryAt": null,
+      "coverage": null
+    },
+    {
+      "key": "coinlore",
+      "last_attempt": 1790128342,
+      "last_success": 1790128342,
+      "data_as_of": 1790128342,
+      "error": null,
+      "failures": 0,
+      "next_attempt": 0,
+      "active": true,
+      "status": "ok",
+      "collectorAgeSeconds": 3454,
+      "dataAgeSeconds": 3454,
+      "liveStale": false,
+      "expectedCadenceSeconds": 3600,
+      "dataFreshnessLimitSeconds": 7200,
+      "nextDueAt": 1790131942,
+      "retryAt": null,
+      "coverage": null
+    },
+    {
+      "key": "maintenance",
+      "last_attempt": 1790128400,
+      "last_success": 1790128400,
+      "data_as_of": 1790128400,
+      "error": null,
+      "failures": 0,
+      "next_attempt": 0,
+      "active": true,
+      "status": "ok",
+      "collectorAgeSeconds": 3396,
+      "dataAgeSeconds": 3396,
+      "liveStale": false,
+      "expectedCadenceSeconds": 3600,
+      "dataFreshnessLimitSeconds": 7200,
+      "nextDueAt": 1790132000,
+      "retryAt": null,
+      "coverage": null
+    },
+    {
+      "key": "reference:BTC",
+      "last_attempt": 1790128580,
+      "last_success": 1790128580,
+      "data_as_of": 1790035200,
+      "error": null,
+      "failures": 0,
+      "next_attempt": 0,
+      "active": true,
+      "status": "ok",
+      "collectorAgeSeconds": 3216,
+      "dataAgeSeconds": 96596,
+      "liveStale": false,
+      "expectedCadenceSeconds": 21600,
+      "dataFreshnessLimitSeconds": 259200,
+      "nextDueAt": 1790150180,
+      "retryAt": null,
+      "coverage": {
+        "first": 1279411200,
+        "last": 1790035200,
+        "rows": null,
+        "archived": false
+      }
+    },
+    {
+      "key": "reference:DOGE",
+      "last_attempt": 1790128826,
+      "last_success": 1790128826,
+      "data_as_of": 1790035200,
+      "error": null,
+      "failures": 0,
+      "next_attempt": 0,
+      "active": true,
+      "status": "ok",
+      "collectorAgeSeconds": 2970,
+      "dataAgeSeconds": 96596,
+      "liveStale": false,
+      "expectedCadenceSeconds": 21600,
+      "dataFreshnessLimitSeconds": 259200,
+      "nextDueAt": 1790150426,
+      "retryAt": null,
+      "coverage": {
+        "first": 1390435200,
+        "last": 1790035200,
+        "rows": null,
+        "archived": false
+      }
+    },
+    {
+      "key": "reference:ETH",
+      "last_attempt": 1790129240,
+      "last_success": 1790129240,
+      "data_as_of": 1790035200,
+      "error": null,
+      "failures": 0,
+      "next_attempt": 0,
+      "active": true,
+      "status": "ok",
+      "collectorAgeSeconds": 2556,
+      "dataAgeSeconds": 96596,
+      "liveStale": false,
+      "expectedCadenceSeconds": 21600,
+      "dataFreshnessLimitSeconds": 259200,
+      "nextDueAt": 1790150840,
+      "retryAt": null,
+      "coverage": {
+        "first": 1438992000,
+        "last": 1790035200,
+        "rows": null,
+        "archived": false
+      }
+    },
+    {
+      "key": "reference:XRP",
+      "last_attempt": 1790130140,
+      "last_success": 1790130140,
+      "data_as_of": 1790035200,
+      "error": null,
+      "failures": 0,
+      "next_attempt": 0,
+      "active": true,
+      "status": "ok",
+      "collectorAgeSeconds": 1656,
+      "dataAgeSeconds": 96596,
+      "liveStale": false,
+      "expectedCadenceSeconds": 21600,
+      "dataFreshnessLimitSeconds": 259200,
+      "nextDueAt": 1790151740,
+      "retryAt": null,
+      "coverage": {
+        "first": 1408060800,
+        "last": 1790035200,
+        "rows": null,
+        "archived": false
+      }
+    },
+    {
+      "key": "reference:LINK",
+      "last_attempt": 1790130320,
+      "last_success": 1790130320,
+      "data_as_of": 1790035200,
+      "error": null,
+      "failures": 0,
+      "next_attempt": 0,
+      "active": true,
+      "status": "ok",
+      "collectorAgeSeconds": 1476,
+      "dataAgeSeconds": 96596,
+      "liveStale": false,
+      "expectedCadenceSeconds": 21600,
+      "dataFreshnessLimitSeconds": 259200,
+      "nextDueAt": 1790151920,
+      "retryAt": null,
+      "coverage": {
+        "first": 1506643200,
+        "last": 1790035200,
+        "rows": null,
+        "archived": false
+      }
+    },
+    {
+      "key": "network:BTC",
+      "last_attempt": 1790130740,
+      "last_success": 1790130740,
+      "data_as_of": 1790035200,
+      "error": null,
+      "failures": 0,
+      "next_attempt": 0,
+      "active": true,
+      "status": "ok",
+      "collectorAgeSeconds": 1056,
+      "dataAgeSeconds": 182996,
+      "liveStale": false,
+      "expectedCadenceSeconds": 21600,
+      "dataFreshnessLimitSeconds": 259200,
+      "nextDueAt": 1790152340,
+      "retryAt": null,
+      "coverage": {
+        "first": 1230940800,
+        "last": 1790035200,
+        "rows": null,
+        "archived": false,
+        "metrics": 12,
+        "expectedMetrics": 12,
+        "oldestMetricAsOf": 1789948800
+      }
+    },
+    {
+      "key": "network:DOGE",
+      "last_attempt": 1790110580,
+      "last_success": 1790110580,
+      "data_as_of": 1789948800,
+      "error": null,
+      "failures": 0,
+      "next_attempt": 0,
+      "active": true,
+      "status": "ok",
+      "collectorAgeSeconds": 21216,
+      "dataAgeSeconds": 182996,
+      "liveStale": false,
+      "expectedCadenceSeconds": 21600,
+      "dataFreshnessLimitSeconds": 259200,
+      "nextDueAt": 1790132180,
+      "retryAt": null,
+      "coverage": {
+        "first": 1386460800,
+        "last": 1789948800,
+        "rows": null,
+        "archived": false,
+        "metrics": 12,
+        "expectedMetrics": 12,
+        "oldestMetricAsOf": 1789948800
+      }
+    },
+    {
+      "key": "network:ETH",
+      "last_attempt": 1790131040,
+      "last_success": 1790131040,
+      "data_as_of": 1790035200,
+      "error": null,
+      "failures": 0,
+      "next_attempt": 0,
+      "active": true,
+      "status": "ok",
+      "collectorAgeSeconds": 756,
+      "dataAgeSeconds": 182996,
+      "liveStale": false,
+      "expectedCadenceSeconds": 21600,
+      "dataFreshnessLimitSeconds": 259200,
+      "nextDueAt": 1790152640,
+      "retryAt": null,
+      "coverage": {
+        "first": 1438214400,
+        "last": 1790035200,
+        "rows": null,
+        "archived": false,
+        "metrics": 11,
+        "expectedMetrics": 11,
+        "oldestMetricAsOf": 1789948800
+      }
+    },
+    {
+      "key": "network:XRP",
+      "last_attempt": 1790131400,
+      "last_success": 1790131400,
+      "data_as_of": 1790035200,
+      "error": null,
+      "failures": 0,
+      "next_attempt": 0,
+      "active": true,
+      "status": "ok",
+      "collectorAgeSeconds": 396,
+      "dataAgeSeconds": 96596,
+      "liveStale": false,
+      "expectedCadenceSeconds": 21600,
+      "dataFreshnessLimitSeconds": 259200,
+      "nextDueAt": 1790153000,
+      "retryAt": null,
+      "coverage": {
+        "first": 1356998400,
+        "last": 1790035200,
+        "rows": null,
+        "archived": false,
+        "metrics": 11,
+        "expectedMetrics": 11,
+        "oldestMetricAsOf": 1790035200
+      }
+    },
+    {
+      "key": "network:LINK",
+      "last_attempt": 1790110220,
+      "last_success": 1790110220,
+      "data_as_of": 1789948800,
+      "error": null,
+      "failures": 0,
+      "next_attempt": 0,
+      "active": true,
+      "status": "ok",
+      "collectorAgeSeconds": 21576,
+      "dataAgeSeconds": 182996,
+      "liveStale": false,
+      "expectedCadenceSeconds": 21600,
+      "dataFreshnessLimitSeconds": 259200,
+      "nextDueAt": 1790131820,
+      "retryAt": null,
+      "coverage": {
+        "first": 1505520000,
+        "last": 1789948800,
+        "rows": null,
+        "archived": false,
+        "metrics": 10,
+        "expectedMetrics": 10,
+        "oldestMetricAsOf": 1789948800
+      }
+    },
+    {
+      "key": "BTC:binance:1h",
+      "last_attempt": 1790128520,
+      "last_success": 1790128520,
+      "data_as_of": 1790125200,
+      "error": null,
+      "failures": 0,
+      "next_attempt": 0,
+      "active": true,
+      "status": "ok",
+      "collectorAgeSeconds": 3276,
+      "dataAgeSeconds": 6596,
+      "liveStale": false,
+      "expectedCadenceSeconds": 3600,
+      "dataFreshnessLimitSeconds": 7200,
+      "nextDueAt": 1790132120,
+      "retryAt": null,
+      "coverage": {
+        "first": 1782352800,
+        "last": 1790125200,
+        "rows": 2160,
+        "archived": false
+      }
+    },
+    {
+      "key": "BTC:binance:1d",
+      "last_attempt": 1790121740,
+      "last_success": 1790121740,
+      "data_as_of": 1790121600,
+      "error": null,
+      "failures": 0,
+      "next_attempt": 0,
+      "active": true,
+      "status": "ok",
+      "collectorAgeSeconds": 10056,
+      "dataAgeSeconds": 10196,
+      "liveStale": false,
+      "expectedCadenceSeconds": 21600,
+      "dataFreshnessLimitSeconds": 172800,
+      "nextDueAt": 1790143340,
+      "retryAt": null,
+      "coverage": {
+        "first": 1502928000,
+        "last": 1790121600,
+        "rows": 3325,
+        "archived": false
+      }
+    },
+    {
+      "key": "DOGE:binance:1h",
+      "last_attempt": 1790130560,
+      "last_success": 1790130560,
+      "data_as_of": 1790128800,
+      "error": null,
+      "failures": 0,
+      "next_attempt": 0,
+      "active": true,
+      "status": "ok",
+      "collectorAgeSeconds": 1236,
+      "dataAgeSeconds": 2996,
+      "liveStale": false,
+      "expectedCadenceSeconds": 3600,
+      "dataFreshnessLimitSeconds": 7200,
+      "nextDueAt": 1790134160,
+      "retryAt": null,
+      "coverage": {
+        "first": 1782356400,
+        "last": 1790128800,
+        "rows": null,
+        "archived": true
+      }
+    },
+    {
+      "key": "DOGE:binance:1d",
+      "last_attempt": 1790121860,
+      "last_success": 1790121860,
+      "data_as_of": 1790121600,
+      "error": null,
+      "failures": 0,
+      "next_attempt": 0,
+      "active": true,
+      "status": "ok",
+      "collectorAgeSeconds": 9936,
+      "dataAgeSeconds": 10196,
+      "liveStale": false,
+      "expectedCadenceSeconds": 21600,
+      "dataFreshnessLimitSeconds": 172800,
+      "nextDueAt": 1790143460,
+      "retryAt": null,
+      "coverage": {
+        "first": 1562284800,
+        "last": 1790121600,
+        "rows": 2638,
+        "archived": true
+      }
+    },
+    {
+      "key": "ETH:binance:1h",
+      "last_attempt": 1790130800,
+      "last_success": 1790130800,
+      "data_as_of": 1790128800,
+      "error": null,
+      "failures": 0,
+      "next_attempt": 0,
+      "active": true,
+      "status": "ok",
+      "collectorAgeSeconds": 996,
+      "dataAgeSeconds": 2996,
+      "liveStale": false,
+      "expectedCadenceSeconds": 3600,
+      "dataFreshnessLimitSeconds": 7200,
+      "nextDueAt": 1790134400,
+      "retryAt": null,
+      "coverage": {
+        "first": 1782356400,
+        "last": 1790128800,
+        "rows": null,
+        "archived": true
+      }
+    },
+    {
+      "key": "ETH:binance:1d",
+      "last_attempt": 1790121980,
+      "last_success": 1790121980,
+      "data_as_of": 1790121600,
+      "error": null,
+      "failures": 0,
+      "next_attempt": 0,
+      "active": true,
+      "status": "ok",
+      "collectorAgeSeconds": 9816,
+      "dataAgeSeconds": 10196,
+      "liveStale": false,
+      "expectedCadenceSeconds": 21600,
+      "dataFreshnessLimitSeconds": 172800,
+      "nextDueAt": 1790143580,
+      "retryAt": null,
+      "coverage": {
+        "first": 1502928000,
+        "last": 1790121600,
+        "rows": 3325,
+        "archived": true
+      }
+    },
+    {
+      "key": "SOL:binance:1h",
+      "last_attempt": 1790130920,
+      "last_success": 1790130920,
+      "data_as_of": 1790128800,
+      "error": null,
+      "failures": 0,
+      "next_attempt": 0,
+      "active": true,
+      "status": "ok",
+      "collectorAgeSeconds": 876,
+      "dataAgeSeconds": 2996,
+      "liveStale": false,
+      "expectedCadenceSeconds": 3600,
+      "dataFreshnessLimitSeconds": 7200,
+      "nextDueAt": 1790134520,
+      "retryAt": null,
+      "coverage": {
+        "first": 1782356400,
+        "last": 1790128800,
+        "rows": null,
+        "archived": true
+      }
+    },
+    {
+      "key": "SOL:binance:1d",
+      "last_attempt": 1790122040,
+      "last_success": 1790122040,
+      "data_as_of": 1790121600,
+      "error": null,
+      "failures": 0,
+      "next_attempt": 0,
+      "active": true,
+      "status": "ok",
+      "collectorAgeSeconds": 9756,
+      "dataAgeSeconds": 10196,
+      "liveStale": false,
+      "expectedCadenceSeconds": 21600,
+      "dataFreshnessLimitSeconds": 172800,
+      "nextDueAt": 1790143640,
+      "retryAt": null,
+      "coverage": {
+        "first": 1597104000,
+        "last": 1790121600,
+        "rows": 2235,
+        "archived": true
+      }
+    },
+    {
+      "key": "XRP:binance:1h",
+      "last_attempt": 1790131280,
+      "last_success": 1790131280,
+      "data_as_of": 1790128800,
+      "error": null,
+      "failures": 0,
+      "next_attempt": 0,
+      "active": true,
+      "status": "ok",
+      "collectorAgeSeconds": 516,
+      "dataAgeSeconds": 2996,
+      "liveStale": false,
+      "expectedCadenceSeconds": 3600,
+      "dataFreshnessLimitSeconds": 7200,
+      "nextDueAt": 1790134880,
+      "retryAt": null,
+      "coverage": {
+        "first": 1782356400,
+        "last": 1790128800,
+        "rows": null,
+        "archived": true
+      }
+    },
+    {
+      "key": "XRP:binance:1d",
+      "last_attempt": 1790122160,
+      "last_success": 1790122160,
+      "data_as_of": 1790121600,
+      "error": null,
+      "failures": 0,
+      "next_attempt": 0,
+      "active": true,
+      "status": "ok",
+      "collectorAgeSeconds": 9636,
+      "dataAgeSeconds": 10196,
+      "liveStale": false,
+      "expectedCadenceSeconds": 21600,
+      "dataFreshnessLimitSeconds": 172800,
+      "nextDueAt": 1790143760,
+      "retryAt": null,
+      "coverage": {
+        "first": 1525392000,
+        "last": 1790121600,
+        "rows": 3065,
+        "archived": true
+      }
+    },
+    {
+      "key": "LINK:binance:1h",
+      "last_attempt": 1790131700,
+      "last_success": 1790131700,
+      "data_as_of": 1790128800,
+      "error": null,
+      "failures": 0,
+      "next_attempt": 0,
+      "active": true,
+      "status": "ok",
+      "collectorAgeSeconds": 96,
+      "dataAgeSeconds": 2996,
+      "liveStale": false,
+      "expectedCadenceSeconds": 3600,
+      "dataFreshnessLimitSeconds": 7200,
+      "nextDueAt": 1790135300,
+      "retryAt": null,
+      "coverage": {
+        "first": 1782356400,
+        "last": 1790128800,
+        "rows": null,
+        "archived": true
+      }
+    },
+    {
+      "key": "LINK:binance:1d",
+      "last_attempt": 1790122220,
+      "last_success": 1790122220,
+      "data_as_of": 1790121600,
+      "error": null,
+      "failures": 0,
+      "next_attempt": 0,
+      "active": true,
+      "status": "ok",
+      "collectorAgeSeconds": 9576,
+      "dataAgeSeconds": 10196,
+      "liveStale": false,
+      "expectedCadenceSeconds": 21600,
+      "dataFreshnessLimitSeconds": 172800,
+      "nextDueAt": 1790143820,
+      "retryAt": null,
+      "coverage": {
+        "first": 1547596800,
+        "last": 1790121600,
+        "rows": 2808,
+        "archived": true
+      }
+    },
+    {
+      "key": "ONDO:binance:1h",
+      "last_attempt": 1790131761,
+      "last_success": 1790131761,
+      "data_as_of": 1790128800,
+      "error": null,
+      "failures": 0,
+      "next_attempt": 0,
+      "active": true,
+      "status": "ok",
+      "collectorAgeSeconds": 35,
+      "dataAgeSeconds": 2996,
+      "liveStale": false,
+      "expectedCadenceSeconds": 3600,
+      "dataFreshnessLimitSeconds": 7200,
+      "nextDueAt": 1790135361,
+      "retryAt": null,
+      "coverage": {
+        "first": 1782356400,
+        "last": 1790128800,
+        "rows": null,
+        "archived": true
+      }
+    },
+    {
+      "key": "ONDO:binance:1d",
+      "last_attempt": 1790122280,
+      "last_success": 1790122280,
+      "data_as_of": 1790121600,
+      "error": null,
+      "failures": 0,
+      "next_attempt": 0,
+      "active": true,
+      "status": "ok",
+      "collectorAgeSeconds": 9516,
+      "dataAgeSeconds": 10196,
+      "liveStale": false,
+      "expectedCadenceSeconds": 21600,
+      "dataFreshnessLimitSeconds": 172800,
+      "nextDueAt": 1790143880,
+      "retryAt": null,
+      "coverage": {
+        "first": 1744329600,
+        "last": 1790121600,
+        "rows": 531,
+        "archived": true
+      }
+    },
+    {
+      "key": "PEPE:binance:1h",
+      "last_attempt": 1790128100,
+      "last_success": 1790128100,
+      "data_as_of": 1790125200,
+      "error": null,
+      "failures": 0,
+      "next_attempt": 0,
+      "active": true,
+      "status": "ok",
+      "collectorAgeSeconds": 3696,
+      "dataAgeSeconds": 6596,
+      "liveStale": false,
+      "expectedCadenceSeconds": 3600,
+      "dataFreshnessLimitSeconds": 7200,
+      "nextDueAt": 1790131700,
+      "retryAt": null,
+      "coverage": {
+        "first": 1782352800,
+        "last": 1790125200,
+        "rows": null,
+        "archived": true
+      }
+    },
+    {
+      "key": "PEPE:binance:1d",
+      "last_attempt": 1790122400,
+      "last_success": 1790122400,
+      "data_as_of": 1790121600,
+      "error": null,
+      "failures": 0,
+      "next_attempt": 0,
+      "active": true,
+      "status": "ok",
+      "collectorAgeSeconds": 9396,
+      "dataAgeSeconds": 10196,
+      "liveStale": false,
+      "expectedCadenceSeconds": 21600,
+      "dataFreshnessLimitSeconds": 172800,
+      "nextDueAt": 1790144000,
+      "retryAt": null,
+      "coverage": {
+        "first": 1683244800,
+        "last": 1790121600,
+        "rows": 1238,
+        "archived": true
+      }
+    },
+    {
+      "key": "BTC:upbit:1h",
+      "last_attempt": 1790128700,
+      "last_success": 1790128700,
+      "data_as_of": 1790125200,
+      "error": null,
+      "failures": 0,
+      "next_attempt": 0,
+      "active": true,
+      "status": "ok",
+      "collectorAgeSeconds": 3096,
+      "dataAgeSeconds": 6596,
+      "liveStale": false,
+      "expectedCadenceSeconds": 3600,
+      "dataFreshnessLimitSeconds": 7200,
+      "nextDueAt": 1790132300,
+      "retryAt": null,
+      "coverage": {
+        "first": 1782352800,
+        "last": 1790125200,
+        "rows": 2157,
+        "archived": false
+      }
+    },
+    {
+      "key": "BTC:upbit:1d",
+      "last_attempt": 1790122520,
+      "last_success": 1790122520,
+      "data_as_of": 1790121600,
+      "error": null,
+      "failures": 0,
+      "next_attempt": 0,
+      "active": true,
+      "status": "ok",
+      "collectorAgeSeconds": 9276,
+      "dataAgeSeconds": 10196,
+      "liveStale": false,
+      "expectedCadenceSeconds": 21600,
+      "dataFreshnessLimitSeconds": 172800,
+      "nextDueAt": 1790144120,
+      "retryAt": null,
+      "coverage": {
+        "first": 1506297600,
+        "last": 1790121600,
+        "rows": 3286,
+        "archived": false
+      }
+    },
+    {
+      "key": "DOGE:upbit:1h",
+      "last_attempt": 1790130623,
+      "last_success": 1790130623,
+      "data_as_of": 1790128800,
+      "error": null,
+      "failures": 0,
+      "next_attempt": 0,
+      "active": true,
+      "status": "ok",
+      "collectorAgeSeconds": 1173,
+      "dataAgeSeconds": 2996,
+      "liveStale": false,
+      "expectedCadenceSeconds": 3600,
+      "dataFreshnessLimitSeconds": 7200,
+      "nextDueAt": 1790134223,
+      "retryAt": null,
+      "coverage": {
+        "first": 1782356400,
+        "last": 1790128800,
+        "rows": null,
+        "archived": true
+      }
+    },
+    {
+      "key": "DOGE:upbit:1d",
+      "last_attempt": 1790122640,
+      "last_success": 1790122640,
+      "data_as_of": 1790121600,
+      "error": null,
+      "failures": 0,
+      "next_attempt": 0,
+      "active": true,
+      "status": "ok",
+      "collectorAgeSeconds": 9156,
+      "dataAgeSeconds": 10196,
+      "liveStale": false,
+      "expectedCadenceSeconds": 21600,
+      "dataFreshnessLimitSeconds": 172800,
+      "nextDueAt": 1790144240,
+      "retryAt": null,
+      "coverage": {
+        "first": 1614124800,
+        "last": 1790121600,
+        "rows": 2038,
+        "archived": true
+      }
+    },
+    {
+      "key": "ETH:upbit:1h",
+      "last_attempt": 1790131100,
+      "last_success": 1790131100,
+      "data_as_of": 1790128800,
+      "error": null,
+      "failures": 0,
+      "next_attempt": 0,
+      "active": true,
+      "status": "ok",
+      "collectorAgeSeconds": 696,
+      "dataAgeSeconds": 2996,
+      "liveStale": false,
+      "expectedCadenceSeconds": 3600,
+      "dataFreshnessLimitSeconds": 7200,
+      "nextDueAt": 1790134700,
+      "retryAt": null,
+      "coverage": {
+        "first": 1782356400,
+        "last": 1790128800,
+        "rows": null,
+        "archived": true
+      }
+    },
+    {
+      "key": "ETH:upbit:1d",
+      "last_attempt": 1790122700,
+      "last_success": 1790122700,
+      "data_as_of": 1790121600,
+      "error": null,
+      "failures": 0,
+      "next_attempt": 0,
+      "active": true,
+      "status": "ok",
+      "collectorAgeSeconds": 9096,
+      "dataAgeSeconds": 10196,
+      "liveStale": false,
+      "expectedCadenceSeconds": 21600,
+      "dataFreshnessLimitSeconds": 172800,
+      "nextDueAt": 1790144300,
+      "retryAt": null,
+      "coverage": {
+        "first": 1506297600,
+        "last": 1790121600,
+        "rows": 3283,
+        "archived": true
+      }
+    },
+    {
+      "key": "SOL:upbit:1h",
+      "last_attempt": 1790131220,
+      "last_success": 1790131220,
+      "data_as_of": 1790128800,
+      "error": null,
+      "failures": 0,
+      "next_attempt": 0,
+      "active": true,
+      "status": "ok",
+      "collectorAgeSeconds": 576,
+      "dataAgeSeconds": 2996,
+      "liveStale": false,
+      "expectedCadenceSeconds": 3600,
+      "dataFreshnessLimitSeconds": 7200,
+      "nextDueAt": 1790134820,
+      "retryAt": null,
+      "coverage": {
+        "first": 1782356400,
+        "last": 1790128800,
+        "rows": null,
+        "archived": true
+      }
+    },
+    {
+      "key": "SOL:upbit:1d",
+      "last_attempt": 1790122820,
+      "last_success": 1790122820,
+      "data_as_of": 1790121600,
+      "error": null,
+      "failures": 0,
+      "next_attempt": 0,
+      "active": true,
+      "status": "ok",
+      "collectorAgeSeconds": 8976,
+      "dataAgeSeconds": 10196,
+      "liveStale": false,
+      "expectedCadenceSeconds": 21600,
+      "dataFreshnessLimitSeconds": 172800,
+      "nextDueAt": 1790144420,
+      "retryAt": null,
+      "coverage": {
+        "first": 1634256000,
+        "last": 1790121600,
+        "rows": 1805,
+        "archived": true
+      }
+    },
+    {
+      "key": "XRP:upbit:1h",
+      "last_attempt": 1790131460,
+      "last_success": 1790131460,
+      "data_as_of": 1790128800,
+      "error": null,
+      "failures": 0,
+      "next_attempt": 0,
+      "active": true,
+      "status": "ok",
+      "collectorAgeSeconds": 336,
+      "dataAgeSeconds": 2996,
+      "liveStale": false,
+      "expectedCadenceSeconds": 3600,
+      "dataFreshnessLimitSeconds": 7200,
+      "nextDueAt": 1790135060,
+      "retryAt": null,
+      "coverage": {
+        "first": 1782356400,
+        "last": 1790128800,
+        "rows": null,
+        "archived": true
+      }
+    },
+    {
+      "key": "XRP:upbit:1d",
+      "last_attempt": 1790122880,
+      "last_success": 1790122880,
+      "data_as_of": 1790121600,
+      "error": null,
+      "failures": 0,
+      "next_attempt": 0,
+      "active": true,
+      "status": "ok",
+      "collectorAgeSeconds": 8916,
+      "dataAgeSeconds": 10196,
+      "liveStale": false,
+      "expectedCadenceSeconds": 21600,
+      "dataFreshnessLimitSeconds": 172800,
+      "nextDueAt": 1790144480,
+      "retryAt": null,
+      "coverage": {
+        "first": 1506297600,
+        "last": 1790121600,
+        "rows": 3283,
+        "archived": true
+      }
+    },
+    {
+      "key": "LINK:upbit:1h",
+      "last_attempt": 1790131580,
+      "last_success": 1790131580,
+      "data_as_of": 1790128800,
+      "error": null,
+      "failures": 0,
+      "next_attempt": 0,
+      "active": true,
+      "status": "ok",
+      "collectorAgeSeconds": 216,
+      "dataAgeSeconds": 2996,
+      "liveStale": false,
+      "expectedCadenceSeconds": 3600,
+      "dataFreshnessLimitSeconds": 7200,
+      "nextDueAt": 1790135180,
+      "retryAt": null,
+      "coverage": {
+        "first": 1782356400,
+        "last": 1790128800,
+        "rows": null,
+        "archived": true
+      }
+    },
+    {
+      "key": "LINK:upbit:1d",
+      "last_attempt": 1790122940,
+      "last_success": 1790122940,
+      "data_as_of": 1790121600,
+      "error": null,
+      "failures": 0,
+      "next_attempt": 0,
+      "active": true,
+      "status": "ok",
+      "collectorAgeSeconds": 8856,
+      "dataAgeSeconds": 10196,
+      "liveStale": false,
+      "expectedCadenceSeconds": 21600,
+      "dataFreshnessLimitSeconds": 172800,
+      "nextDueAt": 1790144540,
+      "retryAt": null,
+      "coverage": {
+        "first": 1596499200,
+        "last": 1790121600,
+        "rows": 2242,
+        "archived": true
+      }
+    },
+    {
+      "key": "ONDO:upbit:1h",
+      "last_attempt": 1790127980,
+      "last_success": 1790127980,
+      "data_as_of": 1790125200,
+      "error": null,
+      "failures": 0,
+      "next_attempt": 0,
+      "active": true,
+      "status": "ok",
+      "collectorAgeSeconds": 3816,
+      "dataAgeSeconds": 6596,
+      "liveStale": false,
+      "expectedCadenceSeconds": 3600,
+      "dataFreshnessLimitSeconds": 7200,
+      "nextDueAt": 1790131580,
+      "retryAt": null,
+      "coverage": {
+        "first": 1782352800,
+        "last": 1790125200,
+        "rows": null,
+        "archived": true
+      }
+    },
+    {
+      "key": "ONDO:upbit:1d",
+      "last_attempt": 1790123060,
+      "last_success": 1790123060,
+      "data_as_of": 1790121600,
+      "error": null,
+      "failures": 0,
+      "next_attempt": 0,
+      "active": true,
+      "status": "ok",
+      "collectorAgeSeconds": 8736,
+      "dataAgeSeconds": 10196,
+      "liveStale": false,
+      "expectedCadenceSeconds": 21600,
+      "dataFreshnessLimitSeconds": 172800,
+      "nextDueAt": 1790144660,
+      "retryAt": null,
+      "coverage": {
+        "first": 1718323200,
+        "last": 1790121600,
+        "rows": 832,
+        "archived": true
+      }
+    },
+    {
+      "key": "PEPE:upbit:1h",
+      "last_attempt": 1790128220,
+      "last_success": 1790128220,
+      "data_as_of": 1790125200,
+      "error": null,
+      "failures": 0,
+      "next_attempt": 0,
+      "active": true,
+      "status": "ok",
+      "collectorAgeSeconds": 3576,
+      "dataAgeSeconds": 6596,
+      "liveStale": false,
+      "expectedCadenceSeconds": 3600,
+      "dataFreshnessLimitSeconds": 7200,
+      "nextDueAt": 1790131820,
+      "retryAt": null,
+      "coverage": {
+        "first": 1782352800,
+        "last": 1790125200,
+        "rows": null,
+        "archived": true
+      }
+    },
+    {
+      "key": "PEPE:upbit:1d",
+      "last_attempt": 1790123180,
+      "last_success": 1790123180,
+      "data_as_of": 1790121600,
+      "error": null,
+      "failures": 0,
+      "next_attempt": 0,
+      "active": true,
+      "status": "ok",
+      "collectorAgeSeconds": 8616,
+      "dataAgeSeconds": 10196,
+      "liveStale": false,
+      "expectedCadenceSeconds": 21600,
+      "dataFreshnessLimitSeconds": 172800,
+      "nextDueAt": 1790144780,
+      "retryAt": null,
+      "coverage": {
+        "first": 1731542400,
+        "last": 1790121600,
+        "rows": 679,
+        "archived": true
+      }
+    },
+    {
+      "key": "quote:BTC:binance",
+      "last_attempt": 1790131787,
+      "last_success": 1790131787,
+      "data_as_of": 1790131787,
+      "error": null,
+      "failures": 0,
+      "next_attempt": 0,
+      "active": true,
+      "status": "ok",
+      "collectorAgeSeconds": 9,
+      "dataAgeSeconds": 9,
+      "liveStale": false,
+      "expectedCadenceSeconds": 480,
+      "dataFreshnessLimitSeconds": 600,
+      "nextDueAt": 1790132267,
+      "retryAt": null,
+      "coverage": null
+    },
+    {
+      "key": "quote:BTC:upbit",
+      "last_attempt": 1790131788,
+      "last_success": 1790131788,
+      "data_as_of": 1790131780,
+      "error": null,
+      "failures": 0,
+      "next_attempt": 0,
+      "active": true,
+      "status": "ok",
+      "collectorAgeSeconds": 8,
+      "dataAgeSeconds": 16,
+      "liveStale": false,
+      "expectedCadenceSeconds": 480,
+      "dataFreshnessLimitSeconds": 600,
+      "nextDueAt": 1790132268,
+      "retryAt": null,
+      "coverage": null
+    },
+    {
+      "key": "quote:DOGE:binance",
+      "last_attempt": 1790131790,
+      "last_success": 1790131790,
+      "data_as_of": 1790131789,
+      "error": null,
+      "failures": 0,
+      "next_attempt": 0,
+      "active": true,
+      "status": "ok",
+      "collectorAgeSeconds": 6,
+      "dataAgeSeconds": 7,
+      "liveStale": false,
+      "expectedCadenceSeconds": 480,
+      "dataFreshnessLimitSeconds": 600,
+      "nextDueAt": 1790132270,
+      "retryAt": null,
+      "coverage": null
+    },
+    {
+      "key": "quote:DOGE:upbit",
+      "last_attempt": 1790131790,
+      "last_success": 1790131790,
+      "data_as_of": 1790131778,
+      "error": null,
+      "failures": 0,
+      "next_attempt": 0,
+      "active": true,
+      "status": "ok",
+      "collectorAgeSeconds": 6,
+      "dataAgeSeconds": 18,
+      "liveStale": false,
+      "expectedCadenceSeconds": 480,
+      "dataFreshnessLimitSeconds": 600,
+      "nextDueAt": 1790132270,
+      "retryAt": null,
+      "coverage": null
+    },
+    {
+      "key": "quote:ETH:binance",
+      "last_attempt": 1790131791,
+      "last_success": 1790131791,
+      "data_as_of": 1790131790,
+      "error": null,
+      "failures": 0,
+      "next_attempt": 0,
+      "active": true,
+      "status": "ok",
+      "collectorAgeSeconds": 5,
+      "dataAgeSeconds": 6,
+      "liveStale": false,
+      "expectedCadenceSeconds": 480,
+      "dataFreshnessLimitSeconds": 600,
+      "nextDueAt": 1790132271,
+      "retryAt": null,
+      "coverage": null
+    },
+    {
+      "key": "quote:ETH:upbit",
+      "last_attempt": 1790131791,
+      "last_success": 1790131791,
+      "data_as_of": 1790131783,
+      "error": null,
+      "failures": 0,
+      "next_attempt": 0,
+      "active": true,
+      "status": "ok",
+      "collectorAgeSeconds": 5,
+      "dataAgeSeconds": 13,
+      "liveStale": false,
+      "expectedCadenceSeconds": 480,
+      "dataFreshnessLimitSeconds": 600,
+      "nextDueAt": 1790132271,
+      "retryAt": null,
+      "coverage": null
+    },
+    {
+      "key": "quote:SOL:binance",
+      "last_attempt": 1790131791,
+      "last_success": 1790131791,
+      "data_as_of": 1790131790,
+      "error": null,
+      "failures": 0,
+      "next_attempt": 0,
+      "active": true,
+      "status": "ok",
+      "collectorAgeSeconds": 5,
+      "dataAgeSeconds": 6,
+      "liveStale": false,
+      "expectedCadenceSeconds": 480,
+      "dataFreshnessLimitSeconds": 600,
+      "nextDueAt": 1790132271,
+      "retryAt": null,
+      "coverage": null
+    },
+    {
+      "key": "quote:SOL:upbit",
+      "last_attempt": 1790131792,
+      "last_success": 1790131792,
+      "data_as_of": 1790131790,
+      "error": null,
+      "failures": 0,
+      "next_attempt": 0,
+      "active": true,
+      "status": "ok",
+      "collectorAgeSeconds": 4,
+      "dataAgeSeconds": 6,
+      "liveStale": false,
+      "expectedCadenceSeconds": 480,
+      "dataFreshnessLimitSeconds": 600,
+      "nextDueAt": 1790132272,
+      "retryAt": null,
+      "coverage": null
+    },
+    {
+      "key": "quote:XRP:binance",
+      "last_attempt": 1790131792,
+      "last_success": 1790131792,
+      "data_as_of": 1790131792,
+      "error": null,
+      "failures": 0,
+      "next_attempt": 0,
+      "active": true,
+      "status": "ok",
+      "collectorAgeSeconds": 4,
+      "dataAgeSeconds": 4,
+      "liveStale": false,
+      "expectedCadenceSeconds": 480,
+      "dataFreshnessLimitSeconds": 600,
+      "nextDueAt": 1790132272,
+      "retryAt": null,
+      "coverage": null
+    },
+    {
+      "key": "quote:XRP:upbit",
+      "last_attempt": 1790131793,
+      "last_success": 1790131793,
+      "data_as_of": 1790131791,
+      "error": null,
+      "failures": 0,
+      "next_attempt": 0,
+      "active": true,
+      "status": "ok",
+      "collectorAgeSeconds": 3,
+      "dataAgeSeconds": 5,
+      "liveStale": false,
+      "expectedCadenceSeconds": 480,
+      "dataFreshnessLimitSeconds": 600,
+      "nextDueAt": 1790132273,
+      "retryAt": null,
+      "coverage": null
+    },
+    {
+      "key": "quote:LINK:binance",
+      "last_attempt": 1790131793,
+      "last_success": 1790131793,
+      "data_as_of": 1790131791,
+      "error": null,
+      "failures": 0,
+      "next_attempt": 0,
+      "active": true,
+      "status": "ok",
+      "collectorAgeSeconds": 3,
+      "dataAgeSeconds": 5,
+      "liveStale": false,
+      "expectedCadenceSeconds": 480,
+      "dataFreshnessLimitSeconds": 600,
+      "nextDueAt": 1790132273,
+      "retryAt": null,
+      "coverage": null
+    },
+    {
+      "key": "quote:LINK:upbit",
+      "last_attempt": 1790131793,
+      "last_success": 1790131793,
+      "data_as_of": 1790131790,
+      "error": null,
+      "failures": 0,
+      "next_attempt": 0,
+      "active": true,
+      "status": "ok",
+      "collectorAgeSeconds": 3,
+      "dataAgeSeconds": 6,
+      "liveStale": false,
+      "expectedCadenceSeconds": 480,
+      "dataFreshnessLimitSeconds": 600,
+      "nextDueAt": 1790132273,
+      "retryAt": null,
+      "coverage": null
+    },
+    {
+      "key": "quote:ONDO:binance",
+      "last_attempt": 1790131794,
+      "last_success": 1790131794,
+      "data_as_of": 1790131782,
+      "error": null,
+      "failures": 0,
+      "next_attempt": 0,
+      "active": true,
+      "status": "ok",
+      "collectorAgeSeconds": 2,
+      "dataAgeSeconds": 14,
+      "liveStale": false,
+      "expectedCadenceSeconds": 480,
+      "dataFreshnessLimitSeconds": 600,
+      "nextDueAt": 1790132274,
+      "retryAt": null,
+      "coverage": null
+    },
+    {
+      "key": "quote:ONDO:upbit",
+      "last_attempt": 1790131794,
+      "last_success": 1790131794,
+      "data_as_of": 1790131783,
+      "error": null,
+      "failures": 0,
+      "next_attempt": 0,
+      "active": true,
+      "status": "ok",
+      "collectorAgeSeconds": 2,
+      "dataAgeSeconds": 13,
+      "liveStale": false,
+      "expectedCadenceSeconds": 480,
+      "dataFreshnessLimitSeconds": 600,
+      "nextDueAt": 1790132274,
+      "retryAt": null,
+      "coverage": null
+    },
+    {
+      "key": "quote:PEPE:binance",
+      "last_attempt": 1790131795,
+      "last_success": 1790131795,
+      "data_as_of": 1790131794,
+      "error": null,
+      "failures": 0,
+      "next_attempt": 0,
+      "active": true,
+      "status": "ok",
+      "collectorAgeSeconds": 1,
+      "dataAgeSeconds": 2,
+      "liveStale": false,
+      "expectedCadenceSeconds": 480,
+      "dataFreshnessLimitSeconds": 600,
+      "nextDueAt": 1790132275,
+      "retryAt": null,
+      "coverage": null
+    },
+    {
+      "key": "quote:PEPE:upbit",
+      "last_attempt": 1790131795,
+      "last_success": 1790131795,
+      "data_as_of": 1790131756,
+      "error": null,
+      "failures": 0,
+      "next_attempt": 0,
+      "active": true,
+      "status": "ok",
+      "collectorAgeSeconds": 1,
+      "dataAgeSeconds": 40,
+      "liveStale": false,
+      "expectedCadenceSeconds": 480,
+      "dataFreshnessLimitSeconds": 600,
+      "nextDueAt": 1790132275,
+      "retryAt": null,
+      "coverage": null
+    },
+    {
+      "key": "coingecko",
+      "last_attempt": 1789838000,
+      "last_success": null,
+      "data_as_of": null,
+      "error": "HTTP 429",
+      "failures": 3,
+      "next_attempt": 1789838480,
+      "active": false,
+      "status": "inactive",
+      "collectorAgeSeconds": null,
+      "dataAgeSeconds": null,
+      "liveStale": false,
+      "expectedCadenceSeconds": null,
+      "dataFreshnessLimitSeconds": null,
+      "nextDueAt": null,
+      "retryAt": 1789838480,
+      "coverage": null
+    },
+    {
+      "key": "quotes:binance:0",
+      "last_attempt": 1790131161,
+      "last_success": 1790131161,
+      "data_as_of": 1790131161,
+      "error": null,
+      "failures": 0,
+      "next_attempt": 0,
+      "active": false,
+      "status": "inactive",
+      "collectorAgeSeconds": 635,
+      "dataAgeSeconds": 635,
+      "liveStale": false,
+      "expectedCadenceSeconds": null,
+      "dataFreshnessLimitSeconds": null,
+      "nextDueAt": null,
+      "retryAt": null,
+      "coverage": null
+    },
+    {
+      "key": "quotes:binance:1",
+      "last_attempt": 1790131340,
+      "last_success": 1790131340,
+      "data_as_of": 1790131340,
+      "error": null,
+      "failures": 0,
+      "next_attempt": 0,
+      "active": false,
+      "status": "inactive",
+      "collectorAgeSeconds": 456,
+      "dataAgeSeconds": 456,
+      "liveStale": false,
+      "expectedCadenceSeconds": null,
+      "dataFreshnessLimitSeconds": null,
+      "nextDueAt": null,
+      "retryAt": null,
+      "coverage": null
+    },
+    {
+      "key": "quotes:upbit:0",
+      "last_attempt": 1790131521,
+      "last_success": 1790131521,
+      "data_as_of": 1790131521,
+      "error": null,
+      "failures": 0,
+      "next_attempt": 0,
+      "active": false,
+      "status": "inactive",
+      "collectorAgeSeconds": 275,
+      "dataAgeSeconds": 275,
+      "liveStale": false,
+      "expectedCadenceSeconds": null,
+      "dataFreshnessLimitSeconds": null,
+      "nextDueAt": null,
+      "retryAt": null,
+      "coverage": null
+    },
+    {
+      "key": "quotes:upbit:1",
+      "last_attempt": 1790131640,
+      "last_success": 1790131640,
+      "data_as_of": 1790131640,
+      "error": null,
+      "failures": 0,
+      "next_attempt": 0,
+      "active": false,
+      "status": "inactive",
+      "collectorAgeSeconds": 156,
+      "dataAgeSeconds": 156,
+      "liveStale": false,
+      "expectedCadenceSeconds": null,
+      "dataFreshnessLimitSeconds": null,
+      "nextDueAt": null,
+      "retryAt": null,
+      "coverage": null
+    }
+  ],
+  "automation": {
+    "runner": "Cloudflare Cron",
+    "independentOfVisitors": true,
+    "tickSeconds": 60,
+    "lastStartedAt": 1790131760,
+    "lastCompletedAt": 1790131761,
+    "lastSucceededAt": 1790131761,
+    "lastJob": "ONDO:binance:1h",
+    "lastRunStatus": "ok",
+    "lastError": null,
+    "leaseUntil": null,
+    "stalled": false,
+    "nextTickAt": 1790131800,
+    "cadence": {
+      "quoteBackgroundTargetSeconds": 480,
+      "quoteBackgroundDelaySeconds": 600,
+      "quoteOnDemandMinSeconds": 180,
+      "hourlyCandlesSeconds": 3600,
+      "dailyCandlesSeconds": 21600,
+      "dailyUtcBoundaryRefresh": true
+    },
+    "jobs": [
+      {
+        "key": "bitview",
+        "kind": "onchain",
+        "cadenceSeconds": 3600,
+        "dueAt": 1790132541
+      },
+      {
+        "key": "defillama",
+        "kind": "stablecoins",
+        "cadenceSeconds": 21600,
+        "dueAt": 1790146760
+      },
+      {
+        "key": "coinlore",
+        "kind": "dominance",
+        "cadenceSeconds": 3600,
+        "dueAt": 1790131942
+      },
+      {
+        "key": "maintenance",
+        "kind": "maintenance",
+        "cadenceSeconds": 3600,
+        "dueAt": 1790132000
+      },
+      {
+        "key": "reference:BTC",
+        "kind": "reference",
+        "cadenceSeconds": 21600,
+        "dueAt": 1790150180,
+        "assets": [
+          "BTC"
+        ]
+      },
+      {
+        "key": "reference:DOGE",
+        "kind": "reference",
+        "cadenceSeconds": 21600,
+        "dueAt": 1790150426,
+        "assets": [
+          "DOGE"
+        ]
+      },
+      {
+        "key": "reference:ETH",
+        "kind": "reference",
+        "cadenceSeconds": 21600,
+        "dueAt": 1790150840,
+        "assets": [
+          "ETH"
+        ]
+      },
+      {
+        "key": "reference:XRP",
+        "kind": "reference",
+        "cadenceSeconds": 21600,
+        "dueAt": 1790151740,
+        "assets": [
+          "XRP"
+        ]
+      },
+      {
+        "key": "reference:LINK",
+        "kind": "reference",
+        "cadenceSeconds": 21600,
+        "dueAt": 1790151920,
+        "assets": [
+          "LINK"
+        ]
+      },
+      {
+        "key": "network:BTC",
+        "kind": "network",
+        "cadenceSeconds": 21600,
+        "dueAt": 1790152340,
+        "assets": [
+          "BTC"
+        ]
+      },
+      {
+        "key": "network:DOGE",
+        "kind": "network",
+        "cadenceSeconds": 21600,
+        "dueAt": 1790132180,
+        "assets": [
+          "DOGE"
+        ]
+      },
+      {
+        "key": "network:ETH",
+        "kind": "network",
+        "cadenceSeconds": 21600,
+        "dueAt": 1790152640,
+        "assets": [
+          "ETH"
+        ]
+      },
+      {
+        "key": "network:XRP",
+        "kind": "network",
+        "cadenceSeconds": 21600,
+        "dueAt": 1790153000,
+        "assets": [
+          "XRP"
+        ]
+      },
+      {
+        "key": "network:LINK",
+        "kind": "network",
+        "cadenceSeconds": 21600,
+        "dueAt": 1790131820,
+        "assets": [
+          "LINK"
+        ]
+      },
+      {
+        "key": "quotes:binance:0",
+        "kind": "quote-batch",
+        "cadenceSeconds": 480,
+        "dueAt": 1790131221,
+        "assets": [
+          "BTC",
+          "DOGE",
+          "ETH",
+          "SOL"
+        ],
+        "market": "binance"
+      },
+      {
+        "key": "quotes:binance:1",
+        "kind": "quote-batch",
+        "cadenceSeconds": 480,
+        "dueAt": 1790131820,
+        "assets": [
+          "XRP",
+          "LINK",
+          "ONDO",
+          "PEPE"
+        ],
+        "market": "binance"
+      },
+      {
+        "key": "BTC:binance:1h",
+        "kind": "price",
+        "cadenceSeconds": 3600,
+        "dueAt": 1790132120,
+        "assets": [
+          "BTC"
+        ],
+        "market": "binance"
+      },
+      {
+        "key": "BTC:binance:1d",
+        "kind": "price",
+        "cadenceSeconds": 21600,
+        "dueAt": 1790143340,
+        "assets": [
+          "BTC"
+        ],
+        "market": "binance"
+      },
+      {
+        "key": "DOGE:binance:1h",
+        "kind": "price",
+        "cadenceSeconds": 3600,
+        "dueAt": 1790134160,
+        "assets": [
+          "DOGE"
+        ],
+        "market": "binance"
+      },
+      {
+        "key": "DOGE:binance:1d",
+        "kind": "price",
+        "cadenceSeconds": 21600,
+        "dueAt": 1790143460,
+        "assets": [
+          "DOGE"
+        ],
+        "market": "binance"
+      },
+      {
+        "key": "ETH:binance:1h",
+        "kind": "price",
+        "cadenceSeconds": 3600,
+        "dueAt": 1790134400,
+        "assets": [
+          "ETH"
+        ],
+        "market": "binance"
+      },
+      {
+        "key": "ETH:binance:1d",
+        "kind": "price",
+        "cadenceSeconds": 21600,
+        "dueAt": 1790143580,
+        "assets": [
+          "ETH"
+        ],
+        "market": "binance"
+      },
+      {
+        "key": "SOL:binance:1h",
+        "kind": "price",
+        "cadenceSeconds": 3600,
+        "dueAt": 1790134520,
+        "assets": [
+          "SOL"
+        ],
+        "market": "binance"
+      },
+      {
+        "key": "SOL:binance:1d",
+        "kind": "price",
+        "cadenceSeconds": 21600,
+        "dueAt": 1790143640,
+        "assets": [
+          "SOL"
+        ],
+        "market": "binance"
+      },
+      {
+        "key": "XRP:binance:1h",
+        "kind": "price",
+        "cadenceSeconds": 3600,
+        "dueAt": 1790134880,
+        "assets": [
+          "XRP"
+        ],
+        "market": "binance"
+      },
+      {
+        "key": "XRP:binance:1d",
+        "kind": "price",
+        "cadenceSeconds": 21600,
+        "dueAt": 1790143760,
+        "assets": [
+          "XRP"
+        ],
+        "market": "binance"
+      },
+      {
+        "key": "LINK:binance:1h",
+        "kind": "price",
+        "cadenceSeconds": 3600,
+        "dueAt": 1790135300,
+        "assets": [
+          "LINK"
+        ],
+        "market": "binance"
+      },
+      {
+        "key": "LINK:binance:1d",
+        "kind": "price",
+        "cadenceSeconds": 21600,
+        "dueAt": 1790143820,
+        "assets": [
+          "LINK"
+        ],
+        "market": "binance"
+      },
+      {
+        "key": "ONDO:binance:1h",
+        "kind": "price",
+        "cadenceSeconds": 3600,
+        "dueAt": 1790135361,
+        "assets": [
+          "ONDO"
+        ],
+        "market": "binance"
+      },
+      {
+        "key": "ONDO:binance:1d",
+        "kind": "price",
+        "cadenceSeconds": 21600,
+        "dueAt": 1790143880,
+        "assets": [
+          "ONDO"
+        ],
+        "market": "binance"
+      },
+      {
+        "key": "PEPE:binance:1h",
+        "kind": "price",
+        "cadenceSeconds": 3600,
+        "dueAt": 1790131700,
+        "assets": [
+          "PEPE"
+        ],
+        "market": "binance"
+      },
+      {
+        "key": "PEPE:binance:1d",
+        "kind": "price",
+        "cadenceSeconds": 21600,
+        "dueAt": 1790144000,
+        "assets": [
+          "PEPE"
+        ],
+        "market": "binance"
+      },
+      {
+        "key": "quotes:upbit:0",
+        "kind": "quote-batch",
+        "cadenceSeconds": 480,
+        "dueAt": 1790132001,
+        "assets": [
+          "BTC",
+          "DOGE",
+          "ETH",
+          "SOL"
+        ],
+        "market": "upbit"
+      },
+      {
+        "key": "quotes:upbit:1",
+        "kind": "quote-batch",
+        "cadenceSeconds": 480,
+        "dueAt": 1790132120,
+        "assets": [
+          "XRP",
+          "LINK",
+          "ONDO",
+          "PEPE"
+        ],
+        "market": "upbit"
+      },
+      {
+        "key": "BTC:upbit:1h",
+        "kind": "price",
+        "cadenceSeconds": 3600,
+        "dueAt": 1790132300,
+        "assets": [
+          "BTC"
+        ],
+        "market": "upbit"
+      },
+      {
+        "key": "BTC:upbit:1d",
+        "kind": "price",
+        "cadenceSeconds": 21600,
+        "dueAt": 1790144120,
+        "assets": [
+          "BTC"
+        ],
+        "market": "upbit"
+      },
+      {
+        "key": "DOGE:upbit:1h",
+        "kind": "price",
+        "cadenceSeconds": 3600,
+        "dueAt": 1790134223,
+        "assets": [
+          "DOGE"
+        ],
+        "market": "upbit"
+      },
+      {
+        "key": "DOGE:upbit:1d",
+        "kind": "price",
+        "cadenceSeconds": 21600,
+        "dueAt": 1790144240,
+        "assets": [
+          "DOGE"
+        ],
+        "market": "upbit"
+      },
+      {
+        "key": "ETH:upbit:1h",
+        "kind": "price",
+        "cadenceSeconds": 3600,
+        "dueAt": 1790134700,
+        "assets": [
+          "ETH"
+        ],
+        "market": "upbit"
+      },
+      {
+        "key": "ETH:upbit:1d",
+        "kind": "price",
+        "cadenceSeconds": 21600,
+        "dueAt": 1790144300,
+        "assets": [
+          "ETH"
+        ],
+        "market": "upbit"
+      },
+      {
+        "key": "SOL:upbit:1h",
+        "kind": "price",
+        "cadenceSeconds": 3600,
+        "dueAt": 1790134820,
+        "assets": [
+          "SOL"
+        ],
+        "market": "upbit"
+      },
+      {
+        "key": "SOL:upbit:1d",
+        "kind": "price",
+        "cadenceSeconds": 21600,
+        "dueAt": 1790144420,
+        "assets": [
+          "SOL"
+        ],
+        "market": "upbit"
+      },
+      {
+        "key": "XRP:upbit:1h",
+        "kind": "price",
+        "cadenceSeconds": 3600,
+        "dueAt": 1790135060,
+        "assets": [
+          "XRP"
+        ],
+        "market": "upbit"
+      },
+      {
+        "key": "XRP:upbit:1d",
+        "kind": "price",
+        "cadenceSeconds": 21600,
+        "dueAt": 1790144480,
+        "assets": [
+          "XRP"
+        ],
+        "market": "upbit"
+      },
+      {
+        "key": "LINK:upbit:1h",
+        "kind": "price",
+        "cadenceSeconds": 3600,
+        "dueAt": 1790135180,
+        "assets": [
+          "LINK"
+        ],
+        "market": "upbit"
+      },
+      {
+        "key": "LINK:upbit:1d",
+        "kind": "price",
+        "cadenceSeconds": 21600,
+        "dueAt": 1790144540,
+        "assets": [
+          "LINK"
+        ],
+        "market": "upbit"
+      },
+      {
+        "key": "ONDO:upbit:1h",
+        "kind": "price",
+        "cadenceSeconds": 3600,
+        "dueAt": 1790131580,
+        "assets": [
+          "ONDO"
+        ],
+        "market": "upbit"
+      },
+      {
+        "key": "ONDO:upbit:1d",
+        "kind": "price",
+        "cadenceSeconds": 21600,
+        "dueAt": 1790144660,
+        "assets": [
+          "ONDO"
+        ],
+        "market": "upbit"
+      },
+      {
+        "key": "PEPE:upbit:1h",
+        "kind": "price",
+        "cadenceSeconds": 3600,
+        "dueAt": 1790131820,
+        "assets": [
+          "PEPE"
+        ],
+        "market": "upbit"
+      },
+      {
+        "key": "PEPE:upbit:1d",
+        "kind": "price",
+        "cadenceSeconds": 21600,
+        "dueAt": 1790144780,
+        "assets": [
+          "PEPE"
+        ],
+        "market": "upbit"
+      }
+    ],
+    "recentRuns": [
+      {
+        "runId": "426b47c1-20f1-4b0d-8c54-61bb5b74aa88",
+        "startedAt": 1790131760,
+        "completedAt": 1790131761,
+        "job": "ONDO:binance:1h",
+        "outcome": "ok",
+        "error": null
+      },
+      {
+        "runId": "dabeb3fe-e823-417f-b65b-ee27ef2db577",
+        "startedAt": 1790131700,
+        "completedAt": 1790131701,
+        "job": "LINK:binance:1h",
+        "outcome": "ok",
+        "error": null
+      },
+      {
+        "runId": "2c875a26-b820-4101-8700-1256570c562b",
+        "startedAt": 1790131640,
+        "completedAt": 1790131640,
+        "job": "quotes:upbit:1",
+        "outcome": "ok",
+        "error": null
+      },
+      {
+        "runId": "afb3418a-47d8-41a6-9148-0be5e466155e",
+        "startedAt": 1790131580,
+        "completedAt": 1790131581,
+        "job": "LINK:upbit:1h",
+        "outcome": "ok",
+        "error": null
+      },
+      {
+        "runId": "a961967f-696a-4575-b004-a35fd13f94f4",
+        "startedAt": 1790131520,
+        "completedAt": 1790131521,
+        "job": "quotes:upbit:0",
+        "outcome": "ok",
+        "error": null
+      },
+      {
+        "runId": "bc92a89c-6961-45e9-a6ea-c9d94bceb171",
+        "startedAt": 1790131460,
+        "completedAt": 1790131461,
+        "job": "XRP:upbit:1h",
+        "outcome": "ok",
+        "error": null
+      },
+      {
+        "runId": "5d0e9256-a284-45dd-9024-d4e47f5fd52c",
+        "startedAt": 1790131400,
+        "completedAt": 1790131407,
+        "job": "network:XRP",
+        "outcome": "ok",
+        "error": null
+      },
+      {
+        "runId": "8d790e45-8db2-4093-956a-84f2728d3756",
+        "startedAt": 1790131340,
+        "completedAt": 1790131341,
+        "job": "quotes:binance:1",
+        "outcome": "ok",
+        "error": null
+      },
+      {
+        "runId": "9db07075-1dee-40d6-a336-6dc6ae885988",
+        "startedAt": 1790131280,
+        "completedAt": 1790131281,
+        "job": "XRP:binance:1h",
+        "outcome": "ok",
+        "error": null
+      },
+      {
+        "runId": "8f5c3e46-a4aa-4bae-a53f-93fa1e92355c",
+        "startedAt": 1790131220,
+        "completedAt": 1790131221,
+        "job": "SOL:upbit:1h",
+        "outcome": "ok",
+        "error": null
+      },
+      {
+        "runId": "cd11da56-834d-40b6-9877-74863bc86abc",
+        "startedAt": 1790131160,
+        "completedAt": 1790131161,
+        "job": "quotes:binance:0",
+        "outcome": "ok",
+        "error": null
+      },
+      {
+        "runId": "440e6b89-e7fe-44fb-a261-117071a810e6",
+        "startedAt": 1790131100,
+        "completedAt": 1790131100,
+        "job": "ETH:upbit:1h",
+        "outcome": "ok",
+        "error": null
+      },
+      {
+        "runId": "6de0852c-a585-42d1-b609-8f84f01c4c6f",
+        "startedAt": 1790131040,
+        "completedAt": 1790131041,
+        "job": "network:ETH",
+        "outcome": "ok",
+        "error": null
+      },
+      {
+        "runId": "97604584-6fc6-4332-bd60-e71fc93b3c4a",
+        "startedAt": 1790130980,
+        "completedAt": 1790130981,
+        "job": "quotes:upbit:1",
+        "outcome": "ok",
+        "error": null
+      },
+      {
+        "runId": "2212de45-e3a6-424a-89ad-94c3daccd861",
+        "startedAt": 1790130920,
+        "completedAt": 1790130921,
+        "job": "SOL:binance:1h",
+        "outcome": "ok",
+        "error": null
+      },
+      {
+        "runId": "b42f5da1-2c43-47bd-87a4-1c20b2c376e7",
+        "startedAt": 1790130860,
+        "completedAt": 1790130861,
+        "job": "quotes:upbit:0",
+        "outcome": "ok",
+        "error": null
+      },
+      {
+        "runId": "31c4b6c1-5ba4-4b96-aff4-c7c944d3e3a4",
+        "startedAt": 1790130800,
+        "completedAt": 1790130801,
+        "job": "ETH:binance:1h",
+        "outcome": "ok",
+        "error": null
+      },
+      {
+        "runId": "e28bb555-8cd0-4bd6-9330-455c12d8ab89",
+        "startedAt": 1790130740,
+        "completedAt": 1790130741,
+        "job": "network:BTC",
+        "outcome": "ok",
+        "error": null
+      },
+      {
+        "runId": "7fc507c7-73dd-4307-a914-d58d49129053",
+        "startedAt": 1790130680,
+        "completedAt": 1790130681,
+        "job": "quotes:binance:1",
+        "outcome": "ok",
+        "error": null
+      },
+      {
+        "runId": "27b9a80e-8dee-4e37-b64d-1f0c0a33d0f5",
+        "startedAt": 1790130623,
+        "completedAt": 1790130624,
+        "job": "DOGE:upbit:1h",
+        "outcome": "ok",
+        "error": null
+      }
+    ]
+  },
+  "coverage": {
+    "expectedSources": 62,
+    "healthySources": 62,
+    "priceMarkets": 16,
+    "histories": 32
+  },
+  "quoteAsOf": 1790131787,
+  "onchainAsOf": 1790035200,
+  "dominanceAsOf": 1790128342,
+  "dominanceSource": "CoinLore / DefiLlama"
+}
