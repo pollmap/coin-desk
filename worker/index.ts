@@ -143,10 +143,15 @@ async function overview(env: Env, asset: Asset, market: Market): Promise<Overvie
       try {
         quote = await getQuote(asset, market, env);
         saved = { data: JSON.stringify(quote), fetched_at: epoch() };
-        await env.DB.prepare('INSERT OR REPLACE INTO snapshots(key,data,fetched_at) VALUES(?,?,?)')
-          .bind(key, saved.data, saved.fetched_at)
-          .run();
-        await success(env.DB, key, quote.time);
+        try {
+          await env.DB.prepare('INSERT OR REPLACE INTO snapshots(key,data,fetched_at) VALUES(?,?,?)')
+            .bind(key, saved.data, saved.fetched_at)
+            .run();
+          await success(env.DB, key, quote.time);
+        } catch {
+          // A fresh public quote is still useful when D1's daily write quota is exhausted.
+          warning = '거래소 시세를 조회했지만 서버 자동 저장이 지연되고 있습니다.';
+        }
       } catch (e) {
         warning = '시세 원천 연결이 지연되고 있습니다. 마지막 정상 값을 표시합니다.';
         await failure(env.DB, key, e).catch(() => undefined);
@@ -155,6 +160,15 @@ async function overview(env: Env, asset: Asset, market: Market): Promise<Overvie
   } catch {
     // A quota/lease write failure must not prevent reading the saved market data.
     warning = '서버 저장·갱신이 지연되고 있습니다. 마지막 정상 값을 표시합니다.';
+    if (!saved || epoch() - saved.fetched_at > 300) {
+      try {
+        quote = await getQuote(asset, market, env);
+        saved = { data: JSON.stringify(quote), fetched_at: epoch() };
+        warning = '거래소 시세를 조회했지만 서버 자동 저장이 지연되고 있습니다.';
+      } catch {
+        // Keep the last durable quote and its age visible when the exchange is also unavailable.
+      }
+    }
   }
   if (saved && epoch() - saved.fetched_at >= QUOTE_REFRESH_SECONDS) {
     // A scheduled refresh may have won the lease after our initial snapshot read.
@@ -210,9 +224,7 @@ async function overview(env: Env, asset: Asset, market: Market): Promise<Overvie
     meta: {
       ...meta(market, quote?.time ?? null, saved?.fetched_at ?? null),
       stale:
-        !!warning ||
         !saved ||
-        epoch() - saved.fetched_at > 300 ||
         !quote ||
         epoch() - quote.time > 300,
       warning,
@@ -514,8 +526,8 @@ export default {
       if (request.method !== 'GET') return response({ error: 'Read-only API' }, 405);
       const canonical = canonicalRequest(request);
       const cache = (caches as unknown as { default: Cache }).default;
-      // Quotes already share durable snapshots and refresh leases. An extra edge
-      // cache can keep an old/stale response after the scheduled collector commits.
+      // Quotes bypass edge caching so a newly committed scheduled snapshot is
+      // visible immediately instead of waiting for an older response to expire.
       const liveStatus = /\/(health|status|overview|dominance|research\/public)$/.test(
         url.pathname,
       );
@@ -542,7 +554,7 @@ export default {
             const clone = new Response(out.clone().body, out);
             clone.headers.set(
               'Cache-Control',
-              'public, max-age=' + (url.pathname.endsWith('/overview') ? 30 : 300),
+              'public, max-age=300',
             );
             ctx.waitUntil(cache.put(canonical, clone).catch(() => undefined));
           }
