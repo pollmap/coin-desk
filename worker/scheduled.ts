@@ -355,7 +355,8 @@ export async function scheduled(env: Env, scheduledAt = epoch()) {
   );
   if (retry) retry.next_attempt = now;
   const job = selectJob(jobPolicies(enabledAssets(env), !!build), rows.results, now);
-  const slot = tick % 120;
+  // Keep 72 hours of minute ticks so a full 48-hour unattended run is auditable.
+  const slot = tick % 4320;
   // The run lease, bounded ledger, and selected-job attempt are one transaction.
   // Conditional SELECTs keep duplicate deliveries from overwriting the winning run.
   const initial = [

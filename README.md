@@ -5,7 +5,9 @@
 
 **BTC·DOGE·ETH를 중심으로 8개 코인의 가격과 5개 코인의 온체인을 분석하는 한국어 대시보드입니다.** 무료 공개 데이터를 수집하고 출처·기준일·계산식을 함께 표시합니다. 관심 코인을 비교하고, 지표와 기간을 조절한 뒤 나만의 구성을 작업공간으로 저장할 수 있습니다.
 
-현재 소스는 **0.7.0**입니다. 첫 화면에 BTC·DOGE·ETH의 가격·등락률·기준일을 함께 보여주고, 선택한 한 코인의 전체 USD 이력을 큰 차트로 엽니다. 다른 5개 코인은 펼침 메뉴에 둡니다. 8개 로고, BTC 사이클 기준선, DOGE·ETH의 BTC 대비 성과·상관관계, 코인별 네트워크 지표, Binance 선물 패널과 BTC 네트워크 현황을 추가했습니다. **선물 원천은 현재 배포 서버에서 HTTP 403으로 차단되어 실제 이력 없이 ‘원천 연결 대기’로 표시됩니다.** [0.7 변경·검증 기록](docs/UPGRADE07.md), [로고 출처](docs/COIN_LOGOS.md), [BTC MVRV](https://coin-desk.pages.dev/metrics/mvrv?period=all), [DOGE 온체인](https://coin-desk.pages.dev/onchain/DOGE?period=all)을 확인하세요. 수집은 방문자와 독립적인 Cloudflare Cron에서 실행됩니다. 48시간 운영 관찰은 배포 직후의 단기 검증과 구분합니다.
+현재 소스는 **0.8.0**입니다. BTC·DOGE·ETH의 전체 USD 흐름을 우선 보여주고, 다른 5개 코인은 펼침 메뉴에 둡니다. 첫 화면의 중복 시세를 제거해 차트를 앞당겼으며, 시바견 안내 캐릭터를 차트 뒤에 배치했습니다. 서버에서 차단된 Binance 선물 원천은 실제 Cloudflare 응답을 확인한 Bybit V5로 교체했습니다. 펀딩비는 %, 미결제약정은 해당 코인 수량으로 표시합니다. 서버 Cron 실행 기록을 72시간 보관하고 상태 화면에 48시간 관찰 진행을 표시합니다. [0.8 변경·검증 기록](docs/UPGRADE08.md), [로고 출처](docs/COIN_LOGOS.md), [BTC MVRV](https://coin-desk.pages.dev/metrics/mvrv?period=all), [DOGE 온체인](https://coin-desk.pages.dev/onchain/DOGE?period=all)을 확인하세요. 수집은 방문자와 독립적인 Cloudflare Cron에서 실행됩니다.
+
+BTC·DOGE 전체 이력에는 과거 730일의 로그가격만 사용해 매일 재계산하는 장기 가격 위치 밴드와 당시 최고 종가 대비 낙폭도 표시합니다. 이는 사용자 판단을 위한 과거 위치 설명으로, 적정가·바닥 또는 미래 경로를 뜻하지 않습니다.
 
 ![Coin Desk 개편 온체인 화면](docs/upgrade-06/public-doge-dashboard.png)
 
@@ -23,6 +25,7 @@
 | 관심 코인 `/coins` | 별표 즐겨찾기·검색, 즐겨찾기/상승률/하락률/거래대금 정렬, RSI 14·200일선 대비 가격 위치 |
 | 실제 거래소 가격 | 8개 모두 Binance USDT / Upbit KRW, 환율 환산 없이 시장 전환 |
 | 장기 조망 `/` | BTC 2010년·DOGE 2014년·ETH 2015년부터의 Coin Metrics USD 일별 참조가격, 전체 기간 우선·로그축 |
+| BTC·DOGE 가격 위치 | 그날 이전 730개 연속 UTC 일별 가격의 로그 평균·표준편차 밴드, 당시까지의 최고 종가 대비 낙폭, 최근 4년·전체 보기 |
 | 성과 비교 `/compare` | 공통 UTC 확정일을 100으로 맞춘 상대 성과, 수익률·종가 기준 최대 낙폭·연환산 변동성, 직접 날짜·공통 기간 제한 이유·비교 CSV |
 | 차트 | 캔들·거래량, 1시간·4시간·일·주·월, 8개 기간 프리셋·KST 날짜 직접 선택, 로그축·확대·이동·십자선·전체화면·키보드·보이는 구간 CSV |
 | 이동평균 | SMA·EMA 기간 **2~1,000** 직접 입력, 일봉·주봉·선택한 봉 기준 선택 |
@@ -32,7 +35,7 @@
 | 코인별 온체인 `/onchain/:asset` | BTC·DOGE·ETH·XRP·LINK의 MVRV·주소·거래·공급·시총·수수료 등 **70개 시계열**. BTC·ETH 거래소 유입·유출·보유량과 계산 순유입, DOGE 블록·발행량 포함 |
 | BTC 사이클 | 전체 USD 가격에 200주선, 2년선·5배선, Pi Cycle 111일·350일 2배선, 고점 대비 낙폭을 선택해 표시 |
 | 상대 분석 | DOGE·ETH의 BTC 대비 참조가격 비율, 공통 시작일=100 성과, USD 종가 낙폭, 연속 UTC 30·90일 로그수익률 상관 |
-| 선물 | BTC·DOGE·ETH Binance USDT 무기한 선물의 펀딩비·미결제약정 조회 화면·CSV·원천 확보 범위. 현재 배포 Worker에서 원천 403으로 실제 이력은 연결 대기 |
+| 선물 | BTC·DOGE·ETH Bybit USDT 무기한 선물의 펀딩비(%)·미결제약정(코인 수량), 실제 확보 기간·CSV·원천 상태 |
 | BTC 네트워크 현황 | mempool.space의 권장 수수료·미확인 거래 규모; 서버가 15분 간격으로 수집 |
 | 지표 참고 구간 | BTC MVRV 1·3.7, NUPL 0·25·50·75%, RSI 30·70 등 출처별 참고선·색 구간·현재 위치. 알트 MVRV에는 1 평가 기준만 적용 |
 | 브랜드 `/brand` | 심볼·워드마크 SVG, PNG·ICO 파비콘, Apple 아이콘, 공유 썸네일·Open Graph |
@@ -72,7 +75,7 @@
 | BTC 온체인 | Bitview / Bitcoin Research Kit | 확정 일별 관측, 같은 원천의 **추정 USD 가격**과 비교 |
 | BTC·ETH 거래소 온체인 | Coin Metrics Community `FlowInExNtv`·`FlowOutExNtv`·`SplyExNtv` | 원천의 거래소 주소 식별 범위; 순유입은 같은 날 유입−유출의 **계산값**. 분류 변경으로 과거 수정 가능 |
 | DOGE 블록·발행 | Coin Metrics Community `BlkCnt`·`IssTotNtv` | 확정 UTC 일별 원천값; 가격이나 거래소 수요로 해석하지 않음 |
-| Binance 선물 | USDⓈ-M Futures 공개 REST | BTC·DOGE·ETH USDT 무기한 계약 한 거래소의 펀딩비(%)·미결제약정 가치(USDT); 실제 확보 시작일 표시 |
+| Bybit 선물 | V5 공개 REST | BTC·DOGE·ETH USDT 무기한 계약 한 거래소의 펀딩비(%)·미결제약정 코인 수량; 실제 확보 시작일 표시 |
 | BTC 네트워크 현황 | mempool.space 공개 API | 권장 수수료(sat/vB)와 미확인 거래 수·가상 크기; 관측 시각과 지연 상태 표시 |
 | 코인·USDT·USDC 도미넌스 | CoinLore 개별·전체 시가총액 | 같은 제공자의 개별 시가총액 / 전체 시가총액 × 100 |
 | 스테이블코인 전체 ≈ | DefiLlama 일별 USD 총액 / CoinLore 전체 시가총액 | **서로 다른 원천·시점의 근사 비중**; 일별 기준일을 별도 표시 |
@@ -123,7 +126,7 @@ BTC 수집·검산 자료, 추가 자산 자료와 장기 참조가격을 분리
 | `python scripts/check_assets.py --base https://coin-desk.pages.dev` | 추가 자산 수집본과 공개 페이지별 OHLCV 전체 비교 |
 | `python scripts/backup_check.py` | 로컬 DB 백업→별도 파일 복구, 테이블 해시 비교 |
 
-새 온체인 지표를 포함해 재수집할 때는 `python scripts/bootstrap_network.py --assets BTC,DOGE,ETH` 뒤 `node scripts/import_network.mjs BTC,DOGE,ETH`를 실행합니다. 선물·BTC 네트워크 현황은 로컬 API의 정기 작업 또는 배포된 Cloudflare Cron이 **실제로 받은 값부터** 축적합니다. Binance 미결제약정 과거 범위는 원천이 제공하는 최근 약 1개월로 제한되며, 더 오래된 값을 생성하지 않습니다.
+새 온체인 지표를 포함해 재수집할 때는 `python scripts/bootstrap_network.py --assets BTC,DOGE,ETH` 뒤 `node scripts/import_network.mjs BTC,DOGE,ETH`를 실행합니다. 선물·BTC 네트워크 현황은 로컬 API의 정기 작업 또는 배포된 Cloudflare Cron이 **실제로 받은 값부터** 축적합니다. Bybit 미결제약정은 최근 30일을 먼저 적재하고 이후 서버에 축적하며, 더 오래된 값을 생성하지 않습니다.
 | `python scripts/package_release.py` | 인증·캐시·DB를 제외한 재현용 소스 ZIP 생성 |
 
 ## 구조와 무료 운영

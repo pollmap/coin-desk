@@ -49,7 +49,7 @@ const questions = [
   {
     category: '선물',
     question: '선물 포지션과 펀딩비는 어떻게 변하나요?',
-    hint: 'Binance 펀딩비 · 미결제약정',
+    hint: 'Bybit 펀딩비 · 미결제약정',
   },
 ];
 const guideText = (id: string) => {
@@ -114,11 +114,11 @@ const expanded = [
   ...(['BTC', 'DOGE', 'ETH'] as const).map((coin) => ({
     category: '선물',
     title: coin + ' 펀딩비·미결제약정',
-    description: 'Binance USDT 무기한 선물 한 거래소의 실제 확보 이력을 가격과 비교합니다.',
-    formula: '펀딩비 = 정산 비율(%) · 미결제약정 = 계약의 USDT 가치',
+    description: 'Bybit USDT 무기한 선물 한 거래소의 실제 확보 이력을 가격과 비교합니다.',
+    formula: '펀딩비 = 정산 비율(%) · 미결제약정 = 코인 수량',
     to: '/?asset=' + coin + '&period=all#derivatives',
     source:
-      'https://developers.binance.com/docs/derivatives/usds-margined-futures/market-data/rest-api/Get-Funding-Rate-History',
+      'https://bybit-exchange.github.io/docs/v5/market/history-fund-rate',
   })),
 ];
 export function MetricsExplorer() {
@@ -339,7 +339,7 @@ export function MetricsExplorer() {
         <div className="empty-state">검색된 지표가 없습니다. 검색어와 분류를 바꿔 보세요.</div>
       ) : null}
       <p className="watch-note">
-        BTC 전용 지표는 Bitview, 코인별 네트워크는 Coin Metrics Community, 선물은 Binance가
+        BTC 전용 지표는 Bitview, 코인별 네트워크는 Coin Metrics Community, 선물은 Bybit이
         원천입니다. 기준선은 관측을 비교하기 위한 값이며 단독 매매 신호로 해석하지 않습니다.
       </p>
     </div>

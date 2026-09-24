@@ -59,6 +59,20 @@ export function BrandPage() {
           </a>
         </div>
       </section>
+      <section className="panel brand-mascot" aria-label="Coin Desk 안내 캐릭터">
+        <img
+          src="/brand/coin-desk-shiba.png"
+          width="160"
+          height="160"
+          loading="lazy"
+          alt="청록색 스카프를 두른 미니멀한 시바견 캐릭터"
+        />
+        <div>
+          <h2>Coin Desk 시바견</h2>
+          <p>분석 방법을 안내하는 캐릭터입니다. 공식 코인 로고나 매매 신호로 사용하지 않습니다.</p>
+          <a href="/brand/coin-desk-shiba.png" download>캐릭터 PNG 저장</a>
+        </div>
+      </section>
       <section className="panel brand-preview">
         <h2>링크 공유 미리보기</h2>
         <img

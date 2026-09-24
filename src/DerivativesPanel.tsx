@@ -3,7 +3,7 @@ import { LineSeries, type UTCTimestamp } from 'lightweight-charts';
 import { createDeskChart } from './chart-theme';
 import type { CandleResponse, SeriesResponse } from '../shared/types';
 import { useData } from './hooks';
-import { dateLabel, money, numeric } from './lib';
+import { dateLabel, numeric } from './lib';
 import './analysis-expansion.css';
 
 type Featured = 'BTC' | 'DOGE' | 'ETH';
@@ -56,7 +56,7 @@ export function DerivativesPanel({ asset }: { asset: Featured }) {
       priceFormat: {
         type: 'custom',
         formatter: (value: number) =>
-          metric === 'funding' ? numeric(value, 4) + '%' : money(value, 'USDT'),
+          metric === 'funding' ? numeric(value, 4) + '%' : numeric(value, 3) + ' ' + asset,
       },
     });
     line.setData(data.map((point) => ({ time: point.time as UTCTimestamp, value: point.value })));
@@ -76,7 +76,7 @@ export function DerivativesPanel({ asset }: { asset: Featured }) {
     return () => chart.remove();
   }, [data, spotPoints, metric]);
   const latest = result.data?.data.at(-1);
-  const unit = metric === 'funding' ? '%' : 'USDT';
+  const unit = metric === 'funding' ? '%' : asset;
   function csv() {
     const text =
       '\uFEFF' +
@@ -84,7 +84,7 @@ export function DerivativesPanel({ asset }: { asset: Featured }) {
         'asset,contract,metric,time_utc,value,unit,source',
         ...data.map(
           (point) =>
-            `${asset},${asset}USDT_PERPETUAL,${metric},${new Date(point.time * 1000).toISOString()},${point.value},${unit},Binance USD-M Futures`,
+            `${asset},${asset}USDT_PERPETUAL,${metric},${new Date(point.time * 1000).toISOString()},${point.value},${unit},Bybit V5 public market data`,
         ),
       ].join('\r\n');
     const url = URL.createObjectURL(new Blob([text], { type: 'text/csv;charset=utf-8' }));
@@ -98,10 +98,10 @@ export function DerivativesPanel({ asset }: { asset: Featured }) {
     <section
       id="derivatives"
       className="panel derivatives-panel"
-      aria-label={`${asset} Binance 선물 분석`}
+      aria-label={`${asset} Bybit 선물 분석`}
     >
       <div className="panel-title">
-        <h2>{asset} · Binance USDT 무기한 선물</h2>
+        <h2>{asset} · Bybit USDT 무기한 선물</h2>
         <small>한 거래소의 선물 자료</small>
       </div>
       <div className="derivatives-toolbar">
@@ -155,12 +155,12 @@ export function DerivativesPanel({ asset }: { asset: Featured }) {
           {latest
             ? metric === 'funding'
               ? numeric(latest.value, 4) + '%'
-              : money(latest.value, 'USDT')
+              : numeric(latest.value, 3) + ' ' + asset
             : '—'}
         </strong>
         <span>
           {dateLabel(latest?.time, true)} 관측 ·{' '}
-          {metric === 'funding' ? '정산 비율' : '미결제약정 가치'}
+          {metric === 'funding' ? '정산 비율' : '미결제약정 수량'}
         </span>
       </div>
       {result.error ? (
@@ -179,7 +179,7 @@ export function DerivativesPanel({ asset }: { asset: Featured }) {
         <div className="empty-state" role="status">
           {result.loading
             ? '선물 이력을 불러오고 있습니다…'
-            : result.data?.meta.warning?.includes('차단')
+            : result.data?.meta.warning?.includes('연결에 실패')
               ? result.data.meta.warning
               : '원천 연결 또는 첫 자동 수집을 기다리고 있습니다.'}
         </div>
@@ -204,7 +204,7 @@ export function DerivativesPanel({ asset }: { asset: Featured }) {
       <p className="muted">
         {result.data?.meta.warning ||
           (metric === 'open_interest'
-            ? '미결제약정의 과거 조회는 원천이 제공하는 최근 약 1개월부터 시작합니다.'
+            ? '미결제약정은 Bybit 한 거래소의 코인 수량이며 최근 30일을 먼저 확보합니다.'
             : '펀딩비는 정산 시각의 실제 비율입니다.')}
       </p>
     </section>

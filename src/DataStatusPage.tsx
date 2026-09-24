@@ -28,6 +28,12 @@ export function sourceLabel(key: string) {
   if (key === 'coinlore') return '코인 시가총액 · CoinLore';
   if (key === 'defillama') return '스테이블코인 · DefiLlama';
   if (key === 'maintenance') return '이력 정리';
+  if (key === 'mempool:BTC') return 'BTC 수수료·미확인 거래 · mempool.space';
+  if (key.startsWith('derivatives:')) {
+    const [, asset, metric] = key.split(':');
+    return asset + ' · Bybit ' + (metric === 'funding' ? '펀딩비' : '미결제약정');
+  }
+  if (key.startsWith('network:')) return key.split(':')[1] + ' 온체인 · Coin Metrics';
   if (key.startsWith('reference:')) return key.split(':')[1] + ' 장기 USD · Coin Metrics';
   if (key.startsWith('quote:')) {
     const [, asset, market] = key.split(':');
@@ -81,6 +87,12 @@ export function AutomationSummary({ compact = false }: { compact?: boolean }) {
               : '확인 대기'}
           </dd>
         </div>
+        {!compact && <div>
+          <dt>48시간 자동 수집 관찰</dt>
+          <dd>{a?.observation48h.ready
+            ? `${a.observation48h.ticks}회 기록 · 실패 ${a.observation48h.failures}회`
+            : `${a?.observation48h.ticks ?? 0}회 기록 · 관찰 기간 누적 중`}</dd>
+        </div>}
       </dl>
       {compact ? (
         <Link className="desk-button" to="/status">

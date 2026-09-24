@@ -41,6 +41,17 @@
 .brand-preview {
   margin-top: 20px;
 }
+.brand-mascot {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+  margin-top: 20px;
+  padding: 16px 24px;
+}
+.brand-mascot img { flex: 0 0 auto; max-width: 35%; height: auto; }
+.brand-mascot h2 { margin: 0; font-size: 17px; }
+.brand-mascot p { color: var(--muted); font-size: 12px; line-height: 1.6; }
+.brand-mascot a { color: var(--accent); font-size: 12px; }
 .brand-preview h2 {
   font-size: 16px;
   margin: 0 0 16px;
@@ -66,4 +77,6 @@
     flex: 1 1 42%;
     text-align: center;
   }
+  .brand-mascot { padding: 14px; gap: 12px; }
+  .brand-mascot img { max-width: 34%; }
 }
