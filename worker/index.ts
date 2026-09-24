@@ -526,9 +526,9 @@ export default {
       if (request.method !== 'GET') return response({ error: 'Read-only API' }, 405);
       const canonical = canonicalRequest(request);
       const cache = (caches as unknown as { default: Cache }).default;
-      // Health/status stay live. A 10-second overview cache limits duplicate
-      // exchange requests while keeping quote age bounded for active viewers.
-      const liveStatus = /\/(health|status|dominance|research\/public)$/.test(
+      // Quotes bypass edge caching so a newly committed scheduled snapshot is
+      // visible immediately instead of waiting for an older response to expire.
+      const liveStatus = /\/(health|status|overview|dominance|research\/public)$/.test(
         url.pathname,
       );
       const cached = liveStatus ? undefined : await cache.match(canonical).catch(() => undefined);
@@ -554,7 +554,7 @@ export default {
             const clone = new Response(out.clone().body, out);
             clone.headers.set(
               'Cache-Control',
-              'public, max-age=' + (url.pathname.endsWith('/overview') ? 10 : 300),
+              'public, max-age=300',
             );
             ctx.waitUntil(cache.put(canonical, clone).catch(() => undefined));
           }
