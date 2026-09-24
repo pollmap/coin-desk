@@ -109,7 +109,11 @@ export function DerivativesPanel({
       autoSize: true,
       height: 300,
       layout: { attributionLogo: true },
-      rightPriceScale: { borderVisible: false },
+      rightPriceScale: {
+        borderVisible: false,
+        scaleMargins:
+          metric === 'long_account_ratio' ? { top: 0, bottom: 0 } : { top: 0.1, bottom: 0.1 },
+      },
       leftPriceScale: { visible: spotPoints.length > 0, borderVisible: false },
       timeScale: { borderVisible: false },
     });
