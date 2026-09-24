@@ -61,6 +61,7 @@ const AutomationSummary = lazy(() =>
 const LongHistoryPanel = lazy(() =>
   import('./LongHistoryPanel').then((m) => ({ default: m.LongHistoryPanel })),
 );
+const HistoryPositionPanel = lazy(() => import('./HistoryPositionPanel').then((m) => ({ default: m.HistoryPositionPanel })));
 const RelativeAnalysisPanel = lazy(() => import('./RelativeAnalysisPanel').then((m) => ({ default: m.RelativeAnalysisPanel })));
 const DerivativesPanel = lazy(() => import('./DerivativesPanel').then((m) => ({ default: m.DerivativesPanel })));
 const MempoolPanel = lazy(() => import('./MempoolPanel').then((m) => ({ default: m.MempoolPanel })));
@@ -446,7 +447,7 @@ function PricePage({ workspace = false }: { workspace?: boolean }) {
           <button onClick={() => setShareUrl('')}>닫기</button>
         </div>
       ) : null}
-      <section className="quote-strip" aria-label="시장 요약">
+      {!historical && <section className="quote-strip" aria-label="시장 요약">
         <div className="quote-primary">
           <AssetLogo asset={asset} size={30} />
           <div>
@@ -512,7 +513,7 @@ function PricePage({ workspace = false }: { workspace?: boolean }) {
             {asset === 'BTC' ? dateLabel(quote.data?.metricsAsOf) : currency + ' · 일봉 200개'}
           </small>
         </div>
-      </section>
+      </section>}
       {!workspace && hasLongHistory ? (
         <div className="history-view-tabs" aria-label="가격 자료 선택">
           <button
@@ -543,6 +544,11 @@ function PricePage({ workspace = false }: { workspace?: boolean }) {
           />
         </Suspense>
       ) : null}
+      {historical && (asset === 'BTC' || asset === 'DOGE') ? (
+        <DeferredMount><Suspense fallback={<Loading message="장기 가격 위치를 계산하고 있습니다…" />}>
+          <HistoryPositionPanel asset={asset} />
+        </Suspense></DeferredMount>
+      ) : null}
       {historical && (asset === 'DOGE' || asset === 'ETH') ? (
         <DeferredMount><Suspense fallback={<Loading message="BTC 대비 상대 분석을 준비하고 있습니다…" />}>
           <RelativeAnalysisPanel asset={asset} />
@@ -550,9 +556,17 @@ function PricePage({ workspace = false }: { workspace?: boolean }) {
       ) : null}
       {hasLongHistory && historical ? (
         <div className="network-entry">
+          <img
+            className="desk-shiba"
+            src="/brand/coin-desk-shiba.png"
+            width="58"
+            height="58"
+            loading="lazy"
+            alt="Coin Desk 시바견 안내 캐릭터"
+          />
           <div>
-            {asset}의 가격과 온체인을 함께 살펴보세요.
-            <small>MVRV · 주소 활동 · 거래 수 · 공급량 · 원천별 전체 이력</small>
+            거래소 캔들과 전체 USD 참조가격은 원천이 다릅니다.
+            <small>가격의 긴 흐름을 본 뒤 {asset}의 실제 제공 온체인 지표를 확인하세요.</small>
           </div>
           <Link to={`/onchain/${asset}?period=all`}>{asset} 온체인 전체 보기 ↗</Link>
         </div>

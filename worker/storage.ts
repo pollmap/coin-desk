@@ -2,6 +2,8 @@ import type { Candle } from '../shared/types';
 export interface Env {
   DB: D1Database;
   ASSETS: Fetcher;
+  FEED_URL?: string;
+  FEED_TOKEN?: string;
   BITVIEW_BASE_URL: string;
   ENABLED_ASSETS: string;
 }

@@ -151,7 +151,7 @@ export function selectJob(jobs: JobPolicy[], states: IngestionState[], now: numb
 
 export async function operationStatus(env: Env) {
   const now = epoch();
-  const [ingestion, historyRows, state, runs, build, snapshots, onchain, references, networks] =
+  const [ingestion, historyRows, state, runs, observation, build, snapshots, onchain, references, networks] =
     await Promise.all([
       env.DB.prepare('SELECT * FROM ingestion ORDER BY key').all<IngestionState>(),
       env.DB.prepare("SELECT value FROM state WHERE key LIKE 'history:%'").all<{ value: string }>(),
@@ -163,6 +163,11 @@ export async function operationStatus(env: Env) {
         job: string | null;
         outcome: string;
         error: string | null;
+      }>(),
+      env.DB.prepare(
+        "SELECT COUNT(*) AS ticks,MIN(started_at) AS first,MAX(started_at) AS last,SUM(CASE WHEN outcome IN ('error','partial','interrupted') THEN 1 ELSE 0 END) AS failures FROM cron_runs WHERE started_at>=?",
+      ).bind(now - 48 * 3600).first<{
+        ticks: number; first: number | null; last: number | null; failures: number | null;
       }>(),
       env.DB.prepare('SELECT value FROM state WHERE key=?').bind('onchain_build').first(),
       env.DB.prepare("SELECT key,fetched_at FROM snapshots WHERE key LIKE 'quote:%'").all<{
@@ -360,6 +365,15 @@ export async function operationStatus(env: Env) {
       leaseUntil: state?.outcome === 'running' ? state.lease_until : null,
       stalled,
       nextTickAt: Math.floor(now / 60) * 60 + 60,
+      observation48h: {
+        from: now - 48 * 3600,
+        firstRunAt: observation?.first ?? null,
+        lastRunAt: observation?.last ?? null,
+        ticks: observation?.ticks ?? 0,
+        failures: observation?.failures ?? 0,
+        ready: !!observation?.first && observation.first <= now - 48 * 3600 + 60 &&
+          !!observation.last && now - observation.last <= 180,
+      },
       cadence: {
         quoteBackgroundTargetSeconds: BACKGROUND_QUOTE_SECONDS,
         quoteBackgroundDelaySeconds: 600,

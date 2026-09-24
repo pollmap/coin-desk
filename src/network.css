@@ -142,6 +142,13 @@
 .network-entry div {
   font-size: 13px;
   color: var(--text);
+  flex: 1;
+}
+.network-entry .desk-shiba {
+  width: 58px;
+  height: 58px;
+  object-fit: contain;
+  flex: 0 0 auto;
 }
 .network-entry small {
   display: block;
@@ -185,7 +192,6 @@
     flex-wrap: wrap;
   }
   .network-entry {
-    align-items: flex-start;
-    flex-direction: column;
+    flex-wrap: wrap;
   }
 }

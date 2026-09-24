@@ -380,16 +380,19 @@ it('status bypasses old cached responses and reflects DB changes immediately wit
   expect(getQuotes).not.toHaveBeenCalled();
   expect(getRecentCandles).not.toHaveBeenCalled();
 });
-it('the execution ledger remains bounded after more than 120 minute ticks', async () => {
+it('retains enough minute ticks for a 48-hour observation and reuses a slot after 72 hours', async () => {
   ready();
   // Keep every source not due; exercise persistence/retention without fake upstream work.
-  DB.sqlite.prepare('UPDATE ingestion SET next_attempt=?').run(now + 86400);
+  DB.sqlite.prepare('UPDATE ingestion SET next_attempt=?').run(now + 1_000_000);
   for (let minute = 0; minute < 125; minute++) {
     vi.setSystemTime((now + minute * 60) * 1000);
     await scheduled(env);
   }
-  expect(DB.sqlite.prepare('SELECT COUNT(*) n FROM cron_runs').get().n).toBe(120);
+  expect(DB.sqlite.prepare('SELECT COUNT(*) n FROM cron_runs').get().n).toBe(125);
+  vi.setSystemTime((now + 4320 * 60) * 1000);
+  await scheduled(env);
+  expect(DB.sqlite.prepare('SELECT COUNT(*) n FROM cron_runs').get().n).toBe(125);
   expect(DB.sqlite.prepare('SELECT last_completed FROM cron_state').get().last_completed).toBe(
-    now + 124 * 60,
+    now + 4320 * 60,
   );
 });
