@@ -109,7 +109,7 @@
   font-size: 11px;
 }
 @media (max-width: 760px) {
-  .app .long-period-actions .segments { display: none; }
+  .app .long-history-panel .long-period-actions .segments { display: none; }
   .app .long-period-actions .period-mobile-select {
     display: block; min-width: 0; flex: 1; padding: 7px 9px;
     color: var(--text); background: var(--panel); border: 1px solid var(--border); border-radius: 6px;
