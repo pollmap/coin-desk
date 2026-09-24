@@ -1,11 +1,13 @@
 # Coin Desk
 
+현재 릴리스: **0.10.0**. 코인별 전체 가격·기술적 분석·온체인·선물 화면을 연결하고, 온체인은 용도별로 분류합니다. BTC·DOGE·ETH 선물의 일별 장기 이력과 최근 시간별 이력은 구분합니다. [0.10 변경·검증 기록](docs/UPGRADE10.md) · [DOGE 선물](https://coin-desk.pages.dev/futures/DOGE).
+
 [![CI](https://github.com/pollmap/coin-desk/actions/workflows/ci.yml/badge.svg)](https://github.com/pollmap/coin-desk/actions/workflows/ci.yml)
 [사이트 열기](https://coin-desk.pages.dev) · [도지코인 차트](https://coin-desk.pages.dev/chart/DOGE) · [코인 성과 비교](https://coin-desk.pages.dev/compare) · [관심 코인](https://coin-desk.pages.dev/coins) · [시장 도미넌스](https://coin-desk.pages.dev/dominance)
 
 **BTC·DOGE·ETH를 중심으로 8개 코인의 가격과 5개 코인의 온체인을 분석하는 한국어 대시보드입니다.** 무료 공개 데이터를 수집하고 출처·기준일·계산식을 함께 표시합니다. 관심 코인을 비교하고, 지표와 기간을 조절한 뒤 나만의 구성을 작업공간으로 저장할 수 있습니다.
 
-현재 소스는 **0.8.0**입니다. BTC·DOGE·ETH의 전체 USD 흐름을 우선 보여주고, 다른 5개 코인은 펼침 메뉴에 둡니다. 첫 화면의 중복 시세를 제거해 차트를 앞당겼으며, 시바견 안내 캐릭터를 차트 뒤에 배치했습니다. 서버에서 차단된 Binance 선물 원천은 실제 Cloudflare 응답을 확인한 Bybit V5로 교체했습니다. 펀딩비는 %, 미결제약정은 해당 코인 수량으로 표시합니다. 서버 Cron 실행 기록을 72시간 보관하고 상태 화면에 48시간 관찰 진행을 표시합니다. [0.8 변경·검증 기록](docs/UPGRADE08.md), [로고 출처](docs/COIN_LOGOS.md), [BTC MVRV](https://coin-desk.pages.dev/metrics/mvrv?period=all), [DOGE 온체인](https://coin-desk.pages.dev/onchain/DOGE?period=all)을 확인하세요. 수집은 방문자와 독립적인 Cloudflare Cron에서 실행됩니다.
+0.8.0에서 도입한 기반 기능입니다. BTC·DOGE·ETH의 전체 USD 흐름을 우선 보여주고, 다른 5개 코인은 펼침 메뉴에 둡니다. 첫 화면의 중복 시세를 제거해 차트를 앞당겼으며, 시바견 안내 캐릭터를 차트 뒤에 배치했습니다. 서버에서 차단된 Binance 선물 원천은 실제 Cloudflare 응답을 확인한 Bybit V5로 교체했습니다. 펀딩비는 %, 미결제약정은 해당 코인 수량으로 표시합니다. 서버 Cron 실행 기록을 72시간 보관하고 상태 화면에 48시간 관찰 진행을 표시합니다. [0.8 변경·검증 기록](docs/UPGRADE08.md), [로고 출처](docs/COIN_LOGOS.md), [BTC MVRV](https://coin-desk.pages.dev/metrics/mvrv?period=all), [DOGE 온체인](https://coin-desk.pages.dev/onchain/DOGE?period=all)을 확인하세요. 수집은 방문자와 독립적인 Cloudflare Cron에서 실행됩니다.
 
 BTC·DOGE 전체 이력에는 과거 730일의 로그가격만 사용해 매일 재계산하는 장기 가격 위치 밴드와 당시 최고 종가 대비 낙폭도 표시합니다. 이는 사용자 판단을 위한 과거 위치 설명으로, 적정가·바닥 또는 미래 경로를 뜻하지 않습니다.
 

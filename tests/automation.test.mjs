@@ -109,7 +109,7 @@ afterEach(async () => {
   vi.unstubAllGlobals();
   vi.useRealTimers();
 });
-it('four quote batches refresh every market without visitors even while price recovery is overdue', async () => {
+it('two quote batches refresh every market without visitors even while price recovery is overdue', async () => {
   ready();
   DB.sqlite
     .prepare("UPDATE ingestion SET last_attempt=?,data_as_of=? WHERE key LIKE '%:1h'")
@@ -118,11 +118,11 @@ it('four quote batches refresh every market without visitors even while price re
     .prepare("UPDATE ingestion SET last_attempt=? WHERE key LIKE 'quotes:%' OR key LIKE 'quote:%'")
     .run(now - 900);
   DB.sqlite.prepare("UPDATE ingestion SET last_success=? WHERE key LIKE 'quote:%'").run(now - 900);
-  for (let minute = 0; minute < 4; minute++) {
+  for (let minute = 0; minute < 2; minute++) {
     vi.setSystemTime((now + minute * 60) * 1000);
     await scheduled(env);
   }
-  expect(getQuotes).toHaveBeenCalledTimes(4);
+  expect(getQuotes).toHaveBeenCalledTimes(2);
   expect(getRecentCandles).not.toHaveBeenCalled();
   const stored = DB.sqlite
     .prepare('SELECT data FROM snapshots')
@@ -130,9 +130,48 @@ it('four quote batches refresh every market without visitors even while price re
     .map((r) => JSON.parse(r.data));
   expect(stored).toHaveLength(16);
   expect(stored.every((q) => q.time >= now)).toBe(true);
-  vi.setSystemTime((now + 4 * 60) * 1000);
+  vi.setSystemTime((now + 2 * 60) * 1000);
   await scheduled(env);
   expect(getRecentCandles).toHaveBeenCalledTimes(1);
+});
+it('does not let failed quote and mempool sources repeatedly jump ahead of older candle work', () => {
+  const jobs = [
+    {
+      key: 'quotes:binance:0',
+      kind: 'quote-batch',
+      assets: ['BTC'],
+      market: 'binance',
+      every: 480,
+      maxLag: 600,
+    },
+    { key: 'mempool:BTC', kind: 'mempool', every: 900, maxLag: 1800 },
+    { key: 'BTC:upbit:1h', kind: 'price', every: 3600, maxLag: 7200 },
+  ];
+  const states = [
+    {
+      key: 'quotes:binance:0',
+      last_attempt: now - 600,
+      data_as_of: now - 600,
+      failures: 2,
+      next_attempt: 0,
+    },
+    { key: 'quote:BTC:binance', last_attempt: now - 600, failures: 2, next_attempt: 0 },
+    {
+      key: 'mempool:BTC',
+      last_attempt: now - 1000,
+      data_as_of: now - 1000,
+      failures: 2,
+      next_attempt: 0,
+    },
+    {
+      key: 'BTC:upbit:1h',
+      last_attempt: now - 7200,
+      data_as_of: now - 7200,
+      failures: 0,
+      next_attempt: 0,
+    },
+  ];
+  expect(selectJob(jobs, states, now).key).toBe('BTC:upbit:1h');
 });
 it('concurrent delivery and duplicate minute delivery execute exactly one source job', async () => {
   ready();
@@ -336,15 +375,21 @@ it('a fresh network collector cannot conceal a missing or outdated individual me
 it('a blocked optional futures feed stays visible without declaring core market data unavailable', async () => {
   ready();
   await scheduled(env);
-  DB.sqlite.prepare(
-    "UPDATE ingestion SET error='HTTP 403',last_success=NULL,data_as_of=NULL WHERE key='derivatives:BTC:funding'",
-  ).run();
-  DB.sqlite.prepare(
-    "UPDATE cron_state SET outcome='error',job='derivatives:BTC:funding',error='HTTP 403' WHERE id=1",
-  ).run();
+  DB.sqlite
+    .prepare(
+      "UPDATE ingestion SET error='HTTP 403',last_success=NULL,data_as_of=NULL WHERE key='derivatives:BTC:funding'",
+    )
+    .run();
+  DB.sqlite
+    .prepare(
+      "UPDATE cron_state SET outcome='error',job='derivatives:BTC:funding',error='HTTP 403' WHERE id=1",
+    )
+    .run();
   const report = await operationStatus(env);
-  expect(report.sources.find((row) => row.key === 'derivatives:BTC:funding'))
-    .toMatchObject({ status: 'missing', error: 'HTTP 403' });
+  expect(report.sources.find((row) => row.key === 'derivatives:BTC:funding')).toMatchObject({
+    status: 'missing',
+    error: 'HTTP 403',
+  });
   expect(report.health.reasons.some((row) => row.key === 'derivatives:BTC:funding')).toBe(false);
   expect(report.health.ok).toBe(true);
 });

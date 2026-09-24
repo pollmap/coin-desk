@@ -87,12 +87,16 @@ export function AutomationSummary({ compact = false }: { compact?: boolean }) {
               : '확인 대기'}
           </dd>
         </div>
-        {!compact && <div>
-          <dt>48시간 자동 수집 관찰</dt>
-          <dd>{a?.observation48h.ready
-            ? `${a.observation48h.ticks}회 기록 · 실패 ${a.observation48h.failures}회`
-            : `${a?.observation48h.ticks ?? 0}회 기록 · 관찰 기간 누적 중`}</dd>
-        </div>}
+        {!compact && (
+          <div>
+            <dt>48시간 자동 수집 관찰</dt>
+            <dd>
+              {a?.observation48h.ready
+                ? `${a.observation48h.ticks}회 기록 · 실패 ${a.observation48h.failures}회`
+                : `${a?.observation48h.ticks ?? 0}회 기록 · 관찰 기간 누적 중`}
+            </dd>
+          </div>
+        )}
       </dl>
       {compact ? (
         <Link className="desk-button" to="/status">
@@ -162,8 +166,7 @@ export function DataStatusPage() {
           <div>
             <b>시세 · 목표 8분</b>
             <p>
-              방문자가 없어도 16개 시장을 묶어서 갱신합니다. 방문 중에는 약 3분 공유 시세로
-              보완합니다.
+              방문자가 없어도 16개 시장을 묶어서 갱신합니다. 방문 중에는 1분 공유 시세로 보완합니다.
             </p>
           </div>
           <div>

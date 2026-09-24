@@ -1,6 +1,6 @@
 import { NetworkInfoTabs } from './NetworkInfoTabs';
-import { ThresholdMeter } from './ThresholdMeter';
-import { useMemo } from 'react';
+import { useMemo, useRef, useState } from 'react';
+import { AssetSections } from './AssetSections';
 import { Link, useParams, useSearchParams } from 'react-router-dom';
 import { ASSETS } from '../shared/catalog';
 import {
@@ -8,6 +8,7 @@ import {
   networkMetric,
   networkMetrics,
   networkUnit,
+  NETWORK_GROUPS,
 } from '../shared/network-catalog';
 import { PERIOD_OPTIONS } from '../shared/ranges';
 import type { Asset, Period, SeriesResponse } from '../shared/types';
@@ -23,6 +24,8 @@ export function NetworkPage() {
   const asset = (route.asset || 'DOGE').toUpperCase() as Asset;
   const coin = ASSETS.find((item) => item.id === asset);
   const [params, setParams] = useSearchParams();
+  const [query, setQuery] = useState('');
+  const picker = useRef<HTMLDetailsElement>(null);
   const requested = params.get('metric') || 'mvrv';
   const metric = networkMetric(asset, requested);
   const metrics = networkMetrics(asset);
@@ -49,6 +52,7 @@ export function NetworkPage() {
   const latest = result.data?.data.at(-1);
   const unit = networkUnit(asset, requested);
   function change(key: string, value: string) {
+    if (key === 'metric' && picker.current) picker.current.open = false;
     setParams(
       (previous) => {
         const next = new URLSearchParams(previous);
@@ -83,7 +87,7 @@ export function NetworkPage() {
             key={item.id}
             aria-current={item.id === asset ? 'page' : undefined}
             className={item.id === asset ? 'selected' : ''}
-            to={`/onchain/${item.id}?metric=${networkMetric(item.id, requested) ? requested : 'mvrv'}&period=${period}`}
+            to={`/onchain/${item.id}?metric=${networkMetric(item.id, requested) ? requested : 'mvrv'}&period=all`}
           >
             <AssetLogo asset={item.id} size={19} />
             <b>{item.id}</b>
@@ -91,6 +95,7 @@ export function NetworkPage() {
           </Link>
         ))}
       </nav>
+      <AssetSections asset={asset} current="onchain" />
       {!supported ? (
         <section className="panel network-unavailable">
           <h2>{asset} 무료 온체인 과거 이력 미제공</h2>
@@ -108,26 +113,44 @@ export function NetworkPage() {
         </section>
       ) : (
         <>
-          <details className="panel network-picker" aria-label="온체인 지표 선택">
+          <details ref={picker} className="panel network-picker" aria-label="온체인 지표 선택">
             <summary>
               지표 변경 · {metric?.title || requested} <span>{metrics.length}개 지표</span>
             </summary>
-            <div>
-              <h2>보고 싶은 지표</h2>
-              <span>{metrics.length}개 지표 · Coin Metrics</span>
-            </div>
-            <div className="network-metrics">
-              {metrics.map((item) => (
-                <button
-                  key={item.id}
-                  aria-pressed={item.id === requested}
-                  className={item.id === requested ? 'selected' : ''}
-                  onClick={() => change('metric', item.id)}
-                >
-                  {item.title}
-                </button>
-              ))}
-            </div>
+            <input
+              className="metric-filter"
+              aria-label="이 코인의 온체인 지표 검색"
+              placeholder="지표 검색"
+              value={query}
+              onChange={(event) => setQuery(event.target.value)}
+            />
+            {NETWORK_GROUPS.map((group) => {
+              const items = metrics.filter(
+                (item) =>
+                  group.ids.includes(item.id) &&
+                  (item.title + item.id).toLowerCase().includes(query.trim().toLowerCase()),
+              );
+              return items.length ? (
+                <section className="network-metric-group" key={group.title}>
+                  <h3>{group.title}</h3>
+                  <div className="network-metrics">
+                    {items.map((item) => (
+                      <button
+                        key={item.id}
+                        aria-pressed={item.id === requested}
+                        className={item.id === requested ? 'selected' : ''}
+                        onClick={() => change('metric', item.id)}
+                      >
+                        {item.title}
+                      </button>
+                    ))}
+                  </div>
+                </section>
+              ) : null;
+            })}
+            {!metrics.some((item) =>
+              (item.title + item.id).toLowerCase().includes(query.trim().toLowerCase()),
+            ) && <p role="status">일치하는 지표가 없습니다.</p>}
           </details>
           {!metric ? (
             <div className="error-notice" role="alert">
@@ -154,9 +177,10 @@ export function NetworkPage() {
                       <span>원천 관측 상태: {result.data.meta.sourceStatus}</span>
                     ) : null}
                   </div>
-                  <PeriodPicker value={period} onChange={(value) => change('period', value)} />
+                  <div className="network-period-actions">
+                    <PeriodPicker value={period} onChange={(value) => change('period', value)} />
+                  </div>
                 </div>
-                <ThresholdMeter id={'network_' + metric.id} value={latest?.value} unit={unit} />
                 <div className="network-coverage" aria-label="온체인 실제 제공 범위">
                   <div>
                     <span>제공 시작일</span>

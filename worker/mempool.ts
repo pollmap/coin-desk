@@ -1,4 +1,5 @@
 import { upstream } from './providers';
+import { feedRequest } from './feed-client';
 import { epoch, successStatement, type Env } from './storage';
 
 export interface MempoolSnapshot {
@@ -47,10 +48,16 @@ export function parseMempool(
 }
 
 export async function updateMempool(env: Env) {
-  const [pool, fees] = await Promise.all([
-    upstream('https://mempool.space/api/mempool'),
-    upstream('https://mempool.space/api/v1/fees/recommended'),
-  ]);
+  const [pool, fees] =
+    env.FEED_URL && env.FEED_TOKEN
+      ? await (async () => {
+          const raw = (await feedRequest(env, '/mempool')) as { pool: unknown; fees: unknown };
+          return [raw.pool, raw.fees];
+        })()
+      : await Promise.all([
+          upstream('https://mempool.space/api/mempool'),
+          upstream('https://mempool.space/api/v1/fees/recommended'),
+        ]);
   const snapshot = parseMempool(pool, fees);
   await env.DB.batch([
     env.DB.prepare('INSERT OR REPLACE INTO snapshots(key,data,fetched_at) VALUES(?,?,?)').bind(

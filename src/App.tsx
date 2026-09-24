@@ -1,5 +1,6 @@
 import { DeskNavigation, DeskTopbar } from './DeskNavigation';
 import { AssetLogo } from './AssetLogo';
+import { AssetSections } from './AssetSections';
 import { MainAssetDeck } from './MainAssetDeck';
 import { MetricInfoTabs } from './MetricInfoTabs';
 import { ThresholdMeter } from './ThresholdMeter';
@@ -61,10 +62,19 @@ const AutomationSummary = lazy(() =>
 const LongHistoryPanel = lazy(() =>
   import('./LongHistoryPanel').then((m) => ({ default: m.LongHistoryPanel })),
 );
-const HistoryPositionPanel = lazy(() => import('./HistoryPositionPanel').then((m) => ({ default: m.HistoryPositionPanel })));
-const RelativeAnalysisPanel = lazy(() => import('./RelativeAnalysisPanel').then((m) => ({ default: m.RelativeAnalysisPanel })));
-const DerivativesPanel = lazy(() => import('./DerivativesPanel').then((m) => ({ default: m.DerivativesPanel })));
-const MempoolPanel = lazy(() => import('./MempoolPanel').then((m) => ({ default: m.MempoolPanel })));
+const HistoryPositionPanel = lazy(() =>
+  import('./HistoryPositionPanel').then((m) => ({ default: m.HistoryPositionPanel })),
+);
+const RelativeAnalysisPanel = lazy(() =>
+  import('./RelativeAnalysisPanel').then((m) => ({ default: m.RelativeAnalysisPanel })),
+);
+const DerivativesPanel = lazy(() =>
+  import('./DerivativesPanel').then((m) => ({ default: m.DerivativesPanel })),
+);
+const MempoolPanel = lazy(() =>
+  import('./MempoolPanel').then((m) => ({ default: m.MempoolPanel })),
+);
+const FuturesPage = lazy(() => import('./FuturesPage').then((m) => ({ default: m.FuturesPage })));
 const NetworkPage = lazy(() => import('./NetworkPage').then((m) => ({ default: m.NetworkPage })));
 const BrandPage = lazy(() => import('./BrandPage').then((m) => ({ default: m.BrandPage })));
 import { MetricGuide } from './MetricGuide';
@@ -388,35 +398,53 @@ function PricePage({ workspace = false }: { workspace?: boolean }) {
           </button>
         </div>
       </div>
-      {workspace ? <nav className="asset-switcher" aria-label="분석 코인 선택">
-        {ASSETS.map((a) => (
-          <Link
-            key={a.id}
-            className={a.id === asset ? 'selected' : ''}
-            aria-current={a.id === asset ? 'page' : undefined}
-            to={
-              (workspace ? '/chart/' + a.id : '/') +
-              '?' +
-              new URLSearchParams({
-                asset: a.id,
-                market,
-                interval,
-                period,
-                indicators: indicators.join(','),
-                log: log ? '1' : '0',
-                cards: cards.join(','),
-              })
-            }
-          >
-            <AssetLogo asset={a.id} size={19} />
-            <b>{a.id}</b>
-            <span>{a.name}</span>
-          </Link>
-        ))}
-      </nav> : <MainAssetDeck asset={asset} market={market} href={(next) => '/' + '?' + new URLSearchParams({
-        asset: next, market, interval, period: 'all', indicators: indicators.join(','),
-        log: log ? '1' : '0', cards: cards.join(','),
-      })} />}
+      {workspace ? (
+        <nav className="asset-switcher" aria-label="분석 코인 선택">
+          {ASSETS.map((a) => (
+            <Link
+              key={a.id}
+              className={a.id === asset ? 'selected' : ''}
+              aria-current={a.id === asset ? 'page' : undefined}
+              to={
+                (workspace ? '/chart/' + a.id : '/') +
+                '?' +
+                new URLSearchParams({
+                  asset: a.id,
+                  market,
+                  interval,
+                  period,
+                  indicators: indicators.join(','),
+                  log: log ? '1' : '0',
+                  cards: cards.join(','),
+                })
+              }
+            >
+              <AssetLogo asset={a.id} size={19} />
+              <b>{a.id}</b>
+              <span>{a.name}</span>
+            </Link>
+          ))}
+        </nav>
+      ) : (
+        <MainAssetDeck
+          asset={asset}
+          market={market}
+          href={(next) =>
+            '/' +
+            '?' +
+            new URLSearchParams({
+              asset: next,
+              market,
+              interval,
+              period: 'all',
+              indicators: indicators.join(','),
+              log: log ? '1' : '0',
+              cards: cards.join(','),
+            })
+          }
+        />
+      )}
+      <AssetSections asset={asset} current={workspace ? 'chart' : 'history'} />
       {!historical && (
         <details className="workspace-fold">
           <summary>작업공간 저장 · 불러오기</summary>
@@ -449,73 +477,79 @@ function PricePage({ workspace = false }: { workspace?: boolean }) {
           <button onClick={() => setShareUrl('')}>닫기</button>
         </div>
       ) : null}
-      {!historical && <section className="quote-strip" aria-label="시장 요약">
-        <div className="quote-primary">
-          <AssetLogo asset={asset} size={30} />
-          <div>
-            <div className="quote-symbol">
-              {asset}
-              <span>{currency}</span>
+      {!historical && (
+        <section className="quote-strip" aria-label="시장 요약">
+          <div className="quote-primary">
+            <AssetLogo asset={asset} size={30} />
+            <div>
+              <div className="quote-symbol">
+                {asset}
+                <span>{currency}</span>
+              </div>
+              <strong>{money(q?.price, currency)}</strong>
             </div>
-            <strong>{money(q?.price, currency)}</strong>
+            <span
+              title={
+                q?.changeBasis === 'rolling24h-minute'
+                  ? '24시간 변동 · 전일 같은 시각의 1분봉 근사'
+                  : '최근 24시간 변동'
+              }
+              className={
+                'change ' + (change24h === null ? 'muted' : change24h >= 0 ? 'up' : 'down')
+              }
+            >
+              {change24h !== null ? (change24h >= 0 ? '+' : '') + numeric(change24h) + '%' : '—'}
+              {q?.changeUnavailableReason ? (
+                <small>24H 계산 불가</small>
+              ) : q?.changeBasis === 'rolling24h-minute' ? (
+                <small>24H≈</small>
+              ) : null}
+              {change24h !== null ? (
+                change24h >= 0 ? (
+                  <ArrowUpRight size={15} />
+                ) : (
+                  <ArrowDownRight size={15} />
+                )
+              ) : null}
+            </span>
           </div>
-          <span
-            title={
-              q?.changeBasis === 'rolling24h-minute'
-                ? '24시간 변동 · 전일 같은 시각의 1분봉 근사'
-                : '최근 24시간 변동'
-            }
-            className={'change ' + (change24h === null ? 'muted' : change24h >= 0 ? 'up' : 'down')}
-          >
-            {change24h !== null ? (change24h >= 0 ? '+' : '') + numeric(change24h) + '%' : '—'}
-            {q?.changeUnavailableReason ? (
-              <small>24H 계산 불가</small>
-            ) : q?.changeBasis === 'rolling24h-minute' ? (
-              <small>24H≈</small>
-            ) : null}
-            {change24h !== null ? (
-              change24h >= 0 ? (
-                <ArrowUpRight size={15} />
-              ) : (
-                <ArrowDownRight size={15} />
-              )
-            ) : null}
-          </span>
-        </div>
-        <div className="quote-stat">
-          <span>24H 거래대금</span>
-          <b>{q ? money(q.volume24h / 1e6, currency) + ' M' : '—'}</b>
-        </div>
-        <div className="quote-stat">
-          <span>
-            고가 / 저가{' '}
-            <small>{q?.rangeBasis === 'utc-day' || market === 'upbit' ? 'UTC 당일' : '24H'}</small>
-          </span>
-          <b>{money(q?.high24h, currency)}</b>
-          <small>{money(q?.low24h, currency)}</small>
-        </div>
-        <div className="quote-stat">
-          <span>
-            RSI <small>일봉 · 14</small>
-          </span>
-          <b>{numeric(quote.data?.technical.rsi)}</b>
-          <small>확정 봉 기준</small>
-        </div>
-        <div className="quote-stat">
-          <span>
-            {asset === 'BTC' ? 'MVRV' : '200일 이동평균'}{' '}
-            <small>{asset === 'BTC' ? 'BTC' : '확정 종가'}</small>
-          </span>
-          <b>
-            {asset === 'BTC'
-              ? metricValue(quote.data?.metrics.mvrv, '배')
-              : money(quote.data?.technical.sma200, currency)}
-          </b>
-          <small>
-            {asset === 'BTC' ? dateLabel(quote.data?.metricsAsOf) : currency + ' · 일봉 200개'}
-          </small>
-        </div>
-      </section>}
+          <div className="quote-stat">
+            <span>24H 거래대금</span>
+            <b>{q ? money(q.volume24h / 1e6, currency) + ' M' : '—'}</b>
+          </div>
+          <div className="quote-stat">
+            <span>
+              고가 / 저가{' '}
+              <small>
+                {q?.rangeBasis === 'utc-day' || market === 'upbit' ? 'UTC 당일' : '24H'}
+              </small>
+            </span>
+            <b>{money(q?.high24h, currency)}</b>
+            <small>{money(q?.low24h, currency)}</small>
+          </div>
+          <div className="quote-stat">
+            <span>
+              RSI <small>일봉 · 14</small>
+            </span>
+            <b>{numeric(quote.data?.technical.rsi)}</b>
+            <small>확정 봉 기준</small>
+          </div>
+          <div className="quote-stat">
+            <span>
+              {asset === 'BTC' ? 'MVRV' : '200일 이동평균'}{' '}
+              <small>{asset === 'BTC' ? 'BTC' : '확정 종가'}</small>
+            </span>
+            <b>
+              {asset === 'BTC'
+                ? metricValue(quote.data?.metrics.mvrv, '배')
+                : money(quote.data?.technical.sma200, currency)}
+            </b>
+            <small>
+              {asset === 'BTC' ? dateLabel(quote.data?.metricsAsOf) : currency + ' · 일봉 200개'}
+            </small>
+          </div>
+        </section>
+      )}
       {!workspace && hasLongHistory ? (
         <nav className="history-view-tabs asset-section-nav" aria-label={`${asset} 분석 화면`}>
           <button
@@ -533,7 +567,9 @@ function PricePage({ workspace = false }: { workspace?: boolean }) {
             거래소 차트
           </button>
           <Link to={`/onchain/${asset}?period=all`}>온체인</Link>
-          {(asset === 'BTC' || asset === 'DOGE' || asset === 'ETH') && <a href="#derivatives">선물</a>}
+          {(asset === 'BTC' || asset === 'DOGE' || asset === 'ETH') && (
+            <a href="#derivatives">선물</a>
+          )}
         </nav>
       ) : null}
       {historical ? (
@@ -549,10 +585,14 @@ function PricePage({ workspace = false }: { workspace?: boolean }) {
       ) : null}
       {historical && (asset === 'BTC' || asset === 'DOGE') ? (
         <details className="panel analysis-details">
-          <summary>730일 가격 분포 참고 보기 <small>초기 730일은 밴드 계산 전 · 적정가 지표 아님</small></summary>
-          <DeferredMount><Suspense fallback={<Loading message="가격 분포를 계산하고 있습니다…" />}>
-            <HistoryPositionPanel asset={asset} />
-          </Suspense></DeferredMount>
+          <summary>
+            730일 가격 분포 참고 보기 <small>초기 730일은 밴드 계산 전 · 적정가 지표 아님</small>
+          </summary>
+          <DeferredMount>
+            <Suspense fallback={<Loading message="가격 분포를 계산하고 있습니다…" />}>
+              <HistoryPositionPanel asset={asset} />
+            </Suspense>
+          </DeferredMount>
         </details>
       ) : null}
       {hasLongHistory && historical ? (
@@ -570,18 +610,21 @@ function PricePage({ workspace = false }: { workspace?: boolean }) {
         </div>
       ) : null}
       {historical && (
-        <details className="workspace-fold"><summary>작업공간 저장 · 불러오기</summary><WorkspaceBar
-          current={{
-            asset,
-            market,
-            interval,
-            period,
-            indicators,
-            log,
-            cards,
-            view: workspace ? 'chart' : 'dashboard',
-          }}
-        /></details>
+        <details className="workspace-fold">
+          <summary>작업공간 저장 · 불러오기</summary>
+          <WorkspaceBar
+            current={{
+              asset,
+              market,
+              interval,
+              period,
+              indicators,
+              log,
+              cards,
+              view: workspace ? 'chart' : 'dashboard',
+            }}
+          />
+        </details>
       )}
 
       {q?.changeUnavailableReason ? (
@@ -732,20 +775,26 @@ function PricePage({ workspace = false }: { workspace?: boolean }) {
           </div>
         </section>
       )}
-      {(asset === 'BTC' || asset === 'DOGE' || asset === 'ETH') ? (
-        <DeferredMount><Suspense fallback={<Loading message="선물 시장을 준비하고 있습니다…" />}>
-          <DerivativesPanel asset={asset} />
-        </Suspense></DeferredMount>
+      {asset === 'BTC' || asset === 'DOGE' || asset === 'ETH' ? (
+        <DeferredMount>
+          <Suspense fallback={<Loading message="선물 시장을 준비하고 있습니다…" />}>
+            <DerivativesPanel asset={asset} />
+          </Suspense>
+        </DeferredMount>
       ) : null}
       {asset === 'BTC' && !workspace ? (
-        <DeferredMount><Suspense fallback={<Loading message="BTC 네트워크 현황을 준비하고 있습니다…" />}>
-          <MempoolPanel />
-        </Suspense></DeferredMount>
+        <DeferredMount>
+          <Suspense fallback={<Loading message="BTC 네트워크 현황을 준비하고 있습니다…" />}>
+            <MempoolPanel />
+          </Suspense>
+        </DeferredMount>
       ) : null}
       {historical && (asset === 'DOGE' || asset === 'ETH') ? (
-        <DeferredMount><Suspense fallback={<Loading message="BTC 대비 상대 분석을 준비하고 있습니다…" />}>
-          <RelativeAnalysisPanel asset={asset} />
-        </Suspense></DeferredMount>
+        <DeferredMount>
+          <Suspense fallback={<Loading message="BTC 대비 상대 분석을 준비하고 있습니다…" />}>
+            <RelativeAnalysisPanel asset={asset} />
+          </Suspense>
+        </DeferredMount>
       ) : null}
       {asset === 'BTC' ? (
         <>
@@ -1188,6 +1237,7 @@ export default function App() {
               <Route path="/dominance" element={<DominancePage />} />
               <Route path="/status" element={<DataStatusPage />} />
               <Route path="/onchain/:asset" element={<NetworkPage />} />
+              <Route path="/futures/:asset" element={<FuturesPage />} />
               <Route path="/brand" element={<BrandPage />} />
               <Route
                 path="*"

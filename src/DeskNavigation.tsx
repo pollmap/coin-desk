@@ -28,6 +28,7 @@ const marketItems = [
 
 /** Query and fragment are part of a coin view. NavLink pathname matching ignores them. */
 export function coinSection(pathname: string, hash: string): string {
+  if (pathname.startsWith('/futures/')) return 'derivatives';
   if (pathname.startsWith('/onchain/')) return 'onchain';
   if (pathname.startsWith('/chart/')) return 'chart';
   if (pathname !== '/') return '';
@@ -66,7 +67,12 @@ export function DeskNavigation({ onNavigate }: { onNavigate: () => void }) {
         })),
         ...marketItems.map((item) => ({ ...item, aliases: item.title, type: '시장' })),
         ...featured.flatMap((id) => [
-          { title: id + ' 선물 · 펀딩비·미결제약정', aliases: id + ' 펀딩비 미결제약정 선물', to: `/?asset=${id}&period=all#derivatives`, type: id },
+          {
+            title: id + ' 선물 · 펀딩비·미결제약정',
+            aliases: id + ' 펀딩비 미결제약정 선물',
+            to: `/futures/${id}`,
+            type: id,
+          },
           { title: id + ' 온체인', aliases: id + ' 온체인', to: `/onchain/${id}`, type: id },
         ]),
         ...NETWORK_METRICS.filter((m) => networkMetric(networkAsset, m.id)).map((m) => ({
@@ -139,26 +145,45 @@ export function DeskNavigation({ onNavigate }: { onNavigate: () => void }) {
                   { id: 'history', label: '전체 가격', to: root },
                   { id: 'chart', label: '거래소 차트', to: `/chart/${id}?period=all` },
                   { id: 'onchain', label: '온체인', to: `/onchain/${id}?period=all` },
-                  { id: 'derivatives', label: '선물 · 펀딩비 / 미결제약정', to: root + '#derivatives' },
+                  { id: 'derivatives', label: '선물 · 펀딩비 / 미결제약정', to: `/futures/${id}` },
                   id === 'BTC'
                     ? { id: 'cycle', label: '이동평균 · Pi Cycle', to: root + '#btc-cycle' }
                     : { id: 'relative', label: 'BTC 대비 성과', to: root + '#relative-analysis' },
                 ];
-                return <div key={id} className={'coin-nav-group' + (current ? ' current' : '')}>
-                  <Link className="coin-nav-title" to={root} onClick={onNavigate}>
-                    <AssetLogo asset={id} size={19} /><b>{id}</b><span>{name}</span>
-                  </Link>
-                  {current && <nav aria-label={`${id} 분석`} onClick={onNavigate}>
-                    {links.map((link) => <Link key={link.id} to={link.to}
-                      className={section === link.id ? 'active' : ''}
-                      aria-current={section === link.id ? 'page' : undefined}>{link.label}</Link>)}
-                  </nav>}
-                </div>;
+                return (
+                  <div key={id} className={'coin-nav-group' + (current ? ' current' : '')}>
+                    <Link className="coin-nav-title" to={root} onClick={onNavigate}>
+                      <AssetLogo asset={id} size={19} />
+                      <b>{id}</b>
+                      <span>{name}</span>
+                    </Link>
+                    {current && (
+                      <nav aria-label={`${id} 분석`} onClick={onNavigate}>
+                        {links.map((link) => (
+                          <Link
+                            key={link.id}
+                            to={link.to}
+                            className={section === link.id ? 'active' : ''}
+                            aria-current={section === link.id ? 'page' : undefined}
+                          >
+                            {link.label}
+                          </Link>
+                        ))}
+                      </nav>
+                    )}
+                  </div>
+                );
               })}
             </div>
             <details className="market-nav">
               <summary>시장 · 비교</summary>
-              <nav onClick={onNavigate}>{marketItems.map((item) => <NavLink key={item.to} to={item.to}>{item.title}</NavLink>)}</nav>
+              <nav onClick={onNavigate}>
+                {marketItems.map((item) => (
+                  <NavLink key={item.to} to={item.to}>
+                    {item.title}
+                  </NavLink>
+                ))}
+              </nav>
             </details>
           </div>
         </>
@@ -198,13 +223,15 @@ export function DeskTopbar({
     brand: '브랜드',
     workspace: '내 작업공간',
   };
-  const title = location.pathname.startsWith('/metrics/')
-    ? METRICS.find((m) => m.id === id)?.title
-    : location.pathname.startsWith('/chart/')
-      ? `${id} 기술적 분석`
-      : location.pathname.startsWith('/onchain/')
-        ? `${id} 온체인`
-        : names[location.pathname.split('/')[1]] || '대시보드';
+  const title = location.pathname.startsWith('/futures/')
+    ? id + ' 선물'
+    : location.pathname.startsWith('/metrics/')
+      ? METRICS.find((m) => m.id === id)?.title
+      : location.pathname.startsWith('/chart/')
+        ? `${id} 기술적 분석`
+        : location.pathname.startsWith('/onchain/')
+          ? `${id} 온체인`
+          : names[location.pathname.split('/')[1]] || '대시보드';
   return (
     <>
       <button

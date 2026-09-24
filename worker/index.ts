@@ -137,7 +137,7 @@ async function overview(env: Env, asset: Asset, market: Market): Promise<Overvie
       (await claimRefresh(env.DB, key, QUOTE_REFRESH_SECONDS))
     ) {
       try {
-        quote = await getQuote(asset, market);
+        quote = await getQuote(asset, market, env);
         saved = { data: JSON.stringify(quote), fetched_at: epoch() };
         await env.DB.prepare('INSERT OR REPLACE INTO snapshots(key,data,fetched_at) VALUES(?,?,?)')
           .bind(key, saved.data, saved.fetched_at)

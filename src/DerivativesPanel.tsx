@@ -1,30 +1,89 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { LineSeries, type UTCTimestamp } from 'lightweight-charts';
+import { LineSeries, type UTCTimestamp, type AutoscaleInfo } from 'lightweight-charts';
 import { createDeskChart } from './chart-theme';
 import type { CandleResponse, SeriesResponse } from '../shared/types';
 import { useData } from './hooks';
 import { dateLabel, numeric } from './lib';
 import './analysis-expansion.css';
+import { useSearchParams } from 'react-router-dom';
 
 type Featured = 'BTC' | 'DOGE' | 'ETH';
 type Metric = 'funding' | 'open_interest' | 'long_account_ratio';
 const DAY = 86400;
+const quantity = (value: number) =>
+  new Intl.NumberFormat('en-US', { notation: 'compact', maximumFractionDigits: 2 }).format(value);
 
-export function DerivativesPanel({ asset }: { asset: Featured }) {
-  const [metric, setMetric] = useState<Metric>('funding');
+export function DerivativesPanel({
+  asset,
+  dedicated = false,
+}: {
+  asset: Featured;
+  dedicated?: boolean;
+}) {
+  const [params, setParams] = useSearchParams();
+  const [localMetric, setLocalMetric] = useState<Metric>('funding');
+  const requested = dedicated ? params.get('metric') : localMetric;
+  const metric: Metric =
+    requested === 'open_interest' || requested === 'long_account_ratio' ? requested : 'funding';
+  const [localInterval, setLocalInterval] = useState('1d');
+  const interval = (dedicated ? params.get('interval') : localInterval) === '1h' ? '1h' : '1d';
+  function setMetric(value: Metric) {
+    setLocalMetric(value);
+    if (dedicated)
+      setParams(
+        (previous) => {
+          const next = new URLSearchParams(previous);
+          next.set('metric', value);
+          return next;
+        },
+        { replace: true },
+      );
+  }
+  function setInterval(value: string) {
+    setLocalInterval(value);
+    if (dedicated)
+      setParams(
+        (previous) => {
+          const next = new URLSearchParams(previous);
+          next.set('interval', value);
+          return next;
+        },
+        { replace: true },
+      );
+  }
   const [windowDays, setWindowDays] = useState(0);
   const [showPrice, setShowPrice] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
   const funding = useData<SeriesResponse>(
-    `/api/v1/derivatives?asset=${asset}&metric=funding&limit=1000`, true, 3600000,
+    `/api/v1/derivatives?asset=${asset}&metric=funding&limit=1000`,
+    true,
+    3600000,
   );
   const interest = useData<SeriesResponse>(
-    `/api/v1/derivatives?asset=${asset}&metric=open_interest&limit=1000`, true, 3600000,
+    `/api/v1/derivatives?asset=${asset}&metric=open_interest&limit=1000`,
+    true,
+    3600000,
   );
   const longAccounts = useData<SeriesResponse>(
-    `/api/v1/derivatives?asset=${asset}&metric=long_account_ratio&limit=1000`, true, 3600000,
+    `/api/v1/derivatives?asset=${asset}&metric=long_account_ratio&limit=1000`,
+    true,
+    3600000,
   );
-  const result = metric === 'funding' ? funding : metric === 'open_interest' ? interest : longAccounts;
+  const daily = useData<SeriesResponse>(
+    metric !== 'funding' && interval === '1d'
+      ? `/api/v1/derivatives?asset=${asset}&metric=${metric}_daily&limit=1000`
+      : null,
+    true,
+    3600000,
+  );
+  const result =
+    metric === 'funding'
+      ? funding
+      : interval === '1d'
+        ? daily
+        : metric === 'open_interest'
+          ? interest
+          : longAccounts;
   const spot = useData<CandleResponse>(
     showPrice ? `/api/v1/candles?asset=${asset}&market=binance&interval=1d&limit=1000` : null,
     true,
@@ -58,13 +117,40 @@ export function DerivativesPanel({ asset }: { asset: Featured }) {
       color: metric === 'funding' ? '#6bd7bb' : metric === 'open_interest' ? '#a9a4f0' : '#e8ad65',
       lineWidth: 2,
       priceLineVisible: false,
+      autoscaleInfoProvider: (original: () => AutoscaleInfo | null) => {
+        const range = original();
+        if (!range?.priceRange || metric === 'open_interest') return range;
+        return {
+          ...range,
+          priceRange:
+            metric === 'long_account_ratio'
+              ? { minValue: 0, maxValue: 100 }
+              : {
+                  minValue: Math.min(0, range.priceRange.minValue),
+                  maxValue: Math.max(0, range.priceRange.maxValue),
+                },
+        };
+      },
       priceFormat: {
         type: 'custom',
         formatter: (value: number) =>
-          metric === 'funding' ? numeric(value, 4) + '%' : metric === 'open_interest' ? numeric(value, 3) + ' ' + asset : numeric(value, 2) + '%',
+          metric === 'funding'
+            ? numeric(value, 4) + '%'
+            : metric === 'open_interest'
+              ? quantity(value) + ' ' + asset
+              : numeric(value, 2) + '%',
       },
     });
     line.setData(data.map((point) => ({ time: point.time as UTCTimestamp, value: point.value })));
+    if (metric !== 'open_interest')
+      line.createPriceLine({
+        price: metric === 'funding' ? 0 : 50,
+        color: '#8394a3',
+        lineWidth: 1,
+        lineStyle: 2,
+        axisLabelVisible: true,
+        title: metric === 'funding' ? '0%' : '50%',
+      });
     if (spotPoints.length) {
       const price = chart.addSeries(LineSeries, {
         color: '#8394a3',
@@ -79,17 +165,17 @@ export function DerivativesPanel({ asset }: { asset: Featured }) {
     }
     chart.timeScale().fitContent();
     return () => chart.remove();
-  }, [data, spotPoints, metric]);
+  }, [data, spotPoints, metric, asset]);
   const latest = result.data?.data.at(-1);
   const unit = metric === 'open_interest' ? asset : '%';
   function csv() {
     const text =
       '\uFEFF' +
       [
-        'asset,contract,metric,time_utc,value,unit,source',
+        'asset,contract,metric,interval,time_utc,value,unit,source',
         ...data.map(
           (point) =>
-            `${asset},${asset}USDT_PERPETUAL,${metric},${new Date(point.time * 1000).toISOString()},${point.value},${unit},Bybit V5 public market data`,
+            `${asset},${asset}USDT_PERPETUAL,${metric},${metric === 'funding' ? 'settlement' : interval},${new Date(point.time * 1000).toISOString()},${point.value},${unit},Bybit V5 public market data`,
         ),
       ].join('\r\n');
     const url = URL.createObjectURL(new Blob([text], { type: 'text/csv;charset=utf-8' }));
@@ -110,20 +196,58 @@ export function DerivativesPanel({ asset }: { asset: Featured }) {
         <small>실제 확보한 첫 관측부터 · 한 거래소</small>
       </div>
       <div className="derivatives-overview" role="group" aria-label={`${asset} 선물 지표 선택`}>
-        <button className={metric === 'funding' ? 'selected' : ''} aria-pressed={metric === 'funding'} onClick={() => setMetric('funding')}>
-          <span>펀딩비</span><strong>{funding.data?.data.length ? numeric(funding.data.data.at(-1)!.value, 4) + '%' : '—'}</strong>
+        <button
+          className={metric === 'funding' ? 'selected' : ''}
+          aria-pressed={metric === 'funding'}
+          onClick={() => setMetric('funding')}
+        >
+          <span>펀딩비</span>
+          <strong>
+            {funding.data?.data.length ? numeric(funding.data.data.at(-1)!.value, 4) + '%' : '—'}
+          </strong>
           <small>{dateLabel(funding.data?.meta.dataAsOf, true)}</small>
         </button>
-        <button className={metric === 'open_interest' ? 'selected' : ''} aria-pressed={metric === 'open_interest'} onClick={() => setMetric('open_interest')}>
-          <span>미결제약정</span><strong>{interest.data?.data.length ? numeric(interest.data.data.at(-1)!.value, 3) + ' ' + asset : '—'}</strong>
+        <button
+          className={metric === 'open_interest' ? 'selected' : ''}
+          aria-pressed={metric === 'open_interest'}
+          onClick={() => setMetric('open_interest')}
+        >
+          <span>미결제약정 · 시간별 최신</span>
+          <strong>
+            {interest.data?.data.length
+              ? quantity(interest.data.data.at(-1)!.value) + ' ' + asset
+              : '—'}
+          </strong>
           <small>{dateLabel(interest.data?.meta.dataAsOf, true)}</small>
         </button>
-        <button className={metric === 'long_account_ratio' ? 'selected' : ''} aria-pressed={metric === 'long_account_ratio'} onClick={() => setMetric('long_account_ratio')}>
-          <span>롱 보유 계정</span><strong>{longAccounts.data?.data.length ? numeric(longAccounts.data.data.at(-1)!.value, 2) + '%' : '—'}</strong>
+        <button
+          className={metric === 'long_account_ratio' ? 'selected' : ''}
+          aria-pressed={metric === 'long_account_ratio'}
+          onClick={() => setMetric('long_account_ratio')}
+        >
+          <span>롱 보유 계정 · 시간별 최신</span>
+          <strong>
+            {longAccounts.data?.data.length
+              ? numeric(longAccounts.data.data.at(-1)!.value, 2) + '%'
+              : '—'}
+          </strong>
           <small>{dateLabel(longAccounts.data?.meta.dataAsOf, true)}</small>
         </button>
       </div>
       <div className="derivatives-toolbar">
+        {metric !== 'funding' && (
+          <label>
+            관측 간격{' '}
+            <select
+              aria-label="선물 관측 간격"
+              value={interval}
+              onChange={(event) => setInterval(event.target.value)}
+            >
+              <option value="1d">일별 · 장기 이력</option>
+              <option value="1h">시간별 · 최근 이력</option>
+            </select>
+          </label>
+        )}
         <div className="segments" aria-label="선물 기간">
           {[
             [30, '1개월'],
@@ -158,12 +282,18 @@ export function DerivativesPanel({ asset }: { asset: Featured }) {
           {latest
             ? metric === 'funding'
               ? numeric(latest.value, 4) + '%'
-              : metric === 'open_interest' ? numeric(latest.value, 3) + ' ' + asset : numeric(latest.value, 2) + '%'
+              : metric === 'open_interest'
+                ? numeric(latest.value, 3) + ' ' + asset
+                : numeric(latest.value, 2) + '%'
             : '—'}
         </strong>
         <span>
           {dateLabel(latest?.time, true)} 관측 ·{' '}
-          {metric === 'funding' ? '정산 비율' : metric === 'open_interest' ? '미결제약정 수량' : '롱 보유 계정 비중'}
+          {metric === 'funding'
+            ? '정산 비율'
+            : metric === 'open_interest'
+              ? '미결제약정 수량'
+              : '롱 보유 계정 비중'}
         </span>
       </div>
       {result.error ? (
@@ -192,6 +322,7 @@ export function DerivativesPanel({ asset }: { asset: Featured }) {
           실제 확보 {dateLabel(result.data?.meta.historyStart)}–
           {dateLabel(result.data?.meta.dataAsOf)} ·{' '}
           {result.data?.data.length.toLocaleString() ?? '0'}개 관측
+          {result.data?.meta.sourceStatus === 'backfilling' ? ' · 과거 이력 추가 수집 중' : ''}
         </span>
         <span className={result.data?.meta.stale ? 'amber' : ''}>
           {result.data?.meta.stale ? '갱신 지연 · ' : ''}수집{' '}
@@ -209,8 +340,8 @@ export function DerivativesPanel({ asset }: { asset: Featured }) {
           (metric === 'long_account_ratio'
             ? '롱 포지션 보유 계정 수의 비중입니다. 포지션 규모 비중은 아닙니다.'
             : metric === 'open_interest'
-            ? '미결제약정은 Bybit 한 거래소의 코인 수량이며 최근 30일을 먼저 확보합니다.'
-            : '펀딩비는 정산 시각의 실제 비율입니다. 롱·숏 계정 비율과는 다른 지표입니다.')}
+              ? '미결제약정은 Bybit 한 거래소의 코인 수량입니다.'
+              : '펀딩비는 정산 시각의 실제 비율입니다. 롱·숏 계정 비율과는 다른 지표입니다.')}
       </p>
     </section>
   );

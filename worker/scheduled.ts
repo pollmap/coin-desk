@@ -190,6 +190,7 @@ export async function updatePrice(env: Env, asset: Asset, market: Market, interv
     latest
       ? Math.max(latest.time - 2 * step, interval === '1h' ? epoch() - 90 * DAY : 0)
       : undefined,
+    env,
   );
   const now = epoch();
   const priorHistory = await readState<{
@@ -274,7 +275,7 @@ export async function updateQuoteBatch(
   );
   const selected = candidates.filter((_asset, i) => claims[i].meta.changes > 0);
   if (!selected.length) return false;
-  const result = await getQuotes(selected, market);
+  const result = await getQuotes(selected, market, env);
   const statements = result.quotes.flatMap((quote) => [
     env.DB.prepare('INSERT OR REPLACE INTO snapshots(key,data,fetched_at) VALUES(?,?,?)').bind(
       'quote:' + quote.asset + ':' + market,
@@ -318,10 +319,10 @@ async function executeJob(env: Env, job: JobPolicy, states: IngestionState[]) {
   else if (job.kind === 'derivatives') {
     const asset = job.assets![0];
     const metric = job.key.split(':')[2];
-    if (!derivativeAsset(asset) || !derivativeMetric(metric)) throw new Error('Unsupported derivatives job');
+    if (!derivativeAsset(asset) || !derivativeMetric(metric))
+      throw new Error('Unsupported derivatives job');
     await updateDerivatives(env, asset, metric);
-  }
-  else if (job.kind === 'network') {
+  } else if (job.kind === 'network') {
     const asset = job.assets![0];
     if (!isNetworkAsset(asset)) throw new Error('Unsupported network job');
     await updateNetworkData(env, asset);

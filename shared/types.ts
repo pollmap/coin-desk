@@ -31,6 +31,7 @@ export interface Provenance {
   sourceVersions?: Record<string, number>;
   sourceStatus?: string;
   calculationStart?: number | null;
+  observationInterval?: '1d' | '1h' | 'settlement';
 }
 export interface SeriesResponse {
   range?: { from: number; to: number };

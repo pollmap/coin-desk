@@ -1,6 +1,7 @@
 import type { Asset, Candle, Market, Quote } from '../shared/types';
 import { BASE_SERIES } from '../shared/catalog';
 import { DAY, validCandle } from '../shared/math';
+import { feedRequest, type FeedConfig } from './feed-client';
 export function validateQuote(q: Quote): Quote {
   const now = Math.floor(Date.now() / 1000);
   const validChange =
@@ -42,9 +43,9 @@ export async function upstream(url: string): Promise<unknown> {
   }
   return response.json();
 }
-export async function getQuote(asset: Asset, market: Market): Promise<Quote> {
+export async function getQuote(asset: Asset, market: Market, feed?: FeedConfig): Promise<Quote> {
   if (market === 'binance') {
-    const d = (await binanceRequest('ticker.24hr', { symbol: asset + 'USDT' })) as Record<
+    const d = (await binanceRequest('ticker.24hr', { symbol: asset + 'USDT' }, feed)) as Record<
       string,
       string | number
     >;
@@ -120,14 +121,18 @@ async function upbitQuote(asset: Asset, d: Record<string, number>): Promise<Quot
   }
 }
 /** A single ticker request for a bounded group; one bad asset never discards its peers. */
-export async function getQuotes(assets: Asset[], market: Market) {
-  if (!assets.length || assets.length > 4 || new Set(assets).size !== assets.length)
+export async function getQuotes(assets: Asset[], market: Market, feed?: FeedConfig) {
+  if (!assets.length || assets.length > 8 || new Set(assets).size !== assets.length)
     throw new Error('Invalid quote batch size');
   let rows: Record<string, unknown>[];
   try {
     const raw =
       market === 'binance'
-        ? await binanceRequest('ticker.24hr', { symbols: assets.map((asset) => asset + 'USDT') })
+        ? await binanceRequest(
+            'ticker.24hr',
+            { symbols: assets.map((asset) => asset + 'USDT') },
+            feed,
+          )
         : await upstream(
             'https://api.upbit.com/v1/ticker?markets=' +
               assets.map((asset) => 'KRW-' + asset).join(','),
@@ -164,18 +169,23 @@ export async function getRecentCandles(
   market: Market,
   interval: '1h' | '1d',
   since?: number,
+  feed?: FeedConfig,
 ): Promise<Candle[]> {
   const step = interval === '1h' ? 3600 : DAY;
   let out: Candle[] = [];
   const catching = since !== undefined && Date.now() / 1000 - since > 6 * step;
   const count = catching ? 32 : 8;
   if (market === 'binance') {
-    const raw = (await binanceRequest('klines', {
-      symbol: asset + 'USDT',
-      interval,
-      limit: count,
-      ...(catching ? { startTime: since! * 1000 } : {}),
-    })) as (string | number)[][];
+    const raw = (await binanceRequest(
+      'klines',
+      {
+        symbol: asset + 'USDT',
+        interval,
+        limit: count,
+        ...(catching ? { startTime: since! * 1000 } : {}),
+      },
+      feed,
+    )) as (string | number)[][];
     if (!Array.isArray(raw)) throw new Error('Invalid candles');
     out = raw.map((r) => ({
       time: Number(r[0]) / 1000,
@@ -229,12 +239,18 @@ export async function getRecentCandles(
     throw new Error('OHLC validation failed');
   return out.sort((a, b) => a.time - b.time);
 }
-// Binance's public WebSocket API uses the same exchange data and requires no key.
-// Each job opens one bounded request and closes the connection after its response.
+// Keep the supported WebSocket transport. Public REST returned 403 on the deployed host.
 export function binanceRequest(
   method: 'ticker.24hr' | 'klines',
   params: Record<string, string | number | string[]>,
+  feed?: FeedConfig,
 ): Promise<unknown> {
+  if (feed?.FEED_URL && feed.FEED_TOKEN)
+    return feedRequest(
+      feed,
+      '/binance',
+      new URLSearchParams({ method, params: JSON.stringify(params) }),
+    );
   return new Promise((resolve, reject) => {
     const socket = new WebSocket('wss://ws-api.binance.com:443/ws-api/v3');
     let settled = false;

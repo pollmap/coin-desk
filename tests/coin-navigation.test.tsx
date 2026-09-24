@@ -2,6 +2,7 @@ import { expect, it } from 'vitest';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { MemoryRouter } from 'react-router-dom';
 import { DeskNavigation } from '../src/DeskNavigation';
+import { NETWORK_ASSETS, NETWORK_GROUPS, networkMetrics } from '../shared/network-catalog';
 
 function navigation(at: string) {
   return renderToStaticMarkup(
@@ -10,6 +11,20 @@ function navigation(at: string) {
     </MemoryRouter>,
   );
 }
+
+it('keeps the dedicated futures view attached to its selected coin', () => {
+  const html = navigation('/futures/DOGE?metric=open_interest');
+  expect(html).toContain('aria-label="DOGE 분석"');
+  expect(html).not.toContain('aria-label="BTC 분석"');
+  expect(html.match(/aria-current="page"/g)).toHaveLength(1);
+  expect(html).toContain('href="/futures/DOGE"');
+});
+
+it('assigns every supported onchain metric to exactly one group for every coin', () => {
+  for (const asset of NETWORK_ASSETS)
+    for (const metric of networkMetrics(asset))
+      expect(NETWORK_GROUPS.filter((group) => group.ids.includes(metric.id))).toHaveLength(1);
+});
 
 it('keeps DOGE navigation within DOGE instead of selecting three coin views', () => {
   const html = navigation('/?asset=DOGE&period=all#derivatives');

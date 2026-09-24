@@ -231,6 +231,19 @@ export const networkMetrics = (asset: Asset) =>
   NETWORK_METRICS.filter((item) => item.assets.includes(asset));
 export const networkMetric = (asset: Asset, id: string) =>
   networkMetrics(asset).find((item) => item.id === id);
+export const NETWORK_GROUPS = [
+  { title: '가치 · 손익', ids: ['mvrv', 'realized_cap', 'realized_price', 'nupl'] },
+  {
+    title: '이용 · 전송',
+    ids: ['active_addresses', 'balance_addresses', 'transactions', 'transfers'],
+  },
+  { title: '공급 · 시가총액', ids: ['supply', 'market_cap', 'issuance'] },
+  { title: '수수료 · 블록', ids: ['fees_native', 'hashrate', 'blocks'] },
+  {
+    title: '거래소 자금 흐름',
+    ids: ['exchange_inflow', 'exchange_outflow', 'exchange_balance', 'exchange_netflow'],
+  },
+];
 export function networkUnit(asset: Asset, id: string): string {
   return networkMetric(asset, id)?.unit.replace('자산 단위', asset) || '';
 }
