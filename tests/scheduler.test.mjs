@@ -39,6 +39,7 @@ beforeEach(() => {
 });
 afterEach(() => {
   vi.clearAllMocks();
+  vi.restoreAllMocks();
   DB.sqlite.close();
 });
 const state = (key, value) =>
@@ -236,23 +237,28 @@ it('archived daily metadata keeps original start and counts newly added days onl
   await updatePrice(env, 'DOGE', 'binance', '1d');
   expect(storedHistory(key).rows).toBe(1001);
 });
-it('rolling archived hours retain an explicit unknown row count and advance the ninety-day floor', async () => {
-  const hour = Math.floor(now / 3600) * 3600;
-  const key = 'DOGE:upbit:1h';
-  state('history:' + key, {
-    first: hour - 120 * 86400,
-    last: hour - 3600,
-    rows: 2160,
-    archived: true,
-  });
-  getRecentCandles.mockResolvedValue([priceRow(hour - 3600, 3600), priceRow(hour, 3600)]);
-  const before = Math.ceil((Date.now() / 1000 - 90 * 86400) / 3600) * 3600;
-  await updatePrice(env, 'DOGE', 'upbit', '1h');
-  const history = storedHistory(key);
-  expect(history).toMatchObject({ last: hour, rows: null, archived: true });
-  expect(Object.hasOwn(history, 'rows')).toBe(true);
-  expect(history.first).toBe(before);
-});
+it.each([0, 500, 1000])(
+  'rolling archived hours retain an unknown count at hour + %i ms',
+  async (offset) => {
+    const hour = Math.floor(now / 3600) * 3600;
+    vi.spyOn(Date, 'now').mockReturnValue(hour * 1000 + offset);
+    const key = 'DOGE:upbit:1h';
+    state('history:' + key, {
+      first: hour - 120 * 86400,
+      last: hour - 3600,
+      rows: 2160,
+      archived: true,
+    });
+    getRecentCandles.mockResolvedValue([priceRow(hour - 3600, 3600), priceRow(hour, 3600)]);
+    // Source and retention timestamps are integer epoch seconds, not fractional milliseconds.
+    const before = hour - 90 * 86400 + (offset >= 1000 ? 3600 : 0);
+    await updatePrice(env, 'DOGE', 'upbit', '1h');
+    const history = storedHistory(key);
+    expect(history).toMatchObject({ last: hour, rows: null, archived: true });
+    expect(Object.hasOwn(history, 'rows')).toBe(true);
+    expect(history.first).toBe(before);
+  },
+);
 it('an unknown archived daily count remains explicitly null', async () => {
   const day = Math.floor(now / 86400) * 86400;
   state('history:DOGE:upbit:1d', {
