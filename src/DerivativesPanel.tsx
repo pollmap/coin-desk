@@ -15,7 +15,7 @@ import { useSearchParams } from 'react-router-dom';
 import { ChartTools } from './ChartNavigator';
 import { zoomChartRange } from './chart-range';
 
-type Featured = 'BTC' | 'DOGE' | 'ETH';
+type Featured = import('../shared/types').Asset;
 type Metric = 'funding' | 'open_interest' | 'long_account_ratio';
 const DAY = 86400;
 const quantity = (value: number) =>
@@ -123,7 +123,7 @@ export function DerivativesPanel({
     if (!ref.current || !data.length) return;
     const chart = createDeskChart(ref.current, {
       autoSize: true,
-      height: 300,
+      height: dedicated ? 430 : 300,
       layout: { attributionLogo: true },
       rightPriceScale: {
         borderVisible: false,

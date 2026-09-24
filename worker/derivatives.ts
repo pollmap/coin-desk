@@ -3,7 +3,8 @@ import { DAY } from '../shared/math';
 import { upstream } from './providers';
 import { epoch, readState, successStatement, type Env } from './storage';
 
-export const DERIVATIVE_ASSETS = ['BTC', 'DOGE', 'ETH'] as const;
+import { DERIVATIVE_ASSETS, derivativeContract } from '../shared/derivative-contracts';
+export { DERIVATIVE_ASSETS } from '../shared/derivative-contracts';
 export const DERIVATIVE_METRICS = [
   'funding',
   'open_interest',
@@ -42,7 +43,7 @@ export function parseDerivativeRows(
     (kind !== 'long_account_ratio' && result.category !== 'linear') ||
     !Array.isArray(rows) ||
     rows.length > 200 ||
-    (kind === 'open_interest' && result.symbol !== asset + 'USDT')
+    (kind === 'open_interest' && result.symbol !== derivativeContract(asset).symbol)
   )
     throw new Error('Invalid derivatives response');
   const points: Point[] = [];
@@ -50,7 +51,7 @@ export function parseDerivativeRows(
   for (const candidate of rows) {
     if (!candidate || typeof candidate !== 'object') throw new Error('Invalid derivatives row');
     const row = candidate as Record<string, unknown>;
-    if (kind !== 'open_interest' && row.symbol !== asset + 'USDT')
+    if (kind !== 'open_interest' && row.symbol !== derivativeContract(asset).symbol)
       throw new Error('Derivatives symbol mismatch');
     const timestamp = kind === 'funding' ? row.fundingRateTimestamp : row.timestamp;
     const observed =
@@ -84,7 +85,10 @@ export function parseDerivativeRows(
     previous = milliseconds;
     points.push({
       time: Math.floor(milliseconds / 1000),
-      value: kind === 'open_interest' ? value : Math.round(value * 100 * 1e8) / 1e8,
+      value:
+        kind === 'open_interest'
+          ? value * derivativeContract(asset).quantityMultiplier
+          : Math.round(value * 100 * 1e8) / 1e8,
     });
   }
   return points.reverse();
@@ -114,7 +118,7 @@ export async function updateDerivatives(
   const size = backfill || firstPage ? 200 : metric === 'funding' ? 20 : 30;
   const params = new URLSearchParams({
     category: 'linear',
-    symbol: asset + 'USDT',
+    symbol: derivativeContract(asset).symbol,
     limit: String(size),
   });
   if (kind === 'open_interest') params.set('intervalTime', daily ? '1d' : '1h');
@@ -232,7 +236,7 @@ export async function readDerivativeSeries(
       unit: kind === 'open_interest' ? asset : '%',
       observationInterval: daily ? '1d' : metric === 'funding' ? 'settlement' : '1h',
       sourceStatus: !extent?.last ? 'waiting' : cursor !== null ? 'backfilling' : 'available',
-      market: asset + 'USDT linear perpetual · Bybit only',
+      market: derivativeContract(asset).symbol + ' linear perpetual · Bybit only',
       dataAsOf: extent?.last ?? null,
       fetchedAt: state?.last_success ?? null,
       historyStart: extent?.first ?? null,

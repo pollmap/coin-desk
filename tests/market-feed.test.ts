@@ -85,7 +85,7 @@ it('only forwards registered contracts and bounded history pages', async () => {
   );
   expect(denied.status).toBe(401);
   const invalid = await feed.fetch(
-    new Request('https://feed.internal/derivatives?asset=SOL&metric=funding&limit=200', {
+    new Request('https://feed.internal/derivatives?asset=ADA&metric=funding&limit=200', {
       headers,
     }),
     { FEED_TOKEN: 'test-secret' },

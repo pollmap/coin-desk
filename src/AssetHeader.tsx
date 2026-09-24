@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { save } from './lib';
 import { Link, useNavigate } from 'react-router-dom';
-import { ASSETS } from '../shared/catalog';
+import { ASSETS, isPrimaryAsset } from '../shared/catalog';
 import { COIN_SITES, matchesCoin } from '../shared/coin-search';
 import type { Asset } from '../shared/types';
 import { AssetLogo } from './AssetLogo';
@@ -99,6 +99,7 @@ export function AssetHeader({
               {results.map((item) => (
                 <button
                   key={item.id}
+                  className={isPrimaryAsset(item.id) ? 'primary-coin' : 'secondary-coin'}
                   aria-pressed={item.id === asset}
                   onClick={() => {
                     if (picker.current) {

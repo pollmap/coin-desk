@@ -61,8 +61,10 @@ const tick = setInterval(async () => {
   if (running) return;
   running = true;
   try {
-    const { scheduled } = await vite.ssrLoadModule('/worker/scheduled.ts');
-    await scheduled(env);
+    const worker = (await vite.ssrLoadModule('/worker/index.ts')).default;
+    const jobs = [];
+    worker.scheduled({scheduledTime:Date.now()},env,{waitUntil: p=>jobs.push(p)});
+    await Promise.allSettled(jobs);
   } catch (e) {
     console.error('Refresh:', e.message);
   } finally {

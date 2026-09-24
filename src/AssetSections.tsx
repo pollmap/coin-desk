@@ -1,6 +1,5 @@
 import { useMarket } from './useMarket';
 import { Link, useSearchParams } from 'react-router-dom';
-import { isNetworkAsset } from '../shared/network-catalog';
 import type { Asset } from '../shared/types';
 
 export function AssetSections({ asset, current }: { asset: Asset; current: string }) {
@@ -12,13 +11,11 @@ export function AssetSections({ asset, current }: { asset: Asset; current: strin
   const sections = [
     { id: 'history', label: '전체 가격', to: '/?asset=' + asset + '&' + context },
     { id: 'chart', label: '기술적 분석', to: '/chart/' + asset + '?' + context },
-    ...(isNetworkAsset(asset)
-      ? [{ id: 'onchain', label: '온체인', to: '/onchain/' + asset + '?' + context }]
-      : []),
-    ...(['BTC', 'DOGE', 'ETH'].includes(asset)
-      ? [{ id: 'futures', label: '선물', to: '/futures/' + asset + '?' + context }]
-      : []),
+    { id: 'onchain', label: '온체인', to: '/onchain/' + asset + '?' + context },
+    { id: 'futures', label: '선물', to: '/futures/' + asset + '?' + context },
+    { id: 'dominance', label: '도미넌스', to: '/dominance?asset=' + asset },
     { id: 'research', label: '리서치', to: '/research?asset=' + asset },
+    { id: 'events', label: '역사', to: '/history?asset=' + asset },
   ];
   return (
     <nav className="asset-sections" aria-label={asset + ' 분석 화면'}>

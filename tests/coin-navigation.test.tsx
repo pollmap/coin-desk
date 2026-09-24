@@ -54,13 +54,13 @@ it('keeps all analysis section links scoped to DOGE and marks only futures curre
   expect(html).not.toContain('value="SOL"');
 });
 
-it('does not offer unavailable network or futures sections for SOL', () => {
+it('keeps SOL context across futures and explicit onchain coverage', () => {
   const html = renderToStaticMarkup(
     <MemoryRouter>
       <AssetSections asset="SOL" current="chart" />
     </MemoryRouter>,
   );
-  expect(html).not.toContain('/futures/');
-  expect(html).not.toContain('/onchain/');
+  expect(html).toContain('/futures/SOL');
+  expect(html).toContain('/onchain/SOL');
   expect(html).toContain('/chart/SOL');
 });

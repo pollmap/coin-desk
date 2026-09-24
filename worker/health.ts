@@ -1,4 +1,4 @@
-import { ASSETS } from '../shared/catalog';
+import { ASSETS, isPrimaryAsset } from '../shared/catalog';
 import { DAY } from '../shared/math';
 import type { Asset, Market } from '../shared/types';
 import { epoch, QUOTE_REFRESH_SECONDS, type Env } from './storage';
@@ -6,7 +6,7 @@ import { REFERENCE_ASSETS } from './reference-price';
 import { NETWORK_ASSETS, networkMetrics } from '../shared/network-catalog';
 import { DERIVATIVE_ASSETS, DERIVATIVE_METRICS } from './derivatives';
 
-export const BACKGROUND_QUOTE_SECONDS = 480;
+export const BACKGROUND_QUOTE_SECONDS = 60;
 export const DAILY_REFRESH_SECONDS = 21600;
 export interface IngestionState {
   key: string;
@@ -68,8 +68,14 @@ export function jobPolicies(assets: Asset[], rebuilding: boolean): JobPolicy[] {
         jobs.push({
           key: `derivatives:${asset}:${metric}`,
           kind: 'derivatives',
-          every: metric.endsWith('_daily') ? 21600 : 3600,
-          maxLag: metric.endsWith('_daily') ? 3 * DAY : metric === 'funding' ? 36 * 3600 : 3 * 3600,
+          every: metric.endsWith('_daily') ? 21600 : isPrimaryAsset(asset) ? 3600 : 21600,
+          maxLag: metric.endsWith('_daily')
+            ? 3 * DAY
+            : metric === 'funding'
+              ? 36 * 3600
+              : isPrimaryAsset(asset)
+                ? 3 * 3600
+                : 12 * 3600,
           assets: [asset],
         });
   for (const asset of REFERENCE_ASSETS)
@@ -96,7 +102,7 @@ export function jobPolicies(assets: Asset[], rebuilding: boolean): JobPolicy[] {
         key: 'quotes:' + market + ':' + start / 8,
         kind: 'quote-batch',
         every: BACKGROUND_QUOTE_SECONDS,
-        maxLag: 600,
+        maxLag: 180,
         assets: assets.slice(start, start + 8),
         market,
       });
@@ -139,9 +145,8 @@ export function selectJob(jobs: JobPolicy[], states: IngestionState[], now: numb
     .map((job) => ({ job, due: dueAt(job, states, now) }))
     .filter((item) => item.due <= now)
     .sort((a, b) => a.due - b.due);
-  // A quote batch needs its next minute slot once due. Waiting another two
-  // minutes can push a healthy 8-minute cycle beyond the 10-minute health limit.
-  // Other sources still use the remaining slots between quote batches.
+  // Production quotes use a separate lane. Prioritize healthy primary-asset jobs
+  // without letting a failing source monopolize the recovery queue.
   return (
     eligible.find(
       ({ job }) =>
@@ -154,6 +159,10 @@ export function selectJob(jobs: JobPolicy[], states: IngestionState[], now: numb
     eligible.find(
       ({ job }) =>
         job.kind === 'mempool' && !states.find((state) => state.key === job.key)?.failures,
+    ) ||
+    eligible.find(
+      ({ job }) =>
+        job.assets?.some(isPrimaryAsset) && !states.find((s) => s.key === job.key)?.failures,
     ) ||
     eligible[0]
   )?.job;
@@ -223,8 +232,8 @@ export async function operationStatus(env: Env) {
       expected.set('quote:' + asset + ':' + market, {
         key: 'quote:' + asset + ':' + market,
         kind: 'quote-batch',
-        every: BACKGROUND_QUOTE_SECONDS,
-        maxLag: 600,
+        every: isPrimaryAsset(asset) ? BACKGROUND_QUOTE_SECONDS : 300,
+        maxLag: isPrimaryAsset(asset) ? 180 : 600,
         market,
         assets: [asset],
       });
@@ -404,7 +413,7 @@ export async function operationStatus(env: Env) {
       },
       cadence: {
         quoteBackgroundTargetSeconds: BACKGROUND_QUOTE_SECONDS,
-        quoteBackgroundDelaySeconds: 600,
+        quoteBackgroundDelaySeconds: 180,
         quoteOnDemandMinSeconds: QUOTE_REFRESH_SECONDS,
         hourlyCandlesSeconds: 3600,
         dailyCandlesSeconds: DAILY_REFRESH_SECONDS,

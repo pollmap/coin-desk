@@ -45,6 +45,7 @@ import { WorkspaceBar, CardPicker, usePersonalDesk } from './PersonalDesk';
 const ExchangeHistoryPanel = lazy(() =>
   import('./ExchangeHistoryPanel').then((m) => ({ default: m.ExchangeHistoryPanel })),
 );
+const HistoryPage = lazy(() => import('./HistoryPage').then((m) => ({ default: m.HistoryPage })));
 const ResearchPage = lazy(() =>
   import('./ResearchPage').then((m) => ({ default: m.ResearchPage })),
 );
@@ -143,7 +144,7 @@ function usePreferences() {
   const { market } = useMarket();
   const int = params.get('interval') || initial.interval;
   const interval = intervals.some((i) => i.id === int) ? (int as Interval) : '1d';
-  const p = params.get('period') || initial.period;
+  const p = params.get('period') || 'all';
   const period = periods.some((x) => x.id === p) ? (p as Period) : 'all';
   const raw = params.has('indicators')
     ? (params.get('indicators') || '').split(',')
@@ -1136,6 +1137,7 @@ export default function App() {
               <Route path="/onchain/:asset" element={<NetworkPage />} />
               <Route path="/futures/:asset" element={<FuturesPage />} />
               <Route path="/research" element={<ResearchPage />} />
+              <Route path="/history" element={<HistoryPage />} />
               <Route path="/brand" element={<BrandPage />} />
               <Route
                 path="*"
