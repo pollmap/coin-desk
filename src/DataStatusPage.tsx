@@ -12,6 +12,18 @@ const statusName: Record<string, string> = {
   error: '재시도',
   inactive: '사용 안 함',
 };
+const priorityRank = (key: string) =>
+  key === 'automation'
+    ? -1
+    : key.includes('BTC') || key === 'bitview'
+    ? 0
+    : key.includes('DOGE')
+      ? 1
+      : key.includes('ETH')
+        ? 2
+        : ['coinlore', 'defillama', 'maintenance'].includes(key)
+          ? 3
+          : 4;
 function ago(seconds: number | null | undefined) {
   return seconds == null
     ? '미확인'
@@ -63,7 +75,11 @@ export function AutomationSummary({ compact = false }: { compact?: boolean }) {
           {a ? (a.stalled ? '실행 확인 필요' : '서버 실행 확인') : '상태 확인 중'}
         </span>
       </div>
-      <p>사이트를 닫거나 PC·Codex를 꺼도 Cloudflare 서버가 수집과 DB 갱신을 실행합니다.</p>
+      <p>
+        {a?.stalled
+          ? '현재 서버 실행을 확인하지 못했습니다. 표시 중인 데이터의 실제 시각을 확인해 주세요.'
+          : '사이트를 닫아도 Cloudflare 서버에서 수집을 실행합니다.'}
+      </p>
       {error ? (
         <p role="alert" className="amber">
           {error}
@@ -109,9 +125,10 @@ export function AutomationSummary({ compact = false }: { compact?: boolean }) {
 export function DataStatusPage() {
   const { data, error, reload } = useData<OperationStatus>('/api/v1/status', false, 60000);
   const [filter, setFilter] = useState('all'),
-    [search, setSearch] = useState('');
+    [search, setSearch] = useState(''),
+    [coreOnly, setCoreOnly] = useState(true);
   const active = data?.sources.filter((s) => s.active) ?? [];
-  const rows = active.filter(
+  const matchingRows = active.filter(
     (s) =>
       (filter === 'all' ||
         (filter === 'attention'
@@ -122,6 +139,15 @@ export function DataStatusPage() {
               ? /:(1d|1h)$/.test(s.key)
               : !s.key.startsWith('quote:') && !/:(1d|1h)$/.test(s.key))) &&
       sourceLabel(s.key).toLowerCase().includes(search.trim().toLowerCase()),
+  );
+  const rows = matchingRows
+    .filter((s) => !coreOnly || priorityRank(s.key) < 4)
+    .sort((a, b) => priorityRank(a.key) - priorityRank(b.key));
+  const importantIssues = (data?.health.reasons ?? [])
+    .filter((r) => priorityRank(r.key) < 4 || r.key === 'automation')
+    .sort((a, b) => priorityRank(a.key) - priorityRank(b.key));
+  const extraIssues = (data?.health.reasons ?? []).filter(
+    (r) => !importantIssues.some((item) => item.key === r.key && item.code === r.code),
   );
   const a = data?.automation;
   return (
@@ -144,43 +170,51 @@ export function DataStatusPage() {
       <AutomationSummary />
       {data?.health && !data.health.ok ? (
         <div className="server-issues" role="status">
-          <h2>확인할 항목 {data.health.reasons.length}개</h2>
+          <h2>확인이 필요한 원천 {data.health.reasons.length}개</h2>
           <ul>
-            {data.health.reasons.map((r, i) => (
+            {importantIssues.slice(0, 5).map((r, i) => (
               <li key={r.code + r.key + i}>
                 <b>{sourceLabel(r.key)}</b> · {r.message}
               </li>
             ))}
           </ul>
+          {importantIssues.length > 5 || extraIssues.length ? (
+            <details>
+              <summary>나머지 {Math.max(0, importantIssues.length - 5) + extraIssues.length}개 보기</summary>
+              <ul>
+                {[...importantIssues.slice(5), ...extraIssues].map((r, i) => (
+                  <li key={r.code + r.key + i}>
+                    <b>{sourceLabel(r.key)}</b> · {r.message}
+                  </li>
+                ))}
+              </ul>
+            </details>
+          ) : null}
         </div>
       ) : null}
       <section className="panel server-schedule">
         <h2>서버 수집 주기</h2>
-        <div className="schedule-grid">
-          <div>
-            <b>매분 작업 확인</b>
-            <p>
-              대기 작업을 하나씩 처리합니다. 실행 중복을 막고 중단된 작업은 잠금 만료 뒤 이어갑니다.
-            </p>
+        <details>
+          <summary>목표 주기와 운영 기준</summary>
+          <div className="schedule-grid">
+            <div>
+              <b>매분 작업 확인</b>
+              <p>대기 작업을 하나씩 처리하고, 중단된 작업은 잠금 만료 뒤 다시 예약합니다.</p>
+            </div>
+            <div>
+              <b>BTC · DOGE · ETH 시세 · 1분</b>
+              <p>핵심 3개 코인은 1분, 보조 코인은 5분마다 서버 갱신을 시도합니다.</p>
+            </div>
+            <div>
+              <b>봉·온체인 · 정기 수집</b>
+              <p>시간봉·BTC 온체인은 약 1시간, 일봉·장기 USD·스테이블코인은 약 6시간입니다.</p>
+            </div>
           </div>
-          <div>
-            <b>BTC · DOGE · ETH 시세 · 1분</b>
-            <p>
-              핵심 3개 코인은 1분, 보조 코인은 5분마다 서버에서 갱신을 시도합니다.
-            </p>
-          </div>
-          <div>
-            <b>봉·온체인 · 정기 수집</b>
-            <p>
-              시간봉·BTC 온체인은 약 1시간, 일봉·장기 USD·스테이블코인은 약 6시간입니다. UTC 일
-              경계에는 일봉을 우선 확인합니다.
-            </p>
-          </div>
-        </div>
-        <p className="watch-note">
-          목표 주기는 성공 보장이 아닙니다. 원천 지연·호출 제한은 아래 상태에 표시하며 마지막 정상
-          데이터를 보존합니다. 화면의 원천 시각과 마지막 수집 시각은 다를 수 있습니다.
-        </p>
+          <p className="watch-note">
+            목표 주기는 성공 보장이 아닙니다. 실제 자료 시각과 마지막 수집 시각은 위 상태표에서
+            확인하세요.
+          </p>
+        </details>
       </section>
       <div className="status-filters">
         <label>
@@ -202,7 +236,17 @@ export function DataStatusPage() {
             <option value="other">온체인·장기 USD·시장 비중</option>
           </select>
         </label>
-        <span>{rows.length}개 원천</span>
+        <label className="status-scope">
+          <input
+            type="checkbox"
+            checked={coreOnly}
+            onChange={(e) => setCoreOnly(e.target.checked)}
+          />
+          BTC · DOGE · ETH 우선
+        </label>
+        <span>
+          {rows.length}개 표시{coreOnly ? ` · 전체 ${matchingRows.length}개` : ''}
+        </span>
       </div>
       <section
         className="panel status-table-wrap"

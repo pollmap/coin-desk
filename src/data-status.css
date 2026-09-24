@@ -71,6 +71,31 @@
   line-height: 1.8;
   color: #e6c89f;
 }
+.server-issues details,
+.server-schedule details {
+  margin-top: 10px;
+}
+.server-issues summary,
+.server-schedule summary {
+  color: var(--text);
+  cursor: pointer;
+  font-size: 12px;
+}
+.status-filters label.status-scope {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 38px;
+  color: var(--text);
+  cursor: pointer;
+}
+.status-filters label.status-scope input {
+  width: 16px;
+  height: 16px;
+  margin: 0;
+  padding: 0;
+  accent-color: #55c7a5;
+}
 .status-filters {
   display: flex;
   align-items: end;
