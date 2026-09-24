@@ -16,6 +16,28 @@ const eth = 'https://ethereum.org/ethereum-forks/';
 /** Editorially verified chronology, not an exhaustive list or a price-causality model. */
 export const HISTORY_EVENTS: HistoryEvent[] = [
   {
+    id: 'bitcoin-taproot',
+    date: '2021-11-14',
+    title: '비트코인 Taproot 활성화',
+    summary:
+      '블록 709,632에서 Taproot 소프트포크가 활성화됐습니다. P2TR 출력의 지출에 새로운 합의 규칙이 적용됐습니다.',
+    assets: ['BTC'],
+    category: '업그레이드',
+    source: 'https://b10c.me/projects/019-taproot-activation-monitoring/',
+    sourceName: '개발자 b10c · 당시 활성화 관측',
+  },
+  {
+    id: 'doge-core-1145',
+    date: '2021-11-08',
+    title: 'Dogecoin Core 1.14.5 · 수수료 정책 변경',
+    summary:
+      '권장 최소 거래 수수료를 낮추는 정책과 보안 수정이 포함된 버전이 공개됐습니다. 소프트웨어 공개일이며 모든 서비스의 동시 적용을 뜻하지 않습니다.',
+    assets: ['DOGE'],
+    category: '업그레이드',
+    source: 'https://github.com/dogecoin/dogecoin/releases/tag/v1.14.5',
+    sourceName: 'Dogecoin Core 공식 릴리스',
+  },
+  {
     id: 'bitcoin-paper',
     date: '2008-10-31',
     title: '비트코인 백서 공개',

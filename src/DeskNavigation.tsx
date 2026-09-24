@@ -21,6 +21,7 @@ import { NETWORK_METRICS, isNetworkAsset, networkMetric } from '../shared/networ
 import type { Asset } from '../shared/types';
 import { saved, save } from './lib';
 import { AssetLogo } from './AssetLogo';
+import { useMarket } from './useMarket';
 
 const featured = ASSETS.map((a) => a.id);
 const marketItems = [
@@ -45,6 +46,7 @@ export function coinSection(pathname: string, hash: string): string {
 export function DeskNavigation({ onNavigate }: { onNavigate: () => void }) {
   const [query, setQuery] = useState('');
   const location = useLocation();
+  const { market } = useMarket();
   const candidate =
     location.pathname.split('/')[2] ||
     new URLSearchParams(location.search).get('asset') ||
@@ -164,7 +166,11 @@ export function DeskNavigation({ onNavigate }: { onNavigate: () => void }) {
               <Layers size={18} />
               <span>리서치 모아보기</span>
             </NavLink>
-            <NavLink to="/history?asset=BTC" aria-label="코인 역사" title="코인 역사">
+            <NavLink
+              to={'/history?asset=' + asset + '&market=' + market}
+              aria-label="코인 역사"
+              title="코인 역사"
+            >
               <Activity size={18} />
               <span>코인 역사</span>
             </NavLink>

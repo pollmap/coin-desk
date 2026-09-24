@@ -42,6 +42,7 @@ beforeEach(() => {
 afterEach(async () => {
   await Promise.all(waiting);
   vi.restoreAllMocks();
+  vi.unstubAllGlobals();
   DB.sqlite.close();
 });
 const call = async (path, method = 'GET') => {
@@ -111,6 +112,8 @@ it('exhausted D1 writes keep stored prices readable and explicitly delayed', asy
   DB.sqlite.exec(
     "CREATE TRIGGER deny_state_write BEFORE INSERT ON state BEGIN SELECT RAISE(FAIL, 'D1_ERROR: daily row write limit'); END",
   );
+  // Model both outages explicitly; never depend on the real exchange being unavailable.
+  mockSocket(429, {});
   const out = await call('overview');
   expect(out.status).toBe(200);
   expect(out.data.quote.price).toBe(120);
@@ -118,6 +121,42 @@ it('exhausted D1 writes keep stored prices readable and explicitly delayed', asy
   expect(out.data.meta.warning).toContain('저장·갱신');
   expect(out.data.technical).toBeDefined();
 });
+
+it.each([true, false])(
+  'quota failure still returns a fresh exchange quote (stored snapshot: %s)',
+  async (hasSnapshot) => {
+    const now = Math.floor(Date.now() / 1000);
+    if (hasSnapshot)
+      DB.sqlite
+        .prepare('INSERT INTO snapshots VALUES(?,?,?)')
+        .run(
+          'quote:BTC:binance',
+          JSON.stringify({ asset: 'BTC', price: 120, time: now - 600 }),
+          now - 600,
+        );
+    DB.sqlite.exec(
+      "CREATE TRIGGER deny_state_write BEFORE INSERT ON state BEGIN SELECT RAISE(FAIL, 'D1_ERROR: daily row write limit'); END",
+    );
+    mockSocket(200, {
+      symbol: 'BTCUSDT',
+      lastPrice: '150',
+      priceChangePercent: '1',
+      quoteVolume: '1000',
+      highPrice: '155',
+      lowPrice: '90',
+      closeTime: now * 1000,
+    });
+    const out = await call('overview');
+    expect(out.status).toBe(200);
+    expect(out.data.quote.price).toBe(150);
+    expect(out.data.meta.stale).toBe(false);
+    expect(out.data.meta.warning).toContain('자동 저장');
+    const stored = DB.sqlite
+      .prepare('SELECT data FROM snapshots WHERE key=?')
+      .get('quote:BTC:binance');
+    expect(stored ? JSON.parse(stored.data).price : null).toBe(hasSnapshot ? 120 : null);
+  },
+);
 
 it('a failed failure-log write does not hide the last good quote', async () => {
   DB.sqlite

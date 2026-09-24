@@ -32,10 +32,16 @@ export const LongHistoryChart = memo(function LongHistoryChart({
   currency = 'USD',
   focusTime,
   focusLabel,
+  focusRange,
+  focusRevision = 0,
+  height = 410,
 }: {
   currency?: 'USD' | 'KRW' | 'USDT';
   focusTime?: number;
   focusLabel?: string;
+  focusRange?: { from: number; to: number };
+  focusRevision?: number;
+  height?: number;
   series: SeriesResponse;
   asset: Asset;
   period: Period;
@@ -55,9 +61,13 @@ export const LongHistoryChart = memo(function LongHistoryChart({
   const [message, setMessage] = useState('');
   const points = series.data;
   const byTime = useMemo(() => new Map(points.map((point) => [point.time, point])), [points]);
-  const focusPoint = focusTime === undefined ? undefined : points.find((p) => p.time >= focusTime);
+  const focusPoint =
+    focusTime === undefined
+      ? undefined
+      : points.find((p) => Math.floor(p.time / 86400) === Math.floor(focusTime / 86400));
   const display =
-    (selectedTime === null ? undefined : byTime.get(selectedTime)) ?? focusPoint ?? points.at(-1);
+    (selectedTime === null ? undefined : byTime.get(selectedTime)) ??
+    (focusTime === undefined ? points.at(-1) : focusPoint);
   const color = ASSETS.find((coin) => coin.id === asset)?.color || '#eeb66d';
 
   useEffect(() => {
@@ -65,7 +75,7 @@ export const LongHistoryChart = memo(function LongHistoryChart({
     if (!surface || !points.length) return;
     const chart = createChart(surface, {
       autoSize: true,
-      height: 410,
+      height,
       layout: {
         background: { type: ColorType.Solid, color: '#111721' },
         textColor: '#91a0b5',
@@ -142,7 +152,7 @@ export const LongHistoryChart = memo(function LongHistoryChart({
       chartRef.current = null;
       lineRef.current = null;
     };
-  }, [points, asset, color, currency]);
+  }, [points, asset, color, currency, height]);
 
   useEffect(() => {
     const chart = chartRef.current;
@@ -193,26 +203,42 @@ export const LongHistoryChart = memo(function LongHistoryChart({
     const line = lineRef.current;
     if (!chart || !line || !points.length) return;
     if (focusTime === undefined) return;
-    if (focusTime < points[0].time || focusTime > points.at(-1)!.time) return;
-    const point = points.find((p) => p.time >= focusTime)!;
-    const markers = createSeriesMarkers(line, [
-      {
-        time: ts(point.time),
-        position: 'aboveBar',
-        color: '#efbd70',
-        shape: 'arrowDown',
-        text: focusLabel || '사건',
-      },
-    ]);
+    if (!focusRange && (focusTime < points[0].time || focusTime > points.at(-1)!.time)) return;
+    setSelectedTime(null);
+    setKeyboardMessage('');
+    const point = points.find((p) => Math.floor(p.time / 86400) === Math.floor(focusTime / 86400));
+    const markers = createSeriesMarkers(
+      line,
+      point
+        ? [
+            {
+              time: ts(point.time),
+              position: 'aboveBar',
+              color: '#efbd70',
+              shape: 'arrowDown',
+              text: focusLabel || '사건',
+            },
+          ]
+        : [],
+    );
     chart.timeScale().setVisibleRange({
-      from: ts(Math.max(points[0].time, focusTime - 90 * 86400)),
-      to: ts(Math.min(points.at(-1)!.time, focusTime + 90 * 86400)),
+      from: ts(focusRange?.from ?? Math.max(points[0].time, focusTime - 90 * 86400)),
+      to: ts(focusRange?.to ?? Math.min(points.at(-1)!.time, focusTime + 90 * 86400)),
     });
     return () => {
       markers.detach();
       if (chartRef.current === chart) chart.timeScale().fitContent();
     };
-  }, [focusTime, focusLabel, points, asset, currency]);
+  }, [
+    focusTime,
+    focusLabel,
+    focusRange?.from,
+    focusRange?.to,
+    focusRevision,
+    points,
+    asset,
+    currency,
+  ]);
 
   function zoom(factor: number) {
     const scale = chartRef.current?.timeScale();
@@ -263,7 +289,13 @@ export const LongHistoryChart = memo(function LongHistoryChart({
           <span>{series.meta.source} · 일별 종가</span>
         </div>
         <div className="long-history-observation">
-          <span>{display ? dateLabel(display.time) : '관측 대기'}</span>
+          <span>
+            {display
+              ? dateLabel(display.time)
+              : focusTime === undefined
+                ? '관측 대기'
+                : '선택일 관측 없음'}
+          </span>
           <b>{money(display?.value, currency)}</b>
         </div>
       </div>
@@ -325,7 +357,7 @@ export const LongHistoryChart = memo(function LongHistoryChart({
       />
       <ChartRangeControl
         rows={points}
-        resetKey={asset + ':' + currency + ':' + period}
+        resetKey={asset + ':' + currency + ':' + period + ':' + focusTime + ':' + focusRevision}
         onApply={(selection) =>
           chartRef.current
             ?.timeScale()

@@ -16,14 +16,14 @@ const priorityRank = (key: string) =>
   key === 'automation'
     ? -1
     : key.includes('BTC') || key === 'bitview'
-    ? 0
-    : key.includes('DOGE')
-      ? 1
-      : key.includes('ETH')
-        ? 2
-        : ['coinlore', 'defillama', 'maintenance'].includes(key)
-          ? 3
-          : 4;
+      ? 0
+      : key.includes('DOGE')
+        ? 1
+        : key.includes('ETH')
+          ? 2
+          : ['coinlore', 'defillama', 'maintenance'].includes(key)
+            ? 3
+            : 4;
 function ago(seconds: number | null | undefined) {
   return seconds == null
     ? '미확인'
@@ -36,6 +36,7 @@ function ago(seconds: number | null | undefined) {
           : Math.floor(seconds / 86400) + '일 전';
 }
 export function sourceLabel(key: string) {
+  if (key === 'automation') return '서버 자동 갱신';
   if (key === 'bitview') return 'BTC 온체인 · Bitview';
   if (key === 'coinlore') return '코인 시가총액 · CoinLore';
   if (key === 'defillama') return '스테이블코인 · DefiLlama';
@@ -43,7 +44,15 @@ export function sourceLabel(key: string) {
   if (key === 'mempool:BTC') return 'BTC 수수료·미확인 거래 · mempool.space';
   if (key.startsWith('derivatives:')) {
     const [, asset, metric] = key.split(':');
-    return asset + ' · Bybit ' + (metric === 'funding' ? '펀딩비' : '미결제약정');
+    const labels: Record<string, string> = {
+      funding: '펀딩비',
+      open_interest: '미결제약정',
+      long_account_ratio: '롱 계정 비율',
+      funding_daily: '일별 펀딩비',
+      open_interest_daily: '일별 미결제약정',
+      long_account_ratio_daily: '일별 롱 계정 비율',
+    };
+    return asset + ' · Bybit ' + (labels[metric] || metric);
   }
   if (key.startsWith('network:')) return key.split(':')[1] + ' 온체인 · Coin Metrics';
   if (key.startsWith('reference:')) return key.split(':')[1] + ' 장기 USD · Coin Metrics';
@@ -180,7 +189,9 @@ export function DataStatusPage() {
           </ul>
           {importantIssues.length > 5 || extraIssues.length ? (
             <details>
-              <summary>나머지 {Math.max(0, importantIssues.length - 5) + extraIssues.length}개 보기</summary>
+              <summary>
+                나머지 {Math.max(0, importantIssues.length - 5) + extraIssues.length}개 보기
+              </summary>
               <ul>
                 {[...importantIssues.slice(5), ...extraIssues].map((r, i) => (
                   <li key={r.code + r.key + i}>
