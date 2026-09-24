@@ -1,6 +1,15 @@
 .main-asset-deck {
   margin: 0 0 13px;
 }
+.asset-section-nav { display: flex; flex-wrap: wrap; gap: 6px; margin: 10px 0 12px; }
+.asset-section-nav a { text-decoration: none; }
+.analysis-details { margin: 11px 0; padding: 0; }
+.analysis-details > summary { cursor: pointer; padding: 13px 16px; font-weight: 600; }
+.analysis-details > summary small { margin-left: 8px; color: var(--muted); font-weight: 400; font-size: 11px; }
+.analysis-details .position-panel { border: 0; margin: 0; }
+.history-source-details { padding: 7px 10px; color: var(--muted); font-size: 11px; }
+.history-source-details summary { cursor: pointer; }
+.history-source-details a { display: inline-block; margin: 10px 15px 3px 0; color: var(--accent); }
 .featured-assets {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -189,6 +198,13 @@
   margin: 12px 0;
   padding: 14px;
 }
+.derivatives-overview { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; margin: 12px 0; }
+.derivatives-overview button { display: grid; gap: 5px; text-align: left; background: var(--surface); color: var(--text); border: 1px solid var(--border); border-radius: 7px; padding: 11px 13px; cursor: pointer; }
+.derivatives-overview button.selected { border-color: var(--accent); background: var(--accent-bg); }
+.derivatives-overview span { color: var(--muted); font-size: 11px; }
+.derivatives-overview strong { font-size: 17px; font-variant-numeric: tabular-nums; }
+.derivatives-overview small { color: var(--muted); font-size: 10px; }
+@media (max-width: 620px) { .derivatives-overview { grid-template-columns: 1fr; } .derivatives-overview strong { font-size: 14px; overflow-wrap: anywhere; } }
 .derivatives-panel .panel-title,
 .mempool-panel .panel-title {
   display: flex;

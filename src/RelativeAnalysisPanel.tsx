@@ -41,7 +41,7 @@ export function RelativeAnalysisPanel({ asset }: { asset: 'DOGE' | 'ETH' }) {
   }, [points]);
   const last = points?.at(-1)?.value;
   return (
-    <section className="panel relative-panel">
+    <section id="relative-analysis" className="panel relative-panel">
       <div className="panel-title">
         <h2>{asset} / BTC 상대 분석</h2>
         <span>Coin Metrics PriceUSD · 동일 UTC 종가</span>

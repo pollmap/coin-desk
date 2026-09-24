@@ -29,6 +29,7 @@ beforeEach(() => {
     'mempool:BTC',
     'derivatives:BTC:funding',
     'derivatives:BTC:open_interest',
+    'derivatives:BTC:long_account_ratio',
   ])
     DB.sqlite
       .prepare('INSERT INTO ingestion(key,last_attempt,last_success,data_as_of) VALUES(?,?,?,?)')

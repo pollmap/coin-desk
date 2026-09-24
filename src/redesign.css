@@ -194,6 +194,15 @@ button:disabled {
   font-weight: 400;
   padding-left: 15px;
 }
+.coin-nav-list { display: grid; gap: 4px; margin-top: 8px; }
+.coin-nav-group { border: 1px solid transparent; border-radius: 7px; }
+.coin-nav-group.current { border-color: var(--border); background: var(--panel); }
+.app .sidebar .coin-nav-title { display: flex; align-items: center; gap: 8px; min-height: 38px; color: var(--text); }
+.coin-nav-title b { font-size: 12px; }
+.coin-nav-title span { color: var(--muted); font-size: 11px; }
+.app .coin-nav-group nav { margin: 0 8px 8px 29px; padding-left: 8px; border-left: 1px solid var(--border); gap: 1px; }
+.app .coin-nav-group nav a { min-height: 29px; padding: 5px 8px; font-size: 11px; }
+.nav-groups .market-nav { margin-top: 14px; border-top: 1px solid var(--border); }
 .nav-utilities {
   padding-top: 14px;
   border-top: 1px solid var(--border);

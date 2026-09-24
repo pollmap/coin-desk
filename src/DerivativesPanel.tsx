@@ -7,7 +7,7 @@ import { dateLabel, numeric } from './lib';
 import './analysis-expansion.css';
 
 type Featured = 'BTC' | 'DOGE' | 'ETH';
-type Metric = 'funding' | 'open_interest';
+type Metric = 'funding' | 'open_interest' | 'long_account_ratio';
 const DAY = 86400;
 
 export function DerivativesPanel({ asset }: { asset: Featured }) {
@@ -15,11 +15,16 @@ export function DerivativesPanel({ asset }: { asset: Featured }) {
   const [windowDays, setWindowDays] = useState(0);
   const [showPrice, setShowPrice] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
-  const result = useData<SeriesResponse>(
-    `/api/v1/derivatives?asset=${asset}&metric=${metric}&limit=1000`,
-    true,
-    3600000,
+  const funding = useData<SeriesResponse>(
+    `/api/v1/derivatives?asset=${asset}&metric=funding&limit=1000`, true, 3600000,
   );
+  const interest = useData<SeriesResponse>(
+    `/api/v1/derivatives?asset=${asset}&metric=open_interest&limit=1000`, true, 3600000,
+  );
+  const longAccounts = useData<SeriesResponse>(
+    `/api/v1/derivatives?asset=${asset}&metric=long_account_ratio&limit=1000`, true, 3600000,
+  );
+  const result = metric === 'funding' ? funding : metric === 'open_interest' ? interest : longAccounts;
   const spot = useData<CandleResponse>(
     showPrice ? `/api/v1/candles?asset=${asset}&market=binance&interval=1d&limit=1000` : null,
     true,
@@ -50,13 +55,13 @@ export function DerivativesPanel({ asset }: { asset: Featured }) {
       timeScale: { borderVisible: false },
     });
     const line = chart.addSeries(LineSeries, {
-      color: metric === 'funding' ? '#6bd7bb' : '#a9a4f0',
+      color: metric === 'funding' ? '#6bd7bb' : metric === 'open_interest' ? '#a9a4f0' : '#e8ad65',
       lineWidth: 2,
       priceLineVisible: false,
       priceFormat: {
         type: 'custom',
         formatter: (value: number) =>
-          metric === 'funding' ? numeric(value, 4) + '%' : numeric(value, 3) + ' ' + asset,
+          metric === 'funding' ? numeric(value, 4) + '%' : metric === 'open_interest' ? numeric(value, 3) + ' ' + asset : numeric(value, 2) + '%',
       },
     });
     line.setData(data.map((point) => ({ time: point.time as UTCTimestamp, value: point.value })));
@@ -76,7 +81,7 @@ export function DerivativesPanel({ asset }: { asset: Featured }) {
     return () => chart.remove();
   }, [data, spotPoints, metric]);
   const latest = result.data?.data.at(-1);
-  const unit = metric === 'funding' ? '%' : asset;
+  const unit = metric === 'open_interest' ? asset : '%';
   function csv() {
     const text =
       '\uFEFF' +
@@ -102,25 +107,23 @@ export function DerivativesPanel({ asset }: { asset: Featured }) {
     >
       <div className="panel-title">
         <h2>{asset} · Bybit USDT 무기한 선물</h2>
-        <small>한 거래소의 선물 자료</small>
+        <small>실제 확보한 첫 관측부터 · 한 거래소</small>
+      </div>
+      <div className="derivatives-overview" role="group" aria-label={`${asset} 선물 지표 선택`}>
+        <button className={metric === 'funding' ? 'selected' : ''} aria-pressed={metric === 'funding'} onClick={() => setMetric('funding')}>
+          <span>펀딩비</span><strong>{funding.data?.data.length ? numeric(funding.data.data.at(-1)!.value, 4) + '%' : '—'}</strong>
+          <small>{dateLabel(funding.data?.meta.dataAsOf, true)}</small>
+        </button>
+        <button className={metric === 'open_interest' ? 'selected' : ''} aria-pressed={metric === 'open_interest'} onClick={() => setMetric('open_interest')}>
+          <span>미결제약정</span><strong>{interest.data?.data.length ? numeric(interest.data.data.at(-1)!.value, 3) + ' ' + asset : '—'}</strong>
+          <small>{dateLabel(interest.data?.meta.dataAsOf, true)}</small>
+        </button>
+        <button className={metric === 'long_account_ratio' ? 'selected' : ''} aria-pressed={metric === 'long_account_ratio'} onClick={() => setMetric('long_account_ratio')}>
+          <span>롱 보유 계정</span><strong>{longAccounts.data?.data.length ? numeric(longAccounts.data.data.at(-1)!.value, 2) + '%' : '—'}</strong>
+          <small>{dateLabel(longAccounts.data?.meta.dataAsOf, true)}</small>
+        </button>
       </div>
       <div className="derivatives-toolbar">
-        <div className="segments" aria-label="선물 지표">
-          <button
-            className={metric === 'funding' ? 'selected' : ''}
-            aria-pressed={metric === 'funding'}
-            onClick={() => setMetric('funding')}
-          >
-            펀딩비
-          </button>
-          <button
-            className={metric === 'open_interest' ? 'selected' : ''}
-            aria-pressed={metric === 'open_interest'}
-            onClick={() => setMetric('open_interest')}
-          >
-            미결제약정
-          </button>
-        </div>
         <div className="segments" aria-label="선물 기간">
           {[
             [30, '1개월'],
@@ -155,12 +158,12 @@ export function DerivativesPanel({ asset }: { asset: Featured }) {
           {latest
             ? metric === 'funding'
               ? numeric(latest.value, 4) + '%'
-              : numeric(latest.value, 3) + ' ' + asset
+              : metric === 'open_interest' ? numeric(latest.value, 3) + ' ' + asset : numeric(latest.value, 2) + '%'
             : '—'}
         </strong>
         <span>
           {dateLabel(latest?.time, true)} 관측 ·{' '}
-          {metric === 'funding' ? '정산 비율' : '미결제약정 수량'}
+          {metric === 'funding' ? '정산 비율' : metric === 'open_interest' ? '미결제약정 수량' : '롱 보유 계정 비중'}
         </span>
       </div>
       {result.error ? (
@@ -173,7 +176,7 @@ export function DerivativesPanel({ asset }: { asset: Featured }) {
           className="derivatives-chart"
           ref={ref}
           role="img"
-          aria-label={`${asset} ${metric === 'funding' ? '펀딩비' : '미결제약정'} 이력`}
+          aria-label={`${asset} ${metric === 'funding' ? '펀딩비' : metric === 'open_interest' ? '미결제약정' : '롱 보유 계정 비율'} 이력`}
         />
       ) : (
         <div className="empty-state" role="status">
@@ -203,9 +206,11 @@ export function DerivativesPanel({ asset }: { asset: Featured }) {
       )}
       <p className="muted">
         {result.data?.meta.warning ||
-          (metric === 'open_interest'
+          (metric === 'long_account_ratio'
+            ? '롱 포지션 보유 계정 수의 비중입니다. 포지션 규모 비중은 아닙니다.'
+            : metric === 'open_interest'
             ? '미결제약정은 Bybit 한 거래소의 코인 수량이며 최근 30일을 먼저 확보합니다.'
-            : '펀딩비는 정산 시각의 실제 비율입니다.')}
+            : '펀딩비는 정산 시각의 실제 비율입니다. 롱·숏 계정 비율과는 다른 지표입니다.')}
       </p>
     </section>
   );

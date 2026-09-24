@@ -106,6 +106,14 @@ describe('Bybit USDT perpetual history', () => {
       )[0].value,
     ).toBe(123.5);
   });
+  it('reads long-holder share as a percentage and rejects inconsistent or mixed contracts', () => {
+    const row = { symbol: 'DOGEUSDT', timestamp: String((utc - 3600) * 1000), buyRatio: '0.4927', sellRatio: '0.5073' };
+    const payload = (list: unknown[]) => ({ retCode: 0, result: { list } });
+    expect(parseDerivativeRows(payload([row]), 'DOGE', 'long_account_ratio', utc))
+      .toEqual([{ time: utc - 3600, value: 49.27 }]);
+    expect(() => parseDerivativeRows(payload([{ ...row, symbol: 'BTCUSDT' }]), 'DOGE', 'long_account_ratio', utc)).toThrow('symbol');
+    expect(() => parseDerivativeRows(payload([{ ...row, sellRatio: '0.3' }]), 'DOGE', 'long_account_ratio', utc)).toThrow();
+  });
   it('persists actual pages and returns an exclusive range with source, units and cursor', async () => {
     const base = utc - 16 * 3600;
     const fetcher = vi.fn(async (_url: string) =>

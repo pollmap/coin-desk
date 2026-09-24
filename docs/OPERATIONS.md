@@ -8,7 +8,7 @@
 
 Cloudflare Cron은 방문자 없이 매분 작업 하나를 실행합니다. mempool.space는 15분, 선물 6개 작업은 매시간 목표로 갱신하고 Bybit 펀딩비 이력은 페이지별 체크포인트로 역방향 축적합니다. 미결제약정은 최근 30일을 먼저 확보합니다. 선물 원천 실패는 `/status`의 `derivatives:*` 오류로 확인하고 화면에는 마지막 정상값과 지연을 표시합니다. `0008_cron_72h.sql`을 Worker보다 먼저 운영 D1에 적용합니다. `/status`의 48시간 관찰 상태는 72시간 순환 실행 기록에서 계산합니다. 실제 48시간이 지나기 전에는 장기 관찰 완료로 보고하지 않습니다.
 
-Bybit는 Cron 실행 위치에서 직접 접근 시 403을 반환하므로 `coin-desk-feed` Worker를 서울에 배치합니다. `FEED_TOKEN`은 동일한 무작위 값으로 두 Worker의 Wrangler secret에 각각 등록하고 소스나 로그에 기록하지 않습니다. Feed Worker는 BTC·DOGE·ETH의 두 지표와 최대 200개 관측만 허용하며 익명 요청에는 401을 반환합니다. 두 Worker의 배포 순서, 실제 검증과 미완료 관찰 조건은 [0.8 기록](UPGRADE08.md)을 참고하세요.
+Bybit는 Cron 실행 위치에서 직접 접근 시 403을 반환하므로 `coin-desk-feed` Worker를 서울에 배치합니다. `FEED_TOKEN`은 동일한 무작위 값으로 두 Worker의 Wrangler secret에 각각 등록하고 소스나 로그에 기록하지 않습니다. Feed Worker는 BTC·DOGE·ETH의 세 지표와 최대 200개 관측만 허용하며 익명 요청에는 401을 반환합니다. 두 Worker의 배포 순서, 실제 검증과 미완료 관찰 조건은 [0.8 기록](UPGRADE08.md)과 [0.9 계획·구현](UPGRADE09.md)을 참고하세요.
 
 ## 0.5.0 도입 기록
 
