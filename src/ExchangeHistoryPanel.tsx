@@ -62,8 +62,10 @@ export function ExchangeHistoryPanel({
         </button>
       </div>
       {result.error ? (
-        <div role="alert" className="error-notice">
-          {result.error}
+        <div role="status" className={series?.data.length ? 'refresh-notice' : 'error-notice'}>
+          {series?.data.length
+            ? '갱신이 지연되어 마지막 정상 차트를 표시합니다. 자동으로 다시 확인합니다.'
+            : result.error}
           <button onClick={result.reload}>다시 시도</button>
         </div>
       ) : null}

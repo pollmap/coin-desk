@@ -84,6 +84,7 @@ export function DominancePanel({ compact = false }: { compact?: boolean }) {
   );
 }
 export function DominancePage() {
+  const snapshot = useData<Dominance>('/api/v1/dominance', false, 60000);
   const history = useData<{
     data: { time: number; coins: Dominance['coins'] }[];
     historyStart: number | null;
@@ -215,6 +216,22 @@ export function DominancePage() {
             ))}
           </select>
         </div>
+        {snapshot.data?.stale || snapshot.data?.warning || snapshot.error || history.error ? (
+          <p role="status" className="refresh-notice">
+            {snapshot.data?.warning ||
+              snapshot.error ||
+              history.error ||
+              '갱신이 지연되어 마지막 정상 관측을 표시합니다.'}
+            <button
+              onClick={() => {
+                snapshot.reload();
+                history.reload();
+              }}
+            >
+              다시 확인
+            </button>
+          </p>
+        ) : null}
         {latest ? (
           <p className="dominance-basis">
             {selectedLabel} 최신 관측 {numeric(latest.value, latest.value < 1 ? 3 : 2)}% ·{' '}
@@ -253,11 +270,6 @@ export function DominancePage() {
               onReset={() => apiRef.current?.timeScale().fitContent()}
             />
           </>
-        ) : null}
-        {history.error ? (
-          <p className="amber" role="alert">
-            {history.error} <button onClick={history.reload}>다시 시도</button>
-          </p>
         ) : null}
         <div className="source-line">
           표시 이력 시작 {dateLabel(points[0]?.time, true)} · 실제 수집한 전체 관측 · 시간축 KST ·

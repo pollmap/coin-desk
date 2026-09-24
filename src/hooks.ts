@@ -14,10 +14,13 @@ export function useData<T>(url: string | null, paged = false, refresh = 300000) 
     if (!url || !key) return;
     let mounted = true;
     let request: ReturnType<typeof queryCache.acquire<T>> | undefined;
+    let retryTimer: ReturnType<typeof setTimeout> | undefined;
+    let failures = 0;
     const cached = queryCache.peek<T>(key);
     setState({ key, data: cached?.data, loading: !cached });
     const load = async (force = false) => {
       if (document.hidden || request) return;
+      clearTimeout(retryTimer);
       const hit = queryCache.peek<T>(key);
       if (!force && hit && Date.now() - hit.time < refresh) {
         setState({ key, data: hit.data, loading: false });
@@ -29,15 +32,22 @@ export function useData<T>(url: string | null, paged = false, refresh = 300000) 
       const active = request;
       try {
         const data = await active.task;
+        failures = 0;
         if (mounted) setState({ key, data, loading: false });
       } catch (e) {
-        if (mounted)
+        if (mounted) {
           setState((prev) => ({
             key,
             data: prev.key === key ? prev.data : undefined,
             error: String(e instanceof Error ? e.message : e),
             loading: false,
           }));
+          failures++;
+          retryTimer = setTimeout(
+            () => void load(true),
+            Math.min(refresh, 15000 * 2 ** Math.min(failures - 1, 2)),
+          );
+        }
       } finally {
         active.release();
         if (request === active) request = undefined;
@@ -53,6 +63,7 @@ export function useData<T>(url: string | null, paged = false, refresh = 300000) 
       mounted = false;
       request?.release();
       clearInterval(timer);
+      clearTimeout(retryTimer);
       document.removeEventListener('visibilitychange', visible);
     };
   }, [url, key, paged, refresh, revision]);

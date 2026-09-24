@@ -230,7 +230,7 @@ export function DerivativesPanel({
       className="panel derivatives-panel"
       aria-label={`${asset} Bybit 선물 분석`}
     >
-      <h2 className="sr-only">{asset} · Bybit USDT 무기한 선물</h2>
+      <h2 className="derivatives-source">{asset} · Bybit USDT 무기한 선물</h2>
       <div className="derivatives-overview" role="group" aria-label={`${asset} 선물 지표 선택`}>
         <button
           className={metric === 'funding' ? 'selected' : ''}

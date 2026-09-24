@@ -7,6 +7,7 @@ import type { Asset } from '../shared/types';
 import { AssetLogo } from './AssetLogo';
 import { AssetSections } from './AssetSections';
 import { useMarket } from './useMarket';
+import { ChevronDown } from 'lucide-react';
 
 export function AssetHeader({
   asset,
@@ -32,6 +33,7 @@ export function AssetHeader({
     return url.pathname + url.search + url.hash;
   };
   const [query, setQuery] = useState('');
+  const [open, setOpen] = useState(false);
   const picker = useRef<HTMLDetailsElement>(null);
   useEffect(() => {
     save('lastAsset', asset);
@@ -55,6 +57,7 @@ export function AssetHeader({
           className="coin-picker"
           ref={picker}
           onToggle={(e) => {
+            setOpen(e.currentTarget.open);
             if (e.currentTarget.open) e.currentTarget.querySelector('input')?.focus();
           }}
           onKeyDown={(e) => {
@@ -64,15 +67,19 @@ export function AssetHeader({
             }
           }}
         >
-          <summary aria-label={'코인 변경 · ' + coin.name + ' ' + asset}>
+          <summary
+            role="button"
+            aria-expanded={open}
+            aria-label={'코인 변경 · ' + coin.name + ' ' + asset}
+          >
             <AssetLogo asset={asset} size={42} />
             <span>
-              <small>코인 선택</small>
+              <small>코인 변경</small>
               <h1>
                 {coin.name} <b>{asset}</b>
               </h1>
             </span>
-            <span className="coin-chevron">⌄</span>
+            <ChevronDown className="coin-chevron" size={20} aria-hidden="true" />
           </summary>
           <div className="coin-popover">
             <input
@@ -95,7 +102,24 @@ export function AssetHeader({
                 }
               }}
             />
-            <div className="coin-result-list">
+            <div
+              className="coin-result-list"
+              onKeyDown={(e) => {
+                if (!['ArrowDown', 'ArrowUp', 'Home', 'End'].includes(e.key)) return;
+                const buttons = Array.from(e.currentTarget.querySelectorAll('button'));
+                const index = buttons.indexOf(e.target as HTMLButtonElement);
+                if (index < 0) return;
+                e.preventDefault();
+                const next =
+                  e.key === 'Home'
+                    ? 0
+                    : e.key === 'End'
+                      ? buttons.length - 1
+                      : (index + (e.key === 'ArrowDown' ? 1 : -1) + buttons.length) %
+                        buttons.length;
+                buttons[next]?.focus();
+              }}
+            >
               {results.map((item) => (
                 <button
                   key={item.id}
@@ -130,8 +154,14 @@ export function AssetHeader({
         </div>
         <div className="coin-shortcuts" aria-label="자주 보는 코인">
           {(['BTC', 'DOGE', 'ETH'] as Asset[]).map((a) => (
-            <Link key={a} to={target(a)} className={a === asset ? 'active' : ''}>
+            <Link
+              key={a}
+              to={target(a)}
+              className={a === asset ? 'active' : ''}
+              aria-current={a === asset ? 'true' : undefined}
+            >
               <AssetLogo asset={a} size={21} />
+              <span className="shortcut-name">{ASSETS.find((item) => item.id === a)?.name}</span>
               {a}
             </Link>
           ))}

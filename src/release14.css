@@ -1,0 +1,197 @@
+/* Release polish: existing brand, less chrome, more chart. */
+.app .asset-header {
+  margin-bottom: 12px;
+}
+.coin-context {
+  gap: 16px;
+  margin-bottom: 12px;
+}
+.coin-picker {
+  min-width: 266px;
+}
+.coin-picker > summary {
+  padding: 9px 13px;
+  border-radius: 9px;
+}
+.app .coin-picker h1 {
+  font-size: 22px;
+}
+.coin-chevron {
+  flex-shrink: 0;
+}
+.coin-picker[open] .coin-chevron {
+  transform: rotate(180deg);
+}
+.coin-shortcuts {
+  gap: 6px;
+}
+.coin-shortcuts a {
+  border-color: var(--border);
+  padding: 9px 12px;
+  font-size: 12px;
+}
+.coin-shortcuts a.active {
+  background: var(--accent-bg);
+  border-color: var(--accent);
+  color: var(--accent);
+}
+.shortcut-name {
+  color: var(--text);
+  font-weight: 600;
+}
+.coin-context-links p {
+  margin: 0;
+}
+.app .derivatives-source {
+  margin: 0 0 12px;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--muted);
+}
+.app .asset-sections {
+  gap: 24px;
+}
+.app .asset-sections a {
+  padding-top: 6px;
+  padding-bottom: 9px;
+}
+.market-picker {
+  margin-bottom: 8px;
+}
+.market-picker button {
+  min-height: 32px;
+  padding: 6px 11px;
+}
+.app .quote-strip {
+  margin-bottom: 12px;
+  padding: 12px 16px;
+}
+.quote-timestamp {
+  margin: 0 0 10px;
+}
+.app .price-panel-heading {
+  padding: 12px 18px;
+}
+.app .chart-toolbar {
+  padding: 9px 14px;
+  gap: 10px;
+}
+.app .indicator-row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
+.app .history-toolbar {
+  display: grid;
+  grid-template-columns: minmax(165px, 1fr) auto auto;
+  gap: 12px;
+  padding: 14px 18px;
+  align-items: center;
+}
+.history-toolbar .segments {
+  flex-wrap: nowrap;
+}
+.history-toolbar h2 {
+  margin: 0 0 4px;
+}
+.refresh-notice {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.6;
+  padding: 10px 16px;
+  border-bottom: 1px solid var(--border);
+  background: var(--surface);
+}
+.refresh-notice button {
+  color: var(--accent);
+  white-space: nowrap;
+  padding: 5px 8px;
+  border: 1px solid var(--border);
+  border-radius: 5px;
+}
+.app button:focus-visible,
+.app summary:focus-visible,
+.app a:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+.app .research-view-tabs button[aria-pressed='true'],
+.app .event-chart-actions button[aria-pressed='true'] {
+  color: var(--accent);
+  background: var(--accent-bg);
+  border-color: var(--accent);
+}
+.event-timeline article.selected {
+  background: var(--accent-bg);
+  box-shadow: inset 3px 0 var(--accent);
+}
+.event-timeline h3 button:hover {
+  color: var(--accent);
+}
+.event-category,
+.post-kind {
+  color: var(--muted);
+}
+.event-chart {
+  scroll-margin-top: 72px;
+}
+.app .research-source {
+  color: var(--muted);
+  font-size: 12px;
+}
+.app .research-source summary {
+  padding: 12px 0;
+}
+.research-post.public-post {
+  padding: 17px 10px;
+}
+:root[data-theme='light'] .app .desk-button:hover {
+  color: var(--accent);
+}
+@media (min-width: 1101px) {
+  .coin-context-links {
+    display: flex;
+    flex: 1;
+  }
+  .coin-context-links p {
+    display: none;
+  }
+}
+@media (max-width: 1100px) {
+  .shortcut-name {
+    display: none;
+  }
+  .app .history-toolbar {
+    grid-template-columns: 1fr auto;
+  }
+  .history-toolbar .period-picker {
+    grid-row: 2;
+    grid-column: 1/-1;
+  }
+}
+@media (max-width: 700px) {
+  .coin-picker {
+    min-width: 0;
+  }
+  .app .history-toolbar {
+    padding: 12px;
+  }
+  .history-toolbar > div:first-child {
+    width: auto;
+  }
+  .app .quote-strip {
+    padding: 12px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
+}

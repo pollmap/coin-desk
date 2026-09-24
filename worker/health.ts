@@ -160,6 +160,12 @@ export function selectJob(jobs: JobPolicy[], states: IngestionState[], now: numb
       ({ job }) =>
         job.kind === 'mempool' && !states.find((state) => state.key === job.key)?.failures,
     ) ||
+    // Shared BTC/market sources must not wait behind hours of secondary backfill.
+    // next_attempt still gates failures, so retries cannot run every minute.
+    eligible.find(
+      ({ job, due }) =>
+        due <= now - 300 && ['onchain', 'dominance', 'stablecoins'].includes(job.kind),
+    ) ||
     eligible.find(
       ({ job }) =>
         job.assets?.some(isPrimaryAsset) && !states.find((s) => s.key === job.key)?.failures,
