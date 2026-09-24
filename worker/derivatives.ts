@@ -54,7 +54,7 @@ export function parseDerivativeRows(
         Math.abs(value + Number(row.sellRatio) - 1) > 0.02))
     ) throw new Error('Invalid derivatives observation');
     previous = milliseconds;
-    points.push({ time: Math.floor(milliseconds / 1000), value: metric === 'open_interest' ? value : value * 100 });
+    points.push({ time: Math.floor(milliseconds / 1000), value: metric === 'open_interest' ? value : Math.round(value * 100 * 1e8) / 1e8 });
   }
   return points.reverse();
 }
