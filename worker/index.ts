@@ -23,6 +23,7 @@ import {
   type Env,
 } from './storage';
 import { scheduled } from './scheduled';
+import { researchFeed, refreshResearch } from './research';
 import { candleHistory } from './candle-history';
 import { getDominance, DOMINANCE_VERSION } from './dominance';
 import { REFERENCE_ASSETS, REFERENCE_SOURCE, REFERENCE_VERSION } from './reference-price';
@@ -59,6 +60,7 @@ function canonicalRequest(request: Request) {
     metrics: ['asset'],
     status: [],
     health: [],
+    research: [],
     dominance: [],
     'dominance/history': [],
   };
@@ -226,6 +228,7 @@ async function api(request: Request, env: Env): Promise<Response> {
   const { asset, market } = selection(q);
   if (request.method !== 'GET') return response({ error: 'Read-only API' }, 405);
   const endpoint = url.pathname.replace('/api/v1/', '');
+  if (endpoint === 'research') return response(await researchFeed(env));
   if (endpoint === 'dominance') {
     const data = await getDominance(env);
     return data
@@ -279,17 +282,26 @@ async function api(request: Request, env: Env): Promise<Response> {
   if (endpoint === 'network-live') {
     if (asset !== 'BTC') return response({ error: 'BTC 네트워크만 지원합니다.' }, 400);
     const [snapshot, state] = await Promise.all([
-      env.DB.prepare('SELECT data,fetched_at FROM snapshots WHERE key=?').bind('mempool:BTC')
+      env.DB.prepare('SELECT data,fetched_at FROM snapshots WHERE key=?')
+        .bind('mempool:BTC')
         .first<{ data: string; fetched_at: number }>(),
-      env.DB.prepare('SELECT error FROM ingestion WHERE key=?').bind('mempool:BTC')
+      env.DB.prepare('SELECT error FROM ingestion WHERE key=?')
+        .bind('mempool:BTC')
         .first<{ error: string | null }>(),
     ]);
-    if (!snapshot) return response({ error: 'BTC 네트워크 현황의 첫 수집을 기다리고 있습니다.', code: 'NO_DATA' }, 503);
+    if (!snapshot)
+      return response(
+        { error: 'BTC 네트워크 현황의 첫 수집을 기다리고 있습니다.', code: 'NO_DATA' },
+        503,
+      );
     return response({
       data: JSON.parse(snapshot.data) as MempoolSnapshot,
       meta: {
-        source: 'mempool.space', unit: 'sat/vB · 거래 건 · vB', market: 'Bitcoin mempool',
-        dataAsOf: snapshot.fetched_at, fetchedAt: snapshot.fetched_at,
+        source: 'mempool.space',
+        unit: 'sat/vB · 거래 건 · vB',
+        market: 'Bitcoin mempool',
+        dataAsOf: snapshot.fetched_at,
+        fetchedAt: snapshot.fetched_at,
         stale: epoch() - snapshot.fetched_at > 1800 || !!state?.error,
         calculationVersion: 'mempool-public-snapshot-v1',
         warning: state?.error ? '최근 수집 실패로 마지막 정상 현황을 표시합니다.' : undefined,
@@ -542,5 +554,6 @@ export default {
   },
   async scheduled(_event: ScheduledController, env: Env, ctx: ExecutionContext) {
     ctx.waitUntil(scheduled(env, Math.floor(_event.scheduledTime / 1000)));
+    ctx.waitUntil(refreshResearch(env));
   },
 };

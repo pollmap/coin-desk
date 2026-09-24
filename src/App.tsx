@@ -1,3 +1,5 @@
+import { useMarket } from './useMarket';
+import { MarketPicker } from './MarketPicker';
 import { DeskNavigation, DeskTopbar } from './DeskNavigation';
 import { AssetLogo } from './AssetLogo';
 import { AssetSections } from './AssetSections';
@@ -40,6 +42,12 @@ import {
 import { ASSETS, METRICS } from '../shared/catalog';
 import { validIndicators } from '../shared/indicators';
 import { WorkspaceBar, CardPicker, usePersonalDesk } from './PersonalDesk';
+const ExchangeHistoryPanel = lazy(() =>
+  import('./ExchangeHistoryPanel').then((m) => ({ default: m.ExchangeHistoryPanel })),
+);
+const ResearchPage = lazy(() =>
+  import('./ResearchPage').then((m) => ({ default: m.ResearchPage })),
+);
 const WatchlistPage = lazy(() =>
   import('./WatchlistPage').then((m) => ({ default: m.WatchlistPage })),
 );
@@ -132,14 +140,7 @@ function usePreferences() {
       ? previous
       : { ...previous, period: 'all' as Period };
   }, []);
-  const market: Market =
-    params.get('market') === 'upbit'
-      ? 'upbit'
-      : params.get('market') === 'binance'
-        ? 'binance'
-        : initial.market === 'upbit'
-          ? 'upbit'
-          : 'binance';
+  const { market } = useMarket();
   const int = params.get('interval') || initial.interval;
   const interval = intervals.some((i) => i.id === int) ? (int as Interval) : '1d';
   const p = params.get('period') || initial.period;
@@ -259,13 +260,14 @@ function PricePage({ workspace = false }: { workspace?: boolean }) {
   const coin = ASSETS.find((a) => a.id === asset);
   const { market, interval, period, indicators, log, change } = usePreferences();
   const hasLongHistory = ['BTC', 'DOGE', 'ETH', 'XRP', 'LINK'].includes(asset);
-  const historical = !workspace && hasLongHistory && params.get('view') !== 'exchange';
+  const historical = !workspace;
   const shownPeriod: Period = historical && !params.has('period') ? 'all' : period;
   const { desk, update: updateDesk } = usePersonalDesk();
   const cards = params.has('cards')
     ? validCards((params.get('cards') || '').split(','))
     : desk.cards;
   const [deskError, setDeskError] = useState('');
+  const [archivePeriod, setArchivePeriod] = useState<Period>('all');
   useEffect(() => {
     if (coin) save('lastAsset', asset);
   }, [asset, coin]);
@@ -290,7 +292,7 @@ function PricePage({ workspace = false }: { workspace?: boolean }) {
     };
   }, []);
   const quote = useData<Overview>(
-    historical ? null : '/api/v1/overview?asset=' + asset + '&market=' + market,
+    '/api/v1/overview?asset=' + asset + '&market=' + market,
     false,
     60000,
   );
@@ -368,7 +370,7 @@ function PricePage({ workspace = false }: { workspace?: boolean }) {
       <AssetHeader
         asset={asset}
         current={historical ? 'history' : 'chart'}
-        subtitle={historical ? '전체 가격 · USD 일별 참조가격' : '기술적 분석 · 거래소 캔들'}
+        subtitle={historical ? '가격 흐름부터 분석까지' : '가격·거래량·기술지표'}
         href={(next) =>
           (workspace ? '/chart/' + next : '/') +
           '?' +
@@ -399,7 +401,8 @@ function PricePage({ workspace = false }: { workspace?: boolean }) {
           <button onClick={() => setShareUrl('')}>닫기</button>
         </div>
       ) : null}
-      {!historical && (
+      <MarketPicker market={market} onChange={(value) => change('market', value)} />
+      {
         <section className="quote-strip" aria-label="시장 요약">
           <div className="quote-primary">
             <AssetLogo asset={asset} size={30} />
@@ -471,10 +474,11 @@ function PricePage({ workspace = false }: { workspace?: boolean }) {
             </small>
           </div>
         </section>
-      )}
+      }
       {historical ? (
         <Suspense fallback={<Loading message="초기 가격부터 전체 흐름을 준비하고 있습니다…" />}>
-          <LongHistoryPanel
+          <ExchangeHistoryPanel
+            market={market}
             asset={asset}
             period={shownPeriod}
             log={log}
@@ -482,6 +486,29 @@ function PricePage({ workspace = false }: { workspace?: boolean }) {
             onLogChange={() => change('log', log ? '0' : '1')}
           />
         </Suspense>
+      ) : null}
+      {historical && hasLongHistory ? (
+        <details
+          className="panel reference-archive"
+          id="reference-history"
+          open={params.get('reference') === '1' || routeLocation.hash === '#btc-cycle' || undefined}
+        >
+          <summary>
+            거래소 상장 이전 · {asset} 최초 USD 이력{' '}
+            <small>Coin Metrics · 환산하지 않은 별도 참조가격</small>
+          </summary>
+          <DeferredMount>
+            <Suspense fallback={<Loading />}>
+              <LongHistoryPanel
+                asset={asset}
+                period={archivePeriod}
+                log={log}
+                onPeriodChange={setArchivePeriod}
+                onLogChange={() => change('log', log ? '0' : '1')}
+              />
+            </Suspense>
+          </DeferredMount>
+        </details>
       ) : null}
       {historical && (asset === 'BTC' || asset === 'DOGE') ? (
         <details className="panel analysis-details">
@@ -502,7 +529,9 @@ function PricePage({ workspace = false }: { workspace?: boolean }) {
         </p>
       ) : null}
       {!historical && (
-        <p className="quote-timestamp">시세 {dateLabel(q?.time, true)} · 60초마다 조회</p>
+        <details className="quote-timestamp">
+          <summary>시세 정보</summary>시세 {dateLabel(q?.time, true)} · 60초마다 조회
+        </details>
       )}
       <ErrorNotice message={quote.error || quote.data?.meta.warning} retry={quote.reload} />
       {!historical && (
@@ -514,22 +543,6 @@ function PricePage({ workspace = false }: { workspace?: boolean }) {
               <span className="market-tag">
                 {market === 'binance' ? 'BINANCE' : 'UPBIT'} · {currency}
               </span>
-            </div>
-            <div className="market-switch">
-              <button
-                className={market === 'binance' ? 'active' : ''}
-                aria-pressed={market === 'binance'}
-                onClick={() => change('market', 'binance')}
-              >
-                USDT
-              </button>
-              <button
-                className={market === 'upbit' ? 'active' : ''}
-                aria-pressed={market === 'upbit'}
-                onClick={() => change('market', 'upbit')}
-              >
-                KRW
-              </button>
             </div>
           </div>
           <div className="chart-toolbar">
@@ -546,13 +559,6 @@ function PricePage({ workspace = false }: { workspace?: boolean }) {
               ))}
             </div>
             <span className="toolbar-divider" />
-            <button
-              className={'text-button ' + (log ? 'active' : '')}
-              aria-pressed={log}
-              onClick={() => change('log', log ? '0' : '1')}
-            >
-              로그
-            </button>
             <div className="drawing-tools">
               <button
                 className={'icon-button ' + (tool === 'cursor' ? 'active' : '')}
@@ -578,6 +584,13 @@ function PricePage({ workspace = false }: { workspace?: boolean }) {
             </div>
             <div className="toolbar-spacer" />
             <Periods value={period} onChange={(p) => change('period', p)} />
+            <button
+              className={'axis-control ' + (log ? 'active' : '')}
+              aria-pressed={log}
+              onClick={() => change('log', log ? '0' : '1')}
+            >
+              가격축 · {log ? '로그' : '일반'}
+            </button>
             <button
               className="icon-button expand"
               aria-label="차트 전체화면"
@@ -1048,14 +1061,14 @@ export default function App() {
         <Link to="/" className="brand" onClick={() => setMobile(false)}>
           <img
             className="brand-symbol brand-wordmark-dark"
-            src="/brand/coin-desk-mark.svg"
+            src="/brand/coin-desk-shiba-smile.png"
             alt=""
             width="32"
             height="32"
           />
           <img
             className="brand-symbol brand-wordmark-light"
-            src="/brand/coin-desk-mark-light.svg"
+            src="/brand/coin-desk-shiba-smile.png"
             alt=""
             width="32"
             height="32"
@@ -1122,6 +1135,7 @@ export default function App() {
               <Route path="/status" element={<DataStatusPage />} />
               <Route path="/onchain/:asset" element={<NetworkPage />} />
               <Route path="/futures/:asset" element={<FuturesPage />} />
+              <Route path="/research" element={<ResearchPage />} />
               <Route path="/brand" element={<BrandPage />} />
               <Route
                 path="*"

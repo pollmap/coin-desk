@@ -44,11 +44,13 @@ it('keeps all analysis section links scoped to DOGE and marks only futures curre
       />
     </MemoryRouter>,
   );
-  expect(html.match(/<select/g)).toHaveLength(1);
+  expect(html).toContain('aria-label="코인 변경 · 도지코인 DOGE"');
+  expect(html).toContain('aria-label="코인 검색"');
   expect(html.match(/aria-current="page"/g)).toHaveLength(1);
-  expect(html).toContain('href="/futures/DOGE"');
-  expect(html).toContain('href="/onchain/DOGE"');
-  expect(html).not.toContain('href="/futures/BTC"');
+  expect(html).toContain('href="/futures/DOGE?market=binance&amp;period=all"');
+  expect(html).toContain('href="/onchain/DOGE?market=binance&amp;period=all"');
+  const scoped = html.slice(html.indexOf('<nav class="asset-sections"'));
+  expect(scoped).not.toContain('/futures/BTC');
   expect(html).not.toContain('value="SOL"');
 });
 

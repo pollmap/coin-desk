@@ -1,7 +1,7 @@
 import type { Asset, Metric } from './types';
 export const ASSETS: { id: Asset; name: string; color: string; logo: string }[] = [
   { id: 'BTC', name: '비트코인', color: '#f59c39', logo: '/coin-logos/btc.png' },
-  { id: 'DOGE', name: '도지코인', color: '#c4a34d', logo: '/coin-logos/doge.png' },
+  { id: 'DOGE', name: '도지코인', color: '#c4a34d', logo: '/coin-logos/doge-official.png' },
   { id: 'ETH', name: '이더리움', color: '#899cff', logo: '/coin-logos/eth.png' },
   { id: 'SOL', name: '솔라나', color: '#73dac5', logo: '/coin-logos/sol.png' },
   { id: 'XRP', name: '리플', color: '#d2d9e2', logo: '/coin-logos/xrp.png' },

@@ -4,10 +4,12 @@ import { METRICS } from '../shared/catalog';
 import { ThresholdLegend } from './ThresholdLegend';
 export function MetricGuide({
   id,
+  compact = false,
   expanded = false,
   showThresholds = true,
 }: {
   id: string;
+  compact?: boolean;
   expanded?: boolean;
   showThresholds?: boolean;
 }) {
@@ -17,7 +19,7 @@ export function MetricGuide({
     <details className="metric-guide" open={expanded || undefined}>
       <summary>
         <span>읽는 방법</span>
-        {guide.question}
+        {compact ? null : guide.question}
       </summary>
       {showThresholds ? <ThresholdLegend id={id} showReading={false} /> : null}
       <div className="guide-columns">

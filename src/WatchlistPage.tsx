@@ -1,3 +1,5 @@
+import { matchesCoin } from '../shared/coin-search';
+import { useMarket } from './useMarket';
 import { useEffect, useMemo, useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import { Star, RefreshCw } from 'lucide-react';
@@ -9,7 +11,7 @@ import { usePersonalDesk } from './PersonalDesk';
 
 export function WatchlistPage() {
   const [params, setParams] = useSearchParams();
-  const market: Market = params.get('market') === 'upbit' ? 'upbit' : 'binance';
+  const { market } = useMarket();
   const { desk, update } = usePersonalDesk();
   const [search, setSearch] = useState('');
   const [onlyFavorites, setOnlyFavorites] = useState(false);
@@ -77,9 +79,7 @@ export function WatchlistPage() {
   const assets = useMemo(
     () =>
       ASSETS.filter(
-        (a) =>
-          (!onlyFavorites || desk.favorites.includes(a.id)) &&
-          (a.id + ' ' + a.name).toLowerCase().includes(search.toLowerCase().trim()),
+        (a) => (!onlyFavorites || desk.favorites.includes(a.id)) && matchesCoin(a.id, search),
       ).sort((a, b) => {
         if (sort === 'default')
           return Number(desk.favorites.includes(b.id)) - Number(desk.favorites.includes(a.id));
