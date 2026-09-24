@@ -52,6 +52,35 @@ const call = async (path, method = 'GET') => {
   );
   return { status: response.status, data: await response.json() };
 };
+it('refreshes a quote after one minute and shares that refresh with subsequent readers', async () => {
+  const now = Math.floor(Date.now() / 1000);
+  DB.sqlite
+    .prepare('INSERT INTO snapshots VALUES(?,?,?)')
+    .run(
+      'quote:BTC:binance',
+      JSON.stringify({ asset: 'BTC', price: 100, time: now - 61 }),
+      now - 61,
+    );
+  const send = mockSocket(200, {
+    symbol: 'BTCUSDT',
+    lastPrice: '120',
+    priceChangePercent: '1',
+    quoteVolume: '1000',
+    highPrice: '125',
+    lowPrice: '90',
+    closeTime: now * 1000,
+  });
+  try {
+    const first = await call('overview');
+    const second = await call('overview');
+    expect(first.data.quote.price).toBe(120);
+    expect(second.data.quote.price).toBe(120);
+    expect(first.data.meta.stale).toBe(false);
+    expect(send).toHaveBeenCalledTimes(1);
+  } finally {
+    vi.unstubAllGlobals();
+  }
+});
 it('overview bypasses stale edge responses after the server updates its snapshot', async () => {
   const now = Math.floor(Date.now() / 1000);
   const quote = { asset: 'BTC', price: 120, time: now };

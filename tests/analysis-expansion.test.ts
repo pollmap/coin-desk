@@ -83,8 +83,17 @@ describe('Bybit USDT perpetual history', () => {
     db.sqlite.close();
   });
   it('keeps negative funding in percentage points, rejects mixed symbols and future observations', () => {
-    const rows = [{ symbol: 'DOGEUSDT', fundingRateTimestamp: String((utc - 3600) * 1000), fundingRate: '-0.0001' }];
-    const response = (list: unknown[], symbol = 'DOGEUSDT') => ({ retCode: 0, result: { category: 'linear', symbol, list } });
+    const rows = [
+      {
+        symbol: 'DOGEUSDT',
+        fundingRateTimestamp: String((utc - 3600) * 1000),
+        fundingRate: '-0.0001',
+      },
+    ];
+    const response = (list: unknown[], symbol = 'DOGEUSDT') => ({
+      retCode: 0,
+      result: { category: 'linear', symbol, list },
+    });
     expect(parseDerivativeRows(response(rows), 'DOGE', 'funding', utc)).toEqual([
       { time: utc - 3600, value: -0.01 },
     ]);
@@ -107,20 +116,50 @@ describe('Bybit USDT perpetual history', () => {
     ).toBe(123.5);
   });
   it('reads long-holder share as a percentage and rejects inconsistent or mixed contracts', () => {
-    const row = { symbol: 'DOGEUSDT', timestamp: String((utc - 3600) * 1000), buyRatio: '0.4927', sellRatio: '0.5073' };
+    const row = {
+      symbol: 'DOGEUSDT',
+      timestamp: String((utc - 3600) * 1000),
+      buyRatio: '0.4927',
+      sellRatio: '0.5073',
+    };
     const payload = (list: unknown[]) => ({ retCode: 0, result: { list } });
-    expect(parseDerivativeRows(payload([row]), 'DOGE', 'long_account_ratio', utc))
-      .toEqual([{ time: utc - 3600, value: 49.27 }]);
-    expect(() => parseDerivativeRows(payload([{ ...row, symbol: 'BTCUSDT' }]), 'DOGE', 'long_account_ratio', utc)).toThrow('symbol');
-    expect(() => parseDerivativeRows(payload([{ ...row, sellRatio: '0.3' }]), 'DOGE', 'long_account_ratio', utc)).toThrow();
+    expect(parseDerivativeRows(payload([row]), 'DOGE', 'long_account_ratio', utc)).toEqual([
+      { time: utc - 3600, value: 49.27 },
+    ]);
+    expect(() =>
+      parseDerivativeRows(
+        payload([{ ...row, symbol: 'BTCUSDT' }]),
+        'DOGE',
+        'long_account_ratio',
+        utc,
+      ),
+    ).toThrow('symbol');
+    expect(() =>
+      parseDerivativeRows(
+        payload([{ ...row, sellRatio: '0.3' }]),
+        'DOGE',
+        'long_account_ratio',
+        utc,
+      ),
+    ).toThrow();
   });
   it('persists actual pages and returns an exclusive range with source, units and cursor', async () => {
     const base = utc - 16 * 3600;
     const fetcher = vi.fn(async (_url: string) =>
-      Response.json({ retCode: 0, result: { category: 'linear', list: [
-        { symbol: 'BTCUSDT', fundingRateTimestamp: String((base + 8 * 3600) * 1000), fundingRate: '-0.0002' },
-        { symbol: 'BTCUSDT', fundingRateTimestamp: String(base * 1000), fundingRate: '0.0001' },
-      ] } }),
+      Response.json({
+        retCode: 0,
+        result: {
+          category: 'linear',
+          list: [
+            {
+              symbol: 'BTCUSDT',
+              fundingRateTimestamp: String((base + 8 * 3600) * 1000),
+              fundingRate: '-0.0002',
+            },
+            { symbol: 'BTCUSDT', fundingRateTimestamp: String(base * 1000), fundingRate: '0.0001' },
+          ],
+        },
+      }),
     );
     vi.stubGlobal('fetch', fetcher);
     await updateDerivatives(env, 'BTC', 'funding');
@@ -147,21 +186,94 @@ describe('Bybit USDT perpetual history', () => {
       openInterest: String(1000 + index),
     }));
     const older = [{ timestamp: String((utc - 201 * 3600) * 1000), openInterest: '1201' }];
-    const fetcher = vi.fn(async (_url: string) => Response.json({
-      retCode: 0,
-      result: { category: 'linear', symbol: 'DOGEUSDT', list: fetcher.mock.calls.length === 1 ? initial : older },
-    }));
+    const fetcher = vi.fn(async (_url: string) =>
+      Response.json({
+        retCode: 0,
+        result: {
+          category: 'linear',
+          symbol: 'DOGEUSDT',
+          list: fetcher.mock.calls.length === 1 ? initial : older,
+        },
+      }),
+    );
     vi.stubGlobal('fetch', fetcher);
     await updateDerivatives(env, 'DOGE', 'open_interest');
     await updateDerivatives(env, 'DOGE', 'open_interest');
     const requested = new URL(String(fetcher.mock.calls[1]?.[0]));
     expect(requested.searchParams.get('endTime')).toBe(String((utc - 200 * 3600) * 1000 - 1));
     expect(requested.searchParams.get('intervalTime')).toBe('1h');
-    const result = await readDerivativeSeries(db, 'DOGE', 'open_interest', utc - 30 * DAY, utc, 1000);
+    const result = await readDerivativeSeries(
+      db,
+      'DOGE',
+      'open_interest',
+      utc - 30 * DAY,
+      utc,
+      1000,
+    );
     expect(result.data).toHaveLength(201);
     expect(result.meta.unit).toBe('DOGE');
     expect(result.data[0].value).toBe(1201);
-    expect(db.sqlite.prepare("SELECT value FROM state WHERE key='cursor:derivatives:DOGE:open_interest'").get()).toBeUndefined();
+    expect(
+      db.sqlite
+        .prepare("SELECT value FROM state WHERE key='cursor:derivatives:DOGE:open_interest'")
+        .get(),
+    ).toBeUndefined();
+  });
+  it('backfills daily observations past 30 days without contaminating hourly series', async () => {
+    const initial = Array.from({ length: 200 }, (_, index) => ({
+      timestamp: String((utc - (index + 1) * DAY) * 1000),
+      openInterest: '123',
+    }));
+    const fetcher = vi.fn(async (_url: string) =>
+      Response.json({
+        retCode: 0,
+        result: {
+          category: 'linear',
+          symbol: 'DOGEUSDT',
+          list:
+            fetcher.mock.calls.length === 1
+              ? initial
+              : [{ timestamp: String((utc - 201 * DAY) * 1000), openInterest: '456' }],
+        },
+      }),
+    );
+    vi.stubGlobal('fetch', fetcher);
+    await updateDerivatives(env, 'DOGE', 'open_interest_daily');
+    expect(
+      (await readDerivativeSeries(db, 'DOGE', 'open_interest_daily', 0, utc, 1000)).meta
+        .sourceStatus,
+    ).toBe('backfilling');
+    await updateDerivatives(env, 'DOGE', 'open_interest_daily');
+    expect(new URL(String(fetcher.mock.calls[1][0])).searchParams.get('intervalTime')).toBe('1d');
+    const daily = await readDerivativeSeries(db, 'DOGE', 'open_interest_daily', 0, utc, 1000);
+    expect(daily.data).toHaveLength(201);
+    expect(daily.meta).toMatchObject({
+      historyStart: utc - 201 * DAY,
+      observationInterval: '1d',
+      sourceStatus: 'available',
+    });
+    expect(
+      (await readDerivativeSeries(db, 'DOGE', 'open_interest', 0, utc, 1000)).data,
+    ).toHaveLength(0);
+  });
+  it('rejects a source that ignores the historical cursor without overwriting valid history', async () => {
+    const list = Array.from({ length: 200 }, (_, index) => ({
+      symbol: 'BTCUSDT',
+      timestamp: String((utc - (index + 1) * DAY) * 1000),
+      buyRatio: '0.6',
+      sellRatio: '0.4',
+    }));
+    vi.stubGlobal(
+      'fetch',
+      vi.fn(async () => Response.json({ retCode: 0, result: { list } })),
+    );
+    await updateDerivatives(env, 'BTC', 'long_account_ratio_daily');
+    await expect(updateDerivatives(env, 'BTC', 'long_account_ratio_daily')).rejects.toThrow(
+      'cursor',
+    );
+    expect(
+      (await readDerivativeSeries(db, 'BTC', 'long_account_ratio_daily', 0, utc, 1000)).data,
+    ).toHaveLength(200);
   });
 });
 

@@ -30,6 +30,8 @@ beforeEach(() => {
     'derivatives:BTC:funding',
     'derivatives:BTC:open_interest',
     'derivatives:BTC:long_account_ratio',
+    'derivatives:BTC:open_interest_daily',
+    'derivatives:BTC:long_account_ratio_daily',
   ])
     DB.sqlite
       .prepare('INSERT INTO ingestion(key,last_attempt,last_success,data_as_of) VALUES(?,?,?,?)')
@@ -146,7 +148,7 @@ it('outage recovery asks from the stored boundary', async () => {
     },
   ]);
   await scheduled(env);
-  expect(getRecentCandles).toHaveBeenCalledWith('BTC', 'binance', '1h', old - 7200);
+  expect(getRecentCandles).toHaveBeenCalledWith('BTC', 'binance', '1h', old - 7200, env);
 });
 it('unchanged source candles do not rewrite history, but corrections replace the stored value', async () => {
   const time = Math.floor(now / 3600) * 3600 - 3600;

@@ -8,7 +8,7 @@ export interface Env {
   ENABLED_ASSETS: string;
 }
 export const epoch = () => Math.floor(Date.now() / 1000);
-export const QUOTE_REFRESH_SECONDS = 180;
+export const QUOTE_REFRESH_SECONDS = 60;
 export function refreshLeaseStatement(db: D1Database, key: string, seconds: number, now = epoch()) {
   return db
     .prepare(

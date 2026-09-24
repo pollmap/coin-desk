@@ -194,15 +194,48 @@ button:disabled {
   font-weight: 400;
   padding-left: 15px;
 }
-.coin-nav-list { display: grid; gap: 4px; margin-top: 8px; }
-.coin-nav-group { border: 1px solid transparent; border-radius: 7px; }
-.coin-nav-group.current { border-color: var(--border); background: var(--panel); }
-.app .sidebar .coin-nav-title { display: flex; align-items: center; gap: 8px; min-height: 38px; color: var(--text); }
-.coin-nav-title b { font-size: 12px; }
-.coin-nav-title span { color: var(--muted); font-size: 11px; }
-.app .coin-nav-group nav { margin: 0 8px 8px 29px; padding-left: 8px; border-left: 1px solid var(--border); gap: 1px; }
-.app .coin-nav-group nav a { min-height: 29px; padding: 5px 8px; font-size: 11px; }
-.nav-groups .market-nav { margin-top: 14px; border-top: 1px solid var(--border); }
+.coin-nav-list {
+  display: grid;
+  gap: 4px;
+  margin-top: 8px;
+}
+.coin-nav-group {
+  border: 1px solid transparent;
+  border-radius: 7px;
+}
+.coin-nav-group.current {
+  border-color: var(--border);
+  background: var(--panel);
+}
+.app .sidebar .coin-nav-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 38px;
+  color: var(--text);
+}
+.coin-nav-title b {
+  font-size: 12px;
+}
+.coin-nav-title span {
+  color: var(--muted);
+  font-size: 11px;
+}
+.app .coin-nav-group nav {
+  margin: 0 8px 8px 29px;
+  padding-left: 8px;
+  border-left: 1px solid var(--border);
+  gap: 1px;
+}
+.app .coin-nav-group nav a {
+  min-height: 29px;
+  padding: 5px 8px;
+  font-size: 11px;
+}
+.nav-groups .market-nav {
+  margin-top: 14px;
+  border-top: 1px solid var(--border);
+}
 .nav-utilities {
   padding-top: 14px;
   border-top: 1px solid var(--border);
@@ -1227,4 +1260,95 @@ html[data-theme='light'] .app input[type='date'] {
 /* Reserve the plot while history loads so lower charts stay deferred. */
 .app .long-history-panel .loading {
   min-height: 440px;
+}
+.asset-sections {
+  display: flex;
+  gap: 6px;
+  margin: 12px 0 16px;
+  flex-wrap: wrap;
+}
+.asset-sections a {
+  padding: 9px 14px;
+  border-radius: 6px;
+  color: var(--muted);
+  text-decoration: none;
+  border: 1px solid transparent;
+  font-size: 13px;
+}
+.asset-sections a.selected {
+  color: var(--text);
+  background: var(--surface);
+  border-color: var(--border);
+  font-weight: 700;
+}
+.metric-filter {
+  width: 100%;
+  max-width: 400px;
+  padding: 10px;
+  margin: 14px 0 4px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--bg);
+  color: var(--text);
+}
+.app .network-main .metric-detail-top > div:first-child {
+  display: grid;
+  gap: 5px;
+  min-width: 0;
+}
+.app .network-main .metric-detail-top h2 {
+  margin: 0;
+}
+.app .network-main .metric-detail-top strong {
+  font-size: 24px;
+  overflow-wrap: anywhere;
+}
+.app .network-main .metric-detail-top span {
+  font-size: 11px;
+}
+.app .network-period-actions {
+  align-self: center;
+}
+.app .network-period-actions .period-mobile-select {
+  min-height: 36px;
+  padding: 7px 12px;
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  color: var(--text);
+  background: var(--surface);
+}
+.network-metric-group h3 {
+  font-size: 12px;
+  color: var(--muted);
+  margin: 15px 0 8px;
+}
+.derivatives-toolbar select {
+  padding: 7px;
+  color: var(--text);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 5px;
+}
+@media (max-width: 650px) {
+  .app .network-main .network-period-actions .segments {
+    display: none;
+  }
+  .app .network-main .network-period-actions .period-mobile-select {
+    display: block;
+  }
+  .asset-sections {
+    gap: 2px;
+  }
+  .asset-sections a {
+    padding: 9px 11px;
+    font-size: 12px;
+  }
+  .derivatives-panel .panel-title {
+    align-items: flex-start;
+    gap: 6px;
+    flex-direction: column;
+  }
+  .derivatives-latest {
+    flex-wrap: wrap;
+  }
 }

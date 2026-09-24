@@ -116,9 +116,8 @@ const expanded = [
     title: coin + ' 펀딩비·미결제약정',
     description: 'Bybit USDT 무기한 선물 한 거래소의 실제 확보 이력을 가격과 비교합니다.',
     formula: '펀딩비 = 정산 비율(%) · 미결제약정 = 코인 수량',
-    to: '/?asset=' + coin + '&period=all#derivatives',
-    source:
-      'https://bybit-exchange.github.io/docs/v5/market/history-fund-rate',
+    to: '/futures/' + coin,
+    source: 'https://bybit-exchange.github.io/docs/v5/market/history-fund-rate',
   })),
 ];
 export function MetricsExplorer() {

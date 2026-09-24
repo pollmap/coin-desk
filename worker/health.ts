@@ -68,8 +68,8 @@ export function jobPolicies(assets: Asset[], rebuilding: boolean): JobPolicy[] {
         jobs.push({
           key: `derivatives:${asset}:${metric}`,
           kind: 'derivatives',
-          every: 3600,
-          maxLag: metric === 'funding' ? 36 * 3600 : 3 * 3600,
+          every: metric.endsWith('_daily') ? 21600 : 3600,
+          maxLag: metric.endsWith('_daily') ? 3 * DAY : metric === 'funding' ? 36 * 3600 : 3 * 3600,
           assets: [asset],
         });
   for (const asset of REFERENCE_ASSETS)
@@ -91,13 +91,13 @@ export function jobPolicies(assets: Asset[], rebuilding: boolean): JobPolicy[] {
         assets: [asset],
       });
   for (const market of ['binance', 'upbit'] as Market[]) {
-    for (let start = 0; start < assets.length; start += 4)
+    for (let start = 0; start < assets.length; start += 8)
       jobs.push({
-        key: 'quotes:' + market + ':' + start / 4,
+        key: 'quotes:' + market + ':' + start / 8,
         kind: 'quote-batch',
         every: BACKGROUND_QUOTE_SECONDS,
         maxLag: 600,
-        assets: assets.slice(start, start + 4),
+        assets: assets.slice(start, start + 8),
         market,
       });
     for (const asset of assets)
@@ -143,49 +143,74 @@ export function selectJob(jobs: JobPolicy[], states: IngestionState[], now: numb
   // minutes can push a healthy 8-minute cycle beyond the 10-minute health limit.
   // Other sources still use the remaining slots between quote batches.
   return (
-    eligible.find((item) => item.job.kind === 'quote-batch') ||
-    eligible.find((item) => item.job.kind === 'mempool') ||
+    eligible.find(
+      ({ job }) =>
+        job.kind === 'quote-batch' &&
+        job.assets?.some(
+          (asset) =>
+            !states.find((state) => state.key === `quote:${asset}:${job.market}`)?.failures,
+        ),
+    ) ||
+    eligible.find(
+      ({ job }) =>
+        job.kind === 'mempool' && !states.find((state) => state.key === job.key)?.failures,
+    ) ||
     eligible[0]
   )?.job;
 }
 
 export async function operationStatus(env: Env) {
   const now = epoch();
-  const [ingestion, historyRows, state, runs, observation, build, snapshots, onchain, references, networks] =
-    await Promise.all([
-      env.DB.prepare('SELECT * FROM ingestion ORDER BY key').all<IngestionState>(),
-      env.DB.prepare("SELECT value FROM state WHERE key LIKE 'history:%'").all<{ value: string }>(),
-      env.DB.prepare('SELECT * FROM cron_state WHERE id=1').first<CronState>(),
-      env.DB.prepare('SELECT * FROM cron_runs ORDER BY started_at DESC LIMIT 20').all<{
-        run_id: string;
-        started_at: number;
-        completed_at: number | null;
-        job: string | null;
-        outcome: string;
-        error: string | null;
+  const [
+    ingestion,
+    historyRows,
+    state,
+    runs,
+    observation,
+    build,
+    snapshots,
+    onchain,
+    references,
+    networks,
+  ] = await Promise.all([
+    env.DB.prepare('SELECT * FROM ingestion ORDER BY key').all<IngestionState>(),
+    env.DB.prepare("SELECT value FROM state WHERE key LIKE 'history:%'").all<{ value: string }>(),
+    env.DB.prepare('SELECT * FROM cron_state WHERE id=1').first<CronState>(),
+    env.DB.prepare('SELECT * FROM cron_runs ORDER BY started_at DESC LIMIT 20').all<{
+      run_id: string;
+      started_at: number;
+      completed_at: number | null;
+      job: string | null;
+      outcome: string;
+      error: string | null;
+    }>(),
+    env.DB.prepare(
+      "SELECT COUNT(*) AS ticks,MIN(started_at) AS first,MAX(started_at) AS last,SUM(CASE WHEN outcome IN ('error','partial','interrupted') THEN 1 ELSE 0 END) AS failures FROM cron_runs WHERE started_at>=?",
+    )
+      .bind(now - 48 * 3600)
+      .first<{
+        ticks: number;
+        first: number | null;
+        last: number | null;
+        failures: number | null;
       }>(),
-      env.DB.prepare(
-        "SELECT COUNT(*) AS ticks,MIN(started_at) AS first,MAX(started_at) AS last,SUM(CASE WHEN outcome IN ('error','partial','interrupted') THEN 1 ELSE 0 END) AS failures FROM cron_runs WHERE started_at>=?",
-      ).bind(now - 48 * 3600).first<{
-        ticks: number; first: number | null; last: number | null; failures: number | null;
-      }>(),
-      env.DB.prepare('SELECT value FROM state WHERE key=?').bind('onchain_build').first(),
-      env.DB.prepare("SELECT key,fetched_at FROM snapshots WHERE key LIKE 'quote:%'").all<{
-        key: string;
-        fetched_at: number;
-      }>(),
-      env.DB.prepare(
-        "SELECT time FROM onchain WHERE generation=(SELECT json_extract(value,'$') FROM state WHERE key='onchain_generation') ORDER BY time DESC LIMIT 1",
-      ).first<{ time: number }>(),
-      env.DB.prepare(
-        `WITH wanted(asset) AS (VALUES${REFERENCE_ASSETS.map(() => '(?)').join(',')}) SELECT asset,(SELECT time FROM reference_prices r WHERE r.asset=wanted.asset ORDER BY time LIMIT 1) AS first,(SELECT time FROM reference_prices r WHERE r.asset=wanted.asset ORDER BY time DESC LIMIT 1) AS last FROM wanted`,
-      )
-        .bind(...REFERENCE_ASSETS)
-        .all<{ asset: string; first: number | null; last: number | null }>(),
-      env.DB.prepare(
-        "SELECT asset,MIN(first) AS first,MAX(last) AS last,MIN(last) AS oldest,COUNT(*) AS metrics FROM network_coverage WHERE metric!='price' GROUP BY asset",
-      ).all<{ asset: Asset; first: number; last: number; oldest: number; metrics: number }>(),
-    ]);
+    env.DB.prepare('SELECT value FROM state WHERE key=?').bind('onchain_build').first(),
+    env.DB.prepare("SELECT key,fetched_at FROM snapshots WHERE key LIKE 'quote:%'").all<{
+      key: string;
+      fetched_at: number;
+    }>(),
+    env.DB.prepare(
+      "SELECT time FROM onchain WHERE generation=(SELECT json_extract(value,'$') FROM state WHERE key='onchain_generation') ORDER BY time DESC LIMIT 1",
+    ).first<{ time: number }>(),
+    env.DB.prepare(
+      `WITH wanted(asset) AS (VALUES${REFERENCE_ASSETS.map(() => '(?)').join(',')}) SELECT asset,(SELECT time FROM reference_prices r WHERE r.asset=wanted.asset ORDER BY time LIMIT 1) AS first,(SELECT time FROM reference_prices r WHERE r.asset=wanted.asset ORDER BY time DESC LIMIT 1) AS last FROM wanted`,
+    )
+      .bind(...REFERENCE_ASSETS)
+      .all<{ asset: string; first: number | null; last: number | null }>(),
+    env.DB.prepare(
+      "SELECT asset,MIN(first) AS first,MAX(last) AS last,MIN(last) AS oldest,COUNT(*) AS metrics FROM network_coverage WHERE metric!='price' GROUP BY asset",
+    ).all<{ asset: Asset; first: number; last: number; oldest: number; metrics: number }>(),
+  ]);
   const assets = enabledAssets(env),
     rebuilding = !!build;
   const policies = jobPolicies(assets, rebuilding);
@@ -371,8 +396,11 @@ export async function operationStatus(env: Env) {
         lastRunAt: observation?.last ?? null,
         ticks: observation?.ticks ?? 0,
         failures: observation?.failures ?? 0,
-        ready: !!observation?.first && observation.first <= now - 48 * 3600 + 60 &&
-          !!observation.last && now - observation.last <= 180,
+        ready:
+          !!observation?.first &&
+          observation.first <= now - 48 * 3600 + 60 &&
+          !!observation.last &&
+          now - observation.last <= 180,
       },
       cadence: {
         quoteBackgroundTargetSeconds: BACKGROUND_QUOTE_SECONDS,
