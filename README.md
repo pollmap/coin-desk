@@ -1,6 +1,6 @@
 # Coin Desk
 
-현재 릴리스: **0.10.0**. 코인별 전체 가격·기술적 분석·온체인·선물 화면을 연결하고, 온체인은 용도별로 분류합니다. BTC·DOGE·ETH 선물의 일별 장기 이력과 최근 시간별 이력은 구분합니다. [0.10 변경·검증 기록](docs/UPGRADE10.md) · [DOGE 선물](https://coin-desk.pages.dev/futures/DOGE).
+현재 릴리스: **0.11.0**. 코인 선택 하나와 전체 가격·기술적 분석·온체인·선물 탭으로 탐색을 통일했습니다. 차트를 먼저 보여주고 설명·계산식은 펼쳐 읽습니다. 모바일 시세 목록과 공통 차트 도구, 선물 키보드 탐색을 개선했습니다. [0.11 전후 화면·검증 기록](docs/UPGRADE11.md) · [DOGE 전체 가격](https://coin-desk.pages.dev/?asset=DOGE&period=all).
 
 [![CI](https://github.com/pollmap/coin-desk/actions/workflows/ci.yml/badge.svg)](https://github.com/pollmap/coin-desk/actions/workflows/ci.yml)
 [사이트 열기](https://coin-desk.pages.dev) · [도지코인 차트](https://coin-desk.pages.dev/chart/DOGE) · [코인 성과 비교](https://coin-desk.pages.dev/compare) · [관심 코인](https://coin-desk.pages.dev/coins) · [시장 도미넌스](https://coin-desk.pages.dev/dominance)
@@ -21,9 +21,9 @@ BTC·DOGE 전체 이력에는 과거 730일의 로그가격만 사용해 매일 
 
 | 영역 | 구현 내용 |
 |---|---|
-| 탐색·화면 | 한글·영문 코인/지표 검색, 분류별 사이드바, BTC·DOGE·ETH 바로가기, 접기·모바일 서랍, 다크/라이트 테마 |
+| 탐색·화면 | 한글·영문 코인/지표 검색, 6개 목적지 사이드바, 단일 코인 선택과 분석 탭, 접기·모바일 서랍, 다크/라이트 테마 |
 | 이력 탐색 | 전체 이력 미니 차트와 범위 슬라이더, 공통 전체화면·공유·CSV, 설명 탭 |
-| 관심 자산 | **BTC → DOGE → ETH** 가격·등락률·기준일을 첫 화면에 병렬 표시, SOL·XRP·LINK·ONDO·PEPE는 펼침 메뉴; 8개 코인 로고와 출처 고지 |
+| 관심 자산 | BTC·DOGE·ETH·SOL·XRP·LINK·ONDO·PEPE 선택, 코인별 전체 가격; 시장 시세에서 가격·등락·기술지표 비교와 즐겨찾기 |
 | 관심 코인 `/coins` | 별표 즐겨찾기·검색, 즐겨찾기/상승률/하락률/거래대금 정렬, RSI 14·200일선 대비 가격 위치 |
 | 실제 거래소 가격 | 8개 모두 Binance USDT / Upbit KRW, 환율 환산 없이 시장 전환 |
 | 장기 조망 `/` | BTC 2010년·DOGE 2014년·ETH 2015년부터의 Coin Metrics USD 일별 참조가격, 전체 기간 우선·로그축 |

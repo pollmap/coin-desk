@@ -52,7 +52,7 @@ export function NetworkChart({
   const chart = useRef<IChartApi | null>(null);
   const line = useRef<ISeriesApi<'Line'> | null>(null);
   const priceLine = useRef<ISeriesApi<'Line'> | null>(null);
-  const [showPrice, setShowPrice] = useState(true);
+  const [showPrice, setShowPrice] = useState(false);
   const bands = useRef<ThresholdBands | null>(null);
   const boundaries = useRef<IPriceLine[]>([]);
   const lastView = useRef<{ key: string; from: UTCTimestamp; to: UTCTimestamp } | null>(null);
@@ -193,13 +193,11 @@ export function NetworkChart({
     priceLine.current?.setData(series.price.map((p) => ({ time: ts(p.time), value: p.value })));
     priceLine.current?.applyOptions({ visible: showPrice });
     if (unit !== 'USD')
-      chart.current
-        ?.priceScale('left')
-        .applyOptions({
-          visible: showPrice && !!series.price.length,
-          mode: PriceScaleMode.Logarithmic,
-          borderVisible: false,
-        });
+      chart.current?.priceScale('left').applyOptions({
+        visible: showPrice && !!series.price.length,
+        mode: PriceScaleMode.Logarithmic,
+        borderVisible: false,
+      });
   }, [series.price, showPrice, points, asset, metric, unit]);
   useEffect(() => {
     const visible = points.filter(
@@ -259,6 +257,32 @@ export function NetworkChart({
   }
   return (
     <>
+      <div className="chart-actions">
+        <button
+          aria-pressed={showPrice}
+          disabled={!series.price.length}
+          onClick={() => setShowPrice((v) => !v)}
+        >
+          USD 가격 {showPrice ? '숨기기' : '표시'}
+        </button>
+        <button
+          aria-pressed={log && logAllowed}
+          disabled={!logAllowed}
+          title={logReason || undefined}
+          onClick={() => setLog((v) => !v)}
+        >
+          로그축 {log && logAllowed ? '켜짐' : '꺼짐'}
+        </button>
+        {definition ? (
+          <button
+            aria-pressed={showThresholds}
+            onClick={() => setShowThresholds((value) => !value)}
+          >
+            손익 구간 {showThresholds ? '숨기기' : '표시'}
+          </button>
+        ) : null}
+        {logReason ? <small className="muted">{logReason}</small> : null}
+      </div>
       {definition ? (
         <ThresholdSummary
           id={thresholdId}
@@ -321,37 +345,11 @@ export function NetworkChart({
         label={title}
         unit={unit}
         source={series.meta.source}
+        onZoom={zoom}
+        onReset={all}
+        onExport={download}
+        exportLabel="전체 CSV"
       />
-      <div className="chart-actions">
-        <button
-          aria-pressed={showPrice}
-          disabled={!series.price.length}
-          onClick={() => setShowPrice((v) => !v)}
-        >
-          USD 가격 {showPrice ? '숨기기' : '표시'}
-        </button>
-        <button onClick={() => zoom(1 / 1.4)}>＋ 확대</button>
-        <button onClick={() => zoom(1.4)}>− 축소</button>
-        <button onClick={all}>전체 이력 보기</button>
-        <button
-          aria-pressed={log && logAllowed}
-          disabled={!logAllowed}
-          title={logReason || undefined}
-          onClick={() => setLog((v) => !v)}
-        >
-          로그축 {log && logAllowed ? '켜짐' : '꺼짐'}
-        </button>
-        {definition ? (
-          <button
-            aria-pressed={showThresholds}
-            onClick={() => setShowThresholds((value) => !value)}
-          >
-            손익 구간 {showThresholds ? '숨기기' : '표시'}
-          </button>
-        ) : null}
-        <button onClick={download}>전체 CSV</button>
-        {logReason ? <small className="muted">{logReason}</small> : null}
-      </div>
       {definition ? (
         <ThresholdLegend
           id={thresholdId}

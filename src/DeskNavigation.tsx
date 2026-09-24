@@ -1,10 +1,12 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Link, NavLink, useLocation } from 'react-router-dom';
 import {
   Search,
-  LayoutDashboard,
   ChartNoAxesCombined,
   Activity,
+  ArrowLeftRight,
+  Coins,
+  X,
   Layers,
   Star,
   Database,
@@ -47,7 +49,6 @@ export function DeskNavigation({ onNavigate }: { onNavigate: () => void }) {
     saved('lastAsset', 'BTC');
   const asset: Asset = ASSETS.find((a) => a.id === candidate)?.id || 'BTC';
   const section = coinSection(location.pathname, location.hash);
-  const activeAsset = section ? asset : null;
   const networkAsset = isNetworkAsset(asset) ? asset : 'BTC';
   const entries = useMemo(
     () =>
@@ -96,7 +97,15 @@ export function DeskNavigation({ onNavigate }: { onNavigate: () => void }) {
           placeholder="코인·지표 검색"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === 'Escape') setQuery('');
+          }}
         />
+        {query && (
+          <button aria-label="검색 지우기" onClick={() => setQuery('')}>
+            <X size={14} />
+          </button>
+        )}
       </label>
       {query.trim() ? (
         <nav className="nav-search-results" aria-label="검색 결과" onClick={onNavigate}>
@@ -117,75 +126,37 @@ export function DeskNavigation({ onNavigate }: { onNavigate: () => void }) {
       ) : (
         <>
           <nav className="primary-nav" onClick={onNavigate} aria-label="주요 화면">
-            <Link to="/" aria-label="대시보드" title="대시보드">
-              <LayoutDashboard size={17} />
-              <span>대시보드</span>
+            <Link
+              to={`/?asset=${asset}&period=all`}
+              className={section ? 'active' : ''}
+              aria-current={section ? 'page' : undefined}
+              aria-label="코인 분석"
+              title="코인 분석"
+            >
+              <ChartNoAxesCombined size={18} />
+              <span>코인 분석</span>
             </Link>
-            <Link to={'/chart/' + asset} aria-label="기술적 분석" title="기술적 분석">
-              <ChartNoAxesCombined size={17} />
-              <span>기술적 분석</span>
-            </Link>
-            <NavLink to="/explore" aria-label="온체인 · 지표 탐색" title="온체인 · 지표 탐색">
-              <Layers size={17} />
-              <span>온체인 · 지표 탐색</span>
+            <NavLink to="/coins" aria-label="시장 시세" title="시장 시세">
+              <Coins size={18} />
+              <span>시장 시세</span>
+            </NavLink>
+            <NavLink to="/compare" aria-label="성과 비교" title="성과 비교">
+              <ArrowLeftRight size={18} />
+              <span>성과 비교</span>
+            </NavLink>
+            <NavLink to="/explore" aria-label="지표 찾기" title="지표 찾기">
+              <Layers size={18} />
+              <span>지표 찾기</span>
+            </NavLink>
+            <NavLink to="/dominance" aria-label="시장 비중" title="시장 비중">
+              <Activity size={18} />
+              <span>시장 비중</span>
             </NavLink>
             <NavLink to="/workspace" aria-label="내 작업공간" title="내 작업공간">
-              <Star size={17} />
+              <Star size={18} />
               <span>내 작업공간</span>
             </NavLink>
           </nav>
-          <div className="nav-groups">
-            <span className="sidebar-label">코인별 분석</span>
-            <div className="coin-nav-list">
-              {featured.map((id) => {
-                const name = ASSETS.find((item) => item.id === id)!.name;
-                const current = activeAsset === id;
-                const root = `/?asset=${id}&period=all`;
-                const links = [
-                  { id: 'history', label: '전체 가격', to: root },
-                  { id: 'chart', label: '거래소 차트', to: `/chart/${id}?period=all` },
-                  { id: 'onchain', label: '온체인', to: `/onchain/${id}?period=all` },
-                  { id: 'derivatives', label: '선물 · 펀딩비 / 미결제약정', to: `/futures/${id}` },
-                  id === 'BTC'
-                    ? { id: 'cycle', label: '이동평균 · Pi Cycle', to: root + '#btc-cycle' }
-                    : { id: 'relative', label: 'BTC 대비 성과', to: root + '#relative-analysis' },
-                ];
-                return (
-                  <div key={id} className={'coin-nav-group' + (current ? ' current' : '')}>
-                    <Link className="coin-nav-title" to={root} onClick={onNavigate}>
-                      <AssetLogo asset={id} size={19} />
-                      <b>{id}</b>
-                      <span>{name}</span>
-                    </Link>
-                    {current && (
-                      <nav aria-label={`${id} 분석`} onClick={onNavigate}>
-                        {links.map((link) => (
-                          <Link
-                            key={link.id}
-                            to={link.to}
-                            className={section === link.id ? 'active' : ''}
-                            aria-current={section === link.id ? 'page' : undefined}
-                          >
-                            {link.label}
-                          </Link>
-                        ))}
-                      </nav>
-                    )}
-                  </div>
-                );
-              })}
-            </div>
-            <details className="market-nav">
-              <summary>시장 · 비교</summary>
-              <nav onClick={onNavigate}>
-                {marketItems.map((item) => (
-                  <NavLink key={item.to} to={item.to}>
-                    {item.title}
-                  </NavLink>
-                ))}
-              </nav>
-            </details>
-          </div>
         </>
       )}
       <nav className="nav-utilities" onClick={onNavigate}>
@@ -215,7 +186,7 @@ export function DeskTopbar({
   );
   const id = location.pathname.split('/')[2];
   const names: Record<string, string> = {
-    coins: '관심 코인',
+    coins: '시장 시세',
     compare: '코인 성과 비교',
     explore: '지표 탐색',
     dominance: '시장 도미넌스',
@@ -231,30 +202,26 @@ export function DeskTopbar({
         ? `${id} 기술적 분석`
         : location.pathname.startsWith('/onchain/')
           ? `${id} 온체인`
-          : names[location.pathname.split('/')[1]] || '대시보드';
+          : names[location.pathname.split('/')[1]] || '코인 분석';
+  useEffect(() => {
+    document.title = (title || '코인 분석') + ' | Coin Desk';
+  }, [title]);
   return (
     <>
       <button
         className="icon-button sidebar-toggle"
         aria-label={collapsed ? '탐색 메뉴 펼치기' : '탐색 메뉴 접기'}
+        aria-controls="site-sidebar"
         aria-expanded={!collapsed}
         onClick={onCollapse}
       >
         {collapsed ? <PanelLeftOpen size={18} /> : <PanelLeftClose size={18} />}
       </button>
-      <span className="breadcrumb">
+      <span className="breadcrumb" aria-label="현재 위치">
         <Link to="/">Coin Desk</Link>
         <span>/</span>
         <b>{title}</b>
       </span>
-      <div className="topbar-coins">
-        {ASSETS.slice(0, 3).map((a) => (
-          <Link key={a.id} to={`/?asset=${a.id}`}>
-            <AssetLogo asset={a.id} size={18} />
-            {a.id}
-          </Link>
-        ))}
-      </div>
       <button
         className="icon-button theme-toggle"
         aria-label={theme === 'dark' ? '밝은 테마로 변경' : '어두운 테마로 변경'}

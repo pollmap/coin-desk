@@ -191,6 +191,7 @@ function ComparisonChart({
             unit="기준값 100"
             source="선택 거래소 확정 종가"
             onExport={onExport}
+            exportLabel="비교 CSV"
           />
         </>
       ) : null}
@@ -491,62 +492,68 @@ export function ComparePage() {
             비교 링크 복사
           </button>
         </div>
-        <form
-          key={[period, fromValue ?? '', toValue ?? ''].join(':')}
-          ref={dateForm}
-          className="comparison-date-range"
-          onSubmit={(event) => {
-            event.preventDefault();
-            const checked = comparisonDateSubmission(new FormData(event.currentTarget));
-            if (checked.error !== undefined) {
-              setDraftError(checked.error);
-              return;
-            }
-            setDraftError('');
-            change({ from: checked.from, to: checked.to });
-          }}
+        <details
+          className="comparison-custom-dates"
+          open={hasCustom || !!draftError || !!parsed.error || undefined}
         >
-          <label>
-            시작일 (UTC)
-            <input
-              type="date"
-              name="from"
-              defaultValue={fromValue || ''}
-              max={utcDate(Math.floor(Date.now() / 1000 / DAY) * DAY)}
-              onChange={() => setDraftError('')}
-              required
-            />
-          </label>
-          <label>
-            종료일 (UTC)
-            <input
-              type="date"
-              name="to"
-              defaultValue={toValue || ''}
-              max={utcDate(Math.floor(Date.now() / 1000 / DAY) * DAY)}
-              onChange={() => setDraftError('')}
-              required
-            />
-          </label>
-          <button type="submit" className={hasCustom ? 'selected' : ''}>
-            직접 기간 적용
-          </button>
-          {hasCustom ? (
-            <button type="button" onClick={() => change({ period })}>
-              직접 기간 해제
+          <summary>날짜 직접 선택{hasCustom ? ' · 적용 중' : ''}</summary>
+          <form
+            key={[period, fromValue ?? '', toValue ?? ''].join(':')}
+            ref={dateForm}
+            className="comparison-date-range"
+            onSubmit={(event) => {
+              event.preventDefault();
+              const checked = comparisonDateSubmission(new FormData(event.currentTarget));
+              if (checked.error !== undefined) {
+                setDraftError(checked.error);
+                return;
+              }
+              setDraftError('');
+              change({ from: checked.from, to: checked.to });
+            }}
+          >
+            <label>
+              시작일 (UTC)
+              <input
+                type="date"
+                name="from"
+                defaultValue={fromValue || ''}
+                max={utcDate(Math.floor(Date.now() / 1000 / DAY) * DAY)}
+                onChange={() => setDraftError('')}
+                required
+              />
+            </label>
+            <label>
+              종료일 (UTC)
+              <input
+                type="date"
+                name="to"
+                defaultValue={toValue || ''}
+                max={utcDate(Math.floor(Date.now() / 1000 / DAY) * DAY)}
+                onChange={() => setDraftError('')}
+                required
+              />
+            </label>
+            <button type="submit" className={hasCustom ? 'selected' : ''}>
+              직접 기간 적용
             </button>
-          ) : (
-            <span>날짜를 지정하면 위 프리셋 대신 적용합니다.</span>
-          )}
-        </form>
-        {draftError || parsed.error ? (
-          <p className="comparison-date-error" role="alert">
-            {draftError || parsed.error}
-            {parsed.error ? (
-              <button onClick={() => change({ period })}>기본 기간으로 복원</button>
-            ) : null}
-          </p>
-        ) : null}
+            {hasCustom ? (
+              <button type="button" onClick={() => change({ period })}>
+                직접 기간 해제
+              </button>
+            ) : (
+              <span>날짜를 지정하면 위 프리셋 대신 적용합니다.</span>
+            )}
+          </form>
+          {draftError || parsed.error ? (
+            <p className="comparison-date-error" role="alert">
+              {draftError || parsed.error}
+              {parsed.error ? (
+                <button onClick={() => change({ period })}>기본 기간으로 복원</button>
+              ) : null}
+            </p>
+          ) : null}
+        </details>
         {shareUrl ? (
           <div className="comparison-share-result">
             <span role="status">{shareNote}</span>

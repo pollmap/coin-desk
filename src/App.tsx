@@ -1,7 +1,8 @@
 import { DeskNavigation, DeskTopbar } from './DeskNavigation';
 import { AssetLogo } from './AssetLogo';
 import { AssetSections } from './AssetSections';
-import { MainAssetDeck } from './MainAssetDeck';
+import { AssetHeader } from './AssetHeader';
+import { PeriodPicker } from './PeriodPicker';
 import { MetricInfoTabs } from './MetricInfoTabs';
 import { ThresholdMeter } from './ThresholdMeter';
 import { lazy, Suspense, useCallback, useEffect, useMemo, useRef, useState } from 'react';
@@ -11,6 +12,7 @@ import {
   Route,
   Routes,
   useLocation,
+  useNavigate,
   useParams,
   useSearchParams,
 } from 'react-router-dom';
@@ -68,9 +70,6 @@ const HistoryPositionPanel = lazy(() =>
 const RelativeAnalysisPanel = lazy(() =>
   import('./RelativeAnalysisPanel').then((m) => ({ default: m.RelativeAnalysisPanel })),
 );
-const DerivativesPanel = lazy(() =>
-  import('./DerivativesPanel').then((m) => ({ default: m.DerivativesPanel })),
-);
 const MempoolPanel = lazy(() =>
   import('./MempoolPanel').then((m) => ({ default: m.MempoolPanel })),
 );
@@ -122,21 +121,9 @@ function ErrorNotice({ message, retry }: { message?: string; retry: () => void }
   ) : null;
 }
 function Periods({ value, onChange }: { value: Period; onChange: (v: Period) => void }) {
-  return (
-    <div className="segments" aria-label="조회 기간">
-      {periods.map((p) => (
-        <button
-          key={p.id}
-          aria-pressed={value === p.id}
-          className={value === p.id ? 'selected' : ''}
-          onClick={() => onChange(p.id)}
-        >
-          {p.label}
-        </button>
-      ))}
-    </div>
-  );
+  return <PeriodPicker value={value} onChange={onChange} />;
 }
+
 function usePreferences() {
   const [params, setParams] = useSearchParams();
   const initial = useMemo(() => {
@@ -257,12 +244,18 @@ function MetricCard({
 }
 function PricePage({ workspace = false }: { workspace?: boolean }) {
   const route = useParams();
+  const navigate = useNavigate();
+  const routeLocation = useLocation();
   const [params] = useSearchParams();
   const asset = (
     route.asset ||
     params.get('asset') ||
     chartSettings({ asset: saved('lastAsset', 'BTC') }).asset
   ).toUpperCase() as Asset;
+  useEffect(() => {
+    if (routeLocation.hash === '#derivatives' && ['BTC', 'DOGE', 'ETH'].includes(asset))
+      navigate('/futures/' + asset, { replace: true });
+  }, [asset, routeLocation.hash, navigate]);
   const coin = ASSETS.find((a) => a.id === asset);
   const { market, interval, period, indicators, log, change } = usePreferences();
   const hasLongHistory = ['BTC', 'DOGE', 'ETH', 'XRP', 'LINK'].includes(asset);
@@ -297,7 +290,7 @@ function PricePage({ workspace = false }: { workspace?: boolean }) {
     };
   }, []);
   const quote = useData<Overview>(
-    '/api/v1/overview?asset=' + asset + '&market=' + market,
+    historical ? null : '/api/v1/overview?asset=' + asset + '&market=' + market,
     false,
     60000,
   );
@@ -372,96 +365,25 @@ function PricePage({ workspace = false }: { workspace?: boolean }) {
   }
   return (
     <>
-      <div className="page-heading">
-        <div>
-          <div className="eyebrow">{workspace ? 'CHART WORKSPACE' : 'YOUR MARKET DESK'}</div>
-          <h1>{coin.name + (workspace ? ' 차트' : ' 대시보드')}</h1>
-          <p>
-            {historical
-              ? '초기 가격부터 현재까지 전체 흐름을 조망하고, 궁금한 구간을 확대하세요.'
-              : '거래소 가격·기술지표를 원하는 기간과 설정으로 살펴보세요.'}
-          </p>
-        </div>
-        <div className="heading-actions">
-          <span className={'status-pill ' + (quote.error || quote.data?.meta.stale ? 'warn' : '')}>
-            <i />
-            {quote.error
-              ? '시세 연결 오류'
-              : quote.data?.meta.stale
-                ? '시세 갱신 지연'
-                : quote.data
-                  ? '데이터 연결'
-                  : '연결 중'}
-          </span>
-          <button className="icon-button" onClick={share} aria-label="현재 화면 링크 복사">
-            {copied ? <Check size={18} /> : <Link2 size={18} />}
-          </button>
-        </div>
-      </div>
-      {workspace ? (
-        <nav className="asset-switcher" aria-label="분석 코인 선택">
-          {ASSETS.map((a) => (
-            <Link
-              key={a.id}
-              className={a.id === asset ? 'selected' : ''}
-              aria-current={a.id === asset ? 'page' : undefined}
-              to={
-                (workspace ? '/chart/' + a.id : '/') +
-                '?' +
-                new URLSearchParams({
-                  asset: a.id,
-                  market,
-                  interval,
-                  period,
-                  indicators: indicators.join(','),
-                  log: log ? '1' : '0',
-                  cards: cards.join(','),
-                })
-              }
-            >
-              <AssetLogo asset={a.id} size={19} />
-              <b>{a.id}</b>
-              <span>{a.name}</span>
-            </Link>
-          ))}
-        </nav>
-      ) : (
-        <MainAssetDeck
-          asset={asset}
-          market={market}
-          href={(next) =>
-            '/' +
-            '?' +
-            new URLSearchParams({
-              asset: next,
-              market,
-              interval,
-              period: 'all',
-              indicators: indicators.join(','),
-              log: log ? '1' : '0',
-              cards: cards.join(','),
-            })
-          }
-        />
-      )}
-      <AssetSections asset={asset} current={workspace ? 'chart' : 'history'} />
-      {!historical && (
-        <details className="workspace-fold">
-          <summary>작업공간 저장 · 불러오기</summary>
-          <WorkspaceBar
-            current={{
-              asset,
-              market,
-              interval,
-              period,
-              indicators,
-              log,
-              cards,
-              view: workspace ? 'chart' : 'dashboard',
-            }}
-          />
-        </details>
-      )}
+      <AssetHeader
+        asset={asset}
+        current={historical ? 'history' : 'chart'}
+        subtitle={historical ? '전체 가격 · USD 일별 참조가격' : '기술적 분석 · 거래소 캔들'}
+        href={(next) =>
+          (workspace ? '/chart/' + next : '/') +
+          '?' +
+          new URLSearchParams({
+            asset: next,
+            market,
+            interval,
+            period: 'all',
+            indicators: indicators.join(','),
+            log: log ? '1' : '0',
+            cards: cards.join(','),
+            view: historical ? 'history' : 'exchange',
+          })
+        }
+      />
       {shareUrl ? (
         <div className="share-box">
           <label htmlFor="share-link">
@@ -550,28 +472,6 @@ function PricePage({ workspace = false }: { workspace?: boolean }) {
           </div>
         </section>
       )}
-      {!workspace && hasLongHistory ? (
-        <nav className="history-view-tabs asset-section-nav" aria-label={`${asset} 분석 화면`}>
-          <button
-            className={historical ? 'selected' : ''}
-            aria-pressed={historical}
-            onClick={() => change('view', 'history')}
-          >
-            전체 가격
-          </button>
-          <button
-            className={!historical ? 'selected' : ''}
-            aria-pressed={!historical}
-            onClick={() => change('view', 'exchange')}
-          >
-            거래소 차트
-          </button>
-          <Link to={`/onchain/${asset}?period=all`}>온체인</Link>
-          {(asset === 'BTC' || asset === 'DOGE' || asset === 'ETH') && (
-            <a href="#derivatives">선물</a>
-          )}
-        </nav>
-      ) : null}
       {historical ? (
         <Suspense fallback={<Loading message="초기 가격부터 전체 흐름을 준비하고 있습니다…" />}>
           <LongHistoryPanel
@@ -595,56 +495,16 @@ function PricePage({ workspace = false }: { workspace?: boolean }) {
           </DeferredMount>
         </details>
       ) : null}
-      {hasLongHistory && historical ? (
-        <div className="network-entry">
-          <img
-            className="desk-shiba"
-            src="/brand/coin-desk-shiba.png"
-            width="58"
-            height="58"
-            loading="lazy"
-            alt="Coin Desk 시바견 안내 캐릭터"
-          />
-          <div>{coin.name}의 온체인 지표는 별도 원천에서 확인합니다.</div>
-          <Link to={`/onchain/${asset}?period=all`}>온체인 보기 ↗</Link>
-        </div>
-      ) : null}
-      {historical && (
-        <details className="workspace-fold">
-          <summary>작업공간 저장 · 불러오기</summary>
-          <WorkspaceBar
-            current={{
-              asset,
-              market,
-              interval,
-              period,
-              indicators,
-              log,
-              cards,
-              view: workspace ? 'chart' : 'dashboard',
-            }}
-          />
-        </details>
-      )}
-
       {q?.changeUnavailableReason ? (
         <p className="watch-note" role="status">
           24시간 등락률: {q.changeUnavailableReason} 현재가·거래대금의 기준 시각은 아래에서
           확인하세요.
         </p>
       ) : null}
-      <p className="watch-note">
-        가격 기준 {dateLabel(q?.time, true)} · 화면 60초 조회 / 공유 시세 약 3분 주기
-      </p>
+      {!historical && (
+        <p className="quote-timestamp">시세 {dateLabel(q?.time, true)} · 60초마다 조회</p>
+      )}
       <ErrorNotice message={quote.error || quote.data?.meta.warning} retry={quote.reload} />
-      {workspace && hasLongHistory ? (
-        <p className="coverage-strip">
-          <Link to={'/?asset=' + asset + '&period=all&view=history'}>
-            {asset} 초기 가격부터 전체 USD 이력 보기 ↗
-          </Link>
-          <span>아래 캔들은 해당 거래소 상장 이후 자료입니다.</span>
-        </p>
-      ) : null}
       {!historical && (
         <section className={'panel price-panel' + (expanded ? ' expanded' : '')} ref={fullscreen}>
           <div className="price-panel-heading">
@@ -775,13 +635,24 @@ function PricePage({ workspace = false }: { workspace?: boolean }) {
           </div>
         </section>
       )}
-      {asset === 'BTC' || asset === 'DOGE' || asset === 'ETH' ? (
-        <DeferredMount>
-          <Suspense fallback={<Loading message="선물 시장을 준비하고 있습니다…" />}>
-            <DerivativesPanel asset={asset} />
-          </Suspense>
-        </DeferredMount>
-      ) : null}
+      <details className="workspace-fold">
+        <summary>작업공간 저장 · 불러오기</summary>
+        <WorkspaceBar
+          current={{
+            asset,
+            market,
+            interval,
+            period,
+            indicators,
+            log,
+            cards,
+            view: workspace ? 'chart' : 'dashboard',
+          }}
+        />
+        <button className="desk-button" onClick={share}>
+          {copied ? '복사됨' : '현재 화면 링크 복사'}
+        </button>
+      </details>
       {asset === 'BTC' && !workspace ? (
         <DeferredMount>
           <Suspense fallback={<Loading message="BTC 네트워크 현황을 준비하고 있습니다…" />}>
@@ -797,7 +668,8 @@ function PricePage({ workspace = false }: { workspace?: boolean }) {
         </DeferredMount>
       ) : null}
       {asset === 'BTC' ? (
-        <>
+        <details className="panel analysis-details btc-extra-metrics">
+          <summary>BTC 온체인 카드 · 내 구성</summary>
           <div className="section-heading">
             <div>
               <h2>비트코인 온체인 지표</h2>
@@ -860,7 +732,7 @@ function PricePage({ workspace = false }: { workspace?: boolean }) {
               </Link>
             ))}
           </div>
-        </>
+        </details>
       ) : null}
     </>
   );
@@ -884,18 +756,13 @@ function MetricPage() {
   const latest = result.data?.data.at(-1);
   return (
     <>
-      <Link className="back-link" to="/">
-        <ArrowUpLeft size={15} />
-        대시보드
-      </Link>
-      <div className="page-heading">
-        <div>
-          <div className="eyebrow">BITCOIN ON-CHAIN</div>
-          <h1>{metric.title}</h1>
-          <p>{metric.english}</p>
-        </div>
-        <span className="data-label">BTC · 일별</span>
-      </div>
+      <AssetHeader
+        asset="BTC"
+        current="onchain"
+        subtitle={'온체인 · ' + metric.title + ' · Bitview 일별 관측'}
+        assets={['BTC']}
+        href={() => '/metrics/' + metric.id}
+      />
       <details className="metric-switcher">
         <summary>지표 변경 · {metric.title}</summary>
         <div className="metric-tabs">
@@ -1105,9 +972,12 @@ export default function App() {
   useEffect(() => {
     if (!narrow || !mobile) return;
     const sidebar = sidebarRef.current!;
-    const focusable = () => [
-      ...sidebar.querySelectorAll<HTMLElement>('a[href],button:not([disabled]),input,summary'),
-    ];
+    const focusable = () =>
+      [
+        ...sidebar.querySelectorAll<HTMLElement>('a[href],button:not([disabled]),input,summary'),
+      ].filter((element) => element.getClientRects().length > 0);
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
     focusable()[0]?.focus();
     const trap = (event: KeyboardEvent) => {
       if (event.key !== 'Tab') return;
@@ -1125,7 +995,8 @@ export default function App() {
     sidebar.addEventListener('keydown', trap);
     return () => {
       sidebar.removeEventListener('keydown', trap);
-      if (sidebar.contains(document.activeElement)) menuRef.current?.focus();
+      document.body.style.overflow = previousOverflow;
+      menuRef.current?.focus();
     };
   }, [narrow, mobile]);
   useEffect(() => {
@@ -1141,6 +1012,19 @@ export default function App() {
   useEffect(() => {
     setMobile(false);
   }, [location.pathname, location.search]);
+  const pageKey =
+    location.pathname + ':' + (new URLSearchParams(location.search).get('asset') || '');
+  const previousPage = useRef(pageKey);
+  useEffect(() => {
+    const frame = requestAnimationFrame(() => {
+      if (previousPage.current !== pageKey && !location.hash) {
+        window.scrollTo({ top: 0, behavior: 'instant' });
+        document.getElementById('main-content')?.focus({ preventScroll: true });
+      }
+      previousPage.current = pageKey;
+    });
+    return () => cancelAnimationFrame(frame);
+  }, [pageKey, location.hash]);
   return (
     <div className={'app ' + (collapsed ? 'nav-collapsed' : '')}>
       <a className="skip-link" href="#main-content">

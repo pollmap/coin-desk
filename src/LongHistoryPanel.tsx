@@ -130,16 +130,22 @@ export function LongHistoryPanel({
           </button>
         </div>
       )}
-      <div className="coverage-strip">
-        <span>USD 일별 참조가격입니다. 거래소 캔들·거래량과 구분합니다.</span>
-        <span className={result.data?.meta.stale ? 'amber' : ''}>
-          {result.data?.meta.stale ? '갱신 지연 · ' : ''}수집{' '}
-          {dateLabel(result.data?.meta.fetchedAt, true)}
-        </span>
-      </div>
-      <details className="history-source-details"><summary>원천·라이선스</summary>
-        <a href="https://docs.coinmetrics.io/network-data/network-data-overview/market/price" target="_blank" rel="noreferrer">Coin Metrics · PriceUSD 정의 ↗</a>
-        <a href="https://github.com/coinmetrics/data/blob/master/LICENSE" target="_blank" rel="noreferrer">CC BY-NC 4.0 · 비상업 이용</a>
+      <details className="history-source-details">
+        <summary>원천·라이선스</summary>
+        <a
+          href="https://docs.coinmetrics.io/network-data/network-data-overview/market/price"
+          target="_blank"
+          rel="noreferrer"
+        >
+          Coin Metrics · PriceUSD 정의 ↗
+        </a>
+        <a
+          href="https://github.com/coinmetrics/data/blob/master/LICENSE"
+          target="_blank"
+          rel="noreferrer"
+        >
+          CC BY-NC 4.0 · 비상업 이용
+        </a>
       </details>
     </section>
   );

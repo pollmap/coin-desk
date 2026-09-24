@@ -1,6 +1,8 @@
 import { expect, it } from 'vitest';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { MemoryRouter } from 'react-router-dom';
+import { AssetHeader } from '../src/AssetHeader';
+import { AssetSections } from '../src/AssetSections';
 import { DeskNavigation } from '../src/DeskNavigation';
 import { NETWORK_ASSETS, NETWORK_GROUPS, networkMetrics } from '../shared/network-catalog';
 
@@ -12,37 +14,51 @@ function navigation(at: string) {
   );
 }
 
-it('keeps the dedicated futures view attached to its selected coin', () => {
-  const html = navigation('/futures/DOGE?metric=open_interest');
-  expect(html).toContain('aria-label="DOGE 분석"');
-  expect(html).not.toContain('aria-label="BTC 분석"');
-  expect(html.match(/aria-current="page"/g)).toHaveLength(1);
-  expect(html).toContain('href="/futures/DOGE"');
-});
-
 it('assigns every supported onchain metric to exactly one group for every coin', () => {
   for (const asset of NETWORK_ASSETS)
     for (const metric of networkMetrics(asset))
       expect(NETWORK_GROUPS.filter((group) => group.ids.includes(metric.id))).toHaveLength(1);
 });
 
-it('keeps DOGE navigation within DOGE instead of selecting three coin views', () => {
-  const html = navigation('/?asset=DOGE&period=all#derivatives');
-  expect(html).toContain('aria-label="DOGE 분석"');
-  expect(html).not.toContain('aria-label="BTC 분석"');
-  expect(html).not.toContain('aria-label="ETH 분석"');
+it.each([
+  '/futures/DOGE?metric=open_interest',
+  '/onchain/DOGE',
+  '/chart/ETH?period=all',
+  '/?asset=DOGE&period=all#derivatives',
+])('has exactly one global selection for %s', (path) => {
+  const html = navigation(path);
   expect(html.match(/aria-current="page"/g)).toHaveLength(1);
-  expect(html).toContain('선물 · 펀딩비 / 미결제약정');
+  expect(html).toContain('aria-label="코인 분석"');
+  expect(html).not.toContain('coin-nav-group');
 });
 
-it('selects the onchain view for the current asset only', () => {
-  const html = navigation('/onchain/DOGE');
-  expect(html).toContain('aria-label="DOGE 분석"');
+it('keeps all analysis section links scoped to DOGE and marks only futures current', () => {
+  const html = renderToStaticMarkup(
+    <MemoryRouter>
+      <AssetHeader
+        asset="DOGE"
+        current="futures"
+        subtitle="선물"
+        assets={['BTC', 'DOGE', 'ETH']}
+        href={(asset) => '/futures/' + asset}
+      />
+    </MemoryRouter>,
+  );
+  expect(html.match(/<select/g)).toHaveLength(1);
   expect(html.match(/aria-current="page"/g)).toHaveLength(1);
+  expect(html).toContain('href="/futures/DOGE"');
+  expect(html).toContain('href="/onchain/DOGE"');
+  expect(html).not.toContain('href="/futures/BTC"');
+  expect(html).not.toContain('value="SOL"');
 });
 
-it('selects only the current coin chart in the technical view', () => {
-  const html = navigation('/chart/ETH?period=all');
-  expect(html).toContain('aria-label="ETH 분석"');
-  expect(html.match(/aria-current="page"/g)).toHaveLength(1);
+it('does not offer unavailable network or futures sections for SOL', () => {
+  const html = renderToStaticMarkup(
+    <MemoryRouter>
+      <AssetSections asset="SOL" current="chart" />
+    </MemoryRouter>,
+  );
+  expect(html).not.toContain('/futures/');
+  expect(html).not.toContain('/onchain/');
+  expect(html).toContain('/chart/SOL');
 });

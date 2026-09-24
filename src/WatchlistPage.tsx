@@ -102,7 +102,7 @@ export function WatchlistPage() {
       <div className="page-heading">
         <div>
           <div className="eyebrow">MARKET WATCH</div>
-          <h1>관심 코인</h1>
+          <h1>시장 시세</h1>
           <p>즐겨찾기를 맨 위에 두고 가격·거래대금·기술지표를 함께 비교하세요.</p>
         </div>
         <Link
@@ -162,17 +162,10 @@ export function WatchlistPage() {
         </p>
       ) : null}
       <p className="watch-note">
-        화면 60초 조회 · 공유 시세 약 3분 주기 · 별표와 작업공간은 브라우저에 저장됩니다.
-        RSI·200일선은 확정 일봉 기준입니다.
+        60초마다 시세 조회 · 별표와 작업공간은 브라우저에 저장됩니다. RSI·200일선은 확정 일봉
+        기준입니다.
       </p>
-      <p className="watch-scroll-hint">
-        표를 가로로 밀면 거래대금·기술지표·차트 링크를 볼 수 있습니다.
-      </p>
-      <div
-        className="panel watch-table-wrap"
-        tabIndex={0}
-        aria-label="관심 코인 표. 좁은 화면에서는 가로로 이동할 수 있습니다."
-      >
+      <div className="panel watch-table-wrap" tabIndex={0} aria-label="코인별 시세와 기술지표">
         <table className="watch-table">
           <caption className="sr-only">8개 관심 코인의 현재 시세와 기술지표</caption>
           <thead>
@@ -225,9 +218,11 @@ export function WatchlistPage() {
                       />
                     </button>
                   </td>
-                  <td>
-                    <AssetLogo asset={a.id} size={22} /> <b style={{ color: a.color }}>{a.id}</b>
-                    <small>{a.name}</small>
+                  <td className="watch-asset">
+                    <Link to={'/?asset=' + a.id + '&period=all'}>
+                      <AssetLogo asset={a.id} size={22} /> <b style={{ color: a.color }}>{a.id}</b>
+                      <small>{a.name}</small>
+                    </Link>
                   </td>
                   <td>
                     {money(q?.price, currency)}
@@ -252,9 +247,11 @@ export function WatchlistPage() {
                       <small>24H≈</small>
                     ) : null}
                   </td>
-                  <td>{q ? money(q.volume24h / 1e6, currency) + ' M' : '—'}</td>
-                  <td>{numeric(overview?.technical.rsi)}</td>
-                  <td className={gap !== null && gap < 0 ? 'down' : 'up'}>
+                  <td data-label="24H 거래대금">
+                    {q ? money(q.volume24h / 1e6, currency) + ' M' : '—'}
+                  </td>
+                  <td data-label="RSI 14">{numeric(overview?.technical.rsi)}</td>
+                  <td data-label="200일선 대비" className={gap !== null && gap < 0 ? 'down' : 'up'}>
                     {gap === null ? '—' : (gap >= 0 ? '+' : '') + numeric(gap) + '%'}
                   </td>
                   <td>

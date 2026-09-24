@@ -280,19 +280,10 @@ export const LongHistoryChart = memo(function LongHistoryChart({
         label={asset}
         unit={'USD'}
         source={series.meta.source}
+        onExport={exportCsv}
+        onZoom={zoom}
+        onReset={allHistory}
       />
-      <div className="chart-actions" aria-label="장기 가격 차트 조작">
-        <button onClick={() => zoom(1 / 1.4)} aria-label="장기 가격 차트 확대">
-          ＋ 확대
-        </button>
-        <button onClick={() => zoom(1.4)} aria-label="장기 가격 차트 축소">
-          − 축소
-        </button>
-        <button onClick={allHistory}>전체 이력 보기</button>
-        <button onClick={exportCsv} disabled={!points.length}>
-          보이는 구간 CSV
-        </button>
-      </div>
       <ChartRangeControl
         rows={points}
         resetKey={asset + ':' + period}
