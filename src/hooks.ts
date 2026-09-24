@@ -56,8 +56,11 @@ export function useData<T>(url: string | null, paged = false, refresh = 300000) 
       document.removeEventListener('visibilitychange', visible);
     };
   }, [url, key, paged, refresh, revision]);
+  const cached = key ? queryCache.peek<T>(key) : undefined;
   return {
-    ...(state.key === key ? state : { loading: true, data: undefined, error: undefined }),
+    ...(state.key === key
+      ? state
+      : { loading: !!key && !cached, data: cached?.data, error: undefined }),
     reload: () => setRevision((v) => v + 1),
   };
 }

@@ -1,4 +1,6 @@
 import type { Asset, Metric } from './types';
+export const PRIMARY_ASSETS: readonly Asset[] = ['BTC', 'DOGE', 'ETH'];
+export const isPrimaryAsset = (asset: Asset) => PRIMARY_ASSETS.includes(asset);
 export const ASSETS: { id: Asset; name: string; color: string; logo: string }[] = [
   { id: 'BTC', name: '비트코인', color: '#f59c39', logo: '/coin-logos/btc.png' },
   { id: 'DOGE', name: '도지코인', color: '#c4a34d', logo: '/coin-logos/doge-official.png' },

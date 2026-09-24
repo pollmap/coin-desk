@@ -3,6 +3,7 @@ import { createDeskChart as createChart } from './chart-theme';
 import { memo, useEffect, useMemo, useRef, useState } from 'react';
 import {
   LineSeries,
+  createSeriesMarkers,
   ColorType,
   PriceScaleMode,
   type IChartApi,
@@ -29,8 +30,12 @@ export const LongHistoryChart = memo(function LongHistoryChart({
   onPeriodChange,
   overlays = EMPTY_OVERLAYS,
   currency = 'USD',
+  focusTime,
+  focusLabel,
 }: {
   currency?: 'USD' | 'KRW' | 'USDT';
+  focusTime?: number;
+  focusLabel?: string;
   series: SeriesResponse;
   asset: Asset;
   period: Period;
@@ -50,7 +55,9 @@ export const LongHistoryChart = memo(function LongHistoryChart({
   const [message, setMessage] = useState('');
   const points = series.data;
   const byTime = useMemo(() => new Map(points.map((point) => [point.time, point])), [points]);
-  const display = (selectedTime === null ? undefined : byTime.get(selectedTime)) ?? points.at(-1);
+  const focusPoint = focusTime === undefined ? undefined : points.find((p) => p.time >= focusTime);
+  const display =
+    (selectedTime === null ? undefined : byTime.get(selectedTime)) ?? focusPoint ?? points.at(-1);
   const color = ASSETS.find((coin) => coin.id === asset)?.color || '#eeb66d';
 
   useEffect(() => {
@@ -180,6 +187,32 @@ export const LongHistoryChart = memo(function LongHistoryChart({
     setMessage('');
     // A chosen period resets the view. Refreshing the same source retains user zoom.
   }, [period, asset, currency]);
+
+  useEffect(() => {
+    const chart = chartRef.current;
+    const line = lineRef.current;
+    if (!chart || !line || !points.length) return;
+    if (focusTime === undefined) return;
+    if (focusTime < points[0].time || focusTime > points.at(-1)!.time) return;
+    const point = points.find((p) => p.time >= focusTime)!;
+    const markers = createSeriesMarkers(line, [
+      {
+        time: ts(point.time),
+        position: 'aboveBar',
+        color: '#efbd70',
+        shape: 'arrowDown',
+        text: focusLabel || '사건',
+      },
+    ]);
+    chart.timeScale().setVisibleRange({
+      from: ts(Math.max(points[0].time, focusTime - 90 * 86400)),
+      to: ts(Math.min(points.at(-1)!.time, focusTime + 90 * 86400)),
+    });
+    return () => {
+      markers.detach();
+      if (chartRef.current === chart) chart.timeScale().fitContent();
+    };
+  }, [focusTime, focusLabel, points, asset, currency]);
 
   function zoom(factor: number) {
     const scale = chartRef.current?.timeScale();

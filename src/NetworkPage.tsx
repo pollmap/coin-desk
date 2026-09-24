@@ -78,9 +78,6 @@ export function NetworkPage() {
         asset={asset}
         current="onchain"
         subtitle="온체인 · Coin Metrics 일별 관측"
-        assets={ASSETS.filter((item) => item.id === asset || isNetworkAsset(item.id)).map(
-          (item) => item.id,
-        )}
         href={(next) =>
           `/onchain/${next}?metric=${networkMetric(next, requested) ? requested : 'mvrv'}&period=all`
         }

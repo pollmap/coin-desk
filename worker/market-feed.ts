@@ -1,3 +1,5 @@
+import { DERIVATIVE_ASSETS, derivativeContract } from '../shared/derivative-contracts';
+import type { Asset } from '../shared/types';
 /** Allowlisted public market-data adapter. A shared token prevents public proxy use. */
 import { binanceRequest, upstream } from './providers';
 const spotSymbols = new Set(
@@ -32,7 +34,7 @@ export function validSpotRequest(method: string, params: Record<string, unknown>
         Number(params.startTime) <= Date.now()))
   );
 }
-const assets = new Set(['BTC', 'DOGE', 'ETH']);
+const assets = new Set<string>(DERIVATIVE_ASSETS);
 const metrics = new Set([
   'funding',
   'open_interest',
@@ -101,7 +103,7 @@ export default {
       return Response.json({ error: 'Invalid feed request' }, { status: 400 });
     const params = new URLSearchParams({
       category: 'linear',
-      symbol: asset + 'USDT',
+      symbol: derivativeContract(asset as Asset).symbol,
       limit: String(limit),
     });
     const kind = metric.replace('_daily', '');

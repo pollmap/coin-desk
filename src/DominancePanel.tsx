@@ -1,8 +1,9 @@
 import { ChartNavigator, ChartTools } from './ChartNavigator';
 import { ChartRangeControl } from './ChartRangeControl';
 import { createDeskChart as createChart } from './chart-theme';
-import { useEffect, useMemo, useRef, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useEffect, useMemo, useRef } from 'react';
+import { AssetHeader } from './AssetHeader';
+import { Link, useSearchParams } from 'react-router-dom';
 import {
   LineSeries,
   ColorType,
@@ -11,7 +12,7 @@ import {
   type IChartApi,
 } from 'lightweight-charts';
 import { ASSETS } from '../shared/catalog';
-import type { Dominance } from '../shared/types';
+import type { Asset, Dominance } from '../shared/types';
 import { useData } from './hooks';
 import { dateLabel, numeric } from './lib';
 
@@ -86,8 +87,14 @@ export function DominancePage() {
   const history = useData<{
     data: { time: number; coins: Dominance['coins'] }[];
     historyStart: number | null;
-  }>('/api/v1/dominance/history', false, 300000);
-  const [selected, setSelected] = useState('BTC');
+  }>('/api/v1/dominance/history', true, 300000);
+  const [params, setParams] = useSearchParams();
+  const selected = [...ASSETS.map((a) => a.id), 'STABLE', 'USDT', 'USDC'].includes(
+    params.get('asset') || '',
+  )
+    ? params.get('asset')!
+    : 'BTC';
+  const setSelected = (id: string) => setParams({ asset: id }, { replace: true });
   const ref = useRef<HTMLDivElement>(null);
   const apiRef = useRef<IChartApi | null>(null);
   const lastView = useRef<{ selected: string; from: UTCTimestamp; to: UTCTimestamp } | null>(null);
@@ -116,7 +123,7 @@ export function DominancePage() {
     if (!ref.current || points.length < 2) return;
     const chart = createChart(ref.current, {
       autoSize: true,
-      height: 350,
+      height: 430,
       layout: {
         background: { type: ColorType.Solid, color: '#111721' },
         textColor: '#8490a2',
@@ -176,17 +183,26 @@ export function DominancePage() {
   }, [points, selected]);
   return (
     <>
-      <div className="page-heading">
-        <div>
-          <div className="eyebrow">MARKET DOMINANCE</div>
-          <h1>코인 · 스테이블코인 도미넌스</h1>
-          <p>전체 시장에서 비트코인, 도지코인, 이더리움과 스테이블코인이 차지하는 비중입니다.</p>
+      {ASSETS.some((a) => a.id === selected) ? (
+        <AssetHeader
+          asset={selected as Asset}
+          current="dominance"
+          subtitle="전체 암호자산 시가총액 대비 비중"
+          href={(a) => '/dominance?asset=' + a}
+        />
+      ) : (
+        <div className="page-heading">
+          <h1>시장 도미넌스</h1>
         </div>
-      </div>
-      <DominancePanel />
+      )}
       <section className="panel dominance-history">
         <div className="panel-title">
-          <h2>누적 관측 이력</h2>
+          <h2>
+            {selectedLabel}{' '}
+            <strong className="dominance-value">
+              {latest ? numeric(latest.value, latest.value < 1 ? 3 : 2) + '%' : '—'}
+            </strong>
+          </h2>
           <select
             aria-label="도미넌스 자산"
             value={selected}
@@ -244,11 +260,16 @@ export function DominancePage() {
           </p>
         ) : null}
         <div className="source-line">
-          표시 이력 시작 {dateLabel(points[0]?.time, true)} · 실제 수집한 최근 1,000회 관측 · 시간축
-          KST · 매시간 갱신
+          표시 이력 시작 {dateLabel(points[0]?.time, true)} · 실제 수집한 전체 관측 · 시간축 KST ·
+          매시간 갱신
         </div>
       </section>
-      <section className="metric-explanation">
+      <details className="research-source">
+        <summary>다른 코인 비중</summary>
+        <DominancePanel />
+      </details>
+      <details className="research-source">
+        <summary>비중 산정 기준 · 출처</summary>
         <div>
           <h2>비중을 읽는 기준</h2>
           <p>
@@ -271,7 +292,7 @@ export function DominancePage() {
             산식의 과거 값과 연결하지 않습니다.
           </p>
         </div>
-      </section>
+      </details>
     </>
   );
 }

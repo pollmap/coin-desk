@@ -22,7 +22,8 @@ import {
   QUOTE_REFRESH_SECONDS,
   type Env,
 } from './storage';
-import { scheduled } from './scheduled';
+import { scheduled, refreshMinuteQuotes } from './scheduled';
+import { publicResearchFeed, refreshPublicResearch } from './public-research';
 import { researchFeed, refreshResearch } from './research';
 import { candleHistory } from './candle-history';
 import { getDominance, DOMINANCE_VERSION } from './dominance';
@@ -61,8 +62,9 @@ function canonicalRequest(request: Request) {
     status: [],
     health: [],
     research: [],
+    'research/public': [],
     dominance: [],
-    'dominance/history': [],
+    'dominance/history': ['from', 'to', 'limit'],
   };
   if (!fields[endpoint]) return new Request(url, { method: 'GET' });
   for (const key of url.searchParams.keys())
@@ -228,6 +230,7 @@ async function api(request: Request, env: Env): Promise<Response> {
   const { asset, market } = selection(q);
   if (request.method !== 'GET') return response({ error: 'Read-only API' }, 405);
   const endpoint = url.pathname.replace('/api/v1/', '');
+  if (endpoint === 'research/public') return response(await publicResearchFeed(env));
   if (endpoint === 'research') return response(await researchFeed(env));
   if (endpoint === 'dominance') {
     const data = await getDominance(env);
@@ -236,19 +239,27 @@ async function api(request: Request, env: Env): Promise<Response> {
       : response({ error: '시장 비중 데이터를 아직 가져오지 못했습니다.' }, 503);
   }
   if (endpoint === 'dominance/history') {
+    const from = number(q, 'from', 0),
+      to = number(q, 'to', epoch() + 1),
+      limit = number(q, 'limit', 1000, 1000);
+    if (to <= from || limit < 1) throw new RequestError('Invalid range');
     const rows = (
       await env.DB.prepare(
-        'SELECT time,data FROM dominance_history ORDER BY time DESC LIMIT 1000',
-      ).all<{ time: number; data: string }>()
-    ).results.reverse();
+        "SELECT time,data FROM dominance_history WHERE time>=? AND time<? AND json_extract(data,'$.calculationVersion')=? ORDER BY time LIMIT ?",
+      )
+        .bind(from, to, DOMINANCE_VERSION, limit + 1)
+        .all<{ time: number; data: string }>()
+    ).results;
     const data = rows
-      .filter((r) => JSON.parse(r.data).calculationVersion === DOMINANCE_VERSION)
+      .slice(0, limit)
       .map((r) => ({ time: r.time, coins: JSON.parse(r.data).coins }));
     return response({
       data,
       source: 'CoinLore / DefiLlama',
       unit: '%',
       historyStart: data[0]?.time ?? null,
+      nextCursor: rows.length > limit ? data.at(-1)!.time + 1 : null,
+      meta: { source: 'CoinLore / DefiLlama', unit: '%', stale: false },
     });
   }
   if (endpoint === 'metrics')
@@ -505,7 +516,7 @@ export default {
       const cache = (caches as unknown as { default: Cache }).default;
       // Quotes already share durable snapshots and refresh leases. An extra edge
       // cache can keep an old/stale response after the scheduled collector commits.
-      const liveStatus = /\/(health|status|overview)$/.test(url.pathname);
+      const liveStatus = /\/(health|status|overview|research\/public)$/.test(url.pathname);
       const cached = liveStatus ? undefined : await cache.match(canonical).catch(() => undefined);
       if (cached) return cached;
       let pending = inFlight.get(env.DB);
@@ -553,7 +564,9 @@ export default {
     }
   },
   async scheduled(_event: ScheduledController, env: Env, ctx: ExecutionContext) {
-    ctx.waitUntil(scheduled(env, Math.floor(_event.scheduledTime / 1000)));
+    ctx.waitUntil(scheduled(env, Math.floor(_event.scheduledTime / 1000), true));
     ctx.waitUntil(refreshResearch(env));
+    ctx.waitUntil(refreshMinuteQuotes(env));
+    ctx.waitUntil(refreshPublicResearch(env));
   },
 };

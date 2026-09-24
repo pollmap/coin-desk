@@ -1,0 +1,221 @@
+/* One asset context, chart first, details on demand. */
+.asset-sections {
+  overflow-x: auto;
+  flex-wrap: nowrap;
+  scrollbar-width: thin;
+}
+.asset-sections a {
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.history-page,
+.research-page {
+  min-width: 0;
+}
+.event-chart {
+  padding: 22px;
+}
+.event-chart .panel-title {
+  align-items: center;
+  gap: 16px;
+}
+.event-chart .panel-title h2 {
+  font-size: 22px;
+}
+.event-chart .panel-title small {
+  display: block;
+  margin-top: 6px;
+  color: var(--muted, #91a0b5);
+}
+.event-chart-actions,
+.research-view-tabs {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.event-chart-actions button,
+.research-view-tabs button,
+.timeline-toolbar button,
+.timeline-toolbar select {
+  padding: 8px 12px;
+  background: transparent;
+  color: inherit;
+  border: 1px solid var(--line, #2b3646);
+  border-radius: 7px;
+  cursor: pointer;
+}
+.event-chart-actions button[aria-pressed='true'],
+.research-view-tabs button[aria-pressed='true'] {
+  background: #d7aa651c;
+  color: #dcae69;
+  border-color: #be955960;
+}
+.research-view-tabs {
+  margin: 8px 0 20px;
+}
+.event-summary,
+.event-note {
+  font-size: 13px;
+  line-height: 1.7;
+  color: var(--muted, #91a0b5);
+}
+.event-summary time {
+  color: var(--text, #e4e8ee);
+  margin-right: 8px;
+  font-variant-numeric: tabular-nums;
+}
+.event-summary a {
+  margin-left: 8px;
+}
+.timeline-toolbar {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin: 28px 0 8px;
+}
+.timeline-toolbar h2 {
+  margin-right: auto;
+  font-size: 19px;
+}
+.timeline-toolbar input[type='search'] {
+  background: var(--panel, #111721);
+  color: inherit;
+  border: 1px solid var(--line, #2b3646);
+  padding: 10px 12px;
+  border-radius: 7px;
+  width: 230px;
+}
+.timeline-toolbar label {
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.event-timeline {
+  border-top: 1px solid var(--line, #2b3646);
+}
+.event-timeline article {
+  display: grid;
+  grid-template-columns: 120px 1fr;
+  padding: 24px 16px;
+  gap: 18px;
+  border-bottom: 1px solid var(--line, #2b3646);
+}
+.event-timeline article.selected {
+  background: #d7aa650c;
+  box-shadow: inset 3px 0 #dcae69;
+}
+.event-timeline time {
+  font-size: 13px;
+  color: var(--muted, #91a0b5);
+  font-variant-numeric: tabular-nums;
+  padding-top: 3px;
+}
+.event-category {
+  font-size: 11px;
+  color: #b89b70;
+}
+.event-timeline h3 {
+  margin: 7px 0 9px;
+}
+.event-timeline h3 button {
+  border: 0;
+  background: none;
+  color: inherit;
+  padding: 0;
+  font-size: 17px;
+  text-align: left;
+  cursor: pointer;
+}
+.event-timeline h3 button:hover {
+  color: #dcae69;
+}
+.event-timeline p {
+  font-size: 14px;
+  line-height: 1.65;
+  color: var(--muted, #91a0b5);
+  margin: 0 0 8px;
+}
+.event-timeline a {
+  font-size: 12px;
+}
+.research-post.public-post {
+  display: grid;
+  grid-template-columns: 40px minmax(0, 1fr) auto 16px;
+  gap: 14px;
+  padding: 20px 10px;
+  align-items: center;
+}
+.public-post > div {
+  min-width: 0;
+}
+.public-post strong {
+  display: block;
+  color: var(--text, #e4e8ee);
+  font-size: 15px;
+  line-height: 1.5;
+  margin-bottom: 5px;
+}
+.public-post > div > span,
+.public-post time {
+  font-size: 12px;
+  color: var(--muted, #91a0b5);
+}
+.post-kind {
+  font-size: 11px;
+  color: #dcae69;
+}
+.source-health-list > div {
+  display: flex;
+  justify-content: space-between;
+  gap: 15px;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--line, #2b3646);
+  font-size: 12px;
+}
+.source-health-list > div > span {
+  flex-shrink: 0;
+  color: var(--muted, #91a0b5);
+}
+.dominance-value {
+  font-size: 30px;
+  font-variant-numeric: tabular-nums;
+  margin-left: 14px;
+}
+.research-source {
+  margin-top: 20px;
+}
+.research-source summary {
+  cursor: pointer;
+}
+@media (max-width: 850px) {
+  .event-chart {
+    padding: 16px;
+  }
+  .event-timeline article {
+    grid-template-columns: 90px 1fr;
+    padding: 20px 4px;
+    gap: 10px;
+  }
+  .research-post.public-post {
+    grid-template-columns: 30px minmax(0, 1fr) 16px;
+    gap: 10px;
+  }
+  .public-post time {
+    grid-column: 2;
+    grid-row: 2;
+  }
+  .public-post > svg {
+    grid-column: 3;
+    grid-row: 1;
+  }
+}
+
+.coin-result-list .primary-coin strong {
+  font-weight: 700;
+}
+.coin-result-list .secondary-coin strong {
+  font-weight: 400;
+  color: var(--muted);
+}

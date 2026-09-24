@@ -22,11 +22,12 @@ import type { Asset } from '../shared/types';
 import { saved, save } from './lib';
 import { AssetLogo } from './AssetLogo';
 
-const featured = ['BTC', 'DOGE', 'ETH'] as const;
+const featured = ASSETS.map((a) => a.id);
 const marketItems = [
   { title: '시장 도미넌스', to: '/dominance' },
   { title: '코인 성과 비교', to: '/compare' },
   { title: '관심 코인', to: '/coins' },
+  { title: '코인 역사', to: '/history' },
 ];
 
 /** Query and fragment are part of a coin view. NavLink pathname matching ignores them. */
@@ -151,13 +152,21 @@ export function DeskNavigation({ onNavigate }: { onNavigate: () => void }) {
               <Layers size={18} />
               <span>지표 찾기</span>
             </NavLink>
-            <NavLink to="/dominance" aria-label="시장 비중" title="시장 비중">
+            <NavLink to={'/dominance?asset=' + asset} aria-label="시장 비중" title="시장 비중">
               <Activity size={18} />
               <span>시장 비중</span>
             </NavLink>
-            <NavLink to="/research" aria-label="리서치 모아보기" title="리서치 모아보기">
+            <NavLink
+              to={'/research?asset=' + asset}
+              aria-label="리서치 모아보기"
+              title="리서치 모아보기"
+            >
               <Layers size={18} />
               <span>리서치 모아보기</span>
+            </NavLink>
+            <NavLink to="/history?asset=BTC" aria-label="코인 역사" title="코인 역사">
+              <Activity size={18} />
+              <span>코인 역사</span>
             </NavLink>
             <NavLink to="/workspace" aria-label="내 작업공간" title="내 작업공간">
               <Star size={18} />
@@ -194,6 +203,7 @@ export function DeskTopbar({
   const id = location.pathname.split('/')[2];
   const names: Record<string, string> = {
     research: '리서치 모아보기',
+    history: '코인 역사',
     coins: '시장 시세',
     compare: '코인 성과 비교',
     explore: '지표 탐색',

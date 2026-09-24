@@ -1,3 +1,4 @@
+import { isPrimaryAsset } from '../shared/catalog';
 import { DAY, zStep, type ZState } from '../shared/math';
 import type { Asset, Market } from '../shared/types';
 import { bitviewPage, getQuotes, getRecentCandles } from './providers';
@@ -264,7 +265,8 @@ export async function updateQuoteBatch(
     const state = states.find((s) => s.key === 'quote:' + asset + ':' + market);
     return (
       (!state?.next_attempt || state.next_attempt <= now) &&
-      (!state?.last_success || now - state.last_success >= QUOTE_REFRESH_SECONDS)
+      (!state?.last_success ||
+        now - state.last_success >= (isPrimaryAsset(asset) ? QUOTE_REFRESH_SECONDS : 300))
     );
   });
   if (!candidates.length) return false;
@@ -340,7 +342,7 @@ async function executeJob(env: Env, job: JobPolicy, states: IngestionState[]) {
 }
 
 /** Cloudflare runs this independently of visitors. One bounded source job per minute. */
-export async function scheduled(env: Env, scheduledAt = epoch()) {
+export async function scheduled(env: Env, scheduledAt = epoch(), separateQuotes = false) {
   const now = epoch(),
     tick = Math.floor(scheduledAt / 60),
     runId = crypto.randomUUID();
@@ -355,7 +357,13 @@ export async function scheduled(env: Env, scheduledAt = epoch()) {
     (row) => row.key === interrupted?.job && (row.last_success || 0) < interrupted.last_started,
   );
   if (retry) retry.next_attempt = now;
-  const job = selectJob(jobPolicies(enabledAssets(env), !!build), rows.results, now);
+  const job = selectJob(
+    jobPolicies(enabledAssets(env), !!build).filter(
+      (j) => !separateQuotes || j.kind !== 'quote-batch',
+    ),
+    rows.results,
+    now,
+  );
   // Keep 72 hours of minute ticks so a full 48-hour unattended run is auditable.
   const slot = tick % 4320;
   // The run lease, bounded ledger, and selected-job attempt are one transaction.
@@ -418,4 +426,24 @@ export async function scheduled(env: Env, scheduledAt = epoch()) {
       ).bind(completed, outcome, error, slot, runId),
     ]);
   }
+}
+
+/** Quotes have an independent lane, so history backfills cannot delay live prices. */
+export async function refreshMinuteQuotes(env: Env) {
+  if (!(await claimRefresh(env.DB, 'minute-quotes', 55))) return;
+  const states = (await env.DB.prepare('SELECT * FROM ingestion').all<IngestionState>()).results;
+  const assets = enabledAssets(env);
+  await Promise.all(
+    (['binance', 'upbit'] as Market[]).map(async (market) => {
+      const key = 'quotes:' + market + ':0';
+      if ((states.find((s) => s.key === key)?.next_attempt || 0) > epoch()) return;
+      try {
+        const partial = await updateQuoteBatch(env, assets, market, states);
+        if (partial) await failure(env.DB, key, 'Partial quote refresh');
+        else await success(env.DB, key, epoch());
+      } catch (error) {
+        await failure(env.DB, key, error);
+      }
+    }),
+  );
 }

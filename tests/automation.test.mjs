@@ -13,7 +13,7 @@ vi.mock('../worker/dominance', () => ({
   DOMINANCE_VERSION: 'test',
 }));
 import { getQuotes, getRecentCandles } from '../worker/providers';
-import { scheduled, updateQuoteBatch } from '../worker/scheduled';
+import { scheduled, updateQuoteBatch, refreshMinuteQuotes } from '../worker/scheduled';
 import { jobPolicies, dueAt, selectJob, operationStatus } from '../worker/health';
 import worker from '../worker/index';
 import { DAY } from '../shared/math';
@@ -109,30 +109,27 @@ afterEach(async () => {
   vi.unstubAllGlobals();
   vi.useRealTimers();
 });
-it('two quote batches refresh every market without visitors even while price recovery is overdue', async () => {
+it('minute quotes run independently of overdue history, deduplicate delivery, and refresh again next minute', async () => {
   ready();
+  DB.sqlite
+    .prepare(
+      "UPDATE ingestion SET last_attempt=?,last_success=?,data_as_of=? WHERE key LIKE 'quote:%'",
+    )
+    .run(now - 900, now - 900, now - 900);
   DB.sqlite
     .prepare("UPDATE ingestion SET last_attempt=?,data_as_of=? WHERE key LIKE '%:1h'")
     .run(now - 7200, now - 7200);
-  DB.sqlite
-    .prepare("UPDATE ingestion SET last_attempt=? WHERE key LIKE 'quotes:%' OR key LIKE 'quote:%'")
-    .run(now - 900);
-  DB.sqlite.prepare("UPDATE ingestion SET last_success=? WHERE key LIKE 'quote:%'").run(now - 900);
-  for (let minute = 0; minute < 2; minute++) {
-    vi.setSystemTime((now + minute * 60) * 1000);
-    await scheduled(env);
-  }
+  await Promise.all([
+    refreshMinuteQuotes(env),
+    refreshMinuteQuotes(env),
+    scheduled(env, now, true),
+  ]);
   expect(getQuotes).toHaveBeenCalledTimes(2);
-  expect(getRecentCandles).not.toHaveBeenCalled();
-  const stored = DB.sqlite
-    .prepare('SELECT data FROM snapshots')
-    .all()
-    .map((r) => JSON.parse(r.data));
-  expect(stored).toHaveLength(16);
-  expect(stored.every((q) => q.time >= now)).toBe(true);
-  vi.setSystemTime((now + 2 * 60) * 1000);
-  await scheduled(env);
   expect(getRecentCandles).toHaveBeenCalledTimes(1);
+  vi.setSystemTime((now + 61) * 1000);
+  await refreshMinuteQuotes(env);
+  expect(getQuotes).toHaveBeenCalledTimes(4);
+  expect(DB.sqlite.prepare('SELECT COUNT(*) n FROM snapshots').get().n).toBe(16);
 });
 it('does not let failed quote and mempool sources repeatedly jump ahead of older candle work', () => {
   const jobs = [
@@ -295,18 +292,18 @@ it('reference collection checks every six hours and catches up stale history wit
   state.next_attempt = now + 900;
   expect(dueAt(job, [state], now)).toBe(now + 900);
 });
-it('background quote health tolerates its declared cadence while preserving the stricter live timestamp flag', async () => {
+it('background quote health flags a missed three-minute freshness window', async () => {
   ready();
   await scheduled(env);
-  source('quote:DOGE:binance', now - 480, now - 480);
+  source('quote:DOGE:binance', now - 150, now - 150);
   const report = await operationStatus(env);
   expect(report.sources.find((row) => row.key === 'quote:DOGE:binance')).toMatchObject({
     status: 'ok',
-    liveStale: true,
-    dataAgeSeconds: 480,
-    dataFreshnessLimitSeconds: 600,
+    liveStale: false,
+    dataAgeSeconds: 150,
+    dataFreshnessLimitSeconds: 180,
   });
-  source('quote:DOGE:binance', now - 601, now - 601);
+  source('quote:DOGE:binance', now - 181, now - 181);
   const delayed = await operationStatus(env);
   expect(
     delayed.health.reasons.some(
