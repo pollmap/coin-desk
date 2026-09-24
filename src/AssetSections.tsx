@@ -13,9 +13,9 @@ export function AssetSections({ asset, current }: { asset: Asset; current: strin
     { id: 'chart', label: '기술적 분석', to: '/chart/' + asset + '?' + context },
     { id: 'onchain', label: '온체인', to: '/onchain/' + asset + '?' + context },
     { id: 'futures', label: '선물', to: '/futures/' + asset + '?' + context },
-    { id: 'dominance', label: '도미넌스', to: '/dominance?asset=' + asset },
-    { id: 'research', label: '리서치', to: '/research?asset=' + asset },
-    { id: 'events', label: '역사', to: '/history?asset=' + asset },
+    { id: 'dominance', label: '도미넌스', to: '/dominance?asset=' + asset + '&' + context },
+    { id: 'research', label: '리서치', to: '/research?asset=' + asset + '&' + context },
+    { id: 'events', label: '역사', to: '/history?asset=' + asset + '&' + context },
   ];
   return (
     <nav className="asset-sections" aria-label={asset + ' 분석 화면'}>
