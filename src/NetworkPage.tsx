@@ -226,12 +226,15 @@ export function NetworkPage() {
                   </p>
                 ) : null}
               </section>
-              <NetworkInfoTabs
-                key={asset + metric.id}
-                asset={asset}
-                metric={metric}
-                series={result.data}
-              />
+              <details className="network-explanation">
+                <summary>{metric.title} 읽는 방법 · 산식 · 출처</summary>
+                <NetworkInfoTabs
+                  key={asset + metric.id}
+                  asset={asset}
+                  metric={metric}
+                  series={result.data}
+                />
+              </details>
             </>
           )}
         </>
