@@ -1,4 +1,5 @@
 import { DERIVATIVE_ASSETS, derivativeContract } from '../shared/derivative-contracts';
+import { coinloreSnapshot } from './dominance';
 import type { Asset } from '../shared/types';
 /** Allowlisted public market-data adapter. A shared token prevents public proxy use. */
 import { binanceRequest, upstream } from './providers';
@@ -47,6 +48,23 @@ export default {
     if (!env.FEED_TOKEN || request.headers.get('X-Feed-Token') !== env.FEED_TOKEN)
       return Response.json({ error: 'Unauthorized' }, { status: 401 });
     const url = new URL(request.url);
+    if (request.method === 'GET' && url.pathname === '/coinlore' && url.searchParams.size === 0) {
+      try {
+        return Response.json(await coinloreSnapshot(), {
+          headers: { 'Cache-Control': 'no-store' },
+        });
+      } catch (error) {
+        return Response.json(
+          {
+            error:
+              error instanceof Error && error.name === 'TimeoutError'
+                ? 'CoinLore timeout'
+                : 'CoinLore connection failed',
+          },
+          { status: 502 },
+        );
+      }
+    }
     if (request.method === 'GET' && url.pathname === '/binance') {
       try {
         const method = url.searchParams.get('method') || '';

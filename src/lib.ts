@@ -31,6 +31,18 @@ export function numeric(v: number | null | undefined, digits = 2): string {
         minimumFractionDigits: digits,
       }).format(v);
 }
+export function turnover(value: number | null | undefined, unit: string) {
+  if (value == null || !Number.isFinite(value) || value < 0) return '—';
+  if (unit === 'KRW') {
+    if (value >= 1e12) return numeric(value / 1e12, 2) + '조 원';
+    if (value >= 1e8) return numeric(value / 1e8, 1) + '억 원';
+    if (value >= 1e4) return numeric(value / 1e4, 0) + '만 원';
+    return money(value, unit);
+  }
+  if (value >= 1e9) return numeric(value / 1e9, 2) + 'B ' + unit;
+  if (value >= 1e6) return numeric(value / 1e6, 2) + 'M ' + unit;
+  return numeric(value, 0) + ' ' + unit;
+}
 export function metricValue(v: number | null | undefined, unit: string) {
   if (v === null || v === undefined || !Number.isFinite(v)) return '—';
   return unit === 'USD'

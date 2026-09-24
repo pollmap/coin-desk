@@ -6,7 +6,7 @@ import { Star, RefreshCw } from 'lucide-react';
 import { ASSETS } from '../shared/catalog';
 import { AssetLogo } from './AssetLogo';
 import type { Asset, Market, Overview } from '../shared/types';
-import { dateLabel, json, money, numeric } from './lib';
+import { dateLabel, json, money, numeric, turnover } from './lib';
 import { usePersonalDesk } from './PersonalDesk';
 
 export function WatchlistPage() {
@@ -247,9 +247,7 @@ export function WatchlistPage() {
                       <small>24H≈</small>
                     ) : null}
                   </td>
-                  <td data-label="24H 거래대금">
-                    {q ? money(q.volume24h / 1e6, currency) + ' M' : '—'}
-                  </td>
+                  <td data-label="24H 거래대금">{turnover(q?.volume24h, currency)}</td>
                   <td data-label="RSI 14">{numeric(overview?.technical.rsi)}</td>
                   <td data-label="200일선 대비" className={gap !== null && gap < 0 ? 'down' : 'up'}>
                     {gap === null ? '—' : (gap >= 0 ? '+' : '') + numeric(gap) + '%'}

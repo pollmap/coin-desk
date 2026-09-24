@@ -102,7 +102,7 @@ import type {
   SeriesResponse,
 } from '../shared/types';
 import { useData } from './hooks';
-import { dateLabel, metricValue, money, numeric, save, saved } from './lib';
+import { dateLabel, metricValue, money, numeric, save, saved, turnover } from './lib';
 const PriceChart = lazy(() => import('./PriceChart').then((m) => ({ default: m.PriceChart })));
 const MetricChart = lazy(() => import('./MetricChart').then((m) => ({ default: m.MetricChart })));
 const periods = PERIOD_OPTIONS;
@@ -441,7 +441,7 @@ function PricePage({ workspace = false }: { workspace?: boolean }) {
           </div>
           <div className="quote-stat">
             <span>24H 거래대금</span>
-            <b>{q ? money(q.volume24h / 1e6, currency) + ' M' : '—'}</b>
+            <b>{turnover(q?.volume24h, currency)}</b>
           </div>
           <div className="quote-stat">
             <span>
@@ -476,6 +476,7 @@ function PricePage({ workspace = false }: { workspace?: boolean }) {
           </div>
         </section>
       }
+      <ErrorNotice message={quote.error || quote.data?.meta.warning} retry={quote.reload} />
       {historical ? (
         <Suspense fallback={<Loading message="초기 가격부터 전체 흐름을 준비하고 있습니다…" />}>
           <ExchangeHistoryPanel
@@ -534,7 +535,6 @@ function PricePage({ workspace = false }: { workspace?: boolean }) {
           <summary>시세 정보</summary>시세 {dateLabel(q?.time, true)} · 60초마다 조회
         </details>
       )}
-      <ErrorNotice message={quote.error || quote.data?.meta.warning} retry={quote.reload} />
       {!historical && (
         <section className={'panel price-panel' + (expanded ? ' expanded' : '')} ref={fullscreen}>
           <div className="price-panel-heading">

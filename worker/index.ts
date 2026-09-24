@@ -233,7 +233,7 @@ async function api(request: Request, env: Env): Promise<Response> {
   if (endpoint === 'research/public') return response(await publicResearchFeed(env));
   if (endpoint === 'research') return response(await researchFeed(env));
   if (endpoint === 'dominance') {
-    const data = await getDominance(env);
+    const data = await getDominance(env, false);
     return data
       ? response(data)
       : response({ error: '시장 비중 데이터를 아직 가져오지 못했습니다.' }, 503);
@@ -516,7 +516,9 @@ export default {
       const cache = (caches as unknown as { default: Cache }).default;
       // Quotes already share durable snapshots and refresh leases. An extra edge
       // cache can keep an old/stale response after the scheduled collector commits.
-      const liveStatus = /\/(health|status|overview|research\/public)$/.test(url.pathname);
+      const liveStatus = /\/(health|status|overview|dominance|research\/public)$/.test(
+        url.pathname,
+      );
       const cached = liveStatus ? undefined : await cache.match(canonical).catch(() => undefined);
       if (cached) return cached;
       let pending = inFlight.get(env.DB);

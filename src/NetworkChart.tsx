@@ -56,7 +56,7 @@ export function NetworkChart({
   const bands = useRef<ThresholdBands | null>(null);
   const boundaries = useRef<IPriceLine[]>([]);
   const lastView = useRef<{ key: string; from: UTCTimestamp; to: UTCTimestamp } | null>(null);
-  const [log, setLog] = useState(false);
+  const [axisChoice, setAxisChoice] = useState<{ key: string; log: boolean } | null>(null);
   const [showThresholds, setShowThresholds] = useState(true);
   const [hoverTime, setHoverTime] = useState<number | null>(null);
   const [notice, setNotice] = useState('');
@@ -71,6 +71,11 @@ export function NetworkChart({
   const thresholdId = 'network_' + metric;
   const definition = THRESHOLDS[thresholdId];
   const logAllowed = positive && metric !== 'nupl';
+  const axisKey = `${asset}:${metric}`;
+  // Preserve early observations while keeping later cycles legible, as in MetricChart.
+  const log =
+    logAllowed &&
+    (axisChoice?.key === axisKey ? axisChoice.log : metric === 'mvrv' || unit === 'USD');
   const logReason =
     metric === 'nupl'
       ? '0 손익분기 기준선을 보존하기 위해 선형 축을 사용합니다.'
@@ -269,7 +274,7 @@ export function NetworkChart({
           aria-pressed={log && logAllowed}
           disabled={!logAllowed}
           title={logReason || undefined}
-          onClick={() => setLog((v) => !v)}
+          onClick={() => setAxisChoice({ key: axisKey, log: !log })}
         >
           로그축 {log && logAllowed ? '켜짐' : '꺼짐'}
         </button>

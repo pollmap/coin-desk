@@ -1,6 +1,7 @@
 import { ASSETS } from '../shared/catalog';
 import type { Dominance } from '../shared/types';
 import { DAY } from '../shared/math';
+import { feedRequest } from './feed-client';
 import { claimRefresh, epoch, failure, readState, putState, success, type Env } from './storage';
 const ids: Record<string, string> = {
   BTC: '90',
@@ -151,13 +152,11 @@ export function normalizeDominance(
   };
 }
 export async function updateDominance(env: Env): Promise<Dominance> {
-  const global = await fetchJson('https://api.coinlore.net/api/global/');
   const stable = await readState<StableSnapshot | null>(env.DB, 'stablecoin-total', null);
-  // CoinLore recommends at most one request per second.
-  await new Promise((resolve) => setTimeout(resolve, 1050));
-  const markets = await fetchJson(
-    'https://api.coinlore.net/api/ticker/?id=' + Object.values(ids).join(','),
-  );
+  const { global, markets } =
+    env.FEED_URL && env.FEED_TOKEN
+      ? ((await feedRequest(env, '/coinlore')) as { global: unknown; markets: unknown })
+      : await coinloreSnapshot();
   const result = normalizeDominance(global, markets, stable, epoch());
   await putState(env.DB, 'dominance', result);
   await env.DB.prepare(
@@ -174,7 +173,16 @@ export async function updateDominance(env: Env): Promise<Dominance> {
   await success(env.DB, 'coinlore', result.asOf);
   return result;
 }
-export async function getDominance(env: Env) {
+export async function coinloreSnapshot() {
+  const global = await fetchJson('https://api.coinlore.net/api/global/');
+  // Respect the provider's one-request-per-second recommendation.
+  await new Promise((resolve) => setTimeout(resolve, 1050));
+  const markets = await fetchJson(
+    'https://api.coinlore.net/api/ticker/?id=' + Object.values(ids).join(','),
+  );
+  return { global, markets };
+}
+export async function getDominance(env: Env, refresh = true) {
   let value = await readState<Dominance | null>(env.DB, 'dominance', null);
   if (value?.calculationVersion !== DOMINANCE_VERSION) value = null;
   const retry = await env.DB.prepare('SELECT next_attempt,error FROM ingestion WHERE key=?')
@@ -184,6 +192,7 @@ export async function getDominance(env: Env) {
     ? '시장 비중 원천의 연결이 지연되어 마지막 정상 값을 표시합니다.'
     : undefined;
   if (
+    refresh &&
     (!value ||
       epoch() - value.fetchedAt > 3600 ||
       (!value.coins.some((c) => c.id === 'STABLE') && epoch() - value.fetchedAt > 300)) &&
