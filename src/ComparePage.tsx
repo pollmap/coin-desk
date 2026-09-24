@@ -1,3 +1,4 @@
+import { useMarket } from './useMarket';
 import { ChartNavigator, ChartTools } from './ChartNavigator';
 import { createDeskChart as createChart } from './chart-theme';
 import { useEffect, useMemo, useRef, useState } from 'react';
@@ -207,7 +208,7 @@ export function ComparePage() {
   const [params, setParams] = useSearchParams();
   const initial = useMemo(() => saved<Record<string, unknown>>('comparison', {}), []);
   const assets = selectedAssets(params.get('assets') ?? initial.assets);
-  const market: Market = (params.get('market') ?? initial.market) === 'upbit' ? 'upbit' : 'binance';
+  const { market } = useMarket();
   const rawPeriod = params.get('period') ?? (initial.version === 2 ? initial.period : 'all');
   const period: RangePeriod = isRangePeriod(rawPeriod) ? rawPeriod : 'all';
   const hasUrlRange = params.has('from') || params.has('to');

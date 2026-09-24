@@ -16,6 +16,8 @@ import { zoomChartRange } from './chart-range';
 import { dateLabel, money, periodStart, priceDigits } from './lib';
 import './chart-improvements.css';
 
+const EMPTY_OVERLAYS: { id: string; color: string; points: { time: number; value: number }[] }[] =
+  [];
 const ts = (time: number) => time as UTCTimestamp;
 
 /** CoinMetrics PriceUSD stays a separate series with its own provenance and unit. */
@@ -25,8 +27,10 @@ export const LongHistoryChart = memo(function LongHistoryChart({
   period,
   log,
   onPeriodChange,
-  overlays = [],
+  overlays = EMPTY_OVERLAYS,
+  currency = 'USD',
 }: {
+  currency?: 'USD' | 'KRW' | 'USDT';
   series: SeriesResponse;
   asset: Asset;
   period: Period;
@@ -84,8 +88,8 @@ export const LongHistoryChart = memo(function LongHistoryChart({
       pointMarkersVisible: points.length === 1,
       priceFormat: {
         type: 'custom',
-        formatter: (value: number) => money(value, 'USD'),
-        minMove: 10 ** -priceDigits(Math.min(...points.map((point) => point.value)), 'USD'),
+        formatter: (value: number) => money(value, currency),
+        minMove: 10 ** -priceDigits(Math.min(...points.map((point) => point.value)), currency),
       },
     });
     lineRef.current = line;
@@ -100,7 +104,7 @@ export const LongHistoryChart = memo(function LongHistoryChart({
       surface.dataset.visibleTo = String(Number(range.to));
     });
     const prior = previous.current;
-    const key = asset + ':' + settings.current.period;
+    const key = asset + ':' + currency + ':' + settings.current.period;
     const visible = points.filter(
       (point) => point.time >= periodStart(settings.current.period, points.at(-1)!.time),
     );
@@ -122,7 +126,7 @@ export const LongHistoryChart = memo(function LongHistoryChart({
       const range = chart.timeScale().getVisibleRange();
       if (range)
         previous.current = {
-          key: asset + ':' + settings.current.period,
+          key: asset + ':' + currency + ':' + settings.current.period,
           from: Number(range.from),
           to: Number(range.to),
         };
@@ -131,7 +135,7 @@ export const LongHistoryChart = memo(function LongHistoryChart({
       chartRef.current = null;
       lineRef.current = null;
     };
-  }, [points, asset, color]);
+  }, [points, asset, color, currency]);
 
   useEffect(() => {
     const chart = chartRef.current;
@@ -156,7 +160,7 @@ export const LongHistoryChart = memo(function LongHistoryChart({
       }
       overlayRefs.current = [];
     };
-  }, [overlays, points]);
+  }, [overlays, points, currency, asset]);
 
   useEffect(() => {
     lineRef.current
@@ -175,7 +179,7 @@ export const LongHistoryChart = memo(function LongHistoryChart({
     setKeyboardMessage('');
     setMessage('');
     // A chosen period resets the view. Refreshing the same source retains user zoom.
-  }, [period, asset]);
+  }, [period, asset, currency]);
 
   function zoom(factor: number) {
     const scale = chartRef.current?.timeScale();
@@ -199,20 +203,20 @@ export const LongHistoryChart = memo(function LongHistoryChart({
     const csv =
       '\uFEFF' +
       [
-        'asset,date_utc,price_usd,source',
+        'asset,date_utc,price,currency,source',
         ...visible.map(
           (point) =>
-            `${asset},${new Date(point.time * 1000).toISOString()},${point.value},CoinMetrics PriceUSD`,
+            `${asset},${new Date(point.time * 1000).toISOString()},${point.value},${currency},"${series.meta.source.replaceAll('"', '""')}"`,
         ),
       ].join('\r\n');
     const url = URL.createObjectURL(new Blob([csv], { type: 'text/csv;charset=utf-8' }));
     const link = document.createElement('a');
     link.href = url;
-    link.download = `Coin-Desk-${asset}-CoinMetrics-USD.csv`;
+    link.download = `Coin-Desk-${asset}-${currency}.csv`;
     link.click();
     setTimeout(() => URL.revokeObjectURL(url), 1000);
     setMessage(
-      `${visible.length.toLocaleString()}개 실제 USD 가격 관측을 UTC 시각·원천과 함께 내보냈습니다.`,
+      `${visible.length.toLocaleString()}개 실제 ${currency} 가격 관측을 UTC 시각·원천과 함께 내보냈습니다.`,
     );
   }
 
@@ -220,16 +224,18 @@ export const LongHistoryChart = memo(function LongHistoryChart({
     <div className="long-history-chart">
       <div className="long-history-heading">
         <div>
-          <strong>{asset} 장기 USD 가격</strong>
-          <span>CoinMetrics PriceUSD · 일별 관측</span>
+          <strong>
+            {asset} · {currency}
+          </strong>
+          <span>{series.meta.source} · 일별 종가</span>
         </div>
         <div className="long-history-observation">
           <span>{display ? dateLabel(display.time) : '관측 대기'}</span>
-          <b>{money(display?.value, 'USD')}</b>
+          <b>{money(display?.value, currency)}</b>
         </div>
       </div>
       {!points.length ? (
-        <div className="empty-state">이 자산의 장기 USD 가격 관측을 아직 확보하지 못했습니다.</div>
+        <div className="empty-state">이 자산의 가격 관측을 아직 확보하지 못했습니다.</div>
       ) : null}
       <div
         ref={surfaceRef}
@@ -238,7 +244,7 @@ export const LongHistoryChart = memo(function LongHistoryChart({
         data-asset={asset}
         role="group"
         tabIndex={0}
-        aria-label={`${asset} CoinMetrics 장기 USD 가격 차트. 좌우 화살표로 날짜별 가격, 더하기·빼기로 확대·축소`}
+        aria-label={`${asset} ${currency} 가격 차트. 좌우 화살표로 날짜별 가격, 더하기·빼기로 확대·축소`}
         onKeyDown={(event) => {
           if (event.target !== event.currentTarget) return;
           if (['+', '=', '-'].includes(event.key)) {
@@ -264,7 +270,7 @@ export const LongHistoryChart = memo(function LongHistoryChart({
           const point = points[next];
           setSelectedTime(point.time);
           setKeyboardMessage(
-            `${dateLabel(point.time)} · ${asset} ${money(point.value, 'USD')} · CoinMetrics USD 가격`,
+            `${dateLabel(point.time)} · ${asset} ${money(point.value, currency)} · ${series.meta.source}`,
           );
           if (lineRef.current)
             chartRef.current?.setCrosshairPosition(point.value, ts(point.time), lineRef.current);
@@ -278,7 +284,7 @@ export const LongHistoryChart = memo(function LongHistoryChart({
         chart={chartRef}
         rows={points}
         label={asset}
-        unit={'USD'}
+        unit={currency}
         source={series.meta.source}
         onExport={exportCsv}
         onZoom={zoom}
@@ -286,7 +292,7 @@ export const LongHistoryChart = memo(function LongHistoryChart({
       />
       <ChartRangeControl
         rows={points}
-        resetKey={asset + ':' + period}
+        resetKey={asset + ':' + currency + ':' + period}
         onApply={(selection) =>
           chartRef.current
             ?.timeScale()
@@ -306,12 +312,13 @@ export const LongHistoryChart = memo(function LongHistoryChart({
       ) : null}
       <div className="source-line">
         <span>
-          출처 CoinMetrics · 단위 USD · {dateLabel(points[0]?.time)} ~{' '}
+          출처 {series.meta.source} · 단위 {currency} · {dateLabel(points[0]?.time)} ~{' '}
           {dateLabel(points.at(-1)?.time)}
         </span>
-        <span className={series.meta.stale ? 'amber' : ''}>
-          {series.meta.stale ? '갱신 지연 · ' : ''}수집 {dateLabel(series.meta.fetchedAt, true)}
-        </span>
+        {series.meta.stale ? <span className="amber">갱신 지연</span> : null}
+        <details>
+          <summary>데이터 정보</summary>수집 {dateLabel(series.meta.fetchedAt, true)}
+        </details>
       </div>
     </div>
   );

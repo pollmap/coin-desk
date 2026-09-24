@@ -1,5 +1,8 @@
 import type { Candle } from '../shared/types';
 export interface Env {
+  X_BEARER_TOKEN?: string;
+  X_COLLECTION_ENABLED?: string;
+  X_MAX_REQUESTS_PER_DAY?: string;
   DB: D1Database;
   ASSETS: Fetcher;
   FEED_URL?: string;

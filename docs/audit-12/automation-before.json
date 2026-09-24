@@ -1,0 +1,192 @@
+{
+  "runner": "Cloudflare Cron",
+  "independentOfVisitors": true,
+  "tickSeconds": 60,
+  "lastStartedAt": 1790232553,
+  "lastCompletedAt": 1790232556,
+  "lastSucceededAt": 1790232556,
+  "lastJob": "quotes:upbit:0",
+  "lastRunStatus": "ok",
+  "lastError": null,
+  "leaseUntil": null,
+  "stalled": false,
+  "nextTickAt": 1790232600,
+  "observation48h": {
+    "from": 1790059786,
+    "firstRunAt": 1790132960,
+    "lastRunAt": 1790232553,
+    "ticks": 1525,
+    "failures": 246,
+    "ready": false
+  },
+  "cadence": {
+    "quoteBackgroundTargetSeconds": 480,
+    "quoteBackgroundDelaySeconds": 600,
+    "quoteOnDemandMinSeconds": 60,
+    "hourlyCandlesSeconds": 3600,
+    "dailyCandlesSeconds": 21600,
+    "dailyUtcBoundaryRefresh": true
+  },
+  "recentRuns": [
+    {
+      "runId": "ac641bdd-07af-41af-a96f-1c8a73fc08de",
+      "startedAt": 1790232553,
+      "completedAt": 1790232556,
+      "job": "quotes:upbit:0",
+      "outcome": "ok",
+      "error": null
+    },
+    {
+      "runId": "3432c452-0658-453a-b20e-5bd0964a6b5e",
+      "startedAt": 1790232495,
+      "completedAt": 1790232496,
+      "job": "derivatives:BTC:funding",
+      "outcome": "ok",
+      "error": null
+    },
+    {
+      "runId": "c25a386d-fced-4810-93a3-41f1f7220dc9",
+      "startedAt": 1790232434,
+      "completedAt": 1790232436,
+      "job": "PEPE:binance:1d",
+      "outcome": "ok",
+      "error": null
+    },
+    {
+      "runId": "90e1740a-24ab-4fc3-a070-c0d9f418f493",
+      "startedAt": 1790232374,
+      "completedAt": 1790232378,
+      "job": "coinlore",
+      "outcome": "ok",
+      "error": null
+    },
+    {
+      "runId": "373f0e1c-2ba5-4afe-8eab-d0bf1b88ebba",
+      "startedAt": 1790232325,
+      "completedAt": 1790232327,
+      "job": "quotes:binance:0",
+      "outcome": "ok",
+      "error": null
+    },
+    {
+      "runId": "5b0ebfeb-a073-48a8-b63d-8addca6fe196",
+      "startedAt": 1790232254,
+      "completedAt": 1790232255,
+      "job": "ONDO:binance:1d",
+      "outcome": "ok",
+      "error": null
+    },
+    {
+      "runId": "6074519e-d2bd-449e-917c-1dc4f52903d1",
+      "startedAt": 1790232194,
+      "completedAt": 1790232195,
+      "job": "derivatives:ETH:funding",
+      "outcome": "ok",
+      "error": null
+    },
+    {
+      "runId": "79892135-30c8-40ec-9daa-0dfebdd31432",
+      "startedAt": 1790232135,
+      "completedAt": 1790232137,
+      "job": "LINK:binance:1d",
+      "outcome": "ok",
+      "error": null
+    },
+    {
+      "runId": "9fad7d89-cdd2-439f-aa10-39e99eceb742",
+      "startedAt": 1790232073,
+      "completedAt": 1790232075,
+      "job": "mempool:BTC",
+      "outcome": "ok",
+      "error": null
+    },
+    {
+      "runId": "a614469a-2871-470b-b66f-acd9dd46ebf5",
+      "startedAt": 1790232030,
+      "completedAt": 1790232033,
+      "job": "quotes:upbit:0",
+      "outcome": "ok",
+      "error": null
+    },
+    {
+      "runId": "eae1f0e1-3d46-4999-a0e1-b500a79848f5",
+      "startedAt": 1790231955,
+      "completedAt": 1790231957,
+      "job": "PEPE:upbit:1h",
+      "outcome": "ok",
+      "error": null
+    },
+    {
+      "runId": "a5a8030a-aa34-477d-a2d6-9236d501ce7c",
+      "startedAt": 1790231895,
+      "completedAt": 1790231896,
+      "job": "ONDO:upbit:1h",
+      "outcome": "ok",
+      "error": null
+    },
+    {
+      "runId": "984369a7-59cd-499e-aba5-e9e5af01a5bb",
+      "startedAt": 1790231833,
+      "completedAt": 1790231835,
+      "job": "LINK:upbit:1h",
+      "outcome": "ok",
+      "error": null
+    },
+    {
+      "runId": "c57c5478-8969-44f4-820f-2f95a303efbd",
+      "startedAt": 1790231776,
+      "completedAt": 1790231778,
+      "job": "quotes:binance:0",
+      "outcome": "ok",
+      "error": null
+    },
+    {
+      "runId": "37aa068c-ba79-45ae-8f48-00445a59b917",
+      "startedAt": 1790231723,
+      "completedAt": 1790231725,
+      "job": "XRP:upbit:1h",
+      "outcome": "ok",
+      "error": null
+    },
+    {
+      "runId": "992cc8d4-444f-4b7b-9599-82778a338497",
+      "startedAt": 1790231654,
+      "completedAt": 1790231655,
+      "job": "XRP:binance:1d",
+      "outcome": "ok",
+      "error": null
+    },
+    {
+      "runId": "2bd1f607-679f-405d-ae40-83c9e3187d62",
+      "startedAt": 1790231595,
+      "completedAt": 1790231596,
+      "job": "SOL:upbit:1h",
+      "outcome": "ok",
+      "error": null
+    },
+    {
+      "runId": "e825d2d5-4c63-48b5-8037-ae99f0fda2a4",
+      "startedAt": 1790231535,
+      "completedAt": 1790231536,
+      "job": "SOL:binance:1d",
+      "outcome": "ok",
+      "error": null
+    },
+    {
+      "runId": "7870c1e9-e079-4873-9dc8-fa11137d7cbd",
+      "startedAt": 1790231479,
+      "completedAt": 1790231481,
+      "job": "quotes:upbit:0",
+      "outcome": "ok",
+      "error": null
+    },
+    {
+      "runId": "f28394be-d467-4ef0-adb9-e102145d6ac6",
+      "startedAt": 1790231435,
+      "completedAt": 1790231437,
+      "job": "ETH:upbit:1h",
+      "outcome": "ok",
+      "error": null
+    }
+  ]
+}

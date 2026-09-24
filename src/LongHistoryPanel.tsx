@@ -70,7 +70,16 @@ export function LongHistoryPanel({
         · Coin Metrics 참조가격
       </p>
       {asset === 'BTC' && cycle ? (
-        <details id="btc-cycle" className="cycle-controls">
+        <details
+          id="btc-cycle"
+          className="cycle-controls"
+          open={
+            (typeof window !== 'undefined' &&
+              (window.location.hash === '#btc-cycle' ||
+                new URLSearchParams(window.location.search).get('reference') === '1')) ||
+            undefined
+          }
+        >
           <summary>BTC 사이클 기준선 · 고점 대비 {cycle.drawdown?.toFixed(1) ?? '—'}%</summary>
           <div className="cycle-options">
             {[

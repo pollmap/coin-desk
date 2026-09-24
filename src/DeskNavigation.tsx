@@ -1,3 +1,4 @@
+import { matchesCoin } from '../shared/coin-search';
 import { useEffect, useMemo, useState } from 'react';
 import { Link, NavLink, useLocation } from 'react-router-dom';
 import {
@@ -86,7 +87,9 @@ export function DeskNavigation({ onNavigate }: { onNavigate: () => void }) {
     [networkAsset],
   );
   const results = entries.filter((e) =>
-    e.aliases.toLowerCase().includes(query.toLowerCase().trim()),
+    'asset' in e
+      ? matchesCoin(e.asset as Asset, query)
+      : e.aliases.toLowerCase().includes(query.toLowerCase().trim()),
   );
   return (
     <>
@@ -152,6 +155,10 @@ export function DeskNavigation({ onNavigate }: { onNavigate: () => void }) {
               <Activity size={18} />
               <span>시장 비중</span>
             </NavLink>
+            <NavLink to="/research" aria-label="리서치 모아보기" title="리서치 모아보기">
+              <Layers size={18} />
+              <span>리서치 모아보기</span>
+            </NavLink>
             <NavLink to="/workspace" aria-label="내 작업공간" title="내 작업공간">
               <Star size={18} />
               <span>내 작업공간</span>
@@ -186,6 +193,7 @@ export function DeskTopbar({
   );
   const id = location.pathname.split('/')[2];
   const names: Record<string, string> = {
+    research: '리서치 모아보기',
     coins: '시장 시세',
     compare: '코인 성과 비교',
     explore: '지표 탐색',

@@ -1,3 +1,4 @@
+import { useMarket } from './useMarket';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Search } from 'lucide-react';
@@ -97,7 +98,7 @@ const expanded = [
     title: 'BTC 사이클 기준선',
     description: '200주선, 2년선·5배선, Pi Cycle과 고점 대비 낙폭을 전체 가격 이력에 표시합니다.',
     formula: '확정 USD 일별 종가의 111·350·730일 단순평균 및 완료된 200주의 종가 평균',
-    to: '/?asset=BTC&period=all#btc-cycle',
+    to: '/?asset=BTC&period=all&reference=1#reference-history',
     source: 'https://www.lookintobitcoin.com/charts/market-cycle-charts/',
   },
   ...(['BTC', 'DOGE', 'ETH'] as const).map((coin) => ({
@@ -121,6 +122,7 @@ const expanded = [
   })),
 ];
 export function MetricsExplorer() {
+  const { market } = useMarket();
   const [search, setSearch] = useState(''),
     [filter, setFilter] = useState('전체'),
     [message, setMessage] = useState('');
@@ -237,7 +239,7 @@ export function MetricsExplorer() {
       <div className="explorer-results-heading">
         <p id="explorer-search-hint">
           질문·활용 설명·산식도 검색합니다. 온체인 활동은 해당 코인의 실제 제공 이력을, 기술지표는
-          선택한 코인의 Binance USDT 전체 이력을 엽니다.
+          선택한 가격 기준의 전체 이력을 엽니다.
         </p>
         <div>
           <span role="status" aria-live="polite">
@@ -276,7 +278,7 @@ export function MetricsExplorer() {
                 {m.formula}
               </div>
             </details>
-            <MetricGuide id={m.id} />
+            <MetricGuide id={m.id} compact />
             <div className="workspace-actions">
               <Link className="desk-button" to={'/metrics/' + m.id + '?period=all'}>
                 실제 차트 열기 ↗
@@ -319,11 +321,11 @@ export function MetricsExplorer() {
               <summary>계산 방법</summary>
               <div className="formula">{m.formula}</div>
             </details>
-            <MetricGuide id={m.guide} />
+            <MetricGuide id={m.guide} compact />
             <Link
               className="desk-button"
               to={
-                `/chart/${asset}?asset=${asset}&market=binance&interval=1d&period=all&log=1&indicators=` +
+                `/chart/${asset}?asset=${asset}&market=${market}&interval=1d&period=all&log=1&indicators=` +
                 encodeURIComponent(m.id)
               }
             >
