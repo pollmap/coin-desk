@@ -1,0 +1,778 @@
+/* Shared interaction hierarchy: coin → analysis → chart → optional detail. */
+.explorer-question-picker {
+  margin-bottom: 16px;
+}
+.explorer-question-picker > summary {
+  cursor: pointer;
+  padding: 12px 0;
+  min-height: 44px;
+  font-size: 13px;
+  color: var(--muted);
+}
+.explorer-question-picker[open] > summary {
+  margin-bottom: 8px;
+}
+.app .explorer-questions span,
+.app .metric-guide summary > span {
+  color: var(--accent);
+}
+.app .period-picker .period-mobile-select {
+  display: none;
+}
+.network-selector-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+.app .network-selector-row .network-picker {
+  flex: 1;
+  min-width: 0;
+  margin: 0;
+}
+.network-selector-row > .period-picker {
+  padding-top: 4px;
+}
+.app .network-main > .chart-actions {
+  padding-top: 12px;
+}
+.app .library-formula summary,
+.app .comparison-custom-dates summary {
+  cursor: pointer;
+  padding: 10px 0;
+  min-height: 40px;
+  color: var(--muted);
+  font-size: 12px;
+}
+.app .library-formula .formula {
+  margin-top: 0;
+}
+.app .comparison-custom-dates {
+  border-top: 1px solid var(--border);
+  margin-top: 12px;
+}
+.app .comparison-custom-dates .comparison-date-range {
+  border: 0;
+  padding-top: 0;
+}
+.app .sidebar {
+  width: 208px;
+  padding: 22px 12px 16px;
+}
+.app .main-shell {
+  margin-left: 208px;
+}
+.app main {
+  max-width: 1520px;
+  margin: 0 auto;
+  padding: 24px 28px 36px;
+}
+.app .brand {
+  font-size: 21px;
+}
+.app .primary-nav {
+  gap: 6px;
+}
+.app .sidebar .primary-nav a {
+  min-height: 44px;
+  font-size: 13px;
+  padding: 11px 12px;
+}
+.app .sidebar .nav-utilities {
+  margin-top: auto;
+  padding-top: 24px;
+}
+.nav-search:focus-within {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+.nav-search button {
+  display: flex;
+  align-items: center;
+  padding: 4px;
+}
+.app .theme-toggle {
+  margin-left: auto;
+}
+.app .icon-button {
+  min-height: 40px;
+  min-width: 40px;
+}
+.app button:hover {
+  color: var(--text);
+}
+.app button:focus-visible,
+.app a:focus-visible,
+.app select:focus-visible,
+.app summary:focus-visible,
+.app input:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+.asset-header {
+  margin-bottom: 20px;
+}
+.asset-heading {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+.asset-heading-name {
+  min-width: 0;
+}
+.app .asset-heading h1 {
+  font-size: 25px;
+  line-height: 1.35;
+  letter-spacing: -0.7px;
+}
+.asset-heading h1 span {
+  font-size: 14px;
+  color: var(--muted);
+  font-weight: 500;
+  margin-left: 5px;
+}
+.asset-heading p {
+  color: var(--muted);
+  font-size: 12px;
+  margin-top: 5px;
+  line-height: 1.5;
+}
+.asset-select-label {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  flex-shrink: 0;
+}
+.asset-select-label > span {
+  font-size: 12px;
+  color: var(--muted);
+}
+.app select,
+.app input[type='search'] {
+  color: var(--text);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  min-height: 40px;
+  padding: 8px 10px;
+}
+.app .asset-sections {
+  display: flex;
+  gap: 24px;
+  flex-wrap: nowrap;
+  margin: 18px 0 0;
+  border-bottom: 1px solid var(--border);
+}
+.app .asset-sections a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  border: 0;
+  border-bottom: 2px solid transparent;
+  border-radius: 0;
+  padding: 10px 2px;
+  white-space: nowrap;
+  font-weight: 500;
+}
+.app .asset-sections a.selected {
+  color: var(--accent);
+  background: none;
+  border-bottom-color: var(--accent);
+  font-weight: 700;
+}
+.app .asset-sections a:hover {
+  color: var(--text);
+}
+.app .panel {
+  border-radius: 10px;
+}
+.app .metric-detail-top {
+  padding: 16px 18px 10px;
+  gap: 12px;
+  align-items: center;
+}
+.app .metric-detail-top strong {
+  font-size: 26px;
+  font-weight: 650;
+}
+.app .metric-detail-top h2 {
+  color: var(--muted);
+  font-size: 13px;
+  margin-bottom: 6px;
+}
+.app .history-origin {
+  margin: 0;
+  padding: 0 18px 12px;
+  color: var(--muted);
+  font-size: 11px;
+}
+.app .long-period-actions {
+  gap: 10px;
+}
+.app .segments button {
+  min-height: 36px;
+  font-size: 12px;
+}
+.app .text-button {
+  min-height: 36px;
+}
+.app .network-picker {
+  margin: 0 0 12px;
+  padding: 0;
+}
+.app .network-picker > summary {
+  padding: 12px 16px;
+  font-size: 13px;
+  min-height: 44px;
+}
+.app .network-picker[open] {
+  padding: 0 16px 16px;
+}
+.app .network-picker[open] > summary {
+  margin: 0 -16px;
+}
+.app .network-picker input {
+  max-width: none;
+}
+.app .network-metrics button {
+  min-height: 40px;
+  padding: 9px 12px;
+}
+.app .network-main .metric-detail-top {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding-bottom: 10px;
+}
+.app .network-main .metric-detail-top h2 {
+  font-size: 15px;
+  margin: 0;
+  color: var(--text);
+}
+.app .network-main .chart-actions {
+  border-top: 0;
+  padding-top: 0;
+}
+.app .threshold-summary {
+  background: none;
+  border-top: 1px solid var(--border);
+  padding: 10px 16px;
+  min-height: 44px;
+}
+.app .threshold-summary b {
+  font-size: 20px;
+}
+.app .network-coverage {
+  padding: 12px 16px 4px;
+  font-size: 11px;
+}
+.app .coverage-strip,
+.app .source-line {
+  font-size: 11px;
+  line-height: 1.7;
+  gap: 6px 18px;
+}
+.app .chart-utility-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+  padding: 10px 14px;
+}
+.app .chart-utility-bar > div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-left: auto;
+}
+.app .chart-utility-bar > .chart-zoom-actions {
+  margin-left: 0;
+  margin-right: auto;
+}
+.app .chart-utility-bar button,
+.app .chart-actions button {
+  min-height: 36px;
+  padding: 8px 10px;
+  font-size: 12px;
+}
+.app .chart-utility-bar > small:empty {
+  display: none;
+}
+.chart-share-address {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+}
+.chart-share-address input {
+  min-width: 0;
+  flex: 1;
+}
+.app .derivatives-panel {
+  padding: 16px;
+}
+.app .derivatives-overview {
+  margin: 0 0 14px;
+  gap: 10px;
+}
+.app .derivatives-overview button {
+  padding: 14px;
+  border-radius: 7px;
+  background: var(--panel);
+}
+.app .derivatives-overview button.selected {
+  background: var(--accent-bg);
+  border-color: var(--accent);
+}
+.app .derivatives-overview span {
+  font-size: 12px;
+  color: var(--text);
+}
+.app .derivatives-overview strong {
+  font-size: 22px;
+}
+.app .derivatives-overview small {
+  font-size: 11px;
+  line-height: 1.5;
+}
+.app .derivatives-latest {
+  padding: 12px 0;
+  margin: 0;
+  border-top: 1px solid var(--border);
+  flex-wrap: wrap;
+}
+.app .derivatives-latest strong {
+  font-size: 24px;
+}
+.app .derivatives-toolbar label {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 12px;
+}
+.app .derivatives-toolbar input[type='checkbox'] {
+  width: 16px;
+  height: 16px;
+  accent-color: var(--accent);
+}
+.app .derivatives-panel > .muted {
+  font-size: 12px;
+  line-height: 1.7;
+  margin-top: 10px;
+}
+.app .quote-strip {
+  margin-bottom: 6px;
+}
+.quote-timestamp {
+  color: var(--muted);
+  font-size: 11px;
+  margin: 0 0 14px;
+}
+.app .workspace-fold {
+  margin: 16px 0;
+}
+.app .analysis-details {
+  margin: 16px 0;
+}
+.app .analysis-details > summary,
+.app .network-explanation > summary,
+.app .workspace-fold > summary {
+  min-height: 44px;
+  padding: 12px 14px;
+  font-size: 13px;
+}
+.app .btc-extra-metrics > .section-heading,
+.app .btc-extra-metrics > .onchain-note {
+  margin: 12px 16px;
+}
+.app .page-heading > div > .eyebrow {
+  display: none;
+}
+.app .explorer-toolbar input,
+.app .explorer-toolbar select,
+.app .explorer-toolbar button {
+  min-height: 40px;
+}
+.app .library-card {
+  padding: 18px;
+}
+.app .library-card h2 {
+  font-size: 16px;
+}
+.app .comparison-control-heading button,
+.app .comparison-assets button {
+  min-height: 40px;
+}
+.app .watch-table td {
+  padding-top: 14px;
+  padding-bottom: 14px;
+}
+.app .watch-asset a {
+  display: inline-flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.app .watch-asset a:hover {
+  text-decoration: underline;
+}
+.app .watch-table .star-button {
+  min-width: 40px;
+  min-height: 40px;
+}
+.app footer {
+  max-width: 1520px;
+  margin: 0 auto;
+  font-size: 11px;
+}
+@media (max-width: 1050px) {
+  .asset-select-label > span {
+    display: none;
+  }
+  .app .asset-heading h1 {
+    font-size: 23px;
+  }
+  .app .long-history-panel .metric-detail-top {
+    flex-wrap: wrap;
+  }
+}
+@media (max-width: 760px) {
+  .network-selector-row {
+    gap: 8px;
+  }
+  .network-selector-row > .period-picker {
+    padding: 2px 0 0;
+  }
+  .app .sidebar,
+  .app.nav-collapsed .sidebar {
+    width: 272px;
+  }
+  .app .main-shell,
+  .app.nav-collapsed .main-shell {
+    margin-left: 0;
+  }
+  .app main {
+    padding: 16px 12px 24px;
+  }
+  .app .asset-header {
+    margin-bottom: 14px;
+  }
+  .asset-heading {
+    gap: 8px;
+  }
+  .asset-heading > img {
+    width: 28px;
+    height: 28px;
+  }
+  .app .asset-heading h1 {
+    font-size: 20px;
+  }
+  .asset-heading h1 span {
+    display: none;
+  }
+  .asset-heading p {
+    font-size: 11px;
+    max-width: 195px;
+  }
+  .asset-select-label {
+    max-width: 86px;
+  }
+  .app .asset-select-label select {
+    width: 86px;
+    font-size: 12px;
+    padding: 8px 4px;
+  }
+  .app .asset-sections {
+    gap: 0;
+    margin-top: 12px;
+    justify-content: space-between;
+  }
+  .app .asset-sections a {
+    flex: 1;
+    font-size: 12px;
+    padding: 10px 3px;
+    min-height: 44px;
+  }
+  .app .metric-detail-top,
+  .app .long-history-panel .metric-detail-top {
+    padding: 12px;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .app .long-history-panel .metric-detail-top > div:first-child {
+    flex: 1;
+  }
+  .app .long-history-panel .metric-detail-top span {
+    display: block;
+    font-size: 11px;
+    margin-top: 4px;
+  }
+  .app .long-period-actions {
+    align-items: center;
+  }
+  .app .history-origin {
+    padding: 0 12px 10px;
+  }
+  .app .period-picker .segments {
+    display: none;
+  }
+  .app .period-picker .period-mobile-select {
+    display: block;
+    width: auto;
+    min-width: 78px;
+    min-height: 40px;
+  }
+  .app .network-main .metric-detail-top {
+    flex-wrap: nowrap;
+  }
+  .app .network-period-actions {
+    margin-left: auto;
+  }
+  .app .network-main .chart-actions {
+    gap: 4px;
+    padding: 0 10px 10px;
+  }
+  .app .network-main .chart-actions button {
+    font-size: 11px;
+    padding: 8px;
+    min-height: 40px;
+  }
+  .app .threshold-summary {
+    gap: 6px 9px;
+    padding: 8px 12px;
+  }
+  .app .threshold-summary > span {
+    width: auto;
+    font-size: 11px;
+  }
+  .app .threshold-summary b {
+    font-size: 18px;
+  }
+  .app .threshold-summary strong {
+    font-size: 11px;
+  }
+  .app .network-coverage {
+    gap: 4px 12px;
+  }
+  .app .chart-utility-bar {
+    padding: 8px 10px;
+  }
+  .app .chart-utility-bar > div {
+    width: auto;
+    margin-left: 0;
+    justify-content: flex-start;
+  }
+  .app .chart-utility-bar button {
+    min-height: 40px;
+    font-size: 11px;
+    padding: 8px;
+  }
+  .app .chart-actions button {
+    min-height: 40px;
+  }
+  .app .derivatives-panel {
+    padding: 10px;
+  }
+  .app .derivatives-overview {
+    gap: 5px;
+    margin-bottom: 10px;
+  }
+  .app .derivatives-overview button {
+    padding: 9px 7px;
+    gap: 7px;
+    align-content: start;
+  }
+  .app .derivatives-overview span {
+    font-size: 11px;
+    white-space: nowrap;
+  }
+  .app .derivatives-overview strong {
+    font-size: 16px;
+  }
+  .app .derivatives-overview small {
+    font-size: 10px;
+    line-height: 1.5;
+  }
+  .app .derivatives-toolbar {
+    gap: 8px;
+    margin: 8px 0;
+  }
+  .app .derivatives-toolbar .segments button {
+    min-height: 40px;
+    padding: 8px 10px;
+  }
+  .app .derivatives-toolbar label {
+    font-size: 11px;
+  }
+  .app .derivatives-latest {
+    padding: 10px 0;
+    gap: 5px;
+  }
+  .app .derivatives-latest strong {
+    font-size: 22px;
+  }
+  .app .derivatives-latest span {
+    width: 100%;
+    line-height: 1.5;
+  }
+  .app .chart-toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    padding: 10px;
+  }
+  .app .chart-toolbar .period-picker {
+    margin-left: auto;
+  }
+  .app .chart-toolbar .toolbar-spacer,
+  .app .chart-toolbar .toolbar-divider {
+    display: none;
+  }
+  .app .chart-toolbar .segments {
+    order: initial;
+    width: auto;
+    border: 0;
+    padding: 0;
+  }
+  .app .chart-toolbar .expand {
+    margin-left: 0;
+  }
+  .app .chart-toolbar .icon-button {
+    width: 36px;
+    min-width: 36px;
+  }
+  .app .quote-strip .quote-primary {
+    padding: 0;
+  }
+  .app .quote-strip .quote-stat {
+    display: none;
+  }
+  .app .indicator-toolbar {
+    padding: 8px 10px;
+  }
+  .app .watch-table-wrap {
+    overflow: visible;
+    border: 0;
+    background: none;
+  }
+  .app .watch-table {
+    display: block;
+    min-width: 0;
+    width: 100%;
+  }
+  .app .watch-table thead {
+    position: absolute;
+    clip-path: inset(50%);
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+  }
+  .app .watch-table tbody {
+    display: grid;
+    gap: 10px;
+  }
+  .app .watch-table tr {
+    display: grid;
+    grid-template-columns: 40px 1fr 1fr;
+    align-items: center;
+    padding: 10px;
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+  }
+  .app .watch-table td {
+    position: static;
+    padding: 5px;
+    border: 0;
+    min-width: 0;
+    text-align: left;
+    background: none;
+    white-space: normal;
+  }
+  .app .watch-table td:nth-child(3) {
+    text-align: right;
+    font-weight: 650;
+    font-size: 16px;
+  }
+  .app .watch-table td:nth-child(4) {
+    grid-column: 3;
+    text-align: right;
+  }
+  .app .watch-table td[data-label] {
+    grid-column: auto;
+    padding-top: 10px;
+    font-size: 12px;
+  }
+  .app .watch-table td[data-label]::before {
+    content: attr(data-label);
+    display: block;
+    color: var(--muted);
+    font-size: 10px;
+    padding-bottom: 4px;
+  }
+  .app .watch-table td:nth-child(5) {
+    grid-column: 1 / 3;
+  }
+  .app .watch-table td:nth-child(7) {
+    grid-column: 1 / 3;
+  }
+  .app .watch-table td:nth-child(8) {
+    grid-column: 1 / 3;
+    color: var(--muted);
+  }
+  .app .watch-table td:last-child {
+    text-align: right;
+  }
+  .app .watch-table td:last-child a {
+    display: inline-flex;
+    min-height: 40px;
+    align-items: center;
+    color: var(--accent);
+  }
+  .app .watch-asset a small {
+    width: 100%;
+    padding-left: 28px;
+  }
+  .app .explorer-toolbar {
+    gap: 10px;
+  }
+  .app .explorer-page .explorer-toolbar > label:first-child {
+    width: 100%;
+    flex: 1 0 100%;
+  }
+  .app .explorer-toolbar button {
+    min-height: 44px;
+  }
+  .app .comparison-assets {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 6px;
+  }
+  .app .comparison-assets button {
+    justify-content: center;
+    padding: 9px 4px;
+    min-height: 44px;
+  }
+  .app .comparison-assets button span {
+    display: none;
+  }
+}
+@media (max-width: 360px) {
+  .app main {
+    padding-left: 8px;
+    padding-right: 8px;
+  }
+  .asset-heading > img {
+    display: none;
+  }
+  .app .derivatives-overview strong {
+    font-size: 14px;
+  }
+  .app .derivatives-overview span {
+    font-size: 10px;
+  }
+}

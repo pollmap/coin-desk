@@ -1,6 +1,6 @@
 import { NetworkInfoTabs } from './NetworkInfoTabs';
 import { useMemo, useRef, useState } from 'react';
-import { AssetSections } from './AssetSections';
+import { AssetHeader } from './AssetHeader';
 import { Link, useParams, useSearchParams } from 'react-router-dom';
 import { ASSETS } from '../shared/catalog';
 import {
@@ -15,8 +15,7 @@ import type { Asset, Period, SeriesResponse } from '../shared/types';
 import { useData } from './hooks';
 import { dateLabel } from './lib';
 import { PeriodPicker } from './PeriodPicker';
-import { NetworkChart, networkValue } from './NetworkChart';
-import { AssetLogo } from './AssetLogo';
+import { NetworkChart } from './NetworkChart';
 import './network.css';
 
 export function NetworkPage() {
@@ -52,7 +51,11 @@ export function NetworkPage() {
   const latest = result.data?.data.at(-1);
   const unit = networkUnit(asset, requested);
   function change(key: string, value: string) {
-    if (key === 'metric' && picker.current) picker.current.open = false;
+    if (key === 'metric' && picker.current) {
+      picker.current.open = false;
+      picker.current.querySelector('summary')?.focus();
+      setQuery('');
+    }
     setParams(
       (previous) => {
         const next = new URLSearchParams(previous);
@@ -71,31 +74,17 @@ export function NetworkPage() {
     );
   return (
     <>
-      <div className="page-heading">
-        <div>
-          <div className="eyebrow">NETWORK & ON-CHAIN</div>
-          <h1>{coin.name} 온체인</h1>
-          <p>첫 관측일부터 전체 이력 · 지표별 실제 제공 범위 표시</p>
-        </div>
-        <Link className="desk-button" to={`/?asset=${asset}&period=all`}>
-          {asset} 전체 가격 ↗
-        </Link>
-      </div>
-      <nav className="asset-switcher" aria-label="온체인 코인 선택">
-        {ASSETS.filter((item) => isNetworkAsset(item.id)).map((item) => (
-          <Link
-            key={item.id}
-            aria-current={item.id === asset ? 'page' : undefined}
-            className={item.id === asset ? 'selected' : ''}
-            to={`/onchain/${item.id}?metric=${networkMetric(item.id, requested) ? requested : 'mvrv'}&period=all`}
-          >
-            <AssetLogo asset={item.id} size={19} />
-            <b>{item.id}</b>
-            <span>{item.name}</span>
-          </Link>
-        ))}
-      </nav>
-      <AssetSections asset={asset} current="onchain" />
+      <AssetHeader
+        asset={asset}
+        current="onchain"
+        subtitle="온체인 · Coin Metrics 일별 관측"
+        assets={ASSETS.filter((item) => item.id === asset || isNetworkAsset(item.id)).map(
+          (item) => item.id,
+        )}
+        href={(next) =>
+          `/onchain/${next}?metric=${networkMetric(next, requested) ? requested : 'mvrv'}&period=all`
+        }
+      />
       {!supported ? (
         <section className="panel network-unavailable">
           <h2>{asset} 무료 온체인 과거 이력 미제공</h2>
@@ -113,45 +102,58 @@ export function NetworkPage() {
         </section>
       ) : (
         <>
-          <details ref={picker} className="panel network-picker" aria-label="온체인 지표 선택">
-            <summary>
-              지표 변경 · {metric?.title || requested} <span>{metrics.length}개 지표</span>
-            </summary>
-            <input
-              className="metric-filter"
-              aria-label="이 코인의 온체인 지표 검색"
-              placeholder="지표 검색"
-              value={query}
-              onChange={(event) => setQuery(event.target.value)}
-            />
-            {NETWORK_GROUPS.map((group) => {
-              const items = metrics.filter(
-                (item) =>
-                  group.ids.includes(item.id) &&
-                  (item.title + item.id).toLowerCase().includes(query.trim().toLowerCase()),
-              );
-              return items.length ? (
-                <section className="network-metric-group" key={group.title}>
-                  <h3>{group.title}</h3>
-                  <div className="network-metrics">
-                    {items.map((item) => (
-                      <button
-                        key={item.id}
-                        aria-pressed={item.id === requested}
-                        className={item.id === requested ? 'selected' : ''}
-                        onClick={() => change('metric', item.id)}
-                      >
-                        {item.title}
-                      </button>
-                    ))}
-                  </div>
-                </section>
-              ) : null;
-            })}
-            {!metrics.some((item) =>
-              (item.title + item.id).toLowerCase().includes(query.trim().toLowerCase()),
-            ) && <p role="status">일치하는 지표가 없습니다.</p>}
-          </details>
+          <div className="network-selector-row">
+            <details
+              onKeyDown={(event) => {
+                if (event.key === 'Escape' && picker.current) {
+                  picker.current.open = false;
+                  picker.current.querySelector('summary')?.focus();
+                }
+              }}
+              ref={picker}
+              className="panel network-picker"
+              aria-label="온체인 지표 선택"
+            >
+              <summary>
+                지표 변경 · {metric?.title || requested} <span>{metrics.length}개 지표</span>
+              </summary>
+              <input
+                className="metric-filter"
+                aria-label="이 코인의 온체인 지표 검색"
+                placeholder="지표 검색"
+                value={query}
+                onChange={(event) => setQuery(event.target.value)}
+              />
+              {NETWORK_GROUPS.map((group) => {
+                const items = metrics.filter(
+                  (item) =>
+                    group.ids.includes(item.id) &&
+                    (item.title + item.id).toLowerCase().includes(query.trim().toLowerCase()),
+                );
+                return items.length ? (
+                  <section className="network-metric-group" key={group.title}>
+                    <h3>{group.title}</h3>
+                    <div className="network-metrics">
+                      {items.map((item) => (
+                        <button
+                          key={item.id}
+                          aria-pressed={item.id === requested}
+                          className={item.id === requested ? 'selected' : ''}
+                          onClick={() => change('metric', item.id)}
+                        >
+                          {item.title}
+                        </button>
+                      ))}
+                    </div>
+                  </section>
+                ) : null;
+              })}
+              {!metrics.some((item) =>
+                (item.title + item.id).toLowerCase().includes(query.trim().toLowerCase()),
+              ) && <p role="status">일치하는 지표가 없습니다.</p>}
+            </details>
+            <PeriodPicker value={period} onChange={(value) => change('period', value)} />
+          </div>
           {!metric ? (
             <div className="error-notice" role="alert">
               {asset}에서 지원하지 않는 지표입니다.
@@ -160,41 +162,9 @@ export function NetworkPage() {
           ) : (
             <>
               <section className="panel network-main">
-                <div className="metric-detail-top">
-                  <div>
-                    <h2>
-                      {asset} · {metric.title}
-                    </h2>
-                    <strong>{networkValue(latest?.value, unit)}</strong>
-                    <span>
-                      {latest
-                        ? `${dateLabel(latest.time)} UTC 관측일`
-                        : result.loading
-                          ? '전체 이력 불러오는 중'
-                          : '관측 없음'}
-                    </span>
-                    {result.data?.meta.sourceStatus ? (
-                      <span>원천 관측 상태: {result.data.meta.sourceStatus}</span>
-                    ) : null}
-                  </div>
-                  <div className="network-period-actions">
-                    <PeriodPicker value={period} onChange={(value) => change('period', value)} />
-                  </div>
-                </div>
-                <div className="network-coverage" aria-label="온체인 실제 제공 범위">
-                  <div>
-                    <span>제공 시작일</span>
-                    <b>{dateLabel(first?.time)}</b>
-                  </div>
-                  <div>
-                    <span>최신 관측일</span>
-                    <b>{dateLabel(latest?.time)}</b>
-                  </div>
-                  <div>
-                    <span>확보한 일별 관측</span>
-                    <b>{result.data?.data.length.toLocaleString() ?? '—'}개</b>
-                  </div>
-                </div>
+                <h2 className="sr-only">
+                  {asset} · {metric.title}
+                </h2>
                 {result.error ? (
                   <div className="error-notice" role="alert">
                     {result.error}
@@ -220,6 +190,20 @@ export function NetworkPage() {
                     아직 표시할 관측이 없습니다. <Link to="/status">수집 상태 확인</Link>
                   </div>
                 )}
+                <div className="network-coverage" aria-label="온체인 실제 제공 범위">
+                  <div>
+                    <span>제공 시작일</span>
+                    <b>{dateLabel(first?.time)}</b>
+                  </div>
+                  <div>
+                    <span>최신 관측일</span>
+                    <b>{dateLabel(latest?.time)}</b>
+                  </div>
+                  <div>
+                    <span>확보한 일별 관측</span>
+                    <b>{result.data?.data.length.toLocaleString() ?? '—'}개</b>
+                  </div>
+                </div>
                 <div className="coverage-strip">
                   <span>
                     가격 비교: Coin Metrics USD 참조가격{' '}

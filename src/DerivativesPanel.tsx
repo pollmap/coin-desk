@@ -1,11 +1,19 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { LineSeries, type UTCTimestamp, type AutoscaleInfo } from 'lightweight-charts';
+import {
+  LineSeries,
+  type IChartApi,
+  type ISeriesApi,
+  type UTCTimestamp,
+  type AutoscaleInfo,
+} from 'lightweight-charts';
 import { createDeskChart } from './chart-theme';
 import type { CandleResponse, SeriesResponse } from '../shared/types';
 import { useData } from './hooks';
 import { dateLabel, numeric } from './lib';
 import './analysis-expansion.css';
 import { useSearchParams } from 'react-router-dom';
+import { ChartTools } from './ChartNavigator';
+import { zoomChartRange } from './chart-range';
 
 type Featured = 'BTC' | 'DOGE' | 'ETH';
 type Metric = 'funding' | 'open_interest' | 'long_account_ratio';
@@ -54,6 +62,14 @@ export function DerivativesPanel({
   const [windowDays, setWindowDays] = useState(0);
   const [showPrice, setShowPrice] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
+  const chartRef = useRef<IChartApi | null>(null);
+  const lineRef = useRef<ISeriesApi<'Line'> | null>(null);
+  const [hoverTime, setHoverTime] = useState<number | null>(null);
+  const [keyboardNotice, setKeyboardNotice] = useState('');
+  useEffect(() => {
+    setHoverTime(null);
+    setKeyboardNotice('');
+  }, [asset, metric, interval, windowDays]);
   const funding = useData<SeriesResponse>(
     `/api/v1/derivatives?asset=${asset}&metric=funding&limit=1000`,
     true,
@@ -115,8 +131,14 @@ export function DerivativesPanel({
           metric === 'long_account_ratio' ? { top: 0, bottom: 0 } : { top: 0.1, bottom: 0.1 },
       },
       leftPriceScale: { visible: spotPoints.length > 0, borderVisible: false },
-      timeScale: { borderVisible: false },
+      timeScale: { borderVisible: false, minBarSpacing: 0.01 },
+      localization: {
+        locale: 'ko-KR',
+        timeFormatter: (time: number) => dateLabel(Number(time), true),
+      },
     });
+    chartRef.current = chart;
+    setHoverTime(null);
     const line = chart.addSeries(LineSeries, {
       color: metric === 'funding' ? '#6bd7bb' : metric === 'open_interest' ? '#a9a4f0' : '#e8ad65',
       lineWidth: 2,
@@ -145,6 +167,7 @@ export function DerivativesPanel({
               : numeric(value, 2) + '%',
       },
     });
+    lineRef.current = line;
     line.setData(data.map((point) => ({ time: point.time as UTCTimestamp, value: point.value })));
     if (metric !== 'open_interest')
       line.createPriceLine({
@@ -168,9 +191,21 @@ export function DerivativesPanel({
       );
     }
     chart.timeScale().fitContent();
-    return () => chart.remove();
+    ref.current.dataset.availableFrom = String(data[0].time);
+    ref.current.dataset.availableTo = String(data.at(-1)!.time);
+    chart.subscribeCrosshairMove((event) => setHoverTime(event.time ? Number(event.time) : null));
+    return () => {
+      chart.remove();
+      chartRef.current = null;
+      lineRef.current = null;
+    };
   }, [data, spotPoints, metric, asset]);
-  const latest = result.data?.data.at(-1);
+  const latest = data.find((point) => point.time === hoverTime) ?? data.at(-1);
+  function zoom(factor: number) {
+    const range = chartRef.current?.timeScale().getVisibleLogicalRange();
+    const next = range ? zoomChartRange(range, factor) : null;
+    if (next) chartRef.current?.timeScale().setVisibleLogicalRange(next);
+  }
   const unit = metric === 'open_interest' ? asset : '%';
   function csv() {
     const text =
@@ -195,10 +230,7 @@ export function DerivativesPanel({
       className="panel derivatives-panel"
       aria-label={`${asset} Bybit 선물 분석`}
     >
-      <div className="panel-title">
-        <h2>{asset} · Bybit USDT 무기한 선물</h2>
-        <small>실제 확보한 첫 관측부터 · 한 거래소</small>
-      </div>
+      <h2 className="sr-only">{asset} · Bybit USDT 무기한 선물</h2>
       <div className="derivatives-overview" role="group" aria-label={`${asset} 선물 지표 선택`}>
         <button
           className={metric === 'funding' ? 'selected' : ''}
@@ -216,26 +248,26 @@ export function DerivativesPanel({
           aria-pressed={metric === 'open_interest'}
           onClick={() => setMetric('open_interest')}
         >
-          <span>미결제약정 · 시간별 최신</span>
+          <span>미결제약정</span>
           <strong>
             {interest.data?.data.length
               ? quantity(interest.data.data.at(-1)!.value) + ' ' + asset
               : '—'}
           </strong>
-          <small>{dateLabel(interest.data?.meta.dataAsOf, true)}</small>
+          <small>시간별 최신 · {dateLabel(interest.data?.meta.dataAsOf, true)}</small>
         </button>
         <button
           className={metric === 'long_account_ratio' ? 'selected' : ''}
           aria-pressed={metric === 'long_account_ratio'}
           onClick={() => setMetric('long_account_ratio')}
         >
-          <span>롱 보유 계정 · 시간별 최신</span>
+          <span>롱 계정 비중</span>
           <strong>
             {longAccounts.data?.data.length
               ? numeric(longAccounts.data.data.at(-1)!.value, 2) + '%'
               : '—'}
           </strong>
-          <small>{dateLabel(longAccounts.data?.meta.dataAsOf, true)}</small>
+          <small>시간별 최신 · {dateLabel(longAccounts.data?.meta.dataAsOf, true)}</small>
         </button>
       </div>
       <div className="derivatives-toolbar">
@@ -257,7 +289,7 @@ export function DerivativesPanel({
             [30, '1개월'],
             [90, '3개월'],
             [365, '1년'],
-            [0, '전체 확보'],
+            [0, '전체'],
           ].map(([days, label]) => (
             <button
               key={days}
@@ -277,9 +309,6 @@ export function DerivativesPanel({
           />{' '}
           Binance 현물 가격 비교
         </label>
-        <button className="desk-button" disabled={!data.length} onClick={csv}>
-          CSV
-        </button>
       </div>
       <div className="derivatives-latest">
         <strong>
@@ -287,12 +316,20 @@ export function DerivativesPanel({
             ? metric === 'funding'
               ? numeric(latest.value, 4) + '%'
               : metric === 'open_interest'
-                ? numeric(latest.value, 3) + ' ' + asset
+                ? quantity(latest.value) + ' ' + asset
                 : numeric(latest.value, 2) + '%'
             : '—'}
         </strong>
         <span>
-          {dateLabel(latest?.time, true)} 관측 ·{' '}
+          {hoverTime !== null ? '선택 관측 · ' : ''}
+          {metric !== 'funding'
+            ? interval === '1d'
+              ? '일별 차트 · '
+              : '시간별 차트 · '
+            : hoverTime !== null
+              ? '정산 이력 · '
+              : '최근 정산 · '}
+          {dateLabel(latest?.time, true)} ·{' '}
           {metric === 'funding'
             ? '정산 비율'
             : metric === 'open_interest'
@@ -309,7 +346,41 @@ export function DerivativesPanel({
         <div
           className="derivatives-chart"
           ref={ref}
-          role="img"
+          role="group"
+          tabIndex={0}
+          onKeyDown={(event) => {
+            if (
+              !['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key) ||
+              event.target !== event.currentTarget ||
+              !data.length
+            )
+              return;
+            event.preventDefault();
+            const index = data.findIndex((point) => point.time === latest?.time);
+            const next =
+              event.key === 'Home'
+                ? 0
+                : event.key === 'End'
+                  ? data.length - 1
+                  : Math.max(
+                      0,
+                      Math.min(data.length - 1, index + (event.key === 'ArrowLeft' ? -1 : 1)),
+                    );
+            const point = data[next];
+            setHoverTime(point.time);
+            setKeyboardNotice(
+              dateLabel(point.time, true) +
+                ' · ' +
+                numeric(point.value, metric === 'funding' ? 4 : 2) +
+                unit,
+            );
+            if (lineRef.current)
+              chartRef.current?.setCrosshairPosition(
+                point.value,
+                point.time as UTCTimestamp,
+                lineRef.current,
+              );
+          }}
           aria-label={`${asset} ${metric === 'funding' ? '펀딩비' : metric === 'open_interest' ? '미결제약정' : '롱 보유 계정 비율'} 이력`}
         />
       ) : (
@@ -320,6 +391,25 @@ export function DerivativesPanel({
               ? result.data.meta.warning
               : '원천 연결 또는 첫 자동 수집을 기다리고 있습니다.'}
         </div>
+      )}
+      <span className="sr-only" role="status">
+        {keyboardNotice}
+      </span>
+      {data.length > 0 && (
+        <ChartTools
+          chart={chartRef}
+          rows={data}
+          label={asset + ' 선물'}
+          unit={unit}
+          source="Bybit"
+          onExport={csv}
+          exportLabel="선택 기간 CSV"
+          onZoom={zoom}
+          onReset={() => {
+            setWindowDays(0);
+            chartRef.current?.timeScale().fitContent();
+          }}
+        />
       )}
       <div className="coverage-strip">
         <span>

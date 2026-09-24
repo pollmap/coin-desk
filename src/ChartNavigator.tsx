@@ -135,6 +135,9 @@ export function ChartTools({
   unit,
   source,
   onExport,
+  onZoom,
+  onReset,
+  exportLabel = '보이는 구간 CSV',
 }: {
   chart: RefObject<IChartApi | null>;
   rows: readonly Point[];
@@ -142,6 +145,9 @@ export function ChartTools({
   unit: string;
   source: string;
   onExport?: () => void;
+  onZoom?: (factor: number) => void;
+  onReset?: () => void;
+  exportLabel?: string;
 }) {
   const host = useRef<HTMLDivElement>(null);
   const [message, setMessage] = useState('');
@@ -171,7 +177,17 @@ export function ChartTools({
   };
   return (
     <div ref={host} className="chart-utility-bar">
-      <span>관측값 그대로 · {unit}</span>
+      {onZoom && (
+        <div className="chart-zoom-actions" role="group" aria-label="차트 확대와 범위">
+          <button aria-label={label + ' 차트 확대'} onClick={() => onZoom(1 / 1.4)}>
+            ＋
+          </button>
+          <button aria-label={label + ' 차트 축소'} onClick={() => onZoom(1.4)}>
+            −
+          </button>
+          <button onClick={onReset}>전체 이력</button>
+        </div>
+      )}
       <div>
         <button
           onClick={async () => {
@@ -203,16 +219,20 @@ export function ChartTools({
           링크 공유
         </button>
         <button onClick={onExport ?? csv} disabled={!rows.length}>
-          CSV 내보내기
+          {exportLabel}
         </button>
       </div>
       {share && (
-        <input
-          aria-label="공유 주소"
-          value={share}
-          readOnly
-          onFocus={(e) => e.currentTarget.select()}
-        />
+        <label className="chart-share-address">
+          공유 주소
+          <input
+            aria-label="공유 주소"
+            value={share}
+            readOnly
+            onFocus={(e) => e.currentTarget.select()}
+          />
+          <button onClick={() => setShare('')}>닫기</button>
+        </label>
       )}
       <small role="status">{message}</small>
     </div>

@@ -160,25 +160,33 @@ export function MetricsExplorer() {
         <div>
           <div className="eyebrow">METRIC LIBRARY</div>
           <h1>지표 찾아보기</h1>
-          <p>보고 싶은 질문을 고르고, 지표를 읽는 방법과 실제 차트를 함께 확인하세요.</p>
+          <p>지표를 검색하거나 궁금한 질문으로 찾아보세요.</p>
         </div>
       </div>
-      <section className="explorer-questions" aria-label="질문으로 지표 찾기">
-        {questions.map((item) => (
-          <button
-            key={item.category}
-            aria-pressed={filter === item.category}
-            onClick={() => {
-              setFilter(item.category);
-              setSearch('');
-            }}
-          >
-            <span>{item.category}</span>
-            <strong>{item.question}</strong>
-            <small>{item.hint}</small>
-          </button>
-        ))}
-      </section>
+      <details className="explorer-question-picker">
+        <summary>무엇을 봐야 할지 모르겠다면 · 질문으로 찾기</summary>
+        <section className="explorer-questions" aria-label="질문으로 지표 찾기">
+          {questions.map((item) => (
+            <button
+              key={item.category}
+              aria-pressed={filter === item.category}
+              onClick={(event) => {
+                setFilter(item.category);
+                setSearch('');
+                const picker = event.currentTarget.closest('details');
+                if (picker) {
+                  picker.open = false;
+                  picker.querySelector('summary')?.focus();
+                }
+              }}
+            >
+              <span>{item.category}</span>
+              <strong>{item.question}</strong>
+              <small>{item.hint}</small>
+            </button>
+          ))}
+        </section>
+      </details>
       <div className="explorer-toolbar">
         <label>
           <span>
@@ -261,10 +269,13 @@ export function MetricsExplorer() {
               {m.title}
             </h2>
             <p>{m.description}</p>
-            <div className="formula">
-              <span>산식 · {m.unit}</span>
-              {m.formula}
-            </div>
+            <details className="library-formula">
+              <summary>계산 방법</summary>
+              <div className="formula">
+                <span>산식 · {m.unit}</span>
+                {m.formula}
+              </div>
+            </details>
             <MetricGuide id={m.id} />
             <div className="workspace-actions">
               <Link className="desk-button" to={'/metrics/' + m.id + '?period=all'}>
@@ -304,7 +315,10 @@ export function MetricsExplorer() {
             <span className="micro-label">8개 코인 · 기술지표</span>
             <h2>{m.title}</h2>
             <p>{m.description}</p>
-            <div className="formula">{m.formula}</div>
+            <details className="library-formula">
+              <summary>계산 방법</summary>
+              <div className="formula">{m.formula}</div>
+            </details>
             <MetricGuide id={m.guide} />
             <Link
               className="desk-button"
@@ -322,7 +336,10 @@ export function MetricsExplorer() {
             <span className="micro-label">{item.category}</span>
             <h2>{item.title}</h2>
             <p>{item.description}</p>
-            <div className="formula">{item.formula}</div>
+            <details className="library-formula">
+              <summary>계산 방법</summary>
+              <div className="formula">{item.formula}</div>
+            </details>
             <div className="workspace-actions">
               <Link className="desk-button" to={item.to}>
                 실제 차트 열기 ↗
