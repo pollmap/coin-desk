@@ -71,14 +71,14 @@ export function NetworkPage() {
         <div>
           <div className="eyebrow">NETWORK & ON-CHAIN</div>
           <h1>{coin.name} 온체인</h1>
-          <p>네트워크 활동과 보유 가치의 변화를, 실제 제공되는 첫 관측일부터 살펴보세요.</p>
+          <p>첫 관측일부터 전체 이력 · 지표별 실제 제공 범위 표시</p>
         </div>
         <Link className="desk-button" to={`/?asset=${asset}&period=all`}>
           {asset} 전체 가격 ↗
         </Link>
       </div>
       <nav className="asset-switcher" aria-label="온체인 코인 선택">
-        {ASSETS.map((item) => (
+        {ASSETS.filter((item) => isNetworkAsset(item.id)).map((item) => (
           <Link
             key={item.id}
             aria-current={item.id === asset ? 'page' : undefined}
@@ -226,12 +226,15 @@ export function NetworkPage() {
                   </p>
                 ) : null}
               </section>
-              <NetworkInfoTabs
-                key={asset + metric.id}
-                asset={asset}
-                metric={metric}
-                series={result.data}
-              />
+              <details className="network-explanation">
+                <summary>{metric.title} 읽는 방법 · 산식 · 출처</summary>
+                <NetworkInfoTabs
+                  key={asset + metric.id}
+                  asset={asset}
+                  metric={metric}
+                  series={result.data}
+                />
+              </details>
             </>
           )}
         </>

@@ -19,58 +19,23 @@ import type { Asset } from '../shared/types';
 import { saved, save } from './lib';
 import { AssetLogo } from './AssetLogo';
 
-const groups = [
-  {
-    label: '사이클',
-    items: [
-      { title: 'BTC 이동평균·Pi Cycle', to: '/?asset=BTC&period=all#btc-cycle' },
-      { title: 'DOGE / BTC 상대 성과', to: '/?asset=DOGE&period=all' },
-      { title: 'ETH / BTC 상대 성과', to: '/?asset=ETH&period=all' },
-    ],
-  },
-  {
-    label: '시장',
-    items: [
-      { title: '시장 도미넌스', to: '/dominance' },
-      { title: '코인 성과 비교', to: '/compare' },
-      { title: '관심 코인', to: '/coins' },
-    ],
-  },
-  {
-    label: '밸류에이션',
-    items: METRICS.filter((m) => ['mvrv', 'mvrv_z', 'realized_price'].includes(m.id)).map((m) => ({
-      title: m.title,
-      to: '/metrics/' + m.id,
-    })),
-  },
-  {
-    label: '손익 상태',
-    items: METRICS.filter((m) => ['sopr_24h', 'nupl'].includes(m.id)).map((m) => ({
-      title: m.title,
-      to: '/metrics/' + m.id,
-    })),
-  },
-  {
-    label: '보유자',
-    items: METRICS.filter((m) => ['sth_mvrv', 'lth_mvrv', 'sth_realized_price'].includes(m.id)).map(
-      (m) => ({ title: m.title, to: '/metrics/' + m.id }),
-    ),
-  },
-  {
-    label: '네트워크',
-    items: ['BTC', 'DOGE', 'ETH'].map((asset) => ({
-      title: asset + ' 온체인',
-      to: '/onchain/' + asset,
-    })),
-  },
-  {
-    label: '선물',
-    items: ['BTC', 'DOGE', 'ETH'].map((asset) => ({
-      title: asset + ' 펀딩비·미결제약정',
-      to: '/?asset=' + asset + '&period=all#derivatives',
-    })),
-  },
+const featured = ['BTC', 'DOGE', 'ETH'] as const;
+const marketItems = [
+  { title: '시장 도미넌스', to: '/dominance' },
+  { title: '코인 성과 비교', to: '/compare' },
+  { title: '관심 코인', to: '/coins' },
 ];
+
+/** Query and fragment are part of a coin view. NavLink pathname matching ignores them. */
+export function coinSection(pathname: string, hash: string): string {
+  if (pathname.startsWith('/onchain/')) return 'onchain';
+  if (pathname.startsWith('/chart/')) return 'chart';
+  if (pathname !== '/') return '';
+  if (hash === '#derivatives') return 'derivatives';
+  if (hash === '#btc-cycle') return 'cycle';
+  if (hash === '#relative-analysis') return 'relative';
+  return 'history';
+}
 
 export function DeskNavigation({ onNavigate }: { onNavigate: () => void }) {
   const [query, setQuery] = useState('');
@@ -80,6 +45,8 @@ export function DeskNavigation({ onNavigate }: { onNavigate: () => void }) {
     new URLSearchParams(location.search).get('asset') ||
     saved('lastAsset', 'BTC');
   const asset: Asset = ASSETS.find((a) => a.id === candidate)?.id || 'BTC';
+  const section = coinSection(location.pathname, location.hash);
+  const activeAsset = section ? asset : null;
   const networkAsset = isNetworkAsset(asset) ? asset : 'BTC';
   const entries = useMemo(
     () =>
@@ -97,7 +64,11 @@ export function DeskNavigation({ onNavigate }: { onNavigate: () => void }) {
           to: '/metrics/' + m.id,
           type: 'BTC 지표',
         })),
-        ...groups.flatMap((g) => g.items.map((i) => ({ ...i, aliases: i.title, type: g.label }))),
+        ...marketItems.map((item) => ({ ...item, aliases: item.title, type: '시장' })),
+        ...featured.flatMap((id) => [
+          { title: id + ' 선물 · 펀딩비·미결제약정', aliases: id + ' 펀딩비 미결제약정 선물', to: `/?asset=${id}&period=all#derivatives`, type: id },
+          { title: id + ' 온체인', aliases: id + ' 온체인', to: `/onchain/${id}`, type: id },
+        ]),
         ...NETWORK_METRICS.filter((m) => networkMetric(networkAsset, m.id)).map((m) => ({
           title: m.title,
           aliases: m.title + ' ' + m.id,
@@ -140,14 +111,14 @@ export function DeskNavigation({ onNavigate }: { onNavigate: () => void }) {
       ) : (
         <>
           <nav className="primary-nav" onClick={onNavigate} aria-label="주요 화면">
-            <NavLink to="/" end aria-label="대시보드" title="대시보드">
+            <Link to="/" aria-label="대시보드" title="대시보드">
               <LayoutDashboard size={17} />
               <span>대시보드</span>
-            </NavLink>
-            <NavLink to={'/chart/' + asset} aria-label="기술적 분석" title="기술적 분석">
+            </Link>
+            <Link to={'/chart/' + asset} aria-label="기술적 분석" title="기술적 분석">
               <ChartNoAxesCombined size={17} />
               <span>기술적 분석</span>
-            </NavLink>
+            </Link>
             <NavLink to="/explore" aria-label="온체인 · 지표 탐색" title="온체인 · 지표 탐색">
               <Layers size={17} />
               <span>온체인 · 지표 탐색</span>
@@ -158,18 +129,37 @@ export function DeskNavigation({ onNavigate }: { onNavigate: () => void }) {
             </NavLink>
           </nav>
           <div className="nav-groups">
-            {groups.map((g) => (
-              <details key={g.label} open>
-                <summary>{g.label}</summary>
-                <nav onClick={onNavigate}>
-                  {g.items.map((i) => (
-                    <NavLink key={i.to} to={i.to}>
-                      <span>{i.title}</span>
-                    </NavLink>
-                  ))}
-                </nav>
-              </details>
-            ))}
+            <span className="sidebar-label">코인별 분석</span>
+            <div className="coin-nav-list">
+              {featured.map((id) => {
+                const name = ASSETS.find((item) => item.id === id)!.name;
+                const current = activeAsset === id;
+                const root = `/?asset=${id}&period=all`;
+                const links = [
+                  { id: 'history', label: '전체 가격', to: root },
+                  { id: 'chart', label: '거래소 차트', to: `/chart/${id}?period=all` },
+                  { id: 'onchain', label: '온체인', to: `/onchain/${id}?period=all` },
+                  { id: 'derivatives', label: '선물 · 펀딩비 / 미결제약정', to: root + '#derivatives' },
+                  id === 'BTC'
+                    ? { id: 'cycle', label: '이동평균 · Pi Cycle', to: root + '#btc-cycle' }
+                    : { id: 'relative', label: 'BTC 대비 성과', to: root + '#relative-analysis' },
+                ];
+                return <div key={id} className={'coin-nav-group' + (current ? ' current' : '')}>
+                  <Link className="coin-nav-title" to={root} onClick={onNavigate}>
+                    <AssetLogo asset={id} size={19} /><b>{id}</b><span>{name}</span>
+                  </Link>
+                  {current && <nav aria-label={`${id} 분석`} onClick={onNavigate}>
+                    {links.map((link) => <Link key={link.id} to={link.to}
+                      className={section === link.id ? 'active' : ''}
+                      aria-current={section === link.id ? 'page' : undefined}>{link.label}</Link>)}
+                  </nav>}
+                </div>;
+              })}
+            </div>
+            <details className="market-nav">
+              <summary>시장 · 비교</summary>
+              <nav onClick={onNavigate}>{marketItems.map((item) => <NavLink key={item.to} to={item.to}>{item.title}</NavLink>)}</nav>
+            </details>
           </div>
         </>
       )}

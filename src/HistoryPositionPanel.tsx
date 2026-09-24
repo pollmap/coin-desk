@@ -15,7 +15,7 @@ const colors = ['#4f86cc', '#4bb8bf', '#83c59a', '#e6ba65', '#e37c67'];
 export function HistoryPositionPanel({ asset }: { asset: Asset }) {
   const result = useData<SeriesResponse>(`/api/v1/reference?asset=${asset}&limit=1000`, true, 900000);
   const calculated = useMemo(() => historyBands(result.data?.data ?? []), [result.data]);
-  const [range, setRange] = useState<'four' | 'all'>('four');
+  const [range, setRange] = useState<'four' | 'all'>('all');
   const [hover, setHover] = useState<number | null>(null);
   const scroller = useRef<HTMLDivElement>(null);
   const latest = calculated.at(-1);
@@ -32,7 +32,7 @@ export function HistoryPositionPanel({ asset }: { asset: Asset }) {
   }, [all]);
   const view = hover === null ? latest : sampled[hover] ?? latest;
   useEffect(() => {
-    if (scroller.current) scroller.current.scrollLeft = scroller.current.scrollWidth;
+    if (scroller.current) scroller.current.scrollLeft = 0;
   }, [range, calculated.length]);
   const geometry = useMemo(() => {
     if (sampled.length < 2) return null;
@@ -77,7 +77,7 @@ export function HistoryPositionPanel({ asset }: { asset: Asset }) {
   return <section className="panel position-panel" aria-labelledby="position-title">
     <div className="position-heading">
       <div>
-        <h2 id="position-title">{asset} 장기 가격 위치 밴드</h2>
+        <h2 id="position-title">{asset} 730일 가격 분포</h2>
         <p>레인보우형 시각화 · 실제 USD 일별 참조가격과 이전 730일의 로그가격 분포</p>
       </div>
       <div className="position-range" role="group" aria-label="표시 기간">

@@ -166,6 +166,7 @@ function usePreferences() {
         next.set('indicators', indicators.join(','));
         next.set('log', log ? '1' : '0');
         next.set(key, value);
+        if (key === 'view' && value === 'history') next.set('period', 'all');
         return next;
       },
       { replace: true },
@@ -256,6 +257,7 @@ function PricePage({ workspace = false }: { workspace?: boolean }) {
   const { market, interval, period, indicators, log, change } = usePreferences();
   const hasLongHistory = ['BTC', 'DOGE', 'ETH', 'XRP', 'LINK'].includes(asset);
   const historical = !workspace && hasLongHistory && params.get('view') !== 'exchange';
+  const shownPeriod: Period = historical && !params.has('period') ? 'all' : period;
   const { desk, update: updateDesk } = usePersonalDesk();
   const cards = params.has('cards')
     ? validCards((params.get('cards') || '').split(','))
@@ -412,7 +414,7 @@ function PricePage({ workspace = false }: { workspace?: boolean }) {
           </Link>
         ))}
       </nav> : <MainAssetDeck asset={asset} market={market} href={(next) => '/' + '?' + new URLSearchParams({
-        asset: next, market, interval, period, indicators: indicators.join(','),
+        asset: next, market, interval, period: 'all', indicators: indicators.join(','),
         log: log ? '1' : '0', cards: cards.join(','),
       })} />}
       {!historical && (
@@ -515,29 +517,30 @@ function PricePage({ workspace = false }: { workspace?: boolean }) {
         </div>
       </section>}
       {!workspace && hasLongHistory ? (
-        <div className="history-view-tabs" aria-label="가격 자료 선택">
+        <nav className="history-view-tabs asset-section-nav" aria-label={`${asset} 분석 화면`}>
           <button
             className={historical ? 'selected' : ''}
             aria-pressed={historical}
             onClick={() => change('view', 'history')}
           >
-            전체 USD 이력
+            전체 가격
           </button>
           <button
             className={!historical ? 'selected' : ''}
             aria-pressed={!historical}
             onClick={() => change('view', 'exchange')}
           >
-            거래소 캔들·기술지표
+            거래소 차트
           </button>
-          <Link to={'/chart/' + asset + '?period=all&market=' + market}>차트 작업공간 ↗</Link>
-        </div>
+          <Link to={`/onchain/${asset}?period=all`}>온체인</Link>
+          {(asset === 'BTC' || asset === 'DOGE' || asset === 'ETH') && <a href="#derivatives">선물</a>}
+        </nav>
       ) : null}
       {historical ? (
         <Suspense fallback={<Loading message="초기 가격부터 전체 흐름을 준비하고 있습니다…" />}>
           <LongHistoryPanel
             asset={asset}
-            period={period}
+            period={shownPeriod}
             log={log}
             onPeriodChange={(p) => change('period', p)}
             onLogChange={() => change('log', log ? '0' : '1')}
@@ -545,14 +548,12 @@ function PricePage({ workspace = false }: { workspace?: boolean }) {
         </Suspense>
       ) : null}
       {historical && (asset === 'BTC' || asset === 'DOGE') ? (
-        <DeferredMount><Suspense fallback={<Loading message="장기 가격 위치를 계산하고 있습니다…" />}>
-          <HistoryPositionPanel asset={asset} />
-        </Suspense></DeferredMount>
-      ) : null}
-      {historical && (asset === 'DOGE' || asset === 'ETH') ? (
-        <DeferredMount><Suspense fallback={<Loading message="BTC 대비 상대 분석을 준비하고 있습니다…" />}>
-          <RelativeAnalysisPanel asset={asset} />
-        </Suspense></DeferredMount>
+        <details className="panel analysis-details">
+          <summary>730일 가격 분포 참고 보기 <small>초기 730일은 밴드 계산 전 · 적정가 지표 아님</small></summary>
+          <DeferredMount><Suspense fallback={<Loading message="가격 분포를 계산하고 있습니다…" />}>
+            <HistoryPositionPanel asset={asset} />
+          </Suspense></DeferredMount>
+        </details>
       ) : null}
       {hasLongHistory && historical ? (
         <div className="network-entry">
@@ -564,15 +565,12 @@ function PricePage({ workspace = false }: { workspace?: boolean }) {
             loading="lazy"
             alt="Coin Desk 시바견 안내 캐릭터"
           />
-          <div>
-            거래소 캔들과 전체 USD 참조가격은 원천이 다릅니다.
-            <small>가격의 긴 흐름을 본 뒤 {asset}의 실제 제공 온체인 지표를 확인하세요.</small>
-          </div>
-          <Link to={`/onchain/${asset}?period=all`}>{asset} 온체인 전체 보기 ↗</Link>
+          <div>{coin.name}의 온체인 지표는 별도 원천에서 확인합니다.</div>
+          <Link to={`/onchain/${asset}?period=all`}>온체인 보기 ↗</Link>
         </div>
       ) : null}
       {historical && (
-        <WorkspaceBar
+        <details className="workspace-fold"><summary>작업공간 저장 · 불러오기</summary><WorkspaceBar
           current={{
             asset,
             market,
@@ -583,7 +581,7 @@ function PricePage({ workspace = false }: { workspace?: boolean }) {
             cards,
             view: workspace ? 'chart' : 'dashboard',
           }}
-        />
+        /></details>
       )}
 
       {q?.changeUnavailableReason ? (
@@ -744,10 +742,10 @@ function PricePage({ workspace = false }: { workspace?: boolean }) {
           <MempoolPanel />
         </Suspense></DeferredMount>
       ) : null}
-      {!workspace ? (
-        <Suspense fallback={<Loading />}>
-          <DominancePanel compact />
-        </Suspense>
+      {historical && (asset === 'DOGE' || asset === 'ETH') ? (
+        <DeferredMount><Suspense fallback={<Loading message="BTC 대비 상대 분석을 준비하고 있습니다…" />}>
+          <RelativeAnalysisPanel asset={asset} />
+        </Suspense></DeferredMount>
       ) : null}
       {asset === 'BTC' ? (
         <>

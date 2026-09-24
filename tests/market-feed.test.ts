@@ -19,4 +19,9 @@ it('only forwards registered contracts and bounded history pages', async () => {
   expect(forwarded.pathname).toBe('/v5/market/open-interest');
   expect(forwarded.searchParams.get('symbol')).toBe('DOGEUSDT');
   expect(forwarded.searchParams.get('intervalTime')).toBe('1h');
+  const ratio = await feed.fetch(new Request('https://feed.internal/derivatives?asset=BTC&metric=long_account_ratio&limit=200', { headers }), { FEED_TOKEN: 'test-secret' });
+  expect(ratio.status).toBe(200);
+  const ratioUrl = new URL(String(fetcher.mock.calls[1]?.[0]));
+  expect(ratioUrl.pathname).toBe('/v5/market/account-ratio');
+  expect(ratioUrl.searchParams.get('period')).toBe('1h');
 });

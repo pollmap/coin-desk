@@ -4,10 +4,10 @@ import { upstream } from './providers';
 import { epoch, readState, successStatement, type Env } from './storage';
 
 export const DERIVATIVE_ASSETS = ['BTC', 'DOGE', 'ETH'] as const;
-export const DERIVATIVE_METRICS = ['funding', 'open_interest'] as const;
+export const DERIVATIVE_METRICS = ['funding', 'open_interest', 'long_account_ratio'] as const;
 export type DerivativeAsset = (typeof DERIVATIVE_ASSETS)[number];
 export type DerivativeMetric = (typeof DERIVATIVE_METRICS)[number];
-export const DERIVATIVE_VERSION = 'bybit-usdt-perpetual-v2';
+export const DERIVATIVE_VERSION = 'bybit-usdt-perpetual-v3';
 const origin = 'https://api.bybit.com';
 const fundingFloor = Date.parse('2019-01-01T00:00:00Z');
 const key = (asset: Asset, metric: string) => `derivatives:${asset}:${metric}`;
@@ -27,7 +27,8 @@ export function parseDerivativeRows(
   const result = response?.result as Record<string, unknown> | null;
   const rows = result?.list;
   if (
-    !response || response.retCode !== 0 || !result || result.category !== 'linear' ||
+    !response || response.retCode !== 0 || !result ||
+    (metric !== 'long_account_ratio' && result.category !== 'linear') ||
     !Array.isArray(rows) || rows.length > 200 ||
     (metric === 'open_interest' && result.symbol !== asset + 'USDT')
   ) throw new Error('Invalid derivatives response');
@@ -36,10 +37,10 @@ export function parseDerivativeRows(
   for (const candidate of rows) {
     if (!candidate || typeof candidate !== 'object') throw new Error('Invalid derivatives row');
     const row = candidate as Record<string, unknown>;
-    if (metric === 'funding' && row.symbol !== asset + 'USDT')
+    if (metric !== 'open_interest' && row.symbol !== asset + 'USDT')
       throw new Error('Derivatives symbol mismatch');
     const timestamp = metric === 'funding' ? row.fundingRateTimestamp : row.timestamp;
-    const observed = metric === 'funding' ? row.fundingRate : row.openInterest;
+    const observed = metric === 'funding' ? row.fundingRate : metric === 'open_interest' ? row.openInterest : row.buyRatio;
     if (typeof timestamp !== 'string' || typeof observed !== 'string' || !observed.trim())
       throw new Error('Invalid derivatives observation');
     const milliseconds = Number(timestamp);
@@ -47,10 +48,13 @@ export function parseDerivativeRows(
     if (
       !Number.isSafeInteger(milliseconds) || milliseconds <= 0 || milliseconds >= previous ||
       milliseconds > (now + 60) * 1000 || !Number.isFinite(value) ||
-      (metric === 'open_interest' && value < 0) || (metric === 'funding' && Math.abs(value) > 1)
+      (metric === 'open_interest' && value < 0) || (metric === 'funding' && Math.abs(value) > 1) ||
+      (metric === 'long_account_ratio' && (value < 0 || value > 1 ||
+        typeof row.sellRatio !== 'string' || !Number.isFinite(Number(row.sellRatio)) ||
+        Math.abs(value + Number(row.sellRatio) - 1) > 0.02))
     ) throw new Error('Invalid derivatives observation');
     previous = milliseconds;
-    points.push({ time: Math.floor(milliseconds / 1000), value: metric === 'funding' ? value * 100 : value });
+    points.push({ time: Math.floor(milliseconds / 1000), value: metric === 'open_interest' ? value : Math.round(value * 100 * 1e8) / 1e8 });
   }
   return points.reverse();
 }
@@ -69,8 +73,9 @@ export async function updateDerivatives(env: Env, asset: DerivativeAsset, metric
   const size = backfill || firstPage ? 200 : metric === 'funding' ? 20 : 30;
   const params = new URLSearchParams({ category: 'linear', symbol: asset + 'USDT', limit: String(size) });
   if (metric === 'open_interest') params.set('intervalTime', '1h');
+  if (metric === 'long_account_ratio') params.set('period', '1h');
   if (backfill) params.set('endTime', String(cursor));
-  const path = metric === 'funding' ? '/v5/market/funding/history' : '/v5/market/open-interest';
+  const path = metric === 'funding' ? '/v5/market/funding/history' : metric === 'open_interest' ? '/v5/market/open-interest' : '/v5/market/account-ratio';
   // Cron egress is rejected by Bybit on this host. A Seoul-placed fetch Worker
   // performs the allowlisted request; its endpoint requires a shared secret.
   const raw = env.FEED_URL && env.FEED_TOKEN
@@ -132,7 +137,7 @@ export async function readDerivativeSeries(
     nextCursor: rows.results.length > limit ? data.at(-1)!.time + 1 : null,
     meta: {
       source: 'Bybit V5 public market data',
-      unit: metric === 'funding' ? '%' : asset,
+      unit: metric === 'open_interest' ? asset : '%',
       market: asset + 'USDT linear perpetual · Bybit only',
       dataAsOf: extent?.last ?? null,
       fetchedAt: state?.last_success ?? null,
@@ -143,6 +148,8 @@ export async function readDerivativeSeries(
         ? 'Bybit 원천 연결에 실패했습니다. 실제 관측을 아직 확보하지 못했으며 추정값을 표시하지 않습니다.'
         : state?.error
           ? '선물 원천 갱신이 지연되어 마지막 정상 관측을 표시합니다.'
+          : metric === 'long_account_ratio'
+            ? 'Bybit의 롱 포지션 보유 계정 수 / 전체 포지션 보유 계정 수입니다. 포지션 규모나 전체 시장의 롱 비중이 아닙니다. 최근 30일을 먼저 확보합니다.'
           : metric === 'open_interest'
             ? '미결제약정은 Bybit 한 거래소의 계약 양방향 합계이며 단위는 해당 코인 수량입니다. 최근 30일을 먼저 확보하고 이후 서버에 축적합니다.'
             : '펀딩비는 Bybit 한 거래소의 실제 정산 비율입니다. 과거 이력은 서버가 작은 페이지로 추가하고 있습니다.',

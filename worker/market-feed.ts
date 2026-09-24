@@ -1,6 +1,6 @@
 /** Allowlisted public market-data adapter. A shared token prevents public proxy use. */
 const assets = new Set(['BTC', 'DOGE', 'ETH']);
-const metrics = new Set(['funding', 'open_interest']);
+const metrics = new Set(['funding', 'open_interest', 'long_account_ratio']);
 export default {
   async fetch(request: Request, env: { FEED_TOKEN?: string }) {
     if (!env.FEED_TOKEN || request.headers.get('X-Feed-Token') !== env.FEED_TOKEN)
@@ -19,8 +19,9 @@ export default {
     ) return Response.json({ error: 'Invalid feed request' }, { status: 400 });
     const params = new URLSearchParams({ category: 'linear', symbol: asset + 'USDT', limit: String(limit) });
     if (metric === 'open_interest') params.set('intervalTime', '1h');
+    if (metric === 'long_account_ratio') params.set('period', '1h');
     if (endTime !== null) params.set('endTime', endTime);
-    const path = metric === 'funding' ? '/v5/market/funding/history' : '/v5/market/open-interest';
+    const path = metric === 'funding' ? '/v5/market/funding/history' : metric === 'open_interest' ? '/v5/market/open-interest' : '/v5/market/account-ratio';
     try {
       const response = await fetch('https://api.bybit.com' + path + '?' + params, {
         signal: AbortSignal.timeout(12000),

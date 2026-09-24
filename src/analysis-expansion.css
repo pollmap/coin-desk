@@ -1,6 +1,19 @@
 .main-asset-deck {
   margin: 0 0 13px;
 }
+.period-mobile-select { display: none; }
+.asset-section-nav { display: flex; flex-wrap: wrap; gap: 6px; margin: 10px 0 12px; }
+.asset-section-nav a { text-decoration: none; }
+.analysis-details { margin: 11px 0; padding: 0; }
+.analysis-details > summary { cursor: pointer; padding: 13px 16px; font-weight: 600; }
+.analysis-details > summary small { margin-left: 8px; color: var(--muted); font-weight: 400; font-size: 11px; }
+.analysis-details .position-panel { border: 0; margin: 0; }
+.history-source-details { padding: 7px 10px; color: var(--muted); font-size: 11px; }
+.history-source-details summary { cursor: pointer; }
+.history-source-details a { display: inline-block; margin: 10px 15px 3px 0; color: var(--accent); }
+.network-explanation { margin: 10px 0; border: 1px solid var(--border); border-radius: 7px; background: var(--panel); }
+.network-explanation > summary { padding: 12px 15px; cursor: pointer; font-weight: 600; }
+.network-explanation > section { margin: 0; border: 0; }
 .featured-assets {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -99,18 +112,25 @@
   font-size: 11px;
 }
 @media (max-width: 760px) {
+  .app .long-history-panel .long-period-actions .segments { display: none; }
+  .app .long-period-actions .period-mobile-select {
+    display: block; min-width: 0; flex: 1; padding: 7px 9px;
+    color: var(--text); background: var(--panel); border: 1px solid var(--border); border-radius: 6px;
+  }
   .featured-assets {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
   .featured-asset {
-    grid-template-columns: 1fr auto;
-    padding: 7px 10px;
-    gap: 2px 8px;
+    grid-template-columns: 1fr;
+    padding: 8px 6px;
+    gap: 4px;
+    justify-items: center;
   }
   .featured-assets { gap: 5px; }
-  .featured-asset > strong { font-size: 16px; }
+  .featured-asset > strong { font-size: 13px; text-align: center; white-space: nowrap; }
   .featured-title b { font-size: 13px; }
-  .featured-asof, .featured-title small { font-size: 10px; }
+  .featured-title img { width: 22px; height: 22px; }
+  .featured-asof, .featured-title small, .featured-change { display: none; }
   .secondary-assets summary span {
     display: block;
     margin: 2px 0 0;
@@ -189,6 +209,13 @@
   margin: 12px 0;
   padding: 14px;
 }
+.derivatives-overview { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; margin: 12px 0; }
+.derivatives-overview button { display: grid; gap: 5px; text-align: left; background: var(--surface); color: var(--text); border: 1px solid var(--border); border-radius: 7px; padding: 11px 13px; cursor: pointer; }
+.derivatives-overview button.selected { border-color: var(--accent); background: var(--accent-bg); }
+.derivatives-overview span { color: var(--muted); font-size: 11px; }
+.derivatives-overview strong { font-size: 17px; font-variant-numeric: tabular-nums; }
+.derivatives-overview small { color: var(--muted); font-size: 10px; }
+@media (max-width: 620px) { .derivatives-overview { grid-template-columns: 1fr; } .derivatives-overview strong { font-size: 14px; overflow-wrap: anywhere; } }
 .derivatives-panel .panel-title,
 .mempool-panel .panel-title {
   display: flex;
