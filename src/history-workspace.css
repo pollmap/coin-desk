@@ -219,3 +219,37 @@
     flex-wrap: wrap;
   }
 }
+.history-mobile-picker {
+  display: none;
+}
+@media (max-width: 760px) {
+  .history-mobile-picker {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 8px;
+    align-items: center;
+  }
+  .history-mobile-picker label {
+    color: var(--muted);
+    font-size: 12px;
+  }
+  .history-mobile-picker select {
+    grid-column: 1 / -1;
+    grid-row: 2;
+    width: 100%;
+    min-width: 0;
+  }
+  .history-mobile-picker button {
+    min-height: 44px;
+    color: var(--accent);
+    font-size: 12px;
+    padding: 8px;
+  }
+  .history-browse-list {
+    display: none;
+  }
+  .history-browse-list.is-open {
+    display: block;
+    margin-top: 14px;
+  }
+}

@@ -202,10 +202,10 @@ export const LongHistoryChart = memo(function LongHistoryChart({
     const chart = chartRef.current;
     const line = lineRef.current;
     if (!chart || !line || !points.length) return;
-    if (focusTime === undefined) return;
-    if (!focusRange && (focusTime < points[0].time || focusTime > points.at(-1)!.time)) return;
     setSelectedTime(null);
     setKeyboardMessage('');
+    if (focusTime === undefined) return;
+    if (!focusRange && (focusTime < points[0].time || focusTime > points.at(-1)!.time)) return;
     const point = points.find((p) => Math.floor(p.time / 86400) === Math.floor(focusTime / 86400));
     const markers = createSeriesMarkers(
       line,
