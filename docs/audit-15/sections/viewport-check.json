@@ -1,0 +1,32 @@
+[
+  {
+    "metric": "net:mvrv",
+    "scrollWidth": 375,
+    "top": 410.5,
+    "width": 390
+  },
+  {
+    "metric": "net:mvrv",
+    "scrollWidth": 305,
+    "top": 410.5,
+    "width": 320
+  },
+  {
+    "metric": "net:mvrv",
+    "scrollWidth": 753,
+    "top": 372.5,
+    "width": 768
+  },
+  {
+    "metric": "net:mvrv",
+    "scrollWidth": 1440,
+    "top": 246,
+    "width": 1440
+  },
+  {
+    "metric": "net:mvrv",
+    "scrollWidth": 1265,
+    "top": 246,
+    "width": 1280
+  }
+]

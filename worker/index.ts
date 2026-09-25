@@ -1,3 +1,4 @@
+import { refreshProviderWatch } from './provider-watch';
 import { ASSETS, CALC_VERSION, METRICS } from '../shared/catalog';
 import { aggregate, bucket, DAY, rsi } from '../shared/math';
 import type {
@@ -22,9 +23,9 @@ import {
   QUOTE_REFRESH_SECONDS,
   type Env,
 } from './storage';
-import { scheduled, refreshMinuteQuotes } from './scheduled';
-import { publicResearchFeed, refreshPublicResearch } from './public-research';
-import { researchFeed, refreshResearch } from './research';
+import { scheduled, refreshMinuteQuotes, refreshRecentFutures } from './scheduled';
+import { publicResearchFeed } from './public-research';
+import { researchFeed } from './research';
 import { candleHistory } from './candle-history';
 import { getDominance, DOMINANCE_VERSION } from './dominance';
 import { REFERENCE_ASSETS, REFERENCE_SOURCE, REFERENCE_VERSION } from './reference-price';
@@ -32,6 +33,8 @@ import { operationStatus } from './health';
 import { NETWORK_ASSETS, NETWORK_METRICS, networkMetric } from '../shared/network-catalog';
 import { readNetworkSeries } from './network-data';
 import { derivativeAsset, derivativeMetric, readDerivativeSeries } from './derivatives';
+import { signalsFeed, refreshObservations, refreshBriefing } from './observations';
+import { ETH_CONTEXT, ethereumContext, refreshEthereumContext } from './ethereum-context';
 import type { MempoolSnapshot } from './mempool';
 const response = (body: unknown, status = 200) =>
   new Response(JSON.stringify(body), {
@@ -59,6 +62,9 @@ function canonicalRequest(request: Request) {
     'network-live': ['asset'],
     'network-catalog': ['asset'],
     metrics: ['asset'],
+    signals: ['asset', 'before', 'limit', 'cursor'],
+    briefings: ['before', 'limit'],
+    'chain-context': ['asset', 'metric'],
     status: [],
     health: [],
     research: [],
@@ -82,6 +88,8 @@ function canonicalRequest(request: Request) {
     let value = url.searchParams.get(key) ?? defaults[key];
     if (value === undefined) continue; // Keep a missing "to" stable instead of adding the current second.
     if (key === 'asset') value = value.toUpperCase();
+    if (key === 'cursor' && !/^\d{1,12}\|[A-Za-z0-9:_.-]{1,400}$/.test(value))
+      throw new RequestError('Invalid cursor');
     if (['from', 'to', 'limit'].includes(key)) {
       const parsed = number(
         new URLSearchParams([[key, value]]),
@@ -144,7 +152,9 @@ async function overview(env: Env, asset: Asset, market: Market): Promise<Overvie
         quote = await getQuote(asset, market, env);
         saved = { data: JSON.stringify(quote), fetched_at: epoch() };
         try {
-          await env.DB.prepare('INSERT OR REPLACE INTO snapshots(key,data,fetched_at) VALUES(?,?,?)')
+          await env.DB.prepare(
+            'INSERT INTO snapshots(key,data,fetched_at) VALUES(?,?,?) ON CONFLICT(key) DO UPDATE SET data=excluded.data,fetched_at=excluded.fetched_at',
+          )
             .bind(key, saved.data, saved.fetched_at)
             .run();
           await success(env.DB, key, quote.time);
@@ -223,10 +233,7 @@ async function overview(env: Env, asset: Asset, market: Market): Promise<Overvie
     quote,
     meta: {
       ...meta(market, quote?.time ?? null, saved?.fetched_at ?? null),
-      stale:
-        !saved ||
-        !quote ||
-        epoch() - quote.time > 300,
+      stale: !saved || !quote || epoch() - quote.time > 300,
       warning,
     },
     metrics: latest ? JSON.parse(latest.data) : {},
@@ -242,6 +249,36 @@ async function api(request: Request, env: Env): Promise<Response> {
   const { asset, market } = selection(q);
   if (request.method !== 'GET') return response({ error: 'Read-only API' }, 405);
   const endpoint = url.pathname.replace('/api/v1/', '');
+  if (endpoint === 'signals')
+    return response(
+      await signalsFeed(
+        env,
+        asset,
+        number(q, 'before', epoch() + 1),
+        Math.max(1, Math.min(100, number(q, 'limit', 100, 1000))),
+        q.get('cursor'),
+      ),
+    );
+  if (endpoint === 'briefings') {
+    const rows = (
+      await env.DB.prepare(
+        'SELECT payload FROM daily_briefings WHERE created_at<? ORDER BY created_at DESC LIMIT ?',
+      )
+        .bind(number(q, 'before', epoch() + 1), Math.min(100, number(q, 'limit', 30, 1000)))
+        .all<{ payload: string }>()
+    ).results;
+    return response({
+      data: rows.map((r) => JSON.parse(r.payload)),
+      schedule: '09:10 Asia/Seoul',
+      automatic: true,
+    });
+  }
+  if (endpoint === 'chain-context') {
+    const metric = q.get('metric');
+    if (asset !== 'ETH' || (metric !== 'tvl' && metric !== 'stablecoins'))
+      throw new RequestError('Unsupported chain metric');
+    return response(await ethereumContext(env, metric));
+  }
   if (endpoint === 'research/public') return response(await publicResearchFeed(env));
   if (endpoint === 'research') return response(await researchFeed(env));
   if (endpoint === 'dominance') {
@@ -274,24 +311,91 @@ async function api(request: Request, env: Env): Promise<Response> {
       meta: { source: 'CoinLore / DefiLlama', unit: '%', stale: false },
     });
   }
-  if (endpoint === 'metrics')
+  if (endpoint === 'metrics') {
+    const generation = await readState(env.DB, 'onchain_generation', '');
+    const extent = await env.DB.prepare(
+      'SELECT MIN(time) first,MAX(time) last,COUNT(*) n FROM onchain WHERE generation=?',
+    )
+      .bind(generation)
+      .first<{ first: number | null; last: number | null; n: number }>();
+    const recent = await env.DB.prepare(
+      'SELECT data FROM onchain WHERE generation=? ORDER BY time DESC LIMIT 1',
+    )
+      .bind(generation)
+      .first<{ data: string }>();
+    const values = recent ? JSON.parse(recent.data) : {};
     return response({
-      data: asset === 'BTC' ? METRICS : [],
+      data:
+        asset === 'BTC'
+          ? METRICS.map((m) => ({
+              ...m,
+              support: ['BTC'],
+              firstObservation: extent?.first ?? null,
+              lastObservation: extent?.last ?? null,
+              currentValue: values[m.id] ?? null,
+              observations: values[m.id] == null ? 0 : (extent?.n ?? 0),
+              collectionStatus: !extent?.last
+                ? 'pending'
+                : epoch() - extent.last > 3 * DAY
+                  ? 'delayed'
+                  : 'ready',
+            }))
+          : [],
       asset,
       priceBasis: 'Bitview 추정 USD 가격',
       calculationVersion: CALC_VERSION,
     });
-  if (endpoint === 'network-catalog')
+  }
+  if (endpoint === 'network-catalog') {
+    const coverage = (
+      await env.DB.prepare(
+        'SELECT metric,first,last,observations,fetched_at FROM network_coverage WHERE asset=?',
+      )
+        .bind(asset)
+        .all<{
+          metric: string;
+          first: number;
+          last: number;
+          observations: number;
+          fetched_at: number;
+        }>()
+    ).results;
+    const latestMonths = (
+      await env.DB.prepare(
+        'SELECT payload FROM network_months WHERE asset=? ORDER BY bucket DESC LIMIT 2',
+      )
+        .bind(asset)
+        .all<{ payload: string }>()
+    ).results
+      .flatMap((r) => JSON.parse(r.payload) as { time: number; values: Record<string, number> }[])
+      .sort((a, b) => a.time - b.time);
     return response({
       asset,
       assets: NETWORK_ASSETS,
-      data: NETWORK_METRICS.filter((metric) => networkMetric(asset, metric.id)),
+      data: NETWORK_METRICS.filter((metric) => networkMetric(asset, metric.id)).map((metric) => {
+        const c = coverage.find((r) => r.metric === metric.id);
+        const spark = latestMonths
+          .filter((r) => Number.isFinite(r.values[metric.id]))
+          .slice(-12)
+          .map((r) => ({ time: r.time, value: r.values[metric.id] }));
+        return {
+          ...metric,
+          currentValue: spark.at(-1)?.value ?? null,
+          spark,
+          support: metric.assets,
+          firstObservation: c?.first ?? null,
+          lastObservation: c?.last ?? null,
+          observations: c?.observations ?? 0,
+          collectionStatus: !c ? 'pending' : epoch() - c.last > 3 * DAY ? 'delayed' : 'ready',
+        };
+      }),
       source: 'Coin Metrics Community',
     });
+  }
   if (endpoint === 'status' || endpoint === 'health') {
     const report = await operationStatus(env);
     return endpoint === 'status'
-      ? response(report)
+      ? response({ ...report, providerWatch: await readState(env.DB, 'provider-watch', []) })
       : response(
           {
             ...report.health,
@@ -552,10 +656,7 @@ export default {
           const out = await api(canonical, env);
           if (out.ok && !liveStatus) {
             const clone = new Response(out.clone().body, out);
-            clone.headers.set(
-              'Cache-Control',
-              'public, max-age=300',
-            );
+            clone.headers.set('Cache-Control', 'public, max-age=300');
             ctx.waitUntil(cache.put(canonical, clone).catch(() => undefined));
           }
           return out;
@@ -579,8 +680,12 @@ export default {
   },
   async scheduled(_event: ScheduledController, env: Env, ctx: ExecutionContext) {
     ctx.waitUntil(scheduled(env, Math.floor(_event.scheduledTime / 1000), true));
-    ctx.waitUntil(refreshResearch(env));
+    ctx.waitUntil(refreshObservations(env));
+    ctx.waitUntil(refreshBriefing(env));
+    ctx.waitUntil(refreshEthereumContext(env));
     ctx.waitUntil(refreshMinuteQuotes(env));
-    ctx.waitUntil(refreshPublicResearch(env));
+    ctx.waitUntil(refreshRecentFutures(env));
+    ctx.waitUntil(refreshProviderWatch(env));
+    // Public research collection is disabled at the owner's request. Stored data is retained.
   },
 };

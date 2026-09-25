@@ -99,6 +99,7 @@ export async function updateDerivatives(
   env: Env,
   asset: DerivativeAsset,
   metric: DerivativeMetric,
+  recentOnly = false,
 ) {
   const kind = derivativeKind(metric);
   const daily = metric.endsWith('_daily');
@@ -111,10 +112,11 @@ export async function updateDerivatives(
     .first<{ first: number | null; last: number | null }>();
   const cursor = await readState<number | null>(env.DB, 'cursor:' + id, null);
   const refreshRecent =
-    !!coverage?.last &&
-    now - coverage.last > (daily ? 2 * DAY : kind === 'funding' ? 12 * 3600 : 2 * 3600);
+    recentOnly ||
+    (!!coverage?.last &&
+      now - coverage.last > (daily ? 2 * DAY : kind === 'funding' ? 12 * 3600 : 2 * 3600));
   const backfill = cursor !== null && !refreshRecent;
-  const firstPage = !coverage?.last;
+  const firstPage = !coverage?.last && !recentOnly;
   const size = backfill || firstPage ? 200 : metric === 'funding' ? 20 : 30;
   const params = new URLSearchParams({
     category: 'linear',
@@ -166,11 +168,13 @@ export async function updateDerivatives(
       : (now - 30 * DAY) * 1000;
   const points = parsed.filter((point) => point.time * 1000 >= floor);
   const fetched = epoch();
-  const statements: D1PreparedStatement[] = points.map((point) =>
-    env.DB.prepare(
-      'INSERT INTO derivative_series(asset,metric,time,value,fetched_at) VALUES(?,?,?,?,?) ON CONFLICT(asset,metric,time) DO UPDATE SET value=excluded.value,fetched_at=excluded.fetched_at WHERE derivative_series.value<>excluded.value',
-    ).bind(asset, metric, point.time, point.value, fetched),
-  );
+  const statements: D1PreparedStatement[] = points.length
+    ? [
+        env.DB.prepare(
+          "INSERT INTO derivative_series(asset,metric,time,value,fetched_at) SELECT ?,?,CAST(json_extract(value,'$.time') AS INTEGER),json_extract(value,'$.value'),? FROM json_each(?) WHERE 1 ON CONFLICT(asset,metric,time) DO UPDATE SET value=excluded.value,fetched_at=excluded.fetched_at WHERE derivative_series.value<>excluded.value",
+        ).bind(asset, metric, fetched, JSON.stringify(points)),
+      ]
+    : [];
   const last = Math.max(coverage?.last ?? 0, points.at(-1)?.time ?? 0);
   const more = (backfill || firstPage) && parsed.length === size && parsed[0].time * 1000 > floor;
   if (more)
@@ -189,7 +193,7 @@ export async function updateDerivatives(
   const rawId = backfill || firstPage ? `${id}:history:${parsed[0]?.time ?? now}` : `${id}:latest`;
   statements.push(
     env.DB.prepare(
-      'INSERT OR REPLACE INTO raw_samples(id,source,fetched_at,body) VALUES(?,?,?,?)',
+      'INSERT INTO raw_samples(id,source,fetched_at,body) VALUES(?,?,?,?) ON CONFLICT(id) DO UPDATE SET source=excluded.source,fetched_at=excluded.fetched_at,body=excluded.body WHERE raw_samples.body!=excluded.body OR raw_samples.source!=excluded.source',
     ).bind(rawId, 'Bybit V5 public market data', fetched, JSON.stringify(raw)),
   );
   for (let i = 0; i < statements.length; i += 40) await env.DB.batch(statements.slice(i, i + 40));

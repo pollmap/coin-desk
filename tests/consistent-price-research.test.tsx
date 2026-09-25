@@ -36,7 +36,7 @@ it('retains coin, market, selected range and price axis when navigating analyses
       <AssetSections asset="DOGE" current="chart" />
     </MemoryRouter>,
   );
-  expect(html).toContain('/?asset=DOGE&amp;market=upbit&amp;period=1y&amp;log=0');
+  expect(html).toContain('/?market=upbit&amp;period=1y&amp;log=0&amp;asset=DOGE&amp;price_source=upbit');
   expect(html).toContain('/onchain/DOGE?market=upbit&amp;period=1y&amp;log=0');
   expect(html.match(/aria-current="page"/g)).toHaveLength(1);
   expect(html).not.toContain('/futures/BTC');

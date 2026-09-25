@@ -1,0 +1,16 @@
+{
+  "asset": "비트코인 BTC",
+  "coins": [
+    "비트코인BTC",
+    "도지코인DOGE",
+    "이더리움ETH"
+  ],
+  "dialogs": 0,
+  "keyboardFirst": "2010. 07. 18. $0.08584",
+  "url": "http://127.0.0.1:5173/?asset=BTC&period=all&price_source=reference&log=1&panels=rsi%2Cdrawdown%2Cnet%3Atransactions",
+  "visiblePanels": [
+    "RSI 14 65.57 RSI",
+    "고점 대비 낙폭 -32.40 %",
+    "거래 수 637,210.00 건 / 일"
+  ]
+}

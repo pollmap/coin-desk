@@ -283,10 +283,10 @@ it('source backoff does not stop another eligible source and remains visible', a
   expect(getQuotes).not.toHaveBeenCalled();
   expect(getRecentCandles).toHaveBeenCalledTimes(1);
 });
-it('reference collection checks every six hours and catches up stale history without ignoring backoff', () => {
+it('reference collection checks hourly and catches up stale history without ignoring backoff', () => {
   const job = jobPolicies(['BTC'], false).find((p) => p.key === 'reference:BTC');
   const state = { key: job.key, last_attempt: now - 60, data_as_of: now - DAY, next_attempt: 0 };
-  expect(dueAt(job, [state], now)).toBe(now - 60 + 21600);
+  expect(dueAt(job, [state], now)).toBe(now - 60 + 3600);
   state.data_as_of = now - 4 * DAY;
   expect(dueAt(job, [state], now)).toBe(now);
   state.next_attempt = now + 900;

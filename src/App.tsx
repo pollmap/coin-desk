@@ -1,3 +1,5 @@
+import { AnalysisWorkspace } from './AnalysisWorkspace';
+import { NotificationInbox } from './NotificationInbox';
 import { useMarket } from './useMarket';
 import { MarketPicker } from './MarketPicker';
 import { DeskNavigation, DeskTopbar } from './DeskNavigation';
@@ -11,6 +13,7 @@ import { lazy, Suspense, useCallback, useEffect, useMemo, useRef, useState } fro
 import {
   Link,
   NavLink,
+  Navigate,
   Route,
   Routes,
   useLocation,
@@ -44,10 +47,6 @@ import { validIndicators } from '../shared/indicators';
 import { WorkspaceBar, CardPicker, usePersonalDesk } from './PersonalDesk';
 const ExchangeHistoryPanel = lazy(() =>
   import('./ExchangeHistoryPanel').then((m) => ({ default: m.ExchangeHistoryPanel })),
-);
-const HistoryPage = lazy(() => import('./HistoryPage').then((m) => ({ default: m.HistoryPage })));
-const ResearchPage = lazy(() =>
-  import('./ResearchPage').then((m) => ({ default: m.ResearchPage })),
 );
 const WatchlistPage = lazy(() =>
   import('./WatchlistPage').then((m) => ({ default: m.WatchlistPage })),
@@ -1118,6 +1117,7 @@ export default function App() {
               })
             }
           />
+          <NotificationInbox />
           <button
             className="source-button"
             onClick={() => setSources(true)}
@@ -1141,8 +1141,9 @@ export default function App() {
         <main id="main-content" tabIndex={-1}>
           <Suspense fallback={<Loading />}>
             <Routes>
-              <Route path="/" element={<PricePage />} />
-              <Route path="/chart/:asset" element={<PricePage workspace />} />
+              <Route path="/" element={<AnalysisWorkspace />} />
+              <Route path="/chart/:asset" element={<AnalysisWorkspace />} />
+              <Route path="/technical/:asset" element={<PricePage workspace />} />
               <Route path="/metrics/:metric" element={<MetricPage />} />
               <Route path="/coins" element={<WatchlistPage />} />
               <Route path="/workspace" element={<WorkspacePage />} />
@@ -1150,10 +1151,16 @@ export default function App() {
               <Route path="/explore" element={<MetricsExplorer />} />
               <Route path="/dominance" element={<DominancePage />} />
               <Route path="/status" element={<DataStatusPage />} />
-              <Route path="/onchain/:asset" element={<NetworkPage />} />
-              <Route path="/futures/:asset" element={<FuturesPage />} />
-              <Route path="/research" element={<ResearchPage />} />
-              <Route path="/history" element={<HistoryPage />} />
+              <Route path="/onchain/:asset" element={<AnalysisWorkspace />} />
+              <Route path="/futures/:asset" element={<AnalysisWorkspace />} />
+              <Route
+                path="/research"
+                element={<Navigate to={{ pathname: '/', search: location.search }} replace />}
+              />
+              <Route
+                path="/history"
+                element={<Navigate to={{ pathname: '/', search: location.search }} replace />}
+              />
               <Route path="/brand" element={<BrandPage />} />
               <Route
                 path="*"

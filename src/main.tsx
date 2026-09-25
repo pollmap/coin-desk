@@ -10,6 +10,7 @@ import './desktop12.css';
 import './desktop13.css';
 import './release14.css';
 import './responsive-workspace.css';
+import './analysis-workspace.css';
 import { saved } from './lib';
 document.documentElement.dataset.theme =
   saved<string>('theme', 'dark') === 'light' ? 'light' : 'dark';

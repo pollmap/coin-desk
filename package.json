@@ -1,6 +1,6 @@
 {
   "name": "coin-desk",
-  "version": "0.14.1",
+  "version": "0.15.0",
   "private": true,
   "type": "module",
   "scripts": {
@@ -17,7 +17,7 @@
     "db:init": "wrangler d1 migrations apply btc-desk --local",
     "seed": "python scripts/bootstrap.py",
     "db:seed": "wrangler d1 execute btc-desk --local --file work/seed.sql",
-    "deploy": "npm run build && wrangler deploy && npm run deploy:pages",
+    "deploy": "npm run build && wrangler d1 migrations apply btc-desk --remote && wrangler deploy && npm run deploy:pages",
     "seed:assets": "python scripts/bootstrap_assets.py",
     "deploy:pages": "wrangler pages deploy --cwd pages --project-name coin-desk --branch main",
     "db:assets": "node scripts/import_assets.mjs"

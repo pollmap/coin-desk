@@ -40,7 +40,7 @@ interface Build {
 }
 async function rawSample(env: Env, key: string, data: unknown) {
   await env.DB.prepare(
-    'INSERT OR REPLACE INTO raw_samples(id,source,fetched_at,body) VALUES(?,?,?,?)',
+    'INSERT INTO raw_samples(id,source,fetched_at,body) VALUES(?,?,?,?) ON CONFLICT(id) DO UPDATE SET source=excluded.source,fetched_at=excluded.fetched_at,body=excluded.body WHERE raw_samples.body!=excluded.body OR raw_samples.source!=excluded.source',
   )
     .bind(key, key, epoch(), JSON.stringify(data))
     .run();
@@ -117,22 +117,18 @@ export async function updateOnchain(env: Env) {
         .bind(build.generation)
         .first<{ time: number }>();
       await env.DB.batch([
-        env.DB.prepare('INSERT OR REPLACE INTO state(key,value) VALUES (?,?)').bind(
-          'onchain_generation',
-          JSON.stringify(build.generation),
-        ),
-        env.DB.prepare('INSERT OR REPLACE INTO state(key,value) VALUES (?,?)').bind(
-          'onchain_versions',
-          JSON.stringify(page.versions),
-        ),
-        env.DB.prepare('INSERT OR REPLACE INTO state(key,value) VALUES (?,?)').bind(
-          'onchain_history_start',
-          JSON.stringify(start),
-        ),
-        env.DB.prepare('INSERT OR REPLACE INTO state(key,value) VALUES (?,?)').bind(
-          'onchain_calculation_start',
-          JSON.stringify(firstValid?.time ?? null),
-        ),
+        env.DB.prepare(
+          'INSERT INTO state(key,value) VALUES (?,?) ON CONFLICT(key) DO UPDATE SET value=excluded.value WHERE state.value!=excluded.value',
+        ).bind('onchain_generation', JSON.stringify(build.generation)),
+        env.DB.prepare(
+          'INSERT INTO state(key,value) VALUES (?,?) ON CONFLICT(key) DO UPDATE SET value=excluded.value WHERE state.value!=excluded.value',
+        ).bind('onchain_versions', JSON.stringify(page.versions)),
+        env.DB.prepare(
+          'INSERT INTO state(key,value) VALUES (?,?) ON CONFLICT(key) DO UPDATE SET value=excluded.value WHERE state.value!=excluded.value',
+        ).bind('onchain_history_start', JSON.stringify(start)),
+        env.DB.prepare(
+          'INSERT INTO state(key,value) VALUES (?,?) ON CONFLICT(key) DO UPDATE SET value=excluded.value WHERE state.value!=excluded.value',
+        ).bind('onchain_calculation_start', JSON.stringify(firstValid?.time ?? null)),
         env.DB.prepare('DELETE FROM state WHERE key=?').bind('onchain_build'),
       ]);
       await success(env.DB, 'bitview', latest.time);
@@ -229,7 +225,7 @@ export async function updatePrice(env: Env, asset: Asset, market: Market, interv
   // upserts and a failure keeps the previous raw sample, history, and success state.
   await env.DB.batch([
     env.DB.prepare(
-      'INSERT OR REPLACE INTO raw_samples(id,source,fetched_at,body) VALUES(?,?,?,?)',
+      'INSERT INTO raw_samples(id,source,fetched_at,body) VALUES(?,?,?,?) ON CONFLICT(id) DO UPDATE SET source=excluded.source,fetched_at=excluded.fetched_at,body=excluded.body WHERE raw_samples.body!=excluded.body OR raw_samples.source!=excluded.source',
     ).bind(key, key, now, JSON.stringify({ normalizedSourceSample: rows })),
     ...rows.map((c) =>
       env.DB.prepare(
@@ -279,11 +275,9 @@ export async function updateQuoteBatch(
   if (!selected.length) return false;
   const result = await getQuotes(selected, market, env);
   const statements = result.quotes.flatMap((quote) => [
-    env.DB.prepare('INSERT OR REPLACE INTO snapshots(key,data,fetched_at) VALUES(?,?,?)').bind(
-      'quote:' + quote.asset + ':' + market,
-      JSON.stringify(quote),
-      epoch(),
-    ),
+    env.DB.prepare(
+      'INSERT INTO snapshots(key,data,fetched_at) VALUES(?,?,?) ON CONFLICT(key) DO UPDATE SET data=excluded.data,fetched_at=excluded.fetched_at',
+    ).bind('quote:' + quote.asset + ':' + market, JSON.stringify(quote), epoch()),
     successStatement(env.DB, 'quote:' + quote.asset + ':' + market, quote.time),
   ]);
   if (statements.length) await env.DB.batch(statements);
@@ -323,7 +317,7 @@ async function executeJob(env: Env, job: JobPolicy, states: IngestionState[]) {
     const metric = job.key.split(':')[2];
     if (!derivativeAsset(asset) || !derivativeMetric(metric))
       throw new Error('Unsupported derivatives job');
-    await updateDerivatives(env, asset, metric);
+    if (await claimRefresh(env.DB, job.key, 55)) await updateDerivatives(env, asset, metric);
   } else if (job.kind === 'network') {
     const asset = job.assets![0];
     if (!isNetworkAsset(asset)) throw new Error('Unsupported network job');
@@ -446,4 +440,22 @@ export async function refreshMinuteQuotes(env: Env) {
       }
     }),
   );
+}
+
+/** The recent lane does not consume or overwrite a history backfill checkpoint. */
+export async function refreshRecentFutures(env: Env) {
+  const asset = (['BTC', 'DOGE', 'ETH'] as const)[Math.floor(epoch() / 60) % 5];
+  if (!asset || !(await claimRefresh(env.DB, 'recent-futures:' + asset, 240))) return;
+  const rows = (await env.DB.prepare('SELECT * FROM ingestion').all<IngestionState>()).results;
+  for (const metric of ['funding', 'open_interest', 'long_account_ratio'] as const) {
+    const key = `derivatives:${asset}:${metric}`;
+    const row = rows.find((r) => r.key === key);
+    if (row?.error && row.next_attempt > epoch()) continue;
+    if (!(await claimRefresh(env.DB, key, 55))) continue;
+    try {
+      await updateDerivatives(env, asset, metric, true);
+    } catch (e) {
+      await failure(env.DB, key, e);
+    }
+  }
 }
