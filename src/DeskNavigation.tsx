@@ -9,6 +9,9 @@ import {
   Coins,
   X,
   Layers,
+  ChartPie,
+  SlidersHorizontal,
+  Dog,
   Star,
   Database,
   Sun,
@@ -28,14 +31,13 @@ const marketItems = [
   { title: '시장 도미넌스', to: '/dominance' },
   { title: '코인 성과 비교', to: '/compare' },
   { title: '관심 코인', to: '/coins' },
-  { title: '코인 역사', to: '/history' },
 ];
 
 /** Query and fragment are part of a coin view. NavLink pathname matching ignores them. */
 export function coinSection(pathname: string, hash: string): string {
   if (pathname.startsWith('/futures/')) return 'derivatives';
   if (pathname.startsWith('/onchain/')) return 'onchain';
-  if (pathname.startsWith('/chart/')) return 'chart';
+  if (pathname.startsWith('/chart/') || pathname.startsWith('/technical/')) return 'chart';
   if (pathname !== '/') return '';
   if (hash === '#derivatives') return 'derivatives';
   if (hash === '#btc-cycle') return 'cycle';
@@ -53,7 +55,7 @@ export function DeskNavigation({ onNavigate }: { onNavigate: () => void }) {
     saved('lastAsset', 'BTC');
   const asset: Asset = ASSETS.find((a) => a.id === candidate)?.id || 'BTC';
   const section = coinSection(location.pathname, location.hash);
-  const networkAsset = isNetworkAsset(asset) ? asset : 'BTC';
+  const networkAsset = asset;
   const entries = useMemo(
     () =>
       [
@@ -64,7 +66,7 @@ export function DeskNavigation({ onNavigate }: { onNavigate: () => void }) {
           to: `/?asset=${a.id}&period=all`,
           type: '코인',
         })),
-        ...METRICS.map((m) => ({
+        ...(asset === 'BTC' ? METRICS : []).map((m) => ({
           title: m.title,
           aliases: m.title + m.english + m.id,
           to: '/metrics/' + m.id,
@@ -78,7 +80,9 @@ export function DeskNavigation({ onNavigate }: { onNavigate: () => void }) {
             to: `/futures/${id}`,
             type: id,
           },
-          { title: id + ' 온체인', aliases: id + ' 온체인', to: `/onchain/${id}`, type: id },
+          ...(isNetworkAsset(id)
+            ? [{ title: id + ' 온체인', aliases: id + ' 온체인', to: `/onchain/${id}`, type: id }]
+            : []),
         ]),
         ...NETWORK_METRICS.filter((m) => networkMetric(networkAsset, m.id)).map((m) => ({
           title: m.title,
@@ -133,7 +137,7 @@ export function DeskNavigation({ onNavigate }: { onNavigate: () => void }) {
         <>
           <nav className="primary-nav" onClick={onNavigate} aria-label="주요 화면">
             <Link
-              to={`/?asset=${asset}&period=all`}
+              to={`/?asset=${asset}&period=all&price_source=${new URLSearchParams(location.search).get('price_source') || (new URLSearchParams(location.search).has('market') ? market : 'reference')}`}
               className={section ? 'active' : ''}
               aria-current={section ? 'page' : undefined}
               aria-label="코인 분석"
@@ -142,37 +146,9 @@ export function DeskNavigation({ onNavigate }: { onNavigate: () => void }) {
               <ChartNoAxesCombined size={18} />
               <span>코인 분석</span>
             </Link>
-            <NavLink to="/coins" aria-label="시장 시세" title="시장 시세">
-              <Coins size={18} />
-              <span>시장 시세</span>
-            </NavLink>
-            <NavLink to="/compare" aria-label="성과 비교" title="성과 비교">
-              <ArrowLeftRight size={18} />
-              <span>성과 비교</span>
-            </NavLink>
-            <NavLink to="/explore" aria-label="지표 찾기" title="지표 찾기">
-              <Layers size={18} />
-              <span>지표 찾기</span>
-            </NavLink>
-            <NavLink to={'/dominance?asset=' + asset} aria-label="시장 비중" title="시장 비중">
-              <Activity size={18} />
-              <span>시장 비중</span>
-            </NavLink>
-            <NavLink
-              to={'/research?asset=' + asset}
-              aria-label="리서치 모아보기"
-              title="리서치 모아보기"
-            >
-              <Layers size={18} />
-              <span>리서치 모아보기</span>
-            </NavLink>
-            <NavLink
-              to={'/history?asset=' + asset + '&market=' + market}
-              aria-label="코인 역사"
-              title="코인 역사"
-            >
-              <Activity size={18} />
-              <span>코인 역사</span>
+            <NavLink to="/coins" aria-label="시장·비교" title="시장·비교">
+              <ChartPie size={18} />
+              <span>시장·비교</span>
             </NavLink>
             <NavLink to="/workspace" aria-label="내 작업공간" title="내 작업공간">
               <Star size={18} />
@@ -187,7 +163,7 @@ export function DeskNavigation({ onNavigate }: { onNavigate: () => void }) {
           <span>데이터 · 자동 갱신</span>
         </NavLink>
         <NavLink to="/brand" aria-label="Coin Desk 브랜드" title="Coin Desk 브랜드">
-          <Activity size={15} />
+          <Dog size={15} />
           <span>Coin Desk 브랜드</span>
         </NavLink>
       </nav>
@@ -210,7 +186,7 @@ export function DeskTopbar({
   const names: Record<string, string> = {
     research: '리서치 모아보기',
     history: '코인 역사',
-    coins: '시장 시세',
+    coins: '시장·비교',
     compare: '코인 성과 비교',
     explore: '지표 탐색',
     dominance: '시장 도미넌스',
@@ -222,7 +198,7 @@ export function DeskTopbar({
     ? id + ' 선물'
     : location.pathname.startsWith('/metrics/')
       ? METRICS.find((m) => m.id === id)?.title
-      : location.pathname.startsWith('/chart/')
+      : location.pathname.startsWith('/chart/') || location.pathname.startsWith('/technical/')
         ? `${id} 기술적 분석`
         : location.pathname.startsWith('/onchain/')
           ? `${id} 온체인`

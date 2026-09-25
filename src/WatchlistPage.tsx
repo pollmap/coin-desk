@@ -102,8 +102,7 @@ export function WatchlistPage() {
       <div className="page-heading">
         <div>
           <div className="eyebrow">MARKET WATCH</div>
-          <h1>시장 시세</h1>
-          <p>즐겨찾기를 맨 위에 두고 가격·거래대금·기술지표를 함께 비교하세요.</p>
+          <h1>시장·비교</h1>
         </div>
         <Link
           className="desk-button"

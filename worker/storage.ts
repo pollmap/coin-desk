@@ -36,7 +36,9 @@ export async function readState<T>(db: D1Database, key: string, fallback: T): Pr
 }
 export async function putState(db: D1Database, key: string, value: unknown) {
   await db
-    .prepare('INSERT OR REPLACE INTO state(key,value) VALUES (?,?)')
+    .prepare(
+      'INSERT INTO state(key,value) VALUES (?,?) ON CONFLICT(key) DO UPDATE SET value=excluded.value WHERE state.value!=excluded.value',
+    )
     .bind(key, JSON.stringify(value))
     .run();
 }

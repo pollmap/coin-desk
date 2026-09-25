@@ -1,0 +1,62 @@
+[
+  {
+    "chartHeight": 640,
+    "chartTop": 496.5,
+    "coins": [
+      "비트코인BTC",
+      "도지코인DOGE",
+      "이더리움ETH"
+    ],
+    "dialogCount": 0,
+    "scrollWidth": 305,
+    "width": 320
+  },
+  {
+    "chartHeight": 640,
+    "chartTop": 448.5,
+    "coins": [
+      "비트코인BTC",
+      "도지코인DOGE",
+      "이더리움ETH"
+    ],
+    "dialogCount": 0,
+    "scrollWidth": 375,
+    "width": 390
+  },
+  {
+    "chartHeight": 640,
+    "chartTop": 433,
+    "coins": [
+      "비트코인BTC",
+      "도지코인DOGE",
+      "이더리움ETH"
+    ],
+    "dialogCount": 0,
+    "scrollWidth": 753,
+    "width": 768
+  },
+  {
+    "chartHeight": 640,
+    "chartTop": 246,
+    "coins": [
+      "비트코인BTC",
+      "도지코인DOGE",
+      "이더리움ETH"
+    ],
+    "dialogCount": 0,
+    "scrollWidth": 1265,
+    "width": 1280
+  },
+  {
+    "chartHeight": 640,
+    "chartTop": 246,
+    "coins": [
+      "비트코인BTC",
+      "도지코인DOGE",
+      "이더리움ETH"
+    ],
+    "dialogCount": 0,
+    "scrollWidth": 1425,
+    "width": 1440
+  }
+]

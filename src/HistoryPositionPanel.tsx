@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState, type PointerEvent } from 'react';
-import type { Asset, SeriesResponse } from '../shared/types';
+import type { Asset, Period, SeriesResponse } from '../shared/types';
 import { bandPosition, historyBands } from '../shared/history-bands';
 import {
   positionGeometry,
@@ -9,18 +9,35 @@ import {
   DRAWDOWN_BOTTOM,
 } from '../shared/position-chart';
 import { useData } from './hooks';
-import { dateLabel, money } from './lib';
+import { dateLabel, money, periodStart } from './lib';
 import './history-position.css';
 
 const colors = ['#4f86cc', '#4bb8bf', '#83c59a', '#e6ba65', '#e37c67'];
 const labels = ['깊은 하단', '하단', '중앙', '상단', '높은 상단'];
 
-export function HistoryPositionPanel({ asset }: { asset: Asset }) {
-  const result = useData<SeriesResponse>(
-    `/api/v1/reference?asset=${asset}&limit=1000`,
+export function HistoryPositionPanel({
+  asset,
+  supplied,
+  currency = 'USD',
+  fetchReference = true,
+  period,
+  log = true,
+}: {
+  asset: Asset;
+  period?: Period;
+  log?: boolean;
+  fetchReference?: boolean;
+  supplied?: SeriesResponse;
+  currency?: 'USD' | 'KRW' | 'USDT';
+}) {
+  const fetched = useData<SeriesResponse>(
+    supplied || !fetchReference ? null : `/api/v1/reference?asset=${asset}&limit=1000`,
     true,
     900000,
   );
+  const result = supplied
+    ? { data: supplied, loading: false, error: undefined, reload: fetched.reload }
+    : fetched;
   const observations = useMemo(() => priceObservations(result.data?.data ?? []), [result.data]);
   const calculated = useMemo(() => historyBands(result.data?.data ?? []), [result.data]);
   const bandMap = useMemo(() => new Map(calculated.map((p) => [p.time, p])), [calculated]);
@@ -39,12 +56,14 @@ export function HistoryPositionPanel({ asset }: { asset: Asset }) {
   }, []);
   const all = useMemo(
     () =>
-      range === 'all'
-        ? observations
-        : observations.filter(
-            (p) => p.time >= (observations.at(-1)?.time ?? 0) - 4 * 365.25 * 86400,
-          ),
-    [observations, range],
+      period
+        ? observations.filter((p) => p.time >= periodStart(period, observations.at(-1)?.time ?? 0))
+        : range === 'all'
+          ? observations
+          : observations.filter(
+              (p) => p.time >= (observations.at(-1)?.time ?? 0) - 4 * 365.25 * 86400,
+            ),
+    [observations, range, period],
   );
   const geometry = useMemo(
     () =>
@@ -52,8 +71,9 @@ export function HistoryPositionPanel({ asset }: { asset: Asset }) {
         all,
         calculated.filter((p) => p.time >= (all[0]?.time ?? Infinity)),
         width,
+        log,
       ),
-    [all, calculated, width],
+    [all, calculated, width, log],
   );
   const selectedIndex = selectedTime === null ? -1 : all.findIndex((p) => p.time === selectedTime);
   const index = selectedIndex < 0 ? all.length - 1 : selectedIndex;
@@ -79,29 +99,33 @@ export function HistoryPositionPanel({ asset }: { asset: Asset }) {
     <section className="panel position-panel" aria-labelledby="position-title">
       <div className="position-heading">
         <div>
-          <h2 id="position-title">{asset} 레인보우 · 가격 위치</h2>
-          <p>USD 참조가격 · 로그축 · 과거 730일 대비 위치</p>
+          <h2 id="position-title">{asset} 가격 위치 밴드</h2>
+          <p>
+            {currency} · {log ? '로그축' : '선형축'} · 과거 730일 대비 위치
+          </p>
         </div>
-        <div className="position-range" role="group" aria-label="레인보우 표시 기간">
-          <button
-            onClick={() => {
-              setRange('all');
-              setSelectedTime(null);
-            }}
-            aria-pressed={range === 'all'}
-          >
-            전체
-          </button>
-          <button
-            onClick={() => {
-              setRange('four');
-              setSelectedTime(null);
-            }}
-            aria-pressed={range === 'four'}
-          >
-            최근 4년
-          </button>
-        </div>
+        {!period && (
+          <div className="position-range" role="group" aria-label="가격 위치 표시 기간">
+            <button
+              onClick={() => {
+                setRange('all');
+                setSelectedTime(null);
+              }}
+              aria-pressed={range === 'all'}
+            >
+              전체
+            </button>
+            <button
+              onClick={() => {
+                setRange('four');
+                setSelectedTime(null);
+              }}
+              aria-pressed={range === 'four'}
+            >
+              최근 4년
+            </button>
+          </div>
+        )}
       </div>
       {result.error && (
         <div role="alert" className="error-notice">
@@ -114,8 +138,10 @@ export function HistoryPositionPanel({ asset }: { asset: Asset }) {
           <>
             <div className="position-stats">
               <div>
-                <small>{dateLabel(view.time)} · USD</small>
-                <strong>{money(view.price, 'USD')}</strong>
+                <small>
+                  {dateLabel(view.time)} · {currency}
+                </small>
+                <strong>{money(view.price, currency)}</strong>
               </div>
               <div>
                 <small>과거 분포에서의 위치</small>
@@ -150,14 +176,14 @@ export function HistoryPositionPanel({ asset }: { asset: Asset }) {
               className="position-svg"
               viewBox={`0 0 ${width} 396`}
               role="img"
-              aria-label={`${asset} 전체 USD 가격, 730일 가격 분포와 낙폭. 날짜별 값은 아래 날짜 탐색으로 확인할 수 있습니다.`}
+              aria-label={`${asset} 전체 ${currency} 가격, 730일 가격 분포와 낙폭. 날짜별 값은 아래 날짜 탐색으로 확인할 수 있습니다.`}
               onPointerDown={selectPointer}
               onPointerMove={(e) => {
                 if (e.pointerType === 'mouse') selectPointer(e);
               }}
             >
               {[0, 1, 2, 3, 4].map((i) => {
-                const price = Math.exp(geometry.min + ((geometry.max - geometry.min) * i) / 4);
+                const price = geometry.tick(i / 4);
                 const y = geometry.y(price);
                 return (
                   <g key={i}>
@@ -174,7 +200,7 @@ export function HistoryPositionPanel({ asset }: { asset: Asset }) {
                       textAnchor="end"
                       className="position-label"
                     >
-                      {money(price, 'USD')}
+                      {money(price, currency)}
                     </text>
                   </g>
                 );
@@ -247,7 +273,7 @@ export function HistoryPositionPanel({ asset }: { asset: Asset }) {
                 max={all.length - 1}
                 step="1"
                 value={index}
-                aria-valuetext={`${dateLabel(view.time)}, ${money(view.price, 'USD')}, ${band ? bandPosition(band.z) : '밴드 계산 전'}, 낙폭 ${view.drawdown.toFixed(1)}%`}
+                aria-valuetext={`${dateLabel(view.time)}, ${money(view.price, currency)}, ${band ? bandPosition(band.z) : '밴드 계산 전'}, 낙폭 ${view.drawdown.toFixed(1)}%`}
                 onChange={(e) => setSelectedTime(all[Number(e.target.value)].time)}
               />
               <button onClick={() => setSelectedTime(null)}>최신으로</button>
@@ -268,28 +294,32 @@ export function HistoryPositionPanel({ asset }: { asset: Asset }) {
       <details className="position-method">
         <summary>계산 방법·출처</summary>
         <p>
-          Coin Metrics의 실제 USD 일별 참조가격을 첫 관측부터 표시합니다. 밴드는 그날 이전의 연속된
-          730개 UTC 로그가격 평균과 표준편차(−2, −1.3, −0.55, +0.55, +1.3, +2σ)로 계산합니다. 당일
-          가격과 미래 가격은 계산에 넣지 않으며, 자료가 끊긴 구간은 이어 그리지 않습니다. 낙폭은 첫
-          관측부터 그날까지의 최고 종가 대비입니다. 통용되는 비트코인 로그회귀 레인보우 모델과는
-          다른 과거 분포 시각화입니다.
+          {result.data?.meta.source}의 실제 {currency} 일별 종가를 첫 관측부터 표시합니다. 밴드는
+          그날 이전의 연속된 730개 UTC 로그가격 평균과 표준편차(−2, −1.3, −0.55, +0.55, +1.3, +2σ)로
+          계산합니다. 당일 가격과 미래 가격은 계산에 넣지 않으며, 자료가 끊긴 구간은 이어 그리지
+          않습니다. 낙폭은 첫 관측부터 그날까지의 최고 종가 대비입니다. 통용되는 비트코인 로그회귀
+          레인보우 모델과는 다른 과거 분포 시각화입니다.
         </p>
         <div className="coverage-strip">
           <span>{dateLabel(result.data?.meta.dataAsOf)} 기준</span>
-          <a
-            href="https://docs.coinmetrics.io/network-data/network-data-overview/market/price"
-            target="_blank"
-            rel="noreferrer"
-          >
-            Coin Metrics · 가격 정의 ↗
-          </a>
-          <a
-            href="https://github.com/coinmetrics/data/blob/master/LICENSE"
-            target="_blank"
-            rel="noreferrer"
-          >
-            CC BY-NC 4.0
-          </a>
+          {currency === 'USD' && (
+            <>
+              <a
+                href="https://docs.coinmetrics.io/network-data/network-data-overview/market/price"
+                target="_blank"
+                rel="noreferrer"
+              >
+                Coin Metrics · 가격 정의 ↗
+              </a>
+              <a
+                href="https://github.com/coinmetrics/data/blob/master/LICENSE"
+                target="_blank"
+                rel="noreferrer"
+              >
+                CC BY-NC 4.0
+              </a>
+            </>
+          )}
         </div>
       </details>
     </section>

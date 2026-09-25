@@ -34,6 +34,7 @@ export function positionGeometry(
   points: ReturnType<typeof priceObservations>,
   bands: HistoryBandPoint[],
   width: number,
+  log = true,
 ) {
   if (points.length < 2) return null;
   const left = 76,
@@ -41,22 +42,24 @@ export function positionGeometry(
   const first = points[0].time,
     last = points.at(-1)!.time;
   if (last <= first) return null;
+  const transform = log ? Math.log : (value: number) => value;
+  const inverse = log ? Math.exp : (value: number) => value;
   let low = Infinity,
     high = -Infinity;
   for (const p of points) {
-    low = Math.min(low, Math.log(p.price));
-    high = Math.max(high, Math.log(p.price));
+    low = Math.min(low, transform(p.price));
+    high = Math.max(high, transform(p.price));
   }
   for (const p of bands) {
-    low = Math.min(low, Math.log(p.bands[0]));
-    high = Math.max(high, Math.log(p.bands[5]));
+    low = Math.min(low, transform(p.bands[0]));
+    high = Math.max(high, transform(p.bands[5]));
   }
-  const padding = Math.max(0.1, (high - low) * 0.07);
-  const min = low - padding,
+  const padding = Math.max(log ? 0.1 : 1e-12, (high - low) * 0.07);
+  const min = log ? low - padding : Math.max(0, low - padding),
     max = high + padding;
   const x = (time: number) => left + ((time - first) / (last - first)) * (right - left);
   const y = (price: number) =>
-    PRICE_BOTTOM - ((Math.log(price) - min) / (max - min)) * (PRICE_BOTTOM - PRICE_TOP);
+    PRICE_BOTTOM - ((transform(price) - min) / (max - min)) * (PRICE_BOTTOM - PRICE_TOP);
   const paths = consecutiveSegments(points).map((segment) => ({
     price: segment
       .map((p, i) => `${i ? 'L' : 'M'}${x(p.time).toFixed(1)},${y(p.price).toFixed(1)}`)
@@ -76,5 +79,17 @@ export function positionGeometry(
       ].join(' '),
     })),
   );
-  return { x, y, left, right, min, max, first, last, paths, polygons };
+  return {
+    x,
+    y,
+    left,
+    right,
+    min,
+    max,
+    first,
+    last,
+    paths,
+    polygons,
+    tick: (fraction: number) => inverse(min + (max - min) * fraction),
+  };
 }

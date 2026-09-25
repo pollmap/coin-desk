@@ -172,7 +172,7 @@ it('prioritizes primary coins while keeping secondary collection eligible and bo
   const jobs = jobPolicies(['BTC', 'DOGE', 'ETH', 'SOL'], false).filter(
     (j) => j.kind === 'derivatives' && j.key.endsWith(':funding'),
   );
-  expect(jobs.find((j) => j.assets[0] === 'BTC').every).toBe(3600);
+  expect(jobs.find((j) => j.assets[0] === 'BTC').every).toBe(300);
   expect(jobs.find((j) => j.assets[0] === 'SOL').every).toBe(21600);
   const states = jobs.map((j) => ({
     key: j.key,

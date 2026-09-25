@@ -164,7 +164,7 @@ export function ChartTools({
         'date_utc,value,unit,source',
         ...visible.map(
           (p) =>
-            `${new Date(p.time * 1000).toISOString()},${p.value},${quote(unit === '비율' || unit === '%' ? 'ratio' : unit)},${quote(source)}`,
+            `${new Date(p.time * 1000).toISOString()},${p.value},${quote(unit)},${quote(source)}`,
         ),
       ].join('\r\n');
     const url = URL.createObjectURL(new Blob([content], { type: 'text/csv;charset=utf-8' }));

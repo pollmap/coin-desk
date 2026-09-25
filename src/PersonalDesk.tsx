@@ -105,9 +105,15 @@ export function CardPicker({
     </div>
   );
 }
-export function WorkspaceBar({ current }: { current: Omit<Workspace, 'name'> }) {
+export function WorkspaceBar({
+  current,
+  embedded = false,
+}: {
+  current: Omit<Workspace, 'name'>;
+  embedded?: boolean;
+}) {
   const { desk, update } = usePersonalDesk();
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(embedded);
   const [name, setName] = useState('');
   const [message, setMessage] = useState('');
   const [transfer, setTransfer] = useState(false);
@@ -140,18 +146,20 @@ export function WorkspaceBar({ current }: { current: Omit<Workspace, 'name'> }) 
     });
   return (
     <section className="workspace-bar" aria-label="나의 작업공간">
-      <div className="workspace-actions">
-        <button className="desk-button" aria-expanded={open} onClick={() => setOpen(!open)}>
-          <BookmarkPlus size={16} />
-          작업공간 {open ? '닫기' : '저장·불러오기'}
-        </button>
-        <Link to="/compare" className="desk-button">
-          코인 성과 비교 ↗
-        </Link>
-        <Link to="/explore" className="desk-button">
-          지표 찾아보기 ↗
-        </Link>
-      </div>
+      {!embedded && (
+        <div className="workspace-actions">
+          <button className="desk-button" aria-expanded={open} onClick={() => setOpen(!open)}>
+            <BookmarkPlus size={16} />
+            작업공간 {open ? '닫기' : '저장·불러오기'}
+          </button>
+          <Link to="/compare" className="desk-button">
+            코인 성과 비교 ↗
+          </Link>
+          <Link to="/explore" className="desk-button">
+            지표 찾아보기 ↗
+          </Link>
+        </div>
+      )}
       {open ? (
         <div className="desk-editor">
           <form
@@ -202,7 +210,12 @@ export function WorkspaceBar({ current }: { current: Omit<Workspace, 'name'> }) 
                     <Star size={14} />
                     <b>{w.name}</b>
                     <small>
-                      {w.asset} · {w.market === 'upbit' ? 'KRW' : 'USDT'}
+                      {w.asset} ·{' '}
+                      {w.priceSource === 'reference'
+                        ? 'USD 참조'
+                        : w.market === 'upbit'
+                          ? 'KRW'
+                          : 'USDT'}
                     </small>
                   </Link>
                   <button

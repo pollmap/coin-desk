@@ -15,6 +15,11 @@ export interface Workspace extends ChartSettings {
   name: string;
   view: 'dashboard' | 'chart';
   cards: string[];
+  priceSource?: 'reference' | 'upbit' | 'binance';
+  visual?: string;
+  panels?: string[];
+  section?: 'price' | 'onchain' | 'futures';
+  signal?: string;
 }
 export interface PersonalDesk {
   version: 1;
@@ -74,6 +79,27 @@ export function normalizeDesk(value: unknown): PersonalDesk {
       name,
       view: entry.view === 'chart' ? 'chart' : 'dashboard',
       cards: validCards(entry.cards),
+      ...(['price', 'onchain', 'futures'].includes(String(entry.section))
+        ? { section: entry.section as Workspace['section'] }
+        : {}),
+      ...(typeof entry.signal === 'string' &&
+      /^[A-Za-z0-9:_.-]{1,400}$/.test(entry.signal) &&
+      entry.signal.startsWith(String(entry.asset) + ':')
+        ? { signal: entry.signal }
+        : {}),
+      ...(entry.priceSource === 'reference' ||
+      entry.priceSource === 'upbit' ||
+      entry.priceSource === 'binance'
+        ? { priceSource: entry.priceSource }
+        : {}),
+      ...(entry.visual === 'rainbow' || entry.visual === 'price' ? { visual: entry.visual } : {}),
+      ...(Array.isArray(entry.panels)
+        ? {
+            panels: entry.panels
+              .filter((p): p is string => typeof p === 'string' && /^[a-z0-9_:]+$/i.test(p))
+              .slice(0, 6),
+          }
+        : {}),
     });
   }
   return { version: 1, favorites, cards: validCards(v.cards), workspaces };
@@ -111,6 +137,14 @@ export function importDesk(text: string): PersonalDesk {
       typeof w.log !== 'boolean' ||
       !Array.isArray(w.indicators) ||
       JSON.stringify(validIndicators(w.indicators)) !== JSON.stringify(w.indicators) ||
+      (w.section !== undefined && !['price', 'onchain', 'futures'].includes(String(w.section))) ||
+      (w.priceSource !== undefined &&
+        !['reference', 'upbit', 'binance'].includes(String(w.priceSource))) ||
+      (w.visual !== undefined && !['price', 'rainbow'].includes(String(w.visual))) ||
+      (w.signal !== undefined &&
+        (typeof w.signal !== 'string' ||
+          !/^[A-Za-z0-9:_.-]{1,400}$/.test(w.signal) ||
+          !w.signal.startsWith(String(w.asset) + ':'))) ||
       !Array.isArray(w.cards) ||
       JSON.stringify(validCards(w.cards)) !== JSON.stringify(w.cards)
     ) {
@@ -138,5 +172,15 @@ export function workspaceUrl(workspace: Workspace): string {
     log: config.log ? '1' : '0',
     cards: validCards(workspace.cards).join(','),
   });
-  return (workspace.view === 'chart' ? '/chart/' + config.asset : '/') + '?' + params;
+  if (workspace.priceSource) params.set('price_source', workspace.priceSource);
+  if (workspace.visual) params.set('visual', workspace.visual);
+  if (workspace.panels) params.set('panels', workspace.panels.join(','));
+  if (workspace.signal) params.set('signal', workspace.signal);
+  const path =
+    workspace.section === 'onchain' || workspace.section === 'futures'
+      ? '/' + workspace.section + '/' + config.asset
+      : workspace.view === 'chart'
+        ? '/chart/' + config.asset
+        : '/';
+  return path + '?' + params;
 }

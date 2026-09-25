@@ -1,34 +1,40 @@
-import { useMarket } from './useMarket';
 import { Link, useSearchParams } from 'react-router-dom';
+import { ChartNoAxesCombined, Activity, ChartPie, ArrowLeftRight } from 'lucide-react';
+import { assetLink, priceBasis } from '../shared/analysis-workspace';
 import type { Asset } from '../shared/types';
-
 export function AssetSections({ asset, current }: { asset: Asset; current: string }) {
   const [params] = useSearchParams();
-  const { market } = useMarket();
-  const context = new URLSearchParams({ market, period: params.get('period') || 'all' });
-  for (const key of ['log', 'interval', 'indicators'])
-    if (params.has(key)) context.set(key, params.get(key)!);
+  const context = new URLSearchParams(params);
+  context.set('asset', asset);
+  context.set('price_source', priceBasis(params));
   const sections = [
-    { id: 'history', label: '전체 가격', to: '/?asset=' + asset + '&' + context },
-    { id: 'chart', label: '기술적 분석', to: '/chart/' + asset + '?' + context },
-    { id: 'onchain', label: '온체인', to: '/onchain/' + asset + '?' + context },
-    { id: 'futures', label: '선물', to: '/futures/' + asset + '?' + context },
-    { id: 'dominance', label: '도미넌스', to: '/dominance?asset=' + asset + '&' + context },
-    { id: 'research', label: '리서치', to: '/research?asset=' + asset + '&' + context },
-    { id: 'events', label: '역사', to: '/history?asset=' + asset + '&' + context },
+    { id: 'history', label: '가격·기술', path: '/', Icon: ChartNoAxesCombined },
+    { id: 'onchain', label: '온체인', path: '/onchain/' + asset, Icon: Activity },
+    { id: 'futures', label: '선물', path: '/futures/' + asset, Icon: ArrowLeftRight },
+    { id: 'dominance', label: '시장 비중', path: '/dominance', Icon: ChartPie },
   ];
   return (
     <nav className="asset-sections" aria-label={asset + ' 분석 화면'}>
-      {sections.map((item) => (
-        <Link
-          key={item.id}
-          to={item.to}
-          className={current === item.id ? 'selected' : ''}
-          aria-current={current === item.id ? 'page' : undefined}
-        >
-          {item.label}
-        </Link>
-      ))}
+      {sections.map(({ id, label, path, Icon }) => {
+        const q = new URLSearchParams(context);
+        if (id !== current) {
+          q.delete('panels');
+          q.delete('metric');
+          q.delete('signal');
+          q.delete('visual');
+        }
+        return (
+          <Link
+            key={id}
+            to={assetLink(path, asset, q)}
+            className={(current === 'chart' ? 'history' : current) === id ? 'selected' : ''}
+            aria-current={(current === 'chart' ? 'history' : current) === id ? 'page' : undefined}
+          >
+            <Icon size={16} />
+            {label}
+          </Link>
+        );
+      })}
     </nav>
   );
 }

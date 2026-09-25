@@ -7,7 +7,7 @@ import { NETWORK_ASSETS, networkMetrics } from '../shared/network-catalog';
 import { DERIVATIVE_ASSETS, DERIVATIVE_METRICS } from './derivatives';
 
 export const BACKGROUND_QUOTE_SECONDS = 60;
-export const DAILY_REFRESH_SECONDS = 21600;
+export const DAILY_REFRESH_SECONDS = 3600;
 export interface IngestionState {
   key: string;
   last_attempt: number | null;
@@ -68,7 +68,7 @@ export function jobPolicies(assets: Asset[], rebuilding: boolean): JobPolicy[] {
         jobs.push({
           key: `derivatives:${asset}:${metric}`,
           kind: 'derivatives',
-          every: metric.endsWith('_daily') ? 21600 : isPrimaryAsset(asset) ? 3600 : 21600,
+          every: metric.endsWith('_daily') ? 3600 : isPrimaryAsset(asset) ? 300 : 21600,
           maxLag: metric.endsWith('_daily')
             ? 3 * DAY
             : metric === 'funding'
@@ -83,7 +83,7 @@ export function jobPolicies(assets: Asset[], rebuilding: boolean): JobPolicy[] {
       jobs.push({
         key: 'reference:' + asset,
         kind: 'reference',
-        every: 21600,
+        every: 3600,
         maxLag: 3 * DAY,
         assets: [asset],
       });
@@ -92,7 +92,7 @@ export function jobPolicies(assets: Asset[], rebuilding: boolean): JobPolicy[] {
       jobs.push({
         key: 'network:' + asset,
         kind: 'network',
-        every: 21600,
+        every: 3600,
         maxLag: 3 * DAY,
         assets: [asset],
       });

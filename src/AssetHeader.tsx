@@ -1,6 +1,6 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, type ReactNode } from 'react';
 import { save } from './lib';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { ASSETS, isPrimaryAsset } from '../shared/catalog';
 import { COIN_SITES, matchesCoin } from '../shared/coin-search';
 import type { Asset } from '../shared/types';
@@ -15,7 +15,9 @@ export function AssetHeader({
   subtitle,
   assets = ASSETS.map((a) => a.id),
   href,
+  trailing,
 }: {
+  trailing?: ReactNode;
   asset: Asset;
   current: string;
   subtitle: string;
@@ -23,13 +25,18 @@ export function AssetHeader({
   href: (asset: Asset) => string;
 }) {
   const navigate = useNavigate();
+  const [context] = useSearchParams();
   const { market } = useMarket();
   const target = (next: Asset) => {
     const url = new URL(
       assets.includes(next) ? href(next) : '/?asset=' + next + '&period=all',
       'https://coin-desk.invalid',
     );
-    if (!url.searchParams.has('market')) url.searchParams.set('market', market);
+    for (const key of ['price_source', 'market', 'log', 'interval', 'indicators', 'visual'])
+      if (!url.searchParams.has(key) && context.has(key))
+        url.searchParams.set(key, context.get(key)!);
+    if (!url.searchParams.has('price_source') && !url.searchParams.has('market'))
+      url.searchParams.set('price_source', 'reference');
     return url.pathname + url.search + url.hash;
   };
   const [query, setQuery] = useState('');
@@ -166,6 +173,7 @@ export function AssetHeader({
             </Link>
           ))}
         </div>
+        {trailing}
       </div>
       <AssetSections asset={asset} current={current} />
     </div>

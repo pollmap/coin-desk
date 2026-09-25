@@ -82,7 +82,7 @@ it('loads more than 1,000 daily network observations through the public cursor c
   expect(DB.sqlite.prepare('SELECT total_changes() n').get().n).toBe(before);
 });
 
-it('schedules independent network collection every six hours and respects explicit catchup/backoff checkpoints', () => {
+it('schedules independent network collection hourly and respects explicit catchup/backoff checkpoints', () => {
   const now = Math.floor(Date.now() / 1000),
     job = jobPolicies(['DOGE'], false).find((item) => item.key === 'network:DOGE');
   const source = {
@@ -92,8 +92,8 @@ it('schedules independent network collection every six hours and respects explic
     data_as_of: now - DAY,
     next_attempt: 0,
   };
-  expect(job).toMatchObject({ kind: 'network', every: 21600, maxLag: 3 * DAY });
-  expect(dueAt(job, [source], now)).toBe(now + 21600);
+  expect(job).toMatchObject({ kind: 'network', every: 3600, maxLag: 3 * DAY });
+  expect(dueAt(job, [source], now)).toBe(now + 3600);
   source.next_attempt = now + 60;
   expect(dueAt(job, [source], now)).toBe(now + 60);
   source.next_attempt = now + 3600;
