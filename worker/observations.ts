@@ -38,10 +38,21 @@ export async function reconcileSignals(
       .bind(asset, source, after)
       .all<{ id: string; payload: string; revision: number; status: string }>()
   ).results.filter((r) => rules.includes((JSON.parse(r.payload) as ObservationSignal).rule));
+  const dates = new Set(closed.map((p) => p.time));
+  const canReconcile = (s: ObservationSignal) => {
+    if (
+      !dates.has(s.time) ||
+      !dates.has(s.previousTime ?? s.time - (type === 'funding' ? 8 * 3600 : DAY))
+    )
+      return false;
+    const needed = s.rule === 'sma200' ? 201 : s.rule === 'rsi30' || s.rule === 'rsi70' ? 16 : 1;
+    return Array.from({ length: needed }, (_, i) => s.time - i * DAY).every((t) => dates.has(t));
+  };
   const writes: D1PreparedStatement[] = [];
   for (const item of computed) {
     const payload = JSON.stringify(item),
       prior = existing.find((s) => s.id === item.id);
+    if (prior && !canReconcile(JSON.parse(prior.payload))) continue;
     if (prior?.payload === payload && prior.status !== 'withdrawn') continue;
     if (prior) {
       writes.push(
@@ -67,17 +78,14 @@ export async function reconcileSignals(
     }
   }
   // Only withdraw when both observations remain available; a source outage is not a correction.
-  const dates = new Set(closed.map((p) => p.time));
   for (const prior of existing) {
     const old = JSON.parse(prior.payload) as ObservationSignal;
     if (
       prior.status === 'withdrawn' ||
       computed.some((s) => s.id === prior.id) ||
-      !dates.has(old.time) ||
-      (type !== 'funding' && !dates.has(old.time - DAY))
+      !canReconcile(old)
     )
       continue;
-    if (type === 'price' && closed.filter((p) => p.time <= old.time).length < 201) continue;
     writes.push(
       env.DB.prepare('INSERT OR IGNORE INTO signal_revisions VALUES(?,?,?,?)').bind(
         prior.id,

@@ -11,6 +11,7 @@ export interface ObservationSignal {
   rule: SignalRule;
   time: number;
   previous: number;
+  previousTime?: number;
   current: number;
   threshold: number;
   direction: 'up' | 'down';
@@ -100,6 +101,7 @@ export function observationSignals(
           rule: s.rule,
           time: p.time,
           previous: before.value,
+          previousTime: before.time,
           current: p.value,
           threshold: s.threshold,
           direction,

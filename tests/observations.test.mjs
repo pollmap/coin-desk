@@ -314,3 +314,32 @@ it('restores analysis section and selected observation in a saved workspace', ()
   expect(url.searchParams.get('signal')).toBe('DOGE:bybit:funding0:1:observations-v1');
   expect(url.searchParams.get('price_source')).toBe('upbit');
 });
+
+it('keeps an existing signal when its predecessor or indicator window is missing', async () => {
+  const funding = [
+    { time: base, value: -0.01 },
+    { time: base + 28800, value: 0.01 },
+  ];
+  await reconcileSignals(env, 'BTC', 'bybit', 'funding', funding, base + DAY);
+  await reconcileSignals(env, 'BTC', 'bybit', 'funding', [funding[1]], base + DAY);
+  expect((await signalsFeed(env, 'BTC', base + 2 * DAY)).data[0]).toMatchObject({
+    status: 'active',
+    revision: 1,
+  });
+  const prices = Array.from({ length: 202 }, (_, i) => ({
+    time: base + i * DAY,
+    value: i === 201 ? 120 : 100,
+  }));
+  await reconcileSignals(env, 'BTC', 'reference', 'price', prices, base + 202 * DAY);
+  await reconcileSignals(
+    env,
+    'BTC',
+    'reference',
+    'price',
+    prices.filter((_, i) => i !== 190),
+    base + 202 * DAY,
+  );
+  expect(
+    (await signalsFeed(env, 'BTC', base + 203 * DAY)).data.find((s) => s.rule === 'sma200'),
+  ).toMatchObject({ status: 'active', revision: 1 });
+});

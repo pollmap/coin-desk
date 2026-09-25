@@ -73,7 +73,7 @@ DefiLlama 스테이블코인 공급은 `totalCirculatingUSD`의 통화별 USD �
 
 ## 검증 기록
 
-- TypeScript와 35개 파일의 회귀 테스트 312개를 통과했습니다. 프런트 빌드, Worker dry-run 번들, Decimal 독립 산식, 문서 링크·브랜드 메타 검증도 실행했습니다. 최종 빌드와 CI 결과는 PR 검사에 남깁니다.
+- TypeScript와 35개 파일의 회귀 테스트 313개를 통과했습니다. 프런트 빌드, Worker dry-run 번들, Decimal 독립 산식, 문서 링크·브랜드 메타 검증도 실행했습니다. 최종 빌드와 CI 결과는 PR 검사에 남깁니다.
 - 실제 저장 자료: BTC/DOGE/ETH USD 이력, Bybit 펀딩 각 7,125 / 5,823 / 6,496건, 일별 OI/롱 계정 비중. 공개 운영 API에서 가져온 자료이며 fixture 가격이 아닙니다.
 - DefiLlama TVL 109개월·스테이블코인 107개월을 실제 원천에서 로컬로 저장했습니다. 최초 이력 확보 범위가 제공자별로 다릅니다.
 - 320·390·768·1280·1440px에서 문서 가로 넘침 없음. 1280·1440px에서 차트 시작 246px, 기본 차트 높이 640px. [측정 결과](audit-15/viewport-check.json).
