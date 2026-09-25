@@ -253,3 +253,33 @@
     padding: 10px 2px;
   }
 }
+@media (max-width: 760px) {
+  .app .quote-strip .quote-primary {
+    display: grid;
+    grid-template-columns: 30px minmax(0, 1fr);
+    gap: 8px 10px;
+  }
+  .app .quote-primary > div {
+    display: block;
+    min-width: 0;
+  }
+  .app .quote-primary strong {
+    font-size: 26px;
+    line-height: 1.3;
+  }
+  .app .quote-primary .change {
+    grid-column: 2;
+    justify-self: start;
+    margin: 0;
+    font-size: 13px;
+  }
+  .app .workspace-fold .workspace-bar {
+    width: auto;
+    max-width: 100%;
+    margin: 0;
+  }
+  .app .section-heading {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+}
