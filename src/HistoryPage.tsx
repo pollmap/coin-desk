@@ -26,6 +26,7 @@ function HistoryWorkspace({ asset }: { asset: Asset }) {
   const [includeMarket, setIncludeMarket] = useState(true);
   const log = params.get('log') !== '0';
   const [reverse, setReverse] = useState(false);
+  const [listOpen, setListOpen] = useState(false);
   const [focusRevision, setFocusRevision] = useState(0);
   const chartPanel = useRef<HTMLElement>(null);
   const allEvents = eventsForAsset(asset);
@@ -115,68 +116,95 @@ function HistoryWorkspace({ asset }: { asset: Asset }) {
       />
       <div className="history-workspace">
         <aside className="history-event-list" aria-label="역사 사건 선택">
-          <div className="history-list-heading">
-            <h2>
-              주요 사건 <span>{events.length}</span>
-            </h2>
-            <button
-              onClick={() => setReverse((v) => !v)}
-              aria-label={reverse ? '오래된순으로 정렬' : '최신순으로 정렬'}
+          <div className="history-mobile-picker">
+            <label htmlFor="history-event-select">사건 선택</label>
+            <select
+              id="history-event-select"
+              value={selected?.id || ''}
+              onChange={(e) => choose(allEvents.find((event) => event.id === e.target.value))}
             >
-              {reverse ? '최신순 ↓' : '오래된순 ↑'}
+              <option value="">전체 역사와 가격</option>
+              {allEvents.map((event) => (
+                <option key={event.id} value={event.id}>
+                  {event.date.slice(0, event.precision === 'month' ? 7 : 10)} · {event.title}
+                </option>
+              ))}
+            </select>
+            <button
+              aria-expanded={listOpen}
+              aria-controls="history-browse-list"
+              onClick={() => setListOpen((v) => !v)}
+            >
+              {listOpen ? '목록 접기' : '목록·검색 열기'}
             </button>
           </div>
-          <input
-            type="search"
-            aria-label="역사 검색"
-            placeholder="사건·연도 검색 · FTX, 2022…"
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-          />
-          <div className="history-list-filters">
-            <select
-              aria-label="사건 분류"
-              value={category}
-              onChange={(e) => setCategory(e.target.value)}
-            >
-              {['전체', '탄생', '공급·반감기', '업그레이드', '거래소·위기', '제도·채택'].map(
-                (c) => (
-                  <option key={c}>{c}</option>
-                ),
-              )}
-            </select>
-            <label>
-              <input
-                type="checkbox"
-                checked={includeMarket}
-                onChange={(e) => setIncludeMarket(e.target.checked)}
-              />
-              시장 공통 사건
-            </label>
-          </div>
-          <div className="history-event-scroll">
-            {events.map((event) => (
+          <div
+            id="history-browse-list"
+            className={'history-browse-list' + (listOpen ? ' is-open' : '')}
+          >
+            <div className="history-list-heading">
+              <h2>
+                주요 사건 <span>{events.length}</span>
+              </h2>
               <button
-                key={event.id}
-                className="history-event-row"
-                aria-pressed={selected?.id === event.id}
-                onClick={() => choose(event)}
+                onClick={() => setReverse((v) => !v)}
+                aria-label={reverse ? '오래된순으로 정렬' : '최신순으로 정렬'}
               >
-                <time>{event.precision === 'month' ? event.date.slice(0, 7) : event.date}</time>
-                <strong>{event.title}</strong>
-                <span>
-                  {event.category}
-                  {event.market ? ' · 시장 공통' : ''}
-                  <b aria-hidden="true">↗</b>
-                </span>
+                {reverse ? '최신순 ↓' : '오래된순 ↑'}
               </button>
-            ))}
-            {!events.length && (
-              <div className="empty-state">
-                <p>일치하는 사건이 없습니다.</p>
-                <button onClick={clearFilters}>검색·필터 초기화</button>
-              </div>
-            )}
+            </div>
+            <input
+              type="search"
+              aria-label="역사 검색"
+              placeholder="사건·연도 검색 · FTX, 2022…"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+            />
+            <div className="history-list-filters">
+              <select
+                aria-label="사건 분류"
+                value={category}
+                onChange={(e) => setCategory(e.target.value)}
+              >
+                {['전체', '탄생', '공급·반감기', '업그레이드', '거래소·위기', '제도·채택'].map(
+                  (c) => (
+                    <option key={c}>{c}</option>
+                  ),
+                )}
+              </select>
+              <label>
+                <input
+                  type="checkbox"
+                  checked={includeMarket}
+                  onChange={(e) => setIncludeMarket(e.target.checked)}
+                />
+                시장 공통 사건
+              </label>
+            </div>
+            <div className="history-event-scroll">
+              {events.map((event) => (
+                <button
+                  key={event.id}
+                  className="history-event-row"
+                  aria-pressed={selected?.id === event.id}
+                  onClick={() => choose(event)}
+                >
+                  <time>{event.precision === 'month' ? event.date.slice(0, 7) : event.date}</time>
+                  <strong>{event.title}</strong>
+                  <span>
+                    {event.category}
+                    {event.market ? ' · 시장 공통' : ''}
+                    <b aria-hidden="true">↗</b>
+                  </span>
+                </button>
+              ))}
+              {!events.length && (
+                <div className="empty-state">
+                  <p>일치하는 사건이 없습니다.</p>
+                  <button onClick={clearFilters}>검색·필터 초기화</button>
+                </div>
+              )}
+            </div>
           </div>
         </aside>
         <section

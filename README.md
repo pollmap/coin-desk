@@ -1,6 +1,6 @@
 # Coin Desk
 
-현재 릴리스: **0.14.0**. BTC·DOGE·ETH 중심의 선물·코인별 도미넌스, 공식 출처가 붙은 역사·사건 차트, 공개 리서치 자동 수집을 연결했습니다. 핵심 세 코인의 서버 시세는 방문자 없이도 1분 주기로 갱신을 시도합니다. [마감·검증 기록](docs/RELEASE14.md) · [리서치](https://coin-desk.pages.dev/research) · [역사](https://coin-desk.pages.dev/history?asset=BTC).
+현재 릴리스: **0.14.1**. BTC·DOGE·ETH 중심의 선물·코인별 도미넌스, 공식 출처가 붙은 역사·사건 차트, 공개 리서치 자동 수집을 연결했습니다. 핵심 세 코인의 서버 시세는 방문자 없이도 1분 주기로 갱신을 시도합니다. [마감·검증 기록](docs/RELEASE14.md) · [리서치](https://coin-desk.pages.dev/research) · [역사](https://coin-desk.pages.dev/history?asset=BTC).
 
 [![CI](https://github.com/pollmap/coin-desk/actions/workflows/ci.yml/badge.svg)](https://github.com/pollmap/coin-desk/actions/workflows/ci.yml)
 
@@ -11,13 +11,15 @@
 
 0.8.0에서 도입한 기반 기능입니다. BTC·DOGE·ETH의 전체 USD 흐름을 우선 보여주고, 다른 5개 코인은 펼침 메뉴에 둡니다. 첫 화면의 중복 시세를 제거해 차트를 앞당겼으며, 시바견 안내 캐릭터를 차트 뒤에 배치했습니다. 서버에서 차단된 Binance 선물 원천은 실제 Cloudflare 응답을 확인한 Bybit V5로 교체했습니다. 펀딩비는 %, 미결제약정은 해당 코인 수량으로 표시합니다. 서버 Cron 실행 기록을 72시간 보관하고 상태 화면에 48시간 관찰 진행을 표시합니다. [0.8 변경·검증 기록](docs/UPGRADE08.md), [로고 출처](docs/COIN_LOGOS.md), [BTC MVRV](https://coin-desk.pages.dev/metrics/mvrv?period=all), [DOGE 온체인](https://coin-desk.pages.dev/onchain/DOGE?period=all)을 확인하세요. 수집은 방문자와 독립적인 Cloudflare Cron에서 실행됩니다.
 
-BTC·DOGE 전체 이력에는 과거 730일의 로그가격만 사용해 매일 재계산하는 장기 가격 위치 밴드와 당시 최고 종가 대비 낙폭도 표시합니다. 이는 사용자 판단을 위한 과거 위치 설명으로, 적정가·바닥 또는 미래 경로를 뜻하지 않습니다.
+BTC·DOGE·ETH 전체 이력에는 과거 730일의 로그가격만 사용해 매일 재계산하는 장기 가격 위치 밴드와 당시 최고 종가 대비 낙폭도 표시합니다. 이는 사용자 판단을 위한 과거 위치 설명으로, 적정가·바닥 또는 미래 경로를 뜻하지 않습니다.
 
 ![Coin Desk 개편 온체인 화면](docs/upgrade-06/public-doge-dashboard.png)
 
 화면은 2026-09-23 공개 배포 검수 시점입니다. 실제 최신 관측일은 사이트에 표시됩니다.
 
 ## 사용할 수 있는 기능
+
+2026-09-25 [모바일·레인보우 개선](docs/RESPONSIVE_VISUAL_WORKSPACE.md): 메인 차트에서 거래소 가격/레인보우·낙폭을 바로 전환하고, 최초 관측부터 하루씩 탐색합니다. 모바일에서도 거래대금·고저가·RSI·이동평균과 모든 분석 메뉴를 유지합니다. 역사 화면은 사건 선택으로 당시 차트를 바로 엽니다.
 
 2026-09-25 [역사 화면 개선](docs/HISTORY_WORKSPACE.md): 코인별 사건 목록과 당시 차트를 함께 표시하고 전후 30일·90일·1년, USD·KRW·USDT 가격 원천 전환, 사건일 기준 7·30·90일 뒤 변화를 제공합니다. 가격이 없는 날짜는 보간하지 않습니다.
 
@@ -31,7 +33,7 @@ BTC·DOGE 전체 이력에는 과거 730일의 로그가격만 사용해 매일 
 | 관심 코인 `/coins` | 별표 즐겨찾기·검색, 즐겨찾기/상승률/하락률/거래대금 정렬, RSI 14·200일선 대비 가격 위치 |
 | 실제 거래소 가격 | 8개 모두 Binance USDT / Upbit KRW, 환율 환산 없이 시장 전환 |
 | 장기 조망 `/` | 선택 거래소 최초 확정 일봉, 같은 통화로 기술적 분석 이동; BTC 2010년·DOGE 2014년·ETH 2015년부터의 Coin Metrics USD 초기 이력 별도 열기 |
-| BTC·DOGE 가격 위치 | 그날 이전 730개 연속 UTC 일별 가격의 로그 평균·표준편차 밴드, 당시까지의 최고 종가 대비 낙폭, 최근 4년·전체 보기 |
+| BTC·DOGE·ETH 가격 위치 | 그날 이전 730개 연속 UTC 일별 가격의 로그 평균·표준편차 밴드, 당시까지의 최고 종가 대비 낙폭, 최근 4년·전체 보기 |
 | 성과 비교 `/compare` | 공통 UTC 확정일을 100으로 맞춘 상대 성과, 수익률·종가 기준 최대 낙폭·연환산 변동성, 직접 날짜·공통 기간 제한 이유·비교 CSV |
 | 차트 | 캔들·거래량, 1시간·4시간·일·주·월, 8개 기간 프리셋·KST 날짜 직접 선택, 로그축·확대·이동·십자선·전체화면·키보드·보이는 구간 CSV |
 | 이동평균 | SMA·EMA 기간 **2~1,000** 직접 입력, 일봉·주봉·선택한 봉 기준 선택 |

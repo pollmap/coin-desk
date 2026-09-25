@@ -262,6 +262,13 @@ function PricePage({ workspace = false }: { workspace?: boolean }) {
   const { market, interval, period, indicators, log, change } = usePreferences();
   const hasLongHistory = ['BTC', 'DOGE', 'ETH', 'XRP', 'LINK'].includes(asset);
   const historical = !workspace;
+  const supportsPosition = ['BTC', 'DOGE', 'ETH'].includes(asset);
+  const priceView = supportsPosition && params.get('visual') === 'rainbow' ? 'rainbow' : 'price';
+  function changeVisual(value: string) {
+    const next = new URLSearchParams(params);
+    next.set('visual', value);
+    navigate({ pathname: routeLocation.pathname, search: next.toString() });
+  }
   const shownPeriod: Period = historical && !params.has('period') ? 'all' : period;
   const { desk, update: updateDesk } = usePersonalDesk();
   const cards = params.has('cards')
@@ -384,6 +391,7 @@ function PricePage({ workspace = false }: { workspace?: boolean }) {
             log: log ? '1' : '0',
             cards: cards.join(','),
             view: historical ? 'history' : 'exchange',
+            visual: priceView,
           })
         }
       />
@@ -402,7 +410,11 @@ function PricePage({ workspace = false }: { workspace?: boolean }) {
           <button onClick={() => setShareUrl('')}>닫기</button>
         </div>
       ) : null}
-      <MarketPicker market={market} onChange={(value) => change('market', value)} />
+      <MarketPicker
+        market={market}
+        label={historical && priceView === 'rainbow' ? '시세 기준' : '가격 기준'}
+        onChange={(value) => change('market', value)}
+      />
       {
         <section className="quote-strip" aria-label="시장 요약">
           <div className="quote-primary">
@@ -477,7 +489,23 @@ function PricePage({ workspace = false }: { workspace?: boolean }) {
         </section>
       }
       <ErrorNotice message={quote.error || quote.data?.meta.warning} retry={quote.reload} />
-      {historical ? (
+      {historical && supportsPosition && (
+        <div className="price-view-switch" role="group" aria-label="가격 시각화 선택">
+          <button aria-pressed={priceView === 'price'} onClick={() => changeVisual('price')}>
+            거래소 가격
+          </button>
+          <button aria-pressed={priceView === 'rainbow'} onClick={() => changeVisual('rainbow')}>
+            <span className="rainbow-swatch" aria-hidden="true" />
+            레인보우 · 낙폭
+          </button>
+        </div>
+      )}
+      {historical && priceView === 'rainbow' ? (
+        <Suspense fallback={<Loading />}>
+          <HistoryPositionPanel key={asset} asset={asset} />
+        </Suspense>
+      ) : null}
+      {historical && priceView === 'price' ? (
         <Suspense fallback={<Loading message="초기 가격부터 전체 흐름을 준비하고 있습니다…" />}>
           <ExchangeHistoryPanel
             market={market}
@@ -489,7 +517,7 @@ function PricePage({ workspace = false }: { workspace?: boolean }) {
           />
         </Suspense>
       ) : null}
-      {historical && hasLongHistory ? (
+      {historical && hasLongHistory && priceView === 'price' ? (
         <details
           className="panel reference-archive"
           id="reference-history"
@@ -508,18 +536,6 @@ function PricePage({ workspace = false }: { workspace?: boolean }) {
                 onPeriodChange={setArchivePeriod}
                 onLogChange={() => change('log', log ? '0' : '1')}
               />
-            </Suspense>
-          </DeferredMount>
-        </details>
-      ) : null}
-      {historical && (asset === 'BTC' || asset === 'DOGE') ? (
-        <details className="panel analysis-details">
-          <summary>
-            730일 가격 분포 참고 보기 <small>초기 730일은 밴드 계산 전 · 적정가 지표 아님</small>
-          </summary>
-          <DeferredMount>
-            <Suspense fallback={<Loading message="가격 분포를 계산하고 있습니다…" />}>
-              <HistoryPositionPanel asset={asset} />
             </Suspense>
           </DeferredMount>
         </details>
