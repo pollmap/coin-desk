@@ -1,5 +1,5 @@
 import { workspaceIndicators } from '../shared/workspace-indicators';
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { lazy, Suspense, useEffect, useMemo, useRef, useState } from 'react';
 import { Link, useLocation, useParams, useSearchParams } from 'react-router-dom';
 import {
   SlidersHorizontal,
@@ -39,7 +39,9 @@ import { dateLabel, money, numeric, save, saved, periodStart } from './lib';
 import { PeriodPicker } from './PeriodPicker';
 import { ChartTools } from './ChartNavigator';
 import { AnalysisChart, type AnalysisLine } from './AnalysisChart';
-import { HistoryPositionPanel } from './HistoryPositionPanel';
+const HistoryPositionPanel = lazy(() =>
+  import('./HistoryPositionPanel').then((m) => ({ default: m.HistoryPositionPanel })),
+);
 import { WorkspaceBar } from './PersonalDesk';
 import './analysis-workspace.css';
 
@@ -90,6 +92,7 @@ export function AnalysisWorkspace() {
     [query, setQuery] = useState(''),
     [evidence, setEvidence] = useState(params.get('signal') !== null);
   const [selectedMetric, setSelectedMetric] = useState<string | null>(null);
+  const [rangeRevision, setRangeRevision] = useState(0);
   const panelRef = useRef<HTMLElement>(null),
     dialog = useRef<HTMLDialogElement>(null),
     addButton = useRef<HTMLButtonElement>(null);
@@ -477,7 +480,13 @@ export function AnalysisWorkspace() {
       />
       <section ref={panelRef} className="panel integrated-analysis">
         <div className="analysis-toolbar">
-          <PeriodPicker value={period} onChange={(p) => change({ period: p })} />
+          <PeriodPicker
+            value={period}
+            onChange={(p) => {
+              change({ period: p, signal: null });
+              setRangeRevision((n) => n + 1);
+            }}
+          />
           <select
             aria-label="봉 간격"
             value={interval}
@@ -547,14 +556,23 @@ export function AnalysisWorkspace() {
             )}
             {visual === 'rainbow' ? (
               <>
-                <HistoryPositionPanel
-                  fetchReference={false}
-                  log={log}
-                  period={period}
-                  asset={asset}
-                  supplied={series ? { ...series, data: dailyPoints } : undefined}
-                  currency={unit}
-                />
+                <Suspense
+                  fallback={
+                    <div className="loading" role="status">
+                      가격 위치 밴드를 불러오고 있습니다…
+                    </div>
+                  }
+                >
+                  <HistoryPositionPanel
+                    key={rangeRevision}
+                    fetchReference={false}
+                    log={log}
+                    period={period}
+                    asset={asset}
+                    supplied={series ? { ...series, data: dailyPoints } : undefined}
+                    currency={unit}
+                  />
+                </Suspense>
                 <details className="analysis-tools">
                   <summary>내보내기 · 공유</summary>
                   <ChartTools
@@ -595,6 +613,7 @@ export function AnalysisWorkspace() {
                 focus={focus}
                 onSignal={showSignal}
                 onAll={() => change({ period: 'all', signal: null })}
+                rangeRevision={rangeRevision}
               />
             ) : (
               <div className="loading" role="status">
@@ -614,14 +633,7 @@ export function AnalysisWorkspace() {
                         setEvidence(true);
                       }}
                     >
-                      {l.title}{' '}
-                      <b>
-                        {numeric(
-                          l.data.at(-1)?.value,
-                          Math.abs(l.data.at(-1)?.value ?? 0) < 0.1 ? 6 : 2,
-                        )}{' '}
-                        {l.unit}
-                      </b>
+                      {l.title} · 근거
                       {!l.data.length && <small>관측 대기</small>}
                     </button>
                     <button
@@ -800,6 +812,67 @@ export function AnalysisWorkspace() {
           onChange={(e) => setQuery(e.target.value)}
           placeholder="RSI, 펀딩, 활성 주소…"
         />
+        {!query && (
+          <details className="indicator-presets" open>
+            <summary>지표 묶음으로 한 번에 바꾸기</summary>
+            {[
+              {
+                title: '장기 추세',
+                detail: '50·200일선 · RSI · 낙폭',
+                indicators: 'sma:50:d,sma200',
+                panels: ['rsi', 'drawdown'],
+              },
+              {
+                title: '온체인 평가',
+                detail: 'MVRV · 활성 주소',
+                indicators: '',
+                panels: ['net:mvrv', 'net:active_addresses'],
+              },
+              {
+                title: '선물 수급',
+                detail: '확정 펀딩률 · 미결제약정',
+                indicators: '',
+                panels: ['futures:funding', 'futures:open_interest_daily'],
+              },
+              ...(asset !== 'BTC'
+                ? [
+                    {
+                      title: 'BTC와 비교',
+                      detail: `${asset}/BTC · RSI`,
+                      indicators: 'sma200',
+                      panels: ['relative', 'rsi'],
+                    },
+                  ]
+                : []),
+            ].map((preset) => {
+              const available = preset.panels.every((id) =>
+                choices.some((c) => c.id === id && c.available !== false),
+              );
+              return (
+                <button
+                  key={preset.title}
+                  disabled={!available}
+                  onClick={() => {
+                    change({
+                      indicators: preset.indicators,
+                      panels: preset.panels.join(','),
+                      visual: null,
+                      signal: null,
+                      focus: null,
+                      metric: null,
+                    });
+                    setSelectedMetric(null);
+                    setPicker(false);
+                  }}
+                >
+                  <b>{preset.title}</b>
+                  <span>{preset.detail}</span>
+                  {!available && <small>데이터 확보 대기</small>}
+                </button>
+              );
+            })}
+          </details>
+        )}
         <div className="overlay-options">
           {[
             ['sma:50:d', '50일선'],
@@ -830,6 +903,11 @@ export function AnalysisWorkspace() {
             .filter((c) => (c.title + c.id + c.group).toLowerCase().includes(query.toLowerCase()))
             .map((choice) => {
               const line = lines.find((l) => l.id === choice.id);
+              const preview = line?.data.length
+                ? line.data
+                : choice.id in local
+                  ? local[choice.id as keyof typeof local]
+                  : choice.spark;
               const disabled =
                 choice.available === false ||
                 (!selected.includes(choice.id) && selected.length >= 6);
@@ -854,14 +932,12 @@ export function AnalysisWorkspace() {
                     </small>
                   </span>
                   <span>
-                    {line?.data.length || choice.spark?.length ? (
-                      <MiniTrend points={line?.data.length ? line.data : choice.spark!} />
-                    ) : null}
+                    {preview?.length ? <MiniTrend points={preview} /> : null}
                     {choice.available === false
                       ? '데이터 확보 대기'
                       : numeric(
-                          line?.data.at(-1)?.value ?? choice.latest,
-                          Math.abs(line?.data.at(-1)?.value ?? choice.latest ?? 0) < 0.1 ? 6 : 2,
+                          preview?.at(-1)?.value ?? choice.latest,
+                          Math.abs(preview?.at(-1)?.value ?? choice.latest ?? 0) < 0.1 ? 6 : 2,
                         )}{' '}
                     {selected.includes(choice.id) ? '✓' : '＋'}
                   </span>

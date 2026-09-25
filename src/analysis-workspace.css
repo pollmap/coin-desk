@@ -157,6 +157,66 @@
 .analysis-legend b {
   color: var(--text);
 }
+.indicator-presets {
+  margin: 8px 0;
+  border-bottom: 1px solid var(--border);
+}
+.indicator-presets summary {
+  cursor: pointer;
+  padding: 12px 4px;
+  min-height: 44px;
+  font-size: 13px;
+}
+.indicator-presets button {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 12px;
+  align-items: center;
+  min-height: 44px;
+  padding: 10px 12px;
+  border: 0;
+  border-radius: 0;
+  text-align: left;
+}
+.indicator-presets button span,
+.indicator-presets button small {
+  font-size: 12px;
+  color: var(--muted);
+}
+.analysis-legend > span {
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+.analysis-date-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 12px;
+  border-top: 1px solid var(--border);
+}
+.analysis-date-controls button {
+  min-width: 44px;
+  min-height: 44px;
+}
+.analysis-date-controls label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--muted);
+  font-size: 12px;
+}
+.analysis-date-controls input {
+  width: 140px;
+  min-height: 44px;
+  background: var(--panel);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  padding: 6px;
+  font: inherit;
+}
 .analysis-legend i {
   display: inline-block;
   width: 10px;

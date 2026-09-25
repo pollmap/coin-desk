@@ -10,8 +10,14 @@ import {
 import { createDeskChart } from './chart-theme';
 import type { Candle, Period, Point } from '../shared/types';
 import type { ObservationSignal } from '../shared/signals';
-import { dateLabel, money, numeric, periodStart } from './lib';
+import { money, numeric, periodStart } from './lib';
 import { ChartTools } from './ChartNavigator';
+import {
+  adjacentObservation,
+  readingIndex,
+  readingsCsv,
+  readingDigits,
+} from '../shared/chart-readings';
 
 export interface AnalysisLine {
   id: string;
@@ -52,6 +58,7 @@ export const AnalysisChart = memo(function AnalysisChart({
   focus,
   onSignal,
   onAll,
+  rangeRevision = 0,
 }: {
   asset: string;
   unit: string;
@@ -66,9 +73,12 @@ export const AnalysisChart = memo(function AnalysisChart({
   focus?: number;
   onSignal: (s: ObservationSignal) => void;
   onAll: () => void;
+  rangeRevision?: number;
 }) {
   const host = useRef<HTMLDivElement>(null),
     chartRef = useRef<IChartApi | null>(null);
+  const moveCursor = useRef<(time: number | null) => void>(() => {});
+  const manualCursor = useRef(false);
   const click = useRef(onSignal);
   click.current = onSignal;
   const settings = useRef({ period, log });
@@ -77,6 +87,39 @@ export const AnalysisChart = memo(function AnalysisChart({
   const [selected, setSelected] = useState<number | null>(null),
     [tableCount, setTableCount] = useState(50);
   const key = asset + unit + step;
+  const columns = useMemo(
+    () => [{ title: asset, unit, source, data: points }, ...lines],
+    [asset, unit, source, points, lines],
+  );
+  const readings = useMemo(() => readingIndex(columns), [columns]);
+  const [selectionKey, setSelectionKey] = useState(key);
+  const selectedTime = selectionKey === key ? selected : null;
+  const time = selectedTime ?? points.at(-1)?.time;
+  const priceValue = time === undefined ? undefined : readings.maps[0].get(time);
+  const timestamp = (t: number | undefined) =>
+    t === undefined
+      ? '—'
+      : new Date(t * 1000).toISOString().slice(0, 16).replace('T', ' ') + ' UTC';
+  const metricNumber = (value: number | undefined) => numeric(value, readingDigits(value));
+  function explore(t: number | null) {
+    manualCursor.current = t !== null;
+    setSelectionKey(key);
+    setSelected(t);
+    moveCursor.current(t);
+  }
+  function exportReadings() {
+    const visible = chartRef.current?.timeScale().getVisibleRange();
+    const content = readingsCsv(
+      columns,
+      visible ? { from: Number(visible.from), to: Number(visible.to) } : undefined,
+    );
+    const url = URL.createObjectURL(new Blob([content], { type: 'text/csv;charset=utf-8' }));
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `Coin-Desk-${asset}-${unit}-indicators.csv`;
+    a.click();
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+  }
   useEffect(() => {
     if (!host.current || !points.length) return;
     const panels = panelCount(lines);
@@ -111,6 +154,7 @@ export const AnalysisChart = memo(function AnalysisChart({
         });
     if (candles?.length) price.setData(candles.map((p) => ({ ...p, time: ts(p.time) })));
     else price.setData(gapData(points, step));
+    const cursorSeries = [{ series: price, values: new Map(points.map((p) => [p.time, p.value])) }];
     const panes = new Map<string, number>();
     for (const line of lines.filter((l) => l.data.length)) {
       const paneKey = line.pane ?? line.id;
@@ -125,12 +169,13 @@ export const AnalysisChart = memo(function AnalysisChart({
           priceLineVisible: false,
           priceFormat: {
             type: 'custom',
-            formatter: (v: number) => numeric(v, Math.abs(v) < 0.01 ? 6 : 2),
+            formatter: (v: number) => numeric(v, readingDigits(v)),
           },
         },
         index,
       );
       series.setData(gapData(line.data, line.step ?? 86400));
+      cursorSeries.push({ series, values: new Map(line.data.map((p) => [p.time, p.value])) });
       for (const level of line.thresholds ??
         (line.unit === 'RSI'
           ? [30, 70]
@@ -175,7 +220,28 @@ export const AnalysisChart = memo(function AnalysisChart({
         signals.find((s) => s.time === Number(e.time));
       if (s) click.current(s);
     });
-    chart.subscribeCrosshairMove((e) => setSelected(e.time ? Number(e.time) : null));
+    chart.subscribeCrosshairMove((e) => {
+      if (manualCursor.current) return;
+      setSelectionKey(key);
+      setSelected(e.time === undefined ? null : Number(e.time));
+    });
+    moveCursor.current = (time) => {
+      if (time === null) {
+        chart.clearCrosshairPosition();
+        return;
+      }
+      const target = cursorSeries.find((entry) => entry.values.has(time));
+      if (!target) {
+        chart.clearCrosshairPosition();
+        return;
+      }
+      const range = chart.timeScale().getVisibleRange();
+      if (range && (time < Number(range.from) || time > Number(range.to))) {
+        const width = Number(range.to) - Number(range.from);
+        chart.timeScale().setVisibleRange({ from: ts(time - width / 2), to: ts(time + width / 2) });
+      }
+      chart.setCrosshairPosition(target.values.get(time)!, ts(time), target.series);
+    };
     const prior = previous.current;
     const from = periodStart(settings.current.period, points.at(-1)!.time);
     const visible = points.filter((p) => p.time >= from);
@@ -199,6 +265,7 @@ export const AnalysisChart = memo(function AnalysisChart({
       markers.detach();
       chart.remove();
       chartRef.current = null;
+      moveCursor.current = () => {};
     };
   }, [key, points, candles, lines, signals, asset, unit, source, step]);
   useEffect(() => {
@@ -208,22 +275,20 @@ export const AnalysisChart = memo(function AnalysisChart({
   }, [log]);
   useEffect(() => {
     const visible = points.filter((p) => p.time >= periodStart(period, points.at(-1)?.time ?? 0));
+    manualCursor.current = false;
+    setSelected(null);
+    chartRef.current?.clearCrosshairPosition();
     if (visible.length)
       chartRef.current
         ?.timeScale()
         .setVisibleRange({ from: ts(visible[0].time), to: ts(visible.at(-1)!.time) });
-  }, [period, key]);
+  }, [period, key, rangeRevision]);
   useEffect(() => {
     if (focus)
       chartRef.current
         ?.timeScale()
         .setVisibleRange({ from: ts(focus - 90 * 86400), to: ts(focus + 90 * 86400) });
   }, [focus, points]);
-  const valueMaps = useMemo(
-    () => new Map(lines.map((l) => [l.id, new Map(l.data.map((p) => [p.time, p.value]))])),
-    [lines],
-  );
-  const point = points.find((p) => p.time === selected) ?? points.at(-1);
   return (
     <>
       <div className="analysis-legend">
@@ -231,12 +296,14 @@ export const AnalysisChart = memo(function AnalysisChart({
           {asset} · {unit}
         </span>
         <span>
-          {dateLabel(point?.time)} <b>{money(point?.value, unit)}</b>
+          {timestamp(time)} <b>{money(priceValue, unit)}</b>
         </span>
-        {lines.map((l) => (
-          <span key={l.id}>
+        {lines.map((l, i) => (
+          <span key={l.id} title={l.source}>
             <i style={{ background: l.color }} />
-            {l.title} · {l.unit}
+            {l.title}{' '}
+            <b>{metricNumber(time === undefined ? undefined : readings.maps[i + 1].get(time))}</b>{' '}
+            {l.unit}
           </span>
         ))}
       </div>
@@ -246,33 +313,83 @@ export const AnalysisChart = memo(function AnalysisChart({
         style={{ height: 370 + panelCount(lines) * 135 }}
         data-chart-kind="analysis"
         data-asset={asset}
+        onPointerDown={() => {
+          manualCursor.current = false;
+        }}
         tabIndex={0}
         role="group"
         aria-label={`${asset} ${unit} 가격과 비교 지표. 좌우 방향키로 관측 탐색`}
         onKeyDown={(e) => {
           if (
             e.target !== e.currentTarget ||
-            !['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(e.key)
+            !['ArrowLeft', 'ArrowRight', 'Home', 'End', 'Escape'].includes(e.key)
           )
             return;
           e.preventDefault();
-          const index = points.findIndex((p) => p.time === point?.time);
-          setSelected(
-            points[
-              e.key === 'Home'
-                ? 0
+          explore(
+            e.key === 'Escape'
+              ? null
+              : e.key === 'Home'
+                ? (readings.times[0] ?? null)
                 : e.key === 'End'
-                  ? points.length - 1
-                  : Math.max(
-                      0,
-                      Math.min(points.length - 1, index + (e.key === 'ArrowLeft' ? -1 : 1)),
-                    )
-            ]?.time ?? null,
+                  ? (readings.times.at(-1) ?? null)
+                  : adjacentObservation(
+                      readings.times,
+                      time ?? null,
+                      e.key === 'ArrowLeft' ? -1 : 1,
+                    ),
           );
         }}
       />
+      <div className="analysis-date-controls" role="group" aria-label="차트 날짜 탐색">
+        <button
+          aria-label="이전 관측"
+          disabled={time === readings.times[0]}
+          onClick={() => explore(adjacentObservation(readings.times, time ?? null, -1))}
+        >
+          ←
+        </button>
+        <label>
+          날짜{' '}
+          <input
+            type="date"
+            aria-label="차트 탐색 날짜 (UTC)"
+            value={time === undefined ? '' : new Date(time * 1000).toISOString().slice(0, 10)}
+            min={
+              readings.times.length
+                ? new Date(readings.times[0] * 1000).toISOString().slice(0, 10)
+                : undefined
+            }
+            max={
+              readings.times.length
+                ? new Date(readings.times.at(-1)! * 1000).toISOString().slice(0, 10)
+                : undefined
+            }
+            onInput={(e) => {
+              const t = Date.parse(e.currentTarget.value + 'T00:00:00Z') / 1000;
+              if (Number.isFinite(t) && e.currentTarget.validity.valid) explore(t);
+            }}
+            onChange={(e) => {
+              const t = Date.parse(e.target.value + 'T00:00:00Z') / 1000;
+              if (Number.isFinite(t) && e.target.validity.valid) explore(t);
+            }}
+          />
+        </label>
+        <button
+          aria-label="다음 관측"
+          disabled={time === readings.times.at(-1)}
+          onClick={() => explore(adjacentObservation(readings.times, time ?? null, 1))}
+        >
+          →
+        </button>
+        <button onClick={() => explore(null)} disabled={selectedTime === null}>
+          최신 값
+        </button>
+      </div>
       <span className="sr-only" role="status">
-        {selected ? `${dateLabel(point?.time)} ${money(point?.value, unit)}` : ''}
+        {selectedTime !== null
+          ? `${timestamp(time)} ${asset} ${money(priceValue, unit)}. ${lines.map((l, i) => `${l.title} ${metricNumber(time === undefined ? undefined : readings.maps[i + 1].get(time))} ${l.unit}`).join('. ')}`
+          : ''}
       </span>
       <details className="analysis-tools">
         <summary>내보내기 · 공유 · 날짜별 수치</summary>
@@ -283,6 +400,8 @@ export const AnalysisChart = memo(function AnalysisChart({
           unit={unit}
           source={source}
           onReset={onAll}
+          onExport={exportReadings}
+          exportLabel="가격·지표 CSV"
         />
         <button
           onClick={() => {
@@ -311,22 +430,22 @@ export const AnalysisChart = memo(function AnalysisChart({
               </tr>
             </thead>
             <tbody>
-              {points
+              {readings.times
                 .slice(-tableCount)
                 .reverse()
-                .map((p) => (
-                  <tr key={p.time}>
-                    <td>{new Date(p.time * 1000).toISOString().slice(0, 16).replace('T', ' ')}</td>
-                    <td>{money(p.value, unit)}</td>
-                    {lines.map((l) => (
-                      <td key={l.id}>{numeric(valueMaps.get(l.id)?.get(p.time), 4)}</td>
+                .map((t) => (
+                  <tr key={t}>
+                    <td>{timestamp(t)}</td>
+                    <td>{money(readings.maps[0].get(t), unit)}</td>
+                    {lines.map((l, i) => (
+                      <td key={l.id}>{metricNumber(readings.maps[i + 1].get(t))}</td>
                     ))}
                   </tr>
                 ))}
             </tbody>
           </table>
         </div>
-        {tableCount < points.length && (
+        {tableCount < readings.times.length && (
           <button onClick={() => setTableCount((n) => n + 100)}>이전 100개 표시</button>
         )}
       </details>
