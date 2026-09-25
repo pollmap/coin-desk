@@ -47,6 +47,30 @@ describe('personal desk untrusted settings', () => {
     expect(importDesk(JSON.stringify(desk))).toEqual(desk);
     expect(workspaceUrl(desk.workspaces[0])).toContain('indicators=sma%3A55%3Ad&log=0&cards=');
   });
+  it('restores the focused metric and optional price comparison', () => {
+    const desk = normalizeDesk({
+      ...DEFAULT_DESK,
+      workspaces: [
+        {
+          name: 'ETH onchain',
+          asset: 'ETH',
+          section: 'onchain',
+          panels: ['net:active_addresses', 'net:mvrv'],
+          comparePrice: true,
+        },
+      ],
+    });
+    expect(importDesk(JSON.stringify(desk))).toEqual(desk);
+    const url = new URL(workspaceUrl(desk.workspaces[0]), 'https://example.test');
+    expect(url.pathname).toBe('/onchain/ETH');
+    expect(url.searchParams.get('panels')).toBe('net:active_addresses,net:mvrv');
+    expect(url.searchParams.get('compare_price')).toBe('1');
+    expect(() =>
+      importDesk(
+        JSON.stringify({ ...desk, workspaces: [{ ...desk.workspaces[0], comparePrice: 'false' }] }),
+      ),
+    ).toThrow();
+  });
   it('rejects oversized, unsupported and duplicate imports before replacing settings', () => {
     expect(() => importDesk(' '.repeat(64001))).toThrow();
     expect(() => importDesk(JSON.stringify({ ...DEFAULT_DESK, note: '가'.repeat(22000) }))).toThrow(

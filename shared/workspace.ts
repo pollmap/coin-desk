@@ -20,6 +20,7 @@ export interface Workspace extends ChartSettings {
   panels?: string[];
   section?: 'price' | 'onchain' | 'futures';
   signal?: string;
+  comparePrice?: boolean;
 }
 export interface PersonalDesk {
   version: 1;
@@ -93,6 +94,7 @@ export function normalizeDesk(value: unknown): PersonalDesk {
         ? { priceSource: entry.priceSource }
         : {}),
       ...(entry.visual === 'rainbow' || entry.visual === 'price' ? { visual: entry.visual } : {}),
+      ...(typeof entry.comparePrice === 'boolean' ? { comparePrice: entry.comparePrice } : {}),
       ...(Array.isArray(entry.panels)
         ? {
             panels: entry.panels
@@ -141,6 +143,7 @@ export function importDesk(text: string): PersonalDesk {
       (w.priceSource !== undefined &&
         !['reference', 'upbit', 'binance'].includes(String(w.priceSource))) ||
       (w.visual !== undefined && !['price', 'rainbow'].includes(String(w.visual))) ||
+      (w.comparePrice !== undefined && typeof w.comparePrice !== 'boolean') ||
       (w.signal !== undefined &&
         (typeof w.signal !== 'string' ||
           !/^[A-Za-z0-9:_.-]{1,400}$/.test(w.signal) ||
@@ -175,6 +178,7 @@ export function workspaceUrl(workspace: Workspace): string {
   if (workspace.priceSource) params.set('price_source', workspace.priceSource);
   if (workspace.visual) params.set('visual', workspace.visual);
   if (workspace.panels) params.set('panels', workspace.panels.join(','));
+  if (workspace.comparePrice) params.set('compare_price', '1');
   if (workspace.signal) params.set('signal', workspace.signal);
   const path =
     workspace.section === 'onchain' || workspace.section === 'futures'

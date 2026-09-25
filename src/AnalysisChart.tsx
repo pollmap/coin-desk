@@ -59,6 +59,7 @@ export const AnalysisChart = memo(function AnalysisChart({
   onSignal,
   onAll,
   rangeRevision = 0,
+  primary,
 }: {
   asset: string;
   unit: string;
@@ -74,6 +75,7 @@ export const AnalysisChart = memo(function AnalysisChart({
   onSignal: (s: ObservationSignal) => void;
   onAll: () => void;
   rangeRevision?: number;
+  primary?: AnalysisLine;
 }) {
   const host = useRef<HTMLDivElement>(null),
     chartRef = useRef<IChartApi | null>(null);
@@ -86,10 +88,12 @@ export const AnalysisChart = memo(function AnalysisChart({
   const previous = useRef<{ key: string; from: number; to: number } | null>(null);
   const [selected, setSelected] = useState<number | null>(null),
     [tableCount, setTableCount] = useState(50);
-  const key = asset + unit + step;
+  const key = asset + unit + step + (primary?.id ?? 'price');
+  const display = (value: number | undefined) =>
+    primary ? numeric(value, readingDigits(value)) + ' ' + unit : money(value, unit);
   const columns = useMemo(
-    () => [{ title: asset, unit, source, data: points }, ...lines],
-    [asset, unit, source, points, lines],
+    () => [{ title: primary?.title ?? asset, unit, source, data: points }, ...lines],
+    [asset, unit, source, points, lines, primary?.title],
   );
   const readings = useMemo(() => readingIndex(columns), [columns]);
   const [selectionKey, setSelectionKey] = useState(key);
@@ -147,13 +151,25 @@ export const AnalysisChart = memo(function AnalysisChart({
           priceFormat: { type: 'custom', formatter: (v: number) => money(v, unit) },
         })
       : chart.addSeries(LineSeries, {
-          color: '#65d4bc',
+          color: primary?.color ?? '#65d4bc',
           lineWidth: 2,
           priceLineVisible: false,
-          priceFormat: { type: 'custom', formatter: (v: number) => money(v, unit) },
+          priceFormat: { type: 'custom', formatter: (v: number) => display(v) },
         });
     if (candles?.length) price.setData(candles.map((p) => ({ ...p, time: ts(p.time) })));
     else price.setData(gapData(points, step));
+    if (primary)
+      for (const level of primary.thresholds ??
+        (primary.id.includes('mvrv') ? [1] : primary.id.includes('funding') ? [0] : [])) {
+        price.createPriceLine({
+          price: level,
+          color: '#8292a5',
+          lineWidth: 1,
+          lineStyle: 2,
+          axisLabelVisible: true,
+          title: String(level),
+        });
+      }
     const cursorSeries = [{ series: price, values: new Map(points.map((p) => [p.time, p.value])) }];
     const panes = new Map<string, number>();
     for (const line of lines.filter((l) => l.data.length)) {
@@ -267,7 +283,7 @@ export const AnalysisChart = memo(function AnalysisChart({
       chartRef.current = null;
       moveCursor.current = () => {};
     };
-  }, [key, points, candles, lines, signals, asset, unit, source, step]);
+  }, [key, points, candles, lines, signals, asset, unit, source, step, primary]);
   useEffect(() => {
     chartRef.current
       ?.priceScale('right', 0)
@@ -293,10 +309,10 @@ export const AnalysisChart = memo(function AnalysisChart({
     <>
       <div className="analysis-legend">
         <span>
-          {asset} · {unit}
+          {asset} · {primary?.title ?? unit}
         </span>
         <span>
-          {timestamp(time)} <b>{money(priceValue, unit)}</b>
+          {timestamp(time)} <b>{display(priceValue)}</b>
         </span>
         {lines.map((l, i) => (
           <span key={l.id} title={l.source}>
@@ -313,12 +329,13 @@ export const AnalysisChart = memo(function AnalysisChart({
         style={{ height: 370 + panelCount(lines) * 135 }}
         data-chart-kind="analysis"
         data-asset={asset}
+        data-primary-metric={primary?.id ?? 'price'}
         onPointerDown={() => {
           manualCursor.current = false;
         }}
         tabIndex={0}
         role="group"
-        aria-label={`${asset} ${unit} 가격과 비교 지표. 좌우 방향키로 관측 탐색`}
+        aria-label={`${asset} ${unit} ${primary?.title ?? '가격과 비교 지표'}. 좌우 방향키로 관측 탐색`}
         onKeyDown={(e) => {
           if (
             e.target !== e.currentTarget ||
@@ -388,7 +405,7 @@ export const AnalysisChart = memo(function AnalysisChart({
       </div>
       <span className="sr-only" role="status">
         {selectedTime !== null
-          ? `${timestamp(time)} ${asset} ${money(priceValue, unit)}. ${lines.map((l, i) => `${l.title} ${metricNumber(time === undefined ? undefined : readings.maps[i + 1].get(time))} ${l.unit}`).join('. ')}`
+          ? `${timestamp(time)} ${asset} ${display(priceValue)}. ${lines.map((l, i) => `${l.title} ${metricNumber(time === undefined ? undefined : readings.maps[i + 1].get(time))} ${l.unit}`).join('. ')}`
           : ''}
       </span>
       <details className="analysis-tools">
@@ -401,7 +418,7 @@ export const AnalysisChart = memo(function AnalysisChart({
           source={source}
           onReset={onAll}
           onExport={exportReadings}
-          exportLabel="가격·지표 CSV"
+          exportLabel={primary ? '지표 CSV' : '가격·지표 CSV'}
         />
         <button
           onClick={() => {
@@ -417,11 +434,15 @@ export const AnalysisChart = memo(function AnalysisChart({
         </button>
         <div className="analysis-table">
           <table>
-            <caption>{asset} 가격·지표 · 날짜별 관측 (최근순)</caption>
+            <caption>
+              {asset} {primary?.title ?? '가격·지표'} · 날짜별 관측 (최근순)
+            </caption>
             <thead>
               <tr>
                 <th>UTC 날짜</th>
-                <th>가격 · {unit}</th>
+                <th>
+                  {primary?.title ?? '가격'} · {unit}
+                </th>
                 {lines.map((l) => (
                   <th key={l.id}>
                     {l.title} · {l.unit}
@@ -436,7 +457,7 @@ export const AnalysisChart = memo(function AnalysisChart({
                 .map((t) => (
                   <tr key={t}>
                     <td>{timestamp(t)}</td>
-                    <td>{money(readings.maps[0].get(t), unit)}</td>
+                    <td>{display(readings.maps[0].get(t))}</td>
                     {lines.map((l, i) => (
                       <td key={l.id}>{metricNumber(readings.maps[i + 1].get(t))}</td>
                     ))}

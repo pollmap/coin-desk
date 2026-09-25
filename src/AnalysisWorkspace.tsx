@@ -1,3 +1,4 @@
+import { belongsToSection, focusMetric } from '../shared/analysis-sections';
 import { workspaceIndicators } from '../shared/workspace-indicators';
 import { lazy, Suspense, useEffect, useMemo, useRef, useState } from 'react';
 import { Link, useLocation, useParams, useSearchParams } from 'react-router-dom';
@@ -76,6 +77,9 @@ export function AnalysisWorkspace() {
     : location.pathname.startsWith('/futures')
       ? 'futures'
       : 'history';
+  const focused = section !== 'history';
+  const comparePrice = params.get('compare_price') === '1';
+  const needsPrice = !focused || comparePrice;
   const basis = priceBasis(params),
     unit = basisUnit(basis);
   const period = (isRangePeriod(params.get('period')) ? params.get('period') : 'all') as Period;
@@ -111,7 +115,7 @@ export function AnalysisWorkspace() {
   useEffect(() => {
     save('lastAsset', asset);
     setSelectedMetric(null);
-  }, [asset]);
+  }, [asset, section]);
   useEffect(() => {
     if (picker) {
       dialog.current?.showModal();
@@ -122,21 +126,23 @@ export function AnalysisWorkspace() {
     }
   }, [picker]);
   const raw = useData<SeriesResponse | CandleResponse>(
-    basis === 'reference'
-      ? `/api/v1/reference?asset=${asset}&limit=1000`
-      : `/api/v1/candles?asset=${asset}&market=${basis}&interval=${interval}&limit=1000`,
+    !needsPrice
+      ? null
+      : basis === 'reference'
+        ? `/api/v1/reference?asset=${asset}&limit=1000`
+        : `/api/v1/candles?asset=${asset}&market=${basis}&interval=${interval}&limit=1000`,
     true,
     basis === 'reference' ? 3600000 : 60000,
   );
   const daily = useData<CandleResponse>(
-    basis !== 'reference' && interval !== '1d'
+    !focused && basis !== 'reference' && interval !== '1d'
       ? `/api/v1/candles?asset=${asset}&market=${basis}&interval=1d&limit=1000`
       : null,
     true,
     60000,
   );
   const quote = useData<Overview>(
-    basis === 'reference' ? null : `/api/v1/overview?asset=${asset}&market=${basis}`,
+    !needsPrice || basis === 'reference' ? null : `/api/v1/overview?asset=${asset}&market=${basis}`,
     false,
     60000,
   );
@@ -147,12 +153,12 @@ export function AnalysisWorkspace() {
     data: { id: string; observations: number; currentValue: number | null }[];
   }>(asset === 'BTC' ? '/api/v1/metrics?asset=BTC' : null);
   const ref = useData<SeriesResponse>(
-    asset !== 'BTC' ? `/api/v1/reference?asset=${asset}&limit=1000` : null,
+    !focused && asset !== 'BTC' ? `/api/v1/reference?asset=${asset}&limit=1000` : null,
     true,
     3600000,
   );
   const benchmark = useData<SeriesResponse>(
-    asset !== 'BTC' ? '/api/v1/reference?asset=BTC&limit=1000' : null,
+    !focused && asset !== 'BTC' ? '/api/v1/reference?asset=BTC&limit=1000' : null,
     true,
     3600000,
   );
@@ -324,7 +330,7 @@ export function AnalysisWorkspace() {
   const selected = (
     params.has('panels') ? params.get('panels')!.split(',').filter(Boolean) : defaults
   )
-    .filter((id, i, a) => a.indexOf(id) === i)
+    .filter((id, i, a) => a.indexOf(id) === i && belongsToSection(id, section))
     .slice(0, 6);
   const a = useRemote(selected[0], choices),
     b = useRemote(selected[1], choices),
@@ -406,7 +412,45 @@ export function AnalysisWorkspace() {
     if (signalId) setEvidence(true);
   }, [signalId]);
   const chosenSignal = feed.data?.data.find((s) => s.id === params.get('signal'));
-  const chosenLine = lines.find((l) => l.id === selectedMetric);
+  const primaryLine = focused
+    ? lines.find((l) => !l.overlay && belongsToSection(l.id, section))
+    : undefined;
+  const sectionChoices = choices.filter((c) => belongsToSection(c.id, section));
+  const priceComparison = useMemo<AnalysisLine[]>(
+    () =>
+      focused && comparePrice && points.length
+        ? [
+            {
+              id: 'comparison:price',
+              title: `${asset} 가격`,
+              unit,
+              source: series?.meta.source ?? '',
+              data: points,
+              color: '#65d4bc',
+              step:
+                interval === '1h'
+                  ? 3600
+                  : interval === '4h'
+                    ? 14400
+                    : interval === '1w'
+                      ? 7 * 86400
+                      : interval === '1M'
+                        ? 32 * 86400
+                        : 86400,
+            },
+          ]
+        : [],
+    [focused, comparePrice, points, asset, unit, series, interval],
+  );
+  function choosePrimary(id: string) {
+    change({ panels: focusMetric(id, selected, section).join(','), signal: null });
+    setSelectedMetric(id);
+  }
+  const chosenLine = focused
+    ? selectedMetric === 'signals'
+      ? undefined
+      : primaryLine
+    : lines.find((l) => l.id === selectedMetric);
   const last = points.at(-1),
     current = basis === 'reference' ? last?.value : quote.data?.quote?.price;
   const heatmap = useMemo(() => monthlyReturns(dailyPoints), [dailyPoints]);
@@ -445,41 +489,69 @@ export function AnalysisWorkspace() {
           )
         }
         trailing={
-          <div className="analysis-pricebar">
-            <div>
-              <strong>{money(current, unit)}</strong>
-              <span>
-                {unit} ·{' '}
-                {basis === 'reference'
-                  ? '일별 종가'
-                  : quote.data?.meta.stale
-                    ? '갱신 지연'
-                    : '60초 확인'}
-              </span>
+          (!focused || comparePrice) && (
+            <div className="analysis-pricebar">
+              <div>
+                <strong>{money(current, unit)}</strong>
+                <span>
+                  {unit} ·{' '}
+                  {basis === 'reference'
+                    ? '일별 종가'
+                    : quote.data?.meta.stale
+                      ? '갱신 지연'
+                      : '60초 확인'}
+                </span>
+              </div>
+              <select
+                aria-label="가격 기준"
+                value={basis}
+                onChange={(e) =>
+                  change({
+                    price_source: e.target.value,
+                    market: e.target.value === 'reference' ? null : e.target.value,
+                    period: 'all',
+                    signal: null,
+                  })
+                }
+              >
+                {(['reference', 'upbit', 'binance'] as const).map((value) => (
+                  <option key={value} value={value}>
+                    {basisName(value)}
+                  </option>
+                ))}
+              </select>
             </div>
-            <select
-              aria-label="가격 기준"
-              value={basis}
-              onChange={(e) =>
-                change({
-                  price_source: e.target.value,
-                  market: e.target.value === 'reference' ? null : e.target.value,
-                  period: 'all',
-                  signal: null,
-                })
-              }
-            >
-              {(['reference', 'upbit', 'binance'] as const).map((value) => (
-                <option key={value} value={value}>
-                  {basisName(value)}
-                </option>
-              ))}
-            </select>
-          </div>
+          )
         }
       />
       <section ref={panelRef} className="panel integrated-analysis">
-        <div className="analysis-toolbar">
+        <div className={'analysis-toolbar ' + (focused ? 'metric-toolbar' : '')}>
+          {focused && (
+            <div className="analysis-focus-heading">
+              <label>
+                {section === 'onchain' ? '온체인' : '선물'}
+                <select
+                  aria-label={section === 'onchain' ? '온체인 지표' : '선물 지표'}
+                  value={primaryLine?.id ?? ''}
+                  onChange={(e) => choosePrimary(e.target.value)}
+                >
+                  {!primaryLine && <option value="">지표 선택</option>}
+                  {sectionChoices.map((c) => (
+                    <option key={c.id} value={c.id} disabled={c.available === false}>
+                      {c.title} · {c.source}
+                      {c.available === false ? ' · 데이터 대기' : ''}
+                    </option>
+                  ))}
+                </select>
+              </label>
+              <button
+                aria-pressed={comparePrice}
+                onClick={() => change({ compare_price: comparePrice ? null : '1' })}
+              >
+                가격과 비교
+              </button>
+            </div>
+          )}
           <PeriodPicker
             value={period}
             onChange={(p) => {
@@ -487,37 +559,47 @@ export function AnalysisWorkspace() {
               setRangeRevision((n) => n + 1);
             }}
           />
-          <select
-            aria-label="봉 간격"
-            value={interval}
-            disabled={basis === 'reference'}
-            onChange={(e) => change({ interval: e.target.value })}
-          >
-            {['1h', '4h', '1d', '1w', '1M'].map((v) => (
-              <option key={v} value={v}>
-                {{ '1h': '1시간', '4h': '4시간', '1d': '일봉', '1w': '주봉', '1M': '월봉' }[v]}
-              </option>
-            ))}
-          </select>
-          <select
-            aria-label="차트 시각화"
-            value={visual}
-            onChange={(e) => change({ visual: e.target.value === 'price' ? null : e.target.value })}
-          >
-            <option value="price">가격·지표</option>
-            <option value="rainbow">가격 위치 밴드</option>
-          </select>
+          {!focused && (
+            <>
+              <select
+                aria-label="봉 간격"
+                value={interval}
+                disabled={basis === 'reference'}
+                onChange={(e) => change({ interval: e.target.value })}
+              >
+                {['1h', '4h', '1d', '1w', '1M'].map((v) => (
+                  <option key={v} value={v}>
+                    {{ '1h': '1시간', '4h': '4시간', '1d': '일봉', '1w': '주봉', '1M': '월봉' }[v]}
+                  </option>
+                ))}
+              </select>
+              <select
+                aria-label="차트 시각화"
+                value={visual}
+                onChange={(e) =>
+                  change({ visual: e.target.value === 'price' ? null : e.target.value })
+                }
+              >
+                <option value="price">가격·지표</option>
+                <option value="rainbow">가격 위치 밴드</option>
+              </select>
+            </>
+          )}
           <button ref={addButton} onClick={() => setPicker(true)}>
             <SlidersHorizontal size={16} />
-            지표 추가
+            {focused ? '지표 찾기' : '지표 추가'}
           </button>
-          <button aria-pressed={log} onClick={() => change({ log: log ? '0' : '1' })}>
-            로그축
-          </button>
-          <Link aria-label="코인 성과 비교" to={'/compare?asset=' + asset}>
-            <ArrowLeftRight size={16} />
-            비교
-          </Link>
+          {!focused && (
+            <>
+              <button aria-pressed={log} onClick={() => change({ log: log ? '0' : '1' })}>
+                로그축
+              </button>
+              <Link aria-label="코인 성과 비교" to={'/compare?asset=' + asset}>
+                <ArrowLeftRight size={16} />
+                비교
+              </Link>
+            </>
+          )}
           <button
             aria-label="차트 전체화면"
             onClick={async () => {
@@ -541,7 +623,7 @@ export function AnalysisWorkspace() {
         </div>
         <div className={'analysis-layout ' + (evidence ? 'with-evidence' : '')}>
           <div className="analysis-main">
-            {error && (
+            {error && (!focused || comparePrice) && (
               <div role="status" className="refresh-notice">
                 {points.length ? '갱신 지연 · 마지막 정상 자료를 표시합니다.' : error}
                 <button
@@ -554,7 +636,53 @@ export function AnalysisWorkspace() {
                 </button>
               </div>
             )}
-            {visual === 'rainbow' ? (
+            {focused ? (
+              primaryLine?.data.length ? (
+                <>
+                  <AnalysisChart
+                    asset={asset}
+                    primary={primaryLine}
+                    unit={primaryLine.unit}
+                    source={primaryLine.source}
+                    points={primaryLine.data}
+                    lines={priceComparison}
+                    period={period}
+                    log={false}
+                    step={primaryLine.step}
+                    signals={EMPTY_SIGNALS}
+                    focus={focus}
+                    onSignal={showSignal}
+                    onAll={() => {
+                      change({ period: 'all', signal: null });
+                      setRangeRevision((n) => n + 1);
+                    }}
+                    rangeRevision={rangeRevision}
+                  />
+                  <div className="source-line">
+                    {primaryLine.title} · {primaryLine.unit} · {primaryLine.source}
+                  </div>
+                  {primaryLine.warning && (
+                    <div className="refresh-notice" role="status">
+                      {primaryLine.warning}
+                    </div>
+                  )}
+                </>
+              ) : (
+                <div className="loading" role="status">
+                  <strong>{primaryLine?.title ?? '지표 선택'}</strong>
+                  <p>
+                    {responses[selected.indexOf(primaryLine?.id ?? '')]?.loading
+                      ? '지표 이력을 불러오고 있습니다…'
+                      : (primaryLine?.warning ?? '위에서 분석할 지표를 선택해 주세요.')}
+                  </p>
+                  {primaryLine && (
+                    <button onClick={() => responses[selected.indexOf(primaryLine.id)]?.reload()}>
+                      다시 불러오기
+                    </button>
+                  )}
+                </div>
+              )
+            ) : visual === 'rainbow' ? (
               <>
                 <Suspense
                   fallback={
@@ -622,41 +750,45 @@ export function AnalysisWorkspace() {
                   : '이 원천에서 확보한 가격이 없습니다.'}
               </div>
             )}
-            <div className="analysis-selected">
-              {lines
-                .filter((l) => !l.overlay)
-                .map((l) => (
-                  <div key={l.id}>
-                    <button
-                      onClick={() => {
-                        setSelectedMetric(l.id);
-                        setEvidence(true);
-                      }}
-                    >
-                      {l.title} · 근거
-                      {!l.data.length && <small>관측 대기</small>}
-                    </button>
-                    <button
-                      aria-label={l.title + ' 제거'}
-                      onClick={() =>
-                        selected.includes(l.id)
-                          ? change({ panels: selected.filter((id) => id !== l.id).join(',') })
-                          : change({
-                              indicators: indicators
-                                .filter((id) => !l.id.startsWith(id + ':'))
-                                .join(','),
-                            })
-                      }
-                    >
-                      <X size={14} />
-                    </button>
-                  </div>
-                ))}
-            </div>
-            <div className="source-line">
-              {series?.meta.source} · {unit} · {dateLabel(points[0]?.time)}부터{' '}
-              {series?.meta.stale && <span className="amber">갱신 지연</span>}
-            </div>
+            {!focused && (
+              <>
+                <div className="analysis-selected">
+                  {lines
+                    .filter((l) => !l.overlay)
+                    .map((l) => (
+                      <div key={l.id}>
+                        <button
+                          onClick={() => {
+                            setSelectedMetric(l.id);
+                            setEvidence(true);
+                          }}
+                        >
+                          {l.title} · 근거
+                          {!l.data.length && <small>관측 대기</small>}
+                        </button>
+                        <button
+                          aria-label={l.title + ' 제거'}
+                          onClick={() =>
+                            selected.includes(l.id)
+                              ? change({ panels: selected.filter((id) => id !== l.id).join(',') })
+                              : change({
+                                  indicators: indicators
+                                    .filter((id) => !l.id.startsWith(id + ':'))
+                                    .join(','),
+                                })
+                          }
+                        >
+                          <X size={14} />
+                        </button>
+                      </div>
+                    ))}
+                </div>
+                <div className="source-line">
+                  {series?.meta.source} · {unit} · {dateLabel(points[0]?.time)}부터{' '}
+                  {series?.meta.stale && <span className="amber">갱신 지연</span>}
+                </div>
+              </>
+            )}
           </div>
           {evidence && (
             <aside id="analysis-evidence" className="analysis-evidence">
@@ -692,7 +824,7 @@ export function AnalysisWorkspace() {
                     {chosenLine.source} · {chosenLine.unit}
                   </p>
                   {chosenLine.warning && <p role="status">{chosenLine.warning}</p>}
-                  <button onClick={() => setSelectedMetric(null)}>신호 보기</button>
+                  <button onClick={() => setSelectedMetric('signals')}>신호 보기</button>
                 </>
               ) : (
                 <>
@@ -717,46 +849,48 @@ export function AnalysisWorkspace() {
           )}
         </div>
       </section>
-      <details id="monthly-returns" className="panel monthly-returns">
-        <summary>월별 수익률 · {unit}</summary>
-        <div className="analysis-table">
-          <table>
-            <caption>{basisName(basis)} · 전월 말 대비 종가 변화</caption>
-            <thead>
-              <tr>
-                <th>연도</th>
-                {Array.from({ length: 12 }, (_, i) => (
-                  <th key={i}>{i + 1}월</th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              {years.map((y) => (
-                <tr key={y}>
-                  <th>{y}</th>
-                  {Array.from({ length: 12 }, (_, i) => {
-                    const r = heatmap.find(
-                      (r) => r.month === `${y}-${String(i + 1).padStart(2, '0')}`,
-                    );
-                    return (
-                      <td
-                        key={i}
-                        className={r?.value == null ? '' : r.value >= 0 ? 'gain' : 'loss'}
-                      >
-                        {r?.value == null
-                          ? '—'
-                          : `${r.value >= 0 ? '+' : ''}${r.value.toFixed(1)}%${r.partial ? '*' : ''}`}
-                      </td>
-                    );
-                  })}
+      {!focused && (
+        <details id="monthly-returns" className="panel monthly-returns">
+          <summary>월별 수익률 · {unit}</summary>
+          <div className="analysis-table">
+            <table>
+              <caption>{basisName(basis)} · 전월 말 대비 종가 변화</caption>
+              <thead>
+                <tr>
+                  <th>연도</th>
+                  {Array.from({ length: 12 }, (_, i) => (
+                    <th key={i}>{i + 1}월</th>
+                  ))}
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-        <small>* 진행 중인 달 · 누락 날짜가 있는 달은 계산하지 않습니다.</small>
-      </details>
-      {basis !== 'reference' && (
+              </thead>
+              <tbody>
+                {years.map((y) => (
+                  <tr key={y}>
+                    <th>{y}</th>
+                    {Array.from({ length: 12 }, (_, i) => {
+                      const r = heatmap.find(
+                        (r) => r.month === `${y}-${String(i + 1).padStart(2, '0')}`,
+                      );
+                      return (
+                        <td
+                          key={i}
+                          className={r?.value == null ? '' : r.value >= 0 ? 'gain' : 'loss'}
+                        >
+                          {r?.value == null
+                            ? '—'
+                            : `${r.value >= 0 ? '+' : ''}${r.value.toFixed(1)}%${r.partial ? '*' : ''}`}
+                        </td>
+                      );
+                    })}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <small>* 진행 중인 달 · 누락 날짜가 있는 달은 계산하지 않습니다.</small>
+        </details>
+      )}
+      {section === 'history' && basis !== 'reference' && (
         <details className="analysis-save">
           <summary>드로잉·사용자 지표 설정</summary>
           <Link
@@ -788,6 +922,7 @@ export function AnalysisWorkspace() {
             signal: signalId ?? undefined,
             cards: [],
             priceSource: basis,
+            comparePrice: focused && comparePrice,
             visual,
             panels: selected,
           }}
@@ -801,7 +936,9 @@ export function AnalysisWorkspace() {
         onClose={() => setPicker(false)}
       >
         <div className="picker-heading">
-          <h2 id="indicator-picker-title">{asset} 지표 추가</h2>
+          <h2 id="indicator-picker-title">
+            {asset} 지표 {focused ? '선택' : '추가'}
+          </h2>
           <button aria-label="지표 선택 닫기" onClick={() => setPicker(false)}>
             <X />
           </button>
@@ -810,9 +947,15 @@ export function AnalysisWorkspace() {
           aria-label="지표 검색"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          placeholder="RSI, 펀딩, 활성 주소…"
+          placeholder={
+            section === 'onchain'
+              ? 'MVRV, 활성 주소, 공급량…'
+              : section === 'futures'
+                ? '펀딩, 미결제약정, 롱 계정…'
+                : 'RSI, 펀딩, 활성 주소…'
+          }
         />
-        {!query && (
+        {!query && !focused && (
           <details className="indicator-presets" open>
             <summary>지표 묶음으로 한 번에 바꾸기</summary>
             {[
@@ -873,33 +1016,35 @@ export function AnalysisWorkspace() {
             })}
           </details>
         )}
-        <div className="overlay-options">
-          {[
-            ['sma:50:d', '50일선'],
-            ['sma200', '200일선'],
-            ['sma200w', '200주선'],
-            ['ema:20:bar', 'EMA 20'],
-            ['bb', '볼린저 밴드'],
-            ['macd', 'MACD'],
-          ].map(([id, label]) => (
-            <label key={id}>
-              <input
-                type="checkbox"
-                checked={indicators.includes(id)}
-                onChange={() =>
-                  change({
-                    indicators: indicators.includes(id)
-                      ? indicators.filter((v) => v !== id).join(',')
-                      : [...indicators, id].join(','),
-                  })
-                }
-              />
-              {label}
-            </label>
-          ))}
-        </div>
+        {!focused && (
+          <div className="overlay-options">
+            {[
+              ['sma:50:d', '50일선'],
+              ['sma200', '200일선'],
+              ['sma200w', '200주선'],
+              ['ema:20:bar', 'EMA 20'],
+              ['bb', '볼린저 밴드'],
+              ['macd', 'MACD'],
+            ].map(([id, label]) => (
+              <label key={id}>
+                <input
+                  type="checkbox"
+                  checked={indicators.includes(id)}
+                  onChange={() =>
+                    change({
+                      indicators: indicators.includes(id)
+                        ? indicators.filter((v) => v !== id).join(',')
+                        : [...indicators, id].join(','),
+                    })
+                  }
+                />
+                {label}
+              </label>
+            ))}
+          </div>
+        )}
         <div className="indicator-list">
-          {choices
+          {sectionChoices
             .filter((c) => (c.title + c.id + c.group).toLowerCase().includes(query.toLowerCase()))
             .map((choice) => {
               const line = lines.find((l) => l.id === choice.id);
@@ -908,20 +1053,25 @@ export function AnalysisWorkspace() {
                 : choice.id in local
                   ? local[choice.id as keyof typeof local]
                   : choice.spark;
+              const isSelected = focused
+                ? primaryLine?.id === choice.id
+                : selected.includes(choice.id);
               const disabled =
                 choice.available === false ||
-                (!selected.includes(choice.id) && selected.length >= 6);
+                (!focused && !selected.includes(choice.id) && selected.length >= 6);
               return (
                 <button
                   key={choice.id}
                   disabled={disabled}
-                  aria-pressed={selected.includes(choice.id)}
+                  aria-pressed={isSelected}
                   onClick={() => {
-                    change({
-                      panels: selected.includes(choice.id)
-                        ? selected.filter((id) => id !== choice.id).join(',')
-                        : [...selected, choice.id].join(','),
-                    });
+                    if (focused) choosePrimary(choice.id);
+                    else
+                      change({
+                        panels: selected.includes(choice.id)
+                          ? selected.filter((id) => id !== choice.id).join(',')
+                          : [...selected, choice.id].join(','),
+                      });
                     setPicker(false);
                   }}
                 >
@@ -939,13 +1089,13 @@ export function AnalysisWorkspace() {
                           preview?.at(-1)?.value ?? choice.latest,
                           Math.abs(preview?.at(-1)?.value ?? choice.latest ?? 0) < 0.1 ? 6 : 2,
                         )}{' '}
-                    {selected.includes(choice.id) ? '✓' : '＋'}
+                    {isSelected ? '✓' : focused ? '→' : '＋'}
                   </span>
                 </button>
               );
             })}
         </div>
-        <small>선택한 지표는 최대 6개까지 같은 시간축으로 표시됩니다.</small>
+        {!focused && <small>선택한 지표는 최대 6개까지 같은 시간축으로 표시됩니다.</small>}
       </dialog>
     </div>
   );

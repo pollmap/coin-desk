@@ -22,6 +22,7 @@ export function AssetSections({ asset, current }: { asset: Asset; current: strin
           q.delete('metric');
           q.delete('signal');
           q.delete('visual');
+          q.delete('compare_price');
         }
         return (
           <Link

@@ -154,6 +154,60 @@
   color: var(--muted);
   font-size: 11px;
 }
+.analysis-focus-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  flex-wrap: wrap;
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--border);
+}
+.analysis-focus-heading label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 600;
+  min-width: 0;
+  max-width: 100%;
+}
+.analysis-focus-heading select {
+  min-height: 44px;
+  min-width: 0;
+  max-width: 100%;
+  font: inherit;
+  color: var(--text);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 6px 10px;
+}
+.analysis-focus-heading button {
+  min-height: 44px;
+}
+.metric-toolbar .analysis-focus-heading {
+  display: contents;
+}
+.metric-toolbar .period-picker .segments {
+  display: none;
+}
+.app .metric-toolbar .period-picker .period-mobile-select {
+  display: block;
+  min-height: 44px;
+}
+.analysis-focus-heading button[aria-pressed='true'] {
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+@media (max-width: 600px) {
+  .analysis-focus-heading label {
+    width: 100%;
+  }
+  .analysis-focus-heading select {
+    flex: 1;
+    width: 0;
+  }
+}
 .analysis-legend b {
   color: var(--text);
 }
