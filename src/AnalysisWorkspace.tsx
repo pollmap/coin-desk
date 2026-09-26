@@ -1,3 +1,4 @@
+import { marketComparisonLink } from '../shared/market-watch';
 import { belongsToSection, focusMetric } from '../shared/analysis-sections';
 import { workspaceIndicators } from '../shared/workspace-indicators';
 import { lazy, Suspense, useEffect, useMemo, useRef, useState } from 'react';
@@ -471,6 +472,11 @@ export function AnalysisWorkspace() {
     setEvidence(true);
   }
   const error = raw.error || quote.error;
+  const primaryResponse = responses[selected.indexOf(primaryLine?.id ?? '')];
+  const primaryNotice =
+    primaryResponse?.error ||
+    primaryResponse?.data?.meta.stale ||
+    primaryResponse?.data?.meta.sourceStatus === 'backfilling';
   return (
     <div className="analysis-workspace">
       <AssetHeader
@@ -594,9 +600,13 @@ export function AnalysisWorkspace() {
               <button aria-pressed={log} onClick={() => change({ log: log ? '0' : '1' })}>
                 로그축
               </button>
-              <Link aria-label="코인 성과 비교" to={'/compare?asset=' + asset}>
+              <Link
+                aria-label={basis === 'reference' ? '거래소 기준 코인 성과 비교' : '코인 성과 비교'}
+                to={marketComparisonLink(asset, basis === 'upbit' ? 'upbit' : 'binance', period)}
+                title={basis === 'reference' ? 'Binance USDT 일봉으로 비교' : undefined}
+              >
                 <ArrowLeftRight size={16} />
-                비교
+                {basis === 'reference' ? '거래소 비교' : '비교'}
               </Link>
             </>
           )}
@@ -661,7 +671,7 @@ export function AnalysisWorkspace() {
                   <div className="source-line">
                     {primaryLine.title} · {primaryLine.unit} · {primaryLine.source}
                   </div>
-                  {primaryLine.warning && (
+                  {primaryNotice && primaryLine.warning && (
                     <div className="refresh-notice" role="status">
                       {primaryLine.warning}
                     </div>

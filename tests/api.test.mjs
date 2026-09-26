@@ -351,3 +351,25 @@ describe('public API contract with real SQLite', () => {
     expect(row.data_as_of).toBe(200);
   });
 });
+
+it('overview refreshes technicals when a new closed day arrives and excludes the live candle', async () => {
+  const now = Math.floor(Date.now() / 1000),
+    today = Math.floor(now / DAY) * DAY;
+  DB.sqlite
+    .prepare('INSERT INTO snapshots VALUES(?,?,?)')
+    .run('quote:BTC:binance', JSON.stringify({ asset: 'BTC', price: 300, time: now }), now);
+  const insert = DB.sqlite.prepare(
+    'INSERT INTO candles(asset,market,interval,time,open,high,low,close,volume,close_time,fetched_at) VALUES(?,?,?,?,?,?,?,?,?,?,?)',
+  );
+  for (let i = 0; i < 200; i++) {
+    const t = today - (201 - i) * DAY,
+      value = 100 + i;
+    insert.run('BTC', 'binance', '1d', t, value, value, value, value, 1, t + DAY - 1, now);
+  }
+  const first = await call('overview?asset=BTC&market=binance');
+  expect(first.data.technical).toMatchObject({ asOf: today - 2 * DAY, sma200: 199.5 });
+  insert.run('BTC', 'binance', '1d', today - DAY, 300, 300, 300, 300, 1, today - 1, now);
+  insert.run('BTC', 'binance', '1d', today, 99999, 99999, 99999, 99999, 1, today + DAY - 1, now);
+  const next = await call('overview?asset=BTC&market=binance');
+  expect(next.data.technical).toMatchObject({ asOf: today - DAY, sma200: 200.5 });
+});

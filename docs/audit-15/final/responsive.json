@@ -1,0 +1,61 @@
+{
+  "method": "Same-origin iframe CSS viewport; widths exclude 15px browser scrollbar in clientWidth; real Chromium rendering, not Safari/device emulation",
+  "results": [
+    {
+      "width": 375,
+      "scrollWidth": 375,
+      "heading": "시장·비교",
+      "tableRows": 8,
+      "chartCount": 0,
+      "missingImages": []
+    },
+    {
+      "width": 305,
+      "scrollWidth": 305,
+      "heading": "시장·비교",
+      "tableRows": 8,
+      "chartCount": 0,
+      "missingImages": []
+    },
+    {
+      "width": 753,
+      "scrollWidth": 753,
+      "heading": "시장·비교",
+      "tableRows": 8,
+      "chartCount": 0,
+      "missingImages": []
+    },
+    {
+      "width": 1265,
+      "scrollWidth": 1265,
+      "heading": "시장·비교",
+      "tableRows": 8,
+      "chartCount": 0,
+      "missingImages": []
+    },
+    {
+      "width": 1425,
+      "scrollWidth": 1425,
+      "heading": "시장·비교",
+      "tableRows": 8,
+      "chartCount": 0,
+      "missingImages": []
+    },
+    {
+      "width": 305,
+      "scrollWidth": 305,
+      "heading": "이더리움 ETH",
+      "tableRows": 0,
+      "chartCount": 7,
+      "missingImages": []
+    },
+    {
+      "width": 305,
+      "scrollWidth": 305,
+      "heading": "도지코인 DOGE",
+      "tableRows": 0,
+      "chartCount": 15,
+      "missingImages": []
+    }
+  ]
+}

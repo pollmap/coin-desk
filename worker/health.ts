@@ -68,7 +68,7 @@ export function jobPolicies(assets: Asset[], rebuilding: boolean): JobPolicy[] {
         jobs.push({
           key: `derivatives:${asset}:${metric}`,
           kind: 'derivatives',
-          every: metric.endsWith('_daily') ? 3600 : isPrimaryAsset(asset) ? 300 : 21600,
+          every: isPrimaryAsset(asset) ? (metric.endsWith('_daily') ? 3600 : 300) : 21600,
           maxLag: metric.endsWith('_daily')
             ? 3 * DAY
             : metric === 'funding'
@@ -83,7 +83,7 @@ export function jobPolicies(assets: Asset[], rebuilding: boolean): JobPolicy[] {
       jobs.push({
         key: 'reference:' + asset,
         kind: 'reference',
-        every: 3600,
+        every: isPrimaryAsset(asset) ? 3600 : 21600,
         maxLag: 3 * DAY,
         assets: [asset],
       });
@@ -92,7 +92,7 @@ export function jobPolicies(assets: Asset[], rebuilding: boolean): JobPolicy[] {
       jobs.push({
         key: 'network:' + asset,
         kind: 'network',
-        every: 3600,
+        every: isPrimaryAsset(asset) ? 3600 : 21600,
         maxLag: 3 * DAY,
         assets: [asset],
       });
@@ -111,7 +111,7 @@ export function jobPolicies(assets: Asset[], rebuilding: boolean): JobPolicy[] {
         jobs.push({
           key: asset + ':' + market + ':' + interval,
           kind: 'price',
-          every: interval === '1h' ? 3600 : DAILY_REFRESH_SECONDS,
+          every: interval === '1h' || isPrimaryAsset(asset) ? DAILY_REFRESH_SECONDS : 21600,
           maxLag: interval === '1h' ? 7200 : 2 * DAY,
           assets: [asset],
           market,
@@ -119,6 +119,16 @@ export function jobPolicies(assets: Asset[], rebuilding: boolean): JobPolicy[] {
         });
   }
   return jobs;
+}
+/** Live quotes and primary futures have dedicated lanes; the minute queue handles history. */
+export function backgroundPolicies(assets: Asset[], rebuilding: boolean): JobPolicy[] {
+  return jobPolicies(assets, rebuilding)
+    .filter((job) => job.kind !== 'quote-batch')
+    .map((job) =>
+      job.kind === 'derivatives' && job.assets?.some(isPrimaryAsset) && !job.key.endsWith('_daily')
+        ? { ...job, every: 3600 }
+        : job,
+    );
 }
 export function dueAt(job: JobPolicy, states: IngestionState[], now: number) {
   const state = states.find((s) => s.key === job.key);

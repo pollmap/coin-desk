@@ -1,3 +1,4 @@
+import { priceBasis } from '../shared/analysis-workspace';
 import { matchesCoin } from '../shared/coin-search';
 import { useEffect, useMemo, useState } from 'react';
 import { Link, NavLink, useLocation } from 'react-router-dom';
@@ -56,6 +57,8 @@ export function DeskNavigation({ onNavigate }: { onNavigate: () => void }) {
   const asset: Asset = ASSETS.find((a) => a.id === candidate)?.id || 'BTC';
   const section = coinSection(location.pathname, location.hash);
   const networkAsset = asset;
+  const contextBasis =
+    location.pathname === '/coins' ? market : priceBasis(new URLSearchParams(location.search));
   const entries = useMemo(
     () =>
       [
@@ -63,7 +66,7 @@ export function DeskNavigation({ onNavigate }: { onNavigate: () => void }) {
           title: `${a.id} · ${a.name}`,
           asset: a.id,
           aliases: a.name + a.id,
-          to: `/?asset=${a.id}&period=all`,
+          to: `/?asset=${a.id}&period=all&price_source=${contextBasis}`,
           type: '코인',
         })),
         ...(asset === 'BTC' ? METRICS : []).map((m) => ({
@@ -77,21 +80,28 @@ export function DeskNavigation({ onNavigate }: { onNavigate: () => void }) {
           {
             title: id + ' 선물 · 펀딩비·미결제약정',
             aliases: id + ' 펀딩비 미결제약정 선물',
-            to: `/futures/${id}`,
+            to: `/futures/${id}?asset=${id}&price_source=${contextBasis}&period=all`,
             type: id,
           },
           ...(isNetworkAsset(id)
-            ? [{ title: id + ' 온체인', aliases: id + ' 온체인', to: `/onchain/${id}`, type: id }]
+            ? [
+                {
+                  title: id + ' 온체인',
+                  aliases: id + ' 온체인',
+                  to: `/onchain/${id}?asset=${id}&price_source=${contextBasis}&period=all`,
+                  type: id,
+                },
+              ]
             : []),
         ]),
         ...NETWORK_METRICS.filter((m) => networkMetric(networkAsset, m.id)).map((m) => ({
           title: m.title,
           aliases: m.title + ' ' + m.id,
-          to: `/onchain/${networkAsset}?metric=${m.id}`,
+          to: `/onchain/${networkAsset}?metric=${m.id}&asset=${networkAsset}&price_source=${contextBasis}&period=all`,
           type: networkAsset + ' 네트워크',
         })),
       ].filter((x, i, arr) => arr.findIndex((y) => y.to === x.to) === i),
-    [networkAsset],
+    [networkAsset, contextBasis],
   );
   const results = entries.filter((e) =>
     'asset' in e

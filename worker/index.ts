@@ -1,6 +1,7 @@
+import { dailyTechnical } from '../shared/market-watch';
 import { refreshProviderWatch } from './provider-watch';
 import { ASSETS, CALC_VERSION, METRICS } from '../shared/catalog';
-import { aggregate, bucket, DAY, rsi } from '../shared/math';
+import { aggregate, bucket, DAY } from '../shared/math';
 import type {
   Asset,
   CandleResponse,
@@ -201,14 +202,20 @@ async function overview(env: Env, asset: Asset, market: Market): Promise<Overvie
           .bind(generation)
           .first<{ time: number; data: string }>()
       : null;
-  const technicalKey = 'technical:' + asset + ':' + market;
+  const technicalKey = 'technical:v2:' + asset + ':' + market;
   const cachedTechnical = await readState<{
     computedAt: number;
     data: Overview['technical'];
   } | null>(env.DB, technicalKey, null);
+  const latestClosed = await env.DB.prepare(
+    'SELECT time FROM candles WHERE asset=? AND market=? AND interval=? AND close_time<=? ORDER BY time DESC LIMIT 1',
+  )
+    .bind(asset, market, '1d', epoch())
+    .first<{ time: number }>();
   let technical = cachedTechnical?.data;
   if (
     !cachedTechnical ||
+    cachedTechnical.data.asOf !== (latestClosed?.time ?? null) ||
     epoch() - cachedTechnical.computedAt > 3600 ||
     Math.floor(epoch() / DAY) !== Math.floor(cachedTechnical.computedAt / DAY)
   ) {
@@ -219,11 +226,7 @@ async function overview(env: Env, asset: Asset, market: Market): Promise<Overvie
         .bind(asset, market, '1d', epoch())
         .all<{ time: number; close: number }>()
     ).results.reverse();
-    const techRsi = rsi(daily.map((c) => ({ time: c.time, value: c.close }))).at(-1)?.value ?? null;
-    technical = {
-      rsi: techRsi,
-      sma200: daily.length >= 200 ? daily.slice(-200).reduce((s, c) => s + c.close, 0) / 200 : null,
-    };
+    technical = dailyTechnical(daily.map((c) => ({ time: c.time, value: c.close })));
     // Derived-result caching is optional; read access must survive exhausted writes.
     await putState(env.DB, technicalKey, { computedAt: epoch(), data: technical }).catch(
       () => undefined,

@@ -21,6 +21,14 @@ for name, expected in sizes.items():
     assert data[:8] == b'\x89PNG\r\n\x1a\n' and struct.unpack('>II', data[16:24]) == expected, name
 for name in ['coin-desk-mark.svg','coin-desk-wordmark.svg']:
     assert ET.fromstring((root/'public/brand'/name).read_text(encoding='utf-8')).tag.endswith('svg')
+# Every catalog coin must have a local, readable PNG. No remote image dependency.
+import re
+logos = re.findall(r"logo: '([^']+)'", (root/'shared/catalog.ts').read_text(encoding='utf-8'))
+assert len(logos) == 8 and len(set(logos)) == 8
+for logo in logos:
+    data = (root/'public'/logo.lstrip('/')).read_bytes()
+    assert data[:8] == b'\x89PNG\r\n\x1a\n', logo
+    assert all(32 <= n <= 4096 for n in struct.unpack('>II', data[16:24])), logo
 ico = (root/'public/favicon.ico').read_bytes()
 assert struct.unpack('<HHH',ico[:6]) == (0,1,4)
 assert doc.meta['og:image'] == 'https://coin-desk.pages.dev/brand/coin-desk-shiba-smile.png'
@@ -40,4 +48,4 @@ if args.base:
         data, mime = fetch('/'+path.relative_to(root/'public').as_posix())
         assert hashlib.sha256(data).digest() == hashlib.sha256(path.read_bytes()).digest(), path.name
         assert mime != 'text/html', (path.name,mime)
-print('Brand SVG/PNG/ICO dimensions, manifest, share metadata' + (' and public asset hashes' if args.base else '') + ' verified')
+print('Brand and 8 coin PNGs, SVG/ICO dimensions, manifest, share metadata' + (' and public asset hashes' if args.base else '') + ' verified')
