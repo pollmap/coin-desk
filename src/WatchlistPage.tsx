@@ -245,7 +245,7 @@ export function WatchlistPage() {
                   </td>
                   <td className="watch-asset">
                     <Link to={marketAnalysisLink(a.id, market)}>
-                      <AssetLogo asset={a.id} size={22} /> <b style={{ color: a.color }}>{a.id}</b>
+                      <AssetLogo asset={a.id} size={22} /> <b>{a.id}</b>
                       <small>{a.name}</small>
                     </Link>
                   </td>
