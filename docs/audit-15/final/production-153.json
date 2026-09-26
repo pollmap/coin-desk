@@ -1,0 +1,1450 @@
+{
+  "checkedAt": "2026-09-26T01:43:34.887794+00:00",
+  "readOnlyRowsWritten": [
+    0,
+    0,
+    0,
+    0
+  ],
+  "cronRuns": [
+    {
+      "started_at": 1790386961,
+      "completed_at": 1790386963,
+      "job": "derivatives:ONDO:funding",
+      "outcome": "ok",
+      "error": null
+    },
+    {
+      "started_at": 1790386899,
+      "completed_at": 1790386901,
+      "job": "derivatives:ONDO:long_account_ratio_daily",
+      "outcome": "ok",
+      "error": null
+    },
+    {
+      "started_at": 1790386851,
+      "completed_at": 1790386853,
+      "job": "derivatives:PEPE:funding",
+      "outcome": "ok",
+      "error": null
+    },
+    {
+      "started_at": 1790386779,
+      "completed_at": 1790386781,
+      "job": "derivatives:LINK:funding",
+      "outcome": "ok",
+      "error": null
+    },
+    {
+      "started_at": 1790386721,
+      "completed_at": 1790386722,
+      "job": "derivatives:SOL:funding",
+      "outcome": "ok",
+      "error": null
+    },
+    {
+      "started_at": 1790386659,
+      "completed_at": 1790386661,
+      "job": "derivatives:XRP:funding",
+      "outcome": "ok",
+      "error": null
+    },
+    {
+      "started_at": 1790386601,
+      "completed_at": 1790386603,
+      "job": "PEPE:binance:1h",
+      "outcome": "ok",
+      "error": null
+    },
+    {
+      "started_at": 1790386545,
+      "completed_at": 1790386547,
+      "job": "ONDO:binance:1h",
+      "outcome": "ok",
+      "error": null
+    }
+  ],
+  "quoteProgress": [
+    {
+      "key": "quote:BTC:upbit",
+      "fetched_at": 1790386963,
+      "advanceSeconds": 179
+    },
+    {
+      "key": "quote:DOGE:upbit",
+      "fetched_at": 1790386963,
+      "advanceSeconds": 179
+    },
+    {
+      "key": "quote:ETH:upbit",
+      "fetched_at": 1790386963,
+      "advanceSeconds": 179
+    },
+    {
+      "key": "quote:BTC:binance",
+      "fetched_at": 1790386962,
+      "advanceSeconds": 145
+    },
+    {
+      "key": "quote:DOGE:binance",
+      "fetched_at": 1790386962,
+      "advanceSeconds": 144
+    },
+    {
+      "key": "quote:ETH:binance",
+      "fetched_at": 1790386962,
+      "advanceSeconds": 143
+    }
+  ],
+  "backfillStates": [],
+  "briefings": [
+    {
+      "id": "2026-09-26",
+      "created_at": 1790381433
+    }
+  ],
+  "scheduledEvents": [
+    {
+      "outcome": "ok",
+      "version": "1ed332b7-84ae-4e25-b9c2-bafcecb9c417",
+      "event": {
+        "cron": "* * * * *",
+        "scheduledTime": 1790386833000
+      },
+      "exceptions": 0
+    },
+    {
+      "outcome": "ok",
+      "version": "1ed332b7-84ae-4e25-b9c2-bafcecb9c417",
+      "event": {
+        "cron": "* * * * *",
+        "scheduledTime": 1790386893000
+      },
+      "exceptions": 0
+    }
+  ],
+  "apis": {
+    "checkedAt": "2026-09-26T01:40:19.082755+00:00",
+    "core": [
+      {
+        "asset": "BTC",
+        "endpoint": "network",
+        "points": 10,
+        "meta": {
+          "source": "Coin Metrics Community · CC BY-NC 4.0",
+          "unit": "배",
+          "market": "BTC on-chain / Coin Metrics",
+          "dataAsOf": 1790208000,
+          "fetchedAt": 1790385468,
+          "historyStart": 1279411200,
+          "stale": false,
+          "calculationVersion": "coinmetrics-network-monthly-v2",
+          "priceBasis": "동일 원천 Coin Metrics PriceUSD · 일별 USD 기준가격 · 거래소 OHLCV 아님",
+          "gapCount": 0
+        }
+      },
+      {
+        "asset": "BTC",
+        "endpoint": "derivatives",
+        "points": 10,
+        "meta": {
+          "source": "Bybit V5 public market data",
+          "unit": "%",
+          "observationInterval": "settlement",
+          "sourceStatus": "available",
+          "market": "BTCUSDT linear perpetual · Bybit only",
+          "dataAsOf": 1790380800,
+          "fetchedAt": 1790386546,
+          "historyStart": 1585152000,
+          "stale": false,
+          "calculationVersion": "bybit-usdt-perpetual-v4",
+          "warning": "펀딩비는 Bybit 한 거래소의 실제 정산 비율입니다."
+        }
+      },
+      {
+        "asset": "BTC",
+        "market": "upbit",
+        "meta": {
+          "source": "Upbit",
+          "unit": "KRW",
+          "market": "upbit",
+          "dataAsOf": 1790386780,
+          "fetchedAt": 1790386784,
+          "stale": false,
+          "calculationVersion": "btc-desk-1.1-cap-ratios-expanding-population"
+        },
+        "technical": {
+          "rsi": 62.29162804973895,
+          "sma200": 103413825,
+          "asOf": 1790294400
+        }
+      },
+      {
+        "asset": "BTC",
+        "market": "binance",
+        "meta": {
+          "source": "Binance",
+          "unit": "USDT",
+          "market": "binance",
+          "dataAsOf": 1790386816,
+          "fetchedAt": 1790386817,
+          "stale": false,
+          "calculationVersion": "btc-desk-1.1-cap-ratios-expanding-population"
+        },
+        "technical": {
+          "rsi": 64.31554981919358,
+          "sma200": 70965.35444999993,
+          "asOf": 1790294400
+        }
+      },
+      {
+        "asset": "DOGE",
+        "endpoint": "network",
+        "points": 10,
+        "meta": {
+          "source": "Coin Metrics Community · CC BY-NC 4.0",
+          "unit": "배",
+          "market": "DOGE on-chain / Coin Metrics",
+          "dataAsOf": 1790294400,
+          "fetchedAt": 1790385523,
+          "historyStart": 1390435200,
+          "stale": false,
+          "calculationVersion": "coinmetrics-network-monthly-v2",
+          "priceBasis": "동일 원천 Coin Metrics PriceUSD · 일별 USD 기준가격 · 거래소 OHLCV 아님",
+          "gapCount": 0
+        }
+      },
+      {
+        "asset": "DOGE",
+        "endpoint": "derivatives",
+        "points": 10,
+        "meta": {
+          "source": "Bybit V5 public market data",
+          "unit": "%",
+          "observationInterval": "settlement",
+          "sourceStatus": "available",
+          "market": "DOGEUSDT linear perpetual · Bybit only",
+          "dataAsOf": 1790380800,
+          "fetchedAt": 1790386603,
+          "historyStart": 1622649600,
+          "stale": false,
+          "calculationVersion": "bybit-usdt-perpetual-v4",
+          "warning": "펀딩비는 Bybit 한 거래소의 실제 정산 비율입니다."
+        }
+      },
+      {
+        "asset": "DOGE",
+        "market": "upbit",
+        "meta": {
+          "source": "Upbit",
+          "unit": "KRW",
+          "market": "upbit",
+          "dataAsOf": 1790386773,
+          "fetchedAt": 1790386784,
+          "stale": false,
+          "calculationVersion": "btc-desk-1.1-cap-ratios-expanding-population"
+        },
+        "technical": {
+          "rsi": 65.26658061759721,
+          "sma200": 128.51500000000004,
+          "asOf": 1790294400
+        }
+      },
+      {
+        "asset": "DOGE",
+        "market": "binance",
+        "meta": {
+          "source": "Binance",
+          "unit": "USDT",
+          "market": "binance",
+          "dataAsOf": 1790386817,
+          "fetchedAt": 1790386818,
+          "stale": false,
+          "calculationVersion": "btc-desk-1.1-cap-ratios-expanding-population"
+        },
+        "technical": {
+          "rsi": 63.91199531372542,
+          "sma200": 0.0879147999999997,
+          "asOf": 1790294400
+        }
+      },
+      {
+        "asset": "ETH",
+        "endpoint": "network",
+        "points": 10,
+        "meta": {
+          "source": "Coin Metrics Community · CC BY-NC 4.0",
+          "unit": "배",
+          "market": "ETH on-chain / Coin Metrics",
+          "dataAsOf": 1790208000,
+          "fetchedAt": 1790385652,
+          "historyStart": 1438992000,
+          "stale": false,
+          "calculationVersion": "coinmetrics-network-monthly-v2",
+          "priceBasis": "동일 원천 Coin Metrics PriceUSD · 일별 USD 기준가격 · 거래소 OHLCV 아님",
+          "gapCount": 0
+        }
+      },
+      {
+        "asset": "ETH",
+        "endpoint": "derivatives",
+        "points": 10,
+        "meta": {
+          "source": "Bybit V5 public market data",
+          "unit": "%",
+          "observationInterval": "settlement",
+          "sourceStatus": "available",
+          "market": "ETHUSDT linear perpetual · Bybit only",
+          "dataAsOf": 1790380800,
+          "fetchedAt": 1790386661,
+          "historyStart": 1603267200,
+          "stale": false,
+          "calculationVersion": "bybit-usdt-perpetual-v4",
+          "warning": "펀딩비는 Bybit 한 거래소의 실제 정산 비율입니다."
+        }
+      },
+      {
+        "asset": "ETH",
+        "market": "upbit",
+        "meta": {
+          "source": "Upbit",
+          "unit": "KRW",
+          "market": "upbit",
+          "dataAsOf": 1790386779,
+          "fetchedAt": 1790386784,
+          "stale": false,
+          "calculationVersion": "btc-desk-1.1-cap-ratios-expanding-population"
+        },
+        "technical": {
+          "rsi": 62.806477597372215,
+          "sma200": 3049095,
+          "asOf": 1790294400
+        }
+      },
+      {
+        "asset": "ETH",
+        "market": "binance",
+        "meta": {
+          "source": "Binance",
+          "unit": "USDT",
+          "market": "binance",
+          "dataAsOf": 1790386819,
+          "fetchedAt": 1790386819,
+          "stale": false,
+          "calculationVersion": "btc-desk-1.1-cap-ratios-expanding-population"
+        },
+        "technical": {
+          "rsi": 63.630935813914085,
+          "sma200": 2095.368800000005,
+          "asOf": 1790294400
+        }
+      }
+    ],
+    "signals?asset=BTC": {
+      "count": 10,
+      "meta": null
+    },
+    "briefings": {
+      "count": 1,
+      "meta": null
+    },
+    "chain-context?asset=ETH&metric=tvl": {
+      "count": 3286,
+      "meta": {
+        "source": "DefiLlama · Ethereum",
+        "unit": "USD",
+        "market": "Ethereum chain",
+        "dataAsOf": 1790294400,
+        "fetchedAt": 1790384628,
+        "stale": false,
+        "calculationVersion": "defillama-ethereum-v1",
+        "historyStart": 1506470400
+      }
+    },
+    "health": {
+      "ok": false,
+      "reasons": [
+        {
+          "code": "SOURCE_DELAYED",
+          "key": "reference:XRP",
+          "message": "수집 시각 또는 실제 데이터 시각이 허용 지연을 넘었습니다."
+        },
+        {
+          "code": "SOURCE_DELAYED",
+          "key": "reference:LINK",
+          "message": "수집 시각 또는 실제 데이터 시각이 허용 지연을 넘었습니다."
+        },
+        {
+          "code": "SOURCE_DELAYED",
+          "key": "network:XRP",
+          "message": "수집 시각 또는 실제 데이터 시각이 허용 지연을 넘었습니다."
+        },
+        {
+          "code": "SOURCE_DELAYED",
+          "key": "network:LINK",
+          "message": "수집 시각 또는 실제 데이터 시각이 허용 지연을 넘었습니다."
+        },
+        {
+          "code": "SOURCE_DELAYED",
+          "key": "SOL:binance:1d",
+          "message": "수집 시각 또는 실제 데이터 시각이 허용 지연을 넘었습니다."
+        },
+        {
+          "code": "SOURCE_DELAYED",
+          "key": "XRP:binance:1d",
+          "message": "수집 시각 또는 실제 데이터 시각이 허용 지연을 넘었습니다."
+        },
+        {
+          "code": "SOURCE_DELAYED",
+          "key": "LINK:binance:1d",
+          "message": "수집 시각 또는 실제 데이터 시각이 허용 지연을 넘었습니다."
+        },
+        {
+          "code": "SOURCE_DELAYED",
+          "key": "ONDO:binance:1d",
+          "message": "수집 시각 또는 실제 데이터 시각이 허용 지연을 넘었습니다."
+        },
+        {
+          "code": "SOURCE_DELAYED",
+          "key": "PEPE:binance:1d",
+          "message": "수집 시각 또는 실제 데이터 시각이 허용 지연을 넘었습니다."
+        },
+        {
+          "code": "SOURCE_DELAYED",
+          "key": "SOL:upbit:1d",
+          "message": "수집 시각 또는 실제 데이터 시각이 허용 지연을 넘었습니다."
+        }
+      ],
+      "checkedAt": 1790386819
+    },
+    "automation": {
+      "runner": "Cloudflare Cron",
+      "independentOfVisitors": true,
+      "tickSeconds": 60,
+      "lastStartedAt": 1790386779,
+      "lastCompletedAt": 1790386781,
+      "lastSucceededAt": 1790386781,
+      "lastJob": "derivatives:LINK:funding",
+      "lastRunStatus": "ok",
+      "lastError": null,
+      "leaseUntil": null,
+      "stalled": false,
+      "nextTickAt": 1790386860,
+      "observation48h": {
+        "from": 1790214019,
+        "firstRunAt": 1790214065,
+        "lastRunAt": 1790386779,
+        "ticks": 1399,
+        "failures": 49,
+        "ready": true
+      },
+      "cadence": {
+        "quoteBackgroundTargetSeconds": 60,
+        "quoteBackgroundDelaySeconds": 180,
+        "quoteOnDemandMinSeconds": 60,
+        "hourlyCandlesSeconds": 3600,
+        "dailyCandlesSeconds": 3600,
+        "dailyUtcBoundaryRefresh": true
+      },
+      "jobs": [
+        {
+          "key": "bitview",
+          "kind": "onchain",
+          "cadenceSeconds": 3600,
+          "dueAt": 1790388470
+        },
+        {
+          "key": "defillama",
+          "kind": "stablecoins",
+          "cadenceSeconds": 21600,
+          "dueAt": 1790402613
+        },
+        {
+          "key": "coinlore",
+          "kind": "dominance",
+          "cadenceSeconds": 3600,
+          "dueAt": 1790388411
+        },
+        {
+          "key": "maintenance",
+          "kind": "maintenance",
+          "cadenceSeconds": 3600,
+          "dueAt": 1790387928
+        },
+        {
+          "key": "mempool:BTC",
+          "kind": "mempool",
+          "cadenceSeconds": 900,
+          "dueAt": 1790387381
+        },
+        {
+          "key": "derivatives:BTC:funding",
+          "kind": "derivatives",
+          "cadenceSeconds": 300,
+          "dueAt": 1790386846,
+          "assets": [
+            "BTC"
+          ]
+        },
+        {
+          "key": "derivatives:BTC:open_interest",
+          "kind": "derivatives",
+          "cadenceSeconds": 300,
+          "dueAt": 1790386848,
+          "assets": [
+            "BTC"
+          ]
+        },
+        {
+          "key": "derivatives:BTC:long_account_ratio",
+          "kind": "derivatives",
+          "cadenceSeconds": 300,
+          "dueAt": 1790386849,
+          "assets": [
+            "BTC"
+          ]
+        },
+        {
+          "key": "derivatives:BTC:open_interest_daily",
+          "kind": "derivatives",
+          "cadenceSeconds": 3600,
+          "dueAt": 1790388289,
+          "assets": [
+            "BTC"
+          ]
+        },
+        {
+          "key": "derivatives:BTC:long_account_ratio_daily",
+          "kind": "derivatives",
+          "cadenceSeconds": 3600,
+          "dueAt": 1790388349,
+          "assets": [
+            "BTC"
+          ]
+        },
+        {
+          "key": "derivatives:DOGE:funding",
+          "kind": "derivatives",
+          "cadenceSeconds": 300,
+          "dueAt": 1790386903,
+          "assets": [
+            "DOGE"
+          ]
+        },
+        {
+          "key": "derivatives:DOGE:open_interest",
+          "kind": "derivatives",
+          "cadenceSeconds": 300,
+          "dueAt": 1790386904,
+          "assets": [
+            "DOGE"
+          ]
+        },
+        {
+          "key": "derivatives:DOGE:long_account_ratio",
+          "kind": "derivatives",
+          "cadenceSeconds": 300,
+          "dueAt": 1790386905,
+          "assets": [
+            "DOGE"
+          ]
+        },
+        {
+          "key": "derivatives:DOGE:open_interest_daily",
+          "kind": "derivatives",
+          "cadenceSeconds": 3600,
+          "dueAt": 1790388529,
+          "assets": [
+            "DOGE"
+          ]
+        },
+        {
+          "key": "derivatives:DOGE:long_account_ratio_daily",
+          "kind": "derivatives",
+          "cadenceSeconds": 3600,
+          "dueAt": 1790388589,
+          "assets": [
+            "DOGE"
+          ]
+        },
+        {
+          "key": "derivatives:ETH:funding",
+          "kind": "derivatives",
+          "cadenceSeconds": 300,
+          "dueAt": 1790386961,
+          "assets": [
+            "ETH"
+          ]
+        },
+        {
+          "key": "derivatives:ETH:open_interest",
+          "kind": "derivatives",
+          "cadenceSeconds": 300,
+          "dueAt": 1790386962,
+          "assets": [
+            "ETH"
+          ]
+        },
+        {
+          "key": "derivatives:ETH:long_account_ratio",
+          "kind": "derivatives",
+          "cadenceSeconds": 300,
+          "dueAt": 1790386963,
+          "assets": [
+            "ETH"
+          ]
+        },
+        {
+          "key": "derivatives:ETH:open_interest_daily",
+          "kind": "derivatives",
+          "cadenceSeconds": 3600,
+          "dueAt": 1790388709,
+          "assets": [
+            "ETH"
+          ]
+        },
+        {
+          "key": "derivatives:ETH:long_account_ratio_daily",
+          "kind": "derivatives",
+          "cadenceSeconds": 3600,
+          "dueAt": 1790388769,
+          "assets": [
+            "ETH"
+          ]
+        },
+        {
+          "key": "derivatives:SOL:funding",
+          "kind": "derivatives",
+          "cadenceSeconds": 21600,
+          "dueAt": 1790408322,
+          "assets": [
+            "SOL"
+          ]
+        },
+        {
+          "key": "derivatives:SOL:open_interest",
+          "kind": "derivatives",
+          "cadenceSeconds": 21600,
+          "dueAt": 1790406169,
+          "assets": [
+            "SOL"
+          ]
+        },
+        {
+          "key": "derivatives:SOL:long_account_ratio",
+          "kind": "derivatives",
+          "cadenceSeconds": 21600,
+          "dueAt": 1790407901,
+          "assets": [
+            "SOL"
+          ]
+        },
+        {
+          "key": "derivatives:SOL:open_interest_daily",
+          "kind": "derivatives",
+          "cadenceSeconds": 21600,
+          "dueAt": 1790405209,
+          "assets": [
+            "SOL"
+          ]
+        },
+        {
+          "key": "derivatives:SOL:long_account_ratio_daily",
+          "kind": "derivatives",
+          "cadenceSeconds": 21600,
+          "dueAt": 1790405329,
+          "assets": [
+            "SOL"
+          ]
+        },
+        {
+          "key": "derivatives:XRP:funding",
+          "kind": "derivatives",
+          "cadenceSeconds": 21600,
+          "dueAt": 1790408261,
+          "assets": [
+            "XRP"
+          ]
+        },
+        {
+          "key": "derivatives:XRP:open_interest",
+          "kind": "derivatives",
+          "cadenceSeconds": 21600,
+          "dueAt": 1790404730,
+          "assets": [
+            "XRP"
+          ]
+        },
+        {
+          "key": "derivatives:XRP:long_account_ratio",
+          "kind": "derivatives",
+          "cadenceSeconds": 21600,
+          "dueAt": 1790404250,
+          "assets": [
+            "XRP"
+          ]
+        },
+        {
+          "key": "derivatives:XRP:open_interest_daily",
+          "kind": "derivatives",
+          "cadenceSeconds": 21600,
+          "dueAt": 1790405389,
+          "assets": [
+            "XRP"
+          ]
+        },
+        {
+          "key": "derivatives:XRP:long_account_ratio_daily",
+          "kind": "derivatives",
+          "cadenceSeconds": 21600,
+          "dueAt": 1790405449,
+          "assets": [
+            "XRP"
+          ]
+        },
+        {
+          "key": "derivatives:LINK:funding",
+          "kind": "derivatives",
+          "cadenceSeconds": 21600,
+          "dueAt": 1790408381,
+          "assets": [
+            "LINK"
+          ]
+        },
+        {
+          "key": "derivatives:LINK:open_interest",
+          "kind": "derivatives",
+          "cadenceSeconds": 21600,
+          "dueAt": 1790404369,
+          "assets": [
+            "LINK"
+          ]
+        },
+        {
+          "key": "derivatives:LINK:long_account_ratio",
+          "kind": "derivatives",
+          "cadenceSeconds": 21600,
+          "dueAt": 1790404429,
+          "assets": [
+            "LINK"
+          ]
+        },
+        {
+          "key": "derivatives:LINK:open_interest_daily",
+          "kind": "derivatives",
+          "cadenceSeconds": 21600,
+          "dueAt": 1790405509,
+          "assets": [
+            "LINK"
+          ]
+        },
+        {
+          "key": "derivatives:LINK:long_account_ratio_daily",
+          "kind": "derivatives",
+          "cadenceSeconds": 21600,
+          "dueAt": 1790405569,
+          "assets": [
+            "LINK"
+          ]
+        },
+        {
+          "key": "derivatives:ONDO:funding",
+          "kind": "derivatives",
+          "cadenceSeconds": 21600,
+          "dueAt": 1790364573,
+          "assets": [
+            "ONDO"
+          ]
+        },
+        {
+          "key": "derivatives:ONDO:open_interest",
+          "kind": "derivatives",
+          "cadenceSeconds": 21600,
+          "dueAt": 1790404609,
+          "assets": [
+            "ONDO"
+          ]
+        },
+        {
+          "key": "derivatives:ONDO:long_account_ratio",
+          "kind": "derivatives",
+          "cadenceSeconds": 21600,
+          "dueAt": 1790404669,
+          "assets": [
+            "ONDO"
+          ]
+        },
+        {
+          "key": "derivatives:ONDO:open_interest_daily",
+          "kind": "derivatives",
+          "cadenceSeconds": 21600,
+          "dueAt": 1790405029,
+          "assets": [
+            "ONDO"
+          ]
+        },
+        {
+          "key": "derivatives:ONDO:long_account_ratio_daily",
+          "kind": "derivatives",
+          "cadenceSeconds": 21600,
+          "dueAt": 1790363553,
+          "assets": [
+            "ONDO"
+          ]
+        },
+        {
+          "key": "derivatives:PEPE:funding",
+          "kind": "derivatives",
+          "cadenceSeconds": 21600,
+          "dueAt": 1790359893,
+          "assets": [
+            "PEPE"
+          ]
+        },
+        {
+          "key": "derivatives:PEPE:open_interest",
+          "kind": "derivatives",
+          "cadenceSeconds": 21600,
+          "dueAt": 1790404489,
+          "assets": [
+            "PEPE"
+          ]
+        },
+        {
+          "key": "derivatives:PEPE:long_account_ratio",
+          "kind": "derivatives",
+          "cadenceSeconds": 21600,
+          "dueAt": 1790404549,
+          "assets": [
+            "PEPE"
+          ]
+        },
+        {
+          "key": "derivatives:PEPE:open_interest_daily",
+          "kind": "derivatives",
+          "cadenceSeconds": 21600,
+          "dueAt": 1790405089,
+          "assets": [
+            "PEPE"
+          ]
+        },
+        {
+          "key": "derivatives:PEPE:long_account_ratio_daily",
+          "kind": "derivatives",
+          "cadenceSeconds": 21600,
+          "dueAt": 1790405149,
+          "assets": [
+            "PEPE"
+          ]
+        },
+        {
+          "key": "reference:BTC",
+          "kind": "reference",
+          "cadenceSeconds": 3600,
+          "dueAt": 1790388888,
+          "assets": [
+            "BTC"
+          ]
+        },
+        {
+          "key": "reference:DOGE",
+          "kind": "reference",
+          "cadenceSeconds": 3600,
+          "dueAt": 1790388948,
+          "assets": [
+            "DOGE"
+          ]
+        },
+        {
+          "key": "reference:ETH",
+          "kind": "reference",
+          "cadenceSeconds": 3600,
+          "dueAt": 1790389008,
+          "assets": [
+            "ETH"
+          ]
+        },
+        {
+          "key": "reference:XRP",
+          "kind": "reference",
+          "cadenceSeconds": 21600,
+          "dueAt": 1790365353,
+          "assets": [
+            "XRP"
+          ]
+        },
+        {
+          "key": "reference:LINK",
+          "kind": "reference",
+          "cadenceSeconds": 21600,
+          "dueAt": 1790365713,
+          "assets": [
+            "LINK"
+          ]
+        },
+        {
+          "key": "network:BTC",
+          "kind": "network",
+          "cadenceSeconds": 3600,
+          "dueAt": 1790389068,
+          "assets": [
+            "BTC"
+          ]
+        },
+        {
+          "key": "network:DOGE",
+          "kind": "network",
+          "cadenceSeconds": 3600,
+          "dueAt": 1790389123,
+          "assets": [
+            "DOGE"
+          ]
+        },
+        {
+          "key": "network:ETH",
+          "kind": "network",
+          "cadenceSeconds": 3600,
+          "dueAt": 1790389252,
+          "assets": [
+            "ETH"
+          ]
+        },
+        {
+          "key": "network:XRP",
+          "kind": "network",
+          "cadenceSeconds": 21600,
+          "dueAt": 1790365833,
+          "assets": [
+            "XRP"
+          ]
+        },
+        {
+          "key": "network:LINK",
+          "kind": "network",
+          "cadenceSeconds": 21600,
+          "dueAt": 1790366013,
+          "assets": [
+            "LINK"
+          ]
+        },
+        {
+          "key": "quotes:binance:0",
+          "kind": "quote-batch",
+          "cadenceSeconds": 60,
+          "dueAt": 1790386840,
+          "assets": [
+            "BTC",
+            "DOGE",
+            "ETH",
+            "SOL",
+            "XRP",
+            "LINK",
+            "ONDO",
+            "PEPE"
+          ],
+          "market": "binance"
+        },
+        {
+          "key": "BTC:binance:1h",
+          "kind": "price",
+          "cadenceSeconds": 3600,
+          "dueAt": 1790389301,
+          "assets": [
+            "BTC"
+          ],
+          "market": "binance"
+        },
+        {
+          "key": "BTC:binance:1d",
+          "kind": "price",
+          "cadenceSeconds": 3600,
+          "dueAt": 1790389361,
+          "assets": [
+            "BTC"
+          ],
+          "market": "binance"
+        },
+        {
+          "key": "DOGE:binance:1h",
+          "kind": "price",
+          "cadenceSeconds": 3600,
+          "dueAt": 1790389601,
+          "assets": [
+            "DOGE"
+          ],
+          "market": "binance"
+        },
+        {
+          "key": "DOGE:binance:1d",
+          "kind": "price",
+          "cadenceSeconds": 3600,
+          "dueAt": 1790389420,
+          "assets": [
+            "DOGE"
+          ],
+          "market": "binance"
+        },
+        {
+          "key": "ETH:binance:1h",
+          "kind": "price",
+          "cadenceSeconds": 3600,
+          "dueAt": 1790389662,
+          "assets": [
+            "ETH"
+          ],
+          "market": "binance"
+        },
+        {
+          "key": "ETH:binance:1d",
+          "kind": "price",
+          "cadenceSeconds": 3600,
+          "dueAt": 1790389483,
+          "assets": [
+            "ETH"
+          ],
+          "market": "binance"
+        },
+        {
+          "key": "SOL:binance:1h",
+          "kind": "price",
+          "cadenceSeconds": 3600,
+          "dueAt": 1790387989,
+          "assets": [
+            "SOL"
+          ],
+          "market": "binance"
+        },
+        {
+          "key": "SOL:binance:1d",
+          "kind": "price",
+          "cadenceSeconds": 21600,
+          "dueAt": 1790366133,
+          "assets": [
+            "SOL"
+          ],
+          "market": "binance"
+        },
+        {
+          "key": "XRP:binance:1h",
+          "kind": "price",
+          "cadenceSeconds": 3600,
+          "dueAt": 1790389961,
+          "assets": [
+            "XRP"
+          ],
+          "market": "binance"
+        },
+        {
+          "key": "XRP:binance:1d",
+          "kind": "price",
+          "cadenceSeconds": 21600,
+          "dueAt": 1790366554,
+          "assets": [
+            "XRP"
+          ],
+          "market": "binance"
+        },
+        {
+          "key": "LINK:binance:1h",
+          "kind": "price",
+          "cadenceSeconds": 3600,
+          "dueAt": 1790390021,
+          "assets": [
+            "LINK"
+          ],
+          "market": "binance"
+        },
+        {
+          "key": "LINK:binance:1d",
+          "kind": "price",
+          "cadenceSeconds": 21600,
+          "dueAt": 1790366613,
+          "assets": [
+            "LINK"
+          ],
+          "market": "binance"
+        },
+        {
+          "key": "ONDO:binance:1h",
+          "kind": "price",
+          "cadenceSeconds": 3600,
+          "dueAt": 1790390146,
+          "assets": [
+            "ONDO"
+          ],
+          "market": "binance"
+        },
+        {
+          "key": "ONDO:binance:1d",
+          "kind": "price",
+          "cadenceSeconds": 21600,
+          "dueAt": 1790366673,
+          "assets": [
+            "ONDO"
+          ],
+          "market": "binance"
+        },
+        {
+          "key": "PEPE:binance:1h",
+          "kind": "price",
+          "cadenceSeconds": 3600,
+          "dueAt": 1790390202,
+          "assets": [
+            "PEPE"
+          ],
+          "market": "binance"
+        },
+        {
+          "key": "PEPE:binance:1d",
+          "kind": "price",
+          "cadenceSeconds": 21600,
+          "dueAt": 1790366973,
+          "assets": [
+            "PEPE"
+          ],
+          "market": "binance"
+        },
+        {
+          "key": "quotes:upbit:0",
+          "kind": "quote-batch",
+          "cadenceSeconds": 60,
+          "dueAt": 1790386844,
+          "assets": [
+            "BTC",
+            "DOGE",
+            "ETH",
+            "SOL",
+            "XRP",
+            "LINK",
+            "ONDO",
+            "PEPE"
+          ],
+          "market": "upbit"
+        },
+        {
+          "key": "BTC:upbit:1h",
+          "kind": "price",
+          "cadenceSeconds": 3600,
+          "dueAt": 1790389860,
+          "assets": [
+            "BTC"
+          ],
+          "market": "upbit"
+        },
+        {
+          "key": "BTC:upbit:1d",
+          "kind": "price",
+          "cadenceSeconds": 3600,
+          "dueAt": 1790389547,
+          "assets": [
+            "BTC"
+          ],
+          "market": "upbit"
+        },
+        {
+          "key": "DOGE:upbit:1h",
+          "kind": "price",
+          "cadenceSeconds": 3600,
+          "dueAt": 1790388648,
+          "assets": [
+            "DOGE"
+          ],
+          "market": "upbit"
+        },
+        {
+          "key": "DOGE:upbit:1d",
+          "kind": "price",
+          "cadenceSeconds": 3600,
+          "dueAt": 1790389722,
+          "assets": [
+            "DOGE"
+          ],
+          "market": "upbit"
+        },
+        {
+          "key": "ETH:upbit:1h",
+          "kind": "price",
+          "cadenceSeconds": 3600,
+          "dueAt": 1790388829,
+          "assets": [
+            "ETH"
+          ],
+          "market": "upbit"
+        },
+        {
+          "key": "ETH:upbit:1d",
+          "kind": "price",
+          "cadenceSeconds": 3600,
+          "dueAt": 1790389781,
+          "assets": [
+            "ETH"
+          ],
+          "market": "upbit"
+        },
+        {
+          "key": "SOL:upbit:1h",
+          "kind": "price",
+          "cadenceSeconds": 3600,
+          "dueAt": 1790387629,
+          "assets": [
+            "SOL"
+          ],
+          "market": "upbit"
+        },
+        {
+          "key": "SOL:upbit:1d",
+          "kind": "price",
+          "cadenceSeconds": 21600,
+          "dueAt": 1790367033,
+          "assets": [
+            "SOL"
+          ],
+          "market": "upbit"
+        },
+        {
+          "key": "XRP:upbit:1h",
+          "kind": "price",
+          "cadenceSeconds": 3600,
+          "dueAt": 1790387689,
+          "assets": [
+            "XRP"
+          ],
+          "market": "upbit"
+        },
+        {
+          "key": "XRP:upbit:1d",
+          "kind": "price",
+          "cadenceSeconds": 21600,
+          "dueAt": 1790404789,
+          "assets": [
+            "XRP"
+          ],
+          "market": "upbit"
+        },
+        {
+          "key": "LINK:upbit:1h",
+          "kind": "price",
+          "cadenceSeconds": 3600,
+          "dueAt": 1790387749,
+          "assets": [
+            "LINK"
+          ],
+          "market": "upbit"
+        },
+        {
+          "key": "LINK:upbit:1d",
+          "kind": "price",
+          "cadenceSeconds": 21600,
+          "dueAt": 1790404849,
+          "assets": [
+            "LINK"
+          ],
+          "market": "upbit"
+        },
+        {
+          "key": "ONDO:upbit:1h",
+          "kind": "price",
+          "cadenceSeconds": 3600,
+          "dueAt": 1790387809,
+          "assets": [
+            "ONDO"
+          ],
+          "market": "upbit"
+        },
+        {
+          "key": "ONDO:upbit:1d",
+          "kind": "price",
+          "cadenceSeconds": 21600,
+          "dueAt": 1790404908,
+          "assets": [
+            "ONDO"
+          ],
+          "market": "upbit"
+        },
+        {
+          "key": "PEPE:upbit:1h",
+          "kind": "price",
+          "cadenceSeconds": 3600,
+          "dueAt": 1790387869,
+          "assets": [
+            "PEPE"
+          ],
+          "market": "upbit"
+        },
+        {
+          "key": "PEPE:upbit:1d",
+          "kind": "price",
+          "cadenceSeconds": 21600,
+          "dueAt": 1790404969,
+          "assets": [
+            "PEPE"
+          ],
+          "market": "upbit"
+        }
+      ],
+      "recentRuns": [
+        {
+          "runId": "678acf86-a2ac-4a28-addc-d5919ac9b422",
+          "startedAt": 1790386779,
+          "completedAt": 1790386781,
+          "job": "derivatives:LINK:funding",
+          "outcome": "ok",
+          "error": null
+        },
+        {
+          "runId": "7f919ad4-dc07-45b2-80f1-185e229ac4bf",
+          "startedAt": 1790386721,
+          "completedAt": 1790386722,
+          "job": "derivatives:SOL:funding",
+          "outcome": "ok",
+          "error": null
+        },
+        {
+          "runId": "435e77c9-fb1b-4f07-9d68-0b8fed7ce020",
+          "startedAt": 1790386659,
+          "completedAt": 1790386661,
+          "job": "derivatives:XRP:funding",
+          "outcome": "ok",
+          "error": null
+        },
+        {
+          "runId": "8896c19f-7adf-4779-8ca8-76019ce88e6a",
+          "startedAt": 1790386601,
+          "completedAt": 1790386603,
+          "job": "PEPE:binance:1h",
+          "outcome": "ok",
+          "error": null
+        },
+        {
+          "runId": "e84fd9e3-f56d-4a25-a4a1-dd53037479d2",
+          "startedAt": 1790386545,
+          "completedAt": 1790386547,
+          "job": "ONDO:binance:1h",
+          "outcome": "ok",
+          "error": null
+        },
+        {
+          "runId": "04118c2e-bd9d-4c53-a3bb-f9f5e6615f6d",
+          "startedAt": 1790386480,
+          "completedAt": 1790386481,
+          "job": "mempool:BTC",
+          "outcome": "ok",
+          "error": null
+        },
+        {
+          "runId": "3c4861fa-c38c-4006-8b71-c38d1448b373",
+          "startedAt": 1790386419,
+          "completedAt": 1790386421,
+          "job": "LINK:binance:1h",
+          "outcome": "ok",
+          "error": null
+        },
+        {
+          "runId": "169fe6e2-5253-4ec1-a114-43150b936275",
+          "startedAt": 1790386360,
+          "completedAt": 1790386362,
+          "job": "XRP:binance:1h",
+          "outcome": "ok",
+          "error": null
+        },
+        {
+          "runId": "042cdd7c-038b-44d9-965f-a4a8348c97c1",
+          "startedAt": 1790386300,
+          "completedAt": 1790386302,
+          "job": "derivatives:SOL:long_account_ratio",
+          "outcome": "ok",
+          "error": null
+        },
+        {
+          "runId": "d5e2d7e0-08aa-4983-88bc-90ee4f9990f5",
+          "startedAt": 1790386258,
+          "completedAt": 1790386260,
+          "job": "BTC:upbit:1h",
+          "outcome": "ok",
+          "error": null
+        },
+        {
+          "runId": "848a386f-e6ac-4c7f-8548-d156ccabb2c0",
+          "startedAt": 1790386179,
+          "completedAt": 1790386181,
+          "job": "ETH:upbit:1d",
+          "outcome": "ok",
+          "error": null
+        },
+        {
+          "runId": "c7958db1-4639-4833-baa1-5e96a853d1cb",
+          "startedAt": 1790386120,
+          "completedAt": 1790386123,
+          "job": "DOGE:upbit:1d",
+          "outcome": "ok",
+          "error": null
+        },
+        {
+          "runId": "1327574b-7fa1-4582-b495-bb5e9723b3f2",
+          "startedAt": 1790386061,
+          "completedAt": 1790386062,
+          "job": "ETH:binance:1h",
+          "outcome": "ok",
+          "error": null
+        },
+        {
+          "runId": "3da15bf1-f5ab-4d6f-89b0-72eaf0e7c00f",
+          "startedAt": 1790386000,
+          "completedAt": 1790386002,
+          "job": "DOGE:binance:1h",
+          "outcome": "ok",
+          "error": null
+        },
+        {
+          "runId": "c21229d9-4cf2-4afa-a0d0-b6ea3495296c",
+          "startedAt": 1790385945,
+          "completedAt": 1790385947,
+          "job": "BTC:upbit:1d",
+          "outcome": "ok",
+          "error": null
+        },
+        {
+          "runId": "d42df46c-1617-4676-ae8a-49eb5a13f96a",
+          "startedAt": 1790385881,
+          "completedAt": 1790385883,
+          "job": "ETH:binance:1d",
+          "outcome": "ok",
+          "error": null
+        },
+        {
+          "runId": "09b34e01-34d5-4bc7-822f-beb727cb8e1a",
+          "startedAt": 1790385819,
+          "completedAt": 1790385821,
+          "job": "DOGE:binance:1d",
+          "outcome": "ok",
+          "error": null
+        },
+        {
+          "runId": "d9d7dda1-fb4b-4ab8-a5cd-32f255af2cee",
+          "startedAt": 1790385760,
+          "completedAt": 1790385761,
+          "job": "BTC:binance:1d",
+          "outcome": "ok",
+          "error": null
+        },
+        {
+          "runId": "dd9fdc47-a9fb-4fde-9559-8064489ff947",
+          "startedAt": 1790385699,
+          "completedAt": 1790385701,
+          "job": "BTC:binance:1h",
+          "outcome": "ok",
+          "error": null
+        },
+        {
+          "runId": "248b0efb-4e14-497e-b3f6-1c8bf3f67a49",
+          "startedAt": 1790385652,
+          "completedAt": 1790385654,
+          "job": "network:ETH",
+          "outcome": "ok",
+          "error": null
+        }
+      ]
+    }
+  },
+  "note": "No direct collection API invoked; other visitors cannot be ruled out. Tail request headers and IP addresses omitted."
+}
