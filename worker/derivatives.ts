@@ -1,3 +1,4 @@
+import { reserveDerivativeBackfill } from './backfill-budget';
 import type { Asset, Point, SeriesResponse } from '../shared/types';
 import { DAY } from '../shared/math';
 import { upstream } from './providers';
@@ -118,6 +119,17 @@ export async function updateDerivatives(
   const backfill = cursor !== null && !refreshRecent;
   const firstPage = !coverage?.last && !recentOnly;
   const size = backfill || firstPage ? 200 : metric === 'funding' ? 20 : 30;
+  if ((backfill || firstPage) && !(await reserveDerivativeBackfill(env.DB, size, now))) {
+    // Preserve the cursor and saved observations. The independent recent lane continues.
+    const resumeAt = (Math.floor(now / DAY) + 1) * DAY;
+    await env.DB.prepare(
+      'INSERT INTO ingestion(key,last_attempt,next_attempt) VALUES(?,?,?) ON CONFLICT(key) DO UPDATE SET next_attempt=excluded.next_attempt',
+    )
+      .bind(id, now, resumeAt)
+      .run();
+    return;
+  }
+
   const params = new URLSearchParams({
     category: 'linear',
     symbol: derivativeContract(asset).symbol,
