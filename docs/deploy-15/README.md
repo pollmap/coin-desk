@@ -22,3 +22,11 @@
 09:04 상태에서 원천 오류는 없었으나 중단 기간 동안 밀린 작업 때문에 SOURCE_DELAYED가 남았습니다. 순차 수집이 회복 중이며 당일 펀딩은 BTC·DOGE부터 갱신됐습니다. 모든 원천의 최신성까지 정상이라고 표시하지 않습니다. 후속 heartbeat는 지연 회복과 실제 하루 쓰기 사용량을 확인할 때까지 유지하고, 제품 Cron은 계속 실행합니다.
 
 SQLite 회귀 테스트는 동일 일자 동시 예약 초과 방지, UTC 날짜 초기화, 한도 초과 시 커서 보존, 최근 펀딩 수집의 독립 실행을 검증합니다.
+
+## 쓰기 제한 패치 운영 반영
+
+PR #21은 main `24fa4f9ac00215dcc0d58ae7ebb5843d7d36ceee`로 병합됐고 [main CI](https://github.com/pollmap/coin-desk/actions/runs/36204126366)가 통과했습니다. 추가 마이그레이션 없음 확인 후 배포했습니다.
+
+- Worker: `9b7f01d3-cd24-4ac3-b962-1e71cb20fcf2`, 매분 Cron 유지.
+- Pages: https://051eb0a0.coin-desk.pages.dev (정적 프런트 파일 변경 없음).
+- 하루 사용량 검증과 지연 회복 점검을 위해 임시 heartbeat를 유지합니다. 사용자에게 추가 인증을 요청할 항목은 없습니다.
