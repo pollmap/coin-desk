@@ -16,7 +16,7 @@ export function useMarket() {
         next.set('market', value);
         return next;
       },
-      { replace: true },
+      { replace: false },
     );
   return { market, changeMarket };
 }

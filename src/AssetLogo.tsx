@@ -4,9 +4,9 @@ import { ASSETS } from '../shared/catalog';
 import './asset-logo.css';
 
 export function AssetLogo({ asset, size = 24 }: { asset: Asset; size?: number }) {
-  const [failed, setFailed] = useState(false);
+  const [failedAsset, setFailedAsset] = useState<Asset | null>(null);
   const item = ASSETS.find((entry) => entry.id === asset);
-  if (!item || failed)
+  if (!item || failedAsset === asset)
     return (
       <span
         className="asset-logo fallback"
@@ -24,7 +24,8 @@ export function AssetLogo({ asset, size = 24 }: { asset: Asset; size?: number })
       height={size}
       alt=""
       loading="lazy"
-      onError={() => setFailed(true)}
+      key={asset}
+      onError={() => setFailedAsset(asset)}
     />
   );
 }

@@ -1,8 +1,10 @@
+import { marketAnalysisLink } from '../shared/market-watch';
+import { DAY } from '../shared/math';
 import { matchesCoin } from '../shared/coin-search';
 import { useMarket } from './useMarket';
 import { useEffect, useMemo, useState } from 'react';
-import { Link, useSearchParams } from 'react-router-dom';
-import { Star, RefreshCw } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { Star, RefreshCw, ArrowLeftRight, ChartPie } from 'lucide-react';
 import { ASSETS } from '../shared/catalog';
 import { AssetLogo } from './AssetLogo';
 import type { Asset, Market, Overview } from '../shared/types';
@@ -10,8 +12,7 @@ import { dateLabel, json, money, numeric, turnover } from './lib';
 import { usePersonalDesk } from './PersonalDesk';
 
 export function WatchlistPage() {
-  const [params, setParams] = useSearchParams();
-  const { market } = useMarket();
+  const { market, changeMarket } = useMarket();
   const { desk, update } = usePersonalDesk();
   const [search, setSearch] = useState('');
   const [onlyFavorites, setOnlyFavorites] = useState(false);
@@ -43,12 +44,25 @@ export function WatchlistPage() {
           while (cursor < ASSETS.length && !controller.signal.aborted) {
             const asset = ASSETS[cursor++].id;
             try {
-              quotes[asset] = await json<Overview>(
+              const received = await json<Overview>(
                 '/api/v1/overview?asset=' + asset + '&market=' + market,
                 controller.signal,
               );
+              quotes[asset] = received;
+              if (!controller.signal.aborted)
+                setState((prev) => ({
+                  market,
+                  quotes: { ...(prev.market === market ? prev.quotes : {}), [asset]: received },
+                  errors: { ...(prev.market === market ? prev.errors : {}), [asset]: undefined },
+                  loading: true,
+                }));
             } catch (e) {
               errors[asset] = e instanceof Error ? e.message : String(e);
+              if (!controller.signal.aborted)
+                setState((prev) => ({
+                  ...prev,
+                  errors: { ...prev.errors, [asset]: errors[asset] },
+                }));
             }
           }
         }),
@@ -101,15 +115,24 @@ export function WatchlistPage() {
     <>
       <div className="page-heading">
         <div>
-          <div className="eyebrow">MARKET WATCH</div>
           <h1>시장·비교</h1>
         </div>
-        <Link
-          className="desk-button"
-          to={'/compare?assets=' + desk.favorites.join(',') + '&market=' + market}
-        >
-          즐겨찾기 성과 비교 ↗
-        </Link>
+        <nav className="watch-actions" aria-label="시장 분석">
+          <Link
+            className="desk-button"
+            to={
+              '/compare?assets=' +
+              (desk.favorites.length >= 2 ? desk.favorites : ['BTC', 'DOGE', 'ETH']).join(',') +
+              '&period=all&market=' +
+              market
+            }
+          >
+            <ArrowLeftRight size={16} /> 성과 비교
+          </Link>
+          <Link className="desk-button" to={'/dominance?market=' + market}>
+            <ChartPie size={16} /> 시장 비중
+          </Link>
+        </nav>
       </div>
       <div className="explorer-toolbar">
         <label>
@@ -123,7 +146,7 @@ export function WatchlistPage() {
         </label>
         <label>
           시장
-          <select value={market} onChange={(e) => setParams({ market: e.target.value })}>
+          <select value={market} onChange={(e) => changeMarket(e.target.value as Market)}>
             <option value="binance">Binance · USDT</option>
             <option value="upbit">Upbit · KRW</option>
           </select>
@@ -160,13 +183,10 @@ export function WatchlistPage() {
           {error}
         </p>
       ) : null}
-      <p className="watch-note">
-        60초마다 시세 조회 · 별표와 작업공간은 브라우저에 저장됩니다. RSI·200일선은 확정 일봉
-        기준입니다.
-      </p>
+      <p className="watch-note">1분 자동 갱신 · RSI·200일선은 확정 일봉 기준</p>
       <div className="panel watch-table-wrap" tabIndex={0} aria-label="코인별 시세와 기술지표">
         <table className="watch-table">
-          <caption className="sr-only">8개 관심 코인의 현재 시세와 기술지표</caption>
+          <caption className="sr-only">코인별 현재 시세와 확정 일봉 기술지표</caption>
           <thead>
             <tr>
               <th>즐겨찾기</th>
@@ -186,6 +206,12 @@ export function WatchlistPage() {
                 q = overview?.quote;
               const stale =
                 !!errors[a.id] || overview?.meta.stale || (!!q && Date.now() / 1000 - q.time > 420);
+              const technicalTime = overview?.technical.asOf;
+              const technicalDelayed =
+                !!overview && (!technicalTime || Date.now() / 1000 - technicalTime > 3 * DAY);
+              const technicalTitle = technicalTime
+                ? '확정 일봉 ' + dateLabel(technicalTime)
+                : '지표 기준일 확인 중';
               const gap =
                 q && overview?.technical.sma200
                   ? 100 * (q.price / overview.technical.sma200 - 1)
@@ -218,7 +244,7 @@ export function WatchlistPage() {
                     </button>
                   </td>
                   <td className="watch-asset">
-                    <Link to={'/?asset=' + a.id + '&period=all'}>
+                    <Link to={marketAnalysisLink(a.id, market)}>
                       <AssetLogo asset={a.id} size={22} /> <b style={{ color: a.color }}>{a.id}</b>
                       <small>{a.name}</small>
                     </Link>
@@ -247,15 +273,27 @@ export function WatchlistPage() {
                     ) : null}
                   </td>
                   <td data-label="24H 거래대금">{turnover(q?.volume24h, currency)}</td>
-                  <td data-label="RSI 14">{numeric(overview?.technical.rsi)}</td>
-                  <td data-label="200일선 대비" className={gap !== null && gap < 0 ? 'down' : 'up'}>
+                  <td data-label="RSI 14" title={technicalTitle}>
+                    {numeric(overview?.technical.rsi)}
+                    {technicalDelayed ? <small className="amber">지표 갱신 지연</small> : null}
+                  </td>
+                  <td
+                    data-label="200일선 대비"
+                    title={technicalTitle}
+                    className={gap === null ? 'muted' : gap < 0 ? 'down' : 'up'}
+                  >
                     {gap === null ? '—' : (gap >= 0 ? '+' : '') + numeric(gap) + '%'}
+                    {technicalDelayed ? (
+                      <small className="amber">
+                        {technicalTime ? dateLabel(technicalTime) + ' 기준' : '기준일 확인 중'}
+                      </small>
+                    ) : null}
                   </td>
                   <td>
                     <small>{dateLabel(q?.time, true)}</small>
                   </td>
                   <td>
-                    <Link to={'/chart/' + a.id + '?asset=' + a.id + '&market=' + market}>
+                    <Link to={marketAnalysisLink(a.id, market)} aria-label={a.name + ' 차트 열기'}>
                       차트 ↗
                     </Link>
                   </td>

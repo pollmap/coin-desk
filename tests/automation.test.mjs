@@ -14,7 +14,13 @@ vi.mock('../worker/dominance', () => ({
 }));
 import { getQuotes, getRecentCandles } from '../worker/providers';
 import { scheduled, updateQuoteBatch, refreshMinuteQuotes } from '../worker/scheduled';
-import { jobPolicies, dueAt, selectJob, operationStatus } from '../worker/health';
+import {
+  jobPolicies,
+  backgroundPolicies,
+  dueAt,
+  selectJob,
+  operationStatus,
+} from '../worker/health';
 import worker from '../worker/index';
 import { DAY } from '../shared/math';
 import { networkMetrics } from '../shared/network-catalog';
@@ -437,4 +443,52 @@ it('retains enough minute ticks for a 48-hour observation and reuses a slot afte
   expect(DB.sqlite.prepare('SELECT last_completed FROM cron_state').get().last_completed).toBe(
     now + 4320 * 60,
   );
+});
+
+it('does not schedule the dedicated recent futures lane again, but preserves backfill checkpoints', () => {
+  const live = jobPolicies(['BTC', 'DOGE', 'ETH'], false).find(
+    (j) => j.key === 'derivatives:DOGE:funding',
+  );
+  const background = backgroundPolicies(['BTC', 'DOGE', 'ETH'], false).find(
+    (j) => j.key === live.key,
+  );
+  const state = { key: live.key, last_attempt: now - 301, data_as_of: now, next_attempt: 0 };
+  expect(dueAt(live, [state], now)).toBeLessThanOrEqual(now);
+  expect(dueAt(background, [state], now)).toBeGreaterThan(now);
+  state.next_attempt = now - 1;
+  expect(dueAt(background, [state], now)).toBe(now - 1);
+});
+it('bounds regular background load below one job a minute without slowing primary data', () => {
+  const assets = ['BTC', 'DOGE', 'ETH', 'SOL', 'XRP', 'LINK', 'ONDO', 'PEPE'];
+  const live = jobPolicies(assets, false);
+  expect(live.find((j) => j.key === 'BTC:binance:1d').every).toBe(3600);
+  expect(live.find((j) => j.key === 'reference:DOGE').every).toBe(3600);
+  const queued = backgroundPolicies(assets, false).filter(
+    (j) =>
+      !(
+        j.kind === 'derivatives' &&
+        ['BTC', 'DOGE', 'ETH'].includes(j.assets?.[0]) &&
+        !j.key.endsWith('_daily')
+      ),
+  );
+  expect(queued.reduce((n, j) => n + 3600 / j.every, 0)).toBeLessThan(50);
+  // Starting with an overdue queue, all background jobs get service within two hours.
+  const states = queued.map((j) => ({
+    key: j.key,
+    last_attempt: now - 86400,
+    data_as_of: now - 86400,
+    next_attempt: 0,
+  }));
+  const seen = new Set();
+  for (let minute = 0; minute < 120; minute++) {
+    const clock = now + minute * 60,
+      job = selectJob(queued, states, clock);
+    if (!job) continue;
+    seen.add(job.key);
+    Object.assign(
+      states.find((s) => s.key === job.key),
+      { last_attempt: clock, data_as_of: clock },
+    );
+  }
+  expect(seen.size).toBe(queued.length);
 });

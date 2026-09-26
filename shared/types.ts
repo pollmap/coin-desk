@@ -64,7 +64,7 @@ export interface Overview {
   meta: Provenance;
   metrics: Record<string, number | null>;
   metricsAsOf: number | null;
-  technical: { rsi: number | null; sma200: number | null };
+  technical: { rsi: number | null; sma200: number | null; asOf?: number | null };
   assets: Asset[];
 }
 export interface Metric {

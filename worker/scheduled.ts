@@ -24,6 +24,7 @@ import {
   cleanError,
   enabledAssets,
   jobPolicies,
+  backgroundPolicies,
   selectJob,
   type CronState,
   type IngestionState,
@@ -352,9 +353,9 @@ export async function scheduled(env: Env, scheduledAt = epoch(), separateQuotes 
   );
   if (retry) retry.next_attempt = now;
   const job = selectJob(
-    jobPolicies(enabledAssets(env), !!build).filter(
-      (j) => !separateQuotes || j.kind !== 'quote-batch',
-    ),
+    separateQuotes
+      ? backgroundPolicies(enabledAssets(env), !!build)
+      : jobPolicies(enabledAssets(env), !!build),
     rows.results,
     now,
   );
