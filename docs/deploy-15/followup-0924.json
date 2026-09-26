@@ -1,0 +1,1177 @@
+{
+  "checkedAt": 1790382251,
+  "workerVersions": [
+    {
+      "version_id": "9b7f01d3-cd24-4ac3-b962-1e71cb20fcf2",
+      "percentage": 100
+    }
+  ],
+  "automationStalled": false,
+  "delayedSourceCount": 30,
+  "remainingDelays": [
+    {
+      "code": "SOURCE_DELAYED",
+      "key": "reference:XRP",
+      "message": "수집 시각 또는 실제 데이터 시각이 허용 지연을 넘었습니다."
+    },
+    {
+      "code": "SOURCE_DELAYED",
+      "key": "reference:LINK",
+      "message": "수집 시각 또는 실제 데이터 시각이 허용 지연을 넘었습니다."
+    },
+    {
+      "code": "SOURCE_DELAYED",
+      "key": "network:XRP",
+      "message": "수집 시각 또는 실제 데이터 시각이 허용 지연을 넘었습니다."
+    },
+    {
+      "code": "SOURCE_DELAYED",
+      "key": "network:LINK",
+      "message": "수집 시각 또는 실제 데이터 시각이 허용 지연을 넘었습니다."
+    },
+    {
+      "code": "SOURCE_DELAYED",
+      "key": "DOGE:binance:1h",
+      "message": "수집 시각 또는 실제 데이터 시각이 허용 지연을 넘었습니다."
+    },
+    {
+      "code": "SOURCE_DELAYED",
+      "key": "ETH:binance:1h",
+      "message": "수집 시각 또는 실제 데이터 시각이 허용 지연을 넘었습니다."
+    },
+    {
+      "code": "SOURCE_DELAYED",
+      "key": "SOL:binance:1h",
+      "message": "수집 시각 또는 실제 데이터 시각이 허용 지연을 넘었습니다."
+    },
+    {
+      "code": "SOURCE_DELAYED",
+      "key": "SOL:binance:1d",
+      "message": "수집 시각 또는 실제 데이터 시각이 허용 지연을 넘었습니다."
+    },
+    {
+      "code": "SOURCE_DELAYED",
+      "key": "XRP:binance:1h",
+      "message": "수집 시각 또는 실제 데이터 시각이 허용 지연을 넘었습니다."
+    },
+    {
+      "code": "SOURCE_DELAYED",
+      "key": "XRP:binance:1d",
+      "message": "수집 시각 또는 실제 데이터 시각이 허용 지연을 넘었습니다."
+    },
+    {
+      "code": "SOURCE_DELAYED",
+      "key": "LINK:binance:1h",
+      "message": "수집 시각 또는 실제 데이터 시각이 허용 지연을 넘었습니다."
+    },
+    {
+      "code": "SOURCE_DELAYED",
+      "key": "LINK:binance:1d",
+      "message": "수집 시각 또는 실제 데이터 시각이 허용 지연을 넘었습니다."
+    },
+    {
+      "code": "SOURCE_DELAYED",
+      "key": "ONDO:binance:1h",
+      "message": "수집 시각 또는 실제 데이터 시각이 허용 지연을 넘었습니다."
+    },
+    {
+      "code": "SOURCE_DELAYED",
+      "key": "ONDO:binance:1d",
+      "message": "수집 시각 또는 실제 데이터 시각이 허용 지연을 넘었습니다."
+    },
+    {
+      "code": "SOURCE_DELAYED",
+      "key": "PEPE:binance:1h",
+      "message": "수집 시각 또는 실제 데이터 시각이 허용 지연을 넘었습니다."
+    },
+    {
+      "code": "SOURCE_DELAYED",
+      "key": "PEPE:binance:1d",
+      "message": "수집 시각 또는 실제 데이터 시각이 허용 지연을 넘었습니다."
+    },
+    {
+      "code": "SOURCE_DELAYED",
+      "key": "BTC:upbit:1h",
+      "message": "수집 시각 또는 실제 데이터 시각이 허용 지연을 넘었습니다."
+    },
+    {
+      "code": "SOURCE_DELAYED",
+      "key": "BTC:upbit:1d",
+      "message": "수집 시각 또는 실제 데이터 시각이 허용 지연을 넘었습니다."
+    },
+    {
+      "code": "SOURCE_DELAYED",
+      "key": "DOGE:upbit:1d",
+      "message": "수집 시각 또는 실제 데이터 시각이 허용 지연을 넘었습니다."
+    },
+    {
+      "code": "SOURCE_DELAYED",
+      "key": "ETH:upbit:1d",
+      "message": "수집 시각 또는 실제 데이터 시각이 허용 지연을 넘었습니다."
+    },
+    {
+      "code": "SOURCE_DELAYED",
+      "key": "SOL:upbit:1h",
+      "message": "수집 시각 또는 실제 데이터 시각이 허용 지연을 넘었습니다."
+    },
+    {
+      "code": "SOURCE_DELAYED",
+      "key": "SOL:upbit:1d",
+      "message": "수집 시각 또는 실제 데이터 시각이 허용 지연을 넘었습니다."
+    },
+    {
+      "code": "SOURCE_DELAYED",
+      "key": "XRP:upbit:1h",
+      "message": "수집 시각 또는 실제 데이터 시각이 허용 지연을 넘었습니다."
+    },
+    {
+      "code": "SOURCE_DELAYED",
+      "key": "XRP:upbit:1d",
+      "message": "수집 시각 또는 실제 데이터 시각이 허용 지연을 넘었습니다."
+    },
+    {
+      "code": "SOURCE_DELAYED",
+      "key": "LINK:upbit:1h",
+      "message": "수집 시각 또는 실제 데이터 시각이 허용 지연을 넘었습니다."
+    },
+    {
+      "code": "SOURCE_DELAYED",
+      "key": "LINK:upbit:1d",
+      "message": "수집 시각 또는 실제 데이터 시각이 허용 지연을 넘었습니다."
+    },
+    {
+      "code": "SOURCE_DELAYED",
+      "key": "ONDO:upbit:1h",
+      "message": "수집 시각 또는 실제 데이터 시각이 허용 지연을 넘었습니다."
+    },
+    {
+      "code": "SOURCE_DELAYED",
+      "key": "ONDO:upbit:1d",
+      "message": "수집 시각 또는 실제 데이터 시각이 허용 지연을 넘었습니다."
+    },
+    {
+      "code": "SOURCE_DELAYED",
+      "key": "PEPE:upbit:1h",
+      "message": "수집 시각 또는 실제 데이터 시각이 허용 지연을 넘었습니다."
+    },
+    {
+      "code": "SOURCE_DELAYED",
+      "key": "PEPE:upbit:1d",
+      "message": "수집 시각 또는 실제 데이터 시각이 허용 지연을 넘었습니다."
+    }
+  ],
+  "coreSources": [
+    {
+      "key": "reference:BTC",
+      "last_attempt": 1790381613,
+      "last_success": 1790381613,
+      "data_as_of": 1790294400,
+      "error": null,
+      "failures": 0,
+      "next_attempt": 0,
+      "active": true,
+      "status": "ok",
+      "collectorAgeSeconds": 638,
+      "dataAgeSeconds": 87851,
+      "liveStale": false,
+      "expectedCadenceSeconds": 3600,
+      "dataFreshnessLimitSeconds": 259200,
+      "nextDueAt": 1790385213,
+      "retryAt": null,
+      "coverage": {
+        "first": 1279411200,
+        "last": 1790294400,
+        "rows": null,
+        "archived": false
+      }
+    },
+    {
+      "key": "reference:DOGE",
+      "last_attempt": 1790381673,
+      "last_success": 1790381673,
+      "data_as_of": 1790208000,
+      "error": null,
+      "failures": 0,
+      "next_attempt": 0,
+      "active": true,
+      "status": "ok",
+      "collectorAgeSeconds": 578,
+      "dataAgeSeconds": 174251,
+      "liveStale": false,
+      "expectedCadenceSeconds": 3600,
+      "dataFreshnessLimitSeconds": 259200,
+      "nextDueAt": 1790385273,
+      "retryAt": null,
+      "coverage": {
+        "first": 1390435200,
+        "last": 1790208000,
+        "rows": null,
+        "archived": false
+      }
+    },
+    {
+      "key": "reference:ETH",
+      "last_attempt": 1790381733,
+      "last_success": 1790381733,
+      "data_as_of": 1790294400,
+      "error": null,
+      "failures": 0,
+      "next_attempt": 0,
+      "active": true,
+      "status": "ok",
+      "collectorAgeSeconds": 518,
+      "dataAgeSeconds": 87851,
+      "liveStale": false,
+      "expectedCadenceSeconds": 3600,
+      "dataFreshnessLimitSeconds": 259200,
+      "nextDueAt": 1790385333,
+      "retryAt": null,
+      "coverage": {
+        "first": 1438992000,
+        "last": 1790294400,
+        "rows": null,
+        "archived": false
+      }
+    },
+    {
+      "key": "network:BTC",
+      "last_attempt": 1790381853,
+      "last_success": 1790381853,
+      "data_as_of": 1790294400,
+      "error": null,
+      "failures": 0,
+      "next_attempt": 0,
+      "active": true,
+      "status": "ok",
+      "collectorAgeSeconds": 398,
+      "dataAgeSeconds": 174251,
+      "liveStale": false,
+      "expectedCadenceSeconds": 3600,
+      "dataFreshnessLimitSeconds": 259200,
+      "nextDueAt": 1790385453,
+      "retryAt": null,
+      "coverage": {
+        "first": 1230940800,
+        "last": 1790208000,
+        "rows": null,
+        "archived": false,
+        "metrics": 18,
+        "expectedMetrics": 18,
+        "oldestMetricAsOf": 1790208000
+      }
+    },
+    {
+      "key": "network:DOGE",
+      "last_attempt": 1790381913,
+      "last_success": 1790381913,
+      "data_as_of": 1790208000,
+      "error": null,
+      "failures": 0,
+      "next_attempt": 0,
+      "active": true,
+      "status": "ok",
+      "collectorAgeSeconds": 338,
+      "dataAgeSeconds": 174251,
+      "liveStale": false,
+      "expectedCadenceSeconds": 3600,
+      "dataFreshnessLimitSeconds": 259200,
+      "nextDueAt": 1790385513,
+      "retryAt": null,
+      "coverage": {
+        "first": 1386460800,
+        "last": 1790208000,
+        "rows": null,
+        "archived": false,
+        "metrics": 14,
+        "expectedMetrics": 14,
+        "oldestMetricAsOf": 1790208000
+      }
+    },
+    {
+      "key": "network:ETH",
+      "last_attempt": 1790381973,
+      "last_success": 1790381973,
+      "data_as_of": 1790294400,
+      "error": null,
+      "failures": 0,
+      "next_attempt": 0,
+      "active": true,
+      "status": "ok",
+      "collectorAgeSeconds": 278,
+      "dataAgeSeconds": 174251,
+      "liveStale": false,
+      "expectedCadenceSeconds": 3600,
+      "dataFreshnessLimitSeconds": 259200,
+      "nextDueAt": 1790385573,
+      "retryAt": null,
+      "coverage": {
+        "first": 1438214400,
+        "last": 1790294400,
+        "rows": null,
+        "archived": false,
+        "metrics": 17,
+        "expectedMetrics": 17,
+        "oldestMetricAsOf": 1790208000
+      }
+    }
+  ],
+  "readOnlyDatabase": [
+    {
+      "results": [],
+      "rowsWritten": 0
+    },
+    {
+      "results": [
+        {
+          "started_at": 1790382227,
+          "completed_at": 1790382229,
+          "job": "ETH:binance:1d",
+          "outcome": "ok",
+          "error": null
+        },
+        {
+          "started_at": 1790382167,
+          "completed_at": 1790382169,
+          "job": "DOGE:binance:1d",
+          "outcome": "ok",
+          "error": null
+        },
+        {
+          "started_at": 1790382107,
+          "completed_at": 1790382109,
+          "job": "BTC:binance:1d",
+          "outcome": "ok",
+          "error": null
+        },
+        {
+          "started_at": 1790382047,
+          "completed_at": 1790382049,
+          "job": "BTC:binance:1h",
+          "outcome": "ok",
+          "error": null
+        },
+        {
+          "started_at": 1790381973,
+          "completed_at": 1790381974,
+          "job": "network:ETH",
+          "outcome": "ok",
+          "error": null
+        },
+        {
+          "started_at": 1790381913,
+          "completed_at": 1790381914,
+          "job": "network:DOGE",
+          "outcome": "ok",
+          "error": null
+        },
+        {
+          "started_at": 1790381853,
+          "completed_at": 1790381854,
+          "job": "network:BTC",
+          "outcome": "ok",
+          "error": null
+        },
+        {
+          "started_at": 1790381793,
+          "completed_at": 1790381793,
+          "job": "mempool:BTC",
+          "outcome": "ok",
+          "error": null
+        }
+      ],
+      "rowsWritten": 0
+    },
+    {
+      "results": [
+        {
+          "key": "quote:BTC:upbit",
+          "fetched_at": 1790382170
+        },
+        {
+          "key": "quote:DOGE:upbit",
+          "fetched_at": 1790382170
+        },
+        {
+          "key": "quote:ETH:upbit",
+          "fetched_at": 1790382170
+        },
+        {
+          "key": "quote:BTC:binance",
+          "fetched_at": 1790382169
+        },
+        {
+          "key": "quote:DOGE:binance",
+          "fetched_at": 1790382169
+        },
+        {
+          "key": "quote:ETH:binance",
+          "fetched_at": 1790382169
+        }
+      ],
+      "rowsWritten": 0
+    },
+    {
+      "results": [
+        {
+          "key": "derivatives:BTC:funding",
+          "last_success": 1790382049,
+          "data_as_of": 1790380800,
+          "error": null
+        },
+        {
+          "key": "derivatives:BTC:open_interest",
+          "last_success": 1790382051,
+          "data_as_of": 1790380800,
+          "error": null
+        },
+        {
+          "key": "derivatives:DOGE:funding",
+          "last_success": 1790382110,
+          "data_as_of": 1790380800,
+          "error": null
+        },
+        {
+          "key": "derivatives:DOGE:open_interest",
+          "last_success": 1790382111,
+          "data_as_of": 1790380800,
+          "error": null
+        },
+        {
+          "key": "derivatives:ETH:funding",
+          "last_success": 1790382169,
+          "data_as_of": 1790380800,
+          "error": null
+        },
+        {
+          "key": "derivatives:ETH:open_interest",
+          "last_success": 1790382170,
+          "data_as_of": 1790380800,
+          "error": null
+        },
+        {
+          "key": "derivatives:BTC:long_account_ratio",
+          "last_success": 1790382052,
+          "data_as_of": 1790380800,
+          "error": null
+        },
+        {
+          "key": "derivatives:DOGE:long_account_ratio",
+          "last_success": 1790382113,
+          "data_as_of": 1790380800,
+          "error": null
+        },
+        {
+          "key": "derivatives:ETH:long_account_ratio",
+          "last_success": 1790382172,
+          "data_as_of": 1790380800,
+          "error": null
+        },
+        {
+          "key": "derivatives:BTC:open_interest_daily",
+          "last_success": 1790381074,
+          "data_as_of": 1790380800,
+          "error": null
+        },
+        {
+          "key": "derivatives:BTC:long_account_ratio_daily",
+          "last_success": 1790381134,
+          "data_as_of": 1790380800,
+          "error": null
+        },
+        {
+          "key": "derivatives:DOGE:open_interest_daily",
+          "last_success": 1790381193,
+          "data_as_of": 1790380800,
+          "error": null
+        },
+        {
+          "key": "derivatives:DOGE:long_account_ratio_daily",
+          "last_success": 1790381314,
+          "data_as_of": 1790380800,
+          "error": null
+        },
+        {
+          "key": "derivatives:ETH:open_interest_daily",
+          "last_success": 1790381433,
+          "data_as_of": 1790380800,
+          "error": null
+        },
+        {
+          "key": "derivatives:ETH:long_account_ratio_daily",
+          "last_success": 1790381494,
+          "data_as_of": 1790380800,
+          "error": null
+        },
+        {
+          "key": "derivatives:SOL:funding",
+          "last_success": 1790326834,
+          "data_as_of": 1790294400,
+          "error": null
+        },
+        {
+          "key": "derivatives:SOL:open_interest",
+          "last_success": 1790343213,
+          "data_as_of": 1790341200,
+          "error": null
+        },
+        {
+          "key": "derivatives:SOL:long_account_ratio",
+          "last_success": 1790343274,
+          "data_as_of": 1790341200,
+          "error": null
+        },
+        {
+          "key": "derivatives:SOL:open_interest_daily",
+          "last_success": 1790329713,
+          "data_as_of": 1790294400,
+          "error": null
+        },
+        {
+          "key": "derivatives:SOL:long_account_ratio_daily",
+          "last_success": 1790329773,
+          "data_as_of": 1790294400,
+          "error": null
+        },
+        {
+          "key": "derivatives:XRP:funding",
+          "last_success": 1790326533,
+          "data_as_of": 1790294400,
+          "error": null
+        },
+        {
+          "key": "derivatives:XRP:open_interest",
+          "last_success": 1790327134,
+          "data_as_of": 1790326800,
+          "error": null
+        },
+        {
+          "key": "derivatives:XRP:long_account_ratio",
+          "last_success": 1790324073,
+          "data_as_of": 1790323200,
+          "error": null
+        },
+        {
+          "key": "derivatives:XRP:open_interest_daily",
+          "last_success": 1790329953,
+          "data_as_of": 1790294400,
+          "error": null
+        },
+        {
+          "key": "derivatives:XRP:long_account_ratio_daily",
+          "last_success": 1790330013,
+          "data_as_of": 1790294400,
+          "error": null
+        },
+        {
+          "key": "derivatives:LINK:funding",
+          "last_success": 1790327553,
+          "data_as_of": 1790294400,
+          "error": null
+        },
+        {
+          "key": "derivatives:LINK:open_interest",
+          "last_success": 1790324133,
+          "data_as_of": 1790323200,
+          "error": null
+        },
+        {
+          "key": "derivatives:LINK:long_account_ratio",
+          "last_success": 1790324373,
+          "data_as_of": 1790323200,
+          "error": null
+        },
+        {
+          "key": "derivatives:LINK:open_interest_daily",
+          "last_success": 1790330913,
+          "data_as_of": 1790294400,
+          "error": null
+        },
+        {
+          "key": "derivatives:LINK:long_account_ratio_daily",
+          "last_success": 1790333134,
+          "data_as_of": 1790294400,
+          "error": null
+        },
+        {
+          "key": "derivatives:ONDO:funding",
+          "last_success": 1790342973,
+          "data_as_of": 1790337600,
+          "error": null
+        },
+        {
+          "key": "derivatives:ONDO:open_interest",
+          "last_success": 1790326353,
+          "data_as_of": 1790323200,
+          "error": null
+        },
+        {
+          "key": "derivatives:ONDO:long_account_ratio",
+          "last_success": 1790326473,
+          "data_as_of": 1790323200,
+          "error": null
+        },
+        {
+          "key": "derivatives:ONDO:open_interest_daily",
+          "last_success": 1790325453,
+          "data_as_of": 1790294400,
+          "error": null
+        },
+        {
+          "key": "derivatives:ONDO:long_account_ratio_daily",
+          "last_success": 1790341953,
+          "data_as_of": 1790294400,
+          "error": null
+        },
+        {
+          "key": "derivatives:PEPE:funding",
+          "last_success": 1790338293,
+          "data_as_of": 1790323200,
+          "error": null
+        },
+        {
+          "key": "derivatives:PEPE:open_interest",
+          "last_success": 1790325633,
+          "data_as_of": 1790323200,
+          "error": null
+        },
+        {
+          "key": "derivatives:PEPE:long_account_ratio",
+          "last_success": 1790325813,
+          "data_as_of": 1790323200,
+          "error": null
+        },
+        {
+          "key": "derivatives:PEPE:open_interest_daily",
+          "last_success": 1790326715,
+          "data_as_of": 1790294400,
+          "error": null
+        },
+        {
+          "key": "derivatives:PEPE:long_account_ratio_daily",
+          "last_success": 1790326893,
+          "data_as_of": 1790294400,
+          "error": null
+        }
+      ],
+      "rowsWritten": 0
+    }
+  ],
+  "costWindow": "last 30 minutes, including pre-patch recovery; not a full UTC day",
+  "reportedQueryGroups": 46,
+  "reportedWrites": 1617,
+  "queryInsights": [
+    {
+      "query": "INSERT INTO derivative_series(asset,metric,time,value,fetched_at) SELECT ?,?,CAST(json_extract(value,'$.time') AS INTEGER),json_extract(value,'$.value'),? FROM json_each(?) WHERE 1 ON CONFLICT(asset,metric,time) DO UPDATE SET value=excluded.value,fetched_at=excluded.fetched_at WHERE derivative_series.value<>excluded.value",
+      "avgRowsRead": 50,
+      "totalRowsRead": 3406,
+      "avgRowsWritten": 6,
+      "totalRowsWritten": 468,
+      "avgDurationMs": 0.8349470588235294,
+      "totalDurationMs": 56.776399999999995,
+      "numberOfTimesRun": 68,
+      "queryEfficiency": 0
+    },
+    {
+      "query": "INSERT INTO state(key,value) VALUES (?,?) ON CONFLICT(key) DO UPDATE SET value=excluded.value WHERE CAST(state.value AS INTEGER)<=?",
+      "avgRowsRead": 0,
+      "totalRowsRead": 366,
+      "avgRowsWritten": 0,
+      "totalRowsWritten": 313,
+      "avgDurationMs": 0.09188695652173914,
+      "totalDurationMs": 35.927800000000005,
+      "numberOfTimesRun": 391,
+      "queryEfficiency": 0
+    },
+    {
+      "query": "INSERT INTO snapshots(key,data,fetched_at) VALUES(?,?,?) ON CONFLICT(key) DO UPDATE SET data=excluded.data,fetched_at=excluded.fetched_at",
+      "avgRowsRead": 1,
+      "totalRowsRead": 197,
+      "avgRowsWritten": 1,
+      "totalRowsWritten": 197,
+      "avgDurationMs": 0.07148223350253806,
+      "totalDurationMs": 14.081999999999999,
+      "numberOfTimesRun": 197,
+      "queryEfficiency": 0
+    },
+    {
+      "query": "INSERT INTO ingestion(key,last_attempt,last_success,data_as_of,failures,error,next_attempt) VALUES (?,?,?,?,0,NULL,0) ON CONFLICT(key) DO UPDATE SET last_attempt=?,last_success=?,data_as_of=?,failures=0,error=NULL,next_attempt=0",
+      "avgRowsRead": 1,
+      "totalRowsRead": 185,
+      "avgRowsWritten": 1,
+      "totalRowsWritten": 185,
+      "avgDurationMs": 0.07273945945945946,
+      "totalDurationMs": 13.456800000000001,
+      "numberOfTimesRun": 185,
+      "queryEfficiency": 0
+    },
+    {
+      "query": "INSERT OR IGNORE INTO observation_signals(id,asset,source,rule,time,payload,created_at,notify) VALUES(?,?,?,?,?,?,?,?)",
+      "avgRowsRead": 0,
+      "totalRowsRead": 0,
+      "avgRowsWritten": 3,
+      "totalRowsWritten": 114,
+      "avgDurationMs": 0.0844421052631579,
+      "totalDurationMs": 3.2088,
+      "numberOfTimesRun": 38,
+      "queryEfficiency": 0
+    },
+    {
+      "query": "INSERT INTO state(key,value) VALUES (?,?) ON CONFLICT(key) DO UPDATE SET value=excluded.value WHERE state.value!=excluded.value",
+      "avgRowsRead": 0,
+      "totalRowsRead": 0,
+      "avgRowsWritten": 2,
+      "totalRowsWritten": 86,
+      "avgDurationMs": 0.14361627906976743,
+      "totalDurationMs": 6.1754999999999995,
+      "numberOfTimesRun": 43,
+      "queryEfficiency": 0
+    },
+    {
+      "query": "INSERT INTO raw_samples(id,source,fetched_at,body) VALUES(?,?,?,?) ON CONFLICT(id) DO UPDATE SET source=excluded.source,fetched_at=excluded.fetched_at,body=excluded.body WHERE raw_samples.body!=excluded.body OR raw_samples.source!=excluded.source",
+      "avgRowsRead": 1,
+      "totalRowsRead": 58,
+      "avgRowsWritten": 1,
+      "totalRowsWritten": 58,
+      "avgDurationMs": 0.08964827586206896,
+      "totalDurationMs": 5.199599999999999,
+      "numberOfTimesRun": 58,
+      "queryEfficiency": 0
+    },
+    {
+      "query": "INSERT INTO ingestion(key,last_attempt) SELECT ?,? FROM cron_state WHERE id=1 AND run_id=? ON CONFLICT(key) DO UPDATE SET last_attempt=excluded.last_attempt",
+      "avgRowsRead": 2,
+      "totalRowsRead": 80,
+      "avgRowsWritten": 1,
+      "totalRowsWritten": 40,
+      "avgDurationMs": 0.107795,
+      "totalDurationMs": 4.3118,
+      "numberOfTimesRun": 40,
+      "queryEfficiency": 0
+    },
+    {
+      "query": "INSERT INTO candles(asset,market,interval,time,open,high,low,close,volume,close_time,fetched_at) VALUES (?,?,?,?,?,?,?,?,?,?,?) ON CONFLICT(asset,market,interval,time) DO UPDATE SET open=excluded.open,high=excluded.high,low=excluded.low,close=excluded.close,volume=excluded.volume,close_time=excluded.close_time,fetched_at=excluded.fetched_at WHERE candles.open!=excluded.open OR candles.high!=excluded.high OR candles.low!=excluded.low OR candles.close!=excluded.close OR candles.volume!=excluded.volume OR candles.close_time!=excluded.close_time",
+      "avgRowsRead": 0,
+      "totalRowsRead": 73,
+      "avgRowsWritten": 0,
+      "totalRowsWritten": 39,
+      "avgDurationMs": 0.035436046511627906,
+      "totalDurationMs": 3.0475,
+      "numberOfTimesRun": 86,
+      "queryEfficiency": 0
+    },
+    {
+      "query": "UPDATE cron_runs SET completed_at=?,outcome=?,error=? WHERE slot=? AND run_id=?",
+      "avgRowsRead": 1,
+      "totalRowsRead": 20,
+      "avgRowsWritten": 1,
+      "totalRowsWritten": 20,
+      "avgDurationMs": 0.0809,
+      "totalDurationMs": 1.6179999999999999,
+      "numberOfTimesRun": 20,
+      "queryEfficiency": 0
+    },
+    {
+      "query": "INSERT OR REPLACE INTO cron_runs(slot,run_id,started_at,job,outcome) SELECT ?,?,?,?,'running' FROM cron_state WHERE id=1 AND run_id=?",
+      "avgRowsRead": 2,
+      "totalRowsRead": 36,
+      "avgRowsWritten": 1,
+      "totalRowsWritten": 18,
+      "avgDurationMs": 0.09937777777777777,
+      "totalDurationMs": 1.7888,
+      "numberOfTimesRun": 18,
+      "queryEfficiency": 0
+    },
+    {
+      "query": "INSERT INTO ingestion(key,last_attempt,last_success,data_as_of,failures,error,next_attempt) VALUES (?,?,?,?,0,NULL,0) ON CONFLICT(key) DO UPDATE SET last_attempt=excluded.last_attempt,last_success=excluded.last_success,data_as_of=excluded.data_as_of,failures=0,error=NULL,next_attempt=0",
+      "avgRowsRead": 1,
+      "totalRowsRead": 18,
+      "avgRowsWritten": 1,
+      "totalRowsWritten": 18,
+      "avgDurationMs": 0.059399999999999994,
+      "totalDurationMs": 1.0692,
+      "numberOfTimesRun": 18,
+      "queryEfficiency": 0
+    },
+    {
+      "query": "INSERT OR REPLACE INTO snapshots(key,data,fetched_at) VALUES(?,?,?)",
+      "avgRowsRead": 1,
+      "totalRowsRead": 8,
+      "avgRowsWritten": 2,
+      "totalRowsWritten": 16,
+      "avgDurationMs": 0.1656,
+      "totalDurationMs": 1.3248,
+      "numberOfTimesRun": 8,
+      "queryEfficiency": 0
+    },
+    {
+      "query": "UPDATE cron_state SET last_completed=?,last_succeeded=CASE WHEN ? IN ('ok','idle') THEN ? ELSE last_succeeded END,lease_until=0,outcome=?,error=? WHERE id=1 AND run_id=?",
+      "avgRowsRead": 1,
+      "totalRowsRead": 13,
+      "avgRowsWritten": 1,
+      "totalRowsWritten": 13,
+      "avgDurationMs": 0.1541307692307692,
+      "totalDurationMs": 2.0037,
+      "numberOfTimesRun": 13,
+      "queryEfficiency": 0
+    },
+    {
+      "query": "CREATE TABLE IF NOT EXISTS observation_signals (\n id TEXT PRIMARY KEY, asset TEXT NOT NULL, source TEXT NOT NULL, rule TEXT NOT NULL,\n time INTEGER NOT NULL, payload TEXT NOT NULL CHECK(json_valid(payload)),\n created_at INTEGER NOT NULL, revision INTEGER NOT NULL DEFAULT 1,\n status TEXT NOT NULL DEFAULT 'active', notify INTEGER NOT NULL DEFAULT 0\n);",
+      "avgRowsRead": 1,
+      "totalRowsRead": 4,
+      "avgRowsWritten": 3,
+      "totalRowsWritten": 12,
+      "avgDurationMs": 0.6669,
+      "totalDurationMs": 2.6676,
+      "numberOfTimesRun": 4,
+      "queryEfficiency": 0
+    },
+    {
+      "query": "INSERT INTO cron_state(id,run_id,last_tick,last_started,lease_until,job,outcome) VALUES(1,?,?,?,?,?,'running') ON CONFLICT(id) DO UPDATE SET run_id=excluded.run_id,last_tick=excluded.last_tick,last_started=excluded.last_started,lease_until=excluded.lease_until,job=excluded.job,outcome='running',error=NULL WHERE cron_state.lease_until<=? AND cron_state.last_tick<?",
+      "avgRowsRead": 1,
+      "totalRowsRead": 12,
+      "avgRowsWritten": 1,
+      "totalRowsWritten": 12,
+      "avgDurationMs": 0.1545,
+      "totalDurationMs": 1.854,
+      "numberOfTimesRun": 12,
+      "queryEfficiency": 0
+    },
+    {
+      "query": "INSERT OR REPLACE INTO state(key,value) VALUES (?,?)",
+      "avgRowsRead": 1,
+      "totalRowsRead": 2,
+      "avgRowsWritten": 2,
+      "totalRowsWritten": 4,
+      "avgDurationMs": 0.1699,
+      "totalDurationMs": 0.3398,
+      "numberOfTimesRun": 2,
+      "queryEfficiency": 0
+    },
+    {
+      "query": "INSERT OR REPLACE INTO raw_samples(id,source,fetched_at,body) VALUES(?,?,?,?)",
+      "avgRowsRead": 1,
+      "totalRowsRead": 2,
+      "avgRowsWritten": 2,
+      "totalRowsWritten": 4,
+      "avgDurationMs": 1.078,
+      "totalDurationMs": 2.156,
+      "numberOfTimesRun": 2,
+      "queryEfficiency": 0
+    },
+    {
+      "query": "SELECT MIN(time) first,MAX(time) last,COUNT(*) n FROM onchain WHERE generation=?",
+      "avgRowsRead": 6477,
+      "totalRowsRead": 12954,
+      "avgRowsWritten": 0,
+      "totalRowsWritten": 0,
+      "avgDurationMs": 0.8359,
+      "totalDurationMs": 1.6718,
+      "numberOfTimesRun": 2,
+      "queryEfficiency": 0.0001543924656476764
+    },
+    {
+      "query": "SELECT * FROM network_coverage WHERE asset=? AND metric=?",
+      "avgRowsRead": 1,
+      "totalRowsRead": 52,
+      "avgRowsWritten": 0,
+      "totalRowsWritten": 0,
+      "avgDurationMs": 0.1363769230769231,
+      "totalDurationMs": 7.091600000000001,
+      "numberOfTimesRun": 52,
+      "queryEfficiency": 1
+    },
+    {
+      "query": "SELECT bucket,payload,fetched_at FROM network_months WHERE asset=? AND bucket>=? AND bucket<? ORDER BY bucket LIMIT ?",
+      "avgRowsRead": 23,
+      "totalRowsRead": 466,
+      "avgRowsWritten": 0,
+      "totalRowsWritten": 0,
+      "avgDurationMs": 1.30313,
+      "totalDurationMs": 26.0626,
+      "numberOfTimesRun": 20,
+      "queryEfficiency": 0.9565217391304348
+    },
+    {
+      "query": "SELECT last_success,error FROM ingestion WHERE key=?",
+      "avgRowsRead": 1,
+      "totalRowsRead": 69,
+      "avgRowsWritten": 0,
+      "totalRowsWritten": 0,
+      "avgDurationMs": 0.07508115942028985,
+      "totalDurationMs": 5.1806,
+      "numberOfTimesRun": 69,
+      "queryEfficiency": 1
+    },
+    {
+      "query": "SELECT key,fetched_at FROM snapshots WHERE key LIKE 'quote:%'",
+      "avgRowsRead": 17,
+      "totalRowsRead": 17,
+      "avgRowsWritten": 0,
+      "totalRowsWritten": 0,
+      "avgDurationMs": 0.1215,
+      "totalDurationMs": 0.1215,
+      "numberOfTimesRun": 1,
+      "queryEfficiency": 0.9411764705882353
+    },
+    {
+      "query": "CREATE TABLE IF NOT EXISTS \"d1_migrations\"(\n\t\tid         INTEGER PRIMARY KEY AUTOINCREMENT,\n\t\tname       TEXT UNIQUE,\n\t\tapplied_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL\n);",
+      "avgRowsRead": 0,
+      "totalRowsRead": 0,
+      "avgRowsWritten": 0,
+      "totalRowsWritten": 0,
+      "avgDurationMs": 0.0879,
+      "totalDurationMs": 0.3516,
+      "numberOfTimesRun": 4,
+      "queryEfficiency": 0
+    },
+    {
+      "query": "SELECT * FROM observation_signals WHERE asset=? AND (time<? OR (time=? AND id>?)) ORDER BY time DESC,id LIMIT ?",
+      "avgRowsRead": 10,
+      "totalRowsRead": 10,
+      "avgRowsWritten": 0,
+      "totalRowsWritten": 0,
+      "avgDurationMs": 0.2552,
+      "totalDurationMs": 0.2552,
+      "numberOfTimesRun": 1,
+      "queryEfficiency": 0.9
+    },
+    {
+      "query": "SELECT COUNT(*) AS ticks,MIN(started_at) AS first,MAX(started_at) AS last,SUM(CASE WHEN outcome IN ('error','partial','interrupted') THEN 1 ELSE 0 END) AS failures FROM cron_runs WHERE started_at>=?",
+      "avgRowsRead": 2469,
+      "totalRowsRead": 4938,
+      "avgRowsWritten": 0,
+      "totalRowsWritten": 0,
+      "avgDurationMs": 0.3422,
+      "totalDurationMs": 0.6844,
+      "numberOfTimesRun": 2,
+      "queryEfficiency": 0.0004050222762251924
+    },
+    {
+      "query": "SELECT * FROM daily_briefings ORDER BY day DESC LIMIT ?;",
+      "avgRowsRead": 0,
+      "totalRowsRead": 0,
+      "avgRowsWritten": 0,
+      "totalRowsWritten": 0,
+      "avgDurationMs": 0.4626,
+      "totalDurationMs": 0.4626,
+      "numberOfTimesRun": 1,
+      "queryEfficiency": 0
+    },
+    {
+      "query": "SELECT *\n\t\tFROM \"d1_migrations\"\n\t\tORDER BY id",
+      "avgRowsRead": 8,
+      "totalRowsRead": 8,
+      "avgRowsWritten": 0,
+      "totalRowsWritten": 0,
+      "avgDurationMs": 0.4414,
+      "totalDurationMs": 0.4414,
+      "numberOfTimesRun": 1,
+      "queryEfficiency": 1
+    },
+    {
+      "query": "SELECT time,value FROM derivative_series WHERE asset=? AND metric=? AND time>=? AND time<? ORDER BY time LIMIT ?",
+      "avgRowsRead": 870,
+      "totalRowsRead": 50498,
+      "avgRowsWritten": 0,
+      "totalRowsWritten": 0,
+      "avgDurationMs": 1.3202862068965517,
+      "totalDurationMs": 76.5766,
+      "numberOfTimesRun": 58,
+      "queryEfficiency": 1
+    },
+    {
+      "query": "SELECT id FROM daily_briefings WHERE id=?",
+      "avgRowsRead": 1,
+      "totalRowsRead": 4,
+      "avgRowsWritten": 0,
+      "totalRowsWritten": 0,
+      "avgDurationMs": 0.0754,
+      "totalDurationMs": 0.3016,
+      "numberOfTimesRun": 4,
+      "queryEfficiency": 1
+    },
+    {
+      "query": "SELECT payload FROM daily_briefings WHERE created_at<? ORDER BY created_at DESC LIMIT ?",
+      "avgRowsRead": 2,
+      "totalRowsRead": 22,
+      "avgRowsWritten": 0,
+      "totalRowsWritten": 0,
+      "avgDurationMs": 0.09975454545454544,
+      "totalDurationMs": 1.0973,
+      "numberOfTimesRun": 11,
+      "queryEfficiency": 0
+    },
+    {
+      "query": "SELECT time,close AS value FROM candles WHERE asset=? AND market=? AND interval='1d' AND close_time<=? ORDER BY time",
+      "avgRowsRead": 508,
+      "totalRowsRead": 13208,
+      "avgRowsWritten": 0,
+      "totalRowsWritten": 0,
+      "avgDurationMs": 1.269353846153846,
+      "totalDurationMs": 33.0032,
+      "numberOfTimesRun": 26,
+      "queryEfficiency": 0.9980314960629921
+    },
+    {
+      "query": "SELECT * FROM daily_briefings ORDER BY created_at DESC LIMIT ?;",
+      "avgRowsRead": 2,
+      "totalRowsRead": 2,
+      "avgRowsWritten": 0,
+      "totalRowsWritten": 0,
+      "avgDurationMs": 0.1918,
+      "totalDurationMs": 0.1918,
+      "numberOfTimesRun": 1,
+      "queryEfficiency": 0.5
+    },
+    {
+      "query": "SELECT MIN(time) AS first,MAX(time) AS last FROM derivative_series WHERE asset=? AND metric=?",
+      "avgRowsRead": 3540,
+      "totalRowsRead": 173471,
+      "avgRowsWritten": 0,
+      "totalRowsWritten": 0,
+      "avgDurationMs": 0.42988163265306123,
+      "totalDurationMs": 21.0642,
+      "numberOfTimesRun": 49,
+      "queryEfficiency": 0.0002824858757062147
+    },
+    {
+      "query": "SELECT * FROM cron_state WHERE id=1",
+      "avgRowsRead": 1,
+      "totalRowsRead": 52,
+      "avgRowsWritten": 0,
+      "totalRowsWritten": 0,
+      "avgDurationMs": 0.1364096153846154,
+      "totalDurationMs": 7.093300000000001,
+      "numberOfTimesRun": 52,
+      "queryEfficiency": 1
+    },
+    {
+      "query": "SELECT metric,first,last,observations,fetched_at FROM network_coverage WHERE asset=?",
+      "avgRowsRead": 16,
+      "totalRowsRead": 168,
+      "avgRowsWritten": 0,
+      "totalRowsWritten": 0,
+      "avgDurationMs": 0.131,
+      "totalDurationMs": 1.31,
+      "numberOfTimesRun": 10,
+      "queryEfficiency": 0.9375
+    },
+    {
+      "query": "SELECT time FROM candles WHERE asset=? AND market=? AND interval=? ORDER BY time DESC LIMIT ?",
+      "avgRowsRead": 1,
+      "totalRowsRead": 14,
+      "avgRowsWritten": 0,
+      "totalRowsWritten": 0,
+      "avgDurationMs": 0.2555,
+      "totalDurationMs": 3.577,
+      "numberOfTimesRun": 14,
+      "queryEfficiency": 1
+    },
+    {
+      "query": "SELECT * FROM network_coverage WHERE asset=?",
+      "avgRowsRead": 16,
+      "totalRowsRead": 192,
+      "avgRowsWritten": 0,
+      "totalRowsWritten": 0,
+      "avgDurationMs": 1.6224999999999998,
+      "totalDurationMs": 19.47,
+      "numberOfTimesRun": 12,
+      "queryEfficiency": 0.9375
+    },
+    {
+      "query": "SELECT * FROM cron_runs ORDER BY started_at DESC LIMIT ?;",
+      "avgRowsRead": 4934,
+      "totalRowsRead": 4934,
+      "avgRowsWritten": 0,
+      "totalRowsWritten": 0,
+      "avgDurationMs": 0.5625,
+      "totalDurationMs": 0.5625,
+      "numberOfTimesRun": 1,
+      "queryEfficiency": 0.0010133765707336846
+    },
+    {
+      "query": "SELECT asset,MIN(first) AS first,MAX(last) AS last,MIN(last) AS oldest,COUNT(*) AS metrics FROM network_coverage WHERE metric!='price' GROUP BY asset",
+      "avgRowsRead": 75,
+      "totalRowsRead": 150,
+      "avgRowsWritten": 0,
+      "totalRowsWritten": 0,
+      "avgDurationMs": 0.1128,
+      "totalDurationMs": 0.2256,
+      "numberOfTimesRun": 2,
+      "queryEfficiency": 0.06666666666666667
+    },
+    {
+      "query": "SELECT * FROM ingestion",
+      "avgRowsRead": 110,
+      "totalRowsRead": 6648,
+      "avgRowsWritten": 0,
+      "totalRowsWritten": 0,
+      "avgDurationMs": 0.34177,
+      "totalDurationMs": 20.5062,
+      "numberOfTimesRun": 60,
+      "queryEfficiency": 1
+    },
+    {
+      "query": "SELECT id,payload,revision,status FROM observation_signals WHERE asset=? AND source=? AND time>=?",
+      "avgRowsRead": 2,
+      "totalRowsRead": 66,
+      "avgRowsWritten": 0,
+      "totalRowsWritten": 0,
+      "avgDurationMs": 0.14174,
+      "totalDurationMs": 4.2522,
+      "numberOfTimesRun": 30,
+      "queryEfficiency": 0
+    },
+    {
+      "query": "SELECT value FROM state WHERE key=?",
+      "avgRowsRead": 0,
+      "totalRowsRead": 22,
+      "avgRowsWritten": 0,
+      "totalRowsWritten": 0,
+      "avgDurationMs": 0.16696968325791856,
+      "totalDurationMs": 36.9003,
+      "numberOfTimesRun": 221,
+      "queryEfficiency": 0
+    },
+    {
+      "query": "INSERT INTO onchain(generation,time,data,n,mean,m2,fetched_at) VALUES(?,?,?,?,?,?,?) ON CONFLICT(generation,time) DO UPDATE SET data=excluded.data,n=excluded.n,mean=excluded.mean,m2=excluded.m2,fetched_at=excluded.fetched_at WHERE onchain.data!=excluded.data OR onchain.n!=excluded.n OR onchain.mean!=excluded.mean OR onchain.m2!=excluded.m2",
+      "avgRowsRead": 1,
+      "totalRowsRead": 4,
+      "avgRowsWritten": 0,
+      "totalRowsWritten": 0,
+      "avgDurationMs": 0.025,
+      "totalDurationMs": 0.1,
+      "numberOfTimesRun": 4,
+      "queryEfficiency": 0
+    },
+    {
+      "query": "SELECT data FROM onchain WHERE generation=? ORDER BY time DESC LIMIT ?",
+      "avgRowsRead": 1,
+      "totalRowsRead": 2,
+      "avgRowsWritten": 0,
+      "totalRowsWritten": 0,
+      "avgDurationMs": 0.156,
+      "totalDurationMs": 0.312,
+      "numberOfTimesRun": 2,
+      "queryEfficiency": 1
+    },
+    {
+      "query": "INSERT INTO network_coverage(asset,metric,first,last,observations,fetched_at) VALUES(?,?,?,?,?,?) ON CONFLICT(asset,metric) DO UPDATE SET first=MIN(network_coverage.first,excluded.first),last=MAX(network_coverage.last,excluded.last),observations=network_coverage.observations+?,fetched_at=excluded.fetched_at WHERE network_coverage.first>excluded.first OR network_coverage.last<excluded.last OR ?>0",
+      "avgRowsRead": 1,
+      "totalRowsRead": 78,
+      "avgRowsWritten": 0,
+      "totalRowsWritten": 0,
+      "avgDurationMs": 0.08882307692307692,
+      "totalDurationMs": 6.9282,
+      "numberOfTimesRun": 78,
+      "queryEfficiency": 0
+    }
+  ],
+  "api": {
+    "signalsCount": 10,
+    "briefingIds": [
+      "2026-09-26"
+    ],
+    "chainContextStatus": "HTTP success"
+  }
+}
