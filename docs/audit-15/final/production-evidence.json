@@ -1,0 +1,188 @@
+{
+  "checkedAt": "2026-09-26T01:33:30.610430+00:00",
+  "readOnlyRowsWritten": [
+    0,
+    0,
+    0,
+    0
+  ],
+  "cronRuns": [
+    {
+      "started_at": 1790386360,
+      "completed_at": 1790386362,
+      "job": "XRP:binance:1h",
+      "outcome": "ok",
+      "error": null
+    },
+    {
+      "started_at": 1790386300,
+      "completed_at": 1790386302,
+      "job": "derivatives:SOL:long_account_ratio",
+      "outcome": "ok",
+      "error": null
+    },
+    {
+      "started_at": 1790386258,
+      "completed_at": 1790386260,
+      "job": "BTC:upbit:1h",
+      "outcome": "ok",
+      "error": null
+    },
+    {
+      "started_at": 1790386179,
+      "completed_at": 1790386181,
+      "job": "ETH:upbit:1d",
+      "outcome": "ok",
+      "error": null
+    },
+    {
+      "started_at": 1790386120,
+      "completed_at": 1790386123,
+      "job": "DOGE:upbit:1d",
+      "outcome": "ok",
+      "error": null
+    },
+    {
+      "started_at": 1790386061,
+      "completed_at": 1790386062,
+      "job": "ETH:binance:1h",
+      "outcome": "ok",
+      "error": null
+    },
+    {
+      "started_at": 1790386000,
+      "completed_at": 1790386002,
+      "job": "DOGE:binance:1h",
+      "outcome": "ok",
+      "error": null
+    },
+    {
+      "started_at": 1790385945,
+      "completed_at": 1790385947,
+      "job": "BTC:upbit:1d",
+      "outcome": "ok",
+      "error": null
+    }
+  ],
+  "quoteProgress": [
+    {
+      "key": "quote:BTC:upbit",
+      "fetched_at": 1790386363,
+      "advanceSeconds": 261
+    },
+    {
+      "key": "quote:DOGE:upbit",
+      "fetched_at": 1790386363,
+      "advanceSeconds": 240
+    },
+    {
+      "key": "quote:ETH:upbit",
+      "fetched_at": 1790386363,
+      "advanceSeconds": 240
+    },
+    {
+      "key": "quote:BTC:binance",
+      "fetched_at": 1790386361,
+      "advanceSeconds": 299
+    },
+    {
+      "key": "quote:DOGE:binance",
+      "fetched_at": 1790386361,
+      "advanceSeconds": 299
+    },
+    {
+      "key": "quote:ETH:binance",
+      "fetched_at": 1790386361,
+      "advanceSeconds": 299
+    }
+  ],
+  "backfillStates": [],
+  "briefings": [
+    {
+      "id": "2026-09-26",
+      "created_at": 1790381433
+    }
+  ],
+  "scheduledEvents": [
+    {
+      "outcome": "ok",
+      "version": "fe50a61d-56fc-4efc-acb2-4093527176b5",
+      "event": {
+        "cron": "* * * * *",
+        "scheduledTime": 1790386173000
+      },
+      "exceptions": 0
+    },
+    {
+      "outcome": "ok",
+      "version": "fe50a61d-56fc-4efc-acb2-4093527176b5",
+      "event": {
+        "cron": "* * * * *",
+        "scheduledTime": 1790386233000
+      },
+      "exceptions": 0
+    },
+    {
+      "outcome": "ok",
+      "version": "fe50a61d-56fc-4efc-acb2-4093527176b5",
+      "event": {
+        "cron": "* * * * *",
+        "scheduledTime": 1790386293000
+      },
+      "exceptions": 0
+    },
+    {
+      "outcome": "ok",
+      "version": "fe50a61d-56fc-4efc-acb2-4093527176b5",
+      "event": {
+        "cron": "* * * * *",
+        "scheduledTime": 1790386353000
+      },
+      "exceptions": 0
+    }
+  ],
+  "apis": {
+    "chain-context?asset=ETH&metric=tvl": {
+      "technical": null,
+      "meta": {
+        "source": "DefiLlama · Ethereum",
+        "unit": "USD",
+        "market": "Ethereum chain",
+        "dataAsOf": 1790294400,
+        "fetchedAt": 1790384628,
+        "stale": false,
+        "calculationVersion": "defillama-ethereum-v1",
+        "historyStart": 1506470400
+      },
+      "count": 3286
+    },
+    "overview?asset=BTC&market=upbit": {
+      "technical": {
+        "rsi": 62.29162804973895,
+        "sma200": 103413825,
+        "asOf": 1790294400
+      },
+      "meta": {
+        "source": "Upbit",
+        "unit": "KRW",
+        "market": "upbit",
+        "dataAsOf": 1790386098,
+        "fetchedAt": 1790386102,
+        "stale": false,
+        "calculationVersion": "btc-desk-1.1-cap-ratios-expanding-population"
+      },
+      "count": 0
+    },
+    "briefings": {
+      "technical": null,
+      "meta": null,
+      "count": 1
+    },
+    "signals?asset=BTC": {
+      "technical": null,
+      "meta": null,
+      "count": 10
+    }
+  },
+  "note": "No direct collection API invoked; other visitors cannot be ruled out. Tail request headers and IP addresses omitted."
+}

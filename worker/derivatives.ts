@@ -26,6 +26,20 @@ export const derivativeAsset = (asset: Asset): asset is DerivativeAsset =>
 export const derivativeMetric = (metric: string): metric is DerivativeMetric =>
   DERIVATIVE_METRICS.some((item) => item === metric);
 
+/** Two primary-key seeks; combined MIN/MAX scans every observation in the partition. */
+export function readDerivativeExtent(
+  db: D1Database,
+  asset: DerivativeAsset,
+  metric: DerivativeMetric,
+) {
+  return db
+    .prepare(
+      'SELECT (SELECT time FROM derivative_series WHERE asset=? AND metric=? ORDER BY time ASC LIMIT 1) AS first, (SELECT time FROM derivative_series WHERE asset=? AND metric=? ORDER BY time DESC LIMIT 1) AS last',
+    )
+    .bind(asset, metric, asset, metric)
+    .first<{ first: number | null; last: number | null }>();
+}
+
 /** Bybit V5 returns newest first. Reject mixed symbols and invalid observations. */
 export function parseDerivativeRows(
   input: unknown,
@@ -106,11 +120,7 @@ export async function updateDerivatives(
   const daily = metric.endsWith('_daily');
   const now = epoch();
   const id = key(asset, metric);
-  const coverage = await env.DB.prepare(
-    'SELECT MIN(time) AS first,MAX(time) AS last FROM derivative_series WHERE asset=? AND metric=?',
-  )
-    .bind(asset, metric)
-    .first<{ first: number | null; last: number | null }>();
+  const coverage = await readDerivativeExtent(env.DB, asset, metric);
   const cursor = await readState<number | null>(env.DB, 'cursor:' + id, null);
   const refreshRecent =
     recentOnly ||
@@ -228,12 +238,7 @@ export async function readDerivativeSeries(
       )
       .bind(asset, metric, from, to, limit + 1)
       .all<Point>(),
-    db
-      .prepare(
-        'SELECT MIN(time) AS first,MAX(time) AS last FROM derivative_series WHERE asset=? AND metric=?',
-      )
-      .bind(asset, metric)
-      .first<{ first: number | null; last: number | null }>(),
+    readDerivativeExtent(db, asset, metric),
     db
       .prepare('SELECT last_success,error FROM ingestion WHERE key=?')
       .bind(key(asset, metric))
