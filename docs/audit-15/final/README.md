@@ -31,4 +31,17 @@ Bybit 공식 정의도 대조했습니다. [펀딩 이력](https://bybit-exchang
 
 ## 배포 후 확인
 
-배포 식별자·공개 API·자연 Cron 증거는 배포 성공 후 기록합니다. 하루 전체 D1 비용과 실제 기기 접근성은 통과했다고 표시하지 않습니다.
+- [PR #22](https://github.com/pollmap/coin-desk/pull/22), main `0dceaa3e1f9b565ee7e0d9661437d6b9df9a138a`. [PR CI](https://github.com/pollmap/coin-desk/actions/runs/36208264190) 및 [main CI](https://github.com/pollmap/coin-desk/actions/runs/36208313768) 통과.
+- 원격 미적용 마이그레이션 없음 확인 → Worker `fe50a61d-56fc-4efc-acb2-4093527176b5` → [Pages 배포](https://e2976380.coin-desk.pages.dev). 매분 Cron 유지. 유료 변경·DB 교체·자료 삭제 없음.
+- 운영의 코인 로고 8개와 브랜드 이미지 로딩, KRW 목록 → DOGE KRW → 온체인/선물, ETH/BTC 전환을 확인했습니다. [운영 목록](production-coins.png) · [ETH 온체인](production-eth-onchain.png).
+- signals 10건, 오늘 briefings 1건, ETH TVL 3,286건 응답 확인. Upbit 기술지표에 9월 25일 확정 일봉 기준일이 반환됐습니다. 조회 당시 핵심 코인 온체인·선물 상태는 정상입니다.
+- 최근 30분 D1 insights의 39개 쿼리 그룹 합계 982행 쓰기·97,534행 읽기. lease 291행, ingestion 성공 상태 249행, quote snapshot 119행 쓰기입니다. 일부는 배포 전 시간이며 계정 전체 하루 비용으로 해석하지 않습니다.
+- [운영 증거](production-evidence.json): 해당 Worker 버전의 자연 Cron 4회 outcome=ok, 예외 0. 직접 수집 API 호출 없이 원격 읽기 전용 조회 사이 핵심 6개 시세 fetched_at가 240~299초 증가했습니다. 조회 rows_written=0. 다른 방문자가 전혀 없었다는 의미는 아닙니다. cursor:derivatives 및 예약 상태는 조회 당시 0건이며 작동 중인 커서를 지웠다는 의미가 아닙니다.
+
+하루 전체 D1 비용과 실제 Safari·VoiceOver 검증은 통과했다고 표시하지 않습니다. 보조 원천 복구·하루 비용 후속 확인은 임시 heartbeat에서 계속하며 제품 Cron과 별개입니다.
+
+## 0.15.2 운영 읽기 비용 보완
+
+위 30분 읽기 중 80,010행은 선물 이력의 MIN/MAX 동시 조회 49회에서 발생했습니다. 이를 기존 복합 기본키의 처음·마지막 값 두 번 탐색으로 교체합니다. 운영 BTC 펀딩 테이블에서 읽기 전용으로 비교한 결과, 동일한 first=1585152000·last=1790380800을 반환하면서 rows_read가 7,128 → 2로 줄었습니다. 양쪽 rows_written=0입니다. 이는 해당 조회의 측정값이며 서비스 전체 비용 감소율은 아닙니다.
+
+빈 이력·단일 관측·서로 다른 코인/지표의 분리 회귀 테스트를 포함해 40개 파일 331개 테스트를 통과했습니다. 스키마 변경·자료 재작성은 없습니다. [실제 D1 비교](query-cost.json).

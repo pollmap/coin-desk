@@ -1,0 +1,54 @@
+[
+  {
+    "results": [
+      {
+        "first": 1585152000,
+        "last": 1790380800
+      }
+    ],
+    "success": true,
+    "meta": {
+      "served_by": "v3-prod",
+      "served_by_region": "APAC",
+      "served_by_colo": "ICN",
+      "served_by_primary": true,
+      "timings": {
+        "sql_duration_ms": 1.2856
+      },
+      "duration": 1.2856,
+      "changes": 0,
+      "last_row_id": 0,
+      "changed_db": false,
+      "size_after": 38334464,
+      "rows_read": 7128,
+      "rows_written": 0,
+      "total_attempts": 1
+    }
+  },
+  {
+    "results": [
+      {
+        "first": 1585152000,
+        "last": 1790380800
+      }
+    ],
+    "success": true,
+    "meta": {
+      "served_by": "v3-prod",
+      "served_by_region": "APAC",
+      "served_by_colo": "ICN",
+      "served_by_primary": true,
+      "timings": {
+        "sql_duration_ms": 0.1511
+      },
+      "duration": 0.1511,
+      "changes": 0,
+      "last_row_id": 0,
+      "changed_db": false,
+      "size_after": 38334464,
+      "rows_read": 2,
+      "rows_written": 0,
+      "total_attempts": 1
+    }
+  }
+]
