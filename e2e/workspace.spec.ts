@@ -6,6 +6,48 @@ test.beforeEach(async ({ page }) => {
     new URL(route.request().url()).hostname === '127.0.0.1' ? route.continue() : route.abort(),
   );
 });
+
+test('market table opens the selected metric, keeps currency and groups on-chain choices', async ({
+  page,
+}) => {
+  await page.goto('/coins?market=upbit&view=derivatives');
+  await expect(page.getByRole('link', { name: '도지코인 차트 열기' })).toBeVisible();
+  await expect(page.getByRole('link', { name: '솔라나 차트 열기' })).toHaveCount(0);
+  await page.getByRole('link', { name: '도지코인 미결제약정 차트', exact: true }).click();
+  await expect(chart(page)).toHaveAttribute('data-primary-metric', 'futures:open_interest');
+  await expect(chart(page)).toHaveAttribute('data-asset', 'DOGE');
+  expect(new URL(page.url()).searchParams.get('price_source')).toBe('upbit');
+  await page
+    .getByRole('navigation', { name: 'DOGE 분석 화면' })
+    .getByRole('link', { name: '온체인', exact: true })
+    .click();
+  await page
+    .getByRole('group', { name: '자주 보는 지표' })
+    .getByRole('button', { name: '활성 주소', exact: true })
+    .click();
+  await expect(chart(page)).toHaveAttribute('data-primary-metric', 'net:active_addresses');
+  await page.getByRole('button', { name: '지표 찾기', exact: true }).click();
+  await page
+    .getByRole('group', { name: '지표 분류' })
+    .getByRole('button', { name: '가격 평가·손익', exact: true })
+    .click();
+  await expect(page.getByRole('dialog').getByRole('button', { name: /^MVRV / })).toBeVisible();
+  await expect(page.getByRole('dialog').getByRole('button', { name: /^활성 주소 / })).toHaveCount(
+    0,
+  );
+  await page.keyboard.press('Escape');
+  await page.goto('/coins?market=upbit');
+  await page.getByRole('searchbox', { name: '코인 찾기' }).fill('솔라나');
+  await expect(page.getByRole('link', { name: '솔라나 차트 열기' })).toBeVisible();
+  await page
+    .getByRole('navigation', { name: '시장 분석' })
+    .getByRole('link', { name: '성과 비교' })
+    .click();
+  await expect(
+    page.getByRole('navigation', { name: '시장 분석' }).getByRole('link', { name: '성과 비교' }),
+  ).toHaveAttribute('aria-current', 'page');
+  expect(new URL(page.url()).searchParams.get('market')).toBe('upbit');
+});
 test('core selection, Korean/ticker search, all-history and keyboard restoration', async ({
   page,
 }) => {
@@ -98,9 +140,15 @@ for (const width of [320, 390, 768, 1280, 1440]) {
   test(`responsive and axe at ${width}px in both themes`, async ({ page }) => {
     test.setTimeout(120000);
     await page.setViewportSize({ width, height: 900 });
-    for (const path of ['/coins', '/?asset=BTC&period=all', '/onchain/ETH', '/futures/DOGE']) {
+    for (const path of [
+      '/coins',
+      '/coins?view=derivatives',
+      '/?asset=BTC&period=all',
+      '/onchain/ETH',
+      '/futures/DOGE',
+    ]) {
       await page.goto(path);
-      if (path !== '/coins') await expect(chart(page)).toBeVisible();
+      if (!path.startsWith('/coins')) await expect(chart(page)).toBeVisible();
       else await expect(page.getByRole('link', { name: '비트코인 차트 열기' })).toBeVisible();
       for (let theme = 0; theme < 2; theme++) {
         expect(

@@ -54,3 +54,14 @@ npm run test:e2e
 PR #25는 main e8de908fd036004c67a32e740b27d339c4428953으로 병합됐습니다. 타입/단위 340개, Python 복구 2개, Chromium/WebKit 26개를 CI에서 통과했습니다.
 
 첫 배포는 feed와 현재가 Worker까지 성공한 뒤 background Cron 설치에서 code 10072로 중단했습니다. 계정 무료 Cron 총 5개 중 다른 서비스가 3개를 사용 중이었습니다. 다른 서비스 예약을 변경하거나 유료 전환하지 않았으며 주 Worker/Pages는 아직 이전 버전입니다. 후속 수정에서는 Coin Desk의 Cron 2개만 유지하고 background/analysis는 비공개 Service binding 호출로 실행합니다. 내부 수집 호출은 완료까지 await하며 원천 실패와 CPU 실패는 실제 배포에서 다시 측정합니다.
+
+## 0.15.4 후속 배포 확인
+
+PR #26 main `07999d2`의 CI 통과 후 배포했습니다. 첫 재시도는 D1 인증 응답 7403으로 마이그레이션 단계에서 중단했고 인증/미적용 마이그레이션 없음 확인 후 재시도에 성공했습니다.
+
+- Worker `e6dc7e9e-6285-4f3a-aad8-aa38724d1d53`, Pages https://17dcebec.coin-desk.pages.dev
+- quotes `e4ce8cc6-9d33-4424-8f40-825abc685a91`, background `617afd60-b6cb-4773-b01c-b93338d0fd44`, analysis `feb5d8c2-b394-452d-aaed-996837b61b46`
+- [분리 후 7분의 28개 실행](cpu-after-split.jsonl)은 outcome=ok. CPU 중단은 이 구간에 없지만 원천 응답 성공까지 의미하지 않습니다.
+- 10:42 UTC 읽기 전용 확인에서는 Binance 시세가 10:20 UTC에 정체, Upbit 시세는 10:41 UTC까지 증가했습니다. 배경 작업의 일부 Binance/Bybit HTTP 502가 남았습니다. named entrypoint 위치 적용 제약을 확인해 [0.15.5 경로 수정](../experience/README.md)으로 이어갑니다.
+
+부분 복구이므로 임시 후속 자동화를 계속 유지합니다.

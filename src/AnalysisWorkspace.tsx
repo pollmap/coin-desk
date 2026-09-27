@@ -1,5 +1,6 @@
 import { marketComparisonLink } from '../shared/market-watch';
 import { belongsToSection, focusMetric } from '../shared/analysis-sections';
+import { metricCategory, primaryShortcuts } from '../shared/metric-navigation';
 import { workspaceIndicators } from '../shared/workspace-indicators';
 import { lazy, Suspense, useEffect, useMemo, useRef, useState } from 'react';
 import { Link, useLocation, useParams, useSearchParams } from 'react-router-dom';
@@ -97,6 +98,7 @@ export function AnalysisWorkspace() {
     [query, setQuery] = useState(''),
     [evidence, setEvidence] = useState(params.get('signal') !== null);
   const [selectedMetric, setSelectedMetric] = useState<string | null>(null);
+  const [category, setCategory] = useState('전체');
   const [rangeRevision, setRangeRevision] = useState(0);
   const panelRef = useRef<HTMLElement>(null),
     dialog = useRef<HTMLDialogElement>(null),
@@ -116,6 +118,8 @@ export function AnalysisWorkspace() {
   useEffect(() => {
     save('lastAsset', asset);
     setSelectedMetric(null);
+    setCategory('전체');
+    setQuery('');
   }, [asset, section]);
   useEffect(() => {
     if (picker) {
@@ -287,14 +291,26 @@ export function AnalysisWorkspace() {
           formula: 'Bybit USDT 무기한 선물 · 실제 정산 비율',
         },
         {
+          id: 'open_interest',
+          title: '미결제약정 · 시간별',
+          unit: asset,
+          formula: 'Bybit USDT 무기한 선물 · 시간별 코인 수량',
+        },
+        {
+          id: 'long_account_ratio',
+          title: '롱 계정 비중 · 시간별',
+          unit: '%',
+          formula: 'Bybit 롱 보유 계정 / 전체 포지션 보유 계정 · 시간별',
+        },
+        {
           id: 'open_interest_daily',
-          title: '미결제약정',
+          title: '미결제약정 · 일별',
           unit: asset,
           formula: 'Bybit USDT 무기한 선물 · 일별 코인 수량',
         },
         {
           id: 'long_account_ratio_daily',
-          title: '롱 계정 비중',
+          title: '롱 계정 비중 · 일별',
           unit: '%',
           formula: 'Bybit 롱 보유 계정 / 전체 포지션 보유 계정',
         },
@@ -332,7 +348,7 @@ export function AnalysisWorkspace() {
     params.has('panels') ? params.get('panels')!.split(',').filter(Boolean) : defaults
   )
     .filter((id, i, a) => a.indexOf(id) === i && belongsToSection(id, section))
-    .slice(0, 6);
+    .slice(0, focused ? 1 : 6);
   const a = useRemote(selected[0], choices),
     b = useRemote(selected[1], choices),
     c = useRemote(selected[2], choices),
@@ -358,7 +374,12 @@ export function AnalysisWorkspace() {
             result.error ||
             result.data?.meta.warning ||
             (!data.length ? '아직 표시할 관측이 없습니다.' : undefined),
-          step: id === 'futures:funding' ? 8 * 3600 : 86400,
+          step:
+            id === 'futures:funding'
+              ? 8 * 3600
+              : id === 'futures:open_interest' || id === 'futures:long_account_ratio'
+                ? 3600
+                : 86400,
         },
       ];
     });
@@ -417,6 +438,11 @@ export function AnalysisWorkspace() {
     ? lines.find((l) => !l.overlay && belongsToSection(l.id, section))
     : undefined;
   const sectionChoices = choices.filter((c) => belongsToSection(c.id, section));
+  const filteredChoices = sectionChoices.filter(
+    (c) =>
+      (category === '전체' || metricCategory(c.id) === category) &&
+      (c.title + c.id + c.group).toLowerCase().includes(query.trim().toLowerCase()),
+  );
   const priceComparison = useMemo<AnalysisLine[]>(
     () =>
       focused && comparePrice && points.length
@@ -631,6 +657,21 @@ export function AnalysisWorkspace() {
             {evidence ? <PanelRightClose size={17} /> : <PanelRightOpen size={17} />}근거
           </button>
         </div>
+        {focused && (
+          <div className="metric-shortcuts" role="group" aria-label="자주 보는 지표">
+            {primaryShortcuts[section]
+              .filter(([id]) => sectionChoices.some((c) => c.id === id && c.available !== false))
+              .map(([id, label]) => (
+                <button
+                  key={id}
+                  aria-pressed={primaryLine?.id === id}
+                  onClick={() => choosePrimary(id)}
+                >
+                  {label}
+                </button>
+              ))}
+          </div>
+        )}
         <div className={'analysis-layout ' + (evidence ? 'with-evidence' : '')}>
           <div className="analysis-main">
             {error && (!focused || comparePrice) && (
@@ -965,7 +1006,18 @@ export function AnalysisWorkspace() {
                 : 'RSI, 펀딩, 활성 주소…'
           }
         />
-        {!query && !focused && (
+        <div className="metric-categories" role="group" aria-label="지표 분류">
+          {['전체', ...new Set(sectionChoices.map((c) => metricCategory(c.id)))].map((value) => (
+            <button
+              key={value}
+              aria-pressed={category === value}
+              onClick={() => setCategory(value)}
+            >
+              {value}
+            </button>
+          ))}
+        </div>
+        {!query && !focused && category === '전체' && (
           <details className="indicator-presets" open>
             <summary>지표 묶음으로 한 번에 바꾸기</summary>
             {[
@@ -1026,7 +1078,7 @@ export function AnalysisWorkspace() {
             })}
           </details>
         )}
-        {!focused && (
+        {!focused && (category === '전체' || category === '가격·기술') && (
           <div className="overlay-options">
             {[
               ['sma:50:d', '50일선'],
@@ -1054,57 +1106,58 @@ export function AnalysisWorkspace() {
           </div>
         )}
         <div className="indicator-list">
-          {sectionChoices
-            .filter((c) => (c.title + c.id + c.group).toLowerCase().includes(query.toLowerCase()))
-            .map((choice) => {
-              const line = lines.find((l) => l.id === choice.id);
-              const preview = line?.data.length
-                ? line.data
-                : choice.id in local
-                  ? local[choice.id as keyof typeof local]
-                  : choice.spark;
-              const isSelected = focused
-                ? primaryLine?.id === choice.id
-                : selected.includes(choice.id);
-              const disabled =
-                choice.available === false ||
-                (!focused && !selected.includes(choice.id) && selected.length >= 6);
-              return (
-                <button
-                  key={choice.id}
-                  disabled={disabled}
-                  aria-pressed={isSelected}
-                  onClick={() => {
-                    if (focused) choosePrimary(choice.id);
-                    else
-                      change({
-                        panels: selected.includes(choice.id)
-                          ? selected.filter((id) => id !== choice.id).join(',')
-                          : [...selected, choice.id].join(','),
-                      });
-                    setPicker(false);
-                  }}
-                >
-                  <span>
-                    <b>{choice.title}</b>
-                    <small>
-                      {choice.group} · {choice.unit} · {choice.source}
-                    </small>
-                  </span>
-                  <span>
-                    {preview?.length ? <MiniTrend points={preview} /> : null}
-                    {choice.available === false
-                      ? '데이터 확보 대기'
-                      : numeric(
-                          preview?.at(-1)?.value ?? choice.latest,
-                          Math.abs(preview?.at(-1)?.value ?? choice.latest ?? 0) < 0.1 ? 6 : 2,
-                        )}{' '}
-                    {isSelected ? '✓' : focused ? '→' : '＋'}
-                  </span>
-                </button>
-              );
-            })}
+          {filteredChoices.map((choice) => {
+            const line = lines.find((l) => l.id === choice.id);
+            const preview = line?.data.length
+              ? line.data
+              : choice.id in local
+                ? local[choice.id as keyof typeof local]
+                : choice.spark;
+            const isSelected = focused
+              ? primaryLine?.id === choice.id
+              : selected.includes(choice.id);
+            const disabled =
+              choice.available === false ||
+              (!focused && !selected.includes(choice.id) && selected.length >= 6);
+            return (
+              <button
+                key={choice.id}
+                disabled={disabled}
+                aria-pressed={isSelected}
+                onClick={() => {
+                  if (focused) choosePrimary(choice.id);
+                  else
+                    change({
+                      panels: selected.includes(choice.id)
+                        ? selected.filter((id) => id !== choice.id).join(',')
+                        : [...selected, choice.id].join(','),
+                    });
+                  setPicker(false);
+                }}
+              >
+                <span>
+                  <b>{choice.title}</b>
+                  <small>
+                    {choice.group} · {choice.unit} · {choice.source}
+                  </small>
+                </span>
+                <span>
+                  {preview?.length ? <MiniTrend points={preview} /> : null}
+                  {choice.available === false
+                    ? '데이터 확보 대기'
+                    : numeric(
+                        preview?.at(-1)?.value ?? choice.latest,
+                        Math.abs(preview?.at(-1)?.value ?? choice.latest ?? 0) < 0.1 ? 6 : 2,
+                      )}{' '}
+                  {isSelected ? '✓' : focused ? '→' : '＋'}
+                </span>
+              </button>
+            );
+          })}
         </div>
+        {!filteredChoices.length && (
+          <p role="status">조건에 맞는 지표가 없습니다. 검색어나 분류를 바꿔 주세요.</p>
+        )}
         {!focused && <small>선택한 지표는 최대 6개까지 같은 시간축으로 표시됩니다.</small>}
       </dialog>
     </div>

@@ -4,7 +4,12 @@ import { matchesCoin } from '../shared/coin-search';
 import { useMarket } from './useMarket';
 import { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Star, RefreshCw, ArrowLeftRight, ChartPie } from 'lucide-react';
+import { Star, RefreshCw } from 'lucide-react';
+import { MarketNavigation } from './MarketNavigation';
+import { NETWORK_ASSETS } from '../shared/network-catalog';
+import { useSearchParams } from 'react-router-dom';
+import { useData } from './hooks';
+import type { MarketDerivatives } from '../shared/market-derivatives';
 import { ASSETS } from '../shared/catalog';
 import { AssetLogo } from './AssetLogo';
 import type { Asset, Market, Overview } from '../shared/types';
@@ -14,6 +19,14 @@ import { usePersonalDesk } from './PersonalDesk';
 export function WatchlistPage() {
   const { market, changeMarket } = useMarket();
   const { desk, update } = usePersonalDesk();
+  const [params, setParams] = useSearchParams();
+  const scope = params.get('scope') === 'all' ? 'all' : 'core';
+  const derivatives = params.get('view') === 'derivatives';
+  const futures = useData<MarketDerivatives>(
+    derivatives ? '/api/v1/market-derivatives' : null,
+    false,
+    300000,
+  );
   const [search, setSearch] = useState('');
   const [onlyFavorites, setOnlyFavorites] = useState(false);
   const [sort, setSort] = useState('default');
@@ -93,7 +106,10 @@ export function WatchlistPage() {
   const assets = useMemo(
     () =>
       ASSETS.filter(
-        (a) => (!onlyFavorites || desk.favorites.includes(a.id)) && matchesCoin(a.id, search),
+        (a) =>
+          (search.trim() || scope === 'all' || ['BTC', 'DOGE', 'ETH'].includes(a.id)) &&
+          (!onlyFavorites || desk.favorites.includes(a.id)) &&
+          matchesCoin(a.id, search),
       ).sort((a, b) => {
         if (sort === 'default')
           return Number(desk.favorites.includes(b.id)) - Number(desk.favorites.includes(a.id));
@@ -108,31 +124,58 @@ export function WatchlistPage() {
             ? qa.change24h! - qb.change24h!
             : qb.volume24h - qa.volume24h;
       }),
-    [desk.favorites, onlyFavorites, search, sort, quotes],
+    [desk.favorites, onlyFavorites, search, sort, quotes, scope],
   );
   const currency = market === 'upbit' ? 'KRW' : 'USDT';
   return (
     <>
       <div className="page-heading">
         <div>
-          <h1>시장·비교</h1>
+          <h1>코인 시세</h1>
         </div>
-        <nav className="watch-actions" aria-label="시장 분석">
-          <Link
-            className="desk-button"
-            to={
-              '/compare?assets=' +
-              (desk.favorites.length >= 2 ? desk.favorites : ['BTC', 'DOGE', 'ETH']).join(',') +
-              '&period=all&market=' +
-              market
+      </div>
+      <MarketNavigation
+        current="coins"
+        market={market}
+        assets={desk.favorites.length >= 2 ? desk.favorites : undefined}
+      />
+      <div className="market-scope" role="group" aria-label="표시할 코인">
+        {(['core', 'all'] as const).map((value) => (
+          <button
+            key={value}
+            aria-pressed={scope === value}
+            onClick={() =>
+              setParams((prev) => {
+                const next = new URLSearchParams(prev);
+                next.set('scope', value);
+                next.set('market', market);
+                return next;
+              })
             }
           >
-            <ArrowLeftRight size={16} /> 성과 비교
-          </Link>
-          <Link className="desk-button" to={'/dominance?market=' + market}>
-            <ChartPie size={16} /> 시장 비중
-          </Link>
-        </nav>
+            {value === 'core' ? 'BTC · DOGE · ETH' : '전체 8개'}
+          </button>
+        ))}
+        <div className="market-view" role="group" aria-label="비교할 데이터">
+          {[
+            ['spot', '시세·기술'],
+            ['derivatives', '선물 수급'],
+          ].map(([value, label]) => (
+            <button
+              key={value}
+              aria-pressed={derivatives === (value === 'derivatives')}
+              onClick={() =>
+                setParams((prev) => {
+                  const next = new URLSearchParams(prev);
+                  next.set('view', value);
+                  return next;
+                })
+              }
+            >
+              {label}
+            </button>
+          ))}
+        </div>
       </div>
       <div className="explorer-toolbar">
         <label>
@@ -166,7 +209,7 @@ export function WatchlistPage() {
           onClick={() => setOnlyFavorites(!onlyFavorites)}
         >
           <Star size={15} />
-          {onlyFavorites ? '즐겨찾기만' : '전체 코인'}
+          즐겨찾기만
         </button>
         <button
           className="desk-button"
@@ -183,7 +226,17 @@ export function WatchlistPage() {
           {error}
         </p>
       ) : null}
-      <p className="watch-note">1분 자동 갱신 · RSI·200일선은 확정 일봉 기준</p>
+      <p className="watch-note">
+        {derivatives
+          ? '현재가 1분 · 선물 Bybit USDT 무기한 · 펀딩은 확정 정산, 롱·숏은 계정 수 비중'
+          : '1분 자동 갱신 · RSI·200일선은 확정 일봉 기준'}
+      </p>
+      {derivatives && futures.error && (
+        <p role="status" className="refresh-notice">
+          선물 갱신 지연 · 마지막 자료를 유지합니다.{' '}
+          <button onClick={futures.reload}>다시 시도</button>
+        </p>
+      )}
       <div className="panel watch-table-wrap" tabIndex={0} aria-label="코인별 시세와 기술지표">
         <table className="watch-table">
           <caption className="sr-only">코인별 현재 시세와 확정 일봉 기술지표</caption>
@@ -193,10 +246,9 @@ export function WatchlistPage() {
               <th>자산</th>
               <th>가격 · {currency}</th>
               <th>24H 변동</th>
-              <th>24H 거래대금</th>
-              <th>RSI 14</th>
-              <th>200일선 대비</th>
-              <th>가격 시각 KST</th>
+              <th>{derivatives ? '확정 펀딩률' : '24H 거래대금'}</th>
+              <th>{derivatives ? '미결제약정 · 코인 수량' : 'RSI 14'}</th>
+              <th>{derivatives ? '롱 / 숏 계정 비중' : '200일선 대비'}</th>
               <th>분석</th>
             </tr>
           </thead>
@@ -249,7 +301,7 @@ export function WatchlistPage() {
                       <small>{a.name}</small>
                     </Link>
                   </td>
-                  <td>
+                  <td title={q ? '가격 시각 ' + dateLabel(q.time, true) : undefined}>
                     {money(q?.price, currency)}
                     {stale ? (
                       <small className="amber" title={errors[a.id] || overview?.meta.warning}>
@@ -272,30 +324,95 @@ export function WatchlistPage() {
                       <small>24H≈</small>
                     ) : null}
                   </td>
-                  <td data-label="24H 거래대금">{turnover(q?.volume24h, currency)}</td>
-                  <td data-label="RSI 14" title={technicalTitle}>
-                    {numeric(overview?.technical.rsi)}
-                    {technicalDelayed ? <small className="amber">지표 갱신 지연</small> : null}
-                  </td>
-                  <td
-                    data-label="200일선 대비"
-                    title={technicalTitle}
-                    className={gap === null ? 'muted' : gap < 0 ? 'down' : 'up'}
-                  >
-                    {gap === null ? '—' : (gap >= 0 ? '+' : '') + numeric(gap) + '%'}
-                    {technicalDelayed ? (
-                      <small className="amber">
-                        {technicalTime ? dateLabel(technicalTime) + ' 기준' : '기준일 확인 중'}
-                      </small>
-                    ) : null}
-                  </td>
-                  <td>
-                    <small>{dateLabel(q?.time, true)}</small>
-                  </td>
-                  <td>
+                  {derivatives ? (
+                    (['funding', 'open_interest', 'long_account_ratio'] as const).map((metric) => {
+                      const point = futures.data?.data.find((row) => row.asset === a.id)?.[metric];
+                      const label = {
+                        funding: '확정 펀딩률',
+                        open_interest: '미결제약정',
+                        long_account_ratio: '롱 / 숏 계정 비중',
+                      }[metric];
+                      const delayed = point?.stale || !!futures.error;
+                      return (
+                        <td key={metric} data-label={label}>
+                          <Link
+                            className="market-metric-link"
+                            aria-label={a.name + ' ' + label + ' 차트'}
+                            title={
+                              point ? 'Bybit · ' + dateLabel(point.time, true) : 'Bybit · 관측 대기'
+                            }
+                            to={
+                              '/futures/' +
+                              a.id +
+                              marketAnalysisLink(a.id, market).slice(1) +
+                              '&panels=futures%3A' +
+                              metric
+                            }
+                          >
+                            {!point
+                              ? '—'
+                              : metric === 'funding'
+                                ? (point.value > 0 ? '+' : '') + numeric(point.value, 4) + '%'
+                                : metric === 'open_interest'
+                                  ? numeric(point.value, 0) + ' ' + a.id
+                                  : numeric(point.value, 1) +
+                                    '% / ' +
+                                    numeric(100 - point.value, 1) +
+                                    '%'}
+                            {point && metric === 'long_account_ratio' && (
+                              <span className="account-ratio-track" aria-hidden="true">
+                                <i style={{ width: point.value + '%' }} />
+                              </span>
+                            )}
+                          </Link>
+                          {delayed ? (
+                            <small className="amber">갱신 지연 · 보관값</small>
+                          ) : !point ? (
+                            <small>{futures.loading ? '조회 중' : '관측 대기'}</small>
+                          ) : null}
+                        </td>
+                      );
+                    })
+                  ) : (
+                    <>
+                      <td data-label="24H 거래대금">{turnover(q?.volume24h, currency)}</td>
+                      <td data-label="RSI 14" title={technicalTitle}>
+                        {numeric(overview?.technical.rsi)}
+                        {technicalDelayed ? <small className="amber">지표 갱신 지연</small> : null}
+                      </td>
+                      <td
+                        data-label="200일선 대비"
+                        title={technicalTitle}
+                        className={gap === null ? 'muted' : gap < 0 ? 'down' : 'up'}
+                      >
+                        {gap === null ? '—' : (gap >= 0 ? '+' : '') + numeric(gap) + '%'}
+                        {technicalDelayed ? (
+                          <small className="amber">
+                            {technicalTime ? dateLabel(technicalTime) + ' 기준' : '기준일 확인 중'}
+                          </small>
+                        ) : null}
+                      </td>
+                    </>
+                  )}
+                  <td className="watch-analysis">
                     <Link to={marketAnalysisLink(a.id, market)} aria-label={a.name + ' 차트 열기'}>
-                      차트 ↗
+                      차트
                     </Link>
+                    {NETWORK_ASSETS.some((id) => id === a.id) && (
+                      <Link
+                        to={'/onchain/' + a.id + marketAnalysisLink(a.id, market).slice(1)}
+                        aria-label={a.name + ' 온체인 열기'}
+                      >
+                        온체인
+                      </Link>
+                    )}
+                    <Link
+                      to={'/futures/' + a.id + marketAnalysisLink(a.id, market).slice(1)}
+                      aria-label={a.name + ' 선물 열기'}
+                    >
+                      선물
+                    </Link>
+                    {q && <small className="sr-only">가격 시각 {dateLabel(q.time, true)}</small>}
                   </td>
                 </tr>
               );

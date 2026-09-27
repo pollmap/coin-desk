@@ -2,7 +2,7 @@
 
 **BTC 중심으로 DOGE·ETH의 가격·온체인·선물을 함께 확인하는 분석 작업공간입니다.**
 
-작업 버전 **0.15.4**, 운영 버전 **0.15.3**. 운영 점검에서 Cron CPU 한도 초과를 확인해 현재가·최근 선물·배경 수집·분석을 독립 Worker로 분리합니다. 엄격한 48시간 상태 판정, Chromium/WebKit·접근성 CI와 운영 백업 복원 검사를 추가했습니다. 통합 배포와 배포 후 하루 운영 검증은 진행 중입니다. [마감 검증 기록](docs/audit-15/closeout/README.md) · [구현·검증·배포 상태](docs/RELEASE15.md)
+작업 버전 **0.15.5**, 운영 버전 **0.15.4**. CoinGlass를 참고한 시장 수급 표와 분석 바로가기를 보완합니다. 운영 점검에서 Cron CPU 한도 초과를 확인해 현재가·최근 선물·배경 수집·분석을 독립 Worker로 분리합니다. 엄격한 48시간 상태 판정, Chromium/WebKit·접근성 CI와 운영 백업 복원 검사를 추가했습니다. 통합 배포와 배포 후 하루 운영 검증은 진행 중입니다. [마감 검증 기록](docs/audit-15/closeout/README.md) · [구현·검증·배포 상태](docs/RELEASE15.md)
 
 [운영 사이트](https://coin-desk.pages.dev) · [경쟁 기능 비교표](docs/RELEASE15.md#기능-비교) · [데이터 정의](docs/DATA.md)
 
@@ -162,3 +162,4 @@ docs/            데이터 정의·운영·검증·화면 기록
 - [TradingView Lightweight Charts](https://github.com/tradingview/lightweight-charts), Apache-2.0. 화면의 귀속 로고와 저작권 표시를 유지합니다.
 
 Coin Desk는 독립적으로 만든 개인 분석 도구이며 CoinDesk 뉴스, CoinGlass, TradingView 또는 데이터 제공자의 공식 서비스가 아닙니다. 타사 화면 이미지를 제품 자산으로 재배포하지 않습니다. 저장소 자체 소스에는 별도의 배포 라이선스를 아직 지정하지 않았습니다.
+

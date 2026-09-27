@@ -53,6 +53,26 @@ const call = async (path, method = 'GET') => {
   );
   return { status: response.status, data: await response.json() };
 };
+it('serves a read-only enabled-asset market summary and rejects arbitrary filters', async () => {
+  const upstream = vi.fn(() => {
+    throw new Error('No upstream calls allowed');
+  });
+  vi.stubGlobal('fetch', upstream);
+  const now = Math.floor(Date.now() / 1000);
+  DB.sqlite
+    .prepare('INSERT INTO derivative_series VALUES (?,?,?,?,?)')
+    .run('BTC', 'funding', now - 60, 0.01, now);
+  const before = DB.sqlite.prepare('SELECT total_changes() AS n').get().n;
+  const result = await call('market-derivatives');
+  expect(result.status).toBe(200);
+  expect(result.data.source).toBe('Bybit');
+  expect(result.data.data).toHaveLength(1);
+  expect(result.data.data[0].funding.value).toBe(0.01);
+  expect((await call('market-derivatives?source=untrusted')).status).toBe(400);
+  expect((await call('market-derivatives', 'POST')).status).toBe(405);
+  expect(upstream).not.toHaveBeenCalled();
+  expect(DB.sqlite.prepare('SELECT total_changes() AS n').get().n).toBe(before);
+});
 it('refreshes a quote after one minute and shares that refresh with subsequent readers', async () => {
   const now = Math.floor(Date.now() / 1000);
   DB.sqlite
