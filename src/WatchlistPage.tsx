@@ -215,7 +215,10 @@ export function WatchlistPage() {
           className="desk-button"
           disabled={state.loading}
           aria-label="코인 목록 새로고침"
-          onClick={() => setRevision((v) => v + 1)}
+          onClick={() => {
+            setRevision((v) => v + 1);
+            if (derivatives) futures.reload();
+          }}
         >
           <RefreshCw size={15} />
           {state.loading ? '조회 중' : '새로고침'}
@@ -237,9 +240,17 @@ export function WatchlistPage() {
           <button onClick={futures.reload}>다시 시도</button>
         </p>
       )}
-      <div className="panel watch-table-wrap" tabIndex={0} aria-label="코인별 시세와 기술지표">
+      <div
+        className="panel watch-table-wrap"
+        tabIndex={0}
+        aria-label={derivatives ? '코인별 시세와 Bybit 선물 수급' : '코인별 시세와 기술지표'}
+      >
         <table className="watch-table">
-          <caption className="sr-only">코인별 현재 시세와 확정 일봉 기술지표</caption>
+          <caption className="sr-only">
+            {derivatives
+              ? '코인별 현재 시세와 Bybit 선물 수급'
+              : '코인별 현재 시세와 확정 일봉 기술지표'}
+          </caption>
           <thead>
             <tr>
               <th>즐겨찾기</th>
