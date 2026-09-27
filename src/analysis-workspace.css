@@ -696,12 +696,16 @@
     margin: 4px 0;
     width: 100%;
     justify-content: space-between;
+    flex-wrap: wrap;
+    min-width: 0;
   }
   .analysis-pricebar > div:first-child {
     align-items: flex-start;
+    min-width: 0;
   }
   .analysis-pricebar strong {
     font-size: 25px;
+    overflow-wrap: anywhere;
   }
 }
 
