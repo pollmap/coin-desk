@@ -25,6 +25,7 @@ export function DateNavigator({
 }) {
   const dialog = useRef<HTMLDialogElement>(null),
     opener = useRef<HTMLButtonElement>(null);
+  const dateInput = useRef<HTMLInputElement>(null);
   const id = useId();
   const [mode, setMode] = useState<'date' | 'range'>('date');
   const [start, setStart] = useState(''),
@@ -41,6 +42,7 @@ export function DateNavigator({
     setError('');
     setMode('date');
     dialog.current?.showModal();
+    dateInput.current?.focus();
   }
   function close() {
     dialog.current?.close();
@@ -190,7 +192,7 @@ export function DateNavigator({
           <label>
             {mode === 'date' ? '이동할 날짜 (UTC)' : '시작일 (UTC)'}
             <input
-              autoFocus
+              ref={dateInput}
               required
               type="date"
               value={start}
