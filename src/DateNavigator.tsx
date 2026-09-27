@@ -142,7 +142,11 @@ export function DateNavigator({
         ref={dialog}
         className="date-dialog"
         aria-labelledby={id}
-        onCancel={() => opener.current?.focus()}
+        onCancel={(event) => {
+          event.preventDefault();
+          close();
+        }}
+        onClose={() => opener.current?.focus()}
       >
         <form
           onSubmit={(e) => {

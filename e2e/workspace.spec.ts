@@ -63,10 +63,13 @@ test('core selection, Korean/ticker search, all-history and keyboard restoration
 }) => {
   await page.goto('/');
   await expect(chart(page)).toHaveAttribute('data-asset', 'BTC');
-  await expect(page.getByRole('button', { name: '전체', exact: true }).first()).toHaveAttribute(
-    'aria-pressed',
-    'true',
-  );
+  const periodSelect = page.getByRole('combobox', { name: '조회 기간', exact: true });
+  if (await periodSelect.isVisible()) await expect(periodSelect).toHaveValue('all');
+  else
+    await expect(page.getByRole('button', { name: '전체', exact: true }).first()).toHaveAttribute(
+      'aria-pressed',
+      'true',
+    );
   for (const [query, asset] of [
     ['도지', 'DOGE'],
     ['ETH', 'ETH'],
@@ -90,6 +93,8 @@ test('core selection, Korean/ticker search, all-history and keyboard restoration
   await expect(page.getByRole('button', { name: '지표 추가', exact: true })).toBeFocused();
 });
 test('price source survives sections, navigation, reload and shared URL', async ({ page }) => {
+  // Three price sources, each with section changes, Back and a full reload.
+  test.setTimeout(90000);
   await page.goto('/?asset=DOGE&period=all&price_source=reference');
   for (const basis of ['upbit', 'binance', 'reference']) {
     await page.getByLabel('가격 기준', { exact: true }).selectOption(basis);

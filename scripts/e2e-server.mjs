@@ -6,8 +6,10 @@ import { createServer as createVite } from 'vite';
 import { openDatabase, memoryCache } from './local-db.mjs';
 const DB = openDatabase(':memory:');
 const port = Number(process.env.COIN_DESK_TEST_PORT || '5190');
+const server = createServer();
 const vite = await createVite({
-  server: { middlewareMode: true, hmr: false, proxy: {} },
+  cacheDir: `node_modules/.vite-e2e-${port}`,
+  server: { middlewareMode: true, hmr: { server }, proxy: {} },
   appType: 'spa',
 });
 const { ASSETS, METRICS } = await vite.ssrLoadModule('/shared/catalog.ts');
@@ -34,21 +36,19 @@ for (const [index, asset] of enabled.entries()) {
   const months = new Map();
   for (const market of ['upbit', 'binance']) {
     const factor = market === 'upbit' ? 1400 : 1;
-    DB.sqlite
-      .prepare('INSERT INTO snapshots VALUES(?,?,?)')
-      .run(
-        'quote:' + asset + ':' + market,
-        JSON.stringify({
-          asset,
-          price: base * factor,
-          time: now,
-          change24h: 2,
-          volume24h: 100000000,
-          high24h: base * factor * 1.1,
-          low24h: base * factor * 0.9,
-        }),
-        now,
-      );
+    DB.sqlite.prepare('INSERT INTO snapshots VALUES(?,?,?)').run(
+      'quote:' + asset + ':' + market,
+      JSON.stringify({
+        asset,
+        price: base * factor,
+        time: now,
+        change24h: 2,
+        volume24h: 100000000,
+        high24h: base * factor * 1.1,
+        low24h: base * factor * 0.9,
+      }),
+      now,
+    );
     DB.sqlite
       .prepare(
         'INSERT OR REPLACE INTO ingestion(key,last_success,data_as_of,next_attempt) VALUES(?,?,?,?)',
@@ -142,7 +142,7 @@ const env = {
   BITVIEW_BASE_URL: '',
   ASSETS: { fetch: async () => new Response('', { status: 404 }) },
 };
-const server = createServer(async (req, res) => {
+server.on('request', async (req, res) => {
   if (!req.url.startsWith('/api/')) return vite.middlewares(req, res);
   try {
     const response = await worker.fetch(new Request(`http://127.0.0.1:${port}` + req.url), env, {

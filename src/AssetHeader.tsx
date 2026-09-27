@@ -166,6 +166,7 @@ export function AssetHeader({
               to={target(a)}
               className={a === asset ? 'active' : ''}
               aria-current={a === asset ? 'true' : undefined}
+              aria-label={`${ASSETS.find((item) => item.id === a)?.name} ${a}`}
             >
               <AssetLogo asset={a} size={21} />
               <span className="shortcut-name">{ASSETS.find((item) => item.id === a)?.name}</span>

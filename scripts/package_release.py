@@ -7,7 +7,7 @@ ROOT_FILES = ['.gitignore', '.gitattributes', '.nvmrc', '.prettierrc.json', 'REA
               'wrangler.jsonc', 'wrangler.feed.jsonc', 'wrangler.quotes.jsonc', 'wrangler.background.jsonc',
               'wrangler.analysis.jsonc', 'index.html']
 files = [ROOT / name for name in ROOT_FILES]
-for folder in ['src', 'shared', 'worker', 'migrations', 'scripts', 'tests', 'e2e', 'docs', '.github', 'pages', 'public']:
+for folder in ['src', 'shared', 'worker', 'migrations', 'scripts', 'tests', 'e2e', 'docs', '.github', 'pages', 'public', 'extension']:
     files.extend(p for p in (ROOT / folder).rglob('*')
                  if p.is_file() and '__pycache__' not in p.parts and '.wrangler' not in p.parts and p.suffix != '.pyc')
 with zipfile.ZipFile(DEST, 'w', compression=zipfile.ZIP_DEFLATED) as archive:

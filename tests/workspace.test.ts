@@ -72,12 +72,12 @@ describe('personal desk untrusted settings', () => {
     ).toThrow();
   });
   it('rejects oversized, unsupported and duplicate imports before replacing settings', () => {
-    expect(() => importDesk(' '.repeat(64001))).toThrow();
-    expect(() => importDesk(JSON.stringify({ ...DEFAULT_DESK, note: '가'.repeat(22000) }))).toThrow(
-      '64KB',
+    expect(() => importDesk(' '.repeat(512001))).toThrow();
+    expect(() => importDesk(JSON.stringify({ ...DEFAULT_DESK, note: '가'.repeat(172000) }))).toThrow(
+      '512KB',
     );
     expect(() => importDesk('{')).toThrow();
-    expect(() => importDesk(JSON.stringify({ ...DEFAULT_DESK, version: 2 }))).toThrow();
+    expect(() => importDesk(JSON.stringify({ ...DEFAULT_DESK, version: 99 }))).toThrow();
     expect(() =>
       importDesk(JSON.stringify({ ...DEFAULT_DESK, favorites: ['BTC', 'BTC'] })),
     ).toThrow();

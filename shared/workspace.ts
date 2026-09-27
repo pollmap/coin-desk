@@ -2,6 +2,9 @@ import { ASSETS, METRICS } from './catalog';
 import { isRangePeriod } from './ranges';
 import { validIndicators } from './indicators';
 import type { Asset, Interval, Market, Period } from './types';
+import { ANALYSIS_VIEWS, analysisView } from './advanced-analysis';
+import { validAnnotations, type Annotation } from './annotations';
+import { parseUtcDate, type DateWindow } from './date-navigation';
 
 export interface ChartSettings {
   asset: Asset;
@@ -21,16 +24,21 @@ export interface Workspace extends ChartSettings {
   section?: 'price' | 'onchain' | 'futures';
   signal?: string;
   comparePrice?: boolean;
+  dateWindow?: DateWindow;
+  annotations?: Annotation[];
+  normalization?: 'index' | 'percent' | 'ratio';
+  comparisonWindows?: Record<string, string>;
+  analysisOptions?: Record<string, string>;
 }
 export interface PersonalDesk {
-  version: 1;
+  version: 1 | 2;
   favorites: Asset[];
   cards: string[];
   workspaces: Workspace[];
 }
 export const DEFAULT_CARDS = ['mvrv', 'realized_price', 'sopr_24h', 'nupl'];
 export const DEFAULT_DESK: PersonalDesk = {
-  version: 1,
+  version: 2,
   favorites: ['BTC', 'DOGE', 'ETH'],
   cards: DEFAULT_CARDS,
   workspaces: [],
@@ -62,7 +70,7 @@ export function chartSettings(value: unknown): ChartSettings {
 }
 export function normalizeDesk(value: unknown): PersonalDesk {
   const v = record(value);
-  if (v.version !== 1) return structuredClone(DEFAULT_DESK);
+  if (v.version !== 1 && v.version !== 2) return structuredClone(DEFAULT_DESK);
   const favorites = Array.isArray(v.favorites)
     ? [...new Set(v.favorites.filter((id): id is Asset => ASSETS.some((a) => a.id === id)))].slice(
         0,
@@ -93,7 +101,8 @@ export function normalizeDesk(value: unknown): PersonalDesk {
       entry.priceSource === 'binance'
         ? { priceSource: entry.priceSource }
         : {}),
-      ...(entry.visual === 'rainbow' || entry.visual === 'price' ? { visual: entry.visual } : {}),
+      ...(entry.visual ? { visual: analysisView(entry.visual) } : {}),
+      ...validExtras(entry),
       ...(typeof entry.comparePrice === 'boolean' ? { comparePrice: entry.comparePrice } : {}),
       ...(Array.isArray(entry.panels)
         ? {
@@ -104,11 +113,11 @@ export function normalizeDesk(value: unknown): PersonalDesk {
         : {}),
     });
   }
-  return { version: 1, favorites, cards: validCards(v.cards), workspaces };
+  return { version: 2, favorites, cards: validCards(v.cards), workspaces };
 }
 export function importDesk(text: string): PersonalDesk {
-  if (new TextEncoder().encode(text).byteLength > 64000)
-    throw new Error('설정 파일은 UTF-8 기준 64KB 이하여야 합니다.');
+  if (new TextEncoder().encode(text).byteLength > 512000)
+    throw new Error('설정 파일은 UTF-8 기준 512KB 이하여야 합니다.');
   let parsed: unknown;
   try {
     parsed = JSON.parse(text);
@@ -117,13 +126,13 @@ export function importDesk(text: string): PersonalDesk {
   }
   const v = record(parsed);
   if (
-    v.version !== 1 ||
+    ![1, 2].includes(Number(v.version)) ||
     !Array.isArray(v.workspaces) ||
     v.workspaces.length > 12 ||
     !Array.isArray(v.favorites) ||
     !Array.isArray(v.cards)
   ) {
-    throw new Error('Coin Desk 버전 1 설정 형식이 아닙니다.');
+    throw new Error('Coin Desk 버전 1·2 설정 형식이 아닙니다.');
   }
   for (const item of v.workspaces) {
     const w = record(item);
@@ -142,7 +151,8 @@ export function importDesk(text: string): PersonalDesk {
       (w.section !== undefined && !['price', 'onchain', 'futures'].includes(String(w.section))) ||
       (w.priceSource !== undefined &&
         !['reference', 'upbit', 'binance'].includes(String(w.priceSource))) ||
-      (w.visual !== undefined && !['price', 'rainbow'].includes(String(w.visual))) ||
+      (w.visual !== undefined &&
+        !(ANALYSIS_VIEWS as readonly string[]).includes(String(w.visual))) ||
       (w.comparePrice !== undefined && typeof w.comparePrice !== 'boolean') ||
       (w.signal !== undefined &&
         (typeof w.signal !== 'string' ||
@@ -180,6 +190,15 @@ export function workspaceUrl(workspace: Workspace): string {
   if (workspace.panels) params.set('panels', workspace.panels.join(','));
   if (workspace.comparePrice) params.set('compare_price', '1');
   if (workspace.signal) params.set('signal', workspace.signal);
+  if (workspace.dateWindow) {
+    params.set('chart_from', String(workspace.dateWindow.from));
+    params.set('chart_to', String(workspace.dateWindow.to));
+  }
+  if (workspace.normalization) params.set('normalization', workspace.normalization);
+  for (const [key, value] of Object.entries(workspace.analysisOptions ?? {}))
+    if (validAnalysisOption(key, value)) params.set(key, value);
+  for (const [key, value] of Object.entries(workspace.comparisonWindows ?? {}))
+    if (parseUtcDate(value) !== null) params.set('window_' + key, value);
   const path =
     workspace.section === 'onchain' || workspace.section === 'futures'
       ? '/' + workspace.section + '/' + config.asset
@@ -187,4 +206,44 @@ export function workspaceUrl(workspace: Workspace): string {
         ? '/chart/' + config.asset
         : '/';
   return path + '?' + params;
+}
+function validExtras(entry: Record<string, unknown>): Partial<Workspace> {
+  const d = record(entry.dateWindow),
+    result: Partial<Workspace> = { annotations: validAnnotations(entry.annotations) };
+  if (
+    Number.isSafeInteger(d.from) &&
+    Number.isSafeInteger(d.to) &&
+    Number(d.from) > 0 &&
+    Number(d.to) > Number(d.from)
+  )
+    result.dateWindow = { from: Number(d.from), to: Number(d.to) };
+  if (['index', 'percent', 'ratio'].includes(String(entry.normalization)))
+    result.normalization = entry.normalization as Workspace['normalization'];
+  const windows = record(entry.comparisonWindows);
+  result.analysisOptions = Object.fromEntries(
+    Object.entries(record(entry.analysisOptions)).filter(([k, v]) => validAnalysisOption(k, v)),
+  ) as Record<string, string>;
+  result.comparisonWindows = Object.fromEntries(
+    Object.entries(windows).filter(
+      ([k, v]) =>
+        ['a_from', 'a_to', 'b_from', 'b_to'].includes(k) &&
+        typeof v === 'string' &&
+        parseUtcDate(v) !== null,
+    ),
+  ) as Record<string, string>;
+  return result;
+}
+export function validAnalysisOption(key: string, value: unknown) {
+  return (
+    typeof value === 'string' &&
+    (
+      {
+        correlation: ['30', '90', '365'],
+        correlation_asset: ['DOGE', 'ETH'],
+        seasonality_method: ['log'],
+        seasonality_years: ['1'],
+        comparison_layout: ['side'],
+      } as Record<string, string[]>
+    )[key]?.includes(value)
+  );
 }

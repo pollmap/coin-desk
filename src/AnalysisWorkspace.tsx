@@ -2,6 +2,17 @@ import { marketComparisonLink } from '../shared/market-watch';
 import { belongsToSection, focusMetric } from '../shared/analysis-sections';
 import { metricCategory, primaryShortcuts } from '../shared/metric-navigation';
 import { workspaceIndicators } from '../shared/workspace-indicators';
+import {
+  aggregateCloses,
+  analysisView,
+  ANALYSIS_VIEWS,
+  ANALYSIS_LABELS,
+  powerLaw,
+  rollingVwap,
+  vwapReclaims,
+} from '../shared/advanced-analysis';
+import { annotationKey, type Annotation } from '../shared/annotations';
+import { readAnnotations } from './ChartDrawings';
 import { lazy, Suspense, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { readDateWindow, type DateWindow } from '../shared/date-navigation';
 import { Link, useLocation, useParams, useSearchParams } from 'react-router-dom';
@@ -48,6 +59,11 @@ const HistoryPositionPanel = lazy(() =>
 );
 import { WorkspaceBar } from './PersonalDesk';
 import './analysis-workspace.css';
+import './analysis-library.css';
+const AnalysisLab = lazy(() => import('./AnalysisLab').then((m) => ({ default: m.AnalysisLab })));
+const RelatedLibrary = lazy(() =>
+  import('./ResearchLibrary').then((m) => ({ default: m.RelatedLibrary })),
+);
 
 interface Choice {
   id: string;
@@ -93,13 +109,38 @@ export function AnalysisWorkspace() {
   const period = (isRangePeriod(params.get('period')) ? params.get('period') : 'all') as Period;
   const log = params.get('log') !== '0';
   const interval = (
-    basis === 'reference'
-      ? '1d'
-      : ['1h', '4h', '1d', '1w', '1M'].includes(params.get('interval') || '')
-        ? params.get('interval')
-        : '1d'
+    (basis === 'reference' ? ['1d', '1w', '1M'] : ['1h', '4h', '1d', '1w', '1M']).includes(
+      params.get('interval') || '',
+    )
+      ? params.get('interval')
+      : '1d'
   ) as Interval;
-  const visual = params.get('visual') === 'rainbow' ? 'rainbow' : 'price';
+  const requestedVisual = analysisView(params.get('visual'));
+  const visual =
+    (requestedVisual === 'powerlaw' && (asset !== 'BTC' || basis !== 'reference')) ||
+    (requestedVisual === 'cycles' && asset !== 'BTC') ||
+    (requestedVisual === 'vwap' && basis === 'reference')
+      ? 'price'
+      : requestedVisual;
+  const labView = !focused && ['relative', 'cycles', 'windows', 'seasonality'].includes(visual);
+  const drawingStorageKey = annotationKey(
+    asset,
+    basis,
+    interval,
+    focused ? (params.get('panels')?.split(',')[0] ?? section) : 'price',
+  );
+  const [annotations, setAnnotations] = useState<Annotation[]>(() =>
+    readAnnotations(drawingStorageKey),
+  );
+  const visibleRange = useRef<DateWindow | null>(sharedWindow);
+  const trackRange = useCallback((range: DateWindow) => {
+    visibleRange.current = range;
+  }, []);
+  const [related, setRelated] = useState(params.get('related') === '1');
+  useEffect(() => {
+    setAnnotations(readAnnotations(drawingStorageKey));
+    visibleRange.current = sharedWindow;
+  }, [drawingStorageKey]);
   const [picker, setPicker] = useState(false),
     [query, setQuery] = useState(''),
     [evidence, setEvidence] = useState(params.get('signal') !== null);
@@ -112,7 +153,7 @@ export function AnalysisWorkspace() {
   function change(patch: Record<string, string | null>) {
     setParams((prev) => {
       const next = new URLSearchParams(prev);
-      if (['period', 'price_source', 'panels', 'visual', 'interval'].some((key) => key in patch)) {
+      if (['period', 'price_source', 'visual', 'interval'].some((key) => key in patch)) {
         next.delete('chart_from');
         next.delete('chart_to');
       }
@@ -194,12 +235,12 @@ export function AnalysisWorkspace() {
   const points = useMemo(
     () =>
       basis === 'reference'
-        ? (series?.data ?? EMPTY_POINTS)
+        ? aggregateCloses(series?.data ?? EMPTY_POINTS, interval)
         : ((raw.data as CandleResponse | undefined)?.data.map((p) => ({
             time: p.time,
             value: p.close,
           })) ?? EMPTY_POINTS),
-    [series, raw.data, basis],
+    [series, raw.data, basis, interval],
   );
   const dailyPoints = useMemo(
     () =>
@@ -367,8 +408,28 @@ export function AnalysisWorkspace() {
     f = useRemote(selected[5], choices);
   const responses = [a, b, c, d, e, f];
   const selectedKey = selected.join(',');
-  const indicators = (params.get('indicators') ?? 'sma200').split(',').filter(Boolean);
+  const indicators = (
+    params.get('indicators') ??
+    (visual === 'ribbon' ? 'sma:7:bar,sma:25:bar,sma:50:bar,sma:100:bar' : 'sma200')
+  )
+    .split(',')
+    .filter(Boolean);
   const indicatorKey = indicators.join(',');
+  const vwap = useMemo(
+    () =>
+      basis === 'reference'
+        ? EMPTY_POINTS
+        : rollingVwap(
+            ((daily.data ?? (raw.data as CandleResponse | undefined))
+              ?.data as import('../shared/types').Candle[]) ?? [],
+          ),
+    [basis, daily.data, raw.data],
+  );
+  const reclaims = useMemo(() => vwapReclaims(dailyPoints, vwap), [dailyPoints, vwap]);
+  const computedMarkers = useMemo(
+    () => (visual === 'vwap' ? reclaims.map((p) => ({ time: p.time, label: '재돌파 확인' })) : []),
+    [visual, reclaims],
+  );
   const lines = useMemo<AnalysisLine[]>(() => {
     const mapped = selected.flatMap((id, i) => {
       const choice = choices.find((c) => c.id === id);
@@ -394,7 +455,11 @@ export function AnalysisWorkspace() {
       ];
     });
     const overlays = workspaceIndicators(
-      points,
+      basis === 'reference'
+        ? points
+        : ((raw.data as CandleResponse | undefined)?.data ?? [])
+            .filter((c) => c.closed)
+            .map((c) => ({ time: c.time, value: c.close })),
       dailyPoints,
       indicators,
       unit,
@@ -408,7 +473,35 @@ export function AnalysisWorkspace() {
               ? 32 * 86400
               : 86400,
     );
-    return [...overlays, ...mapped];
+    const model: AnalysisLine[] =
+      visual === 'vwap' && basis !== 'reference'
+        ? [
+            {
+              id: 'vwap365',
+              title: '365일 HLC3 VWAP',
+              unit,
+              source: basisName(basis),
+              formula: 'Σ(HLC3 × 코인 거래량) / Σ코인 거래량 · 연속 확정 일봉 365개',
+              data: vwap,
+              color: '#dfb873',
+              overlay: true,
+            },
+          ]
+        : visual === 'powerlaw' && asset === 'BTC' && basis === 'reference'
+          ? [
+              {
+                id: 'powerlaw',
+                title: '고정식 파워로 · 참고',
+                unit: 'USD',
+                source: '첨부 Dacoinminster 수식',
+                formula: '4.42 × 10^-17 × (2009-01-03 이후 일수)^5.6 · 과거 관측 구간만',
+                data: powerLaw(dailyPoints),
+                color: '#dfb873',
+                overlay: true,
+              },
+            ]
+          : [];
+    return [...overlays, ...model, ...mapped];
   }, [
     selectedKey,
     choices,
@@ -428,9 +521,13 @@ export function AnalysisWorkspace() {
     indicatorKey,
     dailyPoints,
     points,
+    raw.data,
     interval,
     unit,
     basis,
+    visual,
+    vwap,
+    asset,
   ]);
   const visibleSignals = useMemo(
     () =>
@@ -594,41 +691,65 @@ export function AnalysisWorkspace() {
               </button>
             </div>
           )}
-          <PeriodPicker
-            value={period}
-            onChange={(p) => {
-              change({ period: p, signal: null });
-              setRangeRevision((n) => n + 1);
-            }}
-          />
+          {(!labView || visual === 'relative') && (
+            <PeriodPicker
+              value={period}
+              onChange={(p) => {
+                change({ period: p, signal: null });
+                setRangeRevision((n) => n + 1);
+              }}
+            />
+          )}
           {!focused && (
             <>
               <select
                 aria-label="봉 간격"
+                hidden={labView}
                 value={interval}
-                disabled={basis === 'reference'}
                 onChange={(e) => change({ interval: e.target.value })}
               >
-                {['1h', '4h', '1d', '1w', '1M'].map((v) => (
-                  <option key={v} value={v}>
-                    {{ '1h': '1시간', '4h': '4시간', '1d': '일봉', '1w': '주봉', '1M': '월봉' }[v]}
-                  </option>
-                ))}
+                {(basis === 'reference' ? ['1d', '1w', '1M'] : ['1h', '4h', '1d', '1w', '1M']).map(
+                  (v) => (
+                    <option key={v} value={v}>
+                      {{ '1h': '1시간', '4h': '4시간', '1d': '일', '1w': '주', '1M': '월' }[v]}
+                      {basis === 'reference' ? ' 종가' : '봉'}
+                    </option>
+                  ),
+                )}
               </select>
               <select
                 aria-label="차트 시각화"
                 value={visual}
                 onChange={(e) =>
-                  change({ visual: e.target.value === 'price' ? null : e.target.value })
+                  change({
+                    visual: e.target.value === 'price' ? null : e.target.value,
+                    ...(e.target.value === 'ribbon'
+                      ? { indicators: 'sma:7:bar,sma:25:bar,sma:50:bar,sma:100:bar' }
+                      : {}),
+                    ...(e.target.value === 'vwap' ? { interval: '1d' } : {}),
+                  })
                 }
               >
-                <option value="price">가격·지표</option>
-                <option value="rainbow">가격 위치 밴드</option>
+                {ANALYSIS_VIEWS.map((v) => (
+                  <option
+                    key={v}
+                    value={v}
+                    disabled={
+                      (v === 'powerlaw' && (asset !== 'BTC' || basis !== 'reference')) ||
+                      (v === 'cycles' && asset !== 'BTC') ||
+                      (v === 'vwap' && basis === 'reference')
+                    }
+                  >
+                    {ANALYSIS_LABELS[v]}
+                    {v === 'vwap' && basis === 'reference' ? ' · 거래소 필요' : ''}
+                  </option>
+                ))}
               </select>
             </>
           )}
           <button
             ref={addButton}
+            hidden={labView}
             onClick={() => {
               if (!focused && visual === 'rainbow') change({ visual: null });
               setPicker(true);
@@ -637,7 +758,7 @@ export function AnalysisWorkspace() {
             <SlidersHorizontal size={16} />
             {focused ? '지표 찾기' : '지표 추가'}
           </button>
-          {!focused && (
+          {!focused && !labView && (
             <>
               <button aria-pressed={log} onClick={() => change({ log: log ? '0' : '1' })}>
                 로그축
@@ -672,6 +793,9 @@ export function AnalysisWorkspace() {
           >
             {evidence ? <PanelRightClose size={17} /> : <PanelRightOpen size={17} />}근거
           </button>
+          <button aria-expanded={related} onClick={() => setRelated((v) => !v)}>
+            관련 자료
+          </button>
         </div>
         {focused && (
           <div className="metric-shortcuts" role="group" aria-label="자주 보는 지표">
@@ -692,7 +816,7 @@ export function AnalysisWorkspace() {
               ))}
           </div>
         )}
-        <div className={'analysis-layout ' + (evidence ? 'with-evidence' : '')}>
+        <div className={'analysis-layout ' + (evidence || related ? 'with-evidence' : '')}>
           <div className="analysis-main">
             {error && (!focused || comparePrice) && (
               <div role="status" className="refresh-notice">
@@ -711,6 +835,9 @@ export function AnalysisWorkspace() {
               primaryLine?.data.length ? (
                 <>
                   <AnalysisChart
+                    drawingKey={drawingStorageKey}
+                    onAnnotations={setAnnotations}
+                    onVisibleRange={trackRange}
                     initialWindow={sharedWindow}
                     asset={asset}
                     primary={primaryLine}
@@ -754,6 +881,25 @@ export function AnalysisWorkspace() {
                   )}
                 </div>
               )
+            ) : ['relative', 'cycles', 'windows', 'seasonality'].includes(visual) ? (
+              <Suspense
+                fallback={
+                  <div className="loading" role="status">
+                    분석을 불러오고 있습니다…
+                  </div>
+                }
+              >
+                <AnalysisLab
+                  view={visual}
+                  points={dailyPoints}
+                  asset={asset}
+                  basis={basis}
+                  params={params}
+                  change={change}
+                  period={period}
+                  initialWindow={sharedWindow}
+                />
+              </Suspense>
             ) : visual === 'rainbow' ? (
               <>
                 <Suspense
@@ -793,6 +939,10 @@ export function AnalysisWorkspace() {
               </>
             ) : points.length ? (
               <AnalysisChart
+                drawingKey={drawingStorageKey}
+                onAnnotations={setAnnotations}
+                onVisibleRange={trackRange}
+                observations={computedMarkers}
                 initialWindow={sharedWindow}
                 asset={asset}
                 unit={unit}
@@ -828,7 +978,7 @@ export function AnalysisWorkspace() {
             )}
             {!focused && (
               <>
-                {visual !== 'rainbow' && (
+                {visual !== 'rainbow' && !labView && (
                   <div className="analysis-selected">
                     {lines
                       .filter((l) => !l.overlay)
@@ -868,64 +1018,99 @@ export function AnalysisWorkspace() {
               </>
             )}
           </div>
-          {evidence && (
-            <aside id="analysis-evidence" className="analysis-evidence">
-              <h2>{chosenSignal ? '관찰 근거' : chosenLine?.title || '관찰 신호'}</h2>
-              {chosenSignal ? (
-                <>
-                  <p>{chosenSignal.condition}</p>
-                  <dl>
-                    <dt>코인·원천</dt>
-                    <dd>
-                      {chosenSignal.asset} · {chosenSignal.source}
-                    </dd>
-                    <dt>기준 봉</dt>
-                    <dd>
-                      {dateLabel(chosenSignal.time)} · {chosenSignal.bar}
-                    </dd>
-                    <dt>이전 → 현재</dt>
-                    <dd>
-                      {numeric(chosenSignal.previous, 5)} → {numeric(chosenSignal.current, 5)}{' '}
-                      {chosenSignal.unit}
-                    </dd>
-                    <dt>산식 버전</dt>
-                    <dd>
-                      {chosenSignal.version} · {chosenSignal.status}
-                    </dd>
-                  </dl>
-                  <button onClick={() => change({ signal: null })}>전체 신호</button>
-                </>
-              ) : chosenLine ? (
-                <>
-                  <p>{chosenLine.formula}</p>
-                  <p>
-                    {chosenLine.source} · {chosenLine.unit}
-                  </p>
-                  {chosenLine.warning && <p role="status">{chosenLine.warning}</p>}
-                  <button onClick={() => setSelectedMetric('signals')}>신호 보기</button>
-                </>
-              ) : (
-                <>
-                  <p className="muted">확정된 관측의 조건 변화</p>
-                  {(feed.data?.data ?? []).slice(0, 12).map((s) => (
-                    <button className="signal-row" key={s.id} onClick={() => showSignal(s)}>
-                      <b>
-                        {signalLabels[s.rule]} {s.direction === 'up' ? '↑' : '↓'}
-                      </b>
-                      <span>
-                        {s.source} · {dateLabel(s.time)}
-                      </span>
-                      {s.revision! > 1 && <small>정정 {s.revision}</small>}
-                    </button>
-                  ))}
-                  {!feed.data?.data.length && (
-                    <p>{feed.error ? '신호 조회 지연' : '확인된 새 신호가 없습니다.'}</p>
-                  )}
-                </>
-              )}
+          {related ? (
+            <aside className="analysis-evidence">
+              <Suspense fallback={<p role="status">개인 자료를 불러오고 있습니다…</p>}>
+                <RelatedLibrary asset={asset} />
+              </Suspense>
             </aside>
+          ) : (
+            evidence && (
+              <aside id="analysis-evidence" className="analysis-evidence">
+                <h2>{chosenSignal ? '관찰 근거' : chosenLine?.title || '관찰 신호'}</h2>
+                {chosenSignal ? (
+                  <>
+                    <p>{chosenSignal.condition}</p>
+                    <dl>
+                      <dt>코인·원천</dt>
+                      <dd>
+                        {chosenSignal.asset} · {chosenSignal.source}
+                      </dd>
+                      <dt>기준 봉</dt>
+                      <dd>
+                        {dateLabel(chosenSignal.time)} · {chosenSignal.bar}
+                      </dd>
+                      <dt>이전 → 현재</dt>
+                      <dd>
+                        {numeric(chosenSignal.previous, 5)} → {numeric(chosenSignal.current, 5)}{' '}
+                        {chosenSignal.unit}
+                      </dd>
+                      <dt>산식 버전</dt>
+                      <dd>
+                        {chosenSignal.version} · {chosenSignal.status}
+                      </dd>
+                    </dl>
+                    <button onClick={() => change({ signal: null })}>전체 신호</button>
+                  </>
+                ) : chosenLine ? (
+                  <>
+                    <p>{chosenLine.formula}</p>
+                    <p>
+                      {chosenLine.source} · {chosenLine.unit}
+                    </p>
+                    {chosenLine.warning && <p role="status">{chosenLine.warning}</p>}
+                    <button onClick={() => setSelectedMetric('signals')}>신호 보기</button>
+                  </>
+                ) : (
+                  <>
+                    <p className="muted">확정된 관측의 조건 변화</p>
+                    {(feed.data?.data ?? []).slice(0, 12).map((s) => (
+                      <button className="signal-row" key={s.id} onClick={() => showSignal(s)}>
+                        <b>
+                          {signalLabels[s.rule]} {s.direction === 'up' ? '↑' : '↓'}
+                        </b>
+                        <span>
+                          {s.source} · {dateLabel(s.time)}
+                        </span>
+                        {s.revision! > 1 && <small>정정 {s.revision}</small>}
+                      </button>
+                    ))}
+                    {!feed.data?.data.length && (
+                      <p>{feed.error ? '신호 조회 지연' : '확인된 새 신호가 없습니다.'}</p>
+                    )}
+                  </>
+                )}
+              </aside>
+            )
           )}
         </div>
+        {visual === 'vwap' && !focused && (
+          <details className="model-details">
+            <summary>365일 VWAP · 재돌파 관찰 {reclaims.length}회</summary>
+            <p>
+              확정 일봉 HLC3를 거래량으로 가중합니다. 100일 연속 하회 후 7일 연속 상회한 마지막 날에
+              한 번 표시합니다. 결측일은 조건을 초기화합니다.
+            </p>
+            {reclaims.map((p) => (
+              <button
+                key={p.time}
+                onClick={() =>
+                  change({
+                    chart_from: String(p.time - 180 * 86400),
+                    chart_to: String(p.time + 30 * 86400),
+                  })
+                }
+              >
+                {dateLabel(p.time)}
+              </button>
+            ))}
+          </details>
+        )}
+        {visual === 'powerlaw' && !focused && (
+          <p className="source-line">
+            BTC USD 전용 참고식 · P = 4.42×10⁻¹⁷ × (2009-01-03 이후 일수)⁵·⁶ · 예측 경로 없음
+          </p>
+        )}
       </section>
       {!focused && (
         <details id="monthly-returns" className="panel monthly-returns">
@@ -970,7 +1155,7 @@ export function AnalysisWorkspace() {
       )}
       {section === 'history' && basis !== 'reference' && (
         <details className="analysis-save">
-          <summary>드로잉·사용자 지표 설정</summary>
+          <summary>고급 사용자 지표 설정</summary>
           <Link
             className="desk-button"
             to={
@@ -987,6 +1172,10 @@ export function AnalysisWorkspace() {
       <details className="analysis-save">
         <summary>작업공간 저장·불러오기</summary>
         <WorkspaceBar
+          resolveCurrent={(current) => ({
+            ...current,
+            dateWindow: visibleRange.current ?? undefined,
+          })}
           embedded
           current={{
             asset,
@@ -1003,6 +1192,22 @@ export function AnalysisWorkspace() {
             comparePrice: focused && comparePrice,
             visual,
             panels: selected,
+            dateWindow: visibleRange.current ?? undefined,
+            annotations,
+            normalization:
+              (params.get('normalization') as 'index' | 'percent' | 'ratio' | null) ?? undefined,
+            comparisonWindows: Object.fromEntries(
+              ['a_from', 'a_to', 'b_from', 'b_to'].map((k) => [k, params.get('window_' + k) ?? '']),
+            ),
+            analysisOptions: Object.fromEntries(
+              [
+                'correlation',
+                'correlation_asset',
+                'seasonality_method',
+                'seasonality_years',
+                'comparison_layout',
+              ].map((k) => [k, params.get(k) ?? '']),
+            ),
           }}
         />
       </details>

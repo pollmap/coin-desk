@@ -26,7 +26,14 @@ const vite = await viteServer({
   cacheDir: 'node_modules/.vite-api',
   publicDir: false,
   optimizeDeps: { noDiscovery: true, include: [] },
-  server: { middlewareMode: true, hmr: false, ws: false },
+  server: {
+    middlewareMode: true,
+    hmr: false,
+    ws: false,
+    watch: {
+      ignored: ['**/work/**', '**/.wrangler/**', '**/test-results/**', '**/playwright-report/**'],
+    },
+  },
   appType: 'custom',
 });
 const env = {
@@ -34,6 +41,25 @@ const env = {
   BITVIEW_BASE_URL: 'https://bitview.space',
   ENABLED_ASSETS: 'BTC,DOGE,ETH,SOL,XRP,LINK,ONDO,PEPE',
   ASSETS: { fetch: async () => new Response('Open http://127.0.0.1:5173') },
+};
+// Mirror the production service topology locally without remote bindings or credentials.
+for (const [binding, lane] of [
+  ['BACKGROUND_COLLECTOR', 'background'],
+  ['ANALYSIS_COLLECTOR', 'analysis'],
+])
+  env[binding] = {
+    fetch: async (request) => {
+      const collector = (await vite.ssrLoadModule('/worker/collector-entry.ts')).default;
+      return collector.fetch(request, { ...env, COLLECTOR_LANE: lane });
+    },
+  };
+env.FEED_SERVICE = {
+  fetch: async (request) => {
+    const feed = (await vite.ssrLoadModule('/worker/market-feed.ts')).default;
+    const headers = new Headers(request.headers);
+    headers.set('X-Feed-Token', 'local-development-only');
+    return feed.fetch(new Request(request, { headers }), { FEED_TOKEN: 'local-development-only' });
+  },
 };
 const context = {
   waitUntil(promise) {
@@ -63,7 +89,9 @@ const tick = setInterval(async () => {
   try {
     const worker = (await vite.ssrLoadModule('/worker/index.ts')).default;
     const jobs = [];
-    worker.scheduled({scheduledTime:Date.now()},env,{waitUntil: p=>jobs.push(p)});
+    await worker.scheduled({ scheduledTime: Date.now() }, env, { waitUntil: (p) => jobs.push(p) });
+    const { runCollector } = await vite.ssrLoadModule('/worker/collector-entry.ts');
+    jobs.push(runCollector(Math.floor(Date.now() / 1000), { ...env, COLLECTOR_LANE: 'quotes' }));
     await Promise.allSettled(jobs);
   } catch (e) {
     console.error('Refresh:', e.message);

@@ -1,0 +1,9 @@
+{
+  "checkedAt": "2026-09-27T15:31:29.333Z",
+  "runtime": "isolated Chromium with real Manifest V3 extension",
+  "source": "controlled X DOM fixture",
+  "actualChromeApis": true,
+  "rows": 1,
+  "persistedAfterReload": true,
+  "realXLoginTested": false
+}
