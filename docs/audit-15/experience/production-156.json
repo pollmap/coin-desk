@@ -1,0 +1,243 @@
+{
+  "checkedAt": "2026-09-27T11:18:38.069426+00:00",
+  "version": "0.15.6",
+  "endpoints": {
+    "status": {
+      "status": 200,
+      "count": 0
+    },
+    "health": {
+      "status": 503,
+      "count": 0
+    },
+    "signals": {
+      "status": 200,
+      "count": 12
+    },
+    "briefings": {
+      "status": 200,
+      "count": 2
+    },
+    "chain-context?asset=ETH&metric=tvl": {
+      "status": 200,
+      "count": 3287
+    },
+    "market-derivatives": {
+      "status": 200,
+      "count": 8
+    },
+    "network?asset=BTC&metric=mvrv&limit=1": {
+      "status": 200,
+      "count": 1
+    },
+    "derivatives?asset=BTC&metric=funding&limit=1": {
+      "status": 200,
+      "count": 1
+    },
+    "network?asset=DOGE&metric=mvrv&limit=1": {
+      "status": 200,
+      "count": 1
+    },
+    "derivatives?asset=DOGE&metric=funding&limit=1": {
+      "status": 200,
+      "count": 1
+    },
+    "network?asset=ETH&metric=mvrv&limit=1": {
+      "status": 200,
+      "count": 1
+    },
+    "derivatives?asset=ETH&metric=funding&limit=1": {
+      "status": 200,
+      "count": 1
+    }
+  },
+  "sourceCounts": {
+    "ok": 49,
+    "error": 28,
+    "delayed": 26,
+    "inactive": 23
+  },
+  "healthReasons": [
+    {
+      "code": "SOURCE_DELAYED",
+      "key": "reference:XRP"
+    },
+    {
+      "code": "SOURCE_DELAYED",
+      "key": "reference:LINK"
+    },
+    {
+      "code": "SOURCE_DELAYED",
+      "key": "network:XRP"
+    },
+    {
+      "code": "SOURCE_DELAYED",
+      "key": "network:LINK"
+    },
+    {
+      "code": "SOURCE_ERROR",
+      "key": "BTC:binance:1d"
+    },
+    {
+      "code": "SOURCE_ERROR",
+      "key": "DOGE:binance:1h"
+    },
+    {
+      "code": "SOURCE_ERROR",
+      "key": "DOGE:binance:1d"
+    },
+    {
+      "code": "SOURCE_ERROR",
+      "key": "ETH:binance:1h"
+    },
+    {
+      "code": "SOURCE_ERROR",
+      "key": "ETH:binance:1d"
+    },
+    {
+      "code": "SOURCE_DELAYED",
+      "key": "SOL:binance:1d"
+    },
+    {
+      "code": "SOURCE_DELAYED",
+      "key": "PEPE:binance:1d"
+    },
+    {
+      "code": "SOURCE_DELAYED",
+      "key": "SOL:upbit:1d"
+    },
+    {
+      "code": "SOURCE_DELAYED",
+      "key": "XRP:upbit:1d"
+    },
+    {
+      "code": "SOURCE_DELAYED",
+      "key": "LINK:upbit:1d"
+    },
+    {
+      "code": "SOURCE_DELAYED",
+      "key": "ONDO:upbit:1d"
+    },
+    {
+      "code": "SOURCE_DELAYED",
+      "key": "PEPE:upbit:1d"
+    },
+    {
+      "code": "SOURCE_ERROR",
+      "key": "quote:BTC:binance"
+    },
+    {
+      "code": "SOURCE_ERROR",
+      "key": "quote:DOGE:binance"
+    },
+    {
+      "code": "SOURCE_ERROR",
+      "key": "quote:ETH:binance"
+    },
+    {
+      "code": "SOURCE_ERROR",
+      "key": "quote:SOL:binance"
+    },
+    {
+      "code": "SOURCE_ERROR",
+      "key": "quote:XRP:binance"
+    },
+    {
+      "code": "SOURCE_ERROR",
+      "key": "quote:LINK:binance"
+    },
+    {
+      "code": "SOURCE_ERROR",
+      "key": "quote:ONDO:binance"
+    },
+    {
+      "code": "SOURCE_ERROR",
+      "key": "quote:PEPE:binance"
+    }
+  ],
+  "observation48h": {
+    "from": 1790334960,
+    "until": 1790507760,
+    "firstRunAt": 1790334993,
+    "lastRunAt": 1790507704,
+    "ticks": 1342,
+    "failures": 661,
+    "expectedRuns": 2880,
+    "missingRuns": 1538,
+    "successfulRuns": 681,
+    "recordingRate": 0.46597222222222223,
+    "successRate": 0.23645833333333333,
+    "longestGapSeconds": 34560,
+    "unresolvedErrors": [
+      "BTC:binance:1d",
+      "DOGE:binance:1d",
+      "DOGE:binance:1h",
+      "ETH:binance:1d",
+      "ETH:binance:1h",
+      "LINK:upbit:1d",
+      "ONDO:upbit:1d",
+      "PEPE:binance:1d",
+      "PEPE:upbit:1d",
+      "SOL:binance:1d",
+      "SOL:upbit:1d",
+      "XRP:upbit:1d",
+      "derivatives:BTC:long_account_ratio_daily",
+      "derivatives:DOGE:long_account_ratio_daily",
+      "derivatives:DOGE:open_interest_daily",
+      "derivatives:ETH:long_account_ratio_daily",
+      "derivatives:ETH:open_interest_daily",
+      "derivatives:LINK:funding",
+      "derivatives:LINK:long_account_ratio",
+      "derivatives:LINK:long_account_ratio_daily",
+      "derivatives:LINK:open_interest",
+      "derivatives:LINK:open_interest_daily",
+      "derivatives:ONDO:funding",
+      "derivatives:ONDO:long_account_ratio",
+      "derivatives:ONDO:long_account_ratio_daily",
+      "derivatives:ONDO:open_interest",
+      "derivatives:ONDO:open_interest_daily",
+      "derivatives:PEPE:funding",
+      "derivatives:PEPE:long_account_ratio",
+      "derivatives:PEPE:long_account_ratio_daily",
+      "derivatives:PEPE:open_interest",
+      "derivatives:PEPE:open_interest_daily",
+      "derivatives:SOL:funding",
+      "derivatives:SOL:long_account_ratio_daily",
+      "derivatives:SOL:open_interest",
+      "derivatives:SOL:open_interest_daily",
+      "derivatives:XRP:funding",
+      "derivatives:XRP:long_account_ratio",
+      "derivatives:XRP:long_account_ratio_daily",
+      "derivatives:XRP:open_interest",
+      "derivatives:XRP:open_interest_daily",
+      "mempool:BTC",
+      "network:LINK",
+      "network:XRP",
+      "quote:BTC:binance",
+      "quote:DOGE:binance",
+      "quote:ETH:binance",
+      "quote:LINK:binance",
+      "quote:ONDO:binance",
+      "quote:PEPE:binance",
+      "quote:SOL:binance",
+      "quote:XRP:binance",
+      "quotes:binance:0",
+      "reference:LINK",
+      "reference:XRP"
+    ],
+    "windowSatisfied": true,
+    "healthy": false,
+    "ready": false,
+    "thresholds": {
+      "recordingRate": 0.99,
+      "longestGapSeconds": 180,
+      "graceSeconds": 120
+    }
+  },
+  "collectors": [
+    "btc-desk",
+    "btc-desk-quotes",
+    "btc-desk-background",
+    "btc-desk-analysis"
+  ]
+}

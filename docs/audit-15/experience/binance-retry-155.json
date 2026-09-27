@@ -1,0 +1,78 @@
+{
+  "checkedAt": "2026-09-27T11:13:15.181553+00:00",
+  "results": [
+    {
+      "key": "quote:BTC:binance",
+      "last_attempt": 1790506865,
+      "last_success": 1790504452,
+      "failures": 5,
+      "error": "Error: Market feed HTTP 502",
+      "next_attempt": 1790508785
+    },
+    {
+      "key": "quote:DOGE:binance",
+      "last_attempt": 1790506866,
+      "last_success": 1790504452,
+      "failures": 5,
+      "error": "Error: Market feed HTTP 502",
+      "next_attempt": 1790508786
+    },
+    {
+      "key": "quote:ETH:binance",
+      "last_attempt": 1790506866,
+      "last_success": 1790504452,
+      "failures": 5,
+      "error": "Error: Market feed HTTP 502",
+      "next_attempt": 1790508786
+    },
+    {
+      "key": "quote:LINK:binance",
+      "last_attempt": 1790506867,
+      "last_success": 1790504152,
+      "failures": 5,
+      "error": "Error: Market feed HTTP 502",
+      "next_attempt": 1790508787
+    },
+    {
+      "key": "quote:ONDO:binance",
+      "last_attempt": 1790506868,
+      "last_success": 1790504152,
+      "failures": 5,
+      "error": "Error: Market feed HTTP 502",
+      "next_attempt": 1790508788
+    },
+    {
+      "key": "quote:PEPE:binance",
+      "last_attempt": 1790506868,
+      "last_success": 1790504152,
+      "failures": 5,
+      "error": "Error: Market feed HTTP 502",
+      "next_attempt": 1790508788
+    },
+    {
+      "key": "quote:SOL:binance",
+      "last_attempt": 1790506867,
+      "last_success": 1790504152,
+      "failures": 5,
+      "error": "Error: Market feed HTTP 502",
+      "next_attempt": 1790508787
+    },
+    {
+      "key": "quote:XRP:binance",
+      "last_attempt": 1790506867,
+      "last_success": 1790504152,
+      "failures": 5,
+      "error": "Error: Market feed HTTP 502",
+      "next_attempt": 1790508787
+    },
+    {
+      "key": "quotes:binance:0",
+      "last_attempt": 1790506869,
+      "last_success": 1790504620,
+      "failures": 5,
+      "error": "Partial quote refresh",
+      "next_attempt": 1790508789
+    }
+  ],
+  "rows_written": 0
+}

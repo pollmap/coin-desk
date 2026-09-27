@@ -2,7 +2,7 @@
 
 **BTC 중심으로 DOGE·ETH의 가격·온체인·선물을 함께 확인하는 분석 작업공간입니다.**
 
-작업 버전 **0.15.6**, 운영 버전 **0.15.5**. CoinGlass를 참고한 시장 수급 표와 분석 바로가기를 운영에 반영했습니다. Cron CPU 한도 초과를 확인해 현재가·최근 선물·배경 수집·분석을 독립 Worker로 분리했습니다. 엄격한 48시간 상태 판정, Chromium/WebKit·접근성 CI와 운영 백업 복원 검사를 추가했습니다. Binance 재시도·원천 지연 복구와 배포 후 하루 운영 검증은 진행 중입니다. [사용 흐름·배포 검증](docs/audit-15/experience/README.md) · [마감 검증 기록](docs/audit-15/closeout/README.md) · [구현·검증·배포 상태](docs/RELEASE15.md)
+작업·운영 버전 **0.15.6**. CoinGlass를 참고한 시장 수급 표와 분석 바로가기를 운영에 반영했습니다. Cron CPU 한도 초과를 확인해 현재가·최근 선물·배경 수집·분석을 독립 Worker로 분리했습니다. 엄격한 48시간 상태 판정, Chromium/WebKit·접근성 CI와 운영 백업 복원 검사를 추가했습니다. Binance 재시도·원천 지연 복구와 배포 후 하루 운영 검증은 진행 중입니다. [사용 흐름·배포 검증](docs/audit-15/experience/README.md) · [마감 검증 기록](docs/audit-15/closeout/README.md) · [구현·검증·배포 상태](docs/RELEASE15.md)
 
 [운영 사이트](https://coin-desk.pages.dev) · [경쟁 기능 비교표](docs/RELEASE15.md#기능-비교) · [데이터 정의](docs/DATA.md)
 

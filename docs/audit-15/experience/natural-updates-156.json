@@ -1,0 +1,648 @@
+{
+  "start": {
+    "checkedAt": "2026-09-27T11:18:40.447047+00:00",
+    "queries": {
+      "cron": {
+        "results": [
+          {
+            "started_at": 1790507884,
+            "completed_at": 1790507886,
+            "job": "ONDO:binance:1d",
+            "outcome": "ok",
+            "error": null
+          },
+          {
+            "started_at": 1790507824,
+            "completed_at": 1790507826,
+            "job": "SOL:upbit:1h",
+            "outcome": "ok",
+            "error": null
+          },
+          {
+            "started_at": 1790507764,
+            "completed_at": 1790507766,
+            "job": "LINK:binance:1d",
+            "outcome": "ok",
+            "error": null
+          },
+          {
+            "started_at": 1790507704,
+            "completed_at": 1790507706,
+            "job": "XRP:binance:1d",
+            "outcome": "ok",
+            "error": null
+          },
+          {
+            "started_at": 1790507644,
+            "completed_at": 1790507646,
+            "job": "ONDO:binance:1h",
+            "outcome": "ok",
+            "error": null
+          },
+          {
+            "started_at": 1790507584,
+            "completed_at": 1790507586,
+            "job": "PEPE:binance:1h",
+            "outcome": "ok",
+            "error": null
+          },
+          {
+            "started_at": 1790507524,
+            "completed_at": 1790507526,
+            "job": "LINK:binance:1h",
+            "outcome": "ok",
+            "error": null
+          },
+          {
+            "started_at": 1790507464,
+            "completed_at": 1790507466,
+            "job": "XRP:binance:1h",
+            "outcome": "ok",
+            "error": null
+          }
+        ],
+        "rows_read": 5762,
+        "rows_written": 0
+      },
+      "quotes": {
+        "results": [
+          {
+            "key": "quote:BTC:binance",
+            "fetched_at": 1790504452
+          },
+          {
+            "key": "quote:BTC:upbit",
+            "fetched_at": 1790507866
+          },
+          {
+            "key": "quote:DOGE:binance",
+            "fetched_at": 1790504452
+          },
+          {
+            "key": "quote:DOGE:upbit",
+            "fetched_at": 1790507866
+          },
+          {
+            "key": "quote:ETH:binance",
+            "fetched_at": 1790504452
+          },
+          {
+            "key": "quote:ETH:upbit",
+            "fetched_at": 1790507826
+          }
+        ],
+        "rows_read": 12,
+        "rows_written": 0
+      },
+      "futures": {
+        "results": [
+          {
+            "key": "derivatives:BTC:funding",
+            "last_success": 1790507706,
+            "data_as_of": 1790496000,
+            "failures": 0,
+            "error": null
+          },
+          {
+            "key": "derivatives:BTC:long_account_ratio",
+            "last_success": 1790507708,
+            "data_as_of": 1790506800,
+            "failures": 0,
+            "error": null
+          },
+          {
+            "key": "derivatives:BTC:long_account_ratio_daily",
+            "last_success": 1790489381,
+            "data_as_of": 1790467200,
+            "failures": 1,
+            "error": "Error: Market feed HTTP 502"
+          },
+          {
+            "key": "derivatives:BTC:open_interest",
+            "last_success": 1790507707,
+            "data_as_of": 1790506800,
+            "failures": 0,
+            "error": null
+          },
+          {
+            "key": "derivatives:BTC:open_interest_daily",
+            "last_success": 1790505006,
+            "data_as_of": 1790467200,
+            "failures": 0,
+            "error": null
+          },
+          {
+            "key": "derivatives:DOGE:funding",
+            "last_success": 1790507766,
+            "data_as_of": 1790496000,
+            "failures": 0,
+            "error": null
+          },
+          {
+            "key": "derivatives:DOGE:long_account_ratio",
+            "last_success": 1790507768,
+            "data_as_of": 1790506800,
+            "failures": 0,
+            "error": null
+          },
+          {
+            "key": "derivatives:DOGE:long_account_ratio_daily",
+            "last_success": 1790487220,
+            "data_as_of": 1790467200,
+            "failures": 1,
+            "error": "Error: Market feed HTTP 502"
+          },
+          {
+            "key": "derivatives:DOGE:open_interest",
+            "last_success": 1790507767,
+            "data_as_of": 1790506800,
+            "failures": 0,
+            "error": null
+          },
+          {
+            "key": "derivatives:DOGE:open_interest_daily",
+            "last_success": 1790489081,
+            "data_as_of": 1790467200,
+            "failures": 1,
+            "error": "Error: Market feed HTTP 502"
+          },
+          {
+            "key": "derivatives:ETH:funding",
+            "last_success": 1790507825,
+            "data_as_of": 1790496000,
+            "failures": 0,
+            "error": null
+          },
+          {
+            "key": "derivatives:ETH:long_account_ratio",
+            "last_success": 1790507828,
+            "data_as_of": 1790506800,
+            "failures": 0,
+            "error": null
+          },
+          {
+            "key": "derivatives:ETH:long_account_ratio_daily",
+            "last_success": 1790407123,
+            "data_as_of": 1790380800,
+            "failures": 1,
+            "error": "Error: Market feed HTTP 502"
+          },
+          {
+            "key": "derivatives:ETH:open_interest",
+            "last_success": 1790507827,
+            "data_as_of": 1790506800,
+            "failures": 0,
+            "error": null
+          },
+          {
+            "key": "derivatives:ETH:open_interest_daily",
+            "last_success": 1790485780,
+            "data_as_of": 1790467200,
+            "failures": 1,
+            "error": "Error: Market feed HTTP 502"
+          }
+        ],
+        "rows_read": 126,
+        "rows_written": 0
+      },
+      "analysis": {
+        "results": [
+          {
+            "key": "observations:0",
+            "last_success": 1790506805,
+            "failures": 0,
+            "error": null
+          },
+          {
+            "key": "observations:1",
+            "last_success": 1790506865,
+            "failures": 0,
+            "error": null
+          },
+          {
+            "key": "observations:10",
+            "last_success": 1790507406,
+            "failures": 0,
+            "error": null
+          },
+          {
+            "key": "observations:11",
+            "last_success": 1790507465,
+            "failures": 0,
+            "error": null
+          },
+          {
+            "key": "observations:12",
+            "last_success": 1790507525,
+            "failures": 0,
+            "error": null
+          },
+          {
+            "key": "observations:13",
+            "last_success": 1790507585,
+            "failures": 0,
+            "error": null
+          },
+          {
+            "key": "observations:14",
+            "last_success": 1790507645,
+            "failures": 0,
+            "error": null
+          },
+          {
+            "key": "observations:2",
+            "last_success": 1790506925,
+            "failures": 0,
+            "error": null
+          },
+          {
+            "key": "observations:3",
+            "last_success": 1790506985,
+            "failures": 0,
+            "error": null
+          },
+          {
+            "key": "observations:4",
+            "last_success": 1790507045,
+            "failures": 0,
+            "error": null
+          },
+          {
+            "key": "observations:5",
+            "last_success": 1790507106,
+            "failures": 0,
+            "error": null
+          },
+          {
+            "key": "observations:6",
+            "last_success": 1790507165,
+            "failures": 0,
+            "error": null
+          },
+          {
+            "key": "observations:7",
+            "last_success": 1790507225,
+            "failures": 0,
+            "error": null
+          },
+          {
+            "key": "observations:8",
+            "last_success": 1790507285,
+            "failures": 0,
+            "error": null
+          },
+          {
+            "key": "observations:9",
+            "last_success": 1790507345,
+            "failures": 0,
+            "error": null
+          }
+        ],
+        "rows_read": 126,
+        "rows_written": 0
+      },
+      "checkpoints": {
+        "results": [],
+        "rows_read": 213,
+        "rows_written": 0
+      },
+      "briefings": {
+        "results": [
+          {
+            "id": "2026-09-27",
+            "created_at": 1790468260
+          },
+          {
+            "id": "2026-09-26",
+            "created_at": 1790381433
+          }
+        ],
+        "rows_read": 2,
+        "rows_written": 0
+      }
+    }
+  },
+  "end": {
+    "checkedAt": "2026-09-27T11:21:17.607241+00:00",
+    "queries": {
+      "cron": {
+        "results": [
+          {
+            "started_at": 1790508064,
+            "completed_at": 1790508066,
+            "job": "SOL:upbit:1d",
+            "outcome": "ok",
+            "error": null
+          },
+          {
+            "started_at": 1790508004,
+            "completed_at": 1790508006,
+            "job": "PEPE:binance:1d",
+            "outcome": "ok",
+            "error": null
+          },
+          {
+            "started_at": 1790507944,
+            "completed_at": 1790507948,
+            "job": "coinlore",
+            "outcome": "ok",
+            "error": null
+          },
+          {
+            "started_at": 1790507884,
+            "completed_at": 1790507886,
+            "job": "ONDO:binance:1d",
+            "outcome": "ok",
+            "error": null
+          },
+          {
+            "started_at": 1790507824,
+            "completed_at": 1790507826,
+            "job": "SOL:upbit:1h",
+            "outcome": "ok",
+            "error": null
+          },
+          {
+            "started_at": 1790507764,
+            "completed_at": 1790507766,
+            "job": "LINK:binance:1d",
+            "outcome": "ok",
+            "error": null
+          },
+          {
+            "started_at": 1790507704,
+            "completed_at": 1790507706,
+            "job": "XRP:binance:1d",
+            "outcome": "ok",
+            "error": null
+          },
+          {
+            "started_at": 1790507644,
+            "completed_at": 1790507646,
+            "job": "ONDO:binance:1h",
+            "outcome": "ok",
+            "error": null
+          }
+        ],
+        "rows_read": 5768,
+        "rows_written": 0
+      },
+      "quotes": {
+        "results": [
+          {
+            "key": "quote:BTC:binance",
+            "fetched_at": 1790504452
+          },
+          {
+            "key": "quote:BTC:upbit",
+            "fetched_at": 1790508046
+          },
+          {
+            "key": "quote:DOGE:binance",
+            "fetched_at": 1790504452
+          },
+          {
+            "key": "quote:DOGE:upbit",
+            "fetched_at": 1790508046
+          },
+          {
+            "key": "quote:ETH:binance",
+            "fetched_at": 1790504452
+          },
+          {
+            "key": "quote:ETH:upbit",
+            "fetched_at": 1790508066
+          }
+        ],
+        "rows_read": 12,
+        "rows_written": 0
+      },
+      "futures": {
+        "results": [
+          {
+            "key": "derivatives:BTC:funding",
+            "last_success": 1790508006,
+            "data_as_of": 1790496000,
+            "failures": 0,
+            "error": null
+          },
+          {
+            "key": "derivatives:BTC:long_account_ratio",
+            "last_success": 1790508008,
+            "data_as_of": 1790506800,
+            "failures": 0,
+            "error": null
+          },
+          {
+            "key": "derivatives:BTC:long_account_ratio_daily",
+            "last_success": 1790489381,
+            "data_as_of": 1790467200,
+            "failures": 1,
+            "error": "Error: Market feed HTTP 502"
+          },
+          {
+            "key": "derivatives:BTC:open_interest",
+            "last_success": 1790508007,
+            "data_as_of": 1790506800,
+            "failures": 0,
+            "error": null
+          },
+          {
+            "key": "derivatives:BTC:open_interest_daily",
+            "last_success": 1790505006,
+            "data_as_of": 1790467200,
+            "failures": 0,
+            "error": null
+          },
+          {
+            "key": "derivatives:DOGE:funding",
+            "last_success": 1790508066,
+            "data_as_of": 1790496000,
+            "failures": 0,
+            "error": null
+          },
+          {
+            "key": "derivatives:DOGE:long_account_ratio",
+            "last_success": 1790508068,
+            "data_as_of": 1790506800,
+            "failures": 0,
+            "error": null
+          },
+          {
+            "key": "derivatives:DOGE:long_account_ratio_daily",
+            "last_success": 1790487220,
+            "data_as_of": 1790467200,
+            "failures": 1,
+            "error": "Error: Market feed HTTP 502"
+          },
+          {
+            "key": "derivatives:DOGE:open_interest",
+            "last_success": 1790508067,
+            "data_as_of": 1790506800,
+            "failures": 0,
+            "error": null
+          },
+          {
+            "key": "derivatives:DOGE:open_interest_daily",
+            "last_success": 1790489081,
+            "data_as_of": 1790467200,
+            "failures": 1,
+            "error": "Error: Market feed HTTP 502"
+          },
+          {
+            "key": "derivatives:ETH:funding",
+            "last_success": 1790507825,
+            "data_as_of": 1790496000,
+            "failures": 0,
+            "error": null
+          },
+          {
+            "key": "derivatives:ETH:long_account_ratio",
+            "last_success": 1790507828,
+            "data_as_of": 1790506800,
+            "failures": 0,
+            "error": null
+          },
+          {
+            "key": "derivatives:ETH:long_account_ratio_daily",
+            "last_success": 1790407123,
+            "data_as_of": 1790380800,
+            "failures": 1,
+            "error": "Error: Market feed HTTP 502"
+          },
+          {
+            "key": "derivatives:ETH:open_interest",
+            "last_success": 1790507827,
+            "data_as_of": 1790506800,
+            "failures": 0,
+            "error": null
+          },
+          {
+            "key": "derivatives:ETH:open_interest_daily",
+            "last_success": 1790485780,
+            "data_as_of": 1790467200,
+            "failures": 1,
+            "error": "Error: Market feed HTTP 502"
+          }
+        ],
+        "rows_read": 126,
+        "rows_written": 0
+      },
+      "analysis": {
+        "results": [
+          {
+            "key": "observations:0",
+            "last_success": 1790508005,
+            "failures": 0,
+            "error": null
+          },
+          {
+            "key": "observations:1",
+            "last_success": 1790508065,
+            "failures": 0,
+            "error": null
+          },
+          {
+            "key": "observations:10",
+            "last_success": 1790507406,
+            "failures": 0,
+            "error": null
+          },
+          {
+            "key": "observations:11",
+            "last_success": 1790507465,
+            "failures": 0,
+            "error": null
+          },
+          {
+            "key": "observations:12",
+            "last_success": 1790507525,
+            "failures": 0,
+            "error": null
+          },
+          {
+            "key": "observations:13",
+            "last_success": 1790507585,
+            "failures": 0,
+            "error": null
+          },
+          {
+            "key": "observations:14",
+            "last_success": 1790507645,
+            "failures": 0,
+            "error": null
+          },
+          {
+            "key": "observations:2",
+            "last_success": 1790506925,
+            "failures": 0,
+            "error": null
+          },
+          {
+            "key": "observations:3",
+            "last_success": 1790506985,
+            "failures": 0,
+            "error": null
+          },
+          {
+            "key": "observations:4",
+            "last_success": 1790507045,
+            "failures": 0,
+            "error": null
+          },
+          {
+            "key": "observations:5",
+            "last_success": 1790507106,
+            "failures": 0,
+            "error": null
+          },
+          {
+            "key": "observations:6",
+            "last_success": 1790507165,
+            "failures": 0,
+            "error": null
+          },
+          {
+            "key": "observations:7",
+            "last_success": 1790507225,
+            "failures": 0,
+            "error": null
+          },
+          {
+            "key": "observations:8",
+            "last_success": 1790507285,
+            "failures": 0,
+            "error": null
+          },
+          {
+            "key": "observations:9",
+            "last_success": 1790507345,
+            "failures": 0,
+            "error": null
+          }
+        ],
+        "rows_read": 126,
+        "rows_written": 0
+      },
+      "checkpoints": {
+        "results": [],
+        "rows_read": 213,
+        "rows_written": 0
+      },
+      "briefings": {
+        "results": [
+          {
+            "id": "2026-09-27",
+            "created_at": 1790468260
+          },
+          {
+            "id": "2026-09-26",
+            "created_at": 1790381433
+          }
+        ],
+        "rows_read": 2,
+        "rows_written": 0
+      }
+    }
+  }
+}

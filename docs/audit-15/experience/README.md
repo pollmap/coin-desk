@@ -48,3 +48,14 @@
 ## 0.15.6 표시 보완
 
 운영 검수에서 시간별 미결제약정은 빠른 선택 버튼의 일별 ID와 일치하지 않아 선택 표시가 빠졌습니다. 시간별·일별 모두 현재 지표를 표시하고, 같은 버튼을 다시 눌러도 선택한 일별 이력을 유지합니다. 롱/숏 계정 비중은 함께 반올림해 표시 합계가 100%가 되도록 보완합니다. 원천 관측과 차트 값은 바꾸지 않습니다. 해당 선택 흐름 회귀와 57.35%·경곗값·잘못된 비중 검사를 추가했습니다.
+
+- PR #28 main `97d68ab2cca33216fef4c79db4326f9c7d90b3c1`. [CI 36314958868](https://github.com/pollmap/coin-desk/actions/runs/36314958868): 타입·단위 345개, 복구 2개, Chromium/WebKit 28개, 빌드 통과.
+- 2026-09-27 11:18 UTC 배포 완료. Worker `27632d0c-e40d-4e98-9457-5172c4d82af6`, [Pages 2ab71170](https://2ab71170.coin-desk.pages.dev). 마이그레이션 없음. Pages의 dirty 경고는 배포 도중 추가한 검증 문서/캡처이며 애플리케이션 소스는 위 main 커밋입니다.
+- feed `a6ea1982-7e81-4540-a905-7e360384c668`, quotes `3b800f3c-b1fa-4268-883f-4a79a1f1f340`, background `47a0debc-6193-437a-95a2-da3da00868e6`, analysis `99e61144-69e4-40c9-a784-f2b4b2147b6e`.
+- [선택 표시 수정 후 운영 화면](07-futures-selected-after.png), [DOGE 온체인 전체 이력](06-onchain-after.png), [배포 후 공개 API 확인](production-156.json).
+- [0.15.5 자연 실행 7분/28건](cpu-155.jsonl)은 모두 outcome=ok. [Binance 재시도 기록](binance-retry-155.json)은 배포 전 실패와 11:33 UTC의 예정 시각을 구분합니다.
+- [9월 27일 11:14 UTC까지 계정 공식 사용량](usage-20260927-partial.json)은 읽기 1,778,985행·쓰기 17,796행. **부분 하루 집계**이므로 운영 마감 통과가 아닙니다.
+
+최종 배포 이후 첫 완전한 UTC 하루는 9월 28일이며 집계 지연을 고려해 9월 29일 01:00 UTC 이후 확인합니다. 엄격한 48시간 정상 운영은 별도로 확인하고, 이전 누락·오류가 남으면 준비 완료로 표시하지 않습니다. 제품 Cron과 임시 후속 검증 자동화는 계속 유지합니다.
+
+11:18~11:21 UTC [읽기 전용 전후 조회](natural-updates-156.json)에서 ONDO·PEPE Binance 일봉과 SOL Upbit 일봉의 자연 Cron 성공을 확인했습니다. Upbit BTC/DOGE/ETH 시세 관측은 증가했고 Binance 시세는 예정된 재시도 대기였습니다. [0.15.6 수집 실행 기록](cpu-156.jsonl)의 실제 outcome과 원천별 성공은 별도로 판단합니다. 수집 API를 직접 호출하지 않았으며 모든 검증 SELECT의 rows_written은 0입니다. 공개 사이트의 외부 방문 전체가 없었다고 입증한 것은 아닙니다.
