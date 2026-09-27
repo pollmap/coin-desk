@@ -147,3 +147,21 @@ test('analysis recipes replace the main chart with calculated views', async ({ p
   await page.getByLabel('비교 기준', { exact: true }).selectOption('ratio');
   await expect(page.locator('.analysis-legend')).toContainText('BTC/coin');
 });
+
+test('seasonality waits for the price history before reporting sample availability', async ({
+  page,
+}) => {
+  let release!: () => void;
+  const gate = new Promise<void>((resolve) => {
+    release = resolve;
+  });
+  await page.route('**/api/v1/reference?asset=BTC**', async (route) => {
+    await gate;
+    await route.continue();
+  });
+  await page.goto('/?asset=BTC&price_source=reference&period=all&visual=seasonality');
+  await expect(page.getByText('분석할 가격 이력을 불러오고 있습니다…')).toBeVisible();
+  await expect(page.getByText(/현재 0개입니다/)).toHaveCount(0);
+  release();
+  await expect(page.getByRole('heading', { name: 'BTC 계절성' })).toBeVisible();
+});

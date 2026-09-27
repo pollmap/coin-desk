@@ -1,6 +1,14 @@
 # 0.16 검증 기록
 
-현재 작업 브랜치 `codex/analysis-library-016`. 코드 검증과 운영 배포, 개인 자료 내용 검토를 구분합니다.
+0.16.0은 [PR #30](https://github.com/pollmap/coin-desk/pull/30)으로 main `344822571ac3433a59e3619dadc9858728171fe3`에 병합하고 운영 배포했습니다. 코드 검증과 운영 배포, 개인 자료 내용 검토를 구분합니다.
+
+## 0.16.0 운영 확인
+
+- PR [CI 36329967337](https://github.com/pollmap/coin-desk/actions/runs/36329967337), main [CI 36330230777](https://github.com/pollmap/coin-desk/actions/runs/36330230777) 통과. 단위 371개, DB 복구 2개, Chromium/WebKit 50개입니다.
+- Worker `4f1647a9-2bdc-46b3-a24f-74031d00a6dc`, Pages `https://9ce835ad.coin-desk.pages.dev`. 기존 0009 스키마이며 추가 마이그레이션 없음. 처음 D1 확인에서 7403 API 인증 실패로 배포가 멈췄고, 같은 자격으로 계정·DB·스키마 조회 성공 후 정상 순서 재실행으로 배포했습니다.
+- [운영 API와 다운로드](production.json): 103/103 원천 정상, health 200, signals·briefings·ETH TVL 및 핵심 세 코인의 MVRV·펀딩 API 200. 확장 ZIP 9개 파일 CRC 정상이며 개인 파일 없음.
+- [공식 계정 일간 부분 집계](d1-partial-day.json): 2026-09-27 15:42 UTC 읽기 2,741,723행·쓰기 35,061행. 하루 전체 검증이 아닙니다.
+- 운영 화면에서 온체인 차트 시작 위치 291px와 가격 이력 로딩 중 계절성 표본 0개 표시를 발견해 0.16.1에서 보완합니다. 로컬 양 엔진의 온체인·선물 260px 이내 및 늦은 응답 표시 검사 4개와 단위 371개 통과.
 
 ## 확인한 결과
 

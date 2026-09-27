@@ -95,6 +95,7 @@ test('core selection, Korean/ticker search, all-history and keyboard restoration
 test('price source survives sections, navigation, reload and shared URL', async ({ page }) => {
   // Three price sources, each with section changes, Back and a full reload.
   test.setTimeout(90000);
+  await page.setViewportSize({ width: 1280, height: 800 });
   await page.goto('/?asset=DOGE&period=all&price_source=reference');
   for (const basis of ['upbit', 'binance', 'reference']) {
     await page.getByLabel('가격 기준', { exact: true }).selectOption(basis);
@@ -105,12 +106,14 @@ test('price source survives sections, navigation, reload and shared URL', async 
       .getByRole('link', { name: '온체인', exact: true })
       .click();
     await expect(chart(page)).toHaveAttribute('data-primary-metric', /net:/);
+    expect((await chart(page).boundingBox())!.y).toBeLessThanOrEqual(260);
     expect(new URL(page.url()).searchParams.get('price_source')).toBe(basis);
     await page
       .getByRole('navigation', { name: 'DOGE 분석 화면' })
       .getByRole('link', { name: '선물', exact: true })
       .click();
     await expect(chart(page)).toHaveAttribute('data-primary-metric', /futures:/);
+    expect((await chart(page).boundingBox())!.y).toBeLessThanOrEqual(260);
     await page.goBack();
     await expect(chart(page)).toHaveAttribute('data-primary-metric', /net:/);
     await page.reload();

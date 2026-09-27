@@ -1,0 +1,17 @@
+{
+  "checkedAt": "2026-09-27T15:42:37.474713+00:00",
+  "dayUTC": "2026-09-27",
+  "scope": "entire Cloudflare account",
+  "source": "https://developers.cloudflare.com/d1/observability/metrics-analytics/",
+  "rowsRead": 2741723,
+  "rowsWritten": 35061,
+  "limits": {
+    "rowsRead": 5000000,
+    "rowsWritten": 100000
+  },
+  "withinLimits": true,
+  "fullDayAfterDeployment": false,
+  "deployedAt": "2026-09-27T15:41:00Z",
+  "operationalSignoff": false,
+  "note": "Usage alone does not prove successful collection. Verify source freshness, cron completion and the next briefing separately."
+}
