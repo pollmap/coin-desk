@@ -147,7 +147,12 @@ export function DateNavigator({
         <form
           onSubmit={(e) => {
             e.preventDefault();
-            const result = selectDateWindow(times, start, mode === 'range' ? end : undefined);
+            const form = new FormData(e.currentTarget);
+            const result = selectDateWindow(
+              times,
+              String(form.get('start') ?? ''),
+              mode === 'range' ? String(form.get('end') ?? '') : undefined,
+            );
             if (result.error) {
               setError(result.error);
               return;
@@ -193,6 +198,7 @@ export function DateNavigator({
             {mode === 'date' ? '이동할 날짜 (UTC)' : '시작일 (UTC)'}
             <input
               ref={dateInput}
+              name="start"
               required
               type="date"
               value={start}
@@ -206,6 +212,7 @@ export function DateNavigator({
             <label>
               종료일 (UTC)
               <input
+                name="end"
                 required
                 type="date"
                 value={end}
