@@ -205,7 +205,7 @@ it('an abandoned execution is recorded and resumed after its lease expires', asy
     );
   DB.sqlite
     .prepare('INSERT INTO cron_runs VALUES(?,?,?,?,?,?,?)')
-    .run(1, 'abandoned', now - 180, null, 'BTC:binance:1h', 'running', null);
+    .run(Math.floor((now - 180) / 60) % 4320, 'abandoned', now - 180, null, 'BTC:binance:1h', 'running', null);
   source('BTC:binance:1h', now - 180, now - 7200);
   DB.sqlite
     .prepare('UPDATE ingestion SET last_success=? WHERE key=?')

@@ -44,9 +44,10 @@ export function parseEthereumContext(
     .filter((p) => p.time + DAY <= now)
     .sort((a, b) => a.time - b.time);
 }
-export async function refreshEthereumContext(env: Env) {
-  if (!(await claimRefresh(env.DB, 'ethereum-context', 3600))) return;
-  for (const metric of ['tvl', 'stablecoins'] as const) {
+export async function refreshEthereumContext(env: Env, selected?: 'tvl' | 'stablecoins') {
+  if (!(await claimRefresh(env.DB, 'ethereum-context' + (selected ? ':' + selected : ''), 3600)))
+    return;
+  for (const metric of selected ? [selected] : (['tvl', 'stablecoins'] as const)) {
     const key = 'chain:ETH:' + metric;
     try {
       const response = await fetch(ETH_CONTEXT[metric].url, { signal: AbortSignal.timeout(20000) });

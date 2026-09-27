@@ -154,7 +154,7 @@ export function normalizeDominance(
 export async function updateDominance(env: Env): Promise<Dominance> {
   const stable = await readState<StableSnapshot | null>(env.DB, 'stablecoin-total', null);
   const { global, markets } =
-    env.FEED_URL && env.FEED_TOKEN
+    env.FEED_SERVICE || (env.FEED_URL && env.FEED_TOKEN)
       ? ((await feedRequest(env, '/coinlore')) as { global: unknown; markets: unknown })
       : await coinloreSnapshot();
   const result = normalizeDominance(global, markets, stable, epoch());

@@ -1,3 +1,4 @@
+import { feedRequest } from './feed-client';
 import { reserveDerivativeBackfill } from './backfill-budget';
 import type { Asset, Point, SeriesResponse } from '../shared/types';
 import { DAY } from '../shared/math';
@@ -157,25 +158,17 @@ export async function updateDerivatives(
   // Cron egress is rejected by Bybit on this host. A Seoul-placed fetch Worker
   // performs the allowlisted request; its endpoint requires a shared secret.
   const raw =
-    env.FEED_URL && env.FEED_TOKEN
-      ? await (async () => {
-          const response = await fetch(
-            env.FEED_URL +
-              '/derivatives?' +
-              new URLSearchParams({
-                asset,
-                metric,
-                limit: String(size),
-                ...(backfill ? { endTime: String(cursor) } : {}),
-              }),
-            { signal: AbortSignal.timeout(12000), headers: { 'X-Feed-Token': env.FEED_TOKEN! } },
-          );
-          if (!response.ok) {
-            const detail = (await response.json().catch(() => ({}))) as { error?: string };
-            throw new Error(detail.error || 'Feed HTTP ' + response.status);
-          }
-          return response.json();
-        })()
+    env.FEED_SERVICE || (env.FEED_URL && env.FEED_TOKEN)
+      ? await feedRequest(
+          env,
+          '/derivatives',
+          new URLSearchParams({
+            asset,
+            metric,
+            limit: String(size),
+            ...(backfill ? { endTime: String(cursor) } : {}),
+          }),
+        )
       : await upstream(origin + path + '?' + params);
   const parsed = parseDerivativeRows(raw, asset, metric, now);
   if (!parsed.length && !coverage?.last) throw new Error('No derivatives history available');

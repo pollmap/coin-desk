@@ -49,7 +49,7 @@ export function parseMempool(
 
 export async function updateMempool(env: Env) {
   const [pool, fees] =
-    env.FEED_URL && env.FEED_TOKEN
+    env.FEED_SERVICE || (env.FEED_URL && env.FEED_TOKEN)
       ? await (async () => {
           const raw = (await feedRequest(env, '/mempool')) as { pool: unknown; fees: unknown };
           return [raw.pool, raw.fees];

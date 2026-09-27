@@ -682,13 +682,10 @@ export default {
     }
   },
   async scheduled(_event: ScheduledController, env: Env, ctx: ExecutionContext) {
-    ctx.waitUntil(scheduled(env, Math.floor(_event.scheduledTime / 1000), true));
-    ctx.waitUntil(refreshObservations(env));
-    ctx.waitUntil(refreshBriefing(env));
-    ctx.waitUntil(refreshEthereumContext(env));
-    ctx.waitUntil(refreshMinuteQuotes(env));
+    // Independent Worker Cron invocations isolate the free CPU budgets.
+    // btc-desk-quotes/background/analysis own the other collection lanes.
     ctx.waitUntil(refreshRecentFutures(env));
-    ctx.waitUntil(refreshProviderWatch(env));
+    ctx.waitUntil(refreshBriefing(env));
     // Public research collection is disabled at the owner's request. Stored data is retained.
   },
 };

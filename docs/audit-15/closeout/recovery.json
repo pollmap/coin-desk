@@ -1,0 +1,89 @@
+{
+  "verifiedAt": "20260927T093652Z",
+  "backupRestoreIdentical": true,
+  "liveDatabaseOverwritten": false,
+  "integrity": [
+    "ok"
+  ],
+  "foreignKeyViolations": 0,
+  "schemaSha256": "a5da6869a63505965d4bf23dea44b4bfb883e3919e4f2f0cd1ecc19a2d4b0a7a",
+  "schemaObjects": 20,
+  "tables": {
+    "candles": {
+      "rows": 20814,
+      "sha256": "29ac081a9de644e5601b50e06c00d4c3a6c4e536cc89234d7cd2237161652ab0"
+    },
+    "chain_history": {
+      "rows": 216,
+      "sha256": "dd37f06fe9c533a84823fffa97714f806c210d351a50450fa483dc155ede6369"
+    },
+    "cron_runs": {
+      "rows": 2822,
+      "sha256": "19fb772f4b43bf867aeaa402f0cdb6294f1311ab22d7633309d61276c8da6b08"
+    },
+    "cron_state": {
+      "rows": 1,
+      "sha256": "f9452d480378a0e330adcdb9f575dfe0aebb19054da578db2bbecb55d449056f"
+    },
+    "d1_migrations": {
+      "rows": 9,
+      "sha256": "1054cb7c7494723f71b146faf3d1be036d975f1e823aa7c3df7ece9e6607c224"
+    },
+    "daily_briefings": {
+      "rows": 2,
+      "sha256": "eca42d64a9525d3481ed6ede2a887c24726e2ebfb1d7980633acf46fad107d0e"
+    },
+    "derivative_series": {
+      "rows": 88022,
+      "sha256": "4abe97e389e7f1356543a55970f78eae9cb9a0e78d5fae378f27485eb3341dc5"
+    },
+    "dominance_history": {
+      "rows": 121,
+      "sha256": "5d84d43c4394bc700888d84766c50af4227e733b55c74b8bed26feb737ec370c"
+    },
+    "ingestion": {
+      "rows": 111,
+      "sha256": "e4b762da3855b07289d0fe6c8212d6406086117b2bf6f8adc0c0badcf3f6c059"
+    },
+    "network_coverage": {
+      "rows": 75,
+      "sha256": "b71b2390f3bbf859d59d96c9ea171191d7c0c8904c6f4da22e19088b588e153d"
+    },
+    "network_months": {
+      "rows": 776,
+      "sha256": "6e48849b1d79e80cba00a3eec6f433e98b79bc5b23b2867054a4405221018752"
+    },
+    "observation_signals": {
+      "rows": 35,
+      "sha256": "e0cbe1368525461d399b0bbea46e932d64bac50647fdb5cb4e8652d1e16753ee"
+    },
+    "onchain": {
+      "rows": 6478,
+      "sha256": "2df4c885a4e58d27e941ce8e151970c1c17520fb12b135fed6458e43b9722cf3"
+    },
+    "price_archive": {
+      "rows": 248,
+      "sha256": "ab61d815e66397320e7c9fa52e04cd266b03830cd498258cdf2494f527a1f8bc"
+    },
+    "raw_samples": {
+      "rows": 447,
+      "sha256": "fba29ca461fd1c49e7565eddabadf908921eb991855369d998b5e458441a9260"
+    },
+    "reference_prices": {
+      "rows": 22322,
+      "sha256": "207969ed3db4afda967e12b43919d15473459a5a9ff65f28987f8fb6e9ad9ca6"
+    },
+    "signal_revisions": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "snapshots": {
+      "rows": 17,
+      "sha256": "273a306e763dd4de6589bfb64f15f16cad7084fae4491a870b84abcd77fa994a"
+    },
+    "state": {
+      "rows": 196,
+      "sha256": "0c6e81aaa3976b45a858acd2620e00e408f3d2a8761cda6b61ede169d4f1e0a3"
+    }
+  }
+}

@@ -116,9 +116,22 @@ export function AutomationSummary({ compact = false }: { compact?: boolean }) {
           <div>
             <dt>48시간 자동 수집 관찰</dt>
             <dd>
-              {a?.observation48h.ready
-                ? `${a.observation48h.ticks}회 기록 · 실패 ${a.observation48h.failures}회`
-                : `${a?.observation48h.ticks ?? 0}회 기록 · 관찰 기간 누적 중`}
+              {a?.observation48h ? (
+                <>
+                  {a.observation48h.windowSatisfied ? '기간 충족' : '기간 누적 중'} ·{' '}
+                  {a.observation48h.healthy ? '운영 기준 충족' : '운영 확인 필요'}
+                  <br />
+                  기록률 {(a.observation48h.recordingRate * 100).toFixed(2)}% · 누락{' '}
+                  {a.observation48h.missingRuns}회 · 최장 공백 {a.observation48h.longestGapSeconds}
+                  초
+                  <br />
+                  성공률 {(a.observation48h.successRate * 100).toFixed(2)}% · 실패{' '}
+                  {a.observation48h.failures}회 · 미해결 {a.observation48h.unresolvedErrors.length}
+                  건
+                </>
+              ) : (
+                '확인 대기'
+              )}
             </dd>
           </div>
         )}
@@ -217,13 +230,24 @@ export function DataStatusPage() {
               <p>핵심 3개 코인은 1분, 보조 코인은 5분마다 서버 갱신을 시도합니다.</p>
             </div>
             <div>
+              <b>핵심 코인 최근 선물 · 별도 5분 수집</b>
+              <p>
+                최근 관측은 전용 작업으로 확인하고, 과거 이력 보충은 배경 대기열에서 1시간마다
+                확인합니다.
+              </p>
+            </div>
+            <div>
               <b>봉·온체인 · 정기 수집</b>
-              <p>시간봉·BTC 온체인은 약 1시간, 일봉·장기 USD·스테이블코인은 약 6시간입니다.</p>
+              <p>
+                시간봉과 핵심 코인의 일봉·온체인·USD 참조는 1시간, 보조 코인 일별 자료와
+                스테이블코인은 6시간마다 확인합니다. 일별 원천은 매분 새 값이 생기지 않습니다.
+              </p>
             </div>
           </div>
           <p className="watch-note">
             목표 주기는 성공 보장이 아닙니다. 실제 자료 시각과 마지막 수집 시각은 위 상태표에서
-            확인하세요.
+            확인하세요. 48시간 관찰은 최근 2분의 실행 유예를 제외합니다. 기록률 99% 이상, 최장 공백
+            180초 이하, 미해결 오류가 없을 때 운영 기준 충족으로 표시합니다.
           </p>
         </details>
       </section>

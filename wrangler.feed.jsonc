@@ -1,6 +1,6 @@
 {
   "name": "coin-desk-feed",
-  "main": "worker/market-feed.ts",
+  "main": "worker/market-feed-entry.ts",
   "compatibility_date": "2026-09-19",
   "workers_dev": true,
   "preview_urls": false,

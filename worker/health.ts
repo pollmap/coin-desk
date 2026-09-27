@@ -1,3 +1,4 @@
+import { observeAutomation, type ObservationRun } from '../shared/automation-observation';
 import { ASSETS, isPrimaryAsset } from '../shared/catalog';
 import { DAY } from '../shared/math';
 import type { Asset, Market } from '../shared/types';
@@ -210,15 +211,10 @@ export async function operationStatus(env: Env) {
       error: string | null;
     }>(),
     env.DB.prepare(
-      "SELECT COUNT(*) AS ticks,MIN(started_at) AS first,MAX(started_at) AS last,SUM(CASE WHEN outcome IN ('error','partial','interrupted') THEN 1 ELSE 0 END) AS failures FROM cron_runs WHERE started_at>=?",
+      'SELECT slot,started_at,completed_at,job,outcome FROM cron_runs WHERE started_at>=?',
     )
-      .bind(now - 48 * 3600)
-      .first<{
-        ticks: number;
-        first: number | null;
-        last: number | null;
-        failures: number | null;
-      }>(),
+      .bind(now - 72 * 3600)
+      .all<ObservationRun>(),
     env.DB.prepare('SELECT value FROM state WHERE key=?').bind('onchain_build').first(),
     env.DB.prepare("SELECT key,fetched_at FROM snapshots WHERE key LIKE 'quote:%'").all<{
       key: string;
@@ -387,14 +383,70 @@ export async function operationStatus(env: Env) {
       key: 'bitview',
       message: '공개된 온체인 데이터가 없습니다.',
     });
-  const jobs = policies.map((job) => ({
-    key: job.key,
-    kind: job.kind,
-    cadenceSeconds: job.every,
-    dueAt: dueAt(job, ingestion.results, now),
-    assets: job.assets,
-    market: job.market,
-  }));
+  const background = backgroundPolicies(assets, rebuilding);
+  const jobs = policies.map((job) => {
+    const dedicated =
+      job.kind === 'quote-batch'
+        ? 'quotes'
+        : job.kind === 'derivatives' &&
+            job.assets?.some(isPrimaryAsset) &&
+            !job.key.endsWith('_daily')
+          ? 'recent-futures'
+          : null;
+    const queued = background.find((item) => item.key === job.key);
+    return {
+      key: job.key,
+      kind: job.kind,
+      cadenceSeconds: job.every,
+      dueAt: dueAt(queued ?? job, ingestion.results, now),
+      assets: job.assets,
+      market: job.market,
+      lane: dedicated ?? 'background',
+      worker:
+        dedicated === 'quotes'
+          ? 'btc-desk-quotes'
+          : dedicated === 'recent-futures'
+            ? 'btc-desk'
+            : 'btc-desk-background',
+      dedicatedCadenceSeconds: dedicated ? job.every : null,
+      backgroundCadenceSeconds: queued?.every ?? null,
+      dataInterval:
+        job.kind === 'quote-batch'
+          ? 'snapshot'
+          : job.interval === '1h'
+            ? '1h'
+            : ['onchain', 'network', 'reference', 'stablecoins'].includes(job.kind) ||
+                job.key.endsWith('_daily') ||
+                job.interval === '1d'
+              ? '1d'
+              : job.key.endsWith(':funding')
+                ? 'settlement'
+                : job.kind === 'derivatives'
+                  ? '1h'
+                  : 'provider-defined',
+    };
+  });
+  const analysisParts = Array.from({ length: 15 }, (_, part) => {
+    const key = 'observations:' + part;
+    const row = ingestion.results.find((s) => s.key === key);
+    return {
+      key,
+      lastSuccess: row?.last_success ?? null,
+      error: cleanError(row?.error),
+      healthy: !!row?.last_success && now - row.last_success <= 2400 && !row.error,
+    };
+  });
+  const observation48h = observeAutomation(
+    observation.results,
+    now,
+    Object.fromEntries(ingestion.results.map((s) => [s.key, s.last_success ?? 0])),
+    [
+      ...sources.filter((s) => s.active && s.status !== 'ok').map((s) => s.key),
+      ...ingestion.results.filter((s) => s.key.startsWith('quotes:') && s.error).map((s) => s.key),
+      ...analysisParts.filter((s) => !s.healthy).map((s) => s.key),
+      ...(stalled ? ['automation'] : []),
+    ],
+  );
   return {
     now,
     assets,
@@ -404,6 +456,10 @@ export async function operationStatus(env: Env) {
     health: { ok: !reasons.length, reasons, checkedAt: now },
     automation: {
       runner: 'Cloudflare Cron',
+      collectors: ['btc-desk', 'btc-desk-quotes', 'btc-desk-background', 'btc-desk-analysis'],
+      observationScope: 'background Cron ledger; all active source freshness also required',
+      analysisCycleSeconds: 1200,
+      analysisParts,
       independentOfVisitors: true,
       tickSeconds: 60,
       lastStartedAt: state?.last_started ?? null,
@@ -415,18 +471,7 @@ export async function operationStatus(env: Env) {
       leaseUntil: state?.outcome === 'running' ? state.lease_until : null,
       stalled,
       nextTickAt: Math.floor(now / 60) * 60 + 60,
-      observation48h: {
-        from: now - 48 * 3600,
-        firstRunAt: observation?.first ?? null,
-        lastRunAt: observation?.last ?? null,
-        ticks: observation?.ticks ?? 0,
-        failures: observation?.failures ?? 0,
-        ready:
-          !!observation?.first &&
-          observation.first <= now - 48 * 3600 + 60 &&
-          !!observation.last &&
-          now - observation.last <= 180,
-      },
+      observation48h,
       cadence: {
         quoteBackgroundTargetSeconds: BACKGROUND_QUOTE_SECONDS,
         quoteBackgroundDelaySeconds: 180,
