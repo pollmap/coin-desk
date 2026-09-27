@@ -1,0 +1,724 @@
+{
+  "checkedAt": "2026-09-27T23:27:00.107445+00:00",
+  "version": "0.17.1",
+  "deployedCodeCommit": "93b93d0647344b3b1557c43aaa20947f534e73c4",
+  "repositoryCommitAtCheck": "c35e5236fafa6281c00011c355034898f45765fa",
+  "codeCI": {
+    "run": 36340491951,
+    "conclusion": "success"
+  },
+  "publicEndpoints": {
+    "status": {
+      "status": 200,
+      "rows": 0
+    },
+    "health": {
+      "status": 200,
+      "rows": 0,
+      "ok": true,
+      "reasons": []
+    },
+    "signals": {
+      "status": 200,
+      "rows": 12
+    },
+    "briefings": {
+      "status": 200,
+      "rows": 2,
+      "ids": [
+        {
+          "id": "2026-09-27",
+          "createdAt": 1790468260
+        },
+        {
+          "id": "2026-09-26",
+          "createdAt": 1790381433
+        }
+      ]
+    },
+    "chain-context?asset=ETH&metric=tvl": {
+      "status": 200,
+      "rows": 3287
+    },
+    "market-derivatives": {
+      "status": 200,
+      "rows": 8
+    },
+    "network?asset=BTC&metric=mvrv&limit=1": {
+      "status": 200,
+      "rows": 1
+    },
+    "derivatives?asset=BTC&metric=funding&limit=1": {
+      "status": 200,
+      "rows": 1
+    },
+    "network?asset=DOGE&metric=mvrv&limit=1": {
+      "status": 200,
+      "rows": 1
+    },
+    "derivatives?asset=DOGE&metric=funding&limit=1": {
+      "status": 200,
+      "rows": 1
+    },
+    "network?asset=ETH&metric=mvrv&limit=1": {
+      "status": 200,
+      "rows": 1
+    },
+    "derivatives?asset=ETH&metric=funding&limit=1": {
+      "status": 200,
+      "rows": 1
+    }
+  },
+  "coverage": {
+    "expectedSources": 103,
+    "healthySources": 103,
+    "priceMarkets": 16,
+    "histories": 32
+  },
+  "nonHealthyActiveSources": [],
+  "observation48h": {
+    "from": 1790378520,
+    "until": 1790551320,
+    "firstRunAt": 1790380833,
+    "lastRunAt": 1790551297,
+    "ticks": 1885,
+    "failures": 658,
+    "expectedRuns": 2880,
+    "missingRuns": 995,
+    "successfulRuns": 1227,
+    "recordingRate": 0.6545138888888888,
+    "successRate": 0.42604166666666665,
+    "longestGapSeconds": 2340,
+    "unresolvedErrors": [],
+    "windowSatisfied": true,
+    "healthy": false,
+    "ready": false,
+    "thresholds": {
+      "recordingRate": 0.99,
+      "longestGapSeconds": 180,
+      "graceSeconds": 120
+    }
+  },
+  "deploymentReadback": {
+    "checkedAt": "2026-09-27T23:25:29.733591+00:00",
+    "workers": {
+      "btc-desk": {
+        "latestDeployment": [
+          {
+            "id": "65e087f0-c9d0-461c-a249-dc0fc37aee7a",
+            "created_on": "2026-09-27T18:25:43.593575Z",
+            "versions": [
+              {
+                "version_id": "7b917f0f-3b54-4c5c-bbed-3712db6b2100",
+                "percentage": 100
+              }
+            ],
+            "source": "wrangler"
+          }
+        ],
+        "schedules": {
+          "schedules": [
+            {
+              "cron": "* * * * *",
+              "created_on": "2026-09-19T16:06:56.138768Z",
+              "modified_on": "2026-09-27T18:25:45.731722Z"
+            }
+          ]
+        }
+      },
+      "btc-desk-quotes": {
+        "latestDeployment": [
+          {
+            "id": "6ecbfd9b-c925-4ff6-a016-3d979764f873",
+            "created_on": "2026-09-27T18:25:18.864711Z",
+            "versions": [
+              {
+                "version_id": "649b29c4-5699-4770-8e1a-8bd1d271d7b7",
+                "percentage": 100
+              }
+            ],
+            "source": "wrangler"
+          }
+        ],
+        "schedules": {
+          "schedules": [
+            {
+              "cron": "* * * * *",
+              "created_on": "2026-09-27T10:22:25.312024Z",
+              "modified_on": "2026-09-27T18:25:20.349712Z"
+            }
+          ]
+        }
+      }
+    }
+  },
+  "naturalCollection": {
+    "method": "Remote SELECT comparison and bounded cron run history. No forced collector or overview calls in this task; other visitors cannot be excluded.",
+    "window": {
+      "checkedAt": "2026-09-27T23:26:08.199577+00:00",
+      "fromExclusive": 1790534677,
+      "throughInclusive": 1790551477,
+      "expectedMinuteSlots": 280,
+      "recordedRuns": 280,
+      "successfulRuns": 280,
+      "failedOrUnfinished": [],
+      "longestTickGapSeconds": 67,
+      "rowsRead": 3888,
+      "rowsWritten": 0,
+      "firstRun": {
+        "started_at": 1790534737,
+        "completed_at": 1790534739,
+        "job": "derivatives:SOL:open_interest",
+        "outcome": "ok",
+        "error": null
+      },
+      "lastRun": {
+        "started_at": 1790551477,
+        "completed_at": 1790551479,
+        "job": "reference:ETH",
+        "outcome": "ok",
+        "error": null
+      },
+      "outcomes": {
+        "ok": 196,
+        "idle": 84
+      },
+      "recordedStartTimes": [
+        1790534737,
+        1790534797,
+        1790534857,
+        1790534917,
+        1790534977,
+        1790535037,
+        1790535097,
+        1790535157,
+        1790535217,
+        1790535277,
+        1790535337,
+        1790535397,
+        1790535457,
+        1790535517,
+        1790535577,
+        1790535637,
+        1790535697,
+        1790535757,
+        1790535817,
+        1790535877,
+        1790535937,
+        1790535997,
+        1790536057,
+        1790536117,
+        1790536177,
+        1790536237,
+        1790536297,
+        1790536357,
+        1790536417,
+        1790536477,
+        1790536537,
+        1790536597,
+        1790536657,
+        1790536717,
+        1790536777,
+        1790536837,
+        1790536897,
+        1790536957,
+        1790537017,
+        1790537077,
+        1790537137,
+        1790537197,
+        1790537257,
+        1790537317,
+        1790537377,
+        1790537437,
+        1790537497,
+        1790537557,
+        1790537617,
+        1790537677,
+        1790537737,
+        1790537797,
+        1790537857,
+        1790537917,
+        1790537977,
+        1790538037,
+        1790538097,
+        1790538157,
+        1790538217,
+        1790538277,
+        1790538337,
+        1790538397,
+        1790538457,
+        1790538517,
+        1790538577,
+        1790538637,
+        1790538697,
+        1790538757,
+        1790538817,
+        1790538877,
+        1790538937,
+        1790538997,
+        1790539057,
+        1790539117,
+        1790539177,
+        1790539237,
+        1790539297,
+        1790539357,
+        1790539417,
+        1790539477,
+        1790539537,
+        1790539597,
+        1790539657,
+        1790539717,
+        1790539777,
+        1790539837,
+        1790539897,
+        1790539957,
+        1790540017,
+        1790540077,
+        1790540137,
+        1790540197,
+        1790540257,
+        1790540317,
+        1790540377,
+        1790540437,
+        1790540497,
+        1790540557,
+        1790540617,
+        1790540677,
+        1790540737,
+        1790540797,
+        1790540857,
+        1790540917,
+        1790540977,
+        1790541037,
+        1790541097,
+        1790541157,
+        1790541217,
+        1790541277,
+        1790541337,
+        1790541397,
+        1790541457,
+        1790541517,
+        1790541577,
+        1790541637,
+        1790541697,
+        1790541757,
+        1790541817,
+        1790541877,
+        1790541937,
+        1790541997,
+        1790542057,
+        1790542117,
+        1790542177,
+        1790542237,
+        1790542297,
+        1790542357,
+        1790542417,
+        1790542477,
+        1790542537,
+        1790542597,
+        1790542657,
+        1790542717,
+        1790542777,
+        1790542837,
+        1790542897,
+        1790542957,
+        1790543017,
+        1790543077,
+        1790543137,
+        1790543197,
+        1790543257,
+        1790543317,
+        1790543377,
+        1790543437,
+        1790543497,
+        1790543557,
+        1790543617,
+        1790543677,
+        1790543737,
+        1790543797,
+        1790543857,
+        1790543917,
+        1790543977,
+        1790544037,
+        1790544097,
+        1790544157,
+        1790544217,
+        1790544277,
+        1790544337,
+        1790544397,
+        1790544457,
+        1790544517,
+        1790544577,
+        1790544637,
+        1790544697,
+        1790544757,
+        1790544817,
+        1790544877,
+        1790544937,
+        1790544997,
+        1790545057,
+        1790545117,
+        1790545177,
+        1790545237,
+        1790545297,
+        1790545357,
+        1790545417,
+        1790545477,
+        1790545537,
+        1790545597,
+        1790545657,
+        1790545717,
+        1790545777,
+        1790545837,
+        1790545897,
+        1790545957,
+        1790546017,
+        1790546077,
+        1790546137,
+        1790546197,
+        1790546257,
+        1790546317,
+        1790546377,
+        1790546437,
+        1790546497,
+        1790546557,
+        1790546617,
+        1790546677,
+        1790546737,
+        1790546797,
+        1790546857,
+        1790546917,
+        1790546977,
+        1790547037,
+        1790547097,
+        1790547157,
+        1790547217,
+        1790547277,
+        1790547337,
+        1790547397,
+        1790547457,
+        1790547517,
+        1790547577,
+        1790547637,
+        1790547697,
+        1790547757,
+        1790547817,
+        1790547877,
+        1790547937,
+        1790547997,
+        1790548057,
+        1790548117,
+        1790548177,
+        1790548237,
+        1790548297,
+        1790548357,
+        1790548417,
+        1790548477,
+        1790548537,
+        1790548597,
+        1790548657,
+        1790548717,
+        1790548777,
+        1790548837,
+        1790548897,
+        1790548957,
+        1790549017,
+        1790549077,
+        1790549137,
+        1790549197,
+        1790549257,
+        1790549317,
+        1790549377,
+        1790549437,
+        1790549497,
+        1790549557,
+        1790549617,
+        1790549677,
+        1790549737,
+        1790549797,
+        1790549857,
+        1790549917,
+        1790549977,
+        1790550037,
+        1790550104,
+        1790550157,
+        1790550217,
+        1790550277,
+        1790550337,
+        1790550397,
+        1790550457,
+        1790550517,
+        1790550577,
+        1790550637,
+        1790550697,
+        1790550757,
+        1790550817,
+        1790550877,
+        1790550937,
+        1790550997,
+        1790551057,
+        1790551117,
+        1790551177,
+        1790551237,
+        1790551297,
+        1790551357,
+        1790551417,
+        1790551477
+      ],
+      "sql": "SELECT started_at,completed_at,job,outcome,error FROM cron_runs WHERE started_at > ? AND started_at <= ? ORDER BY started_at"
+    },
+    "quoteChanges": [
+      {
+        "key": "quote:BTC:binance",
+        "beforeDataAsOf": 1790534685,
+        "afterDataAsOf": 1790551478,
+        "beforeSuccess": 1790534685,
+        "afterSuccess": 1790551478,
+        "failures": 0,
+        "error": null
+      },
+      {
+        "key": "quote:BTC:upbit",
+        "beforeDataAsOf": 1790534671,
+        "afterDataAsOf": 1790551469,
+        "beforeSuccess": 1790534672,
+        "afterSuccess": 1790551471,
+        "failures": 0,
+        "error": null
+      },
+      {
+        "key": "quote:DOGE:binance",
+        "beforeDataAsOf": 1790534685,
+        "afterDataAsOf": 1790551478,
+        "beforeSuccess": 1790534685,
+        "afterSuccess": 1790551478,
+        "failures": 0,
+        "error": null
+      },
+      {
+        "key": "quote:DOGE:upbit",
+        "beforeDataAsOf": 1790534665,
+        "afterDataAsOf": 1790551456,
+        "beforeSuccess": 1790534672,
+        "afterSuccess": 1790551471,
+        "failures": 0,
+        "error": null
+      },
+      {
+        "key": "quote:ETH:binance",
+        "beforeDataAsOf": 1790534685,
+        "afterDataAsOf": 1790551477,
+        "beforeSuccess": 1790534685,
+        "afterSuccess": 1790551478,
+        "failures": 0,
+        "error": null
+      },
+      {
+        "key": "quote:ETH:upbit",
+        "beforeDataAsOf": 1790534661,
+        "afterDataAsOf": 1790551468,
+        "beforeSuccess": 1790534672,
+        "afterSuccess": 1790551471,
+        "failures": 0,
+        "error": null
+      }
+    ],
+    "recentDerivativeChanges": [
+      {
+        "key": "derivatives:BTC:funding",
+        "beforeDataAsOf": 1790524800,
+        "afterDataAsOf": 1790524800,
+        "beforeSuccess": 1790534438,
+        "afterSuccess": 1790551238,
+        "failures": 0,
+        "error": null
+      },
+      {
+        "key": "derivatives:BTC:long_account_ratio",
+        "beforeDataAsOf": 1790532000,
+        "afterDataAsOf": 1790550000,
+        "beforeSuccess": 1790534440,
+        "afterSuccess": 1790551241,
+        "failures": 0,
+        "error": null
+      },
+      {
+        "key": "derivatives:BTC:open_interest",
+        "beforeDataAsOf": 1790532000,
+        "afterDataAsOf": 1790550000,
+        "beforeSuccess": 1790534439,
+        "afterSuccess": 1790551239,
+        "failures": 0,
+        "error": null
+      },
+      {
+        "key": "derivatives:DOGE:funding",
+        "beforeDataAsOf": 1790524800,
+        "afterDataAsOf": 1790524800,
+        "beforeSuccess": 1790534498,
+        "afterSuccess": 1790551298,
+        "failures": 0,
+        "error": null
+      },
+      {
+        "key": "derivatives:DOGE:long_account_ratio",
+        "beforeDataAsOf": 1790532000,
+        "afterDataAsOf": 1790550000,
+        "beforeSuccess": 1790534500,
+        "afterSuccess": 1790551301,
+        "failures": 0,
+        "error": null
+      },
+      {
+        "key": "derivatives:DOGE:open_interest",
+        "beforeDataAsOf": 1790532000,
+        "afterDataAsOf": 1790550000,
+        "beforeSuccess": 1790534499,
+        "afterSuccess": 1790551299,
+        "failures": 0,
+        "error": null
+      },
+      {
+        "key": "derivatives:ETH:funding",
+        "beforeDataAsOf": 1790524800,
+        "afterDataAsOf": 1790524800,
+        "beforeSuccess": 1790534559,
+        "afterSuccess": 1790551358,
+        "failures": 0,
+        "error": null
+      },
+      {
+        "key": "derivatives:ETH:long_account_ratio",
+        "beforeDataAsOf": 1790532000,
+        "afterDataAsOf": 1790550000,
+        "beforeSuccess": 1790534560,
+        "afterSuccess": 1790551361,
+        "failures": 0,
+        "error": null
+      },
+      {
+        "key": "derivatives:ETH:open_interest",
+        "beforeDataAsOf": 1790532000,
+        "afterDataAsOf": 1790550000,
+        "beforeSuccess": 1790534560,
+        "afterSuccess": 1790551360,
+        "failures": 0,
+        "error": null
+      }
+    ],
+    "recentDerivativeRefreshesAdvanced": 9,
+    "dailyDerivativeChanges": [
+      {
+        "key": "derivatives:BTC:long_account_ratio_daily",
+        "beforeDataAsOf": 1790467200,
+        "afterDataAsOf": 1790467200,
+        "beforeSuccess": 1790533178,
+        "afterSuccess": 1790547938,
+        "failures": 0,
+        "error": null
+      },
+      {
+        "key": "derivatives:BTC:open_interest_daily",
+        "beforeDataAsOf": 1790467200,
+        "afterDataAsOf": 1790467200,
+        "beforeSuccess": 1790531198,
+        "afterSuccess": 1790549559,
+        "failures": 0,
+        "error": null
+      },
+      {
+        "key": "derivatives:DOGE:long_account_ratio_daily",
+        "beforeDataAsOf": 1790467200,
+        "afterDataAsOf": 1790467200,
+        "beforeSuccess": 1790532638,
+        "afterSuccess": 1790550999,
+        "failures": 0,
+        "error": null
+      },
+      {
+        "key": "derivatives:DOGE:open_interest_daily",
+        "beforeDataAsOf": 1790467200,
+        "afterDataAsOf": 1790467200,
+        "beforeSuccess": 1790532938,
+        "afterSuccess": 1790551239,
+        "failures": 0,
+        "error": null
+      },
+      {
+        "key": "derivatives:ETH:long_account_ratio_daily",
+        "beforeDataAsOf": 1790467200,
+        "afterDataAsOf": 1790467200,
+        "beforeSuccess": 1790532818,
+        "afterSuccess": 1790551178,
+        "failures": 0,
+        "error": null
+      },
+      {
+        "key": "derivatives:ETH:open_interest_daily",
+        "beforeDataAsOf": 1790467200,
+        "afterDataAsOf": 1790467200,
+        "beforeSuccess": 1790532458,
+        "afterSuccess": 1790550818,
+        "failures": 0,
+        "error": null
+      }
+    ],
+    "readOnlyRowsWritten": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "backfillState": [],
+    "briefings": [
+      {
+        "id": "2026-09-27",
+        "created_at": 1790468260
+      },
+      {
+        "id": "2026-09-26",
+        "created_at": 1790381433
+      }
+    ]
+  },
+  "dailyUsage": {
+    "checkedAt": "2026-09-27T23:25:30.172923+00:00",
+    "dayUTC": "2026-09-27",
+    "scope": "entire Cloudflare account",
+    "source": "https://developers.cloudflare.com/d1/observability/metrics-analytics/",
+    "rowsRead": 4500726,
+    "rowsWritten": 64752,
+    "limits": {
+      "rowsRead": 5000000,
+      "rowsWritten": 100000
+    },
+    "withinLimits": true,
+    "fullDayAfterDeployment": false,
+    "deployedAt": "2026-09-27T18:26:35Z",
+    "operationalSignoff": false,
+    "note": "Usage alone does not prove successful collection. Verify source freshness, cron completion and the next briefing separately."
+  },
+  "verificationAuthentication": {
+    "initialQueryHttpStatus": 401,
+    "initialUsageHttpStatus": 401,
+    "recovery": "Existing Wrangler authentication refreshed using whoami; read-only SQL and official usage requests then succeeded. No login action or credential disclosure was required.",
+    "productionApiFailure": false
+  },
+  "operationalSignoff": false,
+  "pending": {
+    "firstFullUTCDay": "2026-09-28",
+    "usageCheckNotBeforeUTC": "2026-09-29T01:00:00Z",
+    "nextBriefing": "2026-09-28 at 09:10 KST is not due at this check",
+    "strict48hReady": false
+  },
+  "automation": {
+    "followup": "ACTIVE",
+    "productCrons": "unchanged"
+  },
+  "runtimeChanged": false
+}
