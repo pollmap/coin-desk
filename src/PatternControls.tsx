@@ -10,8 +10,8 @@ import {
 import { guideHref, guideArticle, guideChartLink } from '../shared/learning-catalog';
 import type { Asset } from '../shared/types';
 import type { PriceBasis } from '../shared/analysis-workspace';
-import { basisName } from '../shared/analysis-workspace';
-import { numeric } from './lib';
+import { basisName, basisUnit } from '../shared/analysis-workspace';
+import { numeric, priceDigits } from './lib';
 import './learn.css';
 
 export function PatternPicker({
@@ -162,6 +162,8 @@ export function PatternObservations({
 }) {
   const [limit, setLimit] = useState(15);
   const selected = hits.find((h) => h.id === selection);
+  const valueLabel = (value: number | null | undefined) =>
+    numeric(value, priceDigits(value ?? 0, basisUnit(basis)));
   useEffect(
     () => setLimit(15),
     [asset, basis, params.get('patterns'), params.get('pattern_trend'), params.get('interval')],
@@ -175,15 +177,15 @@ export function PatternObservations({
             {new Date(selected.time * 1000).toISOString().slice(0, 16).replace('T', ' ')} UTC
           </strong>
           <p>
-            {asset} · {basisName(basis)} · 종가 {numeric(selected.close, 8)}
+            {asset} · {basisName(basis)} · 종가 {valueLabel(selected.close)}
             <br />
-            몸통 {numeric(selected.body, 8)} / 고저 범위 {numeric(selected.range, 8)} · 위꼬리{' '}
-            {numeric(selected.upper, 8)} / 아래꼬리 {numeric(selected.lower, 8)}
+            몸통 {valueLabel(selected.body)} / 고저 범위 {valueLabel(selected.range)} · 위꼬리{' '}
+            {valueLabel(selected.upper)} / 아래꼬리 {valueLabel(selected.lower)}
           </p>
           <p>
             {selected.trend === 'none' || selected.direction === 'neutral'
               ? '추세 필터 없음'
-              : `직전 종가 ${numeric(selected.previousClose, 8)} · SMA50 ${numeric(selected.sma50, 8)}${selected.trend === 'sma50-200' ? ' · SMA200 ' + numeric(selected.sma200, 8) : ''}`}
+              : `직전 종가 ${valueLabel(selected.previousClose)} · SMA50 ${valueLabel(selected.sma50)}${selected.trend === 'sma50-200' ? ' · SMA200 ' + valueLabel(selected.sma200) : ''}`}
           </p>
           <Link className="chart-guide-link" to={guideHref('pattern-' + selected.pattern, params)}>
             <BookOpen size={15} />
