@@ -39,6 +39,8 @@ Chrome 확장 설치와 화면 수집은 [설치 안내](../extension/README.md)
 
 ## 검증과 운영
 
+0.16.1은 운영 화면에서 확인한 두 표시 문제를 보완합니다. 온체인·선물의 빠른 지표 버튼을 차트 아래로 옮겨 주 차트가 1280×800에서 상단 260px 이내에 시작하도록 하고, 계절성 등 분석은 가격 이력 로딩 중에 표본이 없다고 표시하지 않습니다. 수집 로직·스키마·확장 0.16.0 코드는 유지합니다.
+
 [실행 결과와 남은 확인](audit-16/README.md)을 별도로 기록합니다. 기존 Cloudflare 수집·신호·브리핑·추가형 마이그레이션 흐름을 유지하며 운영 스키마 변경은 없습니다. 무료 D1 전체 UTC 하루 비용·다음 날 브리핑·48시간 안정 관찰은 별도 운영 기준입니다.
 
 참고: [TradingView 비교](https://www.tradingview.com/support/solutions/43000543053-how-to-use-the-compare-tool/), [시간축 동기화](https://www.tradingview.com/support/solutions/43000629992-how-to-sync-the-charts-of-my-layout/), [Chrome 메시지](https://developer.chrome.com/docs/extensions/develop/concepts/messaging), [Chrome activeTab](https://developer.chrome.com/docs/extensions/develop/concepts/activeTab).

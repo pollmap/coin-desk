@@ -797,25 +797,6 @@ export function AnalysisWorkspace() {
             관련 자료
           </button>
         </div>
-        {focused && (
-          <div className="metric-shortcuts" role="group" aria-label="자주 보는 지표">
-            {primaryShortcuts[section]
-              .filter(([id]) => sectionChoices.some((c) => c.id === id && c.available !== false))
-              .map(([id, label]) => (
-                <button
-                  key={id}
-                  aria-pressed={primaryLine?.id.replace(/_daily$/, '') === id}
-                  onClick={() =>
-                    choosePrimary(
-                      primaryLine?.id.replace(/_daily$/, '') === id ? primaryLine.id : id,
-                    )
-                  }
-                >
-                  {label}
-                </button>
-              ))}
-          </div>
-        )}
         <div className={'analysis-layout ' + (evidence || related ? 'with-evidence' : '')}>
           <div className="analysis-main">
             {error && (!focused || comparePrice) && (
@@ -881,6 +862,10 @@ export function AnalysisWorkspace() {
                   )}
                 </div>
               )
+            ) : labView && visual !== 'relative' && raw.loading && !dailyPoints.length ? (
+              <div className="loading" role="status">
+                분석할 가격 이력을 불러오고 있습니다…
+              </div>
             ) : ['relative', 'cycles', 'windows', 'seasonality'].includes(visual) ? (
               <Suspense
                 fallback={
@@ -1084,6 +1069,25 @@ export function AnalysisWorkspace() {
             )
           )}
         </div>
+        {focused && (
+          <div className="metric-shortcuts" role="group" aria-label="자주 보는 지표">
+            {primaryShortcuts[section]
+              .filter(([id]) => sectionChoices.some((c) => c.id === id && c.available !== false))
+              .map(([id, label]) => (
+                <button
+                  key={id}
+                  aria-pressed={primaryLine?.id.replace(/_daily$/, '') === id}
+                  onClick={() =>
+                    choosePrimary(
+                      primaryLine?.id.replace(/_daily$/, '') === id ? primaryLine.id : id,
+                    )
+                  }
+                >
+                  {label}
+                </button>
+              ))}
+          </div>
+        )}
         {visual === 'vwap' && !focused && (
           <details className="model-details">
             <summary>365일 VWAP · 재돌파 관찰 {reclaims.length}회</summary>
