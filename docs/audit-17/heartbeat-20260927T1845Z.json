@@ -1,0 +1,403 @@
+{
+  "checkedAt": "2026-09-27T18:44:58.338206+00:00",
+  "deployedCodeCommit": "93b93d0647344b3b1557c43aaa20947f534e73c4",
+  "repositoryCommitAtCheck": "1f182c8deac30ad02245110ca481b7a7b5377419",
+  "version": "0.17.1",
+  "changesRequired": false,
+  "publicEndpoints": {
+    "status": {
+      "status": 200,
+      "rows": 0
+    },
+    "health": {
+      "status": 200,
+      "rows": 0,
+      "ok": true,
+      "reasons": []
+    },
+    "signals": {
+      "status": 200,
+      "rows": 12
+    },
+    "briefings": {
+      "status": 200,
+      "rows": 2,
+      "ids": [
+        {
+          "id": "2026-09-27",
+          "createdAt": 1790468260
+        },
+        {
+          "id": "2026-09-26",
+          "createdAt": 1790381433
+        }
+      ]
+    },
+    "chain-context?asset=ETH&metric=tvl": {
+      "status": 200,
+      "rows": 3287
+    },
+    "market-derivatives": {
+      "status": 200,
+      "rows": 8
+    },
+    "network?asset=BTC&metric=mvrv&limit=1": {
+      "status": 200,
+      "rows": 1
+    },
+    "derivatives?asset=BTC&metric=funding&limit=1": {
+      "status": 200,
+      "rows": 1
+    },
+    "network?asset=DOGE&metric=mvrv&limit=1": {
+      "status": 200,
+      "rows": 1
+    },
+    "derivatives?asset=DOGE&metric=funding&limit=1": {
+      "status": 200,
+      "rows": 1
+    },
+    "network?asset=ETH&metric=mvrv&limit=1": {
+      "status": 200,
+      "rows": 1
+    },
+    "derivatives?asset=ETH&metric=funding&limit=1": {
+      "status": 200,
+      "rows": 1
+    }
+  },
+  "coverage": {
+    "expectedSources": 103,
+    "healthySources": 103,
+    "priceMarkets": 16,
+    "histories": 32
+  },
+  "nonHealthyActiveSources": [],
+  "observation48h": {
+    "from": 1790361720,
+    "until": 1790534520,
+    "firstRunAt": 1790380833,
+    "lastRunAt": 1790534497,
+    "ticks": 1605,
+    "failures": 658,
+    "expectedRuns": 2880,
+    "missingRuns": 1275,
+    "successfulRuns": 947,
+    "recordingRate": 0.5572916666666666,
+    "successRate": 0.32881944444444444,
+    "longestGapSeconds": 19140,
+    "unresolvedErrors": [],
+    "windowSatisfied": true,
+    "healthy": false,
+    "ready": false,
+    "thresholds": {
+      "recordingRate": 0.99,
+      "longestGapSeconds": 180,
+      "graceSeconds": 120
+    }
+  },
+  "deploymentReadback": {
+    "mainWorker": "7b917f0f-3b54-4c5c-bbed-3712db6b2100",
+    "quotesWorker": "649b29c4-5699-4770-8e1a-8bd1d271d7b7",
+    "method": "Cloudflare deployments API; current version at 100 percent; no new deployment"
+  },
+  "naturalCollection": {
+    "method": "Compare remote SELECT with prior audit snapshot. No forced collection or overview calls in this task. Other visitors cannot be excluded.",
+    "fromLastObservedTick": 1790534197,
+    "throughLastObservedTick": 1790534677,
+    "newRuns": [
+      {
+        "started_at": 1790534677,
+        "completed_at": 1790534679,
+        "job": "network:BTC",
+        "outcome": "ok"
+      },
+      {
+        "started_at": 1790534617,
+        "completed_at": 1790534619,
+        "job": "derivatives:XRP:open_interest",
+        "outcome": "ok"
+      },
+      {
+        "started_at": 1790534557,
+        "completed_at": 1790534559,
+        "job": "ETH:upbit:1d",
+        "outcome": "ok"
+      },
+      {
+        "started_at": 1790534497,
+        "completed_at": 1790534499,
+        "job": "BTC:binance:1h",
+        "outcome": "ok"
+      },
+      {
+        "started_at": 1790534437,
+        "completed_at": 1790534439,
+        "job": "DOGE:binance:1d",
+        "outcome": "ok"
+      },
+      {
+        "started_at": 1790534377,
+        "completed_at": 1790534380,
+        "job": "coinlore",
+        "outcome": "ok"
+      },
+      {
+        "started_at": 1790534317,
+        "completed_at": 1790534319,
+        "job": "reference:DOGE",
+        "outcome": "ok"
+      },
+      {
+        "started_at": 1790534257,
+        "completed_at": 1790534259,
+        "job": "derivatives:ONDO:long_account_ratio",
+        "outcome": "ok"
+      }
+    ],
+    "quoteChanges": [
+      {
+        "key": "quote:BTC:binance",
+        "beforeDataAsOf": 1790534198,
+        "afterDataAsOf": 1790534685,
+        "beforeSuccess": 1790534198,
+        "afterSuccess": 1790534685,
+        "failures": 0,
+        "error": null
+      },
+      {
+        "key": "quote:BTC:upbit",
+        "beforeDataAsOf": 1790534177,
+        "afterDataAsOf": 1790534671,
+        "beforeSuccess": 1790534192,
+        "afterSuccess": 1790534672,
+        "failures": 0,
+        "error": null
+      },
+      {
+        "key": "quote:DOGE:binance",
+        "beforeDataAsOf": 1790534198,
+        "afterDataAsOf": 1790534685,
+        "beforeSuccess": 1790534198,
+        "afterSuccess": 1790534685,
+        "failures": 0,
+        "error": null
+      },
+      {
+        "key": "quote:DOGE:upbit",
+        "beforeDataAsOf": 1790534172,
+        "afterDataAsOf": 1790534665,
+        "beforeSuccess": 1790534192,
+        "afterSuccess": 1790534672,
+        "failures": 0,
+        "error": null
+      },
+      {
+        "key": "quote:ETH:binance",
+        "beforeDataAsOf": 1790534197,
+        "afterDataAsOf": 1790534685,
+        "beforeSuccess": 1790534198,
+        "afterSuccess": 1790534685,
+        "failures": 0,
+        "error": null
+      },
+      {
+        "key": "quote:ETH:upbit",
+        "beforeDataAsOf": 1790534175,
+        "afterDataAsOf": 1790534661,
+        "beforeSuccess": 1790534192,
+        "afterSuccess": 1790534672,
+        "failures": 0,
+        "error": null
+      }
+    ],
+    "derivativeChanges": [
+      {
+        "key": "derivatives:BTC:funding",
+        "beforeDataAsOf": 1790524800,
+        "afterDataAsOf": 1790524800,
+        "beforeSuccess": 1790534138,
+        "afterSuccess": 1790534438,
+        "failures": 0,
+        "error": null
+      },
+      {
+        "key": "derivatives:BTC:long_account_ratio",
+        "beforeDataAsOf": 1790532000,
+        "afterDataAsOf": 1790532000,
+        "beforeSuccess": 1790534140,
+        "afterSuccess": 1790534440,
+        "failures": 0,
+        "error": null
+      },
+      {
+        "key": "derivatives:BTC:long_account_ratio_daily",
+        "beforeDataAsOf": 1790467200,
+        "afterDataAsOf": 1790467200,
+        "beforeSuccess": 1790533178,
+        "afterSuccess": 1790533178,
+        "failures": 0,
+        "error": null
+      },
+      {
+        "key": "derivatives:BTC:open_interest",
+        "beforeDataAsOf": 1790532000,
+        "afterDataAsOf": 1790532000,
+        "beforeSuccess": 1790534139,
+        "afterSuccess": 1790534439,
+        "failures": 0,
+        "error": null
+      },
+      {
+        "key": "derivatives:BTC:open_interest_daily",
+        "beforeDataAsOf": 1790467200,
+        "afterDataAsOf": 1790467200,
+        "beforeSuccess": 1790531198,
+        "afterSuccess": 1790531198,
+        "failures": 0,
+        "error": null
+      },
+      {
+        "key": "derivatives:DOGE:funding",
+        "beforeDataAsOf": 1790524800,
+        "afterDataAsOf": 1790524800,
+        "beforeSuccess": 1790534198,
+        "afterSuccess": 1790534498,
+        "failures": 0,
+        "error": null
+      },
+      {
+        "key": "derivatives:DOGE:long_account_ratio",
+        "beforeDataAsOf": 1790532000,
+        "afterDataAsOf": 1790532000,
+        "beforeSuccess": 1790534200,
+        "afterSuccess": 1790534500,
+        "failures": 0,
+        "error": null
+      },
+      {
+        "key": "derivatives:DOGE:long_account_ratio_daily",
+        "beforeDataAsOf": 1790467200,
+        "afterDataAsOf": 1790467200,
+        "beforeSuccess": 1790532638,
+        "afterSuccess": 1790532638,
+        "failures": 0,
+        "error": null
+      },
+      {
+        "key": "derivatives:DOGE:open_interest",
+        "beforeDataAsOf": 1790532000,
+        "afterDataAsOf": 1790532000,
+        "beforeSuccess": 1790534199,
+        "afterSuccess": 1790534499,
+        "failures": 0,
+        "error": null
+      },
+      {
+        "key": "derivatives:DOGE:open_interest_daily",
+        "beforeDataAsOf": 1790467200,
+        "afterDataAsOf": 1790467200,
+        "beforeSuccess": 1790532938,
+        "afterSuccess": 1790532938,
+        "failures": 0,
+        "error": null
+      },
+      {
+        "key": "derivatives:ETH:funding",
+        "beforeDataAsOf": 1790524800,
+        "afterDataAsOf": 1790524800,
+        "beforeSuccess": 1790533958,
+        "afterSuccess": 1790534559,
+        "failures": 0,
+        "error": null
+      },
+      {
+        "key": "derivatives:ETH:long_account_ratio",
+        "beforeDataAsOf": 1790532000,
+        "afterDataAsOf": 1790532000,
+        "beforeSuccess": 1790533960,
+        "afterSuccess": 1790534560,
+        "failures": 0,
+        "error": null
+      },
+      {
+        "key": "derivatives:ETH:long_account_ratio_daily",
+        "beforeDataAsOf": 1790467200,
+        "afterDataAsOf": 1790467200,
+        "beforeSuccess": 1790532818,
+        "afterSuccess": 1790532818,
+        "failures": 0,
+        "error": null
+      },
+      {
+        "key": "derivatives:ETH:open_interest",
+        "beforeDataAsOf": 1790532000,
+        "afterDataAsOf": 1790532000,
+        "beforeSuccess": 1790533960,
+        "afterSuccess": 1790534560,
+        "failures": 0,
+        "error": null
+      },
+      {
+        "key": "derivatives:ETH:open_interest_daily",
+        "beforeDataAsOf": 1790467200,
+        "afterDataAsOf": 1790467200,
+        "beforeSuccess": 1790532458,
+        "afterSuccess": 1790532458,
+        "failures": 0,
+        "error": null
+      }
+    ],
+    "recentDerivativeRefreshesAdvanced": 9,
+    "derivativeNote": "Recent observation checks advanced; settled funding and daily aggregates do not generate a new value every five minutes.",
+    "readOnlyRowsWritten": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "backfillState": [],
+    "briefings": [
+      {
+        "id": "2026-09-27",
+        "created_at": 1790468260
+      },
+      {
+        "id": "2026-09-26",
+        "created_at": 1790381433
+      }
+    ]
+  },
+  "dailyUsage": {
+    "checkedAt": "2026-09-27T18:44:59.121790+00:00",
+    "dayUTC": "2026-09-27",
+    "scope": "entire Cloudflare account",
+    "source": "https://developers.cloudflare.com/d1/observability/metrics-analytics/",
+    "rowsRead": 3626375,
+    "rowsWritten": 45732,
+    "limits": {
+      "rowsRead": 5000000,
+      "rowsWritten": 100000
+    },
+    "withinLimits": true,
+    "fullDayAfterDeployment": false,
+    "deployedAt": "2026-09-27T18:26:35Z",
+    "operationalSignoff": false,
+    "note": "Usage alone does not prove successful collection. Verify source freshness, cron completion and the next briefing separately."
+  },
+  "operationalSignoff": false,
+  "pending": {
+    "firstFullUTCDay": "2026-09-28",
+    "usageCheckNotBeforeUTC": "2026-09-29T01:00:00Z",
+    "nextBriefing": "2026-09-28",
+    "strict48hReady": false
+  },
+  "automation": {
+    "followup": "ACTIVE",
+    "productCrons": "unchanged"
+  }
+}
