@@ -724,22 +724,37 @@ export function ResearchLibrary() {
             폴더 가져오기
           </button>
           <button
-            onClick={() => {
-              const job = batch('Chrome X 화면'),
-                nonce = crypto.randomUUID();
-              bridge.current = {
-                nonce,
-                until: Date.now() + 30 * 60 * 1000,
-                batch: job,
-                tail: Promise.resolve(),
-                sequences: new Set(),
-                keys: new Set(),
-              };
-              setConnection(nonce);
-              window.postMessage({ type: 'CD_LIBRARY_HELLO', nonce }, location.origin);
-              setStatus(
-                'Chrome 확장을 열고 이 자료함에 전송해 주세요. 연결은 30분 동안 이 탭에서만 유효합니다.',
-              );
+            disabled={busy}
+            onClick={async () => {
+              setBusy(true);
+              try {
+                const previous = bridge.current?.tail;
+                bridge.current = null;
+                setConnection(null);
+                await previous;
+                // A resumed transfer may have already persisted its rows in an
+                // earlier session. Only those known media references can resume.
+                const saved = await libraryItems();
+                const job = batch('Chrome X 화면'),
+                  nonce = crypto.randomUUID();
+                bridge.current = {
+                  nonce,
+                  until: Date.now() + 30 * 60 * 1000,
+                  batch: job,
+                  tail: Promise.resolve(),
+                  sequences: new Set(),
+                  keys: new Set(saved.flatMap((row) => row.media.map((media) => media.key))),
+                };
+                setConnection(nonce);
+                window.postMessage({ type: 'CD_LIBRARY_HELLO', nonce }, location.origin);
+                setStatus(
+                  'Chrome 확장을 열고 이 자료함에 전송해 주세요. 연결은 30분 동안 이 탭에서만 유효합니다.',
+                );
+              } catch (e) {
+                setStatus('Chrome 연결 실패: ' + String(e));
+              } finally {
+                setBusy(false);
+              }
             }}
           >
             Chrome 연결

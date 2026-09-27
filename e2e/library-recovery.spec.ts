@@ -2,6 +2,78 @@ import { test, expect } from '@playwright/test';
 import { readFile } from 'node:fs/promises';
 import { readFileSync } from 'node:fs';
 const png = readFileSync('public/brand/favicon-32.png');
+
+test('Chrome image transfer resumes after reload and still rejects unreferenced media', async ({
+  page,
+}) => {
+  await page.addInitScript(() => {
+    const w = window as any;
+    w.bridgeNonce = null;
+    w.bridgeAcks = {};
+    window.addEventListener('message', (event) => {
+      if (event.source !== window || event.origin !== location.origin) return;
+      if (event.data?.type === 'CD_LIBRARY_HELLO') w.bridgeNonce = event.data.nonce;
+      if (event.data?.type === 'CD_LIBRARY_ACK') w.bridgeAcks[event.data.sequence] = event.data;
+    });
+  });
+  const connect = async () => {
+    await page.getByRole('button', { name: 'Chrome 연결', exact: true }).click();
+    await expect.poll(() => page.evaluate(() => (window as any).bridgeNonce)).toBeTruthy();
+  };
+  const send = async (sequence: number, payload: Record<string, unknown>) => {
+    await page.evaluate(
+      ({ sequence, payload }) => {
+        window.postMessage(
+          { ...payload, sequence, nonce: (window as any).bridgeNonce },
+          location.origin,
+        );
+      },
+      { sequence, payload },
+    );
+    await expect
+      .poll(() => page.evaluate((n) => (window as any).bridgeAcks[n], sequence))
+      .toBeTruthy();
+    return page.evaluate((n) => (window as any).bridgeAcks[n], sequence);
+  };
+  await page.goto('/workspace/library');
+  await connect();
+  expect(
+    await send(0, {
+      type: 'CD_LIBRARY_CHUNK',
+      rows: [
+        {
+          post_id: '778899',
+          account: 'fixture',
+          text: 'BTC resumable image',
+          images: [{ url: 'https://pbs.twimg.com/media/fixture.png' }],
+        },
+      ],
+    }),
+  ).not.toHaveProperty('error');
+  const image = {
+    type: 'CD_LIBRARY_MEDIA',
+    key: 'x:778899:0',
+    mime: 'image/png',
+    total: png.length,
+    offset: 0,
+  };
+  expect(
+    await send(1, { ...image, data: png.subarray(0, 10).toString('base64') }),
+  ).not.toHaveProperty('error');
+  await page.reload();
+  await connect();
+  expect(
+    await send(0, { ...image, key: 'x:unknown:0', data: png.toString('base64') }),
+  ).toHaveProperty('error');
+  expect(await send(1, { ...image, data: png.toString('base64') })).not.toHaveProperty('error');
+  expect(await send(2, { type: 'CD_LIBRARY_DONE', failed: 0 })).not.toHaveProperty('error');
+  await expect(page.locator('.library-row')).toHaveCount(1);
+  await page.locator('.library-row').click();
+  await expect(page.getByRole('img', { name: '보관한 원본 차트 · 작성자 해석' })).toBeVisible();
+  await page.reload();
+  await page.locator('.library-row').click();
+  await expect(page.getByRole('img', { name: '보관한 원본 차트 · 작성자 해석' })).toBeVisible();
+});
 test('private backup restores text, recipe and hashed original media in an empty browser', async ({
   page,
   browser,
