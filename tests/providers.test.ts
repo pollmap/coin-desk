@@ -88,6 +88,7 @@ it('one Binance batch request maps symbols exactly and isolates an outdated peer
   });
   expect(result.quotes.map((q) => q.asset)).toEqual(['BTC']);
   expect(result.errors.map((q) => q.asset)).toEqual(['DOGE']);
+  expect(result.requestFailed).toBe(false);
   expect(mock.closed).toHaveBeenCalledTimes(1);
 });
 it('Upbit uses one batched ticker request and preserves a valid peer when one ticker is absent', async () => {
@@ -124,4 +125,22 @@ it('Upbit uses one batched ticker request and preserves a valid peer when one ti
   expect(String(fetcher.mock.calls[0][0])).toContain('markets=KRW-BTC,KRW-DOGE');
   expect(result.quotes[0]).toMatchObject({ asset: 'BTC', change24h: 25 });
   expect(result.errors[0].asset).toBe('DOGE');
+  expect(result.requestFailed).toBe(false);
+});
+it('distinguishes a rejected upstream request from individually rejected tickers', async () => {
+  vi.stubGlobal(
+    'fetch',
+    vi.fn(async () => new Response('', { status: 429 })),
+  );
+  const unavailable = await getQuotes(['BTC', 'DOGE'], 'upbit');
+  expect(unavailable.requestFailed).toBe(true);
+  expect(unavailable.quotes).toEqual([]);
+  expect(unavailable.errors.map((row) => row.asset)).toEqual(['BTC', 'DOGE']);
+  vi.stubGlobal(
+    'fetch',
+    vi.fn(async () => Response.json([])),
+  );
+  const missingTickers = await getQuotes(['BTC', 'DOGE'], 'upbit');
+  expect(missingTickers.requestFailed).toBe(false);
+  expect(missingTickers.errors.map((row) => row.asset)).toEqual(['BTC', 'DOGE']);
 });

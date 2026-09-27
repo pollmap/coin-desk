@@ -140,7 +140,11 @@ export async function getQuotes(assets: Asset[], market: Market, feed?: FeedConf
     if (!Array.isArray(raw)) throw new Error('Invalid batch ticker response');
     rows = raw;
   } catch (error) {
-    return { quotes: [] as Quote[], errors: assets.map((asset) => ({ asset, error })) };
+    return {
+      quotes: [] as Quote[],
+      errors: assets.map((asset) => ({ asset, error })),
+      requestFailed: true,
+    };
   }
   const results = await Promise.all(
     assets.map(async (asset) => {
@@ -162,6 +166,7 @@ export async function getQuotes(assets: Asset[], market: Market, feed?: FeedConf
   return {
     quotes: results.flatMap((row) => (row.quote ? [row.quote] : [])),
     errors: results.flatMap((row) => (row.asset ? [{ asset: row.asset, error: row.error }] : [])),
+    requestFailed: false,
   };
 }
 export async function getRecentCandles(

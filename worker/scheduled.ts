@@ -266,14 +266,14 @@ export async function updateQuoteBatch(
         now - state.last_success >= (isPrimaryAsset(asset) ? QUOTE_REFRESH_SECONDS : 300))
     );
   });
-  if (!candidates.length) return false;
+  if (!candidates.length) return { attempted: 0, failed: 0, requestFailed: false };
   const claims = await env.DB.batch(
     candidates.map((asset) =>
       refreshLeaseStatement(env.DB, 'quote:' + asset + ':' + market, QUOTE_REFRESH_SECONDS, now),
     ),
   );
   const selected = candidates.filter((_asset, i) => claims[i].meta.changes > 0);
-  if (!selected.length) return false;
+  if (!selected.length) return { attempted: 0, failed: 0, requestFailed: false };
   const result = await getQuotes(selected, market, env);
   const statements = result.quotes.flatMap((quote) => [
     env.DB.prepare(
@@ -284,7 +284,11 @@ export async function updateQuoteBatch(
   if (statements.length) await env.DB.batch(statements);
   for (const problem of result.errors)
     await failure(env.DB, 'quote:' + problem.asset + ':' + market, problem.error);
-  return result.errors.length > 0;
+  return {
+    attempted: selected.length,
+    failed: result.errors.length,
+    requestFailed: result.requestFailed,
+  };
 }
 
 async function maintenance(env: Env, now: number) {
@@ -306,10 +310,11 @@ async function maintenance(env: Env, now: number) {
 
 async function executeJob(env: Env, job: JobPolicy, states: IngestionState[]) {
   if (job.kind === 'quote-batch') {
-    const partial = await updateQuoteBatch(env, job.assets!, job.market!, states);
+    const result = await updateQuoteBatch(env, job.assets!, job.market!, states);
     // Batch completion is recorded separately from each actual quote's status/time.
-    await success(env.DB, job.key, epoch());
-    return partial;
+    if (result.requestFailed) await failure(env.DB, job.key, 'Quote source request failed');
+    else await success(env.DB, job.key, epoch());
+    return result.failed > 0;
   }
   if (job.key === 'bitview') await updateOnchain(env);
   else if (job.kind === 'mempool') await updateMempool(env);
@@ -434,8 +439,11 @@ export async function refreshMinuteQuotes(env: Env) {
       const key = 'quotes:' + market + ':0';
       if ((states.find((s) => s.key === key)?.next_attempt || 0) > epoch()) return;
       try {
-        const partial = await updateQuoteBatch(env, assets, market, states);
-        if (partial) await failure(env.DB, key, 'Partial quote refresh');
+        const result = await updateQuoteBatch(env, assets, market, states);
+        if (!result.attempted) return;
+        // Stale/invalid individual tickers retain their own backoff. Only a failed
+        // batch request backs off the market, including when a sole peer was due.
+        if (result.requestFailed) await failure(env.DB, key, 'Quote source request failed');
         else await success(env.DB, key, epoch());
       } catch (error) {
         await failure(env.DB, key, error);

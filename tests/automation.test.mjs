@@ -137,6 +137,117 @@ it('minute quotes run independently of overdue history, deduplicate delivery, an
   expect(getQuotes).toHaveBeenCalledTimes(4);
   expect(DB.sqlite.prepare('SELECT COUNT(*) n FROM snapshots').get().n).toBe(16);
 });
+it('a stale peer backs off alone while healthy core quotes refresh on each next minute', async () => {
+  ready();
+  for (const asset of assets) source('quote:' + asset + ':upbit', now - 900);
+  const old = DB.sqlite.prepare('SELECT * FROM snapshots WHERE key=?').get('quote:PEPE:upbit');
+  getQuotes.mockImplementation(async (selected, market) => ({
+    quotes: selected.filter((asset) => market !== 'upbit' || asset !== 'PEPE').map(quote),
+    errors:
+      market === 'upbit' && selected.includes('PEPE')
+        ? [{ asset: 'PEPE', error: new Error('Invalid or outdated quote') }]
+        : [],
+    requestFailed: false,
+  }));
+  for (const offset of [0, 61, 122, 183]) {
+    vi.setSystemTime((now + offset) * 1000);
+    await refreshMinuteQuotes(env);
+    for (const asset of ['BTC', 'DOGE', 'ETH'])
+      expect(
+        DB.sqlite
+          .prepare('SELECT last_success,error FROM ingestion WHERE key=?')
+          .get('quote:' + asset + ':upbit'),
+      ).toMatchObject({ last_success: now + offset, error: null });
+    expect(
+      DB.sqlite
+        .prepare('SELECT next_attempt,error FROM ingestion WHERE key=?')
+        .get('quotes:upbit:0'),
+    ).toMatchObject({ next_attempt: 0, error: null });
+  }
+  const calls = getQuotes.mock.calls.filter((call) => call[1] === 'upbit');
+  expect(calls).toHaveLength(4);
+  expect(calls.map((call) => call[0].includes('PEPE'))).toEqual([true, false, true, false]);
+  expect(DB.sqlite.prepare('SELECT * FROM snapshots WHERE key=?').get('quote:PEPE:upbit')).toEqual(
+    old,
+  );
+  expect(
+    DB.sqlite
+      .prepare('SELECT failures,error,next_attempt FROM ingestion WHERE key=?')
+      .get('quote:PEPE:upbit'),
+  ).toMatchObject({
+    failures: 2,
+    error: 'Error: Invalid or outdated quote',
+    next_attempt: now + 362,
+  });
+});
+it('an invalid sole due ticker does not back off a market whose core quotes become due next minute', async () => {
+  ready();
+  source('quote:PEPE:upbit', now - 900);
+  getQuotes.mockImplementation(async (selected, market) => ({
+    quotes: selected.filter((asset) => market !== 'upbit' || asset !== 'PEPE').map(quote),
+    errors:
+      market === 'upbit' && selected.includes('PEPE')
+        ? [{ asset: 'PEPE', error: new Error('Invalid or outdated quote') }]
+        : [],
+    requestFailed: false,
+  }));
+  await refreshMinuteQuotes(env);
+  expect(getQuotes).toHaveBeenCalledTimes(1);
+  vi.setSystemTime((now + 61) * 1000);
+  await refreshMinuteQuotes(env);
+  expect(
+    DB.sqlite
+      .prepare('SELECT last_success,error FROM ingestion WHERE key=?')
+      .get('quote:BTC:upbit'),
+  ).toMatchObject({ last_success: now + 61, error: null });
+  expect(getQuotes.mock.calls.filter((call) => call[1] === 'upbit')).toHaveLength(2);
+});
+it('a failed upstream request backs off the market, preserves snapshots, then recovers when due', async () => {
+  ready();
+  for (const asset of assets) source('quote:' + asset + ':upbit', now - 900);
+  const old = DB.sqlite
+    .prepare("SELECT * FROM snapshots WHERE key LIKE '%:upbit' ORDER BY key")
+    .all();
+  getQuotes.mockImplementation(async (selected, market) =>
+    market === 'upbit'
+      ? {
+          quotes: [],
+          errors: selected.map((asset) => ({ asset, error: new Error('Source HTTP 429') })),
+          requestFailed: true,
+        }
+      : { quotes: selected.map(quote), errors: [], requestFailed: false },
+  );
+  await refreshMinuteQuotes(env);
+  expect(
+    DB.sqlite
+      .prepare('SELECT failures,next_attempt FROM ingestion WHERE key=?')
+      .get('quotes:upbit:0'),
+  ).toMatchObject({ failures: 1, next_attempt: now + 120 });
+  expect(
+    DB.sqlite.prepare("SELECT * FROM snapshots WHERE key LIKE '%:upbit' ORDER BY key").all(),
+  ).toEqual(old);
+  vi.setSystemTime((now + 61) * 1000);
+  await refreshMinuteQuotes(env);
+  expect(getQuotes.mock.calls.filter((call) => call[1] === 'upbit')).toHaveLength(1);
+  getQuotes.mockImplementation(async (selected) => ({
+    quotes: selected.map(quote),
+    errors: [],
+    requestFailed: false,
+  }));
+  vi.setSystemTime((now + 122) * 1000);
+  await refreshMinuteQuotes(env);
+  expect(getQuotes.mock.calls.filter((call) => call[1] === 'upbit')).toHaveLength(2);
+  expect(
+    DB.sqlite
+      .prepare('SELECT failures,next_attempt,error FROM ingestion WHERE key=?')
+      .get('quotes:upbit:0'),
+  ).toMatchObject({ failures: 0, next_attempt: 0, error: null });
+  expect(
+    DB.sqlite
+      .prepare('SELECT last_success,error FROM ingestion WHERE key=?')
+      .get('quote:BTC:upbit'),
+  ).toMatchObject({ last_success: now + 122, error: null });
+});
 it('does not let failed quote and mempool sources repeatedly jump ahead of older candle work', () => {
   const jobs = [
     {
@@ -205,7 +316,15 @@ it('an abandoned execution is recorded and resumed after its lease expires', asy
     );
   DB.sqlite
     .prepare('INSERT INTO cron_runs VALUES(?,?,?,?,?,?,?)')
-    .run(Math.floor((now - 180) / 60) % 4320, 'abandoned', now - 180, null, 'BTC:binance:1h', 'running', null);
+    .run(
+      Math.floor((now - 180) / 60) % 4320,
+      'abandoned',
+      now - 180,
+      null,
+      'BTC:binance:1h',
+      'running',
+      null,
+    );
   source('BTC:binance:1h', now - 180, now - 7200);
   DB.sqlite
     .prepare('UPDATE ingestion SET last_success=? WHERE key=?')
@@ -229,7 +348,10 @@ it('a failed asset preserves its prior quote and does not mark its successful pe
     errors: [{ asset: 'SOL', error: new Error('HTTP 429 private body') }],
   });
   const states = DB.sqlite.prepare('SELECT * FROM ingestion').all();
-  expect(await updateQuoteBatch(env, selected, 'binance', states)).toBe(true);
+  expect(await updateQuoteBatch(env, selected, 'binance', states)).toMatchObject({
+    attempted: 4,
+    failed: 1,
+  });
   for (const asset of selected.slice(0, 3))
     expect(
       DB.sqlite
