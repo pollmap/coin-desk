@@ -263,12 +263,32 @@ export function HistoryPositionPanel({
               >
                 −100%
               </text>
-              <text x={geometry.left} y="389" className="position-label">
-                {new Date(geometry.first * 1000).toISOString().slice(0, 7)}
-              </text>
-              <text x={geometry.right} y="389" textAnchor="end" className="position-label">
-                {new Date(geometry.last * 1000).toISOString().slice(0, 7)}
-              </text>
+              {Array.from({ length: width < 420 ? 2 : width < 760 ? 3 : 5 }, (_, i) => {
+                const tickCount = width < 420 ? 2 : width < 760 ? 3 : 5;
+                const fraction = i / (tickCount - 1);
+                const t = geometry.first + fraction * (geometry.last - geometry.first);
+                return (
+                  <g key={i}>
+                    <line
+                      x1={geometry.x(t)}
+                      x2={geometry.x(t)}
+                      y1={PRICE_TOP}
+                      y2={DRAWDOWN_BOTTOM}
+                      className="position-grid"
+                    />
+                    <text
+                      x={geometry.x(t)}
+                      y="389"
+                      textAnchor={i === 0 ? 'start' : i === tickCount - 1 ? 'end' : 'middle'}
+                      className="position-label"
+                    >
+                      {new Date(t * 1000)
+                        .toISOString()
+                        .slice(0, geometry.last - geometry.first < 180 * 86400 ? 10 : 7)}
+                    </text>
+                  </g>
+                );
+              })}
               <g>
                 <line
                   x1={geometry.x(view.time)}
