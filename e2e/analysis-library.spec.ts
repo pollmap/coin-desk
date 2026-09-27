@@ -139,6 +139,8 @@ test('analysis recipes replace the main chart with calculated views', async ({ p
   await expect(page.getByRole('heading', { name: 'BTC 반감기 사이클' })).toBeVisible();
   await page.getByLabel('차트 시각화').selectOption('seasonality');
   await expect(page.getByRole('heading', { name: 'BTC 계절성' })).toBeVisible();
+  await expect(page.getByLabel('봉 간격', { exact: true })).not.toBeVisible();
+  await expect(page.getByRole('button', { name: '지표 추가', exact: true })).not.toBeVisible();
   await page.getByLabel('차트 시각화').selectOption('relative');
   await expect(page.getByLabel('비교 기준', { exact: true })).toBeVisible();
   await expect(chart(page)).toBeVisible();

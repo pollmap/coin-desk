@@ -5,6 +5,9 @@
 .library-detail [hidden] {
   display: none;
 }
+.app .analysis-workspace [hidden] {
+  display: none !important;
+}
 .drawing-overlay {
   position: absolute;
   left: 0;
