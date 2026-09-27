@@ -11,6 +11,8 @@ import {
 import { useData } from './hooks';
 import { dateLabel, money, periodStart } from './lib';
 import './history-position.css';
+import { DateNavigator } from './DateNavigator';
+import { availableWindow, type DateWindow } from '../shared/date-navigation';
 
 const colors = ['#4f86cc', '#4bb8bf', '#83c59a', '#e6ba65', '#e37c67'];
 const labels = ['깊은 하단', '하단', '중앙', '상단', '높은 상단'];
@@ -22,6 +24,9 @@ export function HistoryPositionPanel({
   fetchReference = true,
   period,
   log = true,
+  onAll,
+  onVisibleRange,
+  initialWindow,
 }: {
   asset: Asset;
   period?: Period;
@@ -29,6 +34,9 @@ export function HistoryPositionPanel({
   fetchReference?: boolean;
   supplied?: SeriesResponse;
   currency?: 'USD' | 'KRW' | 'USDT';
+  onAll?: () => void;
+  onVisibleRange?: (range: DateWindow | null) => void;
+  initialWindow?: DateWindow | null;
 }) {
   const fetched = useData<SeriesResponse>(
     supplied || !fetchReference ? null : `/api/v1/reference?asset=${asset}&limit=1000`,
@@ -43,6 +51,12 @@ export function HistoryPositionPanel({
   const bandMap = useMemo(() => new Map(calculated.map((p) => [p.time, p])), [calculated]);
   const [range, setRange] = useState<'four' | 'all'>('all');
   const [selectedTime, setSelectedTime] = useState<number | null>(null);
+  const [customWindow, setCustomWindow] = useState<DateWindow | null>(null);
+  useEffect(() => {
+    setCustomWindow(initialWindow ?? null);
+    setSelectedTime(null);
+  }, [asset, currency, period, range, initialWindow?.from, initialWindow?.to]);
+  const times = useMemo(() => observations.map((p) => p.time), [observations]);
   const container = useRef<HTMLDivElement>(null);
   const [width, setWidth] = useState(1000);
   useEffect(() => {
@@ -54,27 +68,33 @@ export function HistoryPositionPanel({
     observer.observe(element);
     return () => observer.disconnect();
   }, []);
-  const all = useMemo(
-    () =>
-      period
+  const all = useMemo(() => {
+    const window = availableWindow(times, customWindow);
+    return window
+      ? observations.filter((p) => p.time >= window.from && p.time <= window.to)
+      : period
         ? observations.filter((p) => p.time >= periodStart(period, observations.at(-1)?.time ?? 0))
         : range === 'all'
           ? observations
           : observations.filter(
               (p) => p.time >= (observations.at(-1)?.time ?? 0) - 4 * 365.25 * 86400,
-            ),
-    [observations, range, period],
-  );
+            );
+  }, [observations, range, period, customWindow, times]);
   const geometry = useMemo(
     () =>
       positionGeometry(
         all,
-        calculated.filter((p) => p.time >= (all[0]?.time ?? Infinity)),
+        calculated.filter(
+          (p) => p.time >= (all[0]?.time ?? Infinity) && p.time <= (all.at(-1)?.time ?? -Infinity),
+        ),
         width,
         log,
       ),
     [all, calculated, width, log],
   );
+  useEffect(() => {
+    onVisibleRange?.(all.length ? { from: all[0].time, to: all.at(-1)!.time } : null);
+  }, [all, onVisibleRange]);
   const selectedIndex = selectedTime === null ? -1 : all.findIndex((p) => p.time === selectedTime);
   const index = selectedIndex < 0 ? all.length - 1 : selectedIndex;
   const view = all[index];
@@ -176,7 +196,10 @@ export function HistoryPositionPanel({
               className="position-svg"
               viewBox={`0 0 ${width} 396`}
               role="img"
-              aria-label={`${asset} 전체 ${currency} 가격, 730일 가격 분포와 낙폭. 날짜별 값은 아래 날짜 탐색으로 확인할 수 있습니다.`}
+              data-chart-kind="position"
+              data-visible-from={all[0]?.time}
+              data-visible-to={all.at(-1)?.time}
+              aria-label={`${asset} ${currency} 가격, 730일 가격 분포와 낙폭. 날짜별 값은 아래 날짜 탐색으로 확인할 수 있습니다.`}
               onPointerDown={selectPointer}
               onPointerMove={(e) => {
                 if (e.pointerType === 'mouse') selectPointer(e);
@@ -240,12 +263,32 @@ export function HistoryPositionPanel({
               >
                 −100%
               </text>
-              <text x={geometry.left} y="389" className="position-label">
-                {new Date(geometry.first * 1000).toISOString().slice(0, 7)}
-              </text>
-              <text x={geometry.right} y="389" textAnchor="end" className="position-label">
-                {new Date(geometry.last * 1000).toISOString().slice(0, 7)}
-              </text>
+              {Array.from({ length: width < 420 ? 2 : width < 760 ? 3 : 5 }, (_, i) => {
+                const tickCount = width < 420 ? 2 : width < 760 ? 3 : 5;
+                const fraction = i / (tickCount - 1);
+                const t = geometry.first + fraction * (geometry.last - geometry.first);
+                return (
+                  <g key={i}>
+                    <line
+                      x1={geometry.x(t)}
+                      x2={geometry.x(t)}
+                      y1={PRICE_TOP}
+                      y2={DRAWDOWN_BOTTOM}
+                      className="position-grid"
+                    />
+                    <text
+                      x={geometry.x(t)}
+                      y="389"
+                      textAnchor={i === 0 ? 'start' : i === tickCount - 1 ? 'end' : 'middle'}
+                      className="position-label"
+                    >
+                      {new Date(t * 1000)
+                        .toISOString()
+                        .slice(0, geometry.last - geometry.first < 180 * 86400 ? 10 : 7)}
+                    </text>
+                  </g>
+                );
+              })}
               <g>
                 <line
                   x1={geometry.x(view.time)}
@@ -276,8 +319,21 @@ export function HistoryPositionPanel({
                 aria-valuetext={`${dateLabel(view.time)}, ${money(view.price, currency)}, ${band ? bandPosition(band.z) : '밴드 계산 전'}, 낙폭 ${view.drawdown.toFixed(1)}%`}
                 onChange={(e) => setSelectedTime(all[Number(e.target.value)].time)}
               />
-              <button onClick={() => setSelectedTime(null)}>최신으로</button>
             </div>
+            <DateNavigator
+              key={asset + currency}
+              times={times}
+              visible={{ from: all[0].time, to: all.at(-1)!.time }}
+              selected={view.time}
+              onRange={setCustomWindow}
+              onSelect={setSelectedTime}
+              onReset={() => {
+                setCustomWindow(null);
+                setRange('all');
+                setSelectedTime(null);
+                onAll?.();
+              }}
+            />
             <p className="position-note">
               {!band ? '이 날짜에는 이전 730일 연속 가격이 부족해 색상 밴드가 없습니다. ' : ''}
               색상은 과거 대비 위치이며 미래 가격이나 매수·매도 신호가 아닙니다.

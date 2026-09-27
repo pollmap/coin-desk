@@ -137,6 +137,8 @@ export function ChartTools({
   onExport,
   onZoom,
   onReset,
+  getVisibleRange,
+  shareVisibleRange = false,
   exportLabel = '보이는 구간 CSV',
 }: {
   chart: RefObject<IChartApi | null>;
@@ -147,13 +149,15 @@ export function ChartTools({
   onExport?: () => void;
   onZoom?: (factor: number) => void;
   onReset?: () => void;
+  getVisibleRange?: () => { from: number; to: number } | null;
+  shareVisibleRange?: boolean;
   exportLabel?: string;
 }) {
   const host = useRef<HTMLDivElement>(null);
   const [message, setMessage] = useState('');
   const [share, setShare] = useState('');
   const csv = () => {
-    const range = chart.current?.timeScale().getVisibleRange();
+    const range = getVisibleRange?.() ?? chart.current?.timeScale().getVisibleRange();
     const visible = rows.filter(
       (p) => !range || (p.time >= Number(range.from) && p.time <= Number(range.to)),
     );
@@ -207,9 +211,16 @@ export function ChartTools({
         </button>
         <button
           onClick={async () => {
-            setShare(location.href);
+            const url = new URL(location.href);
+            const range = getVisibleRange?.() ?? chart.current?.timeScale().getVisibleRange();
+            if (shareVisibleRange && range) {
+              url.searchParams.set('chart_from', String(range.from));
+              url.searchParams.set('chart_to', String(range.to));
+            }
+            const address = url.toString();
+            setShare(address);
             try {
-              await navigator.clipboard.writeText(location.href);
+              await navigator.clipboard.writeText(address);
               setMessage('화면 링크를 복사했습니다.');
             } catch {
               setMessage('주소를 선택해 복사해 주세요.');

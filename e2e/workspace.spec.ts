@@ -154,11 +154,14 @@ for (const width of [320, 390, 768, 1280, 1440]) {
       '/coins',
       '/coins?view=derivatives',
       '/?asset=BTC&period=all',
+      '/?asset=DOGE&period=all&visual=rainbow',
       '/onchain/ETH',
       '/futures/DOGE',
     ]) {
       await page.goto(path);
-      if (!path.startsWith('/coins')) await expect(chart(page)).toBeVisible();
+      if (path.includes('rainbow'))
+        await expect(page.locator('[data-chart-kind="position"]')).toBeVisible();
+      else if (!path.startsWith('/coins')) await expect(chart(page)).toBeVisible();
       else await expect(page.getByRole('link', { name: '비트코인 차트 열기' })).toBeVisible();
       for (let theme = 0; theme < 2; theme++) {
         expect(
@@ -191,9 +194,9 @@ test('200 percent CSS zoom preserves controls and chart keyboard access', async 
   ).toBe(true);
   await chart(page).focus();
   await page.keyboard.press('Home');
-  const first = await page.getByLabel('차트 탐색 날짜 (UTC)').inputValue();
+  const first = await page.locator('.analysis-legend').innerText();
   await page.keyboard.press('End');
-  expect(await page.getByLabel('차트 탐색 날짜 (UTC)').inputValue()).not.toBe(first);
+  expect(await page.locator('.analysis-legend').innerText()).not.toBe(first);
 });
 
 test('stale data is visible and an API failure remains isolated to its asset', async ({ page }) => {
@@ -228,5 +231,72 @@ for (const asset of ['BTC', 'DOGE', 'ETH']) {
       .click();
     await expect(chart(page)).toHaveAttribute('data-primary-metric', /^futures:/);
     expect(priceRequests).toEqual([]);
+  });
+}
+
+for (const visual of ['price', 'rainbow']) {
+  test(`${visual} date navigation zooms, selects UTC ranges and restores focus`, async ({
+    page,
+  }) => {
+    await page.goto(`/?asset=DOGE&period=all&visual=${visual}`);
+    const surface = page.locator(
+      `[data-chart-kind="${visual === 'rainbow' ? 'position' : 'analysis'}"]`,
+    );
+    await expect(surface).toBeVisible();
+    await expect(surface).toHaveAttribute('data-visible-from', /\d+/);
+    const first = Number(await surface.getAttribute('data-visible-from'));
+    const last = Number(await surface.getAttribute('data-visible-to'));
+    const date = (time: number) => new Date(time * 1000).toISOString().slice(0, 10);
+    const target = first + 300 * 86400;
+    const nav = page.getByRole('group', { name: '차트 날짜 탐색', exact: true });
+    await nav.getByRole('button', { name: '날짜로 이동', exact: true }).click();
+    const dialog = page.getByRole('dialog', { name: '차트 날짜 탐색' });
+    await dialog.getByLabel('이동할 날짜 (UTC)').fill('2100-01-01');
+    await dialog.getByRole('button', { name: '이동', exact: true }).click();
+    await expect(dialog.getByRole('alert')).toContainText('확보한 데이터');
+    await dialog.getByLabel('이동할 날짜 (UTC)').fill(date(target));
+    await dialog.getByRole('button', { name: '이동', exact: true }).click();
+    await expect(dialog).not.toBeVisible();
+    await expect(nav.getByRole('button', { name: '날짜로 이동', exact: true })).toBeFocused();
+    await expect
+      .poll(
+        async () =>
+          Number(await surface.getAttribute('data-visible-to')) -
+          Number(await surface.getAttribute('data-visible-from')),
+      )
+      .toBeLessThan(100 * 86400);
+    const before = Number(await surface.getAttribute('data-visible-from'));
+    await nav.getByRole('button', { name: '다음 구간', exact: true }).click();
+    await expect
+      .poll(async () => Number(await surface.getAttribute('data-visible-from')))
+      .toBeGreaterThan(before);
+    await page.keyboard.press('Alt+g');
+    await expect(dialog).toBeVisible();
+    await dialog.getByRole('button', { name: '기간 선택', exact: true }).click();
+    await dialog.getByLabel('시작일 (UTC)').fill(date(target));
+    await dialog.getByLabel('종료일 (UTC)').fill(date(target + 30 * 86400));
+    await dialog.getByRole('button', { name: '기간 적용', exact: true }).click();
+    await expect(surface).toHaveAttribute('data-visible-from', String(target));
+    await expect(surface).toHaveAttribute('data-visible-to', String(target + 30 * 86400));
+    await page.locator('details.analysis-tools > summary').click();
+    await page.getByRole('button', { name: '링크 공유', exact: true }).click();
+    const shared = await page.getByRole('textbox', { name: '공유 주소', exact: true }).inputValue();
+    expect(new URL(shared).searchParams.get('chart_from')).toBe(String(target));
+    await page.goto(shared);
+    await expect(surface).toHaveAttribute('data-visible-from', String(target));
+    await expect(surface).toHaveAttribute('data-visible-to', String(target + 30 * 86400));
+    await nav.getByRole('button', { name: '최신 구간', exact: true }).click();
+    await expect(surface).toHaveAttribute('data-visible-to', String(last));
+    await nav.getByRole('button', { name: '전체 보기', exact: true }).click();
+    await expect(surface).toHaveAttribute('data-visible-from', String(first));
+    await expect(surface).toHaveAttribute('data-visible-to', String(last));
+    await nav.getByRole('button', { name: '날짜로 이동', exact: true }).click();
+    const scan = await new AxeBuilder({ page })
+      .withTags(['wcag2a', 'wcag2aa', 'wcag21aa', 'wcag22aa'])
+      .analyze();
+    expect(scan.violations.map((v) => v.id)).toEqual([]);
+    await page.keyboard.press('Escape');
+    await expect(dialog).not.toBeVisible();
+    await expect(nav.getByRole('button', { name: '날짜로 이동', exact: true })).toBeFocused();
   });
 }

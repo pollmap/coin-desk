@@ -2,7 +2,8 @@ import { marketComparisonLink } from '../shared/market-watch';
 import { belongsToSection, focusMetric } from '../shared/analysis-sections';
 import { metricCategory, primaryShortcuts } from '../shared/metric-navigation';
 import { workspaceIndicators } from '../shared/workspace-indicators';
-import { lazy, Suspense, useEffect, useMemo, useRef, useState } from 'react';
+import { lazy, Suspense, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { readDateWindow, type DateWindow } from '../shared/date-navigation';
 import { Link, useLocation, useParams, useSearchParams } from 'react-router-dom';
 import {
   SlidersHorizontal,
@@ -69,6 +70,10 @@ function useRemote(id: string | undefined, choices: Choice[]) {
 
 export function AnalysisWorkspace() {
   const positionExport = useRef(null);
+  const positionWindow = useRef<DateWindow | null>(null);
+  const updatePositionWindow = useCallback((range: DateWindow | null) => {
+    positionWindow.current = range;
+  }, []);
   const route = useParams(),
     location = useLocation(),
     [params, setParams] = useSearchParams();
@@ -80,6 +85,7 @@ export function AnalysisWorkspace() {
       ? 'futures'
       : 'history';
   const focused = section !== 'history';
+  const sharedWindow = readDateWindow(params);
   const comparePrice = params.get('compare_price') === '1';
   const needsPrice = !focused || comparePrice;
   const basis = priceBasis(params),
@@ -106,6 +112,10 @@ export function AnalysisWorkspace() {
   function change(patch: Record<string, string | null>) {
     setParams((prev) => {
       const next = new URLSearchParams(prev);
+      if (['period', 'price_source', 'panels', 'visual', 'interval'].some((key) => key in patch)) {
+        next.delete('chart_from');
+        next.delete('chart_to');
+      }
       next.set('asset', route.asset || prev.get('asset') || asset);
       next.set('price_source', basis);
       next.set('period', period);
@@ -617,7 +627,13 @@ export function AnalysisWorkspace() {
               </select>
             </>
           )}
-          <button ref={addButton} onClick={() => setPicker(true)}>
+          <button
+            ref={addButton}
+            onClick={() => {
+              if (!focused && visual === 'rainbow') change({ visual: null });
+              setPicker(true);
+            }}
+          >
             <SlidersHorizontal size={16} />
             {focused ? '지표 찾기' : '지표 추가'}
           </button>
@@ -695,6 +711,7 @@ export function AnalysisWorkspace() {
               primaryLine?.data.length ? (
                 <>
                   <AnalysisChart
+                    initialWindow={sharedWindow}
                     asset={asset}
                     primary={primaryLine}
                     unit={primaryLine.unit}
@@ -747,7 +764,10 @@ export function AnalysisWorkspace() {
                   }
                 >
                   <HistoryPositionPanel
+                    initialWindow={sharedWindow}
                     key={rangeRevision}
+                    onAll={() => change({ period: 'all' })}
+                    onVisibleRange={updatePositionWindow}
                     fetchReference={false}
                     log={log}
                     period={period}
@@ -760,19 +780,20 @@ export function AnalysisWorkspace() {
                   <summary>내보내기 · 공유</summary>
                   <ChartTools
                     chart={positionExport}
-                    rows={dailyPoints.filter(
-                      (p) => p.time >= periodStart(period, dailyPoints.at(-1)?.time ?? 0),
-                    )}
+                    rows={dailyPoints}
+                    shareVisibleRange
+                    getVisibleRange={() => positionWindow.current}
                     label={asset}
                     unit={unit}
                     source={series?.meta.source ?? ''}
-                    exportLabel="선택 기간 가격 CSV"
+                    exportLabel="보이는 구간 가격 CSV"
                     onReset={() => change({ period: 'all' })}
                   />
                 </details>
               </>
             ) : points.length ? (
               <AnalysisChart
+                initialWindow={sharedWindow}
                 asset={asset}
                 unit={unit}
                 source={series!.meta.source}
@@ -807,37 +828,39 @@ export function AnalysisWorkspace() {
             )}
             {!focused && (
               <>
-                <div className="analysis-selected">
-                  {lines
-                    .filter((l) => !l.overlay)
-                    .map((l) => (
-                      <div key={l.id}>
-                        <button
-                          onClick={() => {
-                            setSelectedMetric(l.id);
-                            setEvidence(true);
-                          }}
-                        >
-                          {l.title} · 근거
-                          {!l.data.length && <small>관측 대기</small>}
-                        </button>
-                        <button
-                          aria-label={l.title + ' 제거'}
-                          onClick={() =>
-                            selected.includes(l.id)
-                              ? change({ panels: selected.filter((id) => id !== l.id).join(',') })
-                              : change({
-                                  indicators: indicators
-                                    .filter((id) => !l.id.startsWith(id + ':'))
-                                    .join(','),
-                                })
-                          }
-                        >
-                          <X size={14} />
-                        </button>
-                      </div>
-                    ))}
-                </div>
+                {visual !== 'rainbow' && (
+                  <div className="analysis-selected">
+                    {lines
+                      .filter((l) => !l.overlay)
+                      .map((l) => (
+                        <div key={l.id}>
+                          <button
+                            onClick={() => {
+                              setSelectedMetric(l.id);
+                              setEvidence(true);
+                            }}
+                          >
+                            {l.title} · 근거
+                            {!l.data.length && <small>관측 대기</small>}
+                          </button>
+                          <button
+                            aria-label={l.title + ' 제거'}
+                            onClick={() =>
+                              selected.includes(l.id)
+                                ? change({ panels: selected.filter((id) => id !== l.id).join(',') })
+                                : change({
+                                    indicators: indicators
+                                      .filter((id) => !l.id.startsWith(id + ':'))
+                                      .join(','),
+                                  })
+                            }
+                          >
+                            <X size={14} />
+                          </button>
+                        </div>
+                      ))}
+                  </div>
+                )}
                 <div className="source-line">
                   {series?.meta.source} · {unit} · {dateLabel(points[0]?.time)}부터{' '}
                   {series?.meta.stale && <span className="amber">갱신 지연</span>}
