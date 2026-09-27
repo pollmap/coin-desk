@@ -8,6 +8,8 @@ export interface Env {
   FEED_URL?: string;
   FEED_TOKEN?: string;
   FEED_SERVICE?: Fetcher;
+  BACKGROUND_COLLECTOR?: Fetcher;
+  ANALYSIS_COLLECTOR?: Fetcher;
   BITVIEW_BASE_URL: string;
   ENABLED_ASSETS: string;
 }

@@ -681,9 +681,23 @@ export default {
       );
     }
   },
-  async scheduled(_event: ScheduledController, env: Env, ctx: ExecutionContext) {
-    // Independent Worker Cron invocations isolate the free CPU budgets.
-    // btc-desk-quotes/background/analysis own the other collection lanes.
+  async scheduled(event: ScheduledController, env: Env, ctx: ExecutionContext) {
+    // Two Cron slots only: quotes plus this dispatcher. Other apps retain their schedules.
+    for (const binding of [env.BACKGROUND_COLLECTOR, env.ANALYSIS_COLLECTOR]) {
+      if (!binding) throw new Error('Collection Service binding missing');
+      ctx.waitUntil(
+        binding
+          .fetch(
+            new Request('https://collector/tick', {
+              method: 'POST',
+              body: JSON.stringify({ at: Math.floor(event.scheduledTime / 1000) }),
+            }),
+          )
+          .then((response) => {
+            if (!response.ok) throw new Error('Collector HTTP ' + response.status);
+          }),
+      );
+    }
     ctx.waitUntil(refreshRecentFutures(env));
     ctx.waitUntil(refreshBriefing(env));
     // Public research collection is disabled at the owner's request. Stored data is retained.
