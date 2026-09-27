@@ -1,6 +1,6 @@
 {
   "name": "coin-desk",
-  "version": "0.15.7",
+  "version": "0.16.0",
   "private": true,
   "type": "module",
   "scripts": {
@@ -11,7 +11,8 @@
     "db:local": "node scripts/local-api.mjs --seed",
     "refresh": "node scripts/refresh.mjs",
     "format": "prettier --write src shared worker tests/*.ts tests/*.mjs scripts/*.mjs *.json *.ts",
-    "build": "tsc -b && vite build",
+    "package:extension": "python scripts/package_extension.py",
+    "build": "npm run package:extension && tsc -b && vite build",
     "test": "vitest run",
     "check": "tsc -b && vitest run",
     "db:init": "wrangler d1 migrations apply btc-desk --local",

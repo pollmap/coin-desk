@@ -1,0 +1,23 @@
+{
+  "manifest_version": 3,
+  "name": "Coin Desk 개인 자료 가져오기",
+  "version": "0.16.0",
+  "description": "사용자가 시작한 X 화면 읽기와 기기 내 자료함 전송. 인증정보와 비공개 메시지를 읽지 않습니다.",
+  "permissions": ["activeTab", "storage", "scripting"],
+  "host_permissions": ["https://x.com/*", "https://coin-desk.pages.dev/*"],
+  "optional_host_permissions": [
+    "http://127.0.0.1/*",
+    "http://localhost/*",
+    "https://pbs.twimg.com/*"
+  ],
+  "background": { "service_worker": "background.js", "type": "module" },
+  "action": { "default_popup": "popup.html" },
+  "content_scripts": [
+    { "matches": ["https://x.com/*"], "js": ["x-reader.js"], "run_at": "document_idle" },
+    {
+      "matches": ["https://coin-desk.pages.dev/*"],
+      "js": ["site-bridge.js"],
+      "run_at": "document_idle"
+    }
+  ]
+}

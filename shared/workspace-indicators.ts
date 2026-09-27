@@ -10,7 +10,8 @@ function segments(points: Point[], step: number) {
     const adjacent =
       d &&
       (step === 32 * DAY
-        ? p.time === Date.UTC(d.getUTCFullYear(), d.getUTCMonth() + 1, 1) / 1000
+        ? new Date(p.time * 1000).getUTCFullYear() * 12 + new Date(p.time * 1000).getUTCMonth() ===
+          d.getUTCFullYear() * 12 + d.getUTCMonth() + 1
         : p.time - previous!.time === step);
     if (!group || !adjacent) output.push([p]);
     else group.push(p);

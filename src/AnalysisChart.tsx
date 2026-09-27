@@ -5,6 +5,8 @@ import {
   PriceScaleMode,
   createSeriesMarkers,
   type IChartApi,
+  type ISeriesApi,
+  type SeriesType,
   type UTCTimestamp,
 } from 'lightweight-charts';
 import { createDeskChart } from './chart-theme';
@@ -14,6 +16,8 @@ import { money, numeric, periodStart } from './lib';
 import { ChartTools } from './ChartNavigator';
 import { DateNavigator } from './DateNavigator';
 import { availableWindow, type DateWindow } from '../shared/date-navigation';
+import { ChartDrawings } from './ChartDrawings';
+import type { Annotation } from '../shared/annotations';
 import {
   adjacentObservation,
   readingIndex,
@@ -35,6 +39,7 @@ export interface AnalysisLine {
   warning?: string;
   formula?: string;
 }
+const EMPTY_OBSERVATIONS: { time: number; label: string }[] = [];
 const panelCount = (lines: AnalysisLine[]) =>
   new Set(lines.filter((l) => !l.overlay && l.data.length).map((l) => l.pane ?? l.id)).size;
 const ts = (n: number) => n as UTCTimestamp;
@@ -63,6 +68,10 @@ export const AnalysisChart = memo(function AnalysisChart({
   rangeRevision = 0,
   primary,
   initialWindow,
+  drawingKey,
+  onAnnotations,
+  onVisibleRange,
+  observations = EMPTY_OBSERVATIONS,
 }: {
   asset: string;
   unit: string;
@@ -80,6 +89,10 @@ export const AnalysisChart = memo(function AnalysisChart({
   rangeRevision?: number;
   primary?: AnalysisLine;
   initialWindow?: DateWindow | null;
+  drawingKey?: string;
+  onAnnotations?: (items: Annotation[]) => void;
+  onVisibleRange?: (range: DateWindow) => void;
+  observations?: { time: number; label: string }[];
 }) {
   const host = useRef<HTMLDivElement>(null),
     chartRef = useRef<IChartApi | null>(null);
@@ -90,12 +103,21 @@ export const AnalysisChart = memo(function AnalysisChart({
   const settings = useRef({ period, log });
   settings.current = { period, log };
   const previous = useRef<{ key: string; from: number; to: number } | null>(null);
+  const userRange = useRef(false);
+  const rangeCallback = useRef(onVisibleRange);
+  rangeCallback.current = onVisibleRange;
+  const [drawingApi, setDrawingApi] = useState<{
+    chart: IChartApi;
+    series: ISeriesApi<SeriesType>;
+  } | null>(null);
   const [selected, setSelected] = useState<number | null>(null),
     [tableCount, setTableCount] = useState(50);
   const [visibleWindow, setVisibleWindow] = useState<DateWindow | null>(null);
   const key = asset + unit + step + (primary?.id ?? 'price');
   const display = (value: number | undefined) =>
-    primary ? numeric(value, readingDigits(value)) + ' ' + unit : money(value, unit);
+    primary || !['USD', 'USDT', 'KRW'].includes(unit)
+      ? numeric(value, readingDigits(value)) + ' ' + unit
+      : money(value, unit);
   const columns = useMemo(
     () => [{ title: primary?.title ?? asset, unit, source, data: points }, ...lines],
     [asset, unit, source, points, lines, primary?.title],
@@ -133,7 +155,8 @@ export const AnalysisChart = memo(function AnalysisChart({
     if (!host.current || !points.length) return;
     const panels = panelCount(lines);
     const chart = createDeskChart(host.current, {
-      autoSize: true,
+      autoSize: false,
+      width: Math.max(1, host.current.clientWidth),
       height: 370 + panels * 135,
       layout: { textColor: '#9aa8b8', fontFamily: 'Inter, Segoe UI, Malgun Gothic, sans-serif' },
       rightPriceScale: {
@@ -224,16 +247,28 @@ export const AnalysisChart = memo(function AnalysisChart({
     const dates = new Set(points.map((p) => p.time));
     const markers = createSeriesMarkers(
       price,
-      signals
-        .filter((s) => s.status !== 'withdrawn' && dates.has(s.time))
-        .map((s) => ({
-          id: s.id,
-          time: ts(s.time),
-          position: 'aboveBar' as const,
-          color: '#e7c681',
-          shape: 'circle' as const,
-          text: '',
-        })),
+      [
+        ...signals
+          .filter((s) => s.status !== 'withdrawn' && dates.has(s.time))
+          .map((s) => ({
+            id: s.id,
+            time: ts(s.time),
+            position: 'aboveBar' as const,
+            color: '#e7c681',
+            shape: 'circle' as const,
+            text: '',
+          })),
+        ...observations
+          .filter((s) => dates.has(s.time))
+          .map((s) => ({
+            id: 'calculated:' + s.time,
+            time: ts(s.time),
+            position: 'belowBar' as const,
+            color: '#dfb873',
+            shape: 'arrowUp' as const,
+            text: s.label,
+          })),
+      ].sort((a, b) => Number(a.time) - Number(b.time)),
     );
     chart.subscribeClick((e) => {
       const s =
@@ -266,7 +301,16 @@ export const AnalysisChart = memo(function AnalysisChart({
     const prior = previous.current;
     const from = periodStart(settings.current.period, points.at(-1)!.time);
     const visible = points.filter((p) => p.time >= from);
-    if (prior?.key === key)
+    const restoreDefault = () => {
+      const explicit = availableWindow(readings.times, initialWindow);
+      if (explicit)
+        chart.timeScale().setVisibleRange({ from: ts(explicit.from), to: ts(explicit.to) });
+      else if (visible.length)
+        chart
+          .timeScale()
+          .setVisibleRange({ from: ts(visible[0].time), to: ts(visible.at(-1)!.time) });
+    };
+    if (prior?.key === key && userRange.current)
       chart.timeScale().setVisibleRange({ from: ts(prior.from), to: ts(prior.to) });
     else if (visible.length)
       chart
@@ -280,26 +324,49 @@ export const AnalysisChart = memo(function AnalysisChart({
         surface.dataset.visibleFrom = String(range.from);
         surface.dataset.visibleTo = String(range.to);
         setVisibleWindow({ from: Number(range.from), to: Number(range.to) });
+        rangeCallback.current?.({ from: Number(range.from), to: Number(range.to) });
       }
     };
     chart.timeScale().subscribeVisibleTimeRangeChange(updateWindow);
     updateWindow(chart.timeScale().getVisibleRange());
     surface.dataset.observations = String(points.length);
+    const resize = new ResizeObserver(() => {
+      const range = chart.timeScale().getVisibleRange();
+      chart.resize(Math.max(1, surface.clientWidth), 370 + panels * 135);
+      if (userRange.current && range) chart.timeScale().setVisibleRange(range);
+      else restoreDefault();
+    });
+    resize.observe(surface);
+    const restored = availableWindow(readings.times, initialWindow);
+    if (restored && !userRange.current)
+      chart.timeScale().setVisibleRange({ from: ts(restored.from), to: ts(restored.to) });
+    // LWC settles pane/price-axis widths on its first animation frame. Restore only
+    // after that layout, rather than capturing its temporary default bar spacing.
+    surface.dataset.rangeReady = '0';
+    const frame = requestAnimationFrame(() => {
+      if (!userRange.current) restoreDefault();
+      updateWindow(chart.timeScale().getVisibleRange());
+      surface.dataset.rangeReady = '1';
+    });
+    setDrawingApi({ chart, series: price });
     return () => {
       const range = chart.timeScale().getVisibleRange();
       if (range) previous.current = { key, from: Number(range.from), to: Number(range.to) };
       markers.detach();
+      resize.disconnect();
+      cancelAnimationFrame(frame);
       chart.remove();
       chartRef.current = null;
       moveCursor.current = () => {};
     };
-  }, [key, points, candles, lines, signals, asset, unit, source, step, primary]);
+  }, [key, points, candles, lines, signals, asset, unit, source, step, primary, observations]);
   useEffect(() => {
     chartRef.current
       ?.priceScale('right', 0)
       .applyOptions({ mode: log ? PriceScaleMode.Logarithmic : PriceScaleMode.Normal });
   }, [log]);
   useEffect(() => {
+    userRange.current = false;
     const visible = points.filter((p) => p.time >= periodStart(period, points.at(-1)?.time ?? 0));
     manualCursor.current = false;
     setSelected(null);
@@ -333,57 +400,85 @@ export const AnalysisChart = memo(function AnalysisChart({
           <span key={l.id} title={l.source}>
             <i style={{ background: l.color }} />
             {l.title}{' '}
-            <b>{metricNumber(time === undefined ? undefined : readings.maps[i + 1].get(time))}</b>{' '}
+            <b>
+              {metricNumber(
+                selectedTime === null
+                  ? l.data.at(-1)?.value
+                  : time === undefined
+                    ? undefined
+                    : readings.maps[i + 1].get(time),
+              )}
+            </b>{' '}
             {l.unit}
+            {selectedTime === null && l.data.at(-1)?.time !== time && (
+              <small> · {timestamp(l.data.at(-1)?.time).slice(0, 10)}</small>
+            )}
           </span>
         ))}
       </div>
-      <div
-        ref={host}
-        className="analysis-canvas"
-        style={{ height: 370 + panelCount(lines) * 135 }}
-        data-chart-kind="analysis"
-        data-asset={asset}
-        data-primary-metric={primary?.id ?? 'price'}
-        onPointerDown={() => {
-          manualCursor.current = false;
-        }}
-        tabIndex={0}
-        role="group"
-        aria-label={`${asset} ${unit} ${primary?.title ?? '가격과 비교 지표'}. 좌우 방향키로 관측 탐색`}
-        onKeyDown={(e) => {
-          if (
-            e.target !== e.currentTarget ||
-            !['ArrowLeft', 'ArrowRight', 'Home', 'End', 'Escape'].includes(e.key)
-          )
-            return;
-          e.preventDefault();
-          explore(
-            e.key === 'Escape'
-              ? null
-              : e.key === 'Home'
-                ? (readings.times[0] ?? null)
-                : e.key === 'End'
-                  ? (readings.times.at(-1) ?? null)
-                  : adjacentObservation(
-                      readings.times,
-                      time ?? null,
-                      e.key === 'ArrowLeft' ? -1 : 1,
-                    ),
-          );
-        }}
-      />
+      <div className={'analysis-surface' + (drawingKey ? ' with-drawings' : '')}>
+        <div
+          ref={host}
+          className="analysis-canvas"
+          style={{ height: 370 + panelCount(lines) * 135 }}
+          data-chart-kind="analysis"
+          data-asset={asset}
+          data-primary-metric={primary?.id ?? 'price'}
+          onPointerDown={() => {
+            manualCursor.current = false;
+            userRange.current = true;
+          }}
+          onWheel={() => {
+            userRange.current = true;
+          }}
+          tabIndex={0}
+          role="group"
+          aria-label={`${asset} ${unit} ${primary?.title ?? '가격과 비교 지표'}. 좌우 방향키로 관측 탐색`}
+          onKeyDown={(e) => {
+            if (
+              e.target !== e.currentTarget ||
+              !['ArrowLeft', 'ArrowRight', 'Home', 'End', 'Escape'].includes(e.key)
+            )
+              return;
+            e.preventDefault();
+            explore(
+              e.key === 'Escape'
+                ? null
+                : e.key === 'Home'
+                  ? (readings.times[0] ?? null)
+                  : e.key === 'End'
+                    ? (readings.times.at(-1) ?? null)
+                    : adjacentObservation(
+                        readings.times,
+                        time ?? null,
+                        e.key === 'ArrowLeft' ? -1 : 1,
+                      ),
+            );
+          }}
+        />
+        {drawingKey && drawingApi && (
+          <ChartDrawings
+            key={drawingKey}
+            chart={drawingApi.chart}
+            series={drawingApi.series}
+            storageKey={drawingKey}
+            onChange={onAnnotations}
+          />
+        )}
+      </div>
       <DateNavigator
         key={key}
         times={readings.times}
         visible={visibleWindow}
         selected={time}
-        onRange={(range) =>
-          chartRef.current?.timeScale().setVisibleRange({ from: ts(range.from), to: ts(range.to) })
-        }
+        onRange={(range) => {
+          userRange.current = true;
+          chartRef.current?.timeScale().setVisibleRange({ from: ts(range.from), to: ts(range.to) });
+        }}
         onSelect={explore}
         onReset={() => {
           explore(null);
+          userRange.current = false;
           chartRef.current?.timeScale().fitContent();
           onAll();
         }}

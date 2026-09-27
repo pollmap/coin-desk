@@ -4,6 +4,7 @@ import { BookmarkPlus, ChevronDown, ChevronUp, Download, Star, Trash2 } from 'lu
 import { METRICS } from '../shared/catalog';
 import { DEFAULT_DESK, importDesk, normalizeDesk, workspaceUrl } from '../shared/workspace';
 import type { PersonalDesk, Workspace } from '../shared/workspace';
+import { annotationKey } from '../shared/annotations';
 import './desk.css';
 
 const KEY = 'coin-desk.personal.v1';
@@ -108,9 +109,11 @@ export function CardPicker({
 export function WorkspaceBar({
   current,
   embedded = false,
+  resolveCurrent,
 }: {
   current: Omit<Workspace, 'name'>;
   embedded?: boolean;
+  resolveCurrent?: (current: Omit<Workspace, 'name'>) => Omit<Workspace, 'name'>;
 }) {
   const { desk, update } = usePersonalDesk();
   const [open, setOpen] = useState(embedded);
@@ -134,7 +137,7 @@ export function WorkspaceBar({
         const found = d.workspaces.some((w) => w.name === title);
         if (!found && d.workspaces.length >= 12)
           throw new Error('최대 12개까지 저장할 수 있습니다.');
-        const item: Workspace = { ...current, name: title };
+        const item: Workspace = { ...(resolveCurrent?.(current) ?? current), name: title };
         return {
           ...d,
           workspaces: found
@@ -192,10 +195,7 @@ export function WorkspaceBar({
               설정 백업·이동
             </button>
           </form>
-          <p>
-            코인·시장·봉·기간·지표·로그축·온체인 카드 구성을 저장합니다. 그린 선은 각 차트에 따로
-            보관됩니다.
-          </p>
+          <p>코인·원천·분석·날짜 구간·지표·주석을 이 기기에 보관합니다.</p>
           <div className="saved-workspaces">
             {desk.workspaces.length ? (
               desk.workspaces.map((w) => (
@@ -203,6 +203,20 @@ export function WorkspaceBar({
                   <Link
                     to={workspaceUrl(w)}
                     onClick={() => {
+                      if (w.annotations)
+                        localStorage.setItem(
+                          'coin-desk.drawings.v2:' +
+                            annotationKey(
+                              w.asset,
+                              w.priceSource ?? w.market,
+                              w.interval,
+                              w.section && w.section !== 'price'
+                                ? (w.panels?.[0] ?? w.section)
+                                : 'price',
+                            ),
+                          JSON.stringify(w.annotations),
+                        );
+                      window.dispatchEvent(new Event('coin-desk-annotations'));
                       setOpen(false);
                       setMessage('');
                     }}

@@ -52,6 +52,7 @@ const WatchlistPage = lazy(() =>
   import('./WatchlistPage').then((m) => ({ default: m.WatchlistPage })),
 );
 const ComparePage = lazy(() => import('./ComparePage').then((m) => ({ default: m.ComparePage })));
+const ResearchLibrary = lazy(() => import('./ResearchLibrary').then(m => ({default:m.ResearchLibrary})));
 const MetricsExplorer = lazy(() =>
   import('./MetricsExplorer').then((m) => ({ default: m.MetricsExplorer })),
 );
@@ -888,6 +889,7 @@ function WorkspacePage() {
         </div>
       </div>
       <section className="panel workspace-page">
+        <Link className="desk-button" to="/workspace/library">개인 자료함 · 글·차트 가져오기 ↗</Link>
         <WorkspaceBar
           current={{
             ...preferences,
@@ -1147,6 +1149,7 @@ export default function App() {
               <Route path="/metrics/:metric" element={<MetricPage />} />
               <Route path="/coins" element={<WatchlistPage />} />
               <Route path="/workspace" element={<WorkspacePage />} />
+              <Route path="/workspace/library" element={<ResearchLibrary />} />
               <Route path="/compare" element={<ComparePage />} />
               <Route path="/explore" element={<MetricsExplorer />} />
               <Route path="/dominance" element={<DominancePage />} />
