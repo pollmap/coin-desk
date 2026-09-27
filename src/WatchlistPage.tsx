@@ -1,4 +1,4 @@
-import { marketAnalysisLink } from '../shared/market-watch';
+import { accountShares, marketAnalysisLink } from '../shared/market-watch';
 import { DAY } from '../shared/math';
 import { matchesCoin } from '../shared/coin-search';
 import { useMarket } from './useMarket';
@@ -366,10 +366,9 @@ export function WatchlistPage() {
                                 ? (point.value > 0 ? '+' : '') + numeric(point.value, 4) + '%'
                                 : metric === 'open_interest'
                                   ? numeric(point.value, 0) + ' ' + a.id
-                                  : numeric(point.value, 1) +
-                                    '% / ' +
-                                    numeric(100 - point.value, 1) +
-                                    '%'}
+                                  : (accountShares(point.value)
+                                      ?.map((v) => numeric(v, 1) + '%')
+                                      .join(' / ') ?? '—')}
                             {point && metric === 'long_account_ratio' && (
                               <span className="account-ratio-track" aria-hidden="true">
                                 <i style={{ width: point.value + '%' }} />

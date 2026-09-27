@@ -18,7 +18,7 @@ export const primaryShortcuts = {
   ],
   futures: [
     ['futures:funding', '펀딩률'],
-    ['futures:open_interest_daily', '미결제약정'],
-    ['futures:long_account_ratio_daily', '롱 계정 비중'],
+    ['futures:open_interest', '미결제약정'],
+    ['futures:long_account_ratio', '롱 계정 비중'],
   ],
 } as const;
