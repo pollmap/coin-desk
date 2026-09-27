@@ -1,4 +1,5 @@
 import { dailyTechnical } from '../shared/market-watch';
+import { marketDerivatives } from './market-derivatives';
 import { refreshProviderWatch } from './provider-watch';
 import { ASSETS, CALC_VERSION, METRICS } from '../shared/catalog';
 import { aggregate, bucket, DAY } from '../shared/math';
@@ -60,6 +61,7 @@ function canonicalRequest(request: Request) {
     reference: ['asset', 'from', 'to', 'limit'],
     network: ['asset', 'metric', 'from', 'to', 'limit'],
     derivatives: ['asset', 'metric', 'from', 'to', 'limit'],
+    'market-derivatives': [],
     'network-live': ['asset'],
     'network-catalog': ['asset'],
     metrics: ['asset'],
@@ -252,6 +254,14 @@ async function api(request: Request, env: Env): Promise<Response> {
   const { asset, market } = selection(q);
   if (request.method !== 'GET') return response({ error: 'Read-only API' }, 405);
   const endpoint = url.pathname.replace('/api/v1/', '');
+  if (endpoint === 'market-derivatives')
+    return response(
+      await marketDerivatives(
+        env.DB,
+        ASSETS.filter((a) => env.ENABLED_ASSETS.split(',').includes(a.id)).map((a) => a.id),
+        epoch(),
+      ),
+    );
   if (endpoint === 'signals')
     return response(
       await signalsFeed(

@@ -3,6 +3,8 @@ import { ChartRangeControl } from './ChartRangeControl';
 import { createDeskChart as createChart } from './chart-theme';
 import { useEffect, useMemo, useRef } from 'react';
 import { AssetHeader } from './AssetHeader';
+import { MarketNavigation } from './MarketNavigation';
+import { useMarket } from './useMarket';
 import { Link, useSearchParams } from 'react-router-dom';
 import {
   LineSeries,
@@ -84,6 +86,7 @@ export function DominancePanel({ compact = false }: { compact?: boolean }) {
   );
 }
 export function DominancePage() {
+  const { market } = useMarket();
   const snapshot = useData<Dominance>('/api/v1/dominance', false, 60000);
   const history = useData<{
     data: { time: number; coins: Dominance['coins'] }[];
@@ -95,7 +98,12 @@ export function DominancePage() {
   )
     ? params.get('asset')!
     : 'BTC';
-  const setSelected = (id: string) => setParams({ asset: id }, { replace: true });
+  const setSelected = (id: string) =>
+    setParams((prev) => {
+      const next = new URLSearchParams(prev);
+      next.set('asset', id);
+      return next;
+    });
   const ref = useRef<HTMLDivElement>(null);
   const apiRef = useRef<IChartApi | null>(null);
   const lastView = useRef<{ selected: string; from: UTCTimestamp; to: UTCTimestamp } | null>(null);
@@ -189,13 +197,16 @@ export function DominancePage() {
           asset={selected as Asset}
           current="dominance"
           subtitle="전체 암호자산 시가총액 대비 비중"
-          href={(a) => '/dominance?asset=' + a}
+          href={(a) =>
+            '/dominance?' + new URLSearchParams({ ...Object.fromEntries(params), asset: a })
+          }
         />
       ) : (
         <div className="page-heading">
           <h1>시장 도미넌스</h1>
         </div>
       )}
+      <MarketNavigation current="dominance" market={market} />
       <section className="panel dominance-history">
         <div className="panel-title">
           <h2>

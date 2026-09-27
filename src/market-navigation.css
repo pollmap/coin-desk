@@ -1,0 +1,118 @@
+.market-navigation,
+.market-scope,
+.metric-shortcuts,
+.metric-categories {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+.market-navigation {
+  border-bottom: 1px solid var(--border);
+  margin: 0 0 16px;
+}
+.market-navigation a,
+.market-scope button,
+.metric-shortcuts button,
+.metric-categories button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  min-height: 44px;
+  padding: 8px 12px;
+  border: 1px solid transparent;
+  border-radius: 5px;
+  color: var(--muted);
+  background: transparent;
+  font: inherit;
+  font-size: 13px;
+  cursor: pointer;
+  text-decoration: none;
+}
+.market-navigation a[aria-current='page'] {
+  color: var(--accent);
+  border-bottom: 2px solid var(--accent);
+  border-radius: 0;
+}
+.market-scope button[aria-pressed='true'],
+.metric-shortcuts button[aria-pressed='true'],
+.metric-categories button[aria-pressed='true'] {
+  color: var(--accent);
+  background: var(--surface);
+  border-color: var(--border);
+  font-weight: 650;
+}
+.market-scope {
+  margin-bottom: 12px;
+}
+.market-view {
+  display: flex;
+  margin-left: auto;
+  gap: 4px;
+}
+.market-metric-link {
+  display: inline-block;
+  padding: 8px 0;
+  min-height: 44px;
+}
+.market-metric-link:hover {
+  text-decoration: underline;
+}
+.account-ratio-track {
+  display: block;
+  height: 4px;
+  margin-top: 7px;
+  border-radius: 3px;
+  background: var(--down, #e693a9);
+  overflow: hidden;
+}
+.account-ratio-track i {
+  display: block;
+  height: 100%;
+  background: var(--accent);
+}
+.metric-shortcuts {
+  padding: 0 10px;
+  border-bottom: 1px solid var(--border);
+}
+.metric-categories {
+  margin: 8px 0;
+}
+.app .watch-table td {
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
+.app .watch-table-wrap {
+  position: relative;
+  min-width: 0;
+  max-width: 100%;
+}
+.app .watch-table .watch-analysis {
+  white-space: nowrap;
+}
+.app .watch-table .watch-analysis a {
+  padding: 0 7px;
+  min-height: 44px;
+  color: var(--accent);
+}
+.app .watch-table .watch-analysis a:hover {
+  background: var(--surface);
+}
+@media (max-width: 700px) {
+  .market-navigation a {
+    flex: 1;
+    padding: 8px 5px;
+    gap: 5px;
+  }
+  .app .watch-table td.watch-analysis {
+    grid-column: 1 / -1;
+    text-align: right;
+    border-top: 1px solid var(--border);
+    margin-top: 8px;
+  }
+  .metric-shortcuts button {
+    flex: 1 1 auto;
+    padding: 7px 8px;
+  }
+}

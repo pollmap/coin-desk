@@ -13,7 +13,14 @@ export function openDatabase(path = 'work/local.sqlite') {
   const executions = new WeakMap();
   function prepare(sql, params = []) {
     const execute = () => {
-      const result = sqlite.prepare(sql).run(...params);
+      const prepared = sqlite.prepare(sql);
+      if (prepared.columns().length) {
+        const before = sqlite.prepare('SELECT total_changes() AS n').get().n;
+        const results = prepared.all(...params);
+        const changes = sqlite.prepare('SELECT total_changes() AS n').get().n - before;
+        return { success: true, results, meta: { changes: Number(changes) } };
+      }
+      const result = prepared.run(...params);
       return { success: true, results: [], meta: { changes: Number(result.changes) } };
     };
     const statement = {

@@ -1,4 +1,5 @@
 import { useMarket } from './useMarket';
+import { MarketNavigation } from './MarketNavigation';
 import { ChartNavigator, ChartTools } from './ChartNavigator';
 import { createDeskChart as createChart } from './chart-theme';
 import { useEffect, useMemo, useRef, useState } from 'react';
@@ -423,13 +424,10 @@ export function ComparePage() {
     <div className="comparison-page">
       <div className="page-heading">
         <div>
-          <div className="eyebrow">COMPARE COINS</div>
           <h1>코인 성과 비교</h1>
-          <p>
-            같은 날 출발했다면 어떻게 달라졌을까요? 가격 변화와 하락 폭을 한 화면에서 비교합니다.
-          </p>
         </div>
       </div>
+      <MarketNavigation current="compare" market={market} assets={assets} />
       <section className="panel comparison-controls" aria-label="비교 설정">
         <div className="comparison-control-heading">
           <h2>
