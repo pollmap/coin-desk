@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Minus, MoveUpRight, GalleryVertical, Ruler, Undo2, X } from 'lucide-react';
 import type { IChartApi, ISeriesApi, SeriesType, UTCTimestamp } from 'lightweight-charts';
 import { validAnnotations, type Annotation, type DrawingKind } from '../shared/annotations';
@@ -17,22 +17,31 @@ export function ChartDrawings({
   series,
   storageKey,
   onChange,
+  initialTool,
 }: {
   chart: IChartApi;
   series: ISeriesApi<SeriesType>;
   storageKey: string;
   onChange?: (items: Annotation[]) => void;
+  initialTool?: DrawingKind;
 }) {
   const [mode, setMode] = useState<DrawingKind | null>(null),
     [items, setItems] = useState(() => readAnnotations(storageKey)),
     [draft, setDraft] = useState<Annotation['points']>([]),
     [revision, redraw] = useState(0),
     [error, setError] = useState('');
+  // Two rapid clicks can arrive before a passive effect resubscribes. Keep the
+  // draft synchronous so the second point cannot overwrite the first one.
+  const draftRef = useRef<Annotation['points']>([]);
+  function updateDraft(points: Annotation['points']) {
+    draftRef.current = points;
+    setDraft(points);
+  }
   useEffect(() => {
     setItems(readAnnotations(storageKey));
-    setDraft([]);
-    setMode(null);
-  }, [storageKey]);
+    updateDraft([]);
+    setMode(initialTool ?? null);
+  }, [storageKey, initialTool]);
   useEffect(() => {
     const restore = () => setItems(readAnnotations(storageKey));
     window.addEventListener('coin-desk-annotations', restore);
@@ -42,7 +51,7 @@ export function ChartDrawings({
     const escape = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
         setMode(null);
-        setDraft([]);
+        updateDraft([]);
       }
     };
     window.addEventListener('keydown', escape);
@@ -69,23 +78,22 @@ export function ChartDrawings({
       setError('주석 저장 공간을 확인해 주세요. 기존 주석은 보존됩니다.');
     }
   }
-  useEffect(() => {
+  // LWC suppresses a second, distant click inside its double-click timeout.
+  // While drawing, take pointer coordinates directly from our primary-pane SVG
+  // and convert them using the public chart API; normal chart gestures are untouched.
+  function pointAt(x: number, y: number) {
     if (!mode) return;
-    const click: Parameters<IChartApi['subscribeClick']>[0] = (event) => {
-      if (!event.point || event.time === undefined || (event.paneIndex ?? 0) !== 0) return;
-      const value = series.coordinateToPrice(event.point.y);
-      if (value === null) return;
-      const points = [...draft, { time: Number(event.time), value }];
-      const count = mode === 'horizontal' ? 1 : mode === 'channel' ? 3 : 2;
-      if (points.length === count) {
-        persist([...items, { id: crypto.randomUUID(), kind: mode, points }].slice(-60));
-        setDraft([]);
-        setMode(null);
-      } else setDraft(points);
-    };
-    chart.subscribeClick(click);
-    return () => chart.unsubscribeClick(click);
-  }, [chart, series, mode, draft, items, storageKey]);
+    const time = chart.timeScale().coordinateToTime(x);
+    const value = series.coordinateToPrice(y);
+    if (typeof time !== 'number' || value === null || !Number.isFinite(value)) return;
+    const points = [...draftRef.current, { time, value }];
+    const count = mode === 'horizontal' ? 1 : mode === 'channel' ? 3 : 2;
+    if (points.length === count) {
+      persist([...items, { id: crypto.randomUUID(), kind: mode, points }].slice(-60));
+      updateDraft([]);
+      setMode(null);
+    } else updateDraft(points);
+  }
   const width = chart.timeScale().width(),
     height = chart.panes()[0]?.getHeight() ?? 0;
   const position = (p: Annotation['points'][number]) => ({
@@ -137,7 +145,24 @@ export function ChartDrawings({
         height={height}
         aria-hidden="true"
         data-revision={revision}
+        style={
+          mode ? { pointerEvents: 'auto', touchAction: 'none', cursor: 'crosshair' } : undefined
+        }
+        onClick={
+          mode
+            ? (event) => {
+                event.stopPropagation();
+                const rect = event.currentTarget.getBoundingClientRect();
+                if (rect.width && rect.height)
+                  pointAt(
+                    ((event.clientX - rect.left) * width) / rect.width,
+                    ((event.clientY - rect.top) * height) / rect.height,
+                  );
+              }
+            : undefined
+        }
       >
+        {mode && <rect width={width} height={height} fill="transparent" pointerEvents="all" />}
         <g stroke="#d9ac54" strokeWidth="1.5">
           {items.map(draw)}
           {draft.map((p, i) => {
@@ -155,7 +180,7 @@ export function ChartDrawings({
         onKeyDown={(e) => {
           if (e.key === 'Escape') {
             setMode(null);
-            setDraft([]);
+            updateDraft([]);
           }
         }}
       >
@@ -174,7 +199,7 @@ export function ChartDrawings({
             aria-pressed={mode === id}
             onClick={() => {
               setMode(mode === id ? null : id);
-              setDraft([]);
+              updateDraft([]);
             }}
           >
             {id === 'horizontal' ? (
@@ -202,7 +227,7 @@ export function ChartDrawings({
             title="주석 취소 · Escape"
             onClick={() => {
               setMode(null);
-              setDraft([]);
+              updateDraft([]);
             }}
           >
             <X size={18} />
@@ -214,8 +239,8 @@ export function ChartDrawings({
               ? mode === 'horizontal'
                 ? '한 점 선택'
                 : mode === 'channel'
-                  ? '기준 두 점, 폭 한 점 선택'
-                  : '두 점 선택'
+                  ? `기준 두 점, 폭 한 점 선택 (${draft.length}/3)`
+                  : `두 점 선택 (${draft.length}/2)`
               : '')}
         </span>
       </div>

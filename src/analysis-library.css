@@ -2,6 +2,10 @@
   position: relative;
   min-width: 0;
 }
+.analysis-canvas {
+  min-width: 0;
+  overflow: hidden;
+}
 .library-detail [hidden] {
   display: none;
 }
@@ -10,11 +14,13 @@
 }
 .drawing-overlay {
   position: absolute;
+  z-index: 3;
   left: 0;
   top: 0;
   pointer-events: none;
   color: var(--text);
   overflow: hidden;
+  max-width: 100%;
 }
 .drawing-toolbar,
 .lab-controls,
@@ -36,13 +42,14 @@
   flex-direction: column;
   gap: 2px;
   border-right: 1px solid var(--border);
-  z-index: 2;
+  z-index: 4;
 }
 .analysis-surface.with-drawings {
   padding-left: 48px;
 }
 .with-drawings .drawing-overlay {
   left: 48px;
+  max-width: calc(100% - 48px);
 }
 .drawing-toolbar button {
   width: 44px;

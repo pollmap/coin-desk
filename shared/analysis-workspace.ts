@@ -22,7 +22,7 @@ export function assetLink(path: string, asset: Asset, params: URLSearchParams) {
   if (!next.has('period')) next.set('period', 'all');
   // An event or observation belongs to one asset; never carry it to another coin.
   if (params.get('asset') !== asset) {
-    for (const key of ['event', 'signal', 'focus', 'metric']) next.delete(key);
+    for (const key of ['event', 'signal', 'focus', 'metric', 'pattern_focus']) next.delete(key);
     if (next.has('panels'))
       next.set(
         'panels',
