@@ -5,6 +5,7 @@ import { createServer } from 'node:http';
 import { createServer as createVite } from 'vite';
 import { openDatabase, memoryCache } from './local-db.mjs';
 const DB = openDatabase(':memory:');
+const port = Number(process.env.COIN_DESK_TEST_PORT || '5190');
 const vite = await createVite({
   server: { middlewareMode: true, hmr: false, proxy: {} },
   appType: 'spa',
@@ -144,7 +145,7 @@ const env = {
 const server = createServer(async (req, res) => {
   if (!req.url.startsWith('/api/')) return vite.middlewares(req, res);
   try {
-    const response = await worker.fetch(new Request('http://127.0.0.1:5190' + req.url), env, {
+    const response = await worker.fetch(new Request(`http://127.0.0.1:${port}` + req.url), env, {
       waitUntil: (p) => p.catch(() => {}),
     });
     res.writeHead(response.status, Object.fromEntries(response.headers));
@@ -154,7 +155,7 @@ const server = createServer(async (req, res) => {
     res.end(JSON.stringify({ error: String(e) }));
   }
 });
-server.listen(5190, '127.0.0.1');
+server.listen(port, '127.0.0.1');
 for (const signal of ['SIGINT', 'SIGTERM'])
   process.on(signal, async () => {
     server.close();

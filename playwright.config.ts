@@ -1,4 +1,5 @@
 import { defineConfig, devices } from '@playwright/test';
+const baseURL = `http://127.0.0.1:${process.env.COIN_DESK_TEST_PORT || '5190'}`;
 export default defineConfig({
   testDir: './e2e',
   fullyParallel: false,
@@ -9,7 +10,7 @@ export default defineConfig({
   expect: { timeout: 12000 },
   reporter: [['list'], ['html', { open: 'never' }]],
   use: {
-    baseURL: 'http://127.0.0.1:5190',
+    baseURL,
     trace: 'retain-on-failure',
     screenshot: 'only-on-failure',
   },
@@ -19,7 +20,7 @@ export default defineConfig({
   ],
   webServer: {
     command: 'node scripts/e2e-server.mjs',
-    url: 'http://127.0.0.1:5190',
+    url: baseURL,
     reuseExistingServer: false,
     timeout: 60000,
   },
