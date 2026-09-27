@@ -18,16 +18,20 @@ async function status() {
       (s.connected ? '연결됨' : '미연결') +
       '\n' +
       (s.job
-        ? JSON.stringify(
-            {
-              상태: s.job.status,
-              이번작업: s.job.collected,
-              남은계정: s.job.queue?.length ?? 0,
-              메모: s.job.reason ?? s.job.coverage,
-            },
-            null,
-            2,
-          )
+        ? ({
+            waiting: '화면 여는 중',
+            running: '읽는 중',
+            paused: '일시 중지',
+            failed: '확인 필요',
+            'access-limited': '확인 가능한 범위까지 읽음',
+            complete: '현재 게시물 읽기 완료',
+          }[s.job.status] ?? '상태 확인 중') +
+          '\n이번 계정에서 읽은 행 ' +
+          s.job.collected +
+          ' · 남은 계정 ' +
+          (s.job.queue?.length ?? 0) +
+          '\n' +
+          (s.job.reason ?? s.job.coverage)
         : '시작할 자료를 선택하세요.') +
       (s.transfer
         ? '\n최근 전송 ' +
@@ -43,11 +47,15 @@ async function status() {
   }
 }
 async function action(fn) {
+  for (const button of document.querySelectorAll('button'))
+    if (button.id !== 'stop') button.disabled = true;
   try {
     await fn();
     await status();
   } catch (e) {
     $('status').textContent = String(e.message ?? e);
+  } finally {
+    for (const button of document.querySelectorAll('button')) button.disabled = false;
   }
 }
 $('start').onclick = () =>

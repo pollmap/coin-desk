@@ -32,6 +32,7 @@ function LocalImage({
   large?: boolean;
 }) {
   const [url, setUrl] = useState('');
+  const [original, setOriginal] = useState(false);
   const [revision, setRevision] = useState(0);
   useEffect(() => {
     const update = () => setRevision((v) => v + 1);
@@ -45,6 +46,7 @@ function LocalImage({
       .then((m) => {
         if (!live || !m) return;
         object = URL.createObjectURL(large ? (m.original ?? m.thumbnail) : m.thumbnail);
+        setOriginal(!!m.original);
         setUrl(object);
       })
       .catch(() => {});
@@ -54,7 +56,22 @@ function LocalImage({
     };
   }, [media.key, large, revision]);
   return url ? (
-    <img src={url} alt={large ? '보관한 원본 차트 · 작성자 해석' : '차트 썸네일'} loading="lazy" />
+    <figure className="local-media">
+      <img
+        src={url}
+        alt={
+          large
+            ? original
+              ? '보관한 원본 차트 · 작성자 해석'
+              : '차트 미리보기 · 원본 미보관'
+            : '차트 썸네일'
+        }
+        loading="lazy"
+      />
+      {large && !original && (
+        <figcaption>미리보기 · 원본은 이미지 폴더를 가져오거나 원문에서 확인하세요.</figcaption>
+      )}
+    </figure>
   ) : (
     <span className="media-missing">이미지 미보관</span>
   );
