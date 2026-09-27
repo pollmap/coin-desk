@@ -33,8 +33,13 @@ async function imageBytes(url) {
 }
 async function db() {
   return await new Promise((resolve, reject) => {
-    const r = indexedDB.open('coin-desk-x-import', 1);
-    r.onupgradeneeded = () => r.result.createObjectStore('posts', { keyPath: 'post_id' });
+    const r = indexedDB.open('coin-desk-x-import', 2);
+    r.onupgradeneeded = () => {
+      if (!r.result.objectStoreNames.contains('posts'))
+        r.result.createObjectStore('posts', { keyPath: 'post_id' });
+      if (!r.result.objectStoreNames.contains('transfers'))
+        r.result.createObjectStore('transfers', { keyPath: 'id' });
+    };
     r.onsuccess = () => resolve(r.result);
     r.onerror = () => reject(r.error);
   });
@@ -59,6 +64,26 @@ async function posts() {
       const r = d.transaction('posts').objectStore('posts').getAll();
       r.onsuccess = () => resolve(r.result);
       r.onerror = () => reject(r.error);
+    });
+  } finally {
+    d.close();
+  }
+}
+async function transferSnapshot(value) {
+  const d = await db();
+  try {
+    return await new Promise((resolve, reject) => {
+      const tx = d.transaction('transfers', value ? 'readwrite' : 'readonly');
+      const request = value
+        ? tx.objectStore('transfers').put({ id: 'active', ...value })
+        : tx.objectStore('transfers').get('active');
+      let result;
+      request.onsuccess = () => {
+        result = request.result;
+      };
+      tx.oncomplete = () => resolve(value ?? result);
+      tx.onerror = () => reject(tx.error);
+      tx.onabort = () => reject(tx.error);
     });
   } finally {
     d.close();
@@ -205,7 +230,7 @@ chrome.runtime.onMessage.addListener((m, sender, reply) => {
     // Popup commands cannot be invoked by a page content script.
     if (sender.tab) throw new Error('이 작업은 확장 창에서 시작해 주세요.');
     if (m.type === 'STATUS') {
-      const state = await chrome.storage.local.get(['job', 'transfer']),
+      const state = await chrome.storage.local.get(['job', 'transfer', 'transferCheckpoint']),
         connection = await chrome.storage.session.get('connection');
       return {
         ...state,
@@ -218,6 +243,11 @@ chrome.runtime.onMessage.addListener((m, sender, reply) => {
       return { ok: true };
     }
     if (m.type === 'STOP') {
+      const { transferCheckpoint } = await chrome.storage.local.get('transferCheckpoint');
+      if (transferCheckpoint)
+        await chrome.storage.local.set({
+          transferCheckpoint: { ...transferCheckpoint, status: 'paused' },
+        });
       const { job } = await chrome.storage.local.get('job');
       if (job) {
         await chrome.storage.local.set({ job: { ...job, status: 'paused' } });
@@ -248,8 +278,72 @@ chrome.runtime.onMessage.addListener((m, sender, reply) => {
       const tab = await chrome.tabs.get(c.tabId);
       if (!allowedSite(tab.url) || new URL(tab.url).origin !== new URL(c.url).origin)
         throw new Error('연결했던 자료함 탭이 변경됐습니다.');
-      const rows = await posts();
+      const destination = new URL(c.url).origin;
+      const { transferCheckpoint: prior } = await chrome.storage.local.get('transferCheckpoint');
+      const saved = await transferSnapshot();
+      const useSaved =
+        prior &&
+        saved &&
+        prior.signature === saved.signature &&
+        prior.destination === destination &&
+        prior.includeImages === !!m.images &&
+        prior.status !== 'complete';
+      const rows = useSaved ? saved.rows : await posts();
+      const signature = useSaved
+        ? saved.signature
+        : [
+            ...new Uint8Array(
+              await crypto.subtle.digest('SHA-256', new TextEncoder().encode(JSON.stringify(rows))),
+            ),
+          ]
+            .map((b) => b.toString(16).padStart(2, '0'))
+            .join('');
+      if (!useSaved) await transferSnapshot({ signature, rows });
+      const resumable =
+        prior &&
+        prior.signature === signature &&
+        prior.destination === destination &&
+        prior.includeImages === !!m.images &&
+        prior.status !== 'complete';
+      const progress = resumable
+        ? { ...prior, status: 'running' }
+        : {
+            signature,
+            destination,
+            includeImages: !!m.images,
+            rowOffset: 0,
+            mediaIndex: 0,
+            images: 0,
+            failed: 0,
+            status: 'running',
+          };
+      if (m.continue && prior?.status === 'paused') return { ok: true, more: false, paused: true };
+      progress.totalRows = rows.length;
+      const imagesToSend = m.images
+        ? rows.flatMap((row) =>
+            (row.images ?? []).flatMap((image, index) => {
+              const url = mediaUrl(image.url);
+              return url ? [{ url, key: 'x:' + row.post_id + ':' + index }] : [];
+            }),
+          )
+        : [];
+      progress.totalImages = imagesToSend.length;
+      if (
+        m.images &&
+        !(await chrome.permissions.contains({ origins: ['https://pbs.twimg.com/*'] }))
+      )
+        throw new Error('이미지 권한이 없습니다. 확장에서 다시 전송하세요.');
+      const checkpoint = async () => {
+        const current = (await chrome.storage.local.get('transferCheckpoint')).transferCheckpoint;
+        if (current?.signature === signature && current.status === 'paused')
+          throw new Error('전송을 중지했습니다. 같은 전송 버튼으로 이어 보낼 수 있습니다.');
+        await chrome.storage.local.set({
+          transferCheckpoint: { ...progress, updatedAt: new Date().toISOString() },
+        });
+      };
+      await chrome.storage.local.set({ transferCheckpoint: progress });
       const transmit = async (payload) => {
+        await checkpoint();
         if (Date.now() > c.expires)
           throw new Error('연결 시간이 끝났습니다. 다시 연결해 재개하세요.');
         const sequence = c.sequence++;
@@ -262,38 +356,67 @@ chrome.runtime.onMessage.addListener((m, sender, reply) => {
         if (!ack?.ok)
           throw new Error(ack?.error || '전송 확인이 없습니다. 자료는 확장에 보존됩니다.');
       };
-      for (let offset = 0; offset < rows.length; offset += 100)
-        await transmit({ type: 'TRANSFER', rows: rows.slice(offset, offset + 100) });
-      let images = 0,
-        failed = 0;
-      if (m.images && (await chrome.permissions.contains({ origins: ['https://pbs.twimg.com/*'] })))
-        for (const row of rows)
-          for (const [index, image] of (row.images ?? []).entries()) {
-            const url = mediaUrl(image.url);
-            if (!url) continue;
-            let payload;
-            try {
-              payload = await imageBytes(url);
-            } catch {
-              failed++;
-              continue;
-            }
-            for (let offset = 0; offset < payload.bytes.length; offset += 192 * 1024) {
-              let binary = '';
-              for (const byte of payload.bytes.subarray(offset, offset + 192 * 1024))
-                binary += String.fromCharCode(byte);
-              await transmit({
-                type: 'TRANSFER_MEDIA',
-                key: 'x:' + row.post_id + ':' + index,
-                mime: payload.mime,
-                total: payload.bytes.length,
-                offset,
-                data: btoa(binary),
-              });
-            }
-            images++;
-          }
+      // Each message finishes quickly; the popup starts the next burst. A closed
+      // popup, expired connection or suspended MV3 worker can resume this cursor.
+      const started = Date.now();
+      const rowEnd = Math.min(rows.length, progress.rowOffset + 500);
+      while (progress.rowOffset < rowEnd) {
+        await transmit({
+          type: 'TRANSFER',
+          rows: rows.slice(progress.rowOffset, progress.rowOffset + 100),
+        });
+        progress.rowOffset = Math.min(rows.length, progress.rowOffset + 100);
+        await checkpoint();
+      }
+      if (progress.rowOffset < rows.length)
+        return {
+          ok: true,
+          more: true,
+          count: progress.rowOffset,
+          images: progress.images,
+          failed: progress.failed,
+        };
+      const imageEnd = Math.min(imagesToSend.length, progress.mediaIndex + 20);
+      while (progress.mediaIndex < imageEnd && Date.now() - started < 60000) {
+        const image = imagesToSend[progress.mediaIndex];
+        let payload;
+        try {
+          payload = await imageBytes(image.url);
+        } catch {
+          progress.failed++;
+          progress.mediaIndex++;
+          await checkpoint();
+          continue;
+        }
+        for (let offset = 0; offset < payload.bytes.length; offset += 192 * 1024) {
+          let binary = '';
+          for (const byte of payload.bytes.subarray(offset, offset + 192 * 1024))
+            binary += String.fromCharCode(byte);
+          await transmit({
+            type: 'TRANSFER_MEDIA',
+            key: image.key,
+            mime: payload.mime,
+            total: payload.bytes.length,
+            offset,
+            data: btoa(binary),
+          });
+        }
+        progress.images++;
+        progress.mediaIndex++;
+        await checkpoint();
+      }
+      if (progress.mediaIndex < imagesToSend.length)
+        return {
+          ok: true,
+          more: true,
+          count: progress.rowOffset,
+          images: progress.images,
+          failed: progress.failed,
+        };
+      const { images, failed } = progress;
       await transmit({ type: 'TRANSFER_DONE', images, failed });
+      progress.status = 'complete';
+      await checkpoint();
       await chrome.storage.local.set({
         transfer: { at: new Date().toISOString(), rows: rows.length, images, failed },
       });

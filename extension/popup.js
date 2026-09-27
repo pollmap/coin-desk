@@ -41,12 +41,25 @@ async function status() {
           '개 · 실패 ' +
           s.transfer.failed +
           '개'
+        : '') +
+      (s.transferCheckpoint && s.transferCheckpoint.status !== 'complete'
+        ? '\n전송 진행: 글 ' +
+          s.transferCheckpoint.rowOffset +
+          '/' +
+          s.transferCheckpoint.totalRows +
+          ' · 이미지 ' +
+          s.transferCheckpoint.mediaIndex +
+          '/' +
+          s.transferCheckpoint.totalImages +
+          '\n전송 창을 닫았거나 중지했다면 전송 버튼으로 이어 보내세요.'
         : '');
   } catch (e) {
     $('status').textContent = String(e);
   }
 }
+let activeOperations = 0;
 async function action(fn) {
+  activeOperations++;
   for (const button of document.querySelectorAll('button'))
     if (button.id !== 'stop') button.disabled = true;
   try {
@@ -55,7 +68,9 @@ async function action(fn) {
   } catch (e) {
     $('status').textContent = String(e.message ?? e);
   } finally {
-    for (const button of document.querySelectorAll('button')) button.disabled = false;
+    activeOperations--;
+    if (!activeOperations)
+      for (const button of document.querySelectorAll('button')) button.disabled = false;
   }
 }
 $('start').onclick = () =>
@@ -77,9 +92,14 @@ $('send').onclick = () =>
     const images = $('images').checked;
     if (images && !(await chrome.permissions.request({ origins: ['https://pbs.twimg.com/*'] })))
       throw new Error('이미지 도메인 접근이 허용되지 않았습니다.');
-    const result = await send({ type: 'SEND', images });
-    $('status').textContent =
-      result.count + '건 전송 · 이미지 ' + result.images + ' · 이미지 실패 ' + result.failed;
+    let result = await send({ type: 'SEND', images });
+    while (result.more) {
+      await status();
+      result = await send({ type: 'SEND', images, continue: true });
+    }
+    $('status').textContent = result.paused
+      ? '전송 중지 · 다음 전송 때 이어 보냅니다.'
+      : result.count + '건 전송 · 이미지 ' + result.images + ' · 이미지 실패 ' + result.failed;
   });
 $('export').onclick = () =>
   action(async () => {
