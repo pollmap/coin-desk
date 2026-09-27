@@ -10,7 +10,31 @@ import collector from '../worker/collector-entry';
 import { refreshMinuteQuotes, scheduled } from '../worker/scheduled';
 import { refreshObservations } from '../worker/observations';
 import { feedRequest } from '../worker/feed-client';
+import { readFileSync } from 'node:fs';
 beforeEach(() => vi.clearAllMocks());
+it('uses only two Cron schedules and keeps heavy workers private', () => {
+  const configs = [
+    'wrangler.jsonc',
+    'wrangler.quotes.jsonc',
+    'wrangler.background.jsonc',
+    'wrangler.analysis.jsonc',
+  ].map((p) => JSON.parse(readFileSync(p, 'utf8')));
+  expect(configs.reduce((n, c) => n + c.triggers.crons.length, 0)).toBe(2);
+  expect(
+    configs.slice(2).every((c) => c.workers_dev === false && c.triggers.crons.length === 0),
+  ).toBe(true);
+});
+it('awaits bound collection and rejects unrelated requests', async () => {
+  const env = { COLLECTOR_LANE: 'background' } as never;
+  expect((await collector.fetch(new Request('https://collector/tick'), env)).status).toBe(404);
+  expect(scheduled).not.toHaveBeenCalled();
+  const request = new Request('https://collector/tick', {
+    method: 'POST',
+    body: JSON.stringify({ at: 180000 }),
+  });
+  expect((await collector.fetch(request, env)).status).toBe(204);
+  expect(scheduled).toHaveBeenCalledWith(env, 180000, true);
+});
 it('never runs quotes and background computation in the same collector invocation', async () => {
   const event = { scheduledTime: 1800000000000 } as ScheduledController;
   const ctx = { waitUntil: vi.fn() } as unknown as ExecutionContext;

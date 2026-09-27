@@ -456,6 +456,8 @@ export async function operationStatus(env: Env) {
     health: { ok: !reasons.length, reasons, checkedAt: now },
     automation: {
       runner: 'Cloudflare Cron',
+      cronWorkers: ['btc-desk', 'btc-desk-quotes'],
+      boundWorkers: ['btc-desk-background', 'btc-desk-analysis'],
       collectors: ['btc-desk', 'btc-desk-quotes', 'btc-desk-background', 'btc-desk-analysis'],
       observationScope: 'background Cron ledger; all active source freshness also required',
       analysisCycleSeconds: 1200,
