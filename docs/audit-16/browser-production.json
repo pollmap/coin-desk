@@ -1,0 +1,108 @@
+{
+  "version": "0.16.1",
+  "method": "Read-only production DOM inspection in user Chrome; no collection endpoints called",
+  "flows": [
+    {
+      "charts": [
+        {
+          "asset": "BTC",
+          "metric": "net:mvrv",
+          "observations": "5915",
+          "ready": "1",
+          "y": 246
+        }
+      ],
+      "legend": "BTC · MVRV2026-09-26 00:00 UTC 1.58 배",
+      "url": "https://coin-desk.pages.dev/onchain/BTC?asset=BTC&period=all&price_source=reference",
+      "viewport": {
+        "height": 675,
+        "width": 1440
+      }
+    },
+    {
+      "charts": [
+        {
+          "asset": "DOGE",
+          "metric": "net:mvrv",
+          "observations": "4630",
+          "ready": "1",
+          "y": 246
+        }
+      ],
+      "legend": "DOGE · MVRV2026-09-26 00:00 UTC 0.82 배",
+      "url": "https://coin-desk.pages.dev/onchain/DOGE?asset=DOGE&period=all&price_source=reference",
+      "viewport": {
+        "height": 675,
+        "width": 1440
+      }
+    },
+    {
+      "charts": [
+        {
+          "asset": "ETH",
+          "metric": "net:mvrv",
+          "observations": "4068",
+          "ready": "1",
+          "y": 246
+        }
+      ],
+      "legend": "ETH · MVRV2026-09-26 00:00 UTC 1.15 배",
+      "url": "https://coin-desk.pages.dev/onchain/ETH?asset=ETH&period=all&price_source=reference",
+      "viewport": {
+        "height": 675,
+        "width": 1440
+      }
+    },
+    {
+      "charts": [
+        {
+          "asset": "ETH",
+          "metric": "futures:funding",
+          "observations": "6502",
+          "ready": "1",
+          "y": 246
+        }
+      ],
+      "legend": "ETH · 확정 펀딩률2026-09-27 08:00 UTC 0.009881 %",
+      "url": "https://coin-desk.pages.dev/futures/ETH?asset=ETH&period=all&price_source=reference",
+      "viewport": {
+        "height": 675,
+        "width": 1440
+      }
+    },
+    {
+      "charts": [
+        {
+          "asset": "DOGE",
+          "metric": "futures:funding",
+          "observations": "5830",
+          "ready": "1",
+          "y": 246
+        }
+      ],
+      "legend": "DOGE · 확정 펀딩률2026-09-27 16:00 UTC 0.004181 %",
+      "url": "https://coin-desk.pages.dev/futures/DOGE?asset=DOGE&period=all&price_source=reference",
+      "viewport": {
+        "height": 675,
+        "width": 1440
+      }
+    },
+    {
+      "charts": [
+        {
+          "asset": "BTC",
+          "metric": "futures:funding",
+          "observations": "7132",
+          "ready": "1",
+          "y": 246
+        }
+      ],
+      "legend": "BTC · 확정 펀딩률2026-09-27 16:00 UTC 0.003647 %",
+      "url": "https://coin-desk.pages.dev/futures/BTC?asset=BTC&period=all&price_source=reference",
+      "viewport": {
+        "height": 675,
+        "width": 1440
+      }
+    }
+  ]
+}
