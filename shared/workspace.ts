@@ -5,6 +5,7 @@ import type { Asset, Interval, Market, Period } from './types';
 import { ANALYSIS_VIEWS, analysisView } from './advanced-analysis';
 import { validAnnotations, type Annotation } from './annotations';
 import { parseUtcDate, type DateWindow } from './date-navigation';
+import { validPatterns } from './candle-patterns';
 
 export interface ChartSettings {
   asset: Asset;
@@ -234,6 +235,11 @@ function validExtras(entry: Record<string, unknown>): Partial<Workspace> {
   return result;
 }
 export function validAnalysisOption(key: string, value: unknown) {
+  if (key === 'patterns')
+    return (
+      typeof value === 'string' &&
+      (value === '' || validPatterns(value.split(',')).join(',') === value)
+    );
   return (
     typeof value === 'string' &&
     (
@@ -243,6 +249,7 @@ export function validAnalysisOption(key: string, value: unknown) {
         seasonality_method: ['log'],
         seasonality_years: ['1'],
         comparison_layout: ['side'],
+        pattern_trend: ['none', 'sma50', 'sma50-200'],
       } as Record<string, string[]>
     )[key]?.includes(value)
   );

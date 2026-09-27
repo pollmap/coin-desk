@@ -17,7 +17,7 @@ import { ChartTools } from './ChartNavigator';
 import { DateNavigator } from './DateNavigator';
 import { availableWindow, type DateWindow } from '../shared/date-navigation';
 import { ChartDrawings } from './ChartDrawings';
-import type { Annotation } from '../shared/annotations';
+import type { Annotation, DrawingKind } from '../shared/annotations';
 import {
   adjacentObservation,
   readingIndex,
@@ -39,7 +39,13 @@ export interface AnalysisLine {
   warning?: string;
   formula?: string;
 }
-const EMPTY_OBSERVATIONS: { time: number; label: string }[] = [];
+export interface ChartObservation {
+  time: number;
+  label: string;
+  id?: string;
+  direction?: 'up' | 'down' | 'neutral';
+}
+const EMPTY_OBSERVATIONS: ChartObservation[] = [];
 const panelCount = (lines: AnalysisLine[]) =>
   new Set(lines.filter((l) => !l.overlay && l.data.length).map((l) => l.pane ?? l.id)).size;
 const ts = (n: number) => n as UTCTimestamp;
@@ -72,6 +78,8 @@ export const AnalysisChart = memo(function AnalysisChart({
   onAnnotations,
   onVisibleRange,
   observations = EMPTY_OBSERVATIONS,
+  onObservation,
+  initialTool,
 }: {
   asset: string;
   unit: string;
@@ -92,7 +100,9 @@ export const AnalysisChart = memo(function AnalysisChart({
   drawingKey?: string;
   onAnnotations?: (items: Annotation[]) => void;
   onVisibleRange?: (range: DateWindow) => void;
-  observations?: { time: number; label: string }[];
+  observations?: ChartObservation[];
+  onObservation?: (id: string) => void;
+  initialTool?: DrawingKind;
 }) {
   const host = useRef<HTMLDivElement>(null),
     chartRef = useRef<IChartApi | null>(null);
@@ -100,10 +110,13 @@ export const AnalysisChart = memo(function AnalysisChart({
   const manualCursor = useRef(false);
   const click = useRef(onSignal);
   click.current = onSignal;
+  const observationClick = useRef(onObservation);
+  observationClick.current = onObservation;
   const settings = useRef({ period, log });
   settings.current = { period, log };
   const previous = useRef<{ key: string; from: number; to: number } | null>(null);
   const userRange = useRef(false);
+  const appliedFocus = useRef<string | null>(null);
   const rangeCallback = useRef(onVisibleRange);
   rangeCallback.current = onVisibleRange;
   const [drawingApi, setDrawingApi] = useState<{
@@ -261,16 +274,29 @@ export const AnalysisChart = memo(function AnalysisChart({
         ...observations
           .filter((s) => dates.has(s.time))
           .map((s) => ({
-            id: 'calculated:' + s.time,
+            id: s.id ?? 'calculated:' + s.time,
             time: ts(s.time),
-            position: 'belowBar' as const,
-            color: '#dfb873',
-            shape: 'arrowUp' as const,
-            text: s.label,
+            position: s.direction === 'down' ? ('aboveBar' as const) : ('belowBar' as const),
+            color:
+              s.direction === 'down' ? '#e98a98' : s.direction === 'up' ? '#55c8af' : '#dfb873',
+            shape:
+              s.direction === 'down'
+                ? ('arrowDown' as const)
+                : s.direction === 'neutral'
+                  ? ('circle' as const)
+                  : ('arrowUp' as const),
+            // Large histories can contain hundreds of patterns. Keep the price readable;
+            // the clickable marker and accessible observation list retain every label.
+            text: s.id ? '' : s.label,
           })),
       ].sort((a, b) => Number(a.time) - Number(b.time)),
     );
     chart.subscribeClick((e) => {
+      const observation = observations.find((o) => o.id && o.id === e.hoveredObjectId);
+      if (observation?.id) {
+        observationClick.current?.(observation.id);
+        return;
+      }
       const s =
         signals.find((s) => s.id === e.hoveredObjectId) ??
         signals.find((s) => s.time === Number(e.time));
@@ -367,6 +393,7 @@ export const AnalysisChart = memo(function AnalysisChart({
   }, [log]);
   useEffect(() => {
     userRange.current = false;
+    appliedFocus.current = null;
     const visible = points.filter((p) => p.time >= periodStart(period, points.at(-1)?.time ?? 0));
     manualCursor.current = false;
     setSelected(null);
@@ -382,11 +409,25 @@ export const AnalysisChart = memo(function AnalysisChart({
         .setVisibleRange({ from: ts(restored.from), to: ts(restored.to) });
   }, [period, key, rangeRevision, initialWindow?.from, initialWindow?.to]);
   useEffect(() => {
-    if (focus)
-      chartRef.current
-        ?.timeScale()
-        .setVisibleRange({ from: ts(focus - 90 * 86400), to: ts(focus + 90 * 86400) });
-  }, [focus, points]);
+    if (!focus) {
+      appliedFocus.current = null;
+      return;
+    }
+    if (!chartRef.current || !points.length) return;
+    const token = `${key}:${focus}`;
+    if (appliedFocus.current === token) return;
+    // A shared date window wins on entry. A newly selected observation clears that
+    // window upstream. Preserve either selection through the first resize/frame
+    // and subsequent data refreshes, including any later manual pan or zoom.
+    const window =
+      availableWindow(readings.times, initialWindow) ??
+      availableWindow(readings.times, { from: focus - 90 * 86400, to: focus + 90 * 86400 });
+    if (window) {
+      userRange.current = true;
+      chartRef.current.timeScale().setVisibleRange({ from: ts(window.from), to: ts(window.to) });
+      appliedFocus.current = token;
+    }
+  }, [focus, points, key, period, rangeRevision, initialWindow?.from, initialWindow?.to]);
   return (
     <>
       <div className="analysis-legend">
@@ -463,6 +504,7 @@ export const AnalysisChart = memo(function AnalysisChart({
             series={drawingApi.series}
             storageKey={drawingKey}
             onChange={onAnnotations}
+            initialTool={initialTool}
           />
         )}
       </div>

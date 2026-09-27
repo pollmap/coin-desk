@@ -1,4 +1,8 @@
 import { marketComparisonLink } from '../shared/market-watch';
+import { detectPatterns, validPatterns, trendFilter } from '../shared/candle-patterns';
+import { guideArticle, guideForMetric, guideHref } from '../shared/learning-catalog';
+import { PatternPicker, PatternObservations } from './PatternControls';
+import type { DrawingKind } from '../shared/annotations';
 import { belongsToSection, focusMetric } from '../shared/analysis-sections';
 import { metricCategory, primaryShortcuts } from '../shared/metric-navigation';
 import { workspaceIndicators } from '../shared/workspace-indicators';
@@ -23,6 +27,7 @@ import {
   Maximize,
   X,
   ArrowLeftRight,
+  BookOpen,
 } from 'lucide-react';
 import { ASSETS, METRICS } from '../shared/catalog';
 import { networkUnit, type NetworkMetric } from '../shared/network-catalog';
@@ -86,6 +91,7 @@ function useRemote(id: string | undefined, choices: Choice[]) {
 
 export function AnalysisWorkspace() {
   const positionExport = useRef(null);
+  const chartArea = useRef<HTMLDivElement>(null);
   const positionWindow = useRef<DateWindow | null>(null);
   const updatePositionWindow = useCallback((range: DateWindow | null) => {
     positionWindow.current = range;
@@ -156,6 +162,7 @@ export function AnalysisWorkspace() {
       if (['period', 'price_source', 'visual', 'interval'].some((key) => key in patch)) {
         next.delete('chart_from');
         next.delete('chart_to');
+        next.delete('pattern_focus');
       }
       next.set('asset', route.asset || prev.get('asset') || asset);
       next.set('price_source', basis);
@@ -415,6 +422,34 @@ export function AnalysisWorkspace() {
     .split(',')
     .filter(Boolean);
   const indicatorKey = indicators.join(',');
+  const patternIds = validPatterns((params.get('patterns') ?? '').split(','));
+  const patternKey = patternIds.join(',');
+  const patternTrend = trendFilter(params.get('pattern_trend'));
+  const patternHits = useMemo(
+    () =>
+      !focused && !labView && visual !== 'rainbow' && basis !== 'reference'
+        ? detectPatterns(
+            (raw.data as CandleResponse | undefined)?.data ?? [],
+            patternIds,
+            patternTrend,
+            interval,
+          )
+        : [],
+    [focused, labView, visual, basis, raw.data, patternKey, patternTrend, interval],
+  );
+  const patternSelection = params.get('pattern_focus');
+  const pickedPattern = patternHits.find((p) => p.id === patternSelection);
+  function selectPattern(id: string | null) {
+    change({ pattern_focus: id, chart_from: null, chart_to: null });
+    if (id)
+      requestAnimationFrame(() => {
+        const surface = chartArea.current?.querySelector<HTMLElement>(
+          '[data-chart-kind="analysis"]',
+        );
+        surface?.focus({ preventScroll: true });
+        chartArea.current?.scrollIntoView({ block: 'start', behavior: 'instant' });
+      });
+  }
   const vwap = useMemo(
     () =>
       basis === 'reference'
@@ -427,8 +462,12 @@ export function AnalysisWorkspace() {
   );
   const reclaims = useMemo(() => vwapReclaims(dailyPoints, vwap), [dailyPoints, vwap]);
   const computedMarkers = useMemo(
-    () => (visual === 'vwap' ? reclaims.map((p) => ({ time: p.time, label: '재돌파 확인' })) : []),
-    [visual, reclaims],
+    () =>
+      [
+        ...(visual === 'vwap' ? reclaims.map((p) => ({ time: p.time, label: '재돌파 확인' })) : []),
+        ...patternHits,
+      ].sort((a, b) => a.time - b.time),
+    [visual, reclaims, patternHits],
   );
   const lines = useMemo<AnalysisLine[]>(() => {
     const mapped = selected.flatMap((id, i) => {
@@ -796,9 +835,33 @@ export function AnalysisWorkspace() {
           <button aria-expanded={related} onClick={() => setRelated((v) => !v)}>
             관련 자료
           </button>
+          {!focused && !labView && visual !== 'rainbow' && (
+            <PatternPicker
+              selected={patternIds}
+              trend={patternTrend}
+              asset={asset}
+              basis={basis}
+              params={params}
+              onChange={change}
+            />
+          )}
+          <Link
+            className="chart-guide-link"
+            aria-label="현재 분석 설명"
+            to={guideHref(
+              guideForMetric(primaryLine?.id ?? '')?.id ??
+                (visual !== 'price' ? visual : undefined) ??
+                guideArticle(params.get('guide') ?? '')?.id ??
+                'start',
+              params,
+            )}
+          >
+            <BookOpen size={16} />
+            도움말
+          </Link>
         </div>
         <div className={'analysis-layout ' + (evidence || related ? 'with-evidence' : '')}>
-          <div className="analysis-main">
+          <div className="analysis-main" ref={chartArea}>
             {error && (!focused || comparePrice) && (
               <div role="status" className="refresh-notice">
                 {points.length ? '갱신 지연 · 마지막 정상 자료를 표시합니다.' : error}
@@ -928,6 +991,14 @@ export function AnalysisWorkspace() {
                 onAnnotations={setAnnotations}
                 onVisibleRange={trackRange}
                 observations={computedMarkers}
+                onObservation={selectPattern}
+                initialTool={
+                  ['horizontal', 'trend', 'channel', 'measure'].includes(
+                    params.get('draw_tool') ?? '',
+                  )
+                    ? (params.get('draw_tool') as DrawingKind)
+                    : undefined
+                }
                 initialWindow={sharedWindow}
                 asset={asset}
                 unit={unit}
@@ -949,9 +1020,9 @@ export function AnalysisWorkspace() {
                           : 86400
                 }
                 signals={visibleSignals}
-                focus={focus}
+                focus={pickedPattern?.time ?? focus}
                 onSignal={showSignal}
-                onAll={() => change({ period: 'all', signal: null })}
+                onAll={() => change({ period: 'all', signal: null, pattern_focus: null })}
                 rangeRevision={rangeRevision}
               />
             ) : (
@@ -963,6 +1034,20 @@ export function AnalysisWorkspace() {
             )}
             {!focused && (
               <>
+                {patternIds.length > 0 &&
+                  !labView &&
+                  visual !== 'rainbow' &&
+                  basis !== 'reference' && (
+                    <PatternObservations
+                      hits={patternHits}
+                      selection={patternSelection}
+                      onSelect={selectPattern}
+                      params={params}
+                      asset={asset}
+                      basis={basis}
+                      loading={raw.loading}
+                    />
+                  )}
                 {visual !== 'rainbow' && !labView && (
                   <div className="analysis-selected">
                     {lines
@@ -1040,6 +1125,13 @@ export function AnalysisWorkspace() {
                 ) : chosenLine ? (
                   <>
                     <p>{chosenLine.formula}</p>
+                    <Link
+                      className="chart-guide-link"
+                      to={guideHref(guideForMetric(chosenLine.id)?.id, params)}
+                    >
+                      <BookOpen size={15} />
+                      읽는 방법·산식 보기
+                    </Link>
                     <p>
                       {chosenLine.source} · {chosenLine.unit}
                     </p>
@@ -1210,6 +1302,8 @@ export function AnalysisWorkspace() {
                 'seasonality_method',
                 'seasonality_years',
                 'comparison_layout',
+                'patterns',
+                'pattern_trend',
               ].map((k) => [k, params.get(k) ?? '']),
             ),
           }}

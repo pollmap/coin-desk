@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { Link, NavLink, useLocation } from 'react-router-dom';
 import {
   Search,
+  BookOpen,
   ChartNoAxesCombined,
   Activity,
   ArrowLeftRight,
@@ -26,6 +27,7 @@ import type { Asset } from '../shared/types';
 import { saved, save } from './lib';
 import { AssetLogo } from './AssetLogo';
 import { useMarket } from './useMarket';
+import { GUIDE_ARTICLES, guideHref } from '../shared/learning-catalog';
 
 const featured = ASSETS.map((a) => a.id);
 const marketItems = [
@@ -51,7 +53,7 @@ export function DeskNavigation({ onNavigate }: { onNavigate: () => void }) {
   const location = useLocation();
   const { market } = useMarket();
   const candidate =
-    location.pathname.split('/')[2] ||
+    ASSETS.find((a) => a.id === location.pathname.split('/')[2])?.id ||
     new URLSearchParams(location.search).get('asset') ||
     saved('lastAsset', 'BTC');
   const asset: Asset = ASSETS.find((a) => a.id === candidate)?.id || 'BTC';
@@ -76,6 +78,12 @@ export function DeskNavigation({ onNavigate }: { onNavigate: () => void }) {
           type: 'BTC 지표',
         })),
         ...marketItems.map((item) => ({ ...item, aliases: item.title, type: '시장' })),
+        ...GUIDE_ARTICLES.map((g) => ({
+          title: g.title,
+          aliases: [g.title, g.english, g.aliases].join(' '),
+          to: guideHref(g.id, new URLSearchParams({ asset, price_source: contextBasis })),
+          type: '분석 사전',
+        })),
         ...featured.flatMap((id) => [
           {
             title: id + ' 선물 · 펀딩비·미결제약정',
@@ -168,6 +176,14 @@ export function DeskNavigation({ onNavigate }: { onNavigate: () => void }) {
         </>
       )}
       <nav className="nav-utilities" onClick={onNavigate}>
+        <NavLink
+          to={guideHref(undefined, new URLSearchParams({ asset, price_source: contextBasis }))}
+          aria-label="분석 사전"
+          title="분석 사전"
+        >
+          <BookOpen size={15} />
+          <span>분석 사전</span>
+        </NavLink>
         <NavLink to="/status" aria-label="데이터 · 자동 갱신" title="데이터 · 자동 갱신">
           <Database size={15} />
           <span>데이터 · 자동 갱신</span>
@@ -203,6 +219,7 @@ export function DeskTopbar({
     status: '데이터 · 자동 갱신',
     brand: '브랜드',
     workspace: '내 작업공간',
+    learn: '분석 사전',
   };
   const title = location.pathname.startsWith('/futures/')
     ? id + ' 선물'

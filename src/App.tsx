@@ -1,4 +1,3 @@
-import { AnalysisWorkspace } from './AnalysisWorkspace';
 import { NotificationInbox } from './NotificationInbox';
 import { useMarket } from './useMarket';
 import { MarketPicker } from './MarketPicker';
@@ -45,6 +44,9 @@ import {
 import { ASSETS, METRICS } from '../shared/catalog';
 import { validIndicators } from '../shared/indicators';
 import { WorkspaceBar, CardPicker, usePersonalDesk } from './PersonalDesk';
+const AnalysisWorkspace = lazy(() =>
+  import('./AnalysisWorkspace').then((m) => ({ default: m.AnalysisWorkspace })),
+);
 const ExchangeHistoryPanel = lazy(() =>
   import('./ExchangeHistoryPanel').then((m) => ({ default: m.ExchangeHistoryPanel })),
 );
@@ -52,7 +54,10 @@ const WatchlistPage = lazy(() =>
   import('./WatchlistPage').then((m) => ({ default: m.WatchlistPage })),
 );
 const ComparePage = lazy(() => import('./ComparePage').then((m) => ({ default: m.ComparePage })));
-const ResearchLibrary = lazy(() => import('./ResearchLibrary').then(m => ({default:m.ResearchLibrary})));
+const ResearchLibrary = lazy(() =>
+  import('./ResearchLibrary').then((m) => ({ default: m.ResearchLibrary })),
+);
+const LearnPage = lazy(() => import('./LearnPage').then((m) => ({ default: m.LearnPage })));
 const MetricsExplorer = lazy(() =>
   import('./MetricsExplorer').then((m) => ({ default: m.MetricsExplorer })),
 );
@@ -889,7 +894,9 @@ function WorkspacePage() {
         </div>
       </div>
       <section className="panel workspace-page">
-        <Link className="desk-button" to="/workspace/library">개인 자료함 · 글·차트 가져오기 ↗</Link>
+        <Link className="desk-button" to="/workspace/library">
+          개인 자료함 · 글·차트 가져오기 ↗
+        </Link>
         <WorkspaceBar
           current={{
             ...preferences,
@@ -1150,6 +1157,8 @@ export default function App() {
               <Route path="/coins" element={<WatchlistPage />} />
               <Route path="/workspace" element={<WorkspacePage />} />
               <Route path="/workspace/library" element={<ResearchLibrary />} />
+              <Route path="/learn" element={<LearnPage />} />
+              <Route path="/learn/:id" element={<LearnPage />} />
               <Route path="/compare" element={<ComparePage />} />
               <Route path="/explore" element={<MetricsExplorer />} />
               <Route path="/dominance" element={<DominancePage />} />
