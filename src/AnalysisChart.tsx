@@ -12,6 +12,8 @@ import type { Candle, Period, Point } from '../shared/types';
 import type { ObservationSignal } from '../shared/signals';
 import { money, numeric, periodStart } from './lib';
 import { ChartTools } from './ChartNavigator';
+import { DateNavigator } from './DateNavigator';
+import { availableWindow, type DateWindow } from '../shared/date-navigation';
 import {
   adjacentObservation,
   readingIndex,
@@ -60,6 +62,7 @@ export const AnalysisChart = memo(function AnalysisChart({
   onAll,
   rangeRevision = 0,
   primary,
+  initialWindow,
 }: {
   asset: string;
   unit: string;
@@ -76,6 +79,7 @@ export const AnalysisChart = memo(function AnalysisChart({
   onAll: () => void;
   rangeRevision?: number;
   primary?: AnalysisLine;
+  initialWindow?: DateWindow | null;
 }) {
   const host = useRef<HTMLDivElement>(null),
     chartRef = useRef<IChartApi | null>(null);
@@ -88,6 +92,7 @@ export const AnalysisChart = memo(function AnalysisChart({
   const previous = useRef<{ key: string; from: number; to: number } | null>(null);
   const [selected, setSelected] = useState<number | null>(null),
     [tableCount, setTableCount] = useState(50);
+  const [visibleWindow, setVisibleWindow] = useState<DateWindow | null>(null);
   const key = asset + unit + step + (primary?.id ?? 'price');
   const display = (value: number | undefined) =>
     primary ? numeric(value, readingDigits(value)) + ' ' + unit : money(value, unit);
@@ -268,12 +273,17 @@ export const AnalysisChart = memo(function AnalysisChart({
         .timeScale()
         .setVisibleRange({ from: ts(visible[0].time), to: ts(visible.at(-1)!.time) });
     const surface = host.current;
-    chart.timeScale().subscribeVisibleTimeRangeChange((range) => {
+    const updateWindow = (
+      range: ReturnType<ReturnType<IChartApi['timeScale']>['getVisibleRange']>,
+    ) => {
       if (range) {
         surface.dataset.visibleFrom = String(range.from);
         surface.dataset.visibleTo = String(range.to);
+        setVisibleWindow({ from: Number(range.from), to: Number(range.to) });
       }
-    });
+    };
+    chart.timeScale().subscribeVisibleTimeRangeChange(updateWindow);
+    updateWindow(chart.timeScale().getVisibleRange());
     surface.dataset.observations = String(points.length);
     return () => {
       const range = chart.timeScale().getVisibleRange();
@@ -298,7 +308,12 @@ export const AnalysisChart = memo(function AnalysisChart({
       chartRef.current
         ?.timeScale()
         .setVisibleRange({ from: ts(visible[0].time), to: ts(visible.at(-1)!.time) });
-  }, [period, key, rangeRevision]);
+    const restored = availableWindow(readings.times, initialWindow);
+    if (restored)
+      chartRef.current
+        ?.timeScale()
+        .setVisibleRange({ from: ts(restored.from), to: ts(restored.to) });
+  }, [period, key, rangeRevision, initialWindow?.from, initialWindow?.to]);
   useEffect(() => {
     if (focus)
       chartRef.current
@@ -358,51 +373,21 @@ export const AnalysisChart = memo(function AnalysisChart({
           );
         }}
       />
-      <div className="analysis-date-controls" role="group" aria-label="차트 날짜 탐색">
-        <button
-          aria-label="이전 관측"
-          disabled={time === readings.times[0]}
-          onClick={() => explore(adjacentObservation(readings.times, time ?? null, -1))}
-        >
-          ←
-        </button>
-        <label>
-          날짜{' '}
-          <input
-            type="date"
-            aria-label="차트 탐색 날짜 (UTC)"
-            value={time === undefined ? '' : new Date(time * 1000).toISOString().slice(0, 10)}
-            min={
-              readings.times.length
-                ? new Date(readings.times[0] * 1000).toISOString().slice(0, 10)
-                : undefined
-            }
-            max={
-              readings.times.length
-                ? new Date(readings.times.at(-1)! * 1000).toISOString().slice(0, 10)
-                : undefined
-            }
-            onInput={(e) => {
-              const t = Date.parse(e.currentTarget.value + 'T00:00:00Z') / 1000;
-              if (Number.isFinite(t) && e.currentTarget.validity.valid) explore(t);
-            }}
-            onChange={(e) => {
-              const t = Date.parse(e.target.value + 'T00:00:00Z') / 1000;
-              if (Number.isFinite(t) && e.target.validity.valid) explore(t);
-            }}
-          />
-        </label>
-        <button
-          aria-label="다음 관측"
-          disabled={time === readings.times.at(-1)}
-          onClick={() => explore(adjacentObservation(readings.times, time ?? null, 1))}
-        >
-          →
-        </button>
-        <button onClick={() => explore(null)} disabled={selectedTime === null}>
-          최신 값
-        </button>
-      </div>
+      <DateNavigator
+        key={key}
+        times={readings.times}
+        visible={visibleWindow}
+        selected={time}
+        onRange={(range) =>
+          chartRef.current?.timeScale().setVisibleRange({ from: ts(range.from), to: ts(range.to) })
+        }
+        onSelect={explore}
+        onReset={() => {
+          explore(null);
+          chartRef.current?.timeScale().fitContent();
+          onAll();
+        }}
+      />
       <span className="sr-only" role="status">
         {selectedTime !== null
           ? `${timestamp(time)} ${asset} ${display(priceValue)}. ${lines.map((l, i) => `${l.title} ${metricNumber(time === undefined ? undefined : readings.maps[i + 1].get(time))} ${l.unit}`).join('. ')}`
@@ -412,6 +397,7 @@ export const AnalysisChart = memo(function AnalysisChart({
         <summary>내보내기 · 공유 · 날짜별 수치</summary>
         <ChartTools
           chart={chartRef}
+          shareVisibleRange
           rows={points}
           label={asset}
           unit={unit}
