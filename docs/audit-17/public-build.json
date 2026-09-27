@@ -1,0 +1,15 @@
+{
+  "checkedAt": "2026-09-27T18:27:50.565615+00:00",
+  "url": "https://coin-desk.pages.dev/learn",
+  "htmlMatchesBuiltDist": true,
+  "htmlSHA256": "b8cf92545f7089c4d3990d41597efc1603293deea9632d50301331834d4d31fa",
+  "entryScriptsMatch": true,
+  "entries": [
+    "/assets/index-BFEIrX-C.js"
+  ],
+  "analysisModule": {
+    "name": "AnalysisWorkspace-E0ZSkqAd.js",
+    "matchesBuiltDist": true,
+    "sha256": "563c2394a2e342b0891c7941427a62bf069f540636c1536f2d3ea1dfa364840c"
+  }
+}

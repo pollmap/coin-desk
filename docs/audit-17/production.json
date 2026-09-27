@@ -1,0 +1,2256 @@
+{
+  "checkedAt": "2026-09-27T18:27:15.187778+00:00",
+  "version": "0.17.1",
+  "commit": "93b93d0647344b3b1557c43aaa20947f534e73c4",
+  "phase": "deployed",
+  "endpoints": {
+    "status": {
+      "status": 200,
+      "rows": 0
+    },
+    "health": {
+      "status": 200,
+      "rows": 0,
+      "ok": true,
+      "reasons": []
+    },
+    "signals": {
+      "status": 200,
+      "rows": 12
+    },
+    "briefings": {
+      "status": 200,
+      "rows": 2,
+      "ids": [
+        {
+          "id": "2026-09-27",
+          "createdAt": 1790468260
+        },
+        {
+          "id": "2026-09-26",
+          "createdAt": 1790381433
+        }
+      ]
+    },
+    "chain-context?asset=ETH&metric=tvl": {
+      "status": 200,
+      "rows": 3287
+    },
+    "market-derivatives": {
+      "status": 200,
+      "rows": 8
+    },
+    "network?asset=BTC&metric=mvrv&limit=1": {
+      "status": 200,
+      "rows": 1
+    },
+    "derivatives?asset=BTC&metric=funding&limit=1": {
+      "status": 200,
+      "rows": 1
+    },
+    "network?asset=DOGE&metric=mvrv&limit=1": {
+      "status": 200,
+      "rows": 1
+    },
+    "derivatives?asset=DOGE&metric=funding&limit=1": {
+      "status": 200,
+      "rows": 1
+    },
+    "network?asset=ETH&metric=mvrv&limit=1": {
+      "status": 200,
+      "rows": 1
+    },
+    "derivatives?asset=ETH&metric=funding&limit=1": {
+      "status": 200,
+      "rows": 1
+    }
+  },
+  "coverage": {
+    "expectedSources": 103,
+    "healthySources": 103,
+    "priceMarkets": 16,
+    "histories": 32
+  },
+  "observation48h": {
+    "from": 1790360700,
+    "until": 1790533500,
+    "firstRunAt": 1790380833,
+    "lastRunAt": 1790533477,
+    "ticks": 1588,
+    "failures": 658,
+    "expectedRuns": 2880,
+    "missingRuns": 1292,
+    "successfulRuns": 930,
+    "recordingRate": 0.5513888888888889,
+    "successRate": 0.3229166666666667,
+    "longestGapSeconds": 20160,
+    "unresolvedErrors": [],
+    "windowSatisfied": true,
+    "healthy": false,
+    "ready": false,
+    "thresholds": {
+      "recordingRate": 0.99,
+      "longestGapSeconds": 180,
+      "graceSeconds": 120
+    }
+  },
+  "nonHealthyActiveSources": [],
+  "automation": {
+    "runner": "Cloudflare Cron",
+    "cronWorkers": [
+      "btc-desk",
+      "btc-desk-quotes"
+    ],
+    "boundWorkers": [
+      "btc-desk-background",
+      "btc-desk-analysis"
+    ],
+    "collectors": [
+      "btc-desk",
+      "btc-desk-quotes",
+      "btc-desk-background",
+      "btc-desk-analysis"
+    ],
+    "observationScope": "background Cron ledger; all active source freshness also required",
+    "analysisCycleSeconds": 1200,
+    "analysisParts": [
+      {
+        "key": "observations:0",
+        "lastSuccess": 1790533239,
+        "error": null,
+        "healthy": true
+      },
+      {
+        "key": "observations:1",
+        "lastSuccess": 1790533298,
+        "error": null,
+        "healthy": true
+      },
+      {
+        "key": "observations:2",
+        "lastSuccess": 1790533358,
+        "error": null,
+        "healthy": true
+      },
+      {
+        "key": "observations:3",
+        "lastSuccess": 1790533418,
+        "error": null,
+        "healthy": true
+      },
+      {
+        "key": "observations:4",
+        "lastSuccess": 1790533478,
+        "error": null,
+        "healthy": true
+      },
+      {
+        "key": "observations:5",
+        "lastSuccess": 1790533539,
+        "error": null,
+        "healthy": true
+      },
+      {
+        "key": "observations:6",
+        "lastSuccess": 1790533598,
+        "error": null,
+        "healthy": true
+      },
+      {
+        "key": "observations:7",
+        "lastSuccess": 1790532458,
+        "error": null,
+        "healthy": true
+      },
+      {
+        "key": "observations:8",
+        "lastSuccess": 1790532518,
+        "error": null,
+        "healthy": true
+      },
+      {
+        "key": "observations:9",
+        "lastSuccess": 1790532578,
+        "error": null,
+        "healthy": true
+      },
+      {
+        "key": "observations:10",
+        "lastSuccess": 1790532638,
+        "error": null,
+        "healthy": true
+      },
+      {
+        "key": "observations:11",
+        "lastSuccess": 1790532698,
+        "error": null,
+        "healthy": true
+      },
+      {
+        "key": "observations:12",
+        "lastSuccess": 1790532758,
+        "error": null,
+        "healthy": true
+      },
+      {
+        "key": "observations:13",
+        "lastSuccess": 1790532818,
+        "error": null,
+        "healthy": true
+      },
+      {
+        "key": "observations:14",
+        "lastSuccess": 1790532878,
+        "error": null,
+        "healthy": true
+      }
+    ],
+    "independentOfVisitors": true,
+    "tickSeconds": 60,
+    "lastStartedAt": 1790533597,
+    "lastCompletedAt": 1790533598,
+    "lastSucceededAt": 1790533598,
+    "lastJob": "reference:LINK",
+    "lastRunStatus": "ok",
+    "lastError": null,
+    "leaseUntil": null,
+    "stalled": false,
+    "nextTickAt": 1790533680,
+    "observation48h": {
+      "from": 1790360700,
+      "until": 1790533500,
+      "firstRunAt": 1790380833,
+      "lastRunAt": 1790533477,
+      "ticks": 1588,
+      "failures": 658,
+      "expectedRuns": 2880,
+      "missingRuns": 1292,
+      "successfulRuns": 930,
+      "recordingRate": 0.5513888888888889,
+      "successRate": 0.3229166666666667,
+      "longestGapSeconds": 20160,
+      "unresolvedErrors": [],
+      "windowSatisfied": true,
+      "healthy": false,
+      "ready": false,
+      "thresholds": {
+        "recordingRate": 0.99,
+        "longestGapSeconds": 180,
+        "graceSeconds": 120
+      }
+    },
+    "cadence": {
+      "quoteBackgroundTargetSeconds": 60,
+      "quoteBackgroundDelaySeconds": 180,
+      "quoteOnDemandMinSeconds": 60,
+      "hourlyCandlesSeconds": 3600,
+      "dailyCandlesSeconds": 3600,
+      "dailyUtcBoundaryRefresh": true
+    },
+    "jobs": [
+      {
+        "key": "bitview",
+        "kind": "onchain",
+        "cadenceSeconds": 3600,
+        "dueAt": 1790535339,
+        "lane": "background",
+        "worker": "btc-desk-background",
+        "dedicatedCadenceSeconds": null,
+        "backgroundCadenceSeconds": 3600,
+        "dataInterval": "1d"
+      },
+      {
+        "key": "defillama",
+        "kind": "stablecoins",
+        "cadenceSeconds": 21600,
+        "dueAt": 1790551778,
+        "lane": "background",
+        "worker": "btc-desk-background",
+        "dedicatedCadenceSeconds": null,
+        "backgroundCadenceSeconds": 21600,
+        "dataInterval": "1d"
+      },
+      {
+        "key": "coinlore",
+        "kind": "dominance",
+        "cadenceSeconds": 3600,
+        "dueAt": 1790534020,
+        "lane": "background",
+        "worker": "btc-desk-background",
+        "dedicatedCadenceSeconds": null,
+        "backgroundCadenceSeconds": 3600,
+        "dataInterval": "provider-defined"
+      },
+      {
+        "key": "maintenance",
+        "kind": "maintenance",
+        "cadenceSeconds": 3600,
+        "dueAt": 1790534978,
+        "lane": "background",
+        "worker": "btc-desk-background",
+        "dedicatedCadenceSeconds": null,
+        "backgroundCadenceSeconds": 3600,
+        "dataInterval": "provider-defined"
+      },
+      {
+        "key": "mempool:BTC",
+        "kind": "mempool",
+        "cadenceSeconds": 900,
+        "dueAt": 1790533778,
+        "lane": "background",
+        "worker": "btc-desk-background",
+        "dedicatedCadenceSeconds": null,
+        "backgroundCadenceSeconds": 900,
+        "dataInterval": "provider-defined"
+      },
+      {
+        "key": "derivatives:BTC:funding",
+        "kind": "derivatives",
+        "cadenceSeconds": 300,
+        "dueAt": 1790537138,
+        "assets": [
+          "BTC"
+        ],
+        "lane": "recent-futures",
+        "worker": "btc-desk",
+        "dedicatedCadenceSeconds": 300,
+        "backgroundCadenceSeconds": 3600,
+        "dataInterval": "settlement"
+      },
+      {
+        "key": "derivatives:BTC:open_interest",
+        "kind": "derivatives",
+        "cadenceSeconds": 300,
+        "dueAt": 1790537139,
+        "assets": [
+          "BTC"
+        ],
+        "lane": "recent-futures",
+        "worker": "btc-desk",
+        "dedicatedCadenceSeconds": 300,
+        "backgroundCadenceSeconds": 3600,
+        "dataInterval": "1h"
+      },
+      {
+        "key": "derivatives:BTC:long_account_ratio",
+        "kind": "derivatives",
+        "cadenceSeconds": 300,
+        "dueAt": 1790537140,
+        "assets": [
+          "BTC"
+        ],
+        "lane": "recent-futures",
+        "worker": "btc-desk",
+        "dedicatedCadenceSeconds": 300,
+        "backgroundCadenceSeconds": 3600,
+        "dataInterval": "1h"
+      },
+      {
+        "key": "derivatives:BTC:open_interest_daily",
+        "kind": "derivatives",
+        "cadenceSeconds": 3600,
+        "dueAt": 1790534798,
+        "assets": [
+          "BTC"
+        ],
+        "lane": "background",
+        "worker": "btc-desk-background",
+        "dedicatedCadenceSeconds": null,
+        "backgroundCadenceSeconds": 3600,
+        "dataInterval": "1d"
+      },
+      {
+        "key": "derivatives:BTC:long_account_ratio_daily",
+        "kind": "derivatives",
+        "cadenceSeconds": 3600,
+        "dueAt": 1790536778,
+        "assets": [
+          "BTC"
+        ],
+        "lane": "background",
+        "worker": "btc-desk-background",
+        "dedicatedCadenceSeconds": null,
+        "backgroundCadenceSeconds": 3600,
+        "dataInterval": "1d"
+      },
+      {
+        "key": "derivatives:DOGE:funding",
+        "kind": "derivatives",
+        "cadenceSeconds": 300,
+        "dueAt": 1790537198,
+        "assets": [
+          "DOGE"
+        ],
+        "lane": "recent-futures",
+        "worker": "btc-desk",
+        "dedicatedCadenceSeconds": 300,
+        "backgroundCadenceSeconds": 3600,
+        "dataInterval": "settlement"
+      },
+      {
+        "key": "derivatives:DOGE:open_interest",
+        "kind": "derivatives",
+        "cadenceSeconds": 300,
+        "dueAt": 1790537199,
+        "assets": [
+          "DOGE"
+        ],
+        "lane": "recent-futures",
+        "worker": "btc-desk",
+        "dedicatedCadenceSeconds": 300,
+        "backgroundCadenceSeconds": 3600,
+        "dataInterval": "1h"
+      },
+      {
+        "key": "derivatives:DOGE:long_account_ratio",
+        "kind": "derivatives",
+        "cadenceSeconds": 300,
+        "dueAt": 1790537200,
+        "assets": [
+          "DOGE"
+        ],
+        "lane": "recent-futures",
+        "worker": "btc-desk",
+        "dedicatedCadenceSeconds": 300,
+        "backgroundCadenceSeconds": 3600,
+        "dataInterval": "1h"
+      },
+      {
+        "key": "derivatives:DOGE:open_interest_daily",
+        "kind": "derivatives",
+        "cadenceSeconds": 3600,
+        "dueAt": 1790536538,
+        "assets": [
+          "DOGE"
+        ],
+        "lane": "background",
+        "worker": "btc-desk-background",
+        "dedicatedCadenceSeconds": null,
+        "backgroundCadenceSeconds": 3600,
+        "dataInterval": "1d"
+      },
+      {
+        "key": "derivatives:DOGE:long_account_ratio_daily",
+        "kind": "derivatives",
+        "cadenceSeconds": 3600,
+        "dueAt": 1790536238,
+        "assets": [
+          "DOGE"
+        ],
+        "lane": "background",
+        "worker": "btc-desk-background",
+        "dedicatedCadenceSeconds": null,
+        "backgroundCadenceSeconds": 3600,
+        "dataInterval": "1d"
+      },
+      {
+        "key": "derivatives:ETH:funding",
+        "kind": "derivatives",
+        "cadenceSeconds": 300,
+        "dueAt": 1790536958,
+        "assets": [
+          "ETH"
+        ],
+        "lane": "recent-futures",
+        "worker": "btc-desk",
+        "dedicatedCadenceSeconds": 300,
+        "backgroundCadenceSeconds": 3600,
+        "dataInterval": "settlement"
+      },
+      {
+        "key": "derivatives:ETH:open_interest",
+        "kind": "derivatives",
+        "cadenceSeconds": 300,
+        "dueAt": 1790536959,
+        "assets": [
+          "ETH"
+        ],
+        "lane": "recent-futures",
+        "worker": "btc-desk",
+        "dedicatedCadenceSeconds": 300,
+        "backgroundCadenceSeconds": 3600,
+        "dataInterval": "1h"
+      },
+      {
+        "key": "derivatives:ETH:long_account_ratio",
+        "kind": "derivatives",
+        "cadenceSeconds": 300,
+        "dueAt": 1790536960,
+        "assets": [
+          "ETH"
+        ],
+        "lane": "recent-futures",
+        "worker": "btc-desk",
+        "dedicatedCadenceSeconds": 300,
+        "backgroundCadenceSeconds": 3600,
+        "dataInterval": "1h"
+      },
+      {
+        "key": "derivatives:ETH:open_interest_daily",
+        "kind": "derivatives",
+        "cadenceSeconds": 3600,
+        "dueAt": 1790536058,
+        "assets": [
+          "ETH"
+        ],
+        "lane": "background",
+        "worker": "btc-desk-background",
+        "dedicatedCadenceSeconds": null,
+        "backgroundCadenceSeconds": 3600,
+        "dataInterval": "1d"
+      },
+      {
+        "key": "derivatives:ETH:long_account_ratio_daily",
+        "kind": "derivatives",
+        "cadenceSeconds": 3600,
+        "dueAt": 1790536418,
+        "assets": [
+          "ETH"
+        ],
+        "lane": "background",
+        "worker": "btc-desk-background",
+        "dedicatedCadenceSeconds": null,
+        "backgroundCadenceSeconds": 3600,
+        "dataInterval": "1d"
+      },
+      {
+        "key": "derivatives:SOL:funding",
+        "kind": "derivatives",
+        "cadenceSeconds": 21600,
+        "dueAt": 1790554838,
+        "assets": [
+          "SOL"
+        ],
+        "lane": "background",
+        "worker": "btc-desk-background",
+        "dedicatedCadenceSeconds": null,
+        "backgroundCadenceSeconds": 21600,
+        "dataInterval": "settlement"
+      },
+      {
+        "key": "derivatives:SOL:open_interest",
+        "kind": "derivatives",
+        "cadenceSeconds": 21600,
+        "dueAt": 1790533266,
+        "assets": [
+          "SOL"
+        ],
+        "lane": "background",
+        "worker": "btc-desk-background",
+        "dedicatedCadenceSeconds": null,
+        "backgroundCadenceSeconds": 21600,
+        "dataInterval": "1h"
+      },
+      {
+        "key": "derivatives:SOL:long_account_ratio",
+        "kind": "derivatives",
+        "cadenceSeconds": 21600,
+        "dueAt": 1790550338,
+        "assets": [
+          "SOL"
+        ],
+        "lane": "background",
+        "worker": "btc-desk-background",
+        "dedicatedCadenceSeconds": null,
+        "backgroundCadenceSeconds": 21600,
+        "dataInterval": "1h"
+      },
+      {
+        "key": "derivatives:SOL:open_interest_daily",
+        "kind": "derivatives",
+        "cadenceSeconds": 21600,
+        "dueAt": 1790553052,
+        "assets": [
+          "SOL"
+        ],
+        "lane": "background",
+        "worker": "btc-desk-background",
+        "dedicatedCadenceSeconds": null,
+        "backgroundCadenceSeconds": 21600,
+        "dataInterval": "1d"
+      },
+      {
+        "key": "derivatives:SOL:long_account_ratio_daily",
+        "kind": "derivatives",
+        "cadenceSeconds": 21600,
+        "dueAt": 1790553398,
+        "assets": [
+          "SOL"
+        ],
+        "lane": "background",
+        "worker": "btc-desk-background",
+        "dedicatedCadenceSeconds": null,
+        "backgroundCadenceSeconds": 21600,
+        "dataInterval": "1d"
+      },
+      {
+        "key": "derivatives:XRP:funding",
+        "kind": "derivatives",
+        "cadenceSeconds": 21600,
+        "dueAt": 1790554298,
+        "assets": [
+          "XRP"
+        ],
+        "lane": "background",
+        "worker": "btc-desk-background",
+        "dedicatedCadenceSeconds": null,
+        "backgroundCadenceSeconds": 21600,
+        "dataInterval": "settlement"
+      },
+      {
+        "key": "derivatives:XRP:open_interest",
+        "kind": "derivatives",
+        "cadenceSeconds": 21600,
+        "dueAt": 1790533206,
+        "assets": [
+          "XRP"
+        ],
+        "lane": "background",
+        "worker": "btc-desk-background",
+        "dedicatedCadenceSeconds": null,
+        "backgroundCadenceSeconds": 21600,
+        "dataInterval": "1h"
+      },
+      {
+        "key": "derivatives:XRP:long_account_ratio",
+        "kind": "derivatives",
+        "cadenceSeconds": 21600,
+        "dueAt": 1790532786,
+        "assets": [
+          "XRP"
+        ],
+        "lane": "background",
+        "worker": "btc-desk-background",
+        "dedicatedCadenceSeconds": null,
+        "backgroundCadenceSeconds": 21600,
+        "dataInterval": "1h"
+      },
+      {
+        "key": "derivatives:XRP:open_interest_daily",
+        "kind": "derivatives",
+        "cadenceSeconds": 21600,
+        "dueAt": 1790553579,
+        "assets": [
+          "XRP"
+        ],
+        "lane": "background",
+        "worker": "btc-desk-background",
+        "dedicatedCadenceSeconds": null,
+        "backgroundCadenceSeconds": 21600,
+        "dataInterval": "1d"
+      },
+      {
+        "key": "derivatives:XRP:long_account_ratio_daily",
+        "kind": "derivatives",
+        "cadenceSeconds": 21600,
+        "dueAt": 1790553938,
+        "assets": [
+          "XRP"
+        ],
+        "lane": "background",
+        "worker": "btc-desk-background",
+        "dedicatedCadenceSeconds": null,
+        "backgroundCadenceSeconds": 21600,
+        "dataInterval": "1d"
+      },
+      {
+        "key": "derivatives:LINK:funding",
+        "kind": "derivatives",
+        "cadenceSeconds": 21600,
+        "dueAt": 1790554899,
+        "assets": [
+          "LINK"
+        ],
+        "lane": "background",
+        "worker": "btc-desk-background",
+        "dedicatedCadenceSeconds": null,
+        "backgroundCadenceSeconds": 21600,
+        "dataInterval": "settlement"
+      },
+      {
+        "key": "derivatives:LINK:open_interest",
+        "kind": "derivatives",
+        "cadenceSeconds": 21600,
+        "dueAt": 1790532846,
+        "assets": [
+          "LINK"
+        ],
+        "lane": "background",
+        "worker": "btc-desk-background",
+        "dedicatedCadenceSeconds": null,
+        "backgroundCadenceSeconds": 21600,
+        "dataInterval": "1h"
+      },
+      {
+        "key": "derivatives:LINK:long_account_ratio",
+        "kind": "derivatives",
+        "cadenceSeconds": 21600,
+        "dueAt": 1790532906,
+        "assets": [
+          "LINK"
+        ],
+        "lane": "background",
+        "worker": "btc-desk-background",
+        "dedicatedCadenceSeconds": null,
+        "backgroundCadenceSeconds": 21600,
+        "dataInterval": "1h"
+      },
+      {
+        "key": "derivatives:LINK:open_interest_daily",
+        "kind": "derivatives",
+        "cadenceSeconds": 21600,
+        "dueAt": 1790553999,
+        "assets": [
+          "LINK"
+        ],
+        "lane": "background",
+        "worker": "btc-desk-background",
+        "dedicatedCadenceSeconds": null,
+        "backgroundCadenceSeconds": 21600,
+        "dataInterval": "1d"
+      },
+      {
+        "key": "derivatives:LINK:long_account_ratio_daily",
+        "kind": "derivatives",
+        "cadenceSeconds": 21600,
+        "dueAt": 1790554118,
+        "assets": [
+          "LINK"
+        ],
+        "lane": "background",
+        "worker": "btc-desk-background",
+        "dedicatedCadenceSeconds": null,
+        "backgroundCadenceSeconds": 21600,
+        "dataInterval": "1d"
+      },
+      {
+        "key": "derivatives:ONDO:funding",
+        "kind": "derivatives",
+        "cadenceSeconds": 21600,
+        "dueAt": 1790555078,
+        "assets": [
+          "ONDO"
+        ],
+        "lane": "background",
+        "worker": "btc-desk-background",
+        "dedicatedCadenceSeconds": null,
+        "backgroundCadenceSeconds": 21600,
+        "dataInterval": "settlement"
+      },
+      {
+        "key": "derivatives:ONDO:open_interest",
+        "kind": "derivatives",
+        "cadenceSeconds": 21600,
+        "dueAt": 1790533086,
+        "assets": [
+          "ONDO"
+        ],
+        "lane": "background",
+        "worker": "btc-desk-background",
+        "dedicatedCadenceSeconds": null,
+        "backgroundCadenceSeconds": 21600,
+        "dataInterval": "1h"
+      },
+      {
+        "key": "derivatives:ONDO:long_account_ratio",
+        "kind": "derivatives",
+        "cadenceSeconds": 21600,
+        "dueAt": 1790533146,
+        "assets": [
+          "ONDO"
+        ],
+        "lane": "background",
+        "worker": "btc-desk-background",
+        "dedicatedCadenceSeconds": null,
+        "backgroundCadenceSeconds": 21600,
+        "dataInterval": "1h"
+      },
+      {
+        "key": "derivatives:ONDO:open_interest_daily",
+        "kind": "derivatives",
+        "cadenceSeconds": 21600,
+        "dueAt": 1790551958,
+        "assets": [
+          "ONDO"
+        ],
+        "lane": "background",
+        "worker": "btc-desk-background",
+        "dedicatedCadenceSeconds": null,
+        "backgroundCadenceSeconds": 21600,
+        "dataInterval": "1d"
+      },
+      {
+        "key": "derivatives:ONDO:long_account_ratio_daily",
+        "kind": "derivatives",
+        "cadenceSeconds": 21600,
+        "dueAt": 1790555018,
+        "assets": [
+          "ONDO"
+        ],
+        "lane": "background",
+        "worker": "btc-desk-background",
+        "dedicatedCadenceSeconds": null,
+        "backgroundCadenceSeconds": 21600,
+        "dataInterval": "1d"
+      },
+      {
+        "key": "derivatives:PEPE:funding",
+        "kind": "derivatives",
+        "cadenceSeconds": 21600,
+        "dueAt": 1790554958,
+        "assets": [
+          "PEPE"
+        ],
+        "lane": "background",
+        "worker": "btc-desk-background",
+        "dedicatedCadenceSeconds": null,
+        "backgroundCadenceSeconds": 21600,
+        "dataInterval": "settlement"
+      },
+      {
+        "key": "derivatives:PEPE:open_interest",
+        "kind": "derivatives",
+        "cadenceSeconds": 21600,
+        "dueAt": 1790532966,
+        "assets": [
+          "PEPE"
+        ],
+        "lane": "background",
+        "worker": "btc-desk-background",
+        "dedicatedCadenceSeconds": null,
+        "backgroundCadenceSeconds": 21600,
+        "dataInterval": "1h"
+      },
+      {
+        "key": "derivatives:PEPE:long_account_ratio",
+        "kind": "derivatives",
+        "cadenceSeconds": 21600,
+        "dueAt": 1790533026,
+        "assets": [
+          "PEPE"
+        ],
+        "lane": "background",
+        "worker": "btc-desk-background",
+        "dedicatedCadenceSeconds": null,
+        "backgroundCadenceSeconds": 21600,
+        "dataInterval": "1h"
+      },
+      {
+        "key": "derivatives:PEPE:open_interest_daily",
+        "kind": "derivatives",
+        "cadenceSeconds": 21600,
+        "dueAt": 1790552078,
+        "assets": [
+          "PEPE"
+        ],
+        "lane": "background",
+        "worker": "btc-desk-background",
+        "dedicatedCadenceSeconds": null,
+        "backgroundCadenceSeconds": 21600,
+        "dataInterval": "1d"
+      },
+      {
+        "key": "derivatives:PEPE:long_account_ratio_daily",
+        "kind": "derivatives",
+        "cadenceSeconds": 21600,
+        "dueAt": 1790552678,
+        "assets": [
+          "PEPE"
+        ],
+        "lane": "background",
+        "worker": "btc-desk-background",
+        "dedicatedCadenceSeconds": null,
+        "backgroundCadenceSeconds": 21600,
+        "dataInterval": "1d"
+      },
+      {
+        "key": "reference:BTC",
+        "kind": "reference",
+        "cadenceSeconds": 3600,
+        "dueAt": 1790535638,
+        "assets": [
+          "BTC"
+        ],
+        "lane": "background",
+        "worker": "btc-desk-background",
+        "dedicatedCadenceSeconds": null,
+        "backgroundCadenceSeconds": 3600,
+        "dataInterval": "1d"
+      },
+      {
+        "key": "reference:DOGE",
+        "kind": "reference",
+        "cadenceSeconds": 3600,
+        "dueAt": 1790534258,
+        "assets": [
+          "DOGE"
+        ],
+        "lane": "background",
+        "worker": "btc-desk-background",
+        "dedicatedCadenceSeconds": null,
+        "backgroundCadenceSeconds": 3600,
+        "dataInterval": "1d"
+      },
+      {
+        "key": "reference:ETH",
+        "kind": "reference",
+        "cadenceSeconds": 3600,
+        "dueAt": 1790536718,
+        "assets": [
+          "ETH"
+        ],
+        "lane": "background",
+        "worker": "btc-desk-background",
+        "dedicatedCadenceSeconds": null,
+        "backgroundCadenceSeconds": 3600,
+        "dataInterval": "1d"
+      },
+      {
+        "key": "reference:XRP",
+        "kind": "reference",
+        "cadenceSeconds": 21600,
+        "dueAt": 1790555138,
+        "assets": [
+          "XRP"
+        ],
+        "lane": "background",
+        "worker": "btc-desk-background",
+        "dedicatedCadenceSeconds": null,
+        "backgroundCadenceSeconds": 21600,
+        "dataInterval": "1d"
+      },
+      {
+        "key": "reference:LINK",
+        "kind": "reference",
+        "cadenceSeconds": 21600,
+        "dueAt": 1790555198,
+        "assets": [
+          "LINK"
+        ],
+        "lane": "background",
+        "worker": "btc-desk-background",
+        "dedicatedCadenceSeconds": null,
+        "backgroundCadenceSeconds": 21600,
+        "dataInterval": "1d"
+      },
+      {
+        "key": "network:BTC",
+        "kind": "network",
+        "cadenceSeconds": 3600,
+        "dueAt": 1790534618,
+        "assets": [
+          "BTC"
+        ],
+        "lane": "background",
+        "worker": "btc-desk-background",
+        "dedicatedCadenceSeconds": null,
+        "backgroundCadenceSeconds": 3600,
+        "dataInterval": "1d"
+      },
+      {
+        "key": "network:DOGE",
+        "kind": "network",
+        "cadenceSeconds": 3600,
+        "dueAt": 1790535218,
+        "assets": [
+          "DOGE"
+        ],
+        "lane": "background",
+        "worker": "btc-desk-background",
+        "dedicatedCadenceSeconds": null,
+        "backgroundCadenceSeconds": 3600,
+        "dataInterval": "1d"
+      },
+      {
+        "key": "network:ETH",
+        "kind": "network",
+        "cadenceSeconds": 3600,
+        "dueAt": 1790534858,
+        "assets": [
+          "ETH"
+        ],
+        "lane": "background",
+        "worker": "btc-desk-background",
+        "dedicatedCadenceSeconds": null,
+        "backgroundCadenceSeconds": 3600,
+        "dataInterval": "1d"
+      },
+      {
+        "key": "network:XRP",
+        "kind": "network",
+        "cadenceSeconds": 21600,
+        "dueAt": 1790531945,
+        "assets": [
+          "XRP"
+        ],
+        "lane": "background",
+        "worker": "btc-desk-background",
+        "dedicatedCadenceSeconds": null,
+        "backgroundCadenceSeconds": 21600,
+        "dataInterval": "1d"
+      },
+      {
+        "key": "network:LINK",
+        "kind": "network",
+        "cadenceSeconds": 21600,
+        "dueAt": 1790532005,
+        "assets": [
+          "LINK"
+        ],
+        "lane": "background",
+        "worker": "btc-desk-background",
+        "dedicatedCadenceSeconds": null,
+        "backgroundCadenceSeconds": 21600,
+        "dataInterval": "1d"
+      },
+      {
+        "key": "quotes:binance:0",
+        "kind": "quote-batch",
+        "cadenceSeconds": 60,
+        "dueAt": 1790533659,
+        "assets": [
+          "BTC",
+          "DOGE",
+          "ETH",
+          "SOL",
+          "XRP",
+          "LINK",
+          "ONDO",
+          "PEPE"
+        ],
+        "market": "binance",
+        "lane": "quotes",
+        "worker": "btc-desk-quotes",
+        "dedicatedCadenceSeconds": 60,
+        "backgroundCadenceSeconds": null,
+        "dataInterval": "snapshot"
+      },
+      {
+        "key": "BTC:binance:1h",
+        "kind": "price",
+        "cadenceSeconds": 3600,
+        "dueAt": 1790534438,
+        "assets": [
+          "BTC"
+        ],
+        "market": "binance",
+        "lane": "background",
+        "worker": "btc-desk-background",
+        "dedicatedCadenceSeconds": null,
+        "backgroundCadenceSeconds": 3600,
+        "dataInterval": "1h"
+      },
+      {
+        "key": "BTC:binance:1d",
+        "kind": "price",
+        "cadenceSeconds": 3600,
+        "dueAt": 1790536598,
+        "assets": [
+          "BTC"
+        ],
+        "market": "binance",
+        "lane": "background",
+        "worker": "btc-desk-background",
+        "dedicatedCadenceSeconds": null,
+        "backgroundCadenceSeconds": 3600,
+        "dataInterval": "1d"
+      },
+      {
+        "key": "DOGE:binance:1h",
+        "kind": "price",
+        "cadenceSeconds": 3600,
+        "dueAt": 1790536658,
+        "assets": [
+          "DOGE"
+        ],
+        "market": "binance",
+        "lane": "background",
+        "worker": "btc-desk-background",
+        "dedicatedCadenceSeconds": null,
+        "backgroundCadenceSeconds": 3600,
+        "dataInterval": "1h"
+      },
+      {
+        "key": "DOGE:binance:1d",
+        "kind": "price",
+        "cadenceSeconds": 3600,
+        "dueAt": 1790534319,
+        "assets": [
+          "DOGE"
+        ],
+        "market": "binance",
+        "lane": "background",
+        "worker": "btc-desk-background",
+        "dedicatedCadenceSeconds": null,
+        "backgroundCadenceSeconds": 3600,
+        "dataInterval": "1d"
+      },
+      {
+        "key": "ETH:binance:1h",
+        "kind": "price",
+        "cadenceSeconds": 3600,
+        "dueAt": 1790536178,
+        "assets": [
+          "ETH"
+        ],
+        "market": "binance",
+        "lane": "background",
+        "worker": "btc-desk-background",
+        "dedicatedCadenceSeconds": null,
+        "backgroundCadenceSeconds": 3600,
+        "dataInterval": "1h"
+      },
+      {
+        "key": "ETH:binance:1d",
+        "kind": "price",
+        "cadenceSeconds": 3600,
+        "dueAt": 1790536358,
+        "assets": [
+          "ETH"
+        ],
+        "market": "binance",
+        "lane": "background",
+        "worker": "btc-desk-background",
+        "dedicatedCadenceSeconds": null,
+        "backgroundCadenceSeconds": 3600,
+        "dataInterval": "1d"
+      },
+      {
+        "key": "SOL:binance:1h",
+        "kind": "price",
+        "cadenceSeconds": 3600,
+        "dueAt": 1790535158,
+        "assets": [
+          "SOL"
+        ],
+        "market": "binance",
+        "lane": "background",
+        "worker": "btc-desk-background",
+        "dedicatedCadenceSeconds": null,
+        "backgroundCadenceSeconds": 3600,
+        "dataInterval": "1h"
+      },
+      {
+        "key": "SOL:binance:1d",
+        "kind": "price",
+        "cadenceSeconds": 21600,
+        "dueAt": 1790551418,
+        "assets": [
+          "SOL"
+        ],
+        "market": "binance",
+        "lane": "background",
+        "worker": "btc-desk-background",
+        "dedicatedCadenceSeconds": null,
+        "backgroundCadenceSeconds": 21600,
+        "dataInterval": "1d"
+      },
+      {
+        "key": "XRP:binance:1h",
+        "kind": "price",
+        "cadenceSeconds": 3600,
+        "dueAt": 1790535458,
+        "assets": [
+          "XRP"
+        ],
+        "market": "binance",
+        "lane": "background",
+        "worker": "btc-desk-background",
+        "dedicatedCadenceSeconds": null,
+        "backgroundCadenceSeconds": 3600,
+        "dataInterval": "1h"
+      },
+      {
+        "key": "XRP:binance:1d",
+        "kind": "price",
+        "cadenceSeconds": 21600,
+        "dueAt": 1790551058,
+        "assets": [
+          "XRP"
+        ],
+        "market": "binance",
+        "lane": "background",
+        "worker": "btc-desk-background",
+        "dedicatedCadenceSeconds": null,
+        "backgroundCadenceSeconds": 21600,
+        "dataInterval": "1d"
+      },
+      {
+        "key": "LINK:binance:1h",
+        "kind": "price",
+        "cadenceSeconds": 3600,
+        "dueAt": 1790535698,
+        "assets": [
+          "LINK"
+        ],
+        "market": "binance",
+        "lane": "background",
+        "worker": "btc-desk-background",
+        "dedicatedCadenceSeconds": null,
+        "backgroundCadenceSeconds": 3600,
+        "dataInterval": "1h"
+      },
+      {
+        "key": "LINK:binance:1d",
+        "kind": "price",
+        "cadenceSeconds": 21600,
+        "dueAt": 1790551178,
+        "assets": [
+          "LINK"
+        ],
+        "market": "binance",
+        "lane": "background",
+        "worker": "btc-desk-background",
+        "dedicatedCadenceSeconds": null,
+        "backgroundCadenceSeconds": 21600,
+        "dataInterval": "1d"
+      },
+      {
+        "key": "ONDO:binance:1h",
+        "kind": "price",
+        "cadenceSeconds": 3600,
+        "dueAt": 1790535818,
+        "assets": [
+          "ONDO"
+        ],
+        "market": "binance",
+        "lane": "background",
+        "worker": "btc-desk-background",
+        "dedicatedCadenceSeconds": null,
+        "backgroundCadenceSeconds": 3600,
+        "dataInterval": "1h"
+      },
+      {
+        "key": "ONDO:binance:1d",
+        "kind": "price",
+        "cadenceSeconds": 21600,
+        "dueAt": 1790551238,
+        "assets": [
+          "ONDO"
+        ],
+        "market": "binance",
+        "lane": "background",
+        "worker": "btc-desk-background",
+        "dedicatedCadenceSeconds": null,
+        "backgroundCadenceSeconds": 21600,
+        "dataInterval": "1d"
+      },
+      {
+        "key": "PEPE:binance:1h",
+        "kind": "price",
+        "cadenceSeconds": 3600,
+        "dueAt": 1790535758,
+        "assets": [
+          "PEPE"
+        ],
+        "market": "binance",
+        "lane": "background",
+        "worker": "btc-desk-background",
+        "dedicatedCadenceSeconds": null,
+        "backgroundCadenceSeconds": 3600,
+        "dataInterval": "1h"
+      },
+      {
+        "key": "PEPE:binance:1d",
+        "kind": "price",
+        "cadenceSeconds": 21600,
+        "dueAt": 1790551298,
+        "assets": [
+          "PEPE"
+        ],
+        "market": "binance",
+        "lane": "background",
+        "worker": "btc-desk-background",
+        "dedicatedCadenceSeconds": null,
+        "backgroundCadenceSeconds": 21600,
+        "dataInterval": "1d"
+      },
+      {
+        "key": "quotes:upbit:0",
+        "kind": "quote-batch",
+        "cadenceSeconds": 60,
+        "dueAt": 1790533538,
+        "assets": [
+          "BTC",
+          "DOGE",
+          "ETH",
+          "SOL",
+          "XRP",
+          "LINK",
+          "ONDO",
+          "PEPE"
+        ],
+        "market": "upbit",
+        "lane": "quotes",
+        "worker": "btc-desk-quotes",
+        "dedicatedCadenceSeconds": 60,
+        "backgroundCadenceSeconds": null,
+        "dataInterval": "snapshot"
+      },
+      {
+        "key": "BTC:upbit:1h",
+        "kind": "price",
+        "cadenceSeconds": 3600,
+        "dueAt": 1790535278,
+        "assets": [
+          "BTC"
+        ],
+        "market": "upbit",
+        "lane": "background",
+        "worker": "btc-desk-background",
+        "dedicatedCadenceSeconds": null,
+        "backgroundCadenceSeconds": 3600,
+        "dataInterval": "1h"
+      },
+      {
+        "key": "BTC:upbit:1d",
+        "kind": "price",
+        "cadenceSeconds": 3600,
+        "dueAt": 1790535098,
+        "assets": [
+          "BTC"
+        ],
+        "market": "upbit",
+        "lane": "background",
+        "worker": "btc-desk-background",
+        "dedicatedCadenceSeconds": null,
+        "backgroundCadenceSeconds": 3600,
+        "dataInterval": "1d"
+      },
+      {
+        "key": "DOGE:upbit:1h",
+        "kind": "price",
+        "cadenceSeconds": 3600,
+        "dueAt": 1790534738,
+        "assets": [
+          "DOGE"
+        ],
+        "market": "upbit",
+        "lane": "background",
+        "worker": "btc-desk-background",
+        "dedicatedCadenceSeconds": null,
+        "backgroundCadenceSeconds": 3600,
+        "dataInterval": "1h"
+      },
+      {
+        "key": "DOGE:upbit:1d",
+        "kind": "price",
+        "cadenceSeconds": 3600,
+        "dueAt": 1790534138,
+        "assets": [
+          "DOGE"
+        ],
+        "market": "upbit",
+        "lane": "background",
+        "worker": "btc-desk-background",
+        "dedicatedCadenceSeconds": null,
+        "backgroundCadenceSeconds": 3600,
+        "dataInterval": "1d"
+      },
+      {
+        "key": "ETH:upbit:1h",
+        "kind": "price",
+        "cadenceSeconds": 3600,
+        "dueAt": 1790534918,
+        "assets": [
+          "ETH"
+        ],
+        "market": "upbit",
+        "lane": "background",
+        "worker": "btc-desk-background",
+        "dedicatedCadenceSeconds": null,
+        "backgroundCadenceSeconds": 3600,
+        "dataInterval": "1h"
+      },
+      {
+        "key": "ETH:upbit:1d",
+        "kind": "price",
+        "cadenceSeconds": 3600,
+        "dueAt": 1790534498,
+        "assets": [
+          "ETH"
+        ],
+        "market": "upbit",
+        "lane": "background",
+        "worker": "btc-desk-background",
+        "dedicatedCadenceSeconds": null,
+        "backgroundCadenceSeconds": 3600,
+        "dataInterval": "1d"
+      },
+      {
+        "key": "SOL:upbit:1h",
+        "kind": "price",
+        "cadenceSeconds": 3600,
+        "dueAt": 1790535878,
+        "assets": [
+          "SOL"
+        ],
+        "market": "upbit",
+        "lane": "background",
+        "worker": "btc-desk-background",
+        "dedicatedCadenceSeconds": null,
+        "backgroundCadenceSeconds": 3600,
+        "dataInterval": "1h"
+      },
+      {
+        "key": "SOL:upbit:1d",
+        "kind": "price",
+        "cadenceSeconds": 21600,
+        "dueAt": 1790551358,
+        "assets": [
+          "SOL"
+        ],
+        "market": "upbit",
+        "lane": "background",
+        "worker": "btc-desk-background",
+        "dedicatedCadenceSeconds": null,
+        "backgroundCadenceSeconds": 21600,
+        "dataInterval": "1d"
+      },
+      {
+        "key": "XRP:upbit:1h",
+        "kind": "price",
+        "cadenceSeconds": 3600,
+        "dueAt": 1790533718,
+        "assets": [
+          "XRP"
+        ],
+        "market": "upbit",
+        "lane": "background",
+        "worker": "btc-desk-background",
+        "dedicatedCadenceSeconds": null,
+        "backgroundCadenceSeconds": 3600,
+        "dataInterval": "1h"
+      },
+      {
+        "key": "XRP:upbit:1d",
+        "kind": "price",
+        "cadenceSeconds": 21600,
+        "dueAt": 1790551478,
+        "assets": [
+          "XRP"
+        ],
+        "market": "upbit",
+        "lane": "background",
+        "worker": "btc-desk-background",
+        "dedicatedCadenceSeconds": null,
+        "backgroundCadenceSeconds": 21600,
+        "dataInterval": "1d"
+      },
+      {
+        "key": "LINK:upbit:1h",
+        "kind": "price",
+        "cadenceSeconds": 3600,
+        "dueAt": 1790533898,
+        "assets": [
+          "LINK"
+        ],
+        "market": "upbit",
+        "lane": "background",
+        "worker": "btc-desk-background",
+        "dedicatedCadenceSeconds": null,
+        "backgroundCadenceSeconds": 3600,
+        "dataInterval": "1h"
+      },
+      {
+        "key": "LINK:upbit:1d",
+        "kind": "price",
+        "cadenceSeconds": 21600,
+        "dueAt": 1790551538,
+        "assets": [
+          "LINK"
+        ],
+        "market": "upbit",
+        "lane": "background",
+        "worker": "btc-desk-background",
+        "dedicatedCadenceSeconds": null,
+        "backgroundCadenceSeconds": 21600,
+        "dataInterval": "1d"
+      },
+      {
+        "key": "ONDO:upbit:1h",
+        "kind": "price",
+        "cadenceSeconds": 3600,
+        "dueAt": 1790534198,
+        "assets": [
+          "ONDO"
+        ],
+        "market": "upbit",
+        "lane": "background",
+        "worker": "btc-desk-background",
+        "dedicatedCadenceSeconds": null,
+        "backgroundCadenceSeconds": 3600,
+        "dataInterval": "1h"
+      },
+      {
+        "key": "ONDO:upbit:1d",
+        "kind": "price",
+        "cadenceSeconds": 21600,
+        "dueAt": 1790551658,
+        "assets": [
+          "ONDO"
+        ],
+        "market": "upbit",
+        "lane": "background",
+        "worker": "btc-desk-background",
+        "dedicatedCadenceSeconds": null,
+        "backgroundCadenceSeconds": 21600,
+        "dataInterval": "1d"
+      },
+      {
+        "key": "PEPE:upbit:1h",
+        "kind": "price",
+        "cadenceSeconds": 3600,
+        "dueAt": 1790534378,
+        "assets": [
+          "PEPE"
+        ],
+        "market": "upbit",
+        "lane": "background",
+        "worker": "btc-desk-background",
+        "dedicatedCadenceSeconds": null,
+        "backgroundCadenceSeconds": 3600,
+        "dataInterval": "1h"
+      },
+      {
+        "key": "PEPE:upbit:1d",
+        "kind": "price",
+        "cadenceSeconds": 21600,
+        "dueAt": 1790551838,
+        "assets": [
+          "PEPE"
+        ],
+        "market": "upbit",
+        "lane": "background",
+        "worker": "btc-desk-background",
+        "dedicatedCadenceSeconds": null,
+        "backgroundCadenceSeconds": 21600,
+        "dataInterval": "1d"
+      }
+    ],
+    "recentRuns": [
+      {
+        "runId": "3db2085e-8766-401f-a5ea-f2e35a6117ff",
+        "startedAt": 1790533597,
+        "completedAt": 1790533598,
+        "job": "reference:LINK",
+        "outcome": "ok",
+        "error": null
+      },
+      {
+        "runId": "27e45f6e-64de-4e73-bdc8-83679873812d",
+        "startedAt": 1790533537,
+        "completedAt": 1790533539,
+        "job": "reference:XRP",
+        "outcome": "ok",
+        "error": null
+      },
+      {
+        "runId": "951c28b6-e38f-4d91-a90c-559c4a468363",
+        "startedAt": 1790533477,
+        "completedAt": 1790533479,
+        "job": "derivatives:ONDO:funding",
+        "outcome": "ok",
+        "error": null
+      },
+      {
+        "runId": "b5a59e68-1ccc-4a6f-ac99-2211e202cf68",
+        "startedAt": 1790533417,
+        "completedAt": 1790533419,
+        "job": "derivatives:ONDO:long_account_ratio_daily",
+        "outcome": "ok",
+        "error": null
+      },
+      {
+        "runId": "c5959fa6-f892-499d-a24a-a06aa07219ad",
+        "startedAt": 1790533357,
+        "completedAt": 1790533359,
+        "job": "derivatives:PEPE:funding",
+        "outcome": "ok",
+        "error": null
+      },
+      {
+        "runId": "cd70b335-50cd-47c0-85b5-f7a3a2827226",
+        "startedAt": 1790533297,
+        "completedAt": 1790533299,
+        "job": "derivatives:LINK:funding",
+        "outcome": "ok",
+        "error": null
+      },
+      {
+        "runId": "3b99459e-9e76-4e2b-93cf-67937e6c809d",
+        "startedAt": 1790533237,
+        "completedAt": 1790533239,
+        "job": "derivatives:SOL:funding",
+        "outcome": "ok",
+        "error": null
+      },
+      {
+        "runId": "dc83fc26-db95-46cd-b9e1-fc167487cb10",
+        "startedAt": 1790533177,
+        "completedAt": 1790533179,
+        "job": "derivatives:BTC:long_account_ratio_daily",
+        "outcome": "ok",
+        "error": null
+      },
+      {
+        "runId": "d3059776-6b23-465f-a52d-158216f75316",
+        "startedAt": 1790533117,
+        "completedAt": 1790533119,
+        "job": "reference:ETH",
+        "outcome": "ok",
+        "error": null
+      },
+      {
+        "runId": "72b3710a-9fd8-403f-a223-1cfe20616504",
+        "startedAt": 1790533057,
+        "completedAt": 1790533059,
+        "job": "DOGE:binance:1h",
+        "outcome": "ok",
+        "error": null
+      },
+      {
+        "runId": "9cbba74e-cdbd-4bb3-b1c9-4213b503454e",
+        "startedAt": 1790532997,
+        "completedAt": 1790532999,
+        "job": "BTC:binance:1d",
+        "outcome": "ok",
+        "error": null
+      },
+      {
+        "runId": "847b41fe-7805-410c-b720-b40e68d349b6",
+        "startedAt": 1790532937,
+        "completedAt": 1790532939,
+        "job": "derivatives:DOGE:open_interest_daily",
+        "outcome": "ok",
+        "error": null
+      },
+      {
+        "runId": "63cd8c26-d99d-4373-b949-b0893016951e",
+        "startedAt": 1790532877,
+        "completedAt": 1790532878,
+        "job": "mempool:BTC",
+        "outcome": "ok",
+        "error": null
+      },
+      {
+        "runId": "172183eb-3e8e-49d9-a6c0-91acafd0ed1b",
+        "startedAt": 1790532817,
+        "completedAt": 1790532819,
+        "job": "derivatives:ETH:long_account_ratio_daily",
+        "outcome": "ok",
+        "error": null
+      },
+      {
+        "runId": "6296fc2f-f98b-41c6-9e23-5fee10afc560",
+        "startedAt": 1790532757,
+        "completedAt": 1790532759,
+        "job": "ETH:binance:1d",
+        "outcome": "ok",
+        "error": null
+      },
+      {
+        "runId": "197acdcc-e9fe-4b64-a64b-f99aae4052a3",
+        "startedAt": 1790532697,
+        "completedAt": 1790532699,
+        "job": "derivatives:XRP:funding",
+        "outcome": "ok",
+        "error": null
+      },
+      {
+        "runId": "cd82bbe7-f57d-4729-81f8-956f19be8fa3",
+        "startedAt": 1790532637,
+        "completedAt": 1790532639,
+        "job": "derivatives:DOGE:long_account_ratio_daily",
+        "outcome": "ok",
+        "error": null
+      },
+      {
+        "runId": "bb553b12-659e-4382-8e5e-671acc8035d0",
+        "startedAt": 1790532577,
+        "completedAt": 1790532579,
+        "job": "ETH:binance:1h",
+        "outcome": "ok",
+        "error": null
+      },
+      {
+        "runId": "5cbc9ee7-467e-4fea-a135-c19af9944597",
+        "startedAt": 1790532517,
+        "completedAt": 1790532519,
+        "job": "derivatives:LINK:long_account_ratio_daily",
+        "outcome": "ok",
+        "error": null
+      },
+      {
+        "runId": "3cf4b5a8-6400-44c1-b41e-fa450c3659df",
+        "startedAt": 1790532457,
+        "completedAt": 1790532459,
+        "job": "derivatives:ETH:open_interest_daily",
+        "outcome": "ok",
+        "error": null
+      }
+    ]
+  },
+  "sources": [
+    {
+      "key": "derivatives:BTC:funding",
+      "last_attempt": 1790533538,
+      "last_success": 1790533538,
+      "data_as_of": 1790524800,
+      "error": null,
+      "failures": 0,
+      "next_attempt": 0,
+      "active": true,
+      "status": "ok",
+      "collectorAgeSeconds": 96,
+      "dataAgeSeconds": 8834,
+      "liveStale": false,
+      "expectedCadenceSeconds": 300,
+      "dataFreshnessLimitSeconds": 129600,
+      "nextDueAt": 1790533838,
+      "retryAt": null,
+      "coverage": null
+    },
+    {
+      "key": "derivatives:BTC:open_interest",
+      "last_attempt": 1790533539,
+      "last_success": 1790533539,
+      "data_as_of": 1790532000,
+      "error": null,
+      "failures": 0,
+      "next_attempt": 0,
+      "active": true,
+      "status": "ok",
+      "collectorAgeSeconds": 95,
+      "dataAgeSeconds": 1634,
+      "liveStale": false,
+      "expectedCadenceSeconds": 300,
+      "dataFreshnessLimitSeconds": 10800,
+      "nextDueAt": 1790533839,
+      "retryAt": null,
+      "coverage": null
+    },
+    {
+      "key": "derivatives:BTC:long_account_ratio",
+      "last_attempt": 1790533540,
+      "last_success": 1790533540,
+      "data_as_of": 1790532000,
+      "error": null,
+      "failures": 0,
+      "next_attempt": 0,
+      "active": true,
+      "status": "ok",
+      "collectorAgeSeconds": 94,
+      "dataAgeSeconds": 1634,
+      "liveStale": false,
+      "expectedCadenceSeconds": 300,
+      "dataFreshnessLimitSeconds": 10800,
+      "nextDueAt": 1790533840,
+      "retryAt": null,
+      "coverage": null
+    },
+    {
+      "key": "derivatives:BTC:open_interest_daily",
+      "last_attempt": 1790531198,
+      "last_success": 1790531198,
+      "data_as_of": 1790467200,
+      "error": null,
+      "failures": 0,
+      "next_attempt": 0,
+      "active": true,
+      "status": "ok",
+      "collectorAgeSeconds": 2436,
+      "dataAgeSeconds": 66434,
+      "liveStale": false,
+      "expectedCadenceSeconds": 3600,
+      "dataFreshnessLimitSeconds": 259200,
+      "nextDueAt": 1790534798,
+      "retryAt": null,
+      "coverage": null
+    },
+    {
+      "key": "derivatives:BTC:long_account_ratio_daily",
+      "last_attempt": 1790533178,
+      "last_success": 1790533178,
+      "data_as_of": 1790467200,
+      "error": null,
+      "failures": 0,
+      "next_attempt": 0,
+      "active": true,
+      "status": "ok",
+      "collectorAgeSeconds": 456,
+      "dataAgeSeconds": 66434,
+      "liveStale": false,
+      "expectedCadenceSeconds": 3600,
+      "dataFreshnessLimitSeconds": 259200,
+      "nextDueAt": 1790536778,
+      "retryAt": null,
+      "coverage": null
+    },
+    {
+      "key": "derivatives:DOGE:funding",
+      "last_attempt": 1790533598,
+      "last_success": 1790533598,
+      "data_as_of": 1790524800,
+      "error": null,
+      "failures": 0,
+      "next_attempt": 0,
+      "active": true,
+      "status": "ok",
+      "collectorAgeSeconds": 36,
+      "dataAgeSeconds": 8834,
+      "liveStale": false,
+      "expectedCadenceSeconds": 300,
+      "dataFreshnessLimitSeconds": 129600,
+      "nextDueAt": 1790533898,
+      "retryAt": null,
+      "coverage": null
+    },
+    {
+      "key": "derivatives:DOGE:open_interest",
+      "last_attempt": 1790533599,
+      "last_success": 1790533599,
+      "data_as_of": 1790532000,
+      "error": null,
+      "failures": 0,
+      "next_attempt": 0,
+      "active": true,
+      "status": "ok",
+      "collectorAgeSeconds": 35,
+      "dataAgeSeconds": 1634,
+      "liveStale": false,
+      "expectedCadenceSeconds": 300,
+      "dataFreshnessLimitSeconds": 10800,
+      "nextDueAt": 1790533899,
+      "retryAt": null,
+      "coverage": null
+    },
+    {
+      "key": "derivatives:DOGE:long_account_ratio",
+      "last_attempt": 1790533600,
+      "last_success": 1790533600,
+      "data_as_of": 1790532000,
+      "error": null,
+      "failures": 0,
+      "next_attempt": 0,
+      "active": true,
+      "status": "ok",
+      "collectorAgeSeconds": 34,
+      "dataAgeSeconds": 1634,
+      "liveStale": false,
+      "expectedCadenceSeconds": 300,
+      "dataFreshnessLimitSeconds": 10800,
+      "nextDueAt": 1790533900,
+      "retryAt": null,
+      "coverage": null
+    },
+    {
+      "key": "derivatives:DOGE:open_interest_daily",
+      "last_attempt": 1790532938,
+      "last_success": 1790532938,
+      "data_as_of": 1790467200,
+      "error": null,
+      "failures": 0,
+      "next_attempt": 0,
+      "active": true,
+      "status": "ok",
+      "collectorAgeSeconds": 696,
+      "dataAgeSeconds": 66434,
+      "liveStale": false,
+      "expectedCadenceSeconds": 3600,
+      "dataFreshnessLimitSeconds": 259200,
+      "nextDueAt": 1790536538,
+      "retryAt": null,
+      "coverage": null
+    },
+    {
+      "key": "derivatives:DOGE:long_account_ratio_daily",
+      "last_attempt": 1790532638,
+      "last_success": 1790532638,
+      "data_as_of": 1790467200,
+      "error": null,
+      "failures": 0,
+      "next_attempt": 0,
+      "active": true,
+      "status": "ok",
+      "collectorAgeSeconds": 996,
+      "dataAgeSeconds": 66434,
+      "liveStale": false,
+      "expectedCadenceSeconds": 3600,
+      "dataFreshnessLimitSeconds": 259200,
+      "nextDueAt": 1790536238,
+      "retryAt": null,
+      "coverage": null
+    },
+    {
+      "key": "derivatives:ETH:funding",
+      "last_attempt": 1790533358,
+      "last_success": 1790533358,
+      "data_as_of": 1790524800,
+      "error": null,
+      "failures": 0,
+      "next_attempt": 0,
+      "active": true,
+      "status": "ok",
+      "collectorAgeSeconds": 276,
+      "dataAgeSeconds": 8834,
+      "liveStale": false,
+      "expectedCadenceSeconds": 300,
+      "dataFreshnessLimitSeconds": 129600,
+      "nextDueAt": 1790533658,
+      "retryAt": null,
+      "coverage": null
+    },
+    {
+      "key": "derivatives:ETH:open_interest",
+      "last_attempt": 1790533359,
+      "last_success": 1790533359,
+      "data_as_of": 1790532000,
+      "error": null,
+      "failures": 0,
+      "next_attempt": 0,
+      "active": true,
+      "status": "ok",
+      "collectorAgeSeconds": 275,
+      "dataAgeSeconds": 1634,
+      "liveStale": false,
+      "expectedCadenceSeconds": 300,
+      "dataFreshnessLimitSeconds": 10800,
+      "nextDueAt": 1790533659,
+      "retryAt": null,
+      "coverage": null
+    },
+    {
+      "key": "derivatives:ETH:long_account_ratio",
+      "last_attempt": 1790533360,
+      "last_success": 1790533360,
+      "data_as_of": 1790532000,
+      "error": null,
+      "failures": 0,
+      "next_attempt": 0,
+      "active": true,
+      "status": "ok",
+      "collectorAgeSeconds": 274,
+      "dataAgeSeconds": 1634,
+      "liveStale": false,
+      "expectedCadenceSeconds": 300,
+      "dataFreshnessLimitSeconds": 10800,
+      "nextDueAt": 1790533660,
+      "retryAt": null,
+      "coverage": null
+    },
+    {
+      "key": "derivatives:ETH:open_interest_daily",
+      "last_attempt": 1790532458,
+      "last_success": 1790532458,
+      "data_as_of": 1790467200,
+      "error": null,
+      "failures": 0,
+      "next_attempt": 0,
+      "active": true,
+      "status": "ok",
+      "collectorAgeSeconds": 1176,
+      "dataAgeSeconds": 66434,
+      "liveStale": false,
+      "expectedCadenceSeconds": 3600,
+      "dataFreshnessLimitSeconds": 259200,
+      "nextDueAt": 1790536058,
+      "retryAt": null,
+      "coverage": null
+    },
+    {
+      "key": "derivatives:ETH:long_account_ratio_daily",
+      "last_attempt": 1790532818,
+      "last_success": 1790532818,
+      "data_as_of": 1790467200,
+      "error": null,
+      "failures": 0,
+      "next_attempt": 0,
+      "active": true,
+      "status": "ok",
+      "collectorAgeSeconds": 816,
+      "dataAgeSeconds": 66434,
+      "liveStale": false,
+      "expectedCadenceSeconds": 3600,
+      "dataFreshnessLimitSeconds": 259200,
+      "nextDueAt": 1790536418,
+      "retryAt": null,
+      "coverage": null
+    },
+    {
+      "key": "reference:BTC",
+      "last_attempt": 1790532038,
+      "last_success": 1790532038,
+      "data_as_of": 1790380800,
+      "error": null,
+      "failures": 0,
+      "next_attempt": 0,
+      "active": true,
+      "status": "ok",
+      "collectorAgeSeconds": 1596,
+      "dataAgeSeconds": 152834,
+      "liveStale": false,
+      "expectedCadenceSeconds": 3600,
+      "dataFreshnessLimitSeconds": 259200,
+      "nextDueAt": 1790535638,
+      "retryAt": null,
+      "coverage": {
+        "first": 1279411200,
+        "last": 1790380800,
+        "rows": null,
+        "archived": false
+      }
+    },
+    {
+      "key": "reference:DOGE",
+      "last_attempt": 1790530658,
+      "last_success": 1790530658,
+      "data_as_of": 1790380800,
+      "error": null,
+      "failures": 0,
+      "next_attempt": 0,
+      "active": true,
+      "status": "ok",
+      "collectorAgeSeconds": 2976,
+      "dataAgeSeconds": 152834,
+      "liveStale": false,
+      "expectedCadenceSeconds": 3600,
+      "dataFreshnessLimitSeconds": 259200,
+      "nextDueAt": 1790534258,
+      "retryAt": null,
+      "coverage": {
+        "first": 1390435200,
+        "last": 1790380800,
+        "rows": null,
+        "archived": false
+      }
+    },
+    {
+      "key": "reference:ETH",
+      "last_attempt": 1790533118,
+      "last_success": 1790533118,
+      "data_as_of": 1790380800,
+      "error": null,
+      "failures": 0,
+      "next_attempt": 0,
+      "active": true,
+      "status": "ok",
+      "collectorAgeSeconds": 516,
+      "dataAgeSeconds": 152834,
+      "liveStale": false,
+      "expectedCadenceSeconds": 3600,
+      "dataFreshnessLimitSeconds": 259200,
+      "nextDueAt": 1790536718,
+      "retryAt": null,
+      "coverage": {
+        "first": 1438992000,
+        "last": 1790380800,
+        "rows": null,
+        "archived": false
+      }
+    },
+    {
+      "key": "network:BTC",
+      "last_attempt": 1790531018,
+      "last_success": 1790531018,
+      "data_as_of": 1790380800,
+      "error": null,
+      "failures": 0,
+      "next_attempt": 0,
+      "active": true,
+      "status": "ok",
+      "collectorAgeSeconds": 2616,
+      "dataAgeSeconds": 152834,
+      "liveStale": false,
+      "expectedCadenceSeconds": 3600,
+      "dataFreshnessLimitSeconds": 259200,
+      "nextDueAt": 1790534618,
+      "retryAt": null,
+      "coverage": {
+        "first": 1230940800,
+        "last": 1790380800,
+        "rows": null,
+        "archived": false,
+        "metrics": 18,
+        "expectedMetrics": 18,
+        "oldestMetricAsOf": 1790380800
+      }
+    },
+    {
+      "key": "network:DOGE",
+      "last_attempt": 1790531618,
+      "last_success": 1790531618,
+      "data_as_of": 1790380800,
+      "error": null,
+      "failures": 0,
+      "next_attempt": 0,
+      "active": true,
+      "status": "ok",
+      "collectorAgeSeconds": 2016,
+      "dataAgeSeconds": 152834,
+      "liveStale": false,
+      "expectedCadenceSeconds": 3600,
+      "dataFreshnessLimitSeconds": 259200,
+      "nextDueAt": 1790535218,
+      "retryAt": null,
+      "coverage": {
+        "first": 1386460800,
+        "last": 1790380800,
+        "rows": null,
+        "archived": false,
+        "metrics": 14,
+        "expectedMetrics": 14,
+        "oldestMetricAsOf": 1790380800
+      }
+    },
+    {
+      "key": "network:ETH",
+      "last_attempt": 1790531258,
+      "last_success": 1790531258,
+      "data_as_of": 1790380800,
+      "error": null,
+      "failures": 0,
+      "next_attempt": 0,
+      "active": true,
+      "status": "ok",
+      "collectorAgeSeconds": 2376,
+      "dataAgeSeconds": 152834,
+      "liveStale": false,
+      "expectedCadenceSeconds": 3600,
+      "dataFreshnessLimitSeconds": 259200,
+      "nextDueAt": 1790534858,
+      "retryAt": null,
+      "coverage": {
+        "first": 1438214400,
+        "last": 1790380800,
+        "rows": null,
+        "archived": false,
+        "metrics": 17,
+        "expectedMetrics": 17,
+        "oldestMetricAsOf": 1790380800
+      }
+    },
+    {
+      "key": "quote:BTC:binance",
+      "last_attempt": 1790533598,
+      "last_success": 1790533598,
+      "data_as_of": 1790533598,
+      "error": null,
+      "failures": 0,
+      "next_attempt": 0,
+      "active": true,
+      "status": "ok",
+      "collectorAgeSeconds": 36,
+      "dataAgeSeconds": 36,
+      "liveStale": false,
+      "expectedCadenceSeconds": 60,
+      "dataFreshnessLimitSeconds": 180,
+      "nextDueAt": 1790533658,
+      "retryAt": null,
+      "coverage": null
+    },
+    {
+      "key": "quote:BTC:upbit",
+      "last_attempt": 1790533592,
+      "last_success": 1790533592,
+      "data_as_of": 1790533591,
+      "error": null,
+      "failures": 0,
+      "next_attempt": 0,
+      "active": true,
+      "status": "ok",
+      "collectorAgeSeconds": 42,
+      "dataAgeSeconds": 43,
+      "liveStale": false,
+      "expectedCadenceSeconds": 60,
+      "dataFreshnessLimitSeconds": 180,
+      "nextDueAt": 1790533652,
+      "retryAt": null,
+      "coverage": null
+    },
+    {
+      "key": "quote:DOGE:binance",
+      "last_attempt": 1790533598,
+      "last_success": 1790533598,
+      "data_as_of": 1790533598,
+      "error": null,
+      "failures": 0,
+      "next_attempt": 0,
+      "active": true,
+      "status": "ok",
+      "collectorAgeSeconds": 36,
+      "dataAgeSeconds": 36,
+      "liveStale": false,
+      "expectedCadenceSeconds": 60,
+      "dataFreshnessLimitSeconds": 180,
+      "nextDueAt": 1790533658,
+      "retryAt": null,
+      "coverage": null
+    },
+    {
+      "key": "quote:DOGE:upbit",
+      "last_attempt": 1790533592,
+      "last_success": 1790533592,
+      "data_as_of": 1790533461,
+      "error": null,
+      "failures": 0,
+      "next_attempt": 0,
+      "active": true,
+      "status": "ok",
+      "collectorAgeSeconds": 42,
+      "dataAgeSeconds": 173,
+      "liveStale": false,
+      "expectedCadenceSeconds": 60,
+      "dataFreshnessLimitSeconds": 180,
+      "nextDueAt": 1790533652,
+      "retryAt": null,
+      "coverage": null
+    },
+    {
+      "key": "quote:ETH:binance",
+      "last_attempt": 1790533598,
+      "last_success": 1790533598,
+      "data_as_of": 1790533597,
+      "error": null,
+      "failures": 0,
+      "next_attempt": 0,
+      "active": true,
+      "status": "ok",
+      "collectorAgeSeconds": 36,
+      "dataAgeSeconds": 37,
+      "liveStale": false,
+      "expectedCadenceSeconds": 60,
+      "dataFreshnessLimitSeconds": 180,
+      "nextDueAt": 1790533658,
+      "retryAt": null,
+      "coverage": null
+    },
+    {
+      "key": "quote:ETH:upbit",
+      "last_attempt": 1790533592,
+      "last_success": 1790533592,
+      "data_as_of": 1790533578,
+      "error": null,
+      "failures": 0,
+      "next_attempt": 0,
+      "active": true,
+      "status": "ok",
+      "collectorAgeSeconds": 42,
+      "dataAgeSeconds": 56,
+      "liveStale": false,
+      "expectedCadenceSeconds": 60,
+      "dataFreshnessLimitSeconds": 180,
+      "nextDueAt": 1790533652,
+      "retryAt": null,
+      "coverage": null
+    }
+  ],
+  "extension": {
+    "bytes": 14190,
+    "sha256": "c9b3e60fa065dfabb0da0e3ae7370ae7089b24b85261ca0577db368b2467cca6",
+    "crcOK": true,
+    "files": 9,
+    "version": "0.16.0",
+    "privateFilesPresent": false
+  }
+}

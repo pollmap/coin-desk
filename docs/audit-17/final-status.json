@@ -1,0 +1,38 @@
+{
+  "checkedAt": "2026-09-27T18:38:18.523608+00:00",
+  "coverage": {
+    "expectedSources": 103,
+    "healthySources": 103,
+    "priceMarkets": 16,
+    "histories": 32
+  },
+  "nonHealthyActiveSources": [],
+  "observation48h": {
+    "from": 1790361360,
+    "until": 1790534160,
+    "firstRunAt": 1790380833,
+    "lastRunAt": 1790534137,
+    "ticks": 1599,
+    "failures": 658,
+    "expectedRuns": 2880,
+    "missingRuns": 1281,
+    "successfulRuns": 941,
+    "recordingRate": 0.5552083333333333,
+    "successRate": 0.3267361111111111,
+    "longestGapSeconds": 19500,
+    "unresolvedErrors": [],
+    "windowSatisfied": true,
+    "healthy": false,
+    "ready": false,
+    "thresholds": {
+      "recordingRate": 0.99,
+      "longestGapSeconds": 180,
+      "graceSeconds": 120
+    }
+  },
+  "health": {
+    "status": 200,
+    "ok": true,
+    "reasons": []
+  }
+}

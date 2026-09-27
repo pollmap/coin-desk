@@ -1,0 +1,158 @@
+{
+  "checkedAt": "2026-09-27T18:00:54.324061+00:00",
+  "version": "0.17.0",
+  "commit": "638142adf2496c88b71b9d6ba77fac0eb3ed4ce0",
+  "coverage": {
+    "expectedSources": 103,
+    "healthySources": 97,
+    "priceMarkets": 16,
+    "histories": 32
+  },
+  "nonHealthyActiveSources": [
+    {
+      "key": "LINK:binance:1h",
+      "last_attempt": 1790527718,
+      "last_success": 1790527718,
+      "data_as_of": 1790524800,
+      "error": null,
+      "failures": 0,
+      "next_attempt": 0,
+      "active": true,
+      "status": "delayed",
+      "collectorAgeSeconds": 4335,
+      "dataAgeSeconds": 7253,
+      "liveStale": false,
+      "expectedCadenceSeconds": 3600,
+      "dataFreshnessLimitSeconds": 7200,
+      "nextDueAt": 1790527778,
+      "retryAt": null,
+      "coverage": {
+        "first": 1782752400,
+        "last": 1790524800,
+        "rows": null,
+        "archived": true
+      }
+    },
+    {
+      "key": "ONDO:binance:1h",
+      "last_attempt": 1790528198,
+      "last_success": 1790528198,
+      "data_as_of": 1790524800,
+      "error": null,
+      "failures": 0,
+      "next_attempt": 0,
+      "active": true,
+      "status": "delayed",
+      "collectorAgeSeconds": 3855,
+      "dataAgeSeconds": 7253,
+      "liveStale": false,
+      "expectedCadenceSeconds": 3600,
+      "dataFreshnessLimitSeconds": 7200,
+      "nextDueAt": 1790528258,
+      "retryAt": null,
+      "coverage": {
+        "first": 1782752400,
+        "last": 1790524800,
+        "rows": null,
+        "archived": true
+      }
+    },
+    {
+      "key": "PEPE:binance:1h",
+      "last_attempt": 1790528138,
+      "last_success": 1790528138,
+      "data_as_of": 1790524800,
+      "error": null,
+      "failures": 0,
+      "next_attempt": 0,
+      "active": true,
+      "status": "delayed",
+      "collectorAgeSeconds": 3915,
+      "dataAgeSeconds": 7253,
+      "liveStale": false,
+      "expectedCadenceSeconds": 3600,
+      "dataFreshnessLimitSeconds": 7200,
+      "nextDueAt": 1790528198,
+      "retryAt": null,
+      "coverage": {
+        "first": 1782752400,
+        "last": 1790524800,
+        "rows": null,
+        "archived": true
+      }
+    },
+    {
+      "key": "SOL:upbit:1h",
+      "last_attempt": 1790528258,
+      "last_success": 1790528258,
+      "data_as_of": 1790524800,
+      "error": null,
+      "failures": 0,
+      "next_attempt": 0,
+      "active": true,
+      "status": "delayed",
+      "collectorAgeSeconds": 3795,
+      "dataAgeSeconds": 7253,
+      "liveStale": false,
+      "expectedCadenceSeconds": 3600,
+      "dataFreshnessLimitSeconds": 7200,
+      "nextDueAt": 1790528318,
+      "retryAt": null,
+      "coverage": {
+        "first": 1782752400,
+        "last": 1790524800,
+        "rows": null,
+        "archived": true
+      }
+    },
+    {
+      "key": "quote:DOGE:upbit",
+      "last_attempt": 1790532032,
+      "last_success": 1790532032,
+      "data_as_of": 1790531802,
+      "error": null,
+      "failures": 0,
+      "next_attempt": 0,
+      "active": true,
+      "status": "delayed",
+      "collectorAgeSeconds": 21,
+      "dataAgeSeconds": 251,
+      "liveStale": false,
+      "expectedCadenceSeconds": 60,
+      "dataFreshnessLimitSeconds": 180,
+      "nextDueAt": 1790532092,
+      "retryAt": null,
+      "coverage": null
+    },
+    {
+      "key": "quote:PEPE:upbit",
+      "last_attempt": 1790531913,
+      "last_success": 1790531674,
+      "data_as_of": 1790531418,
+      "error": "원천 연결 또는 데이터 검증 오류",
+      "failures": 2,
+      "next_attempt": 1790532153,
+      "active": true,
+      "status": "error",
+      "collectorAgeSeconds": 379,
+      "dataAgeSeconds": 635,
+      "liveStale": true,
+      "expectedCadenceSeconds": 300,
+      "dataFreshnessLimitSeconds": 600,
+      "nextDueAt": 1790532153,
+      "retryAt": 1790532153,
+      "coverage": null
+    }
+  ],
+  "initialHealthHTTPStatus": 503,
+  "recoveryBeforePatchDeployment": {
+    "checkedAt": "2026-09-27T18:16:24.056551+00:00",
+    "coverage": {
+      "expectedSources": 103,
+      "healthySources": 103,
+      "priceMarkets": 16,
+      "histories": 32
+    },
+    "warnings": []
+  }
+}

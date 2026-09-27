@@ -1,0 +1,96 @@
+{
+  "checkedAt": "2026-09-27T18:33:04.003669+00:00",
+  "release": "0.17.1",
+  "codeHead": "93b93d0647344b3b1557c43aaa20947f534e73c4",
+  "unit": {
+    "files": 50,
+    "passed": 387
+  },
+  "recovery": {
+    "passed": 2
+  },
+  "focusedBrowserRegression": {
+    "passed": 4,
+    "engines": [
+      "Chromium",
+      "WebKit"
+    ],
+    "scope": [
+      "200 percent CSS zoom",
+      "pattern focus reload/resize/share"
+    ]
+  },
+  "build": {
+    "passed": true,
+    "initialEntryRawBytes": 415650,
+    "initialEntryGzipBytes": 135700,
+    "approximateBundleBytes": true
+  },
+  "checks": [
+    "TypeScript",
+    "independent Decimal calculations",
+    "docs links",
+    "8 coin logos and brand assets",
+    "extension CRC"
+  ],
+  "fullBrowser": {
+    "passed": 74,
+    "skippedPrivateOptIn": 2,
+    "failures": 0,
+    "durationMinutes": 10.2,
+    "engines": [
+      "Chromium",
+      "WebKit"
+    ],
+    "widths": [
+      320,
+      390,
+      768,
+      1000,
+      1280,
+      1440
+    ],
+    "bothThemes": true,
+    "axe": true,
+    "zoomPercent": 200,
+    "scope": "0.17.0 full local run before 0.17.1 quote patch; final main CI recorded separately"
+  },
+  "ci": {
+    "pullRequest": 33,
+    "runId": 36339963477,
+    "conclusion": "success",
+    "browserPassedWithoutRetry": 73,
+    "passedOnRetry": 1,
+    "skippedPrivateOptIn": 2,
+    "flake": "WebKit fixture extension bridge nonce wait exceeded 12 seconds once; passed on retry; cause not established",
+    "main": {
+      "runId": 36340491951,
+      "conclusion": "success",
+      "browserPassedWithoutRetry": 74,
+      "retries": 0,
+      "skippedPrivateOptIn": 2
+    }
+  },
+  "realSafariVoiceOver": "not tested",
+  "privateOriginalsPublished": false,
+  "mergedTreeEqualsTestedHead": true,
+  "extensionBridgeRepeat": {
+    "engine": "WebKit",
+    "passed": 10,
+    "retriesAllowed": 0,
+    "durationMinutes": 1.1,
+    "scope": "isolated mock Chrome message bridge, not real Safari or an installed user extension"
+  },
+  "deployment": {
+    "observedCompleteAt": "2026-09-27T18:26:35Z",
+    "worker": "7b917f0f-3b54-4c5c-bbed-3712db6b2100",
+    "pages": "https://c6b9458a.coin-desk.pages.dev",
+    "feed": "c08bd05d-4c05-4113-8b16-07d27fdf132b",
+    "quotes": "649b29c4-5699-4770-8e1a-8bd1d271d7b7",
+    "background": "75872efb-9be6-4651-8658-8a5133ca3e4e",
+    "analysis": "5b47aec3-7b2e-4e5e-b0eb-f1475cf1fa4a",
+    "migrations": "0009 unchanged; none pending",
+    "mainCron": "* * * * *",
+    "quotesCron": "* * * * *"
+  }
+}

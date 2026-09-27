@@ -1,0 +1,35 @@
+{
+  "checkedAt": "2026-09-27T18:29:40.607961+00:00",
+  "worker": "btc-desk-quotes",
+  "mode": "read-only log subscription, no collection calls",
+  "events": [
+    {
+      "timestamp": 1790533657759,
+      "outcome": "ok",
+      "version": "649b29c4-5699-4770-8e1a-8bd1d271d7b7",
+      "cron": "* * * * *",
+      "scheduledTime": 1790533657000,
+      "cpuTime": 4,
+      "exceptionCount": 0
+    },
+    {
+      "timestamp": 1790533717763,
+      "outcome": "ok",
+      "version": "649b29c4-5699-4770-8e1a-8bd1d271d7b7",
+      "cron": "* * * * *",
+      "scheduledTime": 1790533717000,
+      "cpuTime": 2,
+      "exceptionCount": 0
+    },
+    {
+      "timestamp": 1790533777751,
+      "outcome": "ok",
+      "version": "649b29c4-5699-4770-8e1a-8bd1d271d7b7",
+      "cron": "* * * * *",
+      "scheduledTime": 1790533777000,
+      "cpuTime": 3,
+      "exceptionCount": 0
+    }
+  ],
+  "httpRequestsAndHeadersStored": false
+}
