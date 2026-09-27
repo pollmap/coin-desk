@@ -110,6 +110,20 @@ beforeEach(async () => {
 });
 afterEach(() => vi.unstubAllGlobals());
 
+it('accepts the trusted extension tab and rejects website commands', async () => {
+  expect(await ask({ type: 'STATUS' }, sender)).toHaveProperty('error');
+  expect(
+    await ask(
+      { type: 'STATUS' },
+      {
+        id: 'fixture-extension',
+        tab: { id: 21 },
+        url: 'chrome-extension://fixture-extension/popup.html',
+      },
+    ),
+  ).toMatchObject({ stored: 0 });
+});
+
 it('records pause before the reader replies and ignores a late completion', async () => {
   tabs.sendMessage.mockImplementation(async () => {
     expect(local.job.status).toBe('paused');

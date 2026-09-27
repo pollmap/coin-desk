@@ -227,8 +227,10 @@ chrome.runtime.onMessage.addListener((m, sender, reply) => {
         });
       return { ok: true };
     }
-    // Popup commands cannot be invoked by a page content script.
-    if (sender.tab) throw new Error('이 작업은 확장 창에서 시작해 주세요.');
+    // The same trusted extension UI can stay open in a tab for long imports.
+    // Website content scripts must never invoke its commands.
+    if (sender.tab && sender.url !== `chrome-extension://${chrome.runtime.id}/popup.html`)
+      throw new Error('이 작업은 확장 창에서 시작해 주세요.');
     if (m.type === 'STATUS') {
       const state = await chrome.storage.local.get(['job', 'transfer', 'transferCheckpoint']),
         connection = await chrome.storage.session.get('connection');
