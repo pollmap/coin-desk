@@ -56,7 +56,7 @@ function LocalImage({
     };
   }, [media.key, large, revision]);
   return url ? (
-    <figure className="local-media">
+    <>
       <img
         src={url}
         alt={
@@ -71,7 +71,7 @@ function LocalImage({
       {large && !original && (
         <figcaption>미리보기 · 원본은 이미지 폴더를 가져오거나 원문에서 확인하세요.</figcaption>
       )}
-    </figure>
+    </>
   ) : (
     <span className="media-missing">이미지 미보관</span>
   );
