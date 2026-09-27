@@ -245,7 +245,7 @@ export function binanceRequest(
   params: Record<string, string | number | string[]>,
   feed?: FeedConfig,
 ): Promise<unknown> {
-  if (feed?.FEED_URL && feed.FEED_TOKEN)
+  if (feed?.FEED_SERVICE || (feed?.FEED_URL && feed.FEED_TOKEN))
     return feedRequest(
       feed,
       '/binance',

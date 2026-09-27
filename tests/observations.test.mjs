@@ -1,7 +1,12 @@
 import { beforeEach, afterEach, it, expect, vi } from 'vitest';
 import { openDatabase, memoryCache } from '../scripts/local-db.mjs';
 import { observationSignals } from '../shared/signals';
-import { reconcileSignals, signalsFeed, buildDailyBriefing } from '../worker/observations';
+import {
+  reconcileSignals,
+  signalsFeed,
+  buildDailyBriefing,
+  refreshObservations,
+} from '../worker/observations';
 import {
   parseEthereumContext,
   refreshEthereumContext,
@@ -342,4 +347,39 @@ it('keeps an existing signal when its predecessor or indicator window is missing
   expect(
     (await signalsFeed(env, 'BTC', base + 203 * DAY)).data.find((s) => s.rule === 'sma200'),
   ).toMatchObject({ status: 'active', revision: 1 });
+});
+
+it('each analysis partition reads only its asset and source and preserves signal calculations', async () => {
+  const now = Math.floor(Date.now() / 1000),
+    start = Math.floor(now / DAY) * DAY - 210 * DAY;
+  const points = Array.from({ length: 209 }, (_, i) => ({
+    time: start + i * DAY,
+    value: i < 204 ? 100 : 130,
+  }));
+  for (const asset of ['BTC', 'DOGE', 'ETH']) {
+    const statement = DB.sqlite.prepare(
+      'INSERT INTO reference_prices(asset,time,value,fetched_at) VALUES(?,?,?,?)',
+    );
+    for (const point of points) statement.run(asset, point.time, point.value, now);
+  }
+  await refreshObservations(env, 0);
+  const actual = (await signalsFeed(env, 'BTC')).data;
+  expect(actual.map((s) => s.id)).toEqual(
+    observationSignals('BTC', 'reference', points, 'price', now)
+      .filter((s) => s.time >= now - 8 * DAY)
+      .sort((a, b) => b.time - a.time || a.id.localeCompare(b.id))
+      .map((s) => s.id),
+  );
+  expect(actual.length).toBeGreaterThan(0);
+  expect(actual.every((s) => s.source === 'reference' && !s.notify)).toBe(true);
+  expect((await signalsFeed(env, 'DOGE')).data).toEqual([]);
+  expect(
+    DB.sqlite.prepare("SELECT key FROM ingestion WHERE key LIKE 'observations:%'").all(),
+  ).toEqual([{ key: 'observations:0' }]);
+  expect(
+    DB.sqlite
+      .prepare("SELECT key FROM state WHERE key LIKE 'signals:watermark:%'")
+      .all()
+      .every((r) => r.key.startsWith('signals:watermark:BTC:reference:')),
+  ).toBe(true);
 });

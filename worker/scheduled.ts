@@ -371,11 +371,12 @@ export async function scheduled(env: Env, scheduledAt = epoch(), separateQuotes 
   if (interrupted)
     initial.push(
       env.DB.prepare(
-        "UPDATE cron_runs SET completed_at=?,outcome='interrupted',error=? WHERE run_id=? AND EXISTS(SELECT 1 FROM cron_state WHERE id=1 AND run_id=?)",
+        "UPDATE cron_runs SET completed_at=?,outcome='interrupted',error=? WHERE run_id=? AND slot=? AND EXISTS(SELECT 1 FROM cron_state WHERE id=1 AND run_id=?)",
       ).bind(
         now,
         '이전 실행이 완료되기 전에 중단되어 다시 예약했습니다.',
         interrupted.run_id,
+        interrupted.last_tick % 4320,
         runId,
       ),
     );

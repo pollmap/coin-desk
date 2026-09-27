@@ -7,6 +7,7 @@ export interface Env {
   ASSETS: Fetcher;
   FEED_URL?: string;
   FEED_TOKEN?: string;
+  FEED_SERVICE?: Fetcher;
   BITVIEW_BASE_URL: string;
   ENABLED_ASSETS: string;
 }

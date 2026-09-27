@@ -194,19 +194,26 @@ export async function buildDailyBriefing(env: Env, now = epoch()) {
     .run();
 }
 /** Separate bounded lane. No visitor, browser tab or paid API is required. */
-export async function refreshObservations(env: Env) {
+export async function refreshObservations(env: Env, part?: number) {
   const now = epoch();
-  if (!(await claimRefresh(env.DB, 'observations', 300))) return;
+  if (!(await claimRefresh(env.DB, 'observations' + (part === undefined ? '' : ':' + part), 300)))
+    return;
   try {
-    // One core asset per tick; each revisited every 15 minutes, independent of backfills.
-    const asset = CORE[Math.floor(now / 300) % CORE.length];
-    const prices = (
-      await env.DB.prepare('SELECT time,value FROM reference_prices WHERE asset=? ORDER BY time')
-        .bind(asset)
-        .all<Point>()
-    ).results;
-    await reconcileSignals(env, asset, 'reference', 'price', prices, now);
-    for (const market of ['upbit', 'binance']) {
+    // Dedicated collector supplies one of 15 asset/source parts per invocation.
+    // Legacy direct calls still process one asset as a whole.
+    const asset =
+      CORE[part === undefined ? Math.floor(now / 300) % CORE.length : Math.floor(part / 5)];
+    const section = part === undefined ? null : part % 5;
+    if (section === null || section === 0) {
+      const prices = (
+        await env.DB.prepare('SELECT time,value FROM reference_prices WHERE asset=? ORDER BY time')
+          .bind(asset)
+          .all<Point>()
+      ).results;
+      await reconcileSignals(env, asset, 'reference', 'price', prices, now);
+    }
+    for (const [index, market] of ['upbit', 'binance'].entries()) {
+      if (section !== null && section !== index + 1) continue;
       const rows = (
         await env.DB.prepare(
           "SELECT time,close AS value FROM candles WHERE asset=? AND market=? AND interval='1d' AND close_time<=? ORDER BY time",
@@ -216,19 +223,23 @@ export async function refreshObservations(env: Env) {
       ).results;
       await reconcileSignals(env, asset, market, 'price', rows, now);
     }
-    const mvrv = await readNetworkSeries(env.DB, asset, 'mvrv', now - 12 * DAY, now, 100);
-    await reconcileSignals(env, asset, 'coinmetrics', 'mvrv', mvrv.data, now);
-    const funding = (
-      await env.DB.prepare(
-        "SELECT time,value FROM derivative_series WHERE asset=? AND metric='funding' AND time>=? AND time<=? ORDER BY time",
-      )
-        .bind(asset, now - 12 * DAY, now)
-        .all<Point>()
-    ).results;
-    await reconcileSignals(env, asset, 'bybit', 'funding', funding, now);
-    await success(env.DB, 'observations', now);
+    if (section === null || section === 3) {
+      const mvrv = await readNetworkSeries(env.DB, asset, 'mvrv', now - 12 * DAY, now, 100);
+      await reconcileSignals(env, asset, 'coinmetrics', 'mvrv', mvrv.data, now);
+    }
+    if (section === null || section === 4) {
+      const funding = (
+        await env.DB.prepare(
+          "SELECT time,value FROM derivative_series WHERE asset=? AND metric='funding' AND time>=? AND time<=? ORDER BY time",
+        )
+          .bind(asset, now - 12 * DAY, now)
+          .all<Point>()
+      ).results;
+      await reconcileSignals(env, asset, 'bybit', 'funding', funding, now);
+    }
+    await success(env.DB, 'observations' + (part === undefined ? '' : ':' + part), now);
   } catch (e) {
-    await failure(env.DB, 'observations', e);
+    await failure(env.DB, 'observations' + (part === undefined ? '' : ':' + part), e);
   }
 }
 export async function refreshBriefing(env: Env) {
