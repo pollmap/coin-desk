@@ -21,7 +21,12 @@ TradingView의 [차트 하단 날짜·기간 이동](https://www.tradingview.com
 
 ## 검증과 범위
 
-- 최초 로컬 타입 검사와 단위 검사 350개, 빌드 통과. 이후 공유 범위 복원 검사 추가로 최종 CI 재검증 예정.
-- Chromium에서 가격·밴드 날짜/기간 이동, 미래 날짜 오류, Escape/포커스 복귀, 320px 밝고 어두운 테마 axe, 200% 확대 흐름 통과.
-- 최종 Chromium/WebKit 전체 회귀·배포 증거는 배포 후 여기에 기록합니다.
-- 실기기 Safari/VoiceOver 미검증. 상태 API의 지연 원천과 완전한 UTC 하루 운영 검증은 별도 마감 항목이며 이 UI 변경으로 통과 처리하지 않습니다.
+- [PR #29](https://github.com/pollmap/coin-desk/pull/29), main `f939d5f0b52ee359f0de1527d611ad5f138bfaf2`. [PR CI 36318512262](https://github.com/pollmap/coin-desk/actions/runs/36318512262): 타입·351개 단위·2개 복구·32개 Chromium/WebKit 검사·빌드·문서/브랜드 검사 통과. 320/390/768/1280/1440px 양 테마 axe, 200% 확대, 날짜/기간/공유 복원을 포함합니다.
+- [날짜 입력창](02-date-dialog-fixture.png), [선택 날짜 주변](03-date-window-fixture.png)은 격리된 fixture 화면입니다. 실제 브라우저 입력 중 표시 날짜와 React 상태가 어긋나는 경로를 발견해 제출 시 FormData의 실제 입력값을 사용하도록 수정했습니다.
+- 2026-09-27 약 12:25 UTC 빌드 → 원격 마이그레이션 확인(추가 없음) → 수집 Worker → 메인 Worker → Pages 순서 배포 성공. 미커밋 파일 경고는 검수 스크린샷 하나였으며 배포 소스는 위 main입니다. 수집 로직·스키마 변경 없음.
+- 운영 Worker `1609646f-5da9-4942-9b35-36a485b4b3b3`, [Pages 배포](https://20fe8bb2.coin-desk.pages.dev). Feed `213fb453-a085-4d3a-80c3-b85ce40dd7c1`, quotes `bc5835eb-ca43-48a0-9a50-a8447d500310`, background `275e43c4-61ac-45c2-95a5-09cb89e89f2b`, analysis `9496d131-fa81-4a46-9b63-5151384b8ea7`.
+- 운영 DOGE에서 2021-05-08 선택 후 [2021-03-25~06-22 확대](04-production-doge-date.png), [공유 URL 재진입 복원](05-production-restored-range.png)을 확인했습니다. [ETH MVRV](06-production-eth-onchain.png)도 가격 차트 없이 주 지표를 확대하며 동일 도구를 표시합니다.
+- [운영 API·원격 읽기 전용 증거](production.json): 활성 원천 **103/103 정상**, health200, signals12, briefings2, ETH TVL3287, 시장 수급8, 핵심3코인 온체인/선물 HTTP200. 방문 수집 API/overview 호출 없이 12:18~12:26 UTC 양 거래소 핵심 시세의 저장 시각 증가 및 자연 Cron 완료를 확인했습니다. 조회 쓰기는 0행입니다.
+- **현재 정상 원천과 48시간 안정 관찰은 다릅니다.** `observation48h.ready=false`, 기록1342/2880, 성공682, 실패660, 최장공백34560초로 과거 중단이 남아 있습니다. 현재 health200을 48시간 안정성 통과로 해석하지 않습니다.
+- 최종 배포 후 첫 완전한 UTC 하루인 9/28의 공식 계정 사용량은 9/29 01:00 UTC 이후 확인할 수 있습니다. 이후 일간 비용·다음날 브리핑·48시간 관찰을 충족하기 전 임시 후속 자동화는 ACTIVE입니다. 제품의 매분 Cron은 그대로 유지됩니다.
+- 실제 Safari/VoiceOver 실기기 미검증. WebKit/axe 통과를 실기기 통과나 WCAG 전체 인증으로 표현하지 않습니다.
