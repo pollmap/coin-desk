@@ -664,8 +664,12 @@ export function AnalysisWorkspace() {
               .map(([id, label]) => (
                 <button
                   key={id}
-                  aria-pressed={primaryLine?.id === id}
-                  onClick={() => choosePrimary(id)}
+                  aria-pressed={primaryLine?.id.replace(/_daily$/, '') === id}
+                  onClick={() =>
+                    choosePrimary(
+                      primaryLine?.id.replace(/_daily$/, '') === id ? primaryLine.id : id,
+                    )
+                  }
                 >
                   {label}
                 </button>

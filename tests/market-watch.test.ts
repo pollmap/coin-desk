@@ -1,7 +1,21 @@
 import { expect, it } from 'vitest';
-import { dailyTechnical, marketAnalysisLink, marketComparisonLink } from '../shared/market-watch';
+import {
+  accountShares,
+  dailyTechnical,
+  marketAnalysisLink,
+  marketComparisonLink,
+} from '../shared/market-watch';
 import { DAY } from '../shared/math';
 import { priceBasis } from '../shared/analysis-workspace';
+
+it('keeps rounded long/short account shares complementary and rejects invalid ratios', () => {
+  expect(accountShares(57.35)).toEqual([57.4, 42.6]);
+  expect(accountShares(0)).toEqual([0, 100]);
+  expect(accountShares(100)).toEqual([100, 0]);
+  expect(accountShares(-1)).toBeNull();
+  expect(accountShares(101)).toBeNull();
+  expect(accountShares(NaN)).toBeNull();
+});
 
 it.each(['upbit', 'binance'] as const)(
   'keeps exchange and currency when entering %s analysis and comparison',

@@ -16,6 +16,16 @@ test('market table opens the selected metric, keeps currency and groups on-chain
   await page.getByRole('link', { name: '도지코인 미결제약정 차트', exact: true }).click();
   await expect(chart(page)).toHaveAttribute('data-primary-metric', 'futures:open_interest');
   await expect(chart(page)).toHaveAttribute('data-asset', 'DOGE');
+  const oiShortcut = page
+    .getByRole('group', { name: '자주 보는 지표' })
+    .getByRole('button', { name: '미결제약정', exact: true });
+  await expect(oiShortcut).toHaveAttribute('aria-pressed', 'true');
+  await page
+    .getByRole('combobox', { name: '선물 지표' })
+    .selectOption('futures:open_interest_daily');
+  await expect(oiShortcut).toHaveAttribute('aria-pressed', 'true');
+  await oiShortcut.click();
+  await expect(chart(page)).toHaveAttribute('data-primary-metric', 'futures:open_interest_daily');
   expect(new URL(page.url()).searchParams.get('price_source')).toBe('upbit');
   await page
     .getByRole('navigation', { name: 'DOGE 분석 화면' })

@@ -1,6 +1,13 @@
 import type { Asset, Market, Point } from './types';
 import { contiguousCalculation } from './analysis-workspace';
 
+/** Round the pair together so the displayed account shares still total 100%. */
+export function accountShares(long: number): [number, number] | null {
+  if (!Number.isFinite(long) || long < 0 || long > 100) return null;
+  const tenths = Math.round(long * 10);
+  return [tenths / 10, (1000 - tenths) / 10];
+}
+
 export function marketAnalysisLink(asset: Asset, market: Market) {
   return (
     '/?' + new URLSearchParams({ asset, market, price_source: market, period: 'all', log: '1' })
