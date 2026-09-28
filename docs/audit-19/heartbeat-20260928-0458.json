@@ -1,0 +1,379 @@
+{
+  "checkedAt": "2026-09-28T05:02:55.794702+00:00",
+  "observedMain": "2dc712cd306c643666ea9c4807ac179e148b2af8",
+  "codeMain": "1d30708133ee5d9f3620a75d6674acecdbc5f466",
+  "mainCI": {
+    "runId": 36378722086,
+    "conclusion": "success"
+  },
+  "versions": {
+    "web": "0.19.0",
+    "server": "0.17.1",
+    "schema": "0009"
+  },
+  "serverDeployedAt": "2026-09-27T18:26:35Z",
+  "deployedThisRun": false,
+  "publicAPI": {
+    "checkedAt": "2026-09-28T04:59:14.032427+00:00",
+    "httpStatus": {
+      "status": 200,
+      "health": 200,
+      "signals": 200,
+      "briefings": 200,
+      "chain-context?asset=ETH&metric=tvl": 200,
+      "market-derivatives": 200,
+      "network?asset=BTC&metric=mvrv&limit=1": 200,
+      "derivatives?asset=BTC&metric=funding&limit=1": 200,
+      "network?asset=DOGE&metric=mvrv&limit=1": 200,
+      "derivatives?asset=DOGE&metric=funding&limit=1": 200,
+      "network?asset=ETH&metric=mvrv&limit=1": 200,
+      "derivatives?asset=ETH&metric=funding&limit=1": 200
+    },
+    "healthOK": true,
+    "healthReasons": [],
+    "activeSources": 103,
+    "activeSourcesOK": 103,
+    "inactiveSources": 23,
+    "nonOKActiveSources": [],
+    "observation48h": {
+      "from": 1790398620,
+      "until": 1790571420,
+      "firstRunAt": 1790398720,
+      "lastRunAt": 1790571397,
+      "ticks": 1937,
+      "failures": 648,
+      "expectedRuns": 2880,
+      "missingRuns": 943,
+      "successfulRuns": 1289,
+      "recordingRate": 0.6725694444444444,
+      "successRate": 0.44756944444444446,
+      "longestGapSeconds": 240,
+      "unresolvedErrors": [],
+      "windowSatisfied": true,
+      "healthy": false,
+      "ready": false,
+      "thresholds": {
+        "recordingRate": 0.99,
+        "longestGapSeconds": 180,
+        "graceSeconds": 120
+      }
+    }
+  },
+  "naturalCollection": {
+    "method": "Compare the preceding release verification SELECT snapshot with this heartbeat SELECT snapshot. No direct collection API or overview requests by this task between snapshots. Other visitors cannot be ruled out; this is a short sample, not full-day or 48-hour proof.",
+    "fromLastObservedTick": 1790570977,
+    "throughLastObservedTick": 1790571577,
+    "elapsedSeconds": 600,
+    "newCronRuns": [
+      {
+        "started_at": 1790571577,
+        "completed_at": 1790571579,
+        "job": "derivatives:BTC:open_interest_daily",
+        "outcome": "ok"
+      },
+      {
+        "started_at": 1790571517,
+        "completed_at": 1790571519,
+        "job": "DOGE:upbit:1h",
+        "outcome": "ok"
+      },
+      {
+        "started_at": 1790571457,
+        "completed_at": 1790571458,
+        "job": null,
+        "outcome": "idle"
+      },
+      {
+        "started_at": 1790571397,
+        "completed_at": 1790571398,
+        "job": null,
+        "outcome": "idle"
+      },
+      {
+        "started_at": 1790571337,
+        "completed_at": 1790571340,
+        "job": "network:BTC",
+        "outcome": "ok"
+      },
+      {
+        "started_at": 1790571277,
+        "completed_at": 1790571279,
+        "job": "ONDO:binance:1h",
+        "outcome": "ok"
+      },
+      {
+        "started_at": 1790571217,
+        "completed_at": 1790571218,
+        "job": "mempool:BTC",
+        "outcome": "ok"
+      },
+      {
+        "started_at": 1790571157,
+        "completed_at": 1790571158,
+        "job": null,
+        "outcome": "idle"
+      },
+      {
+        "started_at": 1790571097,
+        "completed_at": 1790571099,
+        "job": "BTC:binance:1h",
+        "outcome": "ok"
+      },
+      {
+        "started_at": 1790571037,
+        "completed_at": 1790571038,
+        "job": null,
+        "outcome": "idle"
+      }
+    ],
+    "failedOrUnfinishedRuns": [],
+    "quoteChanges": [
+      {
+        "key": "quote:BTC:binance",
+        "beforeDataAsOf": 1790570978,
+        "afterDataAsOf": 1790571578,
+        "beforeSuccess": 1790570978,
+        "afterSuccess": 1790571578,
+        "failures": 0,
+        "error": null
+      },
+      {
+        "key": "quote:BTC:upbit",
+        "beforeDataAsOf": 1790570963,
+        "afterDataAsOf": 1790571576,
+        "beforeSuccess": 1790570971,
+        "afterSuccess": 1790571579,
+        "failures": 0,
+        "error": null
+      },
+      {
+        "key": "quote:DOGE:binance",
+        "beforeDataAsOf": 1790570978,
+        "afterDataAsOf": 1790571578,
+        "beforeSuccess": 1790570978,
+        "afterSuccess": 1790571578,
+        "failures": 0,
+        "error": null
+      },
+      {
+        "key": "quote:DOGE:upbit",
+        "beforeDataAsOf": 1790570967,
+        "afterDataAsOf": 1790571565,
+        "beforeSuccess": 1790570971,
+        "afterSuccess": 1790571571,
+        "failures": 0,
+        "error": null
+      },
+      {
+        "key": "quote:ETH:binance",
+        "beforeDataAsOf": 1790570978,
+        "afterDataAsOf": 1790571578,
+        "beforeSuccess": 1790570978,
+        "afterSuccess": 1790571578,
+        "failures": 0,
+        "error": null
+      },
+      {
+        "key": "quote:ETH:upbit",
+        "beforeDataAsOf": 1790570968,
+        "afterDataAsOf": 1790571568,
+        "beforeSuccess": 1790570971,
+        "afterSuccess": 1790571571,
+        "failures": 0,
+        "error": null
+      }
+    ],
+    "recentDerivativeChanges": [
+      {
+        "key": "derivatives:BTC:funding",
+        "beforeDataAsOf": 1790553600,
+        "afterDataAsOf": 1790553600,
+        "beforeSuccess": 1790570738,
+        "afterSuccess": 1790571338,
+        "failures": 0,
+        "error": null
+      },
+      {
+        "key": "derivatives:BTC:long_account_ratio",
+        "beforeDataAsOf": 1790568000,
+        "afterDataAsOf": 1790568000,
+        "beforeSuccess": 1790570741,
+        "afterSuccess": 1790571340,
+        "failures": 0,
+        "error": null
+      },
+      {
+        "key": "derivatives:BTC:open_interest",
+        "beforeDataAsOf": 1790568000,
+        "afterDataAsOf": 1790568000,
+        "beforeSuccess": 1790570740,
+        "afterSuccess": 1790571339,
+        "failures": 0,
+        "error": null
+      },
+      {
+        "key": "derivatives:DOGE:funding",
+        "beforeDataAsOf": 1790553600,
+        "afterDataAsOf": 1790553600,
+        "beforeSuccess": 1790570798,
+        "afterSuccess": 1790571398,
+        "failures": 0,
+        "error": null
+      },
+      {
+        "key": "derivatives:DOGE:long_account_ratio",
+        "beforeDataAsOf": 1790568000,
+        "afterDataAsOf": 1790568000,
+        "beforeSuccess": 1790570800,
+        "afterSuccess": 1790571400,
+        "failures": 0,
+        "error": null
+      },
+      {
+        "key": "derivatives:DOGE:open_interest",
+        "beforeDataAsOf": 1790568000,
+        "afterDataAsOf": 1790568000,
+        "beforeSuccess": 1790570799,
+        "afterSuccess": 1790571399,
+        "failures": 0,
+        "error": null
+      },
+      {
+        "key": "derivatives:ETH:funding",
+        "beforeDataAsOf": 1790553600,
+        "afterDataAsOf": 1790553600,
+        "beforeSuccess": 1790570859,
+        "afterSuccess": 1790571459,
+        "failures": 0,
+        "error": null
+      },
+      {
+        "key": "derivatives:ETH:long_account_ratio",
+        "beforeDataAsOf": 1790568000,
+        "afterDataAsOf": 1790568000,
+        "beforeSuccess": 1790570861,
+        "afterSuccess": 1790571460,
+        "failures": 0,
+        "error": null
+      },
+      {
+        "key": "derivatives:ETH:open_interest",
+        "beforeDataAsOf": 1790568000,
+        "afterDataAsOf": 1790568000,
+        "beforeSuccess": 1790570860,
+        "afterSuccess": 1790571459,
+        "failures": 0,
+        "error": null
+      }
+    ],
+    "otherDerivativeChanges": [
+      {
+        "key": "derivatives:BTC:long_account_ratio_daily",
+        "beforeDataAsOf": 1790553600,
+        "afterDataAsOf": 1790553600,
+        "beforeSuccess": 1790569900,
+        "afterSuccess": 1790569900,
+        "failures": 0,
+        "error": null
+      },
+      {
+        "key": "derivatives:BTC:open_interest_daily",
+        "beforeDataAsOf": 1790553600,
+        "afterDataAsOf": 1790553600,
+        "beforeSuccess": 1790567918,
+        "afterSuccess": 1790571579,
+        "failures": 0,
+        "error": null
+      },
+      {
+        "key": "derivatives:DOGE:long_account_ratio_daily",
+        "beforeDataAsOf": 1790553600,
+        "afterDataAsOf": 1790553600,
+        "beforeSuccess": 1790569358,
+        "afterSuccess": 1790569358,
+        "failures": 0,
+        "error": null
+      },
+      {
+        "key": "derivatives:DOGE:open_interest_daily",
+        "beforeDataAsOf": 1790553600,
+        "afterDataAsOf": 1790553600,
+        "beforeSuccess": 1790569658,
+        "afterSuccess": 1790569658,
+        "failures": 0,
+        "error": null
+      },
+      {
+        "key": "derivatives:ETH:long_account_ratio_daily",
+        "beforeDataAsOf": 1790553600,
+        "afterDataAsOf": 1790553600,
+        "beforeSuccess": 1790569478,
+        "afterSuccess": 1790569478,
+        "failures": 0,
+        "error": null
+      },
+      {
+        "key": "derivatives:ETH:open_interest_daily",
+        "beforeDataAsOf": 1790553600,
+        "afterDataAsOf": 1790553600,
+        "beforeSuccess": 1790569178,
+        "afterSuccess": 1790569178,
+        "failures": 0,
+        "error": null
+      }
+    ],
+    "backfillBudgetAndCursorStates": [],
+    "budgetAndCursorInterpretation": "No matching keys observed; absence alone is not checkpoint loss.",
+    "briefings": [
+      {
+        "id": "2026-09-28",
+        "created_at": 1790554238
+      },
+      {
+        "id": "2026-09-27",
+        "created_at": 1790468260
+      },
+      {
+        "id": "2026-09-26",
+        "created_at": 1790381433
+      }
+    ],
+    "readOnlyRowsWritten": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "accountDailyUsage": {
+    "checkedAt": "2026-09-28T04:59:48.124559+00:00",
+    "dayUTC": "2026-09-28",
+    "scope": "entire Cloudflare account",
+    "source": "https://developers.cloudflare.com/d1/observability/metrics-analytics/",
+    "rowsRead": 1196739,
+    "rowsWritten": 17417,
+    "limits": {
+      "rowsRead": 5000000,
+      "rowsWritten": 100000
+    },
+    "withinLimits": true,
+    "fullDayAfterDeployment": false,
+    "deployedAt": "2026-09-27T18:26:35Z",
+    "operationalSignoff": false,
+    "note": "Usage alone does not prove successful collection. Verify source freshness, cron completion and the next briefing separately."
+  },
+  "closeout": {
+    "complete": false,
+    "heartbeatRemainsActive": true,
+    "fullDayUsageCheckNotBefore": "2026-09-29T01:00:00Z",
+    "pending": [
+      "Complete UTC-day account usage after final server deployment",
+      "Strict 48-hour observation readiness"
+    ],
+    "unchangedStateNotification": false
+  }
+}
