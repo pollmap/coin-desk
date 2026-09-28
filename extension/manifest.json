@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Coin Desk 개인 자료 가져오기",
-  "version": "0.16.0",
+  "version": "0.18.0",
   "description": "사용자가 시작한 X 화면 읽기와 기기 내 자료함 전송. 인증정보와 비공개 메시지를 읽지 않습니다.",
   "permissions": ["activeTab", "storage", "scripting"],
   "host_permissions": ["https://x.com/*", "https://coin-desk.pages.dev/*"],

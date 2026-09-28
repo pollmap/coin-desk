@@ -1,31 +1,19 @@
 /// <reference lib="webworker" />
 import { normalizeResearch, parseCsv, type ResearchItem } from '../shared/research-library';
-let index: ResearchItem[] = [];
+import { buildLibraryIndex, searchLibrary } from '../shared/library-search';
+let index: ReturnType<typeof buildLibraryIndex> = [];
 self.onmessage = async (event: MessageEvent) => {
   const m = event.data;
   try {
     if (m.type === 'index') {
-      index = m.items;
+      index = buildLibraryIndex(m.items);
       return;
     }
     if (m.type === 'search') {
-      const q = String(m.query).toLowerCase().trim();
       self.postMessage({
         type: 'search',
         request: m.request,
-        ids: index
-          .filter(
-            (p) =>
-              (!m.asset || p.assets.includes(m.asset)) &&
-              (!m.method || p.methods.includes(m.method)) &&
-              (!q ||
-                [p.text, p.author, p.publishedAt, p.note, ...p.methods]
-                  .join(' ')
-                  .toLowerCase()
-                  .includes(q)),
-          )
-          .sort((a, b) => b.publishedAt.localeCompare(a.publishedAt))
-          .map((p) => p.id),
+        ids: searchLibrary(index, m),
       });
       return;
     }

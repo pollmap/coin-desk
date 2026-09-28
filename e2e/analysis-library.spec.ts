@@ -73,10 +73,12 @@ test('library import, duplicate/change retention, private chart link and respons
   await page.getByText('수집 경로·변경 이력', { exact: true }).click();
   await expect(page.getByText(/변경 보관 1건/)).toBeVisible();
   await page.getByLabel('코인', { exact: true }).selectOption('DOGE');
+  await page.getByLabel('연결 봉 간격').selectOption('1w');
   await page.getByRole('button', { name: '연결 확인·저장', exact: true }).click();
   const link = page.getByRole('link', { name: '내 차트로 열기', exact: true });
   const href = await link.getAttribute('href');
   expect(href).toContain('asset=DOGE');
+  expect(href).toContain('interval=1w');
   expect(href).toContain('chart_to=');
   expect(href).not.toContain('123456789');
   expect(href).not.toContain('fixture_analyst');

@@ -2,11 +2,13 @@ import type { AnalysisView } from './advanced-analysis';
 import { validIndicators } from './indicators';
 import { networkMetrics } from './network-catalog';
 import { METRICS } from './catalog';
+import type { Interval } from './types';
 export type CoreAsset = 'BTC' | 'DOGE' | 'ETH';
 export interface AnalysisRecipe {
   asset: CoreAsset;
   view: AnalysisView;
   source: 'reference' | 'upbit' | 'binance';
+  interval?: Interval;
   from?: number;
   to?: number;
   indicators?: string[];
@@ -193,10 +195,18 @@ export function validRecipe(raw: unknown): AnalysisRecipe | undefined {
   if (r.view === 'powerlaw' && (r.asset !== 'BTC' || r.source !== 'reference')) return;
   if (r.view === 'cycles' && r.asset !== 'BTC') return;
   if (r.view === 'vwap' && r.source === 'reference') return;
+  if (
+    r.interval &&
+    !(r.source === 'reference' ? ['1d', '1w', '1M'] : ['1h', '4h', '1d', '1w', '1M']).includes(
+      r.interval,
+    )
+  )
+    return;
   return {
     asset: r.asset,
     view: r.view,
     source: r.source,
+    ...(r.interval ? { interval: r.interval } : {}),
     verified: r.verified === true,
     ...(r.section === 'onchain' || r.section === 'futures'
       ? {
@@ -216,21 +226,40 @@ export function mergeResearch(
   incoming: ResearchItem,
 ): { item: ResearchItem; kind: 'added' | 'changed' | 'duplicate' } {
   if (!old) return { item: incoming, kind: 'added' };
-  const changed =
-    (!!incoming.text && incoming.text !== old.text) ||
-    (incoming.media.length > 0 && JSON.stringify(incoming.media) !== JSON.stringify(old.media));
+  // A collapsed X preview is not an edit of a previously captured full body.
+  const preview = incoming.text
+    .replace(/[\s…]+$/, '')
+    .replace(/\.{3}$/, '')
+    .trimEnd();
+  const preserveBody =
+    !!incoming.captureNote?.includes('접힌 본문') &&
+    !old.captureNote?.includes('접힌 본문') &&
+    !!preview &&
+    old.text.startsWith(preview);
+  const text = preserveBody ? old.text : incoming.text || old.text;
+  const media = incoming.media.length
+    ? incoming.media.map((m) => {
+        const previous = old.media.find((v) =>
+          m.url ? v.url === m.url : !v.url && v.key === m.key,
+        );
+        return previous
+          ? { ...previous, ...m, file: m.file ?? previous.file, url: m.url ?? previous.url }
+          : m;
+      })
+    : old.media;
+  const changed = text !== old.text || JSON.stringify(media) !== JSON.stringify(old.media);
   return {
     kind: changed ? 'changed' : 'duplicate',
     item: {
       ...old,
       ...(changed
         ? {
-            text: incoming.text || old.text,
-            ...classifyText(incoming.text || old.text),
+            text,
+            ...classifyText(text),
             review: { text: false, images: false, method: false },
             recipe: old.recipe ? { ...old.recipe, verified: false } : undefined,
-            captureNote: incoming.captureNote,
-            media: incoming.media.length ? incoming.media : old.media,
+            captureNote: preserveBody ? old.captureNote : incoming.captureNote,
+            media,
             revisions: [
               ...old.revisions,
               { at: incoming.importedAt, text: old.text, media: old.media },
@@ -250,6 +279,7 @@ export function recipeUrl(recipe: AnalysisRecipe, publishedAt?: string, after = 
     log: '1',
   });
   const date = publishedAt ? Math.floor(Date.parse(publishedAt) / 86400000) * 86400 : undefined;
+  if (recipe.interval) params.set('interval', recipe.interval);
   const to = after ? undefined : (recipe.to ?? (date === undefined ? undefined : date - 86400));
   if (recipe.indicators?.length)
     params.set('indicators', validIndicators(recipe.indicators).join(','));

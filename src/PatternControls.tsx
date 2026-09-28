@@ -54,6 +54,7 @@ export function PatternPicker({
         ref={ref}
         className="pattern-config"
         aria-labelledby="pattern-config-title"
+        onClose={() => opener.current?.focus({ preventScroll: true })}
         onCancel={(e) => {
           e.preventDefault();
           close();

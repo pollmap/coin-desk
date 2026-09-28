@@ -2,6 +2,7 @@ import { marketComparisonLink } from '../shared/market-watch';
 import { detectPatterns, validPatterns, trendFilter } from '../shared/candle-patterns';
 import { guideArticle, guideForMetric, guideHref } from '../shared/learning-catalog';
 import { PatternPicker, PatternObservations } from './PatternControls';
+import { RibbonControls } from './RibbonControls';
 import type { DrawingKind } from '../shared/annotations';
 import { belongsToSection, focusMetric } from '../shared/analysis-sections';
 import { metricCategory, primaryShortcuts } from '../shared/metric-navigation';
@@ -511,6 +512,7 @@ export function AnalysisWorkspace() {
             : interval === '1M'
               ? 32 * 86400
               : 86400,
+      visual === 'ribbon',
     );
     const model: AnalysisLine[] =
       visual === 'vwap' && basis !== 'reference'
@@ -797,6 +799,12 @@ export function AnalysisWorkspace() {
             <SlidersHorizontal size={16} />
             {focused ? '지표 찾기' : '지표 추가'}
           </button>
+          {!focused && visual === 'ribbon' && (
+            <RibbonControls
+              indicators={indicators}
+              onChange={(value) => change({ indicators: value.join(',') })}
+            />
+          )}
           {!focused && !labView && (
             <>
               <button aria-pressed={log} onClick={() => change({ log: log ? '0' : '1' })}>
