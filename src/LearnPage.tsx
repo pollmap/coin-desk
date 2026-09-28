@@ -1,16 +1,16 @@
-import { useEffect, useMemo, useState } from 'react';
-import { Link, useParams, useSearchParams } from 'react-router-dom';
-import { ArrowLeft, ArrowUpRight, BookOpen, Search, Star, X } from 'lucide-react';
+import { useEffect, useMemo, useRef, useState } from 'react';
+import { Link, useLocation, useParams, useSearchParams } from 'react-router-dom';
+import { ArrowLeft, ArrowRight, ArrowUpRight, BookOpen, Search, Star, X } from 'lucide-react';
 import {
   GUIDE_CATEGORIES,
   GUIDE_PRESETS,
   guideArticle,
   guideChartLink,
-  guideContext,
   guideHref,
   searchGuides,
   type GuideArticle,
 } from '../shared/learning-catalog';
+import { guideLesson } from '../shared/guide-lessons';
 import { PATTERNS, trendFilter } from '../shared/candle-patterns';
 import { ASSETS, PRIMARY_ASSETS } from '../shared/catalog';
 import { priceBasis, basisName, type PriceBasis } from '../shared/analysis-workspace';
@@ -62,11 +62,13 @@ function ApplyGuide({
   asset,
   basis,
   params,
+  change,
 }: {
   article: GuideArticle;
   asset: Asset;
   basis: PriceBasis;
   params: URLSearchParams;
+  change: (patch: Record<string, string | null>) => void;
 }) {
   const permitted = article.assets.filter((a) => PRIMARY_ASSETS.includes(a));
   const supported = article.assets.includes(asset);
@@ -87,8 +89,53 @@ function ApplyGuide({
     catalog.data &&
     !catalog.data.data.some((m) => m.id === metric && (m.observations ?? 0) > 0);
   return (
-    <aside className="guide-apply" aria-label="이 기능 사용하기">
-      <h2>내 차트에 적용</h2>
+    <div className="guide-apply" aria-label="이 기능 사용하기">
+      <div className="learn-controls">
+        <label>
+          코인
+          <select
+            aria-label="사전 코인"
+            value={asset}
+            onChange={(e) => change({ asset: e.target.value })}
+          >
+            {PRIMARY_ASSETS.map((a) => (
+              <option key={a} value={a}>
+                {ASSETS.find((x) => x.id === a)?.name} · {a}
+              </option>
+            ))}
+          </select>
+        </label>
+        <label>
+          가격 기준
+          <select
+            aria-label="사전 가격 기준"
+            value={basis}
+            onChange={(e) => change({ price_source: e.target.value })}
+          >
+            {(['reference', 'upbit', 'binance'] as const).map((b) => (
+              <option key={b} value={b}>
+                {basisName(b)}
+              </option>
+            ))}
+          </select>
+        </label>
+      </div>
+      {article.action.kind === 'pattern' && (
+        <div className="guide-trend">
+          <label>
+            추세 확인
+            <select
+              aria-label="사전 패턴 추세 필터"
+              value={trendFilter(params.get('pattern_trend'))}
+              onChange={(e) => change({ pattern_trend: e.target.value })}
+            >
+              <option value="sma50">이전 종가와 SMA 50</option>
+              <option value="sma50-200">이전 종가 · SMA 50 · SMA 200</option>
+              <option value="none">추세 없이 형태만</option>
+            </select>
+          </label>
+        </div>
+      )}
       <div className="guide-context">
         <AssetLogo asset={useAsset} size={25} />
         <strong>{useAsset}</strong>
@@ -122,26 +169,41 @@ function ApplyGuide({
         </small>
       )}
       <small>코인·원천·날짜 범위를 이어서 엽니다.</small>
-      {article.related.length > 0 && (
-        <>
-          <h3>함께 보기</h3>
-          {article.related.map((id) => {
-            const g = guideArticle(id);
-            return (
-              g && (
-                <Link className="guide-related-link" key={id} to={guideHref(id, params)}>
-                  {g.title} <ArrowUpRight size={14} />
-                </Link>
-              )
-            );
-          })}
-        </>
-      )}
-    </aside>
+    </div>
+  );
+}
+function OptionalApply(props: Parameters<typeof ApplyGuide>[0]) {
+  const [open, setOpen] = useState(false);
+  const action = props.article.action;
+  const destination =
+    action.kind === 'link'
+      ? {
+          '/workspace': '내 작업공간 열기',
+          '/workspace/library': '개인 자료함 열기',
+          '/status': '데이터 상태 보기',
+        }[action.path]
+      : undefined;
+  if (action.kind === 'link' && destination) {
+    return (
+      <footer className="guide-use">
+        <Link className="guide-primary" to={action.path}>
+          {destination} <ArrowUpRight size={17} />
+        </Link>
+      </footer>
+    );
+  }
+  return (
+    <details className="guide-use" onToggle={(e) => setOpen(e.currentTarget.open)}>
+      <summary>설명을 읽었다면, 차트에서 확인하기</summary>
+      {open && <ApplyGuide {...props} />}
+    </details>
   );
 }
 export function LearnPage() {
   const { id } = useParams();
+  const { hash } = useLocation();
+  const heading = useRef<HTMLDivElement>(null);
+  const previousId = useRef(id);
   const [params, setParams] = useSearchParams();
   const asset = PRIMARY_ASSETS.includes(params.get('asset') as Asset)
     ? (params.get('asset') as Asset)
@@ -156,12 +218,8 @@ export function LearnPage() {
       ? v.filter((x): x is string => typeof x === 'string' && !!guideArticle(x))
       : [];
   });
-  const [detail, setDetail] = useState(
-    () => saved<string>('guide-reading-mode', 'summary') === 'detail',
-  );
   const article = guideArticle(id ?? '');
-  const patternId = article?.action.kind === 'pattern' ? article.action.id : undefined;
-  const patternDefinition = PATTERNS.find((p) => p.id === patternId);
+  const lesson = article ? guideLesson(article) : null;
   const results = useMemo(
     () =>
       searchGuides(query).filter(
@@ -188,9 +246,28 @@ export function LearnPage() {
   }
   useEffect(() => {
     document.title = (article?.title ?? '분석 사전') + ' | Coin Desk';
-  }, [article]);
+    const sectionId = hash.slice(1);
+    const section = ['meaning', 'method', 'example', 'data', 'limits'].includes(sectionId)
+      ? heading.current?.querySelector<HTMLElement>(`#${sectionId}`)
+      : null;
+    const changedArticle = previousId.current !== id;
+    previousId.current = id;
+    if (!section && !changedArticle) return;
+    // Native popstate restoration finishes after the event's React commit.
+    // Restore the reading destination together on the following frame.
+    const frame = requestAnimationFrame(() => {
+      if (section) {
+        section.scrollIntoView({ block: 'start', behavior: 'instant' });
+        section.focus({ preventScroll: true });
+      } else {
+        heading.current?.scrollIntoView({ block: 'start' });
+        heading.current?.querySelector<HTMLElement>('h1')?.focus({ preventScroll: true });
+      }
+    });
+    return () => cancelAnimationFrame(frame);
+  }, [article, id, hash]);
   return (
-    <div className="learn-page">
+    <div className="learn-page" ref={heading}>
       <header className="learn-heading">
         <div>
           {id && (
@@ -198,50 +275,36 @@ export function LearnPage() {
               <ArrowLeft size={15} /> 사전 목록
             </Link>
           )}
-          <h1>{id ? '분석 가이드' : '분석 사전'}</h1>
-          {!id && <p>알고 싶은 것을 찾고, 내 코인 차트에서 바로 확인하세요.</p>}
-        </div>
-        <div className="learn-controls">
-          <label>
-            코인
-            <select
-              aria-label="사전 코인"
-              value={asset}
-              onChange={(e) => change({ asset: e.target.value })}
-            >
-              {PRIMARY_ASSETS.map((a) => (
-                <option key={a} value={a}>
-                  {ASSETS.find((x) => x.id === a)?.name} · {a}
-                </option>
-              ))}
-            </select>
-          </label>
-          <label>
-            가격 기준
-            <select
-              aria-label="사전 가격 기준"
-              value={basis}
-              onChange={(e) => change({ price_source: e.target.value })}
-            >
-              {(['reference', 'upbit', 'binance'] as const).map((b) => (
-                <option key={b} value={b}>
-                  {basisName(b)}
-                </option>
-              ))}
-            </select>
-          </label>
+          {!id && (
+            <>
+              <h1 tabIndex={-1} data-route-focus>
+                분석 사전
+              </h1>
+              <p>지표의 뜻부터 계산식과 숫자 예시까지.</p>
+            </>
+          )}
         </div>
       </header>
       {id ? (
-        article ? (
-          <div className="guide-layout">
+        article && lesson ? (
+          <div className="guide-layout" key={article.id}>
+            <nav className="guide-toc" aria-label="이 설명의 목차">
+              <strong>이 설명에서</strong>
+              <a href="#meaning">무엇을 보나요</a>
+              <a href="#method">{lesson.procedural ? '사용 방법' : '계산식·조건'}</a>
+              <a href="#example">{lesson.procedural ? '사용 예시' : '숫자로 읽어보기'}</a>
+              <a href="#data">데이터·지원 범위</a>
+              <a href="#limits">해석할 때 주의할 점</a>
+            </nav>
             <article className="guide-article">
               <div className="guide-kicker">
                 {article.category}
                 {article.advanced ? ' · 상세 분석' : ''}
               </div>
               <div className="guide-title">
-                <h2>{article.title}</h2>
+                <h1 tabIndex={-1} data-route-focus>
+                  {article.title}
+                </h1>
                 <button
                   aria-label="이 설명 즐겨찾기"
                   aria-pressed={favorites.includes(id)}
@@ -252,86 +315,147 @@ export function LearnPage() {
               </div>
               {article.english && <p className="guide-english">{article.english}</p>}
               <p className="guide-intro">{article.summary}</p>
-              <div className="guide-mode" role="group" aria-label="설명 깊이">
-                {[false, true].map((value) => (
-                  <button
-                    key={String(value)}
-                    aria-pressed={detail === value}
-                    onClick={() => {
-                      setDetail(value);
-                      save('guide-reading-mode', value ? 'detail' : 'summary');
-                    }}
-                  >
-                    {value ? '산식까지 자세히' : '핵심만 보기'}
-                  </button>
-                ))}
-              </div>
-              {article.action.kind === 'pattern' && <PatternExample id={article.action.id} />}
-              <section>
-                <h3>어떻게 읽나요?</h3>
+              <section id="meaning" tabIndex={-1}>
+                <h2>{lesson.question}</h2>
                 <p>{article.read}</p>
+                {article.action.kind === 'pattern' && <PatternExample id={article.action.id} />}
+                {lesson.reading.length > 0 && article.id !== 'rainbow' && (
+                  <table className="guide-reading">
+                    <caption>값과 화면을 읽는 기준</caption>
+                    <thead>
+                      <tr>
+                        <th scope="col">관찰한 값·모양</th>
+                        <th scope="col">뜻</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {lesson.reading.map(([value, meaning]) => (
+                        <tr key={value}>
+                          <th scope="row">{value}</th>
+                          <td>{meaning}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                )}
               </section>
-              <section>
-                <h3>차트에서 해보기</h3>
-                <ol>
-                  {article.steps.map((step) => (
-                    <li key={step}>{step}</li>
+              <section id="method" className="guide-method" tabIndex={-1}>
+                <h2>{lesson.procedural ? '사용 방법' : '계산식·판정 조건'}</h2>
+                <ol className={lesson.procedural ? 'guide-steps' : 'guide-formula'}>
+                  {lesson.method.map((line) => (
+                    <li key={line}>{line}</li>
                   ))}
                 </ol>
-              </section>
-              {article.action.kind === 'pattern' && (
-                <div className="guide-trend">
-                  <label>
-                    추세 확인
-                    <select
-                      aria-label="사전 패턴 추세 필터"
-                      value={trendFilter(params.get('pattern_trend'))}
-                      onChange={(e) => change({ pattern_trend: e.target.value })}
-                    >
-                      <option value="sma50">이전 종가와 SMA 50</option>
-                      <option value="sma50-200">이전 종가 · SMA 50 · SMA 200</option>
-                      <option value="none">추세 없이 형태만</option>
-                    </select>
-                  </label>
-                  <small>
-                    현재 봉 직전까지의 확정 종가로 추세를 확인합니다. 중립 도지형에는 적용하지
-                    않습니다.
-                  </small>
-                </div>
-              )}
-              <details open={detail || undefined} className="guide-method">
-                <summary>산식·판정 조건</summary>
-                {article.action.kind !== 'pattern' && <p>{article.formula}</p>}
-                {article.action.kind === 'pattern' && (
-                  <>
-                    <ul>
-                      {patternDefinition?.rules.map((rule) => (
-                        <li key={rule}>{rule}</li>
-                      ))}
-                    </ul>
-                    <p>
-                      추세 필터: 상승형은 이전 종가 &lt; SMA50, 하락형은 이전 종가 &gt; SMA50. 강화
-                      필터는 SMA50 &lt; SMA200 또는 그 반대 조건을 추가합니다. 관측
-                      누락·미확정·잘못된 봉 이후에는 연속 표본을 다시 쌓습니다.
-                    </p>
-                  </>
+                {lesson.terms.length > 0 && (
+                  <dl className="guide-terms">
+                    {lesson.terms.map(([term, meaning]) => (
+                      <div key={term}>
+                        <dt>{term}</dt>
+                        <dd>{meaning}</dd>
+                      </div>
+                    ))}
+                  </dl>
                 )}
-              </details>
-              <section className="guide-caution">
-                <h3>해석할 때 확인할 점</h3>
+                {article.id === 'rainbow' && (
+                  <table className="guide-reading">
+                    <caption>위치 점수 z에 따른 색 구간</caption>
+                    <thead>
+                      <tr>
+                        <th scope="col">위치 점수</th>
+                        <th scope="col">뜻</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {lesson.reading.map(([value, meaning]) => (
+                        <tr key={value}>
+                          <th scope="row">{value}</th>
+                          <td>{meaning}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                )}
+              </section>
+              <section id="example" className="guide-example" tabIndex={-1}>
+                <h2>{lesson.procedural ? '사용 예시' : '숫자로 읽어보기'}</h2>
+                {!lesson.procedural && (
+                  <p className="guide-example-label">이해를 위한 가상 예시 · 현재 시세 아님</p>
+                )}
+                <ol>
+                  {lesson.example.map((line) => (
+                    <li key={line}>{line}</li>
+                  ))}
+                </ol>
+                <p className="guide-conclusion">{lesson.conclusion}</p>
+              </section>
+              <section id="data" tabIndex={-1}>
+                <h2>데이터·지원 범위</h2>
+                <dl className="guide-terms">
+                  <div>
+                    <dt>지원 코인</dt>
+                    <dd>{article.assets.filter((a) => PRIMARY_ASSETS.includes(a)).join(' · ')}</dd>
+                  </div>
+                  {article.unit && (
+                    <div>
+                      <dt>표시 단위</dt>
+                      <dd>{article.unit}</dd>
+                    </div>
+                  )}
+                  {article.basis && (
+                    <div>
+                      <dt>가격 원천</dt>
+                      <dd>{article.basis.map(basisName).join(' · ')}</dd>
+                    </div>
+                  )}
+                </dl>
+                {lesson.data.map((line) => (
+                  <p key={line}>{line}</p>
+                ))}
+                {article.source && (
+                  <a
+                    className="guide-source"
+                    href={article.source}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    원천 정의·참고 문서 <ArrowUpRight size={14} />
+                  </a>
+                )}
+              </section>
+              <section id="limits" className="guide-caution" tabIndex={-1}>
+                <h2>해석할 때 주의할 점</h2>
                 <p>{article.caution}</p>
               </section>
-              {article.source && (
-                <a className="guide-source" href={article.source} target="_blank" rel="noreferrer">
-                  정의·참고 원문 <ArrowUpRight size={14} />
-                </a>
-              )}
+              <section className="guide-related" aria-label="이어 읽기">
+                <h2>이어 읽기</h2>
+                {article.related.map((key) => {
+                  const g = guideArticle(key);
+                  return (
+                    g && (
+                      <Link className="guide-related-link" key={key} to={guideHref(key, params)}>
+                        {g.title}
+                        <ArrowRight size={16} />
+                      </Link>
+                    )
+                  );
+                })}
+                <Link className="guide-related-link" to={guideHref(undefined, params)}>
+                  사전 목록으로
+                  <ArrowRight size={16} />
+                </Link>
+              </section>
+              <OptionalApply
+                article={article}
+                asset={asset}
+                basis={basis}
+                params={params}
+                change={change}
+              />
             </article>
-            <ApplyGuide article={article} asset={asset} basis={basis} params={params} />
           </div>
         ) : (
           <div className="empty-state">
-            <h2>설명을 찾지 못했습니다.</h2>
+            <h1>설명을 찾지 못했습니다.</h1>
             <Link to="/learn">분석 사전에서 찾기</Link>
           </div>
         )
@@ -342,7 +466,7 @@ export function LearnPage() {
             <input
               type="search"
               aria-label="분석 사전 검색"
-              placeholder="RSI, 장악형, 미결제약정, 추세선…"
+              placeholder="가격 위치 밴드, 이동평균, MVRV, 펀딩률…"
               value={query}
               onChange={(e) => change({ q: e.target.value || null }, true)}
               onKeyDown={(e) => {
@@ -361,21 +485,15 @@ export function LearnPage() {
           </form>
           {!query && !onlySaved && category === '전체' && (
             <section className="learn-presets" aria-label="목적별 시작">
-              <h2>무엇을 확인하고 싶으세요?</h2>
+              <h2>여기부터 읽어보세요</h2>
               <div>
                 {GUIDE_PRESETS.map((p) => {
-                  const n = guideContext(params);
-                  n.set('guide', p.guide);
-                  if ('visual' in p) n.set('visual', p.visual);
-                  if ('panels' in p) n.set('panels', p.panels);
-                  const a = p.id === 'onchain' ? 'BTC' : asset;
-                  n.set('asset', a);
                   return (
-                    <Link key={p.id} to={('section' in p ? `/${p.section}/${a}` : '/') + '?' + n}>
+                    <Link key={p.id} to={guideHref(p.guide, params)}>
                       <strong>{p.title}</strong>
                       <span>
                         {p.description}
-                        <ArrowUpRight size={15} />
+                        <ArrowRight size={15} />
                       </span>
                     </Link>
                   );
@@ -403,42 +521,53 @@ export function LearnPage() {
           </div>
           <div className="learn-result-heading">
             <span role="status">{results.length}개 설명</span>
-            <small>{asset} 지원 여부와 적용할 원천을 함께 표시합니다.</small>
+            <small>뜻 · 계산식 · 예시 · 데이터 기준</small>
           </div>
           <div className="learn-list">
-            {results.map((g) => (
-              <div className="learn-row" key={g.id}>
-                <Link to={guideHref(g.id, params)}>
-                  <span className="learn-row-main">
-                    <strong>{g.title}</strong>
-                    <span>{g.summary}</span>
-                  </span>
-                  <span className="learn-row-meta">
-                    <span>{g.category}</span>
-                    <small>
-                      {g.assets.includes(asset)
-                        ? `${asset} 지원`
-                        : g.assets.filter((a) => PRIMARY_ASSETS.includes(a)).join(' · ') + ' 지원'}
-                      {g.basis
-                        ? ' · ' +
-                          g.basis
-                            .map((b) => (b === 'reference' ? 'USD' : '거래소'))
-                            .filter((v, i, a) => a.indexOf(v) === i)
-                            .join('/')
-                        : ' '}
-                    </small>
-                  </span>
-                  <ArrowUpRight size={16} />
-                </Link>
-                <button
-                  aria-label={g.title + ' 즐겨찾기'}
-                  aria-pressed={favorites.includes(g.id)}
-                  onClick={() => favorite(g.id)}
-                >
-                  <Star size={16} fill={favorites.includes(g.id) ? 'currentColor' : 'none'} />
-                </button>
-              </div>
-            ))}
+            {GUIDE_CATEGORIES.map((group) => {
+              const members = results.filter((g) => g.category === group);
+              return (
+                members.length > 0 && (
+                  <section className="learn-group" key={group} aria-label={group + ' 설명'}>
+                    <h2>{group}</h2>
+                    {members.map((g) => (
+                      <div className="learn-row" key={g.id}>
+                        <Link to={guideHref(g.id, params)}>
+                          <span className="learn-row-main">
+                            <strong>{g.title}</strong>
+                            <span>{g.summary}</span>
+                          </span>
+                          <span className="learn-row-meta">
+                            <span>{g.category}</span>
+                            <small>
+                              {g.assets.filter((a) => PRIMARY_ASSETS.includes(a)).join(' · ')}
+                              {g.basis
+                                ? ' · ' +
+                                  g.basis
+                                    .map((b) => (b === 'reference' ? 'USD' : '거래소'))
+                                    .filter((v, i, a) => a.indexOf(v) === i)
+                                    .join('/')
+                                : ' '}
+                            </small>
+                          </span>
+                          <ArrowRight size={16} />
+                        </Link>
+                        <button
+                          aria-label={g.title + ' 즐겨찾기'}
+                          aria-pressed={favorites.includes(g.id)}
+                          onClick={() => favorite(g.id)}
+                        >
+                          <Star
+                            size={16}
+                            fill={favorites.includes(g.id) ? 'currentColor' : 'none'}
+                          />
+                        </button>
+                      </div>
+                    ))}
+                  </section>
+                )
+              );
+            })}
           </div>
           {!results.length && (
             <div className="empty-state">

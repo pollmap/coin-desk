@@ -1,7 +1,9 @@
 import { test, expect, type Page } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
+import { GUIDE_ARTICLES } from '../shared/learning-catalog';
 test.describe.configure({ mode: 'parallel' });
 const chart = (page: Page) => page.locator('[data-chart-kind="analysis"]');
+const openApply = (page: Page) => page.locator('.guide-use > summary').click();
 test.beforeEach(async ({ page }) => {
   await page.route('**/*', (route) =>
     new URL(route.request().url()).hostname === '127.0.0.1' ? route.continue() : route.abort(),
@@ -18,6 +20,7 @@ test('guide search retains filters, favorites and source context; real OHLC is r
   await page.getByRole('button', { name: '상승 장악형 즐겨찾기', exact: true }).click();
   await page.locator('.learn-row > a').filter({ hasText: '상승 장악형' }).click();
   await expect(page.getByRole('heading', { name: '상승 장악형', exact: true })).toBeVisible();
+  await openApply(page);
   await expect(page.getByLabel('사전 코인', { exact: true })).toHaveValue('DOGE');
   await expect(page.locator('.guide-apply')).toContainText('필요한 데이터가 없습니다');
   await expect(page.locator('.guide-primary')).toHaveCount(2);
@@ -27,6 +30,7 @@ test('guide search retains filters, favorites and source context; real OHLC is r
   await page.reload();
   await expect(page.locator('.learn-row')).toHaveCount(1);
   await page.locator('.learn-row > a').click();
+  await openApply(page);
   await page.getByLabel('사전 패턴 추세 필터').selectOption('none');
   await page.locator('.guide-primary').filter({ hasText: 'Upbit' }).click();
   await expect(chart(page)).toHaveAttribute('data-asset', 'DOGE');
@@ -47,6 +51,7 @@ test('confirmed patterns navigate their chart, survive save/share and clear sele
 }) => {
   await page.setViewportSize({ width: 1280, height: 800 });
   await page.goto('/learn/pattern-doji?asset=DOGE&price_source=upbit');
+  await openApply(page);
   await page.locator('.guide-primary').click();
   await expect(chart(page)).toHaveAttribute('data-observations', '1100');
   await expect(chart(page)).toHaveAttribute('data-range-ready', '1');
@@ -99,13 +104,16 @@ test('onchain guides open the corresponding primary metric and unsupported coins
   page,
 }) => {
   await page.goto('/learn/net-mvrv?asset=ETH&price_source=upbit');
+  await openApply(page);
   await page.locator('.guide-primary').click();
   await expect(chart(page)).toHaveAttribute('data-asset', 'ETH');
   await expect(chart(page)).toHaveAttribute('data-primary-metric', 'net:mvrv');
   await page.getByRole('link', { name: '현재 분석 설명', exact: true }).click();
   await expect(page.locator('.guide-title')).toContainText('MVRV');
+  await openApply(page);
   await expect(page.getByLabel('사전 가격 기준', { exact: true })).toHaveValue('upbit');
   await page.goto('/learn/powerlaw?asset=DOGE&price_source=upbit');
+  await openApply(page);
   await expect(page.locator('.guide-apply')).toContainText('DOGE에는 제공하지 않습니다');
   await expect(page.locator('.guide-primary')).toContainText('BTC');
   await page.locator('.guide-primary').click();
@@ -117,6 +125,7 @@ test('a guide activates a real drawing tool and Help follows the selected analys
   page,
 }) => {
   await page.goto('/learn/tool-measure?asset=ETH&price_source=binance');
+  await openApply(page);
   await page.locator('.guide-primary').click();
   const tool = page.getByRole('button', { name: '구간 측정', exact: true });
   await expect(tool).toHaveAttribute('aria-pressed', 'true');
@@ -152,12 +161,13 @@ for (const width of [320, 390, 768, 1000, 1280, 1440]) {
     for (const path of [
       '/learn?asset=DOGE',
       '/learn/pattern-bullish-engulfing?asset=DOGE',
+      '/learn/rainbow?asset=DOGE',
       '/?asset=DOGE&price_source=upbit&period=all&patterns=doji',
     ]) {
       await page.goto(path);
       if (path.startsWith('/?'))
         await expect(chart(page)).toHaveAttribute('data-observations', '1100');
-      else await expect(page.getByRole('heading', { level: 1 })).toContainText('분석');
+      else await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
       for (let theme = 0; theme < 2; theme++) {
         expect(
           await page.evaluate(
@@ -191,6 +201,9 @@ test('guide remains usable at 200 percent zoom with keyboard and missing observa
   );
   await page.setViewportSize({ width: 1280, height: 1000 });
   await page.goto('/learn/net-mvrv?asset=ETH');
+  await expect(page.locator('.guide-method')).toContainText('시가총액');
+  await expect(page.locator('.guide-apply')).toHaveCount(0);
+  await openApply(page);
   await expect(page.locator('.guide-apply')).toContainText('실제 관측이 아직 없습니다');
   await expect(page.locator('.guide-primary')).toHaveCount(0);
   await page.evaluate(() => {
@@ -201,10 +214,135 @@ test('guide remains usable at 200 percent zoom with keyboard and missing observa
       () => document.documentElement.scrollWidth <= document.documentElement.clientWidth + 1,
     ),
   ).toBe(true);
-  const mode = page.getByRole('button', { name: '산식까지 자세히', exact: true });
-  await mode.focus();
+  const method = page.getByRole('link', { name: '계산식·조건', exact: true });
+  await method.focus();
   await page.keyboard.press('Enter');
-  await expect(page.locator('.guide-method')).toHaveAttribute('open', '');
+  await expect(page.locator('.guide-method')).toBeFocused();
   await page.reload();
-  await expect(mode).toHaveAttribute('aria-pressed', 'true');
+  await expect(page.locator('.guide-method')).toBeVisible();
+  await expect(page.locator('.guide-apply')).toHaveCount(0);
+});
+
+test('reading shortcuts stay in the dictionary, formulas are open and learning does not fetch chart data', async ({
+  page,
+}) => {
+  const chartRequests: string[] = [];
+  page.on('request', (r) => {
+    if (/\/api\/v1\/(reference|candles|network-catalog|network-series|derivatives)\?/.test(r.url()))
+      chartRequests.push(r.url());
+  });
+  await page.goto('/learn?asset=DOGE&price_source=upbit');
+  const links = await page
+    .locator('.learn-presets a')
+    .evaluateAll((els) => els.map((a) => a.getAttribute('href')));
+  expect(links.every((href) => href?.startsWith('/learn/'))).toBe(true);
+  await page.getByRole('link', { name: /가격 위치 밴드 읽기/ }).click();
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText('가격 위치 밴드');
+  await expect(page.locator('.guide-method')).toContainText('σ = √');
+  await expect(page.locator('.guide-example')).toContainText('+0.91');
+  await expect(page.locator('.guide-example')).toContainText('111.63');
+  await expect(page.locator('.guide-reading')).toContainText('−1.3 ≤ z < −0.55');
+  await expect(page.locator('canvas, [data-chart-kind], .guide-primary')).toHaveCount(0);
+  await page.getByRole('link', { name: '숫자로 읽어보기', exact: true }).click();
+  await expect(page.locator('#example')).toBeFocused();
+  const related = page
+    .locator('.guide-related')
+    .getByRole('link', { name: '볼린저밴드', exact: true });
+  await related.focus();
+  await page.keyboard.press('Enter');
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText('볼린저밴드');
+  // Let the common route focus callback run before checking the final target.
+  await page.evaluate(
+    () =>
+      new Promise<void>((resolve) =>
+        requestAnimationFrame(() => requestAnimationFrame(() => resolve())),
+      ),
+  );
+  await expect(page.getByRole('heading', { level: 1 })).toBeFocused();
+  expect(chartRequests).toEqual([]);
+  await page.goBack();
+  await expect(page.locator('.guide-method')).toContainText('N = 730');
+  await page.evaluate(
+    () =>
+      new Promise<void>((resolve) =>
+        requestAnimationFrame(() => requestAnimationFrame(() => resolve())),
+      ),
+  );
+  await expect(page).toHaveURL(/#example$/);
+  await expect(page.locator('#example')).toBeFocused();
+  await expect(page.locator('#example')).toBeInViewport();
+  await openApply(page);
+  await expect(page.locator('.guide-primary')).toContainText('DOGE · Upbit KRW');
+  await page.locator('.guide-primary').click();
+  await expect(page.locator('[data-chart-kind="position"]')).toBeVisible();
+});
+
+test('chart application keeps the selected control visible and focused when its context changes', async ({
+  page,
+}) => {
+  await page.goto('/learn/rainbow?asset=BTC&price_source=reference');
+  await openApply(page);
+  for (const [name, value] of [
+    ['사전 코인', 'ETH'],
+    ['사전 가격 기준', 'binance'],
+    ['사전 코인', 'DOGE'],
+  ]) {
+    const control = page.getByLabel(name, { exact: true });
+    await control.focus();
+    await control.selectOption(value);
+    await page.evaluate(
+      () =>
+        new Promise<void>((resolve) =>
+          requestAnimationFrame(() => requestAnimationFrame(() => resolve())),
+        ),
+    );
+    await expect(control).toBeFocused();
+    const bounds = (await control.boundingBox())!;
+    expect(bounds.y).toBeGreaterThanOrEqual(0);
+    expect(bounds.y + bounds.height).toBeLessThanOrEqual(page.viewportSize()!.height);
+  }
+  await expect(page.locator('.guide-primary')).toContainText('DOGE · Binance USDT');
+});
+
+test('reader reflows in a narrow desktop container, including expanded chart controls', async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 1280, height: 1000 });
+  for (const id of ['rainbow', 'net-mvrv', 'pattern-bullish-engulfing']) {
+    await page.goto(`/learn/${id}?asset=ETH`);
+    await expect(page.locator('.guide-article')).toBeVisible();
+    // Desktop media queries still apply, but the available reading area is narrow.
+    await page.addStyleTag({ content: '.learn-page { max-width: 320px; }' });
+    await openApply(page);
+    const toc = await page.locator('.guide-toc').boundingBox();
+    const article = await page.locator('.guide-article').boundingBox();
+    expect(toc!.y + toc!.height).toBeLessThanOrEqual(article!.y);
+    expect(article!.width).toBeGreaterThanOrEqual(319);
+    expect(
+      await page.locator('.guide-article').evaluate((el) => el.scrollWidth <= el.clientWidth + 1),
+    ).toBe(true);
+    expect(
+      await page.evaluate(
+        () => document.documentElement.scrollWidth <= document.documentElement.clientWidth + 1,
+      ),
+    ).toBe(true);
+    for (const select of await page.locator('.guide-apply select').all()) {
+      const bounds = (await select.boundingBox())!;
+      expect(bounds.x).toBeGreaterThanOrEqual(article!.x);
+      expect(bounds.x + bounds.width).toBeLessThanOrEqual(article!.x + article!.width);
+    }
+  }
+});
+
+test('every existing guide renders an explanation and worked example without a chart', async ({
+  page,
+}) => {
+  test.setTimeout(180000);
+  for (const article of GUIDE_ARTICLES) {
+    await page.goto('/learn/' + article.id);
+    await expect(page.getByRole('heading', { level: 1 })).toHaveText(article.title);
+    await expect(page.locator('.guide-method li').first()).toBeVisible();
+    await expect(page.locator('.guide-example li').first()).toBeVisible();
+    await expect(page.locator('canvas, [data-chart-kind], .guide-apply')).toHaveCount(0);
+  }
 });

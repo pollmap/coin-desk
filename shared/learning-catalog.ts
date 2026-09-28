@@ -215,11 +215,15 @@ const views: GuideArticle[] = [
     '가격 위치 밴드',
     '사이클·비교',
     '과거 730일 분포에서 현재 가격의 위치를 봅니다.',
-    '낮은 구간과 높은 구간의 지속 기간을 확인합니다.',
-    '과거 730일 로그가격 분포 기반 위치 밴드 · 미래 관측 미사용',
+    '색 띠는 그날 이전 730일의 가격을 요약한 범위이고, 실제 가격선은 비교할 종가입니다. 가격선이 띠의 위쪽에 있으면 최근 2년과 비교해 높은 위치, 아래쪽이면 낮은 위치입니다. 매일 비교 표본이 달라지므로 가격이 같아도 위치는 바뀔 수 있습니다.',
+    'μ = 직전 730일 ln(종가)의 평균; σ = 해당 로그가격의 모집단 표준편차; 경계 = exp(μ + kσ); 위치 z = (ln(오늘 종가) − μ) / σ',
     '타사의 레인보우 모형이나 미래 적정가격 예측선이 아닙니다.',
     { kind: 'view', id: 'rainbow' },
-    { aliases: '레인보우 rainbow', related: ['powerlaw', 'drawdown'] },
+    {
+      aliases: '레인보우 rainbow 밴드 위치 표준편차 분포',
+      related: ['bb', 'log-scale', 'drawdown'],
+      unit: '가격: 선택 원천의 통화 · 위치: σ',
+    },
   ),
   entry(
     'relative',
@@ -616,7 +620,21 @@ export function searchGuides(query: string) {
   const words = query.toLocaleLowerCase().trim().split(/\s+/).filter(Boolean);
   return GUIDE_ARTICLES.filter((g) =>
     words.every((w) =>
-      (g.title + ' ' + g.english + ' ' + g.aliases + ' ' + g.category + ' ' + g.summary)
+      (
+        g.title +
+        ' ' +
+        g.english +
+        ' ' +
+        g.aliases +
+        ' ' +
+        g.category +
+        ' ' +
+        g.summary +
+        ' ' +
+        g.formula +
+        ' ' +
+        g.read
+      )
         .toLocaleLowerCase()
         .includes(w),
     ),
@@ -692,9 +710,15 @@ export function guideChartLink(
 }
 export const GUIDE_PRESETS = [
   {
+    id: 'position',
+    title: '가격 위치 밴드 읽기',
+    description: '730일 · 색 구간 · 표준편차',
+    guide: 'rainbow',
+  },
+  {
     id: 'trend',
-    title: '가격 흐름부터',
-    description: '이동평균 리본과 RSI',
+    title: '이동평균 리본 이해하기',
+    description: '짧은 선과 긴 선의 배열',
     visual: 'ribbon',
     panels: 'rsi',
     guide: 'ribbon',
@@ -702,7 +726,7 @@ export const GUIDE_PRESETS = [
   {
     id: 'onchain',
     title: 'BTC 평가와 손익',
-    description: 'MVRV를 주 차트로',
+    description: 'MVRV 1배는 무슨 뜻일까요',
     section: 'onchain',
     panels: 'net:mvrv',
     guide: 'net-mvrv',
@@ -710,17 +734,10 @@ export const GUIDE_PRESETS = [
   {
     id: 'futures',
     title: '선물 쏠림 확인',
-    description: '확정 펀딩률을 주 차트로',
+    description: '펀딩률의 부호와 단위',
     section: 'futures',
     panels: 'futures:funding',
     guide: 'futures-funding',
-  },
-  {
-    id: 'seasonality',
-    title: '과거 분포 비교',
-    description: '계절성 평균과 중앙값',
-    visual: 'seasonality',
-    guide: 'seasonality',
   },
 ] as const;
 export function guideBasisLabel(basis: PriceBasis) {

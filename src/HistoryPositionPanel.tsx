@@ -1,4 +1,6 @@
 import { useEffect, useMemo, useRef, useState, type PointerEvent } from 'react';
+import { Link, useSearchParams } from 'react-router-dom';
+import { guideHref } from '../shared/learning-catalog';
 import type { Asset, Period, SeriesResponse } from '../shared/types';
 import { bandPosition, historyBands } from '../shared/history-bands';
 import {
@@ -38,6 +40,7 @@ export function HistoryPositionPanel({
   onVisibleRange?: (range: DateWindow | null) => void;
   initialWindow?: DateWindow | null;
 }) {
+  const [params] = useSearchParams();
   const fetched = useData<SeriesResponse>(
     supplied || !fetchReference ? null : `/api/v1/reference?asset=${asset}&limit=1000`,
     true,
@@ -167,7 +170,7 @@ export function HistoryPositionPanel({
                 <small>과거 분포에서의 위치</small>
                 <strong>
                   {band ? bandPosition(band.z) : '계산 전'}{' '}
-                  {band && (
+                  {band?.z != null && (
                     <em>
                       {band.z >= 0 ? '+' : ''}
                       {band.z.toFixed(2)}σ
@@ -336,6 +339,9 @@ export function HistoryPositionPanel({
             />
             <p className="position-note">
               {!band ? '이 날짜에는 이전 730일 연속 가격이 부족해 색상 밴드가 없습니다. ' : ''}
+              {band?.z === null
+                ? '직전 가격의 변동 폭이 없어 표준화 위치를 계산할 수 없습니다. '
+                : ''}
               색상은 과거 대비 위치이며 미래 가격이나 매수·매도 신호가 아닙니다.
             </p>
           </>
@@ -348,7 +354,15 @@ export function HistoryPositionPanel({
         ) : null}
       </div>
       <details className="position-method">
-        <summary>계산 방법·출처</summary>
+        <summary>이 밴드 읽는 법·계산 방법</summary>
+        <p>
+          실제 가격선이 색 띠의 어디에 있는지 보세요. ‘상단’은 직전 730일 가격보다 상대적으로 높은
+          위치입니다. 상승 확률이나 매도 권고가 아닙니다.
+        </p>
+        <p>
+          중심 = exp(로그 종가 평균 μ), 경계 = exp(μ + kσ), 위치 = (ln(선택일 종가) − μ) / σ. σ는
+          직전 730일 로그 종가의 표준편차입니다.
+        </p>
         <p>
           {result.data?.meta.source}의 실제 {currency} 일별 종가를 첫 관측부터 표시합니다. 밴드는
           그날 이전의 연속된 730개 UTC 로그가격 평균과 표준편차(−2, −1.3, −0.55, +0.55, +1.3, +2σ)로
@@ -356,6 +370,9 @@ export function HistoryPositionPanel({
           않습니다. 낙폭은 첫 관측부터 그날까지의 최고 종가 대비입니다. 통용되는 비트코인 로그회귀
           레인보우 모델과는 다른 과거 분포 시각화입니다.
         </p>
+        <Link className="chart-guide-link" to={guideHref('rainbow', params)}>
+          가격 위치 밴드 설명 · 공식과 숫자 예시
+        </Link>
         <div className="coverage-strip">
           <span>{dateLabel(result.data?.meta.dataAsOf)} 기준</span>
           {currency === 'USD' && (
