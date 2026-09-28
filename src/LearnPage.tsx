@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { Link, useParams, useSearchParams } from 'react-router-dom';
+import { Link, useLocation, useParams, useSearchParams } from 'react-router-dom';
 import { ArrowLeft, ArrowRight, ArrowUpRight, BookOpen, Search, Star, X } from 'lucide-react';
 import {
   GUIDE_CATEGORIES,
@@ -174,6 +174,24 @@ function ApplyGuide({
 }
 function OptionalApply(props: Parameters<typeof ApplyGuide>[0]) {
   const [open, setOpen] = useState(false);
+  const action = props.article.action;
+  const destination =
+    action.kind === 'link'
+      ? {
+          '/workspace': '내 작업공간 열기',
+          '/workspace/library': '개인 자료함 열기',
+          '/status': '데이터 상태 보기',
+        }[action.path]
+      : undefined;
+  if (action.kind === 'link' && destination) {
+    return (
+      <footer className="guide-use">
+        <Link className="guide-primary" to={action.path}>
+          {destination} <ArrowUpRight size={17} />
+        </Link>
+      </footer>
+    );
+  }
   return (
     <details className="guide-use" onToggle={(e) => setOpen(e.currentTarget.open)}>
       <summary>설명을 읽었다면, 차트에서 확인하기</summary>
@@ -183,6 +201,7 @@ function OptionalApply(props: Parameters<typeof ApplyGuide>[0]) {
 }
 export function LearnPage() {
   const { id } = useParams();
+  const { hash } = useLocation();
   const heading = useRef<HTMLDivElement>(null);
   const previousId = useRef(id);
   const [params, setParams] = useSearchParams();
@@ -227,12 +246,26 @@ export function LearnPage() {
   }
   useEffect(() => {
     document.title = (article?.title ?? '분석 사전') + ' | Coin Desk';
-    if (previousId.current !== id) {
-      heading.current?.scrollIntoView({ block: 'start' });
-      heading.current?.querySelector<HTMLElement>('h1')?.focus({ preventScroll: true });
-      previousId.current = id;
-    }
-  }, [article]);
+    const sectionId = hash.slice(1);
+    const section = ['meaning', 'method', 'example', 'data', 'limits'].includes(sectionId)
+      ? heading.current?.querySelector<HTMLElement>(`#${sectionId}`)
+      : null;
+    const changedArticle = previousId.current !== id;
+    previousId.current = id;
+    if (!section && !changedArticle) return;
+    // Native popstate restoration finishes after the event's React commit.
+    // Restore the reading destination together on the following frame.
+    const frame = requestAnimationFrame(() => {
+      if (section) {
+        section.scrollIntoView({ block: 'start', behavior: 'instant' });
+        section.focus({ preventScroll: true });
+      } else {
+        heading.current?.scrollIntoView({ block: 'start' });
+        heading.current?.querySelector<HTMLElement>('h1')?.focus({ preventScroll: true });
+      }
+    });
+    return () => cancelAnimationFrame(frame);
+  }, [article, id, hash]);
   return (
     <div className="learn-page" ref={heading}>
       <header className="learn-heading">

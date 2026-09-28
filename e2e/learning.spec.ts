@@ -268,7 +268,9 @@ test('reading shortcuts stay in the dictionary, formulas are open and learning d
         requestAnimationFrame(() => requestAnimationFrame(() => resolve())),
       ),
   );
-  await expect(page.getByRole('heading', { level: 1 })).toBeFocused();
+  await expect(page).toHaveURL(/#example$/);
+  await expect(page.locator('#example')).toBeFocused();
+  await expect(page.locator('#example')).toBeInViewport();
   await openApply(page);
   await expect(page.locator('.guide-primary')).toContainText('DOGE · Upbit KRW');
   await page.locator('.guide-primary').click();
