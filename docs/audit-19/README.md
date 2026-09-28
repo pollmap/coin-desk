@@ -1,6 +1,6 @@
 # 0.19 검증 기록
 
-## 검사 중간 기록
+## 발견한 문제와 수정 이력
 
 - 타입·단위 검사: 52개 파일, 466개 검사 통과. 사전 70개에 방법·예시·해석이 존재하는지 검사하고, 밴드·VWAP·파워로·계절성 숫자 예시를 실제 계산과 대조했습니다.
 - 백업·복구 검사 2개, 문서 링크·브랜드 검사 통과.
@@ -14,4 +14,28 @@
 
 - 뒤로 가기 검사 기준을 고친 뒤 로컬 WebKit에서 단락의 초점은 맞지만 브라우저의 기본 스크롤 복원이 나중에 화면을 옮기는 현상을 재현했습니다. 즉시 복원과 일시적 수동 스크롤 설정은 각각 4개 중 2개를 실패했습니다. 다음 화면 프레임에서 단락과 초점을 함께 복원하도록 수정한 뒤, 두 관련 흐름을 각각 두 번 검사해 4개 모두 통과했습니다. 저장된 단락이 실제 화면 안에 있는지도 확인합니다.
 
-최종 CI·배포 결과는 검증 후 이 기록에 추가합니다.
+
+
+## 최종 코드·배포 확인
+
+- [PR #35](https://github.com/pollmap/coin-desk/pull/35): `main` `1d30708133ee5d9f3620a75d6674acecdbc5f466`에 병합. 코드 HEAD `67afb0deece75f0cf7f35b32cdf6567c6d083ad6`.
+- [최종 PR CI](https://github.com/pollmap/coin-desk/actions/runs/36377939301)와 [main CI](https://github.com/pollmap/coin-desk/actions/runs/36378722086): 각각 단위 466개, 복구 2개, Chromium/WebKit 90개 통과. 개인 경로 opt-in 2개 제외. PR 재시도 관측: `false`, main 재시도 관측: `false`. 앞선 실패는 위 이력에 보존했습니다.
+- 웹 0.19.0 [Pages 배포](https://efc4ad63.coin-desk.pages.dev). 이 릴리스는 Pages만 배포했고 Worker 0.17.1·Chrome 확장 0.18.0·원격 스키마 0009는 유지합니다.
+- 공개 HTML·JS·CSS·이미지·확장 배포물 70개의 바이트가 이번 빌드와 일치합니다. [파일별 SHA-256](deployment-assets.json).
+- 최초 자동 파일 대조는 Python 기본 클라이언트 식별자로 요청해 Cloudflare 1010/HTTP 403 응답을 받았습니다. 검증 도구 이름과 소유 사이트를 명시한 `CoinDesk-Release-Verification/0.19` 요청으로 정상 확인했습니다. 브라우저를 사칭하거나 보안 설정을 바꾸지 않았습니다. [초기 차단 기록](deployment-assets-initial-403.json).
+- [실제 Chrome 확인](production-chrome.json): 사전의 공식·예시·목차·관련 설명, 읽기 중 차트 부재, 명시적으로 선택한 코인·원천의 실제 차트 전환을 확인했습니다.
+- `2026-09-28T04:41:50.611592+00:00` 읽기 API 12개 HTTP 200, health 정상. 활성 원천 103/103 정상. 원천별 지연 및 엄격한 48시간 조건은 [상태 원본 요약](final-status.json)에 별도로 보존했습니다.
+- [검사 수치](verification.json), [격리 데이터의 Chrome 검사](local-chrome.json), [화면 폭·테마 확인](screenshots/check.json).
+- [자연 수집 확인](natural-cron.json): 300초 동안 직접 수집 API·overview 요청 없이 원격 SELECT를 비교했습니다. 예약 수집 5회 완료, 핵심 시세 6개의 실제 체결·확인 시각 증가, 최근 선물 확인 9개 증가, 조회 쓰기 0을 확인했습니다. 예산·커서 키는 이번에도 없으며 유실로 판정하지 않습니다. 다른 방문자 부재나 완전한 하루·48시간의 증거가 아닙니다.
+
+## 화면 확인
+
+- [1280px 밝은 화면](screenshots/band-1280-light.png) · [1280px 어두운 화면](screenshots/band-1280-dark.png)
+- [390px 밝은 화면](screenshots/band-390-light.png) · [390px 어두운 화면](screenshots/band-390-dark.png)
+- [숫자 예시](screenshots/example-1280.png) · [좁은 화면의 숫자 예시](screenshots/example-390.png) · [200% 확대](screenshots/mvrv-200-percent.png)
+
+## 별도 확인 범위
+
+서버 운영 마감은 아직 완료로 처리하지 않습니다. 마지막 서버 배포는 2026-09-27 18:26:35 UTC이며, 웹 배포로 관찰 창을 초기화하지 않았습니다. 2026-09-28 완전 UTC 하루의 공식 계정 전체 D1 비용은 2026-09-29 01:00 UTC 이후 확인합니다. 엄격한 48시간 기록률·최장 공백·미해결 오류 기준과 제품 Cron을 유지합니다. 이전 자연 수집 증거는 [0.18 운영 기록](../audit-18/README.md)에 있습니다.
+
+Apple 기기가 없어 실제 Safari·VoiceOver는 실기기 검증 대기입니다. WebKit 검사를 그 결과로 표현하지 않습니다. 개인 X 수집·전수 내용 검토는 최신 요청에 따라 우선순위에서 내렸으며 이번 완료 범위에 포함하지 않습니다. 기존 개인 원본은 그대로 보존했습니다.

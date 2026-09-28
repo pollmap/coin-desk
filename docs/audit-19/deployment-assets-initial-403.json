@@ -1,0 +1,427 @@
+{
+  "checkedAt": "2026-09-28T04:52:54.160119+00:00",
+  "commit": "1d30708133ee5d9f3620a75d6674acecdbc5f466",
+  "deployment": "https://efc4ad63.coin-desk.pages.dev",
+  "files": [
+    {
+      "file": "extension-guide.html",
+      "matches": false,
+      "httpStatus": 403,
+      "error": "HTTP Error 403: Forbidden"
+    },
+    {
+      "file": "favicon.ico",
+      "matches": false,
+      "httpStatus": 403,
+      "error": "HTTP Error 403: Forbidden"
+    },
+    {
+      "file": "index.html",
+      "matches": false,
+      "httpStatus": 403,
+      "error": "HTTP Error 403: Forbidden"
+    },
+    {
+      "file": "site.webmanifest",
+      "matches": false,
+      "httpStatus": 403,
+      "error": "HTTP Error 403: Forbidden"
+    },
+    {
+      "file": "assets/analysis-library-DFsjZHI7.css",
+      "matches": false,
+      "httpStatus": 403,
+      "error": "HTTP Error 403: Forbidden"
+    },
+    {
+      "file": "assets/AnalysisLab-BJ-FIIWC.js",
+      "matches": false,
+      "httpStatus": 403,
+      "error": "HTTP Error 403: Forbidden"
+    },
+    {
+      "file": "assets/AnalysisWorkspace-pr4Os7i0.js",
+      "matches": false,
+      "httpStatus": 403,
+      "error": "HTTP Error 403: Forbidden"
+    },
+    {
+      "file": "assets/BrandPage-CYmpMjQ3.css",
+      "matches": false,
+      "httpStatus": 403,
+      "error": "HTTP Error 403: Forbidden"
+    },
+    {
+      "file": "assets/BrandPage-f_2UBtwc.js",
+      "matches": false,
+      "httpStatus": 403,
+      "error": "HTTP Error 403: Forbidden"
+    },
+    {
+      "file": "assets/chart-range-CpF_4IqK.js",
+      "matches": false,
+      "httpStatus": 403,
+      "error": "HTTP Error 403: Forbidden"
+    },
+    {
+      "file": "assets/chart-theme-CJrT-yAF.js",
+      "matches": false,
+      "httpStatus": 403,
+      "error": "HTTP Error 403: Forbidden"
+    },
+    {
+      "file": "assets/ChartNavigator-BHSi4ZI_.js",
+      "matches": false,
+      "httpStatus": 403,
+      "error": "HTTP Error 403: Forbidden"
+    },
+    {
+      "file": "assets/ChartRangeControl-dO38nCqg.js",
+      "matches": false,
+      "httpStatus": 403,
+      "error": "HTTP Error 403: Forbidden"
+    },
+    {
+      "file": "assets/ComparePage-DsP7G-Kt.js",
+      "matches": false,
+      "httpStatus": 403,
+      "error": "HTTP Error 403: Forbidden"
+    },
+    {
+      "file": "assets/ComparePage-DXR9keeU.css",
+      "matches": false,
+      "httpStatus": 403,
+      "error": "HTTP Error 403: Forbidden"
+    },
+    {
+      "file": "assets/DataStatusPage-DOE1hCz7.js",
+      "matches": false,
+      "httpStatus": 403,
+      "error": "HTTP Error 403: Forbidden"
+    },
+    {
+      "file": "assets/DateNavigator-AJZH_DP0.css",
+      "matches": false,
+      "httpStatus": 403,
+      "error": "HTTP Error 403: Forbidden"
+    },
+    {
+      "file": "assets/DateNavigator-C6raBx_h.js",
+      "matches": false,
+      "httpStatus": 403,
+      "error": "HTTP Error 403: Forbidden"
+    },
+    {
+      "file": "assets/DominancePanel-BeFzwjPu.js",
+      "matches": false,
+      "httpStatus": 403,
+      "error": "HTTP Error 403: Forbidden"
+    },
+    {
+      "file": "assets/ExchangeHistoryPanel-DYRt9IxV.js",
+      "matches": false,
+      "httpStatus": 403,
+      "error": "HTTP Error 403: Forbidden"
+    },
+    {
+      "file": "assets/FuturesPage-Ai0rcWnM.js",
+      "matches": false,
+      "httpStatus": 403,
+      "error": "HTTP Error 403: Forbidden"
+    },
+    {
+      "file": "assets/history-bands-D-PIvT-P.js",
+      "matches": false,
+      "httpStatus": 403,
+      "error": "HTTP Error 403: Forbidden"
+    },
+    {
+      "file": "assets/HistoryPositionPanel-C2AOGDVr.js",
+      "matches": false,
+      "httpStatus": 403,
+      "error": "HTTP Error 403: Forbidden"
+    },
+    {
+      "file": "assets/HistoryPositionPanel-DBaHjxFJ.css",
+      "matches": false,
+      "httpStatus": 403,
+      "error": "HTTP Error 403: Forbidden"
+    },
+    {
+      "file": "assets/index-B1qSCWci.css",
+      "matches": false,
+      "httpStatus": 403,
+      "error": "HTTP Error 403: Forbidden"
+    },
+    {
+      "file": "assets/index-D3PSIlKx.js",
+      "matches": false,
+      "httpStatus": 403,
+      "error": "HTTP Error 403: Forbidden"
+    },
+    {
+      "file": "assets/learn-DopCUBEJ.css",
+      "matches": false,
+      "httpStatus": 403,
+      "error": "HTTP Error 403: Forbidden"
+    },
+    {
+      "file": "assets/LearnPage-CNSJt1SD.js",
+      "matches": false,
+      "httpStatus": 403,
+      "error": "HTTP Error 403: Forbidden"
+    },
+    {
+      "file": "assets/library-worker-B-2ZX0WD.js",
+      "matches": false,
+      "httpStatus": 403,
+      "error": "HTTP Error 403: Forbidden"
+    },
+    {
+      "file": "assets/LongHistoryChart-Bi34w0DF.js",
+      "matches": false,
+      "httpStatus": 403,
+      "error": "HTTP Error 403: Forbidden"
+    },
+    {
+      "file": "assets/LongHistoryPanel-8kmqWSKL.js",
+      "matches": false,
+      "httpStatus": 403,
+      "error": "HTTP Error 403: Forbidden"
+    },
+    {
+      "file": "assets/market-watch-CiwilGHN.js",
+      "matches": false,
+      "httpStatus": 403,
+      "error": "HTTP Error 403: Forbidden"
+    },
+    {
+      "file": "assets/MarketNavigation-o_-H-51e.js",
+      "matches": false,
+      "httpStatus": 403,
+      "error": "HTTP Error 403: Forbidden"
+    },
+    {
+      "file": "assets/MempoolPanel-CAxO99mP.js",
+      "matches": false,
+      "httpStatus": 403,
+      "error": "HTTP Error 403: Forbidden"
+    },
+    {
+      "file": "assets/MetricChart-CY8mD2R-.js",
+      "matches": false,
+      "httpStatus": 403,
+      "error": "HTTP Error 403: Forbidden"
+    },
+    {
+      "file": "assets/MetricsExplorer-BEjlWsqn.css",
+      "matches": false,
+      "httpStatus": 403,
+      "error": "HTTP Error 403: Forbidden"
+    },
+    {
+      "file": "assets/MetricsExplorer-DdjTnhRR.js",
+      "matches": false,
+      "httpStatus": 403,
+      "error": "HTTP Error 403: Forbidden"
+    },
+    {
+      "file": "assets/NetworkPage-CfkLHiyE.js",
+      "matches": false,
+      "httpStatus": 403,
+      "error": "HTTP Error 403: Forbidden"
+    },
+    {
+      "file": "assets/price-history-BbpouwUT.js",
+      "matches": false,
+      "httpStatus": 403,
+      "error": "HTTP Error 403: Forbidden"
+    },
+    {
+      "file": "assets/PriceChart-DWpgDjsc.js",
+      "matches": false,
+      "httpStatus": 403,
+      "error": "HTTP Error 403: Forbidden"
+    },
+    {
+      "file": "assets/RelativeAnalysisPanel-h0vHrW2T.js",
+      "matches": false,
+      "httpStatus": 403,
+      "error": "HTTP Error 403: Forbidden"
+    },
+    {
+      "file": "assets/ResearchLibrary-DxWZhrTu.js",
+      "matches": false,
+      "httpStatus": 403,
+      "error": "HTTP Error 403: Forbidden"
+    },
+    {
+      "file": "assets/ThresholdBands-CEcs3-UM.js",
+      "matches": false,
+      "httpStatus": 403,
+      "error": "HTTP Error 403: Forbidden"
+    },
+    {
+      "file": "assets/ThresholdSummary-BdIE7EQe.js",
+      "matches": false,
+      "httpStatus": 403,
+      "error": "HTTP Error 403: Forbidden"
+    },
+    {
+      "file": "assets/WatchlistPage-D_137lfu.js",
+      "matches": false,
+      "httpStatus": 403,
+      "error": "HTTP Error 403: Forbidden"
+    },
+    {
+      "file": "brand/apple-touch-icon.png",
+      "matches": false,
+      "httpStatus": 403,
+      "error": "HTTP Error 403: Forbidden"
+    },
+    {
+      "file": "brand/coin-desk-mark-light.svg",
+      "matches": false,
+      "httpStatus": 403,
+      "error": "HTTP Error 403: Forbidden"
+    },
+    {
+      "file": "brand/coin-desk-mark-mono.svg",
+      "matches": false,
+      "httpStatus": 403,
+      "error": "HTTP Error 403: Forbidden"
+    },
+    {
+      "file": "brand/coin-desk-mark.svg",
+      "matches": false,
+      "httpStatus": 403,
+      "error": "HTTP Error 403: Forbidden"
+    },
+    {
+      "file": "brand/coin-desk-shiba-smile.png",
+      "matches": false,
+      "httpStatus": 403,
+      "error": "HTTP Error 403: Forbidden"
+    },
+    {
+      "file": "brand/coin-desk-shiba.png",
+      "matches": false,
+      "httpStatus": 403,
+      "error": "HTTP Error 403: Forbidden"
+    },
+    {
+      "file": "brand/coin-desk-wordmark-light.svg",
+      "matches": false,
+      "httpStatus": 403,
+      "error": "HTTP Error 403: Forbidden"
+    },
+    {
+      "file": "brand/coin-desk-wordmark-mono.svg",
+      "matches": false,
+      "httpStatus": 403,
+      "error": "HTTP Error 403: Forbidden"
+    },
+    {
+      "file": "brand/coin-desk-wordmark.svg",
+      "matches": false,
+      "httpStatus": 403,
+      "error": "HTTP Error 403: Forbidden"
+    },
+    {
+      "file": "brand/favicon-32.png",
+      "matches": false,
+      "httpStatus": 403,
+      "error": "HTTP Error 403: Forbidden"
+    },
+    {
+      "file": "brand/icon-192.png",
+      "matches": false,
+      "httpStatus": 403,
+      "error": "HTTP Error 403: Forbidden"
+    },
+    {
+      "file": "brand/icon-512.png",
+      "matches": false,
+      "httpStatus": 403,
+      "error": "HTTP Error 403: Forbidden"
+    },
+    {
+      "file": "brand/og-card-v1.png",
+      "matches": false,
+      "httpStatus": 403,
+      "error": "HTTP Error 403: Forbidden"
+    },
+    {
+      "file": "brand/og-card-v2.png",
+      "matches": false,
+      "httpStatus": 403,
+      "error": "HTTP Error 403: Forbidden"
+    },
+    {
+      "file": "coin-logos/btc.png",
+      "matches": false,
+      "httpStatus": 403,
+      "error": "HTTP Error 403: Forbidden"
+    },
+    {
+      "file": "coin-logos/doge-official.png",
+      "matches": false,
+      "httpStatus": 403,
+      "error": "HTTP Error 403: Forbidden"
+    },
+    {
+      "file": "coin-logos/doge.png",
+      "matches": false,
+      "httpStatus": 403,
+      "error": "HTTP Error 403: Forbidden"
+    },
+    {
+      "file": "coin-logos/eth.png",
+      "matches": false,
+      "httpStatus": 403,
+      "error": "HTTP Error 403: Forbidden"
+    },
+    {
+      "file": "coin-logos/LICENSE",
+      "matches": false,
+      "httpStatus": 403,
+      "error": "HTTP Error 403: Forbidden"
+    },
+    {
+      "file": "coin-logos/link.png",
+      "matches": false,
+      "httpStatus": 403,
+      "error": "HTTP Error 403: Forbidden"
+    },
+    {
+      "file": "coin-logos/ondo.png",
+      "matches": false,
+      "httpStatus": 403,
+      "error": "HTTP Error 403: Forbidden"
+    },
+    {
+      "file": "coin-logos/pepe.png",
+      "matches": false,
+      "httpStatus": 403,
+      "error": "HTTP Error 403: Forbidden"
+    },
+    {
+      "file": "coin-logos/sol.png",
+      "matches": false,
+      "httpStatus": 403,
+      "error": "HTTP Error 403: Forbidden"
+    },
+    {
+      "file": "coin-logos/xrp.png",
+      "matches": false,
+      "httpStatus": 403,
+      "error": "HTTP Error 403: Forbidden"
+    },
+    {
+      "file": "downloads/coin-desk-importer.zip",
+      "matches": false,
+      "httpStatus": 403,
+      "error": "HTTP Error 403: Forbidden"
+    }
+  ]
+}

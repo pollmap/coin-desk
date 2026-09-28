@@ -1,0 +1,85 @@
+{
+  "checkedAt": "2026-09-28T04:41:50.611592+00:00",
+  "api": {
+    "status": {
+      "httpStatus": 200,
+      "error": null
+    },
+    "health": {
+      "httpStatus": 200,
+      "error": null
+    },
+    "signals": {
+      "httpStatus": 200,
+      "error": null
+    },
+    "briefings": {
+      "httpStatus": 200,
+      "error": null
+    },
+    "chain-context?asset=ETH&metric=tvl": {
+      "httpStatus": 200,
+      "error": null
+    },
+    "market-derivatives": {
+      "httpStatus": 200,
+      "error": null
+    },
+    "network?asset=BTC&metric=mvrv&limit=1": {
+      "httpStatus": 200,
+      "error": null
+    },
+    "derivatives?asset=BTC&metric=funding&limit=1": {
+      "httpStatus": 200,
+      "error": null
+    },
+    "network?asset=DOGE&metric=mvrv&limit=1": {
+      "httpStatus": 200,
+      "error": null
+    },
+    "derivatives?asset=DOGE&metric=funding&limit=1": {
+      "httpStatus": 200,
+      "error": null
+    },
+    "network?asset=ETH&metric=mvrv&limit=1": {
+      "httpStatus": 200,
+      "error": null
+    },
+    "derivatives?asset=ETH&metric=funding&limit=1": {
+      "httpStatus": 200,
+      "error": null
+    }
+  },
+  "health": {
+    "ok": true,
+    "reasons": []
+  },
+  "activeSources": 103,
+  "healthyActiveSources": 103,
+  "delayedSources": [],
+  "observation48h": {
+    "from": 1790397540,
+    "until": 1790570340,
+    "firstRunAt": 1790397648,
+    "lastRunAt": 1790570317,
+    "ticks": 1929,
+    "failures": 653,
+    "expectedRuns": 2880,
+    "missingRuns": 951,
+    "successfulRuns": 1276,
+    "recordingRate": 0.6697916666666667,
+    "successRate": 0.44305555555555554,
+    "longestGapSeconds": 240,
+    "unresolvedErrors": [],
+    "windowSatisfied": true,
+    "healthy": false,
+    "ready": false,
+    "thresholds": {
+      "recordingRate": 0.99,
+      "longestGapSeconds": 180,
+      "graceSeconds": 120
+    }
+  },
+  "serverDeploymentAt": "2026-09-27T18:26:35Z",
+  "operationalSignoff": false
+}

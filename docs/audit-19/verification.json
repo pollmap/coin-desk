@@ -1,0 +1,117 @@
+{
+  "updatedAt": "2026-09-28T04:54:50.999866+00:00",
+  "webVersion": "0.19.0",
+  "extensionVersion": "0.18.0",
+  "workerVersion": "0.17.1",
+  "pullRequest": "https://github.com/pollmap/coin-desk/pull/35",
+  "codeHead": "67afb0deece75f0cf7f35b32cdf6567c6d083ad6",
+  "mainCommit": "1d30708133ee5d9f3620a75d6674acecdbc5f466",
+  "pullRequestCI": {
+    "run": 36377939301,
+    "conclusion": "success",
+    "headSha": "67afb0deece75f0cf7f35b32cdf6567c6d083ad6",
+    "url": "https://github.com/pollmap/coin-desk/actions/runs/36377939301",
+    "unitPassed": 466,
+    "browserPassed": 90,
+    "privateOptInSkipped": 2,
+    "retriesObserved": false,
+    "summary": [
+      "verify\tRun npm run check\t2026-09-28T04:30:02.7770728Z  Test Files  52 passed (52)",
+      "verify\tRun npm run check\t2026-09-28T04:30:02.7772029Z       Tests  466 passed (466)",
+      "verify\tRun npm run test:e2e\t2026-09-28T04:39:06.7606676Z   2 skipped",
+      "verify\tRun npm run test:e2e\t2026-09-28T04:39:06.7606978Z   90 passed (8.1m)"
+    ]
+  },
+  "mainCI": {
+    "run": 36378722086,
+    "conclusion": "success",
+    "headSha": "1d30708133ee5d9f3620a75d6674acecdbc5f466",
+    "url": "https://github.com/pollmap/coin-desk/actions/runs/36378722086",
+    "unitPassed": 466,
+    "browserPassed": 90,
+    "privateOptInSkipped": 2,
+    "retriesObserved": false,
+    "summary": [
+      "verify\tRun npm run check\t2026-09-28T04:41:05.7680161Z  Test Files  52 passed (52)",
+      "verify\tRun npm run check\t2026-09-28T04:41:05.7681257Z       Tests  466 passed (466)",
+      "verify\tRun npm run test:e2e\t2026-09-28T04:51:23.2670254Z   2 skipped",
+      "verify\tRun npm run test:e2e\t2026-09-28T04:51:23.2670678Z   90 passed (9.2m)"
+    ]
+  },
+  "deployment": {
+    "url": "https://efc4ad63.coin-desk.pages.dev",
+    "scope": "Pages only; Workers/schema unchanged",
+    "publicFilesMatched": 70
+  },
+  "localChecks": {
+    "unitPassed": 466,
+    "recoveryPassed": 2,
+    "webkitSelectedPassed": 12,
+    "webkitZoomAndContainerAfterFixPassed": 2,
+    "webkitFocusAndContextAfterFixPassed": 4,
+    "chromiumSelectedFirst": {
+      "passed": 3,
+      "failed": 9
+    },
+    "chromiumSelectedOneWorker": {
+      "passed": 3,
+      "failed": 9
+    },
+    "browserErrors": [
+      "spawn EPERM",
+      "Target crashed"
+    ],
+    "initialServerStartupTimeoutSeconds": 60,
+    "osCauseConfirmed": false,
+    "webkitReadingRestorationAfterFixPassed": 4,
+    "intermediateReadingRestorationAttempts": [
+      {
+        "approach": "Immediate section scroll",
+        "passed": 2,
+        "failed": 2
+      },
+      {
+        "approach": "Temporary manual history restoration",
+        "passed": 2,
+        "failed": 2
+      }
+    ],
+    "readingRestorationFinal": "Next animation frame, without changing history.scrollRestoration"
+  },
+  "firstPullRequestCI": {
+    "run": 36374185165,
+    "browserPassed": 85,
+    "browserFailed": 1,
+    "privateOptInSkipped": 2,
+    "failure": "Linux WebKit guide overflow at CSS 200 percent zoom, including retry",
+    "resolution": "Container-width reflow and regression for three articles with expanded application controls; no relaxed assertions"
+  },
+  "secondPullRequestCI": {
+    "run": 36375228983,
+    "browserPassed": 87,
+    "browserFailed": 1,
+    "privateOptInSkipped": 2,
+    "failure": "Chromium heading focus overwritten by common route focus callback",
+    "resolution": "Common navigation targets reading-page heading; context changes stay at application controls; assert settled focus"
+  },
+  "appleDevice": {
+    "available": false,
+    "safariVoiceOverVerified": false
+  },
+  "privateCorpusReviewIncluded": false,
+  "operationalSignoff": false,
+  "thirdPullRequestCI": {
+    "run": 36376250703,
+    "browserPassed": 89,
+    "browserFailed": 1,
+    "privateOptInSkipped": 2,
+    "failure": "Chromium back-navigation assertion expected the heading despite a saved #example fragment",
+    "resolution": "Restore the reading section and focus after native popstate scrolling; assert fragment URL, focus and viewport together"
+  },
+  "assetVerification": {
+    "initialPythonDefaultUserAgent": "HTTP 403 / Cloudflare 1010",
+    "identifiedClient": "CoinDesk-Release-Verification/0.19 (+https://coin-desk.pages.dev)",
+    "browserImpersonation": false,
+    "securitySettingsChanged": false
+  }
+}

@@ -1,0 +1,46 @@
+{
+  "checkedAt": "2026-09-28T04:42:16.337Z",
+  "environment": "User Chrome on production",
+  "checks": {
+    "reading": {
+      "applicationMounted": false,
+      "chartCount": 0,
+      "example": true,
+      "formula": true,
+      "title": "가격 위치 밴드"
+    },
+    "readingAnchor": {
+      "focused": "example",
+      "top": 90.09375
+    },
+    "relatedExplanation": {
+      "chartCount": 0,
+      "focusedTag": "H1",
+      "focusedText": "볼린저밴드",
+      "scrollY": 0,
+      "title": "볼린저밴드"
+    },
+    "application": {
+      "asset": "DOGE",
+      "chartCount": 0,
+      "link": "/?asset=DOGE&price_source=upbit&period=all&log=1&market=upbit&guide=rainbow&visual=rainbow",
+      "source": "upbit"
+    },
+    "explicitChart": {
+      "chartCount": 1,
+      "chartKind": "position",
+      "chartLabel": "DOGE KRW 가격, 730일 가격 분포와 낙폭. 날짜별 값은 아래 날짜 탐색으로 확인할 수 있습니다.",
+      "guideArticle": false,
+      "source": "upbit",
+      "title": "도지코인 DOGE",
+      "visual": "rainbow"
+    },
+    "returnToExplanation": {
+      "applicationMounted": false,
+      "chartCount": 0,
+      "methodVisible": true,
+      "title": "가격 위치 밴드"
+    }
+  },
+  "safariVoiceOver": false
+}
