@@ -259,6 +259,36 @@ test('reading shortcuts stay in the dictionary, formulas are open and learning d
   await expect(page.locator('[data-chart-kind="position"]')).toBeVisible();
 });
 
+test('reader reflows in a narrow desktop container, including expanded chart controls', async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 1280, height: 1000 });
+  for (const id of ['rainbow', 'net-mvrv', 'pattern-bullish-engulfing']) {
+    await page.goto(`/learn/${id}?asset=ETH`);
+    await expect(page.locator('.guide-article')).toBeVisible();
+    // Desktop media queries still apply, but the available reading area is narrow.
+    await page.addStyleTag({ content: '.learn-page { max-width: 320px; }' });
+    await openApply(page);
+    const toc = await page.locator('.guide-toc').boundingBox();
+    const article = await page.locator('.guide-article').boundingBox();
+    expect(toc!.y + toc!.height).toBeLessThanOrEqual(article!.y);
+    expect(article!.width).toBeGreaterThanOrEqual(319);
+    expect(
+      await page.locator('.guide-article').evaluate((el) => el.scrollWidth <= el.clientWidth + 1),
+    ).toBe(true);
+    expect(
+      await page.evaluate(
+        () => document.documentElement.scrollWidth <= document.documentElement.clientWidth + 1,
+      ),
+    ).toBe(true);
+    for (const select of await page.locator('.guide-apply select').all()) {
+      const bounds = (await select.boundingBox())!;
+      expect(bounds.x).toBeGreaterThanOrEqual(article!.x);
+      expect(bounds.x + bounds.width).toBeLessThanOrEqual(article!.x + article!.width);
+    }
+  }
+});
+
 test('every existing guide renders an explanation and worked example without a chart', async ({
   page,
 }) => {

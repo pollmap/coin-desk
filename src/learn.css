@@ -1,4 +1,6 @@
 .learn-page {
+  container: learn / inline-size;
+  width: 100%;
   max-width: 1240px;
   margin: 0 auto;
   padding: 8px 0 32px;
@@ -34,9 +36,16 @@
   gap: 6px;
   font-size: 12px;
   color: var(--muted);
+  min-width: 0;
+  max-width: 100%;
+}
+.learn-controls label {
+  flex: 1 1 160px;
 }
 .learn-controls select,
 .guide-trend select {
+  width: 100%;
+  min-width: 0;
   min-height: 44px;
   max-width: 100%;
   padding: 8px 12px;
@@ -244,10 +253,15 @@
   justify-content: space-between;
 }
 .guide-title h1 {
+  min-width: 0;
+  overflow-wrap: anywhere;
   font-size: 30px;
   line-height: 1.4;
   margin: 0;
   letter-spacing: -0.5px;
+}
+.guide-title button {
+  flex: none;
 }
 .guide-english {
   color: var(--muted);
@@ -329,6 +343,7 @@
 }
 .guide-reading {
   border-collapse: collapse;
+  table-layout: fixed;
   width: 100%;
   margin-top: 20px;
   font-size: 14px;
@@ -632,7 +647,8 @@
     padding: 20px;
   }
 }
-@media (max-width: 767px) {
+/* Reflow by the space left for the reader, including desktop zoom and sidebars. */
+@container learn (max-width: 760px) {
   .learn-heading {
     align-items: flex-start;
     flex-direction: column;
@@ -640,10 +656,6 @@
   }
   .learn-controls {
     width: 100%;
-  }
-  .learn-controls label {
-    flex: 1;
-    min-width: 0;
   }
   .guide-layout {
     display: flex;
@@ -715,6 +727,17 @@
   .learn-presets a {
     padding: 12px;
   }
+  .learn-presets > div {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .learn-search {
+    padding: 4px 10px;
+  }
+  .learn-search input {
+    font-size: 14px;
+  }
+}
+@media (max-width: 767px) {
   .pattern-observations th,
   .pattern-observations td {
     padding: 6px 3px;
@@ -731,15 +754,6 @@
   }
   .pattern-config {
     padding: 16px;
-  }
-  .guide-trend select {
-    width: 100%;
-  }
-  .learn-search {
-    padding: 4px 10px;
-  }
-  .learn-search input {
-    font-size: 14px;
   }
   .learn-page {
     padding-top: 0;
