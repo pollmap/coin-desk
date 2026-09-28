@@ -244,7 +244,9 @@ export function LearnPage() {
           )}
           {!id && (
             <>
-              <h1 tabIndex={-1}>분석 사전</h1>
+              <h1 tabIndex={-1} data-route-focus>
+                분석 사전
+              </h1>
               <p>지표의 뜻부터 계산식과 숫자 예시까지.</p>
             </>
           )}
@@ -267,7 +269,9 @@ export function LearnPage() {
                 {article.advanced ? ' · 상세 분석' : ''}
               </div>
               <div className="guide-title">
-                <h1 tabIndex={-1}>{article.title}</h1>
+                <h1 tabIndex={-1} data-route-focus>
+                  {article.title}
+                </h1>
                 <button
                   aria-label="이 설명 즐겨찾기"
                   aria-pressed={favorites.includes(id)}

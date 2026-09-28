@@ -245,18 +245,61 @@ test('reading shortcuts stay in the dictionary, formulas are open and learning d
   await expect(page.locator('canvas, [data-chart-kind], .guide-primary')).toHaveCount(0);
   await page.getByRole('link', { name: '숫자로 읽어보기', exact: true }).click();
   await expect(page.locator('#example')).toBeFocused();
-  await page
+  const related = page
     .locator('.guide-related')
-    .getByRole('link', { name: '볼린저밴드', exact: true })
-    .click();
+    .getByRole('link', { name: '볼린저밴드', exact: true });
+  await related.focus();
+  await page.keyboard.press('Enter');
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText('볼린저밴드');
+  // Let the common route focus callback run before checking the final target.
+  await page.evaluate(
+    () =>
+      new Promise<void>((resolve) =>
+        requestAnimationFrame(() => requestAnimationFrame(() => resolve())),
+      ),
+  );
   await expect(page.getByRole('heading', { level: 1 })).toBeFocused();
   expect(chartRequests).toEqual([]);
   await page.goBack();
   await expect(page.locator('.guide-method')).toContainText('N = 730');
+  await page.evaluate(
+    () =>
+      new Promise<void>((resolve) =>
+        requestAnimationFrame(() => requestAnimationFrame(() => resolve())),
+      ),
+  );
+  await expect(page.getByRole('heading', { level: 1 })).toBeFocused();
   await openApply(page);
   await expect(page.locator('.guide-primary')).toContainText('DOGE · Upbit KRW');
   await page.locator('.guide-primary').click();
   await expect(page.locator('[data-chart-kind="position"]')).toBeVisible();
+});
+
+test('chart application keeps the selected control visible and focused when its context changes', async ({
+  page,
+}) => {
+  await page.goto('/learn/rainbow?asset=BTC&price_source=reference');
+  await openApply(page);
+  for (const [name, value] of [
+    ['사전 코인', 'ETH'],
+    ['사전 가격 기준', 'binance'],
+    ['사전 코인', 'DOGE'],
+  ]) {
+    const control = page.getByLabel(name, { exact: true });
+    await control.focus();
+    await control.selectOption(value);
+    await page.evaluate(
+      () =>
+        new Promise<void>((resolve) =>
+          requestAnimationFrame(() => requestAnimationFrame(() => resolve())),
+        ),
+    );
+    await expect(control).toBeFocused();
+    const bounds = (await control.boundingBox())!;
+    expect(bounds.y).toBeGreaterThanOrEqual(0);
+    expect(bounds.y + bounds.height).toBeLessThanOrEqual(page.viewportSize()!.height);
+  }
+  await expect(page.locator('.guide-primary')).toContainText('DOGE · Binance USDT');
 });
 
 test('reader reflows in a narrow desktop container, including expanded chart controls', async ({

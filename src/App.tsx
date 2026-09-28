@@ -1051,13 +1051,21 @@ export default function App() {
     setMobile(false);
   }, [location.pathname, location.search]);
   const pageKey =
-    location.pathname + ':' + (new URLSearchParams(location.search).get('asset') || '');
+    location.pathname +
+    ':' +
+    (location.pathname === '/learn' || location.pathname.startsWith('/learn/')
+      ? ''
+      : new URLSearchParams(location.search).get('asset') || '');
   const previousPage = useRef(pageKey);
   useEffect(() => {
     const frame = requestAnimationFrame(() => {
       if (previousPage.current !== pageKey && !location.hash) {
         window.scrollTo({ top: 0, behavior: 'instant' });
-        document.getElementById('main-content')?.focus({ preventScroll: true });
+        const main = document.getElementById('main-content');
+        // Reading pages focus their heading. Do not overwrite that destination
+        // with the main landmark in a later animation frame.
+        const target = main?.querySelector<HTMLElement>('[data-route-focus]') ?? main;
+        target?.focus({ preventScroll: true });
       }
       previousPage.current = pageKey;
     });
