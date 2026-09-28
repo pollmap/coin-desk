@@ -1,0 +1,79 @@
+{
+  "updatedAt": "2026-09-28T02:28:20.344387+00:00",
+  "webVersion": "0.18.0",
+  "extensionVersion": "0.18.0",
+  "workerVersion": "0.17.1",
+  "pullRequest": "https://github.com/pollmap/coin-desk/pull/34",
+  "codeHead": "78f9395666a51fb355698a566ba2428e5c43e9d7",
+  "pullRequestCI": {
+    "run": 36368576574,
+    "status": "success",
+    "unitTests": 392,
+    "recoveryTests": 2,
+    "browserPassed": 82,
+    "browserPrivateOptInSkipped": 2,
+    "browserRetriesUsed": 0
+  },
+  "mainCI": {
+    "run": 36369215531,
+    "status": "success",
+    "commit": "59e7df663e864128b3bdf5889fa97952a3748a87",
+    "unitTests": 392,
+    "recoveryTests": 2,
+    "browserPassed": 82,
+    "browserPrivateOptInSkipped": 2,
+    "browserRetriesUsed": 0
+  },
+  "deployment": {
+    "url": "https://f6173978.coin-desk.pages.dev",
+    "publicUrl": "https://coin-desk.pages.dev",
+    "mainCommit": "59e7df663e864128b3bdf5889fa97952a3748a87",
+    "scope": "Pages only; Workers and schema unchanged",
+    "publicFilesMatchBuild": 69,
+    "publicFilesMismatched": 0
+  },
+  "localBrowserBeforeFinalFix": {
+    "passed": 81,
+    "failed": 1,
+    "skippedPrivateOptIn": 2,
+    "failure": "WebKit 1000px pattern dialog opener focus after Escape"
+  },
+  "localFocusRegressionAfterFix": {
+    "project": "WebKit",
+    "repeatEach": 3,
+    "retries": 0,
+    "passed": 3
+  },
+  "fix": "Restore opener focus on native dialog close event in addition to explicit close/cancel handling",
+  "privateArchiveStructure": {
+    "rows": 6227,
+    "images": 4387,
+    "missing": 0,
+    "damaged": 0,
+    "duplicateIds": 0
+  },
+  "privateContentReviewThisRelease": {
+    "postBodiesRead": 33,
+    "imagesViewed": 5,
+    "chartRecipesMapped": 4,
+    "methodsIndependentlyValidated": 0,
+    "fullReviewComplete": false
+  },
+  "actualChromeExtension": {
+    "userConfirmedInstallation": true,
+    "userConfirmedRefreshAndStart": true,
+    "liveLibraryHandshakeVerified": true,
+    "fullCollectionAndTransferVerified": false,
+    "note": "Actual production library acknowledged the installed extension after refresh. Collection and transfer totals are not yet verified."
+  },
+  "localArchiveImport": {
+    "verified": false,
+    "reason": "Browser fileChooser.setFiles denied local file access; user asked to enable file URL access for the ChatGPT browser extension or import folders directly."
+  },
+  "appleDevice": {
+    "available": false,
+    "safariVoiceOverVerified": false,
+    "reason": "User confirmed no Apple device available"
+  },
+  "operationalSignoff": false
+}

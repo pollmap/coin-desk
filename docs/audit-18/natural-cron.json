@@ -1,0 +1,259 @@
+{
+  "checkedAt": "2026-09-28T02:11:59.510483+00:00",
+  "workerVersion": "0.17.1",
+  "method": "Remote SELECT only; no direct collection API or overview requested during the interval. Other visitors cannot be ruled out. This short sample is not a full day or 48-hour stability result.",
+  "fromLastObservedTick": 1790561137,
+  "throughLastObservedTick": 1790561437,
+  "elapsedSeconds": 300,
+  "newCompletedCronRuns": [
+    {
+      "started_at": 1790561437,
+      "completed_at": 1790561438,
+      "job": null,
+      "outcome": "idle"
+    },
+    {
+      "started_at": 1790561377,
+      "completed_at": 1790561379,
+      "job": "BTC:upbit:1h",
+      "outcome": "ok"
+    },
+    {
+      "started_at": 1790561317,
+      "completed_at": 1790561319,
+      "job": "ETH:upbit:1d",
+      "outcome": "ok"
+    },
+    {
+      "started_at": 1790561257,
+      "completed_at": 1790561259,
+      "job": "SOL:upbit:1h",
+      "outcome": "ok"
+    },
+    {
+      "started_at": 1790561197,
+      "completed_at": 1790561199,
+      "job": "DOGE:upbit:1d",
+      "outcome": "ok"
+    }
+  ],
+  "failedOrUnfinishedRuns": [],
+  "quoteChanges": [
+    {
+      "key": "quote:BTC:binance",
+      "before": 1790561138,
+      "after": 1790561438,
+      "beforeSuccess": 1790561138,
+      "afterSuccess": 1790561438,
+      "failures": 0,
+      "error": null
+    },
+    {
+      "key": "quote:BTC:upbit",
+      "before": 1790561130,
+      "after": 1790561429,
+      "beforeSuccess": 1790561131,
+      "afterSuccess": 1790561431,
+      "failures": 0,
+      "error": null
+    },
+    {
+      "key": "quote:DOGE:binance",
+      "before": 1790561138,
+      "after": 1790561438,
+      "beforeSuccess": 1790561138,
+      "afterSuccess": 1790561438,
+      "failures": 0,
+      "error": null
+    },
+    {
+      "key": "quote:DOGE:upbit",
+      "before": 1790561114,
+      "after": 1790561423,
+      "beforeSuccess": 1790561131,
+      "afterSuccess": 1790561431,
+      "failures": 0,
+      "error": null
+    },
+    {
+      "key": "quote:ETH:binance",
+      "before": 1790561138,
+      "after": 1790561438,
+      "beforeSuccess": 1790561138,
+      "afterSuccess": 1790561438,
+      "failures": 0,
+      "error": null
+    },
+    {
+      "key": "quote:ETH:upbit",
+      "before": 1790561129,
+      "after": 1790561428,
+      "beforeSuccess": 1790561131,
+      "afterSuccess": 1790561431,
+      "failures": 0,
+      "error": null
+    }
+  ],
+  "derivativeChanges": [
+    {
+      "key": "derivatives:BTC:funding",
+      "before": 1790553600,
+      "after": 1790553600,
+      "beforeSuccess": 1790561138,
+      "afterSuccess": 1790561439,
+      "failures": 0,
+      "error": null
+    },
+    {
+      "key": "derivatives:BTC:long_account_ratio",
+      "before": 1790560800,
+      "after": 1790560800,
+      "beforeSuccess": 1790561140,
+      "afterSuccess": 1790561441,
+      "failures": 0,
+      "error": null
+    },
+    {
+      "key": "derivatives:BTC:long_account_ratio_daily",
+      "before": 1790553600,
+      "after": 1790553600,
+      "beforeSuccess": 1790558918,
+      "afterSuccess": 1790558918,
+      "failures": 0,
+      "error": null
+    },
+    {
+      "key": "derivatives:BTC:open_interest",
+      "before": 1790560800,
+      "after": 1790560800,
+      "beforeSuccess": 1790561139,
+      "afterSuccess": 1790561440,
+      "failures": 0,
+      "error": null
+    },
+    {
+      "key": "derivatives:BTC:open_interest_daily",
+      "before": 1790553600,
+      "after": 1790553600,
+      "beforeSuccess": 1790560599,
+      "afterSuccess": 1790560599,
+      "failures": 0,
+      "error": null
+    },
+    {
+      "key": "derivatives:DOGE:funding",
+      "before": 1790553600,
+      "after": 1790553600,
+      "beforeSuccess": 1790560913,
+      "afterSuccess": 1790561198,
+      "failures": 0,
+      "error": null
+    },
+    {
+      "key": "derivatives:DOGE:long_account_ratio",
+      "before": 1790560800,
+      "after": 1790560800,
+      "beforeSuccess": 1790560916,
+      "afterSuccess": 1790561200,
+      "failures": 0,
+      "error": null
+    },
+    {
+      "key": "derivatives:DOGE:long_account_ratio_daily",
+      "before": 1790553600,
+      "after": 1790553600,
+      "beforeSuccess": 1790558378,
+      "afterSuccess": 1790558378,
+      "failures": 0,
+      "error": null
+    },
+    {
+      "key": "derivatives:DOGE:open_interest",
+      "before": 1790560800,
+      "after": 1790560800,
+      "beforeSuccess": 1790560915,
+      "afterSuccess": 1790561199,
+      "failures": 0,
+      "error": null
+    },
+    {
+      "key": "derivatives:DOGE:open_interest_daily",
+      "before": 1790553600,
+      "after": 1790553600,
+      "beforeSuccess": 1790558678,
+      "afterSuccess": 1790558678,
+      "failures": 0,
+      "error": null
+    },
+    {
+      "key": "derivatives:ETH:funding",
+      "before": 1790553600,
+      "after": 1790553600,
+      "beforeSuccess": 1790560958,
+      "afterSuccess": 1790561259,
+      "failures": 0,
+      "error": null
+    },
+    {
+      "key": "derivatives:ETH:long_account_ratio",
+      "before": 1790560800,
+      "after": 1790560800,
+      "beforeSuccess": 1790560961,
+      "afterSuccess": 1790561261,
+      "failures": 0,
+      "error": null
+    },
+    {
+      "key": "derivatives:ETH:long_account_ratio_daily",
+      "before": 1790553600,
+      "after": 1790553600,
+      "beforeSuccess": 1790558498,
+      "afterSuccess": 1790558498,
+      "failures": 0,
+      "error": null
+    },
+    {
+      "key": "derivatives:ETH:open_interest",
+      "before": 1790560800,
+      "after": 1790560800,
+      "beforeSuccess": 1790560960,
+      "afterSuccess": 1790561260,
+      "failures": 0,
+      "error": null
+    },
+    {
+      "key": "derivatives:ETH:open_interest_daily",
+      "before": 1790553600,
+      "after": 1790553600,
+      "beforeSuccess": 1790558138,
+      "afterSuccess": 1790558138,
+      "failures": 0,
+      "error": null
+    }
+  ],
+  "backfillStates": [],
+  "briefings": [
+    {
+      "id": "2026-09-28",
+      "created_at": 1790554238
+    },
+    {
+      "id": "2026-09-27",
+      "created_at": 1790468260
+    },
+    {
+      "id": "2026-09-26",
+      "created_at": 1790381433
+    }
+  ],
+  "readOnlyRowsWritten": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+  ]
+}
