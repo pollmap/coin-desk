@@ -1,0 +1,517 @@
+{
+  "checkedAt": "2026-09-28T00:25:47.168272+00:00",
+  "version": "0.17.1",
+  "deployedCodeCommit": "93b93d0647344b3b1557c43aaa20947f534e73c4",
+  "repositoryCommitAtCheck": "fa1e212cdcf00cbb19d619c0ef80304210c393e4",
+  "codeCI": {
+    "run": 36340491951,
+    "conclusion": "success"
+  },
+  "publicEndpoints": {
+    "status": {
+      "status": 200,
+      "rows": 0
+    },
+    "health": {
+      "status": 200,
+      "rows": 0,
+      "ok": true,
+      "reasons": []
+    },
+    "signals": {
+      "status": 200,
+      "rows": 12
+    },
+    "briefings": {
+      "status": 200,
+      "rows": 3,
+      "ids": [
+        {
+          "id": "2026-09-28",
+          "createdAt": 1790554238
+        },
+        {
+          "id": "2026-09-27",
+          "createdAt": 1790468260
+        },
+        {
+          "id": "2026-09-26",
+          "createdAt": 1790381433
+        }
+      ]
+    },
+    "chain-context?asset=ETH&metric=tvl": {
+      "status": 200,
+      "rows": 3287
+    },
+    "market-derivatives": {
+      "status": 200,
+      "rows": 8
+    },
+    "network?asset=BTC&metric=mvrv&limit=1": {
+      "status": 200,
+      "rows": 1
+    },
+    "derivatives?asset=BTC&metric=funding&limit=1": {
+      "status": 200,
+      "rows": 1
+    },
+    "network?asset=DOGE&metric=mvrv&limit=1": {
+      "status": 200,
+      "rows": 1
+    },
+    "derivatives?asset=DOGE&metric=funding&limit=1": {
+      "status": 200,
+      "rows": 1
+    },
+    "network?asset=ETH&metric=mvrv&limit=1": {
+      "status": 200,
+      "rows": 1
+    },
+    "derivatives?asset=ETH&metric=funding&limit=1": {
+      "status": 200,
+      "rows": 1
+    }
+  },
+  "coverage": {
+    "expectedSources": 103,
+    "healthySources": 103,
+    "priceMarkets": 16,
+    "histories": 32
+  },
+  "nonHealthyActiveSources": [],
+  "observation48h": {
+    "from": 1790382060,
+    "until": 1790554860,
+    "firstRunAt": 1790382107,
+    "lastRunAt": 1790554837,
+    "ticks": 1923,
+    "failures": 658,
+    "expectedRuns": 2880,
+    "missingRuns": 957,
+    "successfulRuns": 1265,
+    "recordingRate": 0.6677083333333333,
+    "successRate": 0.4392361111111111,
+    "longestGapSeconds": 240,
+    "unresolvedErrors": [],
+    "windowSatisfied": true,
+    "healthy": false,
+    "ready": false,
+    "thresholds": {
+      "recordingRate": 0.99,
+      "longestGapSeconds": 180,
+      "graceSeconds": 120
+    }
+  },
+  "deploymentReadback": {
+    "checkedAt": "2026-09-28T00:24:37.451821+00:00",
+    "workers": {
+      "btc-desk": {
+        "latestDeployment": [
+          {
+            "id": "65e087f0-c9d0-461c-a249-dc0fc37aee7a",
+            "created_on": "2026-09-27T18:25:43.593575Z",
+            "versions": [
+              {
+                "version_id": "7b917f0f-3b54-4c5c-bbed-3712db6b2100",
+                "percentage": 100
+              }
+            ],
+            "source": "wrangler"
+          }
+        ],
+        "schedules": {
+          "schedules": [
+            {
+              "cron": "* * * * *",
+              "created_on": "2026-09-19T16:06:56.138768Z",
+              "modified_on": "2026-09-27T18:25:45.731722Z"
+            }
+          ]
+        }
+      },
+      "btc-desk-quotes": {
+        "latestDeployment": [
+          {
+            "id": "6ecbfd9b-c925-4ff6-a016-3d979764f873",
+            "created_on": "2026-09-27T18:25:18.864711Z",
+            "versions": [
+              {
+                "version_id": "649b29c4-5699-4770-8e1a-8bd1d271d7b7",
+                "percentage": 100
+              }
+            ],
+            "source": "wrangler"
+          }
+        ],
+        "schedules": {
+          "schedules": [
+            {
+              "cron": "* * * * *",
+              "created_on": "2026-09-27T10:22:25.312024Z",
+              "modified_on": "2026-09-27T18:25:20.349712Z"
+            }
+          ]
+        }
+      }
+    }
+  },
+  "naturalCollection": {
+    "method": "Remote SELECT comparison and bounded cron run history crossing UTC midnight. No forced collector or overview calls in this task; other visitors cannot be excluded.",
+    "window": {
+      "checkedAt": "2026-09-28T00:24:37.812527+00:00",
+      "fromExclusive": 1790551477,
+      "throughInclusive": 1790555017,
+      "expectedMinuteSlots": 59,
+      "recordedRuns": 59,
+      "successfulRuns": 59,
+      "failedOrUnfinished": [],
+      "longestTickGapSeconds": 75,
+      "rowsRead": 3701,
+      "rowsWritten": 0,
+      "outcomes": {
+        "ok": 57,
+        "idle": 2
+      },
+      "recordedStartTimes": [
+        1790551537,
+        1790551597,
+        1790551657,
+        1790551717,
+        1790551777,
+        1790551837,
+        1790551897,
+        1790551957,
+        1790552017,
+        1790552077,
+        1790552137,
+        1790552197,
+        1790552257,
+        1790552317,
+        1790552377,
+        1790552437,
+        1790552497,
+        1790552557,
+        1790552617,
+        1790552677,
+        1790552737,
+        1790552797,
+        1790552857,
+        1790552917,
+        1790552977,
+        1790553037,
+        1790553097,
+        1790553157,
+        1790553217,
+        1790553277,
+        1790553337,
+        1790553397,
+        1790553457,
+        1790553517,
+        1790553577,
+        1790553637,
+        1790553712,
+        1790553757,
+        1790553817,
+        1790553877,
+        1790553937,
+        1790553997,
+        1790554057,
+        1790554117,
+        1790554177,
+        1790554237,
+        1790554297,
+        1790554357,
+        1790554417,
+        1790554477,
+        1790554537,
+        1790554597,
+        1790554657,
+        1790554717,
+        1790554777,
+        1790554837,
+        1790554897,
+        1790554957,
+        1790555017
+      ],
+      "sql": "SELECT started_at,completed_at,job,outcome,error FROM cron_runs WHERE started_at > ? AND started_at <= ? ORDER BY started_at"
+    },
+    "quoteChanges": [
+      {
+        "key": "quote:BTC:binance",
+        "beforeDataAsOf": 1790551478,
+        "afterDataAsOf": 1790555018,
+        "beforeSuccess": 1790551478,
+        "afterSuccess": 1790555018,
+        "failures": 0,
+        "error": null
+      },
+      {
+        "key": "quote:BTC:upbit",
+        "beforeDataAsOf": 1790551469,
+        "afterDataAsOf": 1790555010,
+        "beforeSuccess": 1790551471,
+        "afterSuccess": 1790555011,
+        "failures": 0,
+        "error": null
+      },
+      {
+        "key": "quote:DOGE:binance",
+        "beforeDataAsOf": 1790551478,
+        "afterDataAsOf": 1790555018,
+        "beforeSuccess": 1790551478,
+        "afterSuccess": 1790555018,
+        "failures": 0,
+        "error": null
+      },
+      {
+        "key": "quote:DOGE:upbit",
+        "beforeDataAsOf": 1790551456,
+        "afterDataAsOf": 1790555005,
+        "beforeSuccess": 1790551471,
+        "afterSuccess": 1790555011,
+        "failures": 0,
+        "error": null
+      },
+      {
+        "key": "quote:ETH:binance",
+        "beforeDataAsOf": 1790551477,
+        "afterDataAsOf": 1790555018,
+        "beforeSuccess": 1790551478,
+        "afterSuccess": 1790555018,
+        "failures": 0,
+        "error": null
+      },
+      {
+        "key": "quote:ETH:upbit",
+        "beforeDataAsOf": 1790551468,
+        "afterDataAsOf": 1790555006,
+        "beforeSuccess": 1790551471,
+        "afterSuccess": 1790555011,
+        "failures": 0,
+        "error": null
+      }
+    ],
+    "recentDerivativeChanges": [
+      {
+        "key": "derivatives:BTC:funding",
+        "beforeDataAsOf": 1790524800,
+        "afterDataAsOf": 1790553600,
+        "beforeSuccess": 1790551238,
+        "afterSuccess": 1790554838,
+        "failures": 0,
+        "error": null
+      },
+      {
+        "key": "derivatives:BTC:long_account_ratio",
+        "beforeDataAsOf": 1790550000,
+        "afterDataAsOf": 1790553600,
+        "beforeSuccess": 1790551241,
+        "afterSuccess": 1790554840,
+        "failures": 0,
+        "error": null
+      },
+      {
+        "key": "derivatives:BTC:open_interest",
+        "beforeDataAsOf": 1790550000,
+        "afterDataAsOf": 1790553600,
+        "beforeSuccess": 1790551239,
+        "afterSuccess": 1790554839,
+        "failures": 0,
+        "error": null
+      },
+      {
+        "key": "derivatives:DOGE:funding",
+        "beforeDataAsOf": 1790524800,
+        "afterDataAsOf": 1790553600,
+        "beforeSuccess": 1790551298,
+        "afterSuccess": 1790554899,
+        "failures": 0,
+        "error": null
+      },
+      {
+        "key": "derivatives:DOGE:long_account_ratio",
+        "beforeDataAsOf": 1790550000,
+        "afterDataAsOf": 1790553600,
+        "beforeSuccess": 1790551301,
+        "afterSuccess": 1790554901,
+        "failures": 0,
+        "error": null
+      },
+      {
+        "key": "derivatives:DOGE:open_interest",
+        "beforeDataAsOf": 1790550000,
+        "afterDataAsOf": 1790553600,
+        "beforeSuccess": 1790551299,
+        "afterSuccess": 1790554900,
+        "failures": 0,
+        "error": null
+      },
+      {
+        "key": "derivatives:ETH:funding",
+        "beforeDataAsOf": 1790524800,
+        "afterDataAsOf": 1790553600,
+        "beforeSuccess": 1790551358,
+        "afterSuccess": 1790554959,
+        "failures": 0,
+        "error": null
+      },
+      {
+        "key": "derivatives:ETH:long_account_ratio",
+        "beforeDataAsOf": 1790550000,
+        "afterDataAsOf": 1790553600,
+        "beforeSuccess": 1790551361,
+        "afterSuccess": 1790554961,
+        "failures": 0,
+        "error": null
+      },
+      {
+        "key": "derivatives:ETH:open_interest",
+        "beforeDataAsOf": 1790550000,
+        "afterDataAsOf": 1790553600,
+        "beforeSuccess": 1790551360,
+        "afterSuccess": 1790554960,
+        "failures": 0,
+        "error": null
+      }
+    ],
+    "recentDerivativeRefreshesAdvanced": 9,
+    "dailyDerivativeChanges": [
+      {
+        "key": "derivatives:BTC:long_account_ratio_daily",
+        "beforeDataAsOf": 1790467200,
+        "afterDataAsOf": 1790467200,
+        "beforeSuccess": 1790547938,
+        "afterSuccess": 1790551598,
+        "failures": 0,
+        "error": null
+      },
+      {
+        "key": "derivatives:BTC:open_interest_daily",
+        "beforeDataAsOf": 1790467200,
+        "afterDataAsOf": 1790467200,
+        "beforeSuccess": 1790549559,
+        "afterSuccess": 1790553218,
+        "failures": 0,
+        "error": null
+      },
+      {
+        "key": "derivatives:DOGE:long_account_ratio_daily",
+        "beforeDataAsOf": 1790467200,
+        "afterDataAsOf": 1790553600,
+        "beforeSuccess": 1790550999,
+        "afterSuccess": 1790554718,
+        "failures": 0,
+        "error": null
+      },
+      {
+        "key": "derivatives:DOGE:open_interest_daily",
+        "beforeDataAsOf": 1790467200,
+        "afterDataAsOf": 1790553600,
+        "beforeSuccess": 1790551239,
+        "afterSuccess": 1790554958,
+        "failures": 0,
+        "error": null
+      },
+      {
+        "key": "derivatives:ETH:long_account_ratio_daily",
+        "beforeDataAsOf": 1790467200,
+        "afterDataAsOf": 1790553600,
+        "beforeSuccess": 1790551178,
+        "afterSuccess": 1790554838,
+        "failures": 0,
+        "error": null
+      },
+      {
+        "key": "derivatives:ETH:open_interest_daily",
+        "beforeDataAsOf": 1790467200,
+        "afterDataAsOf": 1790553600,
+        "beforeSuccess": 1790550818,
+        "afterSuccess": 1790554478,
+        "failures": 0,
+        "error": null
+      }
+    ],
+    "readOnlyRowsWritten": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "backfillState": [],
+    "briefings": [
+      {
+        "id": "2026-09-28",
+        "created_at": 1790554238
+      },
+      {
+        "id": "2026-09-27",
+        "created_at": 1790468260
+      },
+      {
+        "id": "2026-09-26",
+        "created_at": 1790381433
+      }
+    ]
+  },
+  "nextDayBriefing": {
+    "id": "2026-09-28",
+    "createdAtUTC": "2026-09-28T00:10:38Z",
+    "createdAtKST": "2026-09-28T09:10:38+09:00",
+    "databaseAndPublicAPIConsistent": true,
+    "manualGenerationRequested": false
+  },
+  "dailyUsage": {
+    "previousUTCDate": {
+      "checkedAt": "2026-09-28T00:23:59.328260+00:00",
+      "dayUTC": "2026-09-27",
+      "scope": "entire Cloudflare account",
+      "source": "https://developers.cloudflare.com/d1/observability/metrics-analytics/",
+      "rowsRead": 4611940,
+      "rowsWritten": 67446,
+      "limits": {
+        "rowsRead": 5000000,
+        "rowsWritten": 100000
+      },
+      "withinLimits": true,
+      "fullDayAfterDeployment": false,
+      "deployedAt": "2026-09-27T18:26:35Z",
+      "operationalSignoff": false,
+      "note": "Usage alone does not prove successful collection. Verify source freshness, cron completion and the next briefing separately."
+    },
+    "currentUTCDate": {
+      "checkedAt": "2026-09-28T00:23:58.316675+00:00",
+      "dayUTC": "2026-09-28",
+      "scope": "entire Cloudflare account",
+      "source": "https://developers.cloudflare.com/d1/observability/metrics-analytics/",
+      "rowsRead": 79296,
+      "rowsWritten": 1322,
+      "limits": {
+        "rowsRead": 5000000,
+        "rowsWritten": 100000
+      },
+      "withinLimits": true,
+      "fullDayAfterDeployment": false,
+      "deployedAt": "2026-09-27T18:26:35Z",
+      "operationalSignoff": false,
+      "note": "Usage alone does not prove successful collection. Verify source freshness, cron completion and the next briefing separately."
+    },
+    "note": "Previous UTC date contains a mid-day deployment and is checked before the one-hour reporting buffer. Current UTC date is incomplete. Neither is the completed first full UTC day after deployment."
+  },
+  "operationalSignoff": false,
+  "pending": {
+    "firstFullUTCDay": "2026-09-28",
+    "usageCheckNotBeforeUTC": "2026-09-29T01:00:00Z",
+    "strict48hReady": false
+  },
+  "automation": {
+    "followup": "ACTIVE",
+    "productCrons": "unchanged"
+  },
+  "runtimeChanged": false
+}
