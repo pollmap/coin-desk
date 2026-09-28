@@ -316,8 +316,56 @@
   border-radius: 0 !important;
   color: var(--text) !important;
 }
-.library-row[aria-pressed='true'] {
+.library-row[aria-selected='true'] {
   background: var(--accent-soft) !important;
+}
+.library-row {
+  cursor: pointer;
+  box-sizing: border-box;
+}
+.library-virtual:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+.library-review-nav {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  font-size: 12px;
+}
+.ribbon-presets {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.ribbon-presets button {
+  flex: 1;
+  min-width: 130px;
+}
+.ribbon-presets small {
+  display: block;
+}
+.ribbon-config form > label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 16px;
+}
+.ribbon-config input,
+.ribbon-config select {
+  min-height: 44px;
+  width: 100%;
+  min-width: 0;
+}
+.ribbon-colors {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.ribbon-colors span {
+  border-bottom: 3px solid;
+  padding: 4px;
 }
 .library-row > img,
 .library-row > .media-missing {

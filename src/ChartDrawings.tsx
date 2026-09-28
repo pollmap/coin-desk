@@ -58,16 +58,25 @@ export function ChartDrawings({
     return () => window.removeEventListener('keydown', escape);
   }, []);
   useEffect(() => {
-    const refresh = () => redraw((v) => v + 1);
+    let frame = 0;
+    const refresh = () => {
+      if (!frame)
+        frame = requestAnimationFrame(() => {
+          frame = 0;
+          redraw((v) => v + 1);
+        });
+    };
+    const hasDrawing = items.length > 0 || draft.length > 0;
     chart.timeScale().subscribeVisibleTimeRangeChange(refresh);
-    chart.subscribeCrosshairMove(refresh);
+    if (hasDrawing) chart.subscribeCrosshairMove(refresh);
     window.addEventListener('resize', refresh);
     return () => {
       chart.timeScale().unsubscribeVisibleTimeRangeChange(refresh);
-      chart.unsubscribeCrosshairMove(refresh);
+      if (hasDrawing) chart.unsubscribeCrosshairMove(refresh);
       window.removeEventListener('resize', refresh);
+      cancelAnimationFrame(frame);
     };
-  }, [chart]);
+  }, [chart, items.length, draft.length]);
   function persist(next: Annotation[]) {
     try {
       localStorage.setItem('coin-desk.drawings.v2:' + storageKey, JSON.stringify(next));

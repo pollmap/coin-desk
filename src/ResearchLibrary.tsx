@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
+import { searchDocument, type ReviewFilter } from '../shared/library-search';
 import {
   normalizeResearch,
   recipeMetrics,
@@ -42,6 +43,8 @@ function LocalImage({
   useEffect(() => {
     let live = true,
       object = '';
+    setUrl('');
+    setOriginal(false);
     loadMedia(media.key)
       .then((m) => {
         if (!live || !m) return;
@@ -86,12 +89,22 @@ function Detail({ item, onUpdate }: { item: ResearchItem; onUpdate: (i: Research
     },
   );
   const [error, setError] = useState('');
+  const [saving, setSaving] = useState(false);
+  const savingRef = useRef(false);
   async function write(next: ResearchItem) {
+    if (savingRef.current) return;
+    savingRef.current = true;
+    setSaving(true);
+    setError('');
+    onUpdate(next);
     try {
       await updateItem(next);
-      onUpdate(next);
     } catch (e) {
+      onUpdate(item);
       setError(String(e));
+    } finally {
+      savingRef.current = false;
+      setSaving(false);
     }
   }
   function link(after: boolean) {
@@ -122,7 +135,7 @@ function Detail({ item, onUpdate }: { item: ResearchItem; onUpdate: (i: Research
           게시물 원문 ↗
         </a>
       )}
-      <fieldset>
+      <fieldset disabled={saving}>
         <legend>검토 상태</legend>
         {(
           [
@@ -135,6 +148,7 @@ function Detail({ item, onUpdate }: { item: ResearchItem; onUpdate: (i: Research
             <input
               type="checkbox"
               checked={item.review[key]}
+              disabled={key === 'images' && !item.media.length}
               onChange={(e) =>
                 write({ ...item, review: { ...item.review, [key]: e.target.checked } })
               }
@@ -143,7 +157,7 @@ function Detail({ item, onUpdate }: { item: ResearchItem; onUpdate: (i: Research
           </label>
         ))}
       </fieldset>
-      <fieldset>
+      <fieldset disabled={saving}>
         <legend>내 차트 연결</legend>
         <label>
           코인
@@ -233,6 +247,10 @@ function Detail({ item, onUpdate }: { item: ResearchItem; onUpdate: (i: Research
               setRecipe({
                 ...recipe,
                 source: e.target.value as AnalysisRecipe['source'],
+                interval:
+                  e.target.value === 'reference' && ['1h', '4h'].includes(recipe.interval ?? '')
+                    ? '1d'
+                    : recipe.interval,
                 verified: false,
               })
             }
@@ -240,6 +258,30 @@ function Detail({ item, onUpdate }: { item: ResearchItem; onUpdate: (i: Research
             <option value="reference">USD 참조</option>
             <option value="upbit">Upbit KRW</option>
             <option value="binance">Binance USDT</option>
+          </select>
+        </label>
+        <label hidden={!!recipe.section && recipe.section !== 'price'}>
+          봉 간격
+          <select
+            aria-label="연결 봉 간격"
+            value={recipe.interval ?? '1d'}
+            onChange={(e) =>
+              setRecipe({
+                ...recipe,
+                interval: e.target.value as AnalysisRecipe['interval'],
+                verified: false,
+              })
+            }
+          >
+            {(recipe.source === 'reference'
+              ? ['1d', '1w', '1M']
+              : ['1h', '4h', '1d', '1w', '1M']
+            ).map((interval) => (
+              <option key={interval} value={interval}>
+                {{ '1h': '1시간', '4h': '4시간', '1d': '일', '1w': '주', '1M': '월' }[interval]}
+                {recipe.source === 'reference' ? ' 종가' : '봉'}
+              </option>
+            ))}
           </select>
         </label>
         <label hidden={!!recipe.section && recipe.section !== 'price'}>
@@ -336,9 +378,9 @@ export function RelatedLibrary({ asset }: { asset: string }) {
       .then(setItems)
       .catch(() => {});
   }, []);
-  const relevant = items.filter(
-    (i) => i.assets.includes(asset as CoreAsset) || i.recipe?.asset === asset,
-  );
+  const relevant = items
+    .filter((i) => i.assets.includes(asset as CoreAsset) || i.recipe?.asset === asset)
+    .sort((a, b) => b.publishedAt.localeCompare(a.publishedAt));
   const item = relevant.find((i) => i.id === selected);
   return (
     <>
@@ -379,12 +421,15 @@ export function ResearchLibrary() {
     [query, setQuery] = useState(''),
     [asset, setAsset] = useState(params.get('asset') ?? ''),
     [method, setMethod] = useState(''),
+    [author, setAuthor] = useState(''),
+    [review, setReview] = useState<ReviewFilter>(''),
     [selected, setSelected] = useState<string | null>(null),
     [scroll, setScroll] = useState(0),
     [status, setStatus] = useState(''),
     [busy, setBusy] = useState(false),
     [originals, setOriginals] = useState(false),
     [connection, setConnection] = useState<string | null>(null);
+  const connectionTimer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
   const worker = useRef<Worker | null>(null),
     stop = useRef(false),
     sequence = useRef(0),
@@ -451,15 +496,23 @@ export function ResearchLibrary() {
     };
   }, []);
   useEffect(() => {
-    worker.current?.postMessage({ type: 'index', items });
+    worker.current?.postMessage({ type: 'index', items: items.map(searchDocument) });
   }, [items]);
   useEffect(() => {
     const id = String(++sequence.current);
     searchRequest.current = id;
-    worker.current?.postMessage({ type: 'search', request: id, query, asset, method });
+    worker.current?.postMessage({
+      type: 'search',
+      request: id,
+      query,
+      asset,
+      method,
+      author,
+      review,
+    });
     setScroll(0);
     if (list.current) list.current.scrollTop = 0;
-  }, [query, asset, method, items]);
+  }, [query, asset, method, author, review, items]);
   function batch(source: string): ImportBatch {
     const now = new Date().toISOString();
     return {
@@ -478,6 +531,27 @@ export function ResearchLibrary() {
     const receive = (event: MessageEvent) => {
       const session = bridge.current,
         m = event.data;
+      if (
+        event.source === window &&
+        event.origin === location.origin &&
+        session &&
+        m?.nonce === session.nonce &&
+        Date.now() <= session.until &&
+        m.type === 'CD_LIBRARY_READY'
+      ) {
+        clearTimeout(connectionTimer.current);
+        if (m.error) {
+          bridge.current = null;
+          setConnection(null);
+          setStatus('Chrome 연결 실패: ' + String(m.error));
+        } else {
+          setConnection(session.nonce);
+          setStatus(
+            'Chrome 연결 확인 · 확장에서 수집한 자료를 전송해 주세요. 이 탭에서 30분 동안 유효합니다.',
+          );
+        }
+        return;
+      }
       if (
         event.source !== window ||
         event.origin !== location.origin ||
@@ -571,7 +645,10 @@ export function ResearchLibrary() {
       });
     };
     window.addEventListener('message', receive);
-    return () => window.removeEventListener('message', receive);
+    return () => {
+      window.removeEventListener('message', receive);
+      clearTimeout(connectionTimer.current);
+    };
   }, []);
   async function parse(file: File) {
     // Read the selected File in its owning document. Some WebKit versions cannot
@@ -706,6 +783,31 @@ export function ResearchLibrary() {
   }
   const map = useMemo(() => new Map(items.map((i) => [i.id, i])), [items]);
   const chosen = selected ? map.get(selected) : undefined;
+  const summary = useMemo(
+    () => ({
+      authors: [...new Set(items.map((i) => i.author))].sort(),
+      methods: [...new Set(items.flatMap((i) => i.methods))].sort(),
+      text: items.filter((i) => i.review.text).length,
+      imageCount: items.filter((i) => i.media.length).length,
+      images: items.filter((i) => i.media.length && i.review.images).length,
+      method: items.filter((i) => i.review.method).length,
+    }),
+    [items],
+  );
+  const selectedIndex = selected ? ids.indexOf(selected) : -1;
+  const chooseAt = (index: number) => {
+    const next = Math.max(0, Math.min(ids.length - 1, index));
+    if (!ids[next]) return;
+    setSelected(ids[next]);
+    const node = list.current;
+    if (
+      node &&
+      (next * 92 < node.scrollTop || (next + 1) * 92 > node.scrollTop + node.clientHeight)
+    ) {
+      node.scrollTop = next * 92;
+      setScroll(node.scrollTop);
+    }
+  };
   const visible = ids.slice(Math.max(0, Math.floor(scroll / 92) - 3), Math.floor(scroll / 92) + 12);
   const start = Math.max(0, Math.floor(scroll / 92) - 3);
   return (
@@ -745,11 +847,17 @@ export function ResearchLibrary() {
                   sequences: new Set(),
                   keys: new Set(saved.flatMap((row) => row.media.map((media) => media.key))),
                 };
-                setConnection(nonce);
+                clearTimeout(connectionTimer.current);
+                connectionTimer.current = setTimeout(() => {
+                  if (bridge.current?.nonce !== nonce) return;
+                  bridge.current = null;
+                  setConnection(null);
+                  setStatus(
+                    '확장 응답이 없습니다. 최신 확장을 설치·새로고침하고 이 페이지를 새로고침한 뒤 다시 연결해 주세요.',
+                  );
+                }, 8000);
                 window.postMessage({ type: 'CD_LIBRARY_HELLO', nonce }, location.origin);
-                setStatus(
-                  'Chrome 확장을 열고 이 자료함에 전송해 주세요. 연결은 30분 동안 이 탭에서만 유효합니다.',
-                );
+                setStatus('Chrome 확장 응답 대기…');
               } catch (e) {
                 setStatus('Chrome 연결 실패: ' + String(e));
               } finally {
@@ -862,6 +970,7 @@ export function ResearchLibrary() {
         <button
           onClick={() => {
             bridge.current = null;
+            clearTimeout(connectionTimer.current);
             setConnection(null);
             setStatus('Chrome 전송 연결을 닫았습니다.');
           }}
@@ -889,30 +998,85 @@ export function ResearchLibrary() {
           onChange={(e) => setMethod(e.target.value)}
         >
           <option value="">모든 방법</option>
-          {[...new Set(items.flatMap((i) => i.methods))].sort().map((v) => (
+          {summary.methods.map((v) => (
             <option key={v}>{v}</option>
           ))}
         </select>
-        <span>{ids.length}건</span>
+        <select aria-label="자료 작성자" value={author} onChange={(e) => setAuthor(e.target.value)}>
+          <option value="">모든 작성자</option>
+          {summary.authors.map((a) => (
+            <option key={a} value={a}>
+              @{a}
+            </option>
+          ))}
+        </select>
+        <select
+          aria-label="자료 검토 상태"
+          value={review}
+          onChange={(e) => setReview(e.target.value as ReviewFilter)}
+        >
+          <option value="">모든 검토 상태</option>
+          <option value="text">본문 미검토</option>
+          <option value="images">이미지 미검토</option>
+          <option value="method">방법 미검증</option>
+          <option value="complete">검토 완료</option>
+        </select>
+        <span aria-live="polite">{ids.length}건</span>
       </div>
       <div className={'library-layout ' + (chosen ? 'has-detail' : '')}>
         <div
           ref={list}
           className="library-virtual"
           tabIndex={0}
+          role={ids.length ? 'listbox' : 'region'}
           aria-label="개인 자료 목록"
+          aria-activedescendant={
+            selected && visible.includes(selected) ? 'library-option-' + selected : undefined
+          }
+          onKeyDown={(e) => {
+            const delta =
+              e.key === 'ArrowDown'
+                ? 1
+                : e.key === 'ArrowUp'
+                  ? -1
+                  : e.key === 'PageDown'
+                    ? 5
+                    : e.key === 'PageUp'
+                      ? -5
+                      : 0;
+            if (delta || ['Home', 'End'].includes(e.key)) {
+              e.preventDefault();
+              chooseAt(
+                e.key === 'Home'
+                  ? 0
+                  : e.key === 'End'
+                    ? ids.length - 1
+                    : Math.max(-1, selectedIndex) + delta,
+              );
+            } else if (e.key === 'Escape') {
+              setSelected(null);
+            }
+          }}
           onScroll={(e) => setScroll(e.currentTarget.scrollTop)}
         >
           <div style={{ height: ids.length * 92, position: 'relative' }}>
             {visible.map((id, i) => {
               const item = map.get(id)!;
               return (
-                <button
+                <div
                   key={id}
+                  id={'library-option-' + id}
+                  role="option"
                   className="library-row"
-                  aria-pressed={selected === id}
+                  aria-selected={selected === id}
+                  aria-posinset={start + i + 1}
+                  aria-setsize={ids.length}
+                  aria-label={`@${item.author} · ${item.publishedAt.slice(0, 10)} · ${item.text.slice(0, 65) || '첨부 이미지'}`}
                   style={{ top: (start + i) * 92 }}
-                  onClick={() => setSelected(id)}
+                  onClick={() => {
+                    setSelected(id);
+                    list.current?.focus({ preventScroll: true });
+                  }}
                 >
                   {item.media[0] ? (
                     <LocalImage media={item.media[0]} />
@@ -934,7 +1098,7 @@ export function ResearchLibrary() {
                       /3
                     </small>
                   </span>
-                </button>
+                </div>
               );
             })}
           </div>
@@ -942,7 +1106,30 @@ export function ResearchLibrary() {
         </div>
         {chosen && (
           <div>
-            <button onClick={() => setSelected(null)}>자료 닫기</button>
+            <nav className="library-review-nav" aria-label="자료 검토 탐색">
+              <button disabled={selectedIndex <= 0} onClick={() => chooseAt(selectedIndex - 1)}>
+                이전 자료
+              </button>
+              <span>
+                {selectedIndex >= 0
+                  ? `${selectedIndex + 1} / ${ids.length}`
+                  : '현재 필터 밖의 자료'}
+              </span>
+              <button
+                disabled={!ids.length || selectedIndex >= ids.length - 1}
+                onClick={() => chooseAt(selectedIndex + 1)}
+              >
+                다음 자료
+              </button>
+              <button
+                onClick={() => {
+                  setSelected(null);
+                  list.current?.focus({ preventScroll: true });
+                }}
+              >
+                자료 닫기
+              </button>
+            </nav>
             <Detail
               key={chosen.id}
               item={chosen}
@@ -954,10 +1141,9 @@ export function ResearchLibrary() {
       <details className="import-audit">
         <summary>확보·검토 현황</summary>
         <p>
-          본문 확인 {items.filter((i) => i.review.text).length}/{items.length} · 이미지 검토{' '}
-          {items.filter((i) => i.review.images).length}/{items.length} · 방법 검증{' '}
-          {items.filter((i) => i.review.method).length}/{items.length}. 가져오기 완료는 전수 내용
-          검토나 X 전체 이력 확보를 의미하지 않습니다.
+          본문 확인 {summary.text}/{items.length} · 이미지 검토 {summary.images}/
+          {summary.imageCount} · 방법 검증 {summary.method}/{items.length}. 가져오기 완료는 전수
+          내용 검토나 X 전체 이력 확보를 의미하지 않습니다.
         </p>
         {batches
           .slice(-12)

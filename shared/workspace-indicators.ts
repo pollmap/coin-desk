@@ -1,6 +1,7 @@
 import { indicatorSpec, validIndicators } from './indicators';
 import { bollinger, ema, macd, rsi, sma, DAY } from './math';
 import type { Point } from './types';
+import { RIBBON_COLORS } from './ribbon';
 function segments(points: Point[], step: number) {
   const output: Point[][] = [];
   for (const p of points) {
@@ -24,7 +25,9 @@ export function workspaceIndicators(
   ids: string[],
   unit: string,
   barStep = DAY,
+  ribbon = false,
 ) {
+  let ribbonIndex = 0;
   const days = new Set(daily.map((p) => p.time));
   const weekly = daily.filter(
     (p) =>
@@ -33,6 +36,10 @@ export function workspaceIndicators(
   );
   return validIndicators(ids).flatMap((id) => {
     const spec = indicatorSpec(id)!;
+    const color =
+      ribbon && ['sma', 'ema'].includes(spec.kind) && spec.basis === 'bar'
+        ? RIBBON_COLORS[ribbonIndex++ % RIBBON_COLORS.length]
+        : spec.color;
     const input = spec.basis === 'w' ? weekly : spec.basis === 'd' ? daily : points;
     const step = spec.basis === 'w' ? 7 * DAY : spec.basis === 'd' ? DAY : barStep;
     const series: Point[][] = [];
@@ -65,7 +72,7 @@ export function workspaceIndicators(
       source: '선택 가격 원천',
       formula: `${spec.label} · ${spec.basis === 'w' ? '완료된 주' : spec.basis === 'd' ? '확정 일봉' : '선택 봉'} · 결측 구간에서 계산 재시작`,
       data,
-      color: i ? ['#b3a3df', '#6eaad3'][i - 1] : spec.color,
+      color: i ? ['#b3a3df', '#6eaad3'][i - 1] : color,
       overlay: !['rsi', 'macd'].includes(spec.kind),
       pane: spec.kind === 'macd' ? id : undefined,
       thresholds:

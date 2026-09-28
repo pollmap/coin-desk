@@ -10,14 +10,15 @@ export function allowedSite(url) {
     return false;
   }
 }
-export function allowedSource(url) {
+export function allowedSource(url, mode) {
   try {
     const u = new URL(url);
     return (
       u.origin === 'https://x.com' &&
       ((/^\/[A-Za-z0-9_]{1,15}(?:\/status\/\d+|\/with_replies)?\/?$/.test(u.pathname) &&
         !/^\/(messages|settings|compose|login|logout|home|notifications)\b/.test(u.pathname)) ||
-        /^\/i\/(bookmarks|lists\/\d+(?:\/members)?)\/?$/.test(u.pathname))
+        /^\/i\/(bookmarks|lists\/\d+(?:\/members)?)\/?$/.test(u.pathname) ||
+        (mode === 'bookmarks' && /^\/i\/history\/?$/.test(u.pathname)))
     );
   } catch {
     return false;

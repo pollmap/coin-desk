@@ -1,0 +1,13 @@
+{
+  "at": "2026-09-28T01:48:38.204Z",
+  "rows": 6227,
+  "queriesPerRun": 400,
+  "runs": 5,
+  "medianMs": {
+    "before": 5710.888800000001,
+    "after": 1274.6371
+  },
+  "speedRatio": 4.48040371647742,
+  "resultSetsMatch": true,
+  "scope": "Local warm pure-search benchmark; excludes worker messaging, disk and rendering. Not end-to-end page speed."
+}

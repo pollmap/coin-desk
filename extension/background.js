@@ -90,7 +90,7 @@ async function transferSnapshot(value) {
   }
 }
 async function begin(url, mode, queue = [], checkpoint) {
-  if (!allowedSource(url))
+  if (!allowedSource(url, mode))
     throw new Error('X 게시물·북마크·리스트·계정 주소만 사용할 수 있습니다.');
   if (!['post', 'bookmarks', 'account', 'list'].includes(mode)) throw new Error('수집 방식 오류');
   const previous = (await chrome.storage.local.get('job')).job;
@@ -115,7 +115,17 @@ async function begin(url, mode, queue = [], checkpoint) {
 chrome.tabs.onUpdated.addListener(async (id, change, tab) => {
   if (change.status !== 'complete') return;
   const { job } = await chrome.storage.local.get('job');
-  if (job?.tabId !== id || job.status !== 'waiting' || !allowedSource(tab.url)) return;
+  if (job?.tabId !== id || job.status !== 'waiting') return;
+  if (!allowedSource(tab.url, job.mode)) {
+    await chrome.storage.local.set({
+      job: {
+        ...job,
+        status: 'failed',
+        reason: '수집 대상 밖으로 이동했습니다. X 로그인과 대상 화면을 확인한 뒤 재개하세요.',
+      },
+    });
+    return;
+  }
   for (let i = 0; i < 5; i++) {
     try {
       const current = (await chrome.storage.local.get('job')).job;
@@ -158,7 +168,7 @@ chrome.runtime.onMessage.addListener((m, sender, reply) => {
       const { job } = await chrome.storage.local.get('job');
       if (
         sender.tab?.id !== job?.tabId ||
-        !allowedSource(sender.url) ||
+        !allowedSource(sender.url, job?.mode) ||
         job.status !== 'running' ||
         !Array.isArray(m.rows) ||
         m.rows.length > 100

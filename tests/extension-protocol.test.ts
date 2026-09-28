@@ -14,6 +14,9 @@ it('binds only the public/local library route and rejects lookalike origins', ()
     expect(allowedSite(u)).toBe(false);
 });
 it('never accepts private messages/settings or non-X collection', () => {
+  expect(allowedSource('https://x.com/i/history')).toBe(false);
+  expect(allowedSource('https://x.com/i/history', 'account')).toBe(false);
+  expect(allowedSource('https://x.com/i/history', 'bookmarks')).toBe(true);
   for (const u of [
     'https://x.com/i/bookmarks',
     'https://x.com/i/lists/123/members',

@@ -3,6 +3,29 @@
     stop = false;
   const seen = new Set(),
     members = new Set();
+  // Quoted posts have a different author and must not become the parent's body/media.
+  function isQuoted(node, article, postId) {
+    for (
+      let parent = node.parentElement;
+      parent && parent !== article;
+      parent = parent.parentElement
+    ) {
+      if (parent.matches('[data-testid="quoteTweet"]')) return true;
+      if (parent.matches('a[href*="/status/"], [role="link"]')) {
+        const links = parent.matches('a')
+          ? [parent]
+          : [...parent.querySelectorAll('a[href*="/status/"]')];
+        if (
+          links.some((a) => {
+            const id = a.getAttribute('href')?.match(/\/status\/(\d+)/)?.[1];
+            return id && id !== postId;
+          })
+        )
+          return true;
+      }
+    }
+    return false;
+  }
   function readPosts(mode) {
     return [...document.querySelectorAll('main article')].flatMap((article) => {
       const time = article.querySelector('time'),
@@ -12,8 +35,8 @@
       if (!match || seen.has(match[2])) return [];
       if (mode === 'post' && match[2] !== location.pathname.match(/\/status\/(\d+)/)?.[1])
         return [];
-      seen.add(match[2]);
       const images = [...article.querySelectorAll('img')]
+        .filter((i) => !isQuoted(i, article, match[2]))
         .map((i) => i.currentSrc || i.src)
         .filter((u) => {
           try {
@@ -30,8 +53,13 @@
           account: match[1],
           post_url: 'https://x.com/' + match[1] + '/status/' + match[2],
           date_utc: time.getAttribute('datetime'),
-          text: article.querySelector('[data-testid="tweetText"]')?.textContent ?? '',
-          text_truncated: !!article.querySelector('[data-testid="tweet-text-show-more-link"]'),
+          text:
+            [...article.querySelectorAll('[data-testid="tweetText"]')].find(
+              (node) => !isQuoted(node, article, match[2]),
+            )?.textContent ?? '',
+          text_truncated: [
+            ...article.querySelectorAll('[data-testid="tweet-text-show-more-link"]'),
+          ].some((node) => !isQuoted(node, article, match[2])),
           capture_url: location.origin + location.pathname,
           images,
         },
@@ -53,6 +81,7 @@
     running = true;
     stop = false;
     seen.clear();
+    members.clear();
     let unchanged = 0,
       oldSize = 0,
       rounds = 0;
@@ -60,6 +89,15 @@
       status = 'access-limited';
     try {
       while (!stop && rounds++ < 1200) {
+        if (mode === 'bookmarks' && /^\/i\/history\/?$/.test(location.pathname)) {
+          const selected = document.querySelector('main [role="tab"][aria-selected="true"]');
+          if (!selected && rounds < 8) {
+            await pause(1500);
+            continue;
+          }
+          if (!selected || !/^(북마크|Bookmarks)$/i.test(selected.textContent.trim()))
+            throw new Error('북마크 탭을 선택한 뒤 재개하세요. 다른 기록은 수집하지 않습니다.');
+        }
         if (mode === 'list') readMembers();
         else {
           const rows = readPosts(mode);
@@ -70,6 +108,7 @@
               scroll: window.scrollY,
             });
             if (result.error) throw new Error(result.error);
+            rows.slice(offset, offset + 100).forEach((row) => seen.add(row.post_id));
           }
         }
         const size = mode === 'list' ? members.size : seen.size;

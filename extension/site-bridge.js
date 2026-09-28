@@ -12,7 +12,31 @@
     ) {
       nonce = m.nonce;
       expires = Date.now() + 30 * 60 * 1000;
-      chrome.runtime.sendMessage({ type: 'BIND', nonce }).catch(() => {});
+      const requestNonce = nonce;
+      chrome.runtime
+        .sendMessage({ type: 'BIND', nonce })
+        .then((result) => {
+          if (nonce !== requestNonce) return;
+          window.postMessage(
+            {
+              type: 'CD_LIBRARY_READY',
+              nonce,
+              error:
+                result?.ok === true
+                  ? undefined
+                  : result?.error || '확장 연결을 확인하지 못했습니다.',
+              version: chrome.runtime.getManifest?.().version,
+            },
+            location.origin,
+          );
+        })
+        .catch(() => {
+          if (nonce === requestNonce)
+            window.postMessage(
+              { type: 'CD_LIBRARY_READY', nonce, error: '확장을 새로고침하고 다시 연결해 주세요.' },
+              location.origin,
+            );
+        });
     }
     if (m?.type === 'CD_LIBRARY_ACK' && m.nonce === nonce) {
       const complete = pending.get(m.sequence);
