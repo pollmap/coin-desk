@@ -1148,7 +1148,7 @@ export default function App() {
           </div>
         ) : null}
         <main id="main-content" tabIndex={-1}>
-          <Suspense fallback={<Loading />}>
+          <Suspense fallback={<Loading message="화면을 열고 있습니다…" />}>
             <Routes>
               <Route path="/" element={<AnalysisWorkspace />} />
               <Route path="/chart/:asset" element={<AnalysisWorkspace />} />
