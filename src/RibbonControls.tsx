@@ -32,6 +32,7 @@ export function RibbonControls({
         ref={dialog}
         className="pattern-config ribbon-config"
         aria-labelledby="ribbon-title"
+        onClose={() => opener.current?.focus({ preventScroll: true })}
         onCancel={(e) => {
           e.preventDefault();
           close();
