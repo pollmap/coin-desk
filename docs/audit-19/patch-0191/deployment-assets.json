@@ -1,0 +1,500 @@
+{
+  "checkedAt": "2026-09-29T01:29:41.538648+00:00",
+  "commit": "aa2d4c196928accd435388e31177e3a44a3d9703",
+  "pages": "https://5f8a4689.coin-desk.pages.dev",
+  "workers": {
+    "btc-desk": {
+      "id": "0c540d8c-84c2-43b0-b027-f2f5914713a8",
+      "created_on": "2026-09-29T01:28:04.908616Z",
+      "versions": [
+        {
+          "version_id": "ec112aab-c88f-483e-a8d5-14b6d766fe68",
+          "percentage": 100
+        }
+      ]
+    },
+    "btc-desk-quotes": {
+      "id": "6ecbfd9b-c925-4ff6-a016-3d979764f873",
+      "created_on": "2026-09-27T18:25:18.864711Z",
+      "versions": [
+        {
+          "version_id": "649b29c4-5699-4770-8e1a-8bd1d271d7b7",
+          "percentage": 100
+        }
+      ]
+    },
+    "coin-desk-feed": {
+      "id": "5e2e3d3f-6d63-460b-a319-f8be86c779f2",
+      "created_on": "2026-09-27T18:25:12.026995Z",
+      "versions": [
+        {
+          "version_id": "c08bd05d-4c05-4113-8b16-07d27fdf132b",
+          "percentage": 100
+        }
+      ]
+    },
+    "btc-desk-background": {
+      "id": "c290bebf-5d7a-4b60-8695-ca1b8893eb3d",
+      "created_on": "2026-09-27T18:25:25.210091Z",
+      "versions": [
+        {
+          "version_id": "75872efb-9be6-4651-8658-8a5133ca3e4e",
+          "percentage": 100
+        }
+      ]
+    },
+    "btc-desk-analysis": {
+      "id": "7f1e006b-42fd-47bd-8216-76e9c0e91619",
+      "created_on": "2026-09-27T18:25:33.551277Z",
+      "versions": [
+        {
+          "version_id": "5b47aec3-7b2e-4e5e-b0eb-f1475cf1fa4a",
+          "percentage": 100
+        }
+      ]
+    }
+  },
+  "schedules": {
+    "btc-desk": {
+      "schedules": [
+        {
+          "cron": "* * * * *",
+          "created_on": "2026-09-19T16:06:56.138768Z",
+          "modified_on": "2026-09-29T01:28:07.500176Z"
+        }
+      ]
+    },
+    "btc-desk-quotes": {
+      "schedules": [
+        {
+          "cron": "* * * * *",
+          "created_on": "2026-09-27T10:22:25.312024Z",
+          "modified_on": "2026-09-27T18:25:20.349712Z"
+        }
+      ]
+    }
+  },
+  "migrationsApplied": 0,
+  "files": [
+    {
+      "file": "extension-guide.html",
+      "matches": true,
+      "bytes": 1638,
+      "sha256": "b2d3226af47f4d0c2ae47c5d8a374a38f95b077365e23eee031f53145d27f11b"
+    },
+    {
+      "file": "favicon.ico",
+      "matches": true,
+      "bytes": 6023,
+      "sha256": "173d9c0af027ad11c0274c299f99ea4d14a1f6be5f3361f538cc655743e84cff"
+    },
+    {
+      "file": "index.html",
+      "matches": true,
+      "bytes": 2055,
+      "sha256": "f3d7365b4013942bae65b2c55d2be461b1bba25dda6ce9dd755eb3f798aebe17"
+    },
+    {
+      "file": "site.webmanifest",
+      "matches": true,
+      "bytes": 477,
+      "sha256": "748fd44fd5a81bb407d7a8fb7fe5bda42f5c262490864d97506133d8d3e0fd33"
+    },
+    {
+      "file": "assets/analysis-library-DFsjZHI7.css",
+      "matches": true,
+      "bytes": 8295,
+      "sha256": "07248dcced9bf61bc690ad1324b15c6ed70ba47b74fbabc9586be17d20a462e8"
+    },
+    {
+      "file": "assets/AnalysisLab-De-_JnYu.js",
+      "matches": true,
+      "bytes": 11325,
+      "sha256": "c2de3b128bcfda2191ed5acf50d1369fcc0575ee5fbe6e51aeee62244ed1a05b"
+    },
+    {
+      "file": "assets/AnalysisWorkspace-DJHFvZE7.js",
+      "matches": true,
+      "bytes": 55914,
+      "sha256": "cd1968b4b8759e9a4e9982ae3d412ef3a537bd5ae60d3c967bae3c119e219527"
+    },
+    {
+      "file": "assets/BrandPage-CTJPnASY.js",
+      "matches": true,
+      "bytes": 2453,
+      "sha256": "83994baf501c5da7d42791a7a8e980ca82a5bc115fc9d8bff0a7e08352bbaf7f"
+    },
+    {
+      "file": "assets/BrandPage-CYmpMjQ3.css",
+      "matches": true,
+      "bytes": 1313,
+      "sha256": "d811aa806131ca10fd9fec73ef7ea4c8a6424447e6dbc80735c88d5426a448cd"
+    },
+    {
+      "file": "assets/chart-range-CpF_4IqK.js",
+      "matches": true,
+      "bytes": 1100,
+      "sha256": "e32cde62bfb69cedecc388c0ee7177cd5b4605379311686769eab054978cabc1"
+    },
+    {
+      "file": "assets/chart-theme-CJrT-yAF.js",
+      "matches": true,
+      "bytes": 181452,
+      "sha256": "29b74b3902b8508ce1f419ecf8fd05ece4afd1d1c55a4a66000e634feadb57d9"
+    },
+    {
+      "file": "assets/ChartNavigator-DdwfJZih.js",
+      "matches": true,
+      "bytes": 4651,
+      "sha256": "39b20f4e656b03368b18073c67d0275f06433f0acbfc630676a00ae7b8b79066"
+    },
+    {
+      "file": "assets/ChartRangeControl-BYuO8uG3.js",
+      "matches": true,
+      "bytes": 2194,
+      "sha256": "0dac2c996fbd2bb04dc7d4aceb58c0d863595c6514c87b07294bd5ccec78f6ec"
+    },
+    {
+      "file": "assets/ComparePage-CJVs7KFB.js",
+      "matches": true,
+      "bytes": 26518,
+      "sha256": "3040692bf97c143f87e3d86c8855ba5e1ce8405dbdf1e55df43fd08ed4df40a5"
+    },
+    {
+      "file": "assets/ComparePage-DXR9keeU.css",
+      "matches": true,
+      "bytes": 7288,
+      "sha256": "4548b5736795d676ea9f5fbf8f7ba0c15d1ae542689c17e31f60c29d430dbc64"
+    },
+    {
+      "file": "assets/DataStatusPage-BbZsb7hv.js",
+      "matches": true,
+      "bytes": 11425,
+      "sha256": "2a5ad66f00158e746a0da975e0091f1a8437721c79ecc1ccaed98d108cab918b"
+    },
+    {
+      "file": "assets/DateNavigator-AJZH_DP0.css",
+      "matches": true,
+      "bytes": 2199,
+      "sha256": "6a5293abd7b33de4c11ba7bee3f6926822b31b56a24a237a71440f5924723cec"
+    },
+    {
+      "file": "assets/DateNavigator-CWjTgxPL.js",
+      "matches": true,
+      "bytes": 4804,
+      "sha256": "98023905fbcdd81eda281a4beab81d7094184a7521aa2ff9aea9fc27367d6272"
+    },
+    {
+      "file": "assets/DominancePanel-FUfali_z.js",
+      "matches": true,
+      "bytes": 7572,
+      "sha256": "c1c5615b42586ba7e0b7c3818e7f4d20c80bf482981d99280c4798cd10b13a23"
+    },
+    {
+      "file": "assets/ExchangeHistoryPanel-B5lUCG0e.js",
+      "matches": true,
+      "bytes": 1903,
+      "sha256": "4a24c5bdf0bdd3a4db5391951afa60ec8f412cffcf4ab77f24faefc09476addc"
+    },
+    {
+      "file": "assets/FuturesPage-CRCaDfMe.js",
+      "matches": true,
+      "bytes": 9466,
+      "sha256": "bacf127dae3e261c490943e651e6b2c027e1e1e47b5c7aad58e77ff5b43f1d3c"
+    },
+    {
+      "file": "assets/history-bands-BH7Q8Bqm.js",
+      "matches": true,
+      "bytes": 973,
+      "sha256": "b31b15cf2e0ae822e999d5b808010af7ba7cc8bb6a9d839c24e1ecf96c0c5473"
+    },
+    {
+      "file": "assets/HistoryPositionPanel-DBaHjxFJ.css",
+      "matches": true,
+      "bytes": 3233,
+      "sha256": "9ce77e510b8d2f7347301b9d3a750acb13d766bf424669d03e5b5ace3c1a1369"
+    },
+    {
+      "file": "assets/HistoryPositionPanel-ws61UeKn.js",
+      "matches": true,
+      "bytes": 9651,
+      "sha256": "8d23eb2093473069c4a18a8dd9f7bd1a7fbce758e15b006d8acbb461548e76b3"
+    },
+    {
+      "file": "assets/index-B1qSCWci.css",
+      "matches": true,
+      "bytes": 118817,
+      "sha256": "670e7c01a0ea683d8f37dfc709030eebe73ba67cbfda651e587f361db7100d02"
+    },
+    {
+      "file": "assets/index-LBJSzHWi.js",
+      "matches": true,
+      "bytes": 416590,
+      "sha256": "ac8ab79e7d273d8b5b286e409620a84281ba81242e69e82d72b4a6b89a1ab154"
+    },
+    {
+      "file": "assets/learn-DopCUBEJ.css",
+      "matches": true,
+      "bytes": 11150,
+      "sha256": "37a8bf1d8ae176c9e6eec6885725c3f9524627ffa54c35d08d3dadeb1a681ce9"
+    },
+    {
+      "file": "assets/LearnPage-CHSWS9SY.js",
+      "matches": true,
+      "bytes": 45311,
+      "sha256": "37e90845b15117859c5271f90a2a941d90abf292cb95ebe3dcfce7946af6de12"
+    },
+    {
+      "file": "assets/library-worker-B-2ZX0WD.js",
+      "matches": true,
+      "bytes": 17798,
+      "sha256": "42f47247692b56b86e2b8ebe8b5a79b95115e4c0d08fb12d660e1715f30cdf7d"
+    },
+    {
+      "file": "assets/LongHistoryChart-CEVzf4q4.js",
+      "matches": true,
+      "bytes": 7370,
+      "sha256": "c0f8626d728f938051accd17ac0dcb64b28c10df980984fcfc5ddf6f6d4b5297"
+    },
+    {
+      "file": "assets/LongHistoryPanel-DM79xYGl.js",
+      "matches": true,
+      "bytes": 4645,
+      "sha256": "ddf02b591e0c5eea13462931d7b04df5ad293eb4aaeb091b61bb4082976db591"
+    },
+    {
+      "file": "assets/market-watch-CiwilGHN.js",
+      "matches": true,
+      "bytes": 394,
+      "sha256": "d89910b83098691831f8e01d12b1a8bc0016d85f9886b31a32af4c3b25659492"
+    },
+    {
+      "file": "assets/MarketNavigation-CC0WCFGQ.js",
+      "matches": true,
+      "bytes": 808,
+      "sha256": "0bf0470fef80256e4dd2fb6e13529584d18870a0af5a9aabd759f19b417eb2c7"
+    },
+    {
+      "file": "assets/MempoolPanel-DtNpAt_T.js",
+      "matches": true,
+      "bytes": 1647,
+      "sha256": "2f9e6df7f97c8f5d2b38f23ee443cd6d23c8c5f6400a14f10b6654b88694ba5d"
+    },
+    {
+      "file": "assets/MetricChart-CItHtoo7.js",
+      "matches": true,
+      "bytes": 9131,
+      "sha256": "20ddc2deed8642950f0bcdc8be5bfd0f4d4d0bfd57560f7689263187317130f7"
+    },
+    {
+      "file": "assets/MetricsExplorer-BEjlWsqn.css",
+      "matches": true,
+      "bytes": 1864,
+      "sha256": "aff4291a84f91f71ebec8a7b4a73ac564fb87ed8a65a101c600183a870e13eb1"
+    },
+    {
+      "file": "assets/MetricsExplorer-CIzPr6_i.js",
+      "matches": true,
+      "bytes": 9719,
+      "sha256": "7452d3c81725a2045c0090c5ec56bbdb01f8a48fd95ba32ed969d729818bc9b5"
+    },
+    {
+      "file": "assets/NetworkPage-D4VZ_Kq1.js",
+      "matches": true,
+      "bytes": 16249,
+      "sha256": "73b632965189d02eb860132b8a96deb701c9b65065bc4c97908162c7e081e13f"
+    },
+    {
+      "file": "assets/price-history-BbpouwUT.js",
+      "matches": true,
+      "bytes": 190,
+      "sha256": "94d51c3e8d29a0b6dc283e105e49aca76e1ff6bcebd1e0042afb1a5ecf61766b"
+    },
+    {
+      "file": "assets/PriceChart-BHYSGzc2.js",
+      "matches": true,
+      "bytes": 18313,
+      "sha256": "c84effa5587e40cc3efb34619d9e0663ff0a8dee95a6baad814e0d94162e7a1e"
+    },
+    {
+      "file": "assets/RelativeAnalysisPanel-DWrtHnci.js",
+      "matches": true,
+      "bytes": 4010,
+      "sha256": "7a9be9c1b5ce1014bc8e4f7dc3c2c2a6387a3f7e41622789105b9eabac80644c"
+    },
+    {
+      "file": "assets/ResearchLibrary-CSMcobCx.js",
+      "matches": true,
+      "bytes": 35498,
+      "sha256": "5720f680806a5e3b5dea5e72d0f1cb5fdacb9af7045f91e59310cb0e6f44f5a5"
+    },
+    {
+      "file": "assets/ThresholdBands-CEcs3-UM.js",
+      "matches": true,
+      "bytes": 888,
+      "sha256": "4083394cc8c5ccf45b548653693520c6e3fe6f9d0b441da5068d84a3a3659b0d"
+    },
+    {
+      "file": "assets/ThresholdSummary-DOhbN0xg.js",
+      "matches": true,
+      "bytes": 906,
+      "sha256": "b7f6a0b55e4b13bd1df7c7a1b1d6d5c0df04cdfcf363505fde04987c4da6f428"
+    },
+    {
+      "file": "assets/WatchlistPage-BdmdPFNH.js",
+      "matches": true,
+      "bytes": 9420,
+      "sha256": "14d79431018ab9838ff38c1402c113fc3994d6ea3eb05e8c2db6c17db7e4e2b8"
+    },
+    {
+      "file": "brand/apple-touch-icon.png",
+      "matches": true,
+      "bytes": 4408,
+      "sha256": "ae40656e4b53e94dfb2a5319c02c46bcb9dd9bbe1f3662061850ac2f1b9b7631"
+    },
+    {
+      "file": "brand/coin-desk-mark-light.svg",
+      "matches": true,
+      "bytes": 316,
+      "sha256": "eea0541616ef491f3d4b6245a1704de84a649d512c66b0fbb5e805f050e12805"
+    },
+    {
+      "file": "brand/coin-desk-mark-mono.svg",
+      "matches": true,
+      "bytes": 326,
+      "sha256": "99e1e05ebe1794dcc427a05f8eedc03b62eed7994dae25b24a3feb5074eca3bf"
+    },
+    {
+      "file": "brand/coin-desk-mark.svg",
+      "matches": true,
+      "bytes": 316,
+      "sha256": "4113315c5fa49a1f0bb5165d9aa2c5b73e6d15d58bf4b60b37aba93ecdb1a722"
+    },
+    {
+      "file": "brand/coin-desk-shiba-smile.png",
+      "matches": true,
+      "bytes": 789844,
+      "sha256": "113d212d84a5228a441c607fd6cfcb0a95f6176667ff7d2e108fac063dec49cf"
+    },
+    {
+      "file": "brand/coin-desk-shiba.png",
+      "matches": true,
+      "bytes": 690773,
+      "sha256": "ba26e20095d4b8b5e4f965fa0176d9a4496c705932712d03e1f7cdaa202d1711"
+    },
+    {
+      "file": "brand/coin-desk-wordmark-light.svg",
+      "matches": true,
+      "bytes": 505,
+      "sha256": "2bcdc21263b715450d2e5a6a26ceda63903b8109ecf5078cccd76402c92d8105"
+    },
+    {
+      "file": "brand/coin-desk-wordmark-mono.svg",
+      "matches": true,
+      "bytes": 525,
+      "sha256": "b00c2656e311c6e71b8559add379d67b8f66586cc7b52a1897f2a92703fbb707"
+    },
+    {
+      "file": "brand/coin-desk-wordmark.svg",
+      "matches": true,
+      "bytes": 505,
+      "sha256": "1bab378273a1fbff2cb201c0653464f9b51840202639112c22a221d963359ee1"
+    },
+    {
+      "file": "brand/favicon-32.png",
+      "matches": true,
+      "bytes": 1040,
+      "sha256": "7cf097d32728a973a8a6901af2aa9da95ce26782ea36f1af6ee6d08665df2d5d"
+    },
+    {
+      "file": "brand/icon-192.png",
+      "matches": true,
+      "bytes": 4624,
+      "sha256": "5a6c3951ccc79c6d53ac407bdc1a13b1142e35750231163d4ad7d513bc193ebb"
+    },
+    {
+      "file": "brand/icon-512.png",
+      "matches": true,
+      "bytes": 9841,
+      "sha256": "ee4105fd5f2dd0a66930f17d2eba61eef4f453b22c5a315588a7a9bef43ac208"
+    },
+    {
+      "file": "brand/og-card-v1.png",
+      "matches": true,
+      "bytes": 1167596,
+      "sha256": "d50b34b5a312ec72ad88ecc31ed6f4a147b02ba88a134adda400e577101e4563"
+    },
+    {
+      "file": "brand/og-card-v2.png",
+      "matches": true,
+      "bytes": 36164,
+      "sha256": "7ed4bc0f23e08f4e1827fa242092a0a5f280dee527ff46ff9b78b648c15b20bb"
+    },
+    {
+      "file": "coin-logos/btc.png",
+      "matches": true,
+      "bytes": 4918,
+      "sha256": "5119d67e7902df5ef9d0e40e309b5f2da85dd8a736eae870072dbe647ed6bcc4"
+    },
+    {
+      "file": "coin-logos/doge-official.png",
+      "matches": true,
+      "bytes": 18385,
+      "sha256": "660e86f3e5c9d63510bc9ed08108273b65f93779b50dabe9cf90a865cc32c2e4"
+    },
+    {
+      "file": "coin-logos/doge.png",
+      "matches": true,
+      "bytes": 2243,
+      "sha256": "f10118c006785f9c31fb0a4b85f863aa2154097c090a07dec27ace07dcfb80e6"
+    },
+    {
+      "file": "coin-logos/eth.png",
+      "matches": true,
+      "bytes": 2984,
+      "sha256": "c253d7c5d4203783e31bde1d33e143f6a9ce1defac24ab5e06948847696b80a1"
+    },
+    {
+      "file": "coin-logos/LICENSE",
+      "matches": true,
+      "bytes": 1074,
+      "sha256": "db05504dbff368f200d2966831dcbddcf73d060a475f7937a760dae1b8dacc01"
+    },
+    {
+      "file": "coin-logos/link.png",
+      "matches": true,
+      "bytes": 21377,
+      "sha256": "c74a7e867400257c72027517b2816666c9a564be622cc6043345a51910cc3078"
+    },
+    {
+      "file": "coin-logos/ondo.png",
+      "matches": true,
+      "bytes": 34347,
+      "sha256": "f8753df79f01af57e32d298a7afedcb4a634f20670550671e8646429d2cc1982"
+    },
+    {
+      "file": "coin-logos/pepe.png",
+      "matches": true,
+      "bytes": 59097,
+      "sha256": "161855015d0324bad79af26ac0366206709427952354648f28ffa944150118af"
+    },
+    {
+      "file": "coin-logos/sol.png",
+      "matches": true,
+      "bytes": 54309,
+      "sha256": "b0fb83e48d1b455333436ae158cd9e547b7493ef4f5b2d5de3d678e93a994d4c"
+    },
+    {
+      "file": "coin-logos/xrp.png",
+      "matches": true,
+      "bytes": 7004,
+      "sha256": "11110d0ef1946d0c2eb9c140631daabbda798a09c9bb9d70875d5773a987848f"
+    },
+    {
+      "file": "downloads/coin-desk-importer.zip",
+      "matches": true,
+      "bytes": 15231,
+      "sha256": "49816fa2df80e5d91fd4375e9f619254fb8a5095ee7e168027325e7a01ef1b50"
+    }
+  ]
+}

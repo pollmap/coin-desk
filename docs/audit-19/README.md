@@ -53,6 +53,16 @@
 - 늦은 실행, 관찰 창 양끝, 실행 유예에 대한 회귀를 추가해 타입·단위 468개를 통과했습니다. 로컬 WebKit에서 320·390·1280px의 상태 표시와 가로 넘침 검사를 재시도 없이 통과했고 빌드도 통과했습니다. 전체 CI와 운영 확인은 아래에 추가합니다.
 - 관리 조회 도구에서 Worker 이름을 `btc-desk-feed`로 잘못 지정한 최초 요청은 404였습니다. 실제 설정의 `coin-desk-feed`로 정정한 조회는 성공했습니다. 공개 제품 API 장애로 집계하지 않습니다.
 
+### 0.19.1 병합·운영 배포
+
+- [PR #36](https://github.com/pollmap/coin-desk/pull/36)을 main `aa2d4c196928accd435388e31177e3a44a3d9703`에 병합했습니다. [PR CI](https://github.com/pollmap/coin-desk/actions/runs/36507065231)는 타입·단위 468개, 복구 2개, Chromium/WebKit 92개를 재시도 없이 통과했고 개인 경로 2개는 제외했습니다. [병합 후 main CI](https://github.com/pollmap/coin-desk/actions/runs/36507912187)의 최종 상태는 [검증 결과](patch-0191/verification.json)에 따로 기록합니다.
+- main 빌드 → 원격 마이그레이션 확인(추가 적용 0개) → main Worker → Pages 순서로 배포했습니다. Worker 버전은 `ec112aab-c88f-483e-a8d5-14b6d766fe68`, 생성 시각은 2026-09-29 01:28:04.908616 UTC, [Pages](https://5f8a4689.coin-desk.pages.dev)입니다. 나머지 4개 Worker·확장·스키마 0009는 유지합니다. [70개 공개 파일의 바이트 대조와 매분 Cron](patch-0191/deployment-assets.json)도 확인했습니다.
+- 배포 후 읽기 API 12개·활성 원천 103/103 정상입니다. 실제 API는 `longestStartGapSeconds=353`, `longestScheduledGapSeconds=180`, `longestGapSeconds=353`, `ready=false`를 반환합니다. [자연 갱신 비교](patch-0191/natural-cron.json)는 직접 수집 API·overview 호출 없이 수행했습니다.
+- 원천 수집 로직을 변경하지 않았지만, 최종 상태 API 배포 이후 첫 완전 UTC 하루인 2026-09-30 비용도 2026-10-01 01:00 UTC 이후 확인합니다. 기존 9월 28일 비용 통과 및 중단·공백 증거는 보존합니다. 임시 후속 자동화는 ACTIVE이며 제품의 두 매분 Cron도 유지합니다.
+- 병합 후 main CI도 2026-09-29 01:35:55 UTC에 성공했습니다. 단위 468개·복구 2개·Chromium/WebKit 92개가 재시도 없이 통과했고 개인 경로 2개는 제외했습니다.
+- 배포 후 자연 갱신 표본은 정확히 294초이며 Cron 5회 완료, 핵심 시세 6개·최근 선물 확인 9개 증가, SELECT 쓰기 0을 확인했습니다. 표본을 300초나 하루 전체로 표현하지 않습니다.
+- [실제 운영 상태 화면](patch-0191/production-status.png)과 [브라우저 확인](patch-0191/production-browser.json)에서도 원천 103/103 정상, 실제 공백 353초·예약 공백 180초·운영 확인 필요가 표시됩니다. 이 화면 확인은 자연 갱신 표본 종료 뒤에 수행했습니다.
+
 서버 운영 마감은 아직 완료로 처리하지 않습니다. 원천 수집 로직 0.17.1 배포 이후 2026-09-28 완전 UTC 하루 비용은 확인했지만 실제 실행 공백이 남아 있습니다. 상태 판정 0.19.1 배포 후 첫 완전 UTC 하루도 별도로 확인합니다. 엄격한 48시간 기록률·최장 공백·미해결 오류 기준과 기존 이력·제품 Cron을 유지합니다. 이전 자연 수집 증거는 [0.18 운영 기록](../audit-18/README.md)에 있습니다.
 
 Apple 기기가 없어 실제 Safari·VoiceOver는 실기기 검증 대기입니다. WebKit 검사를 그 결과로 표현하지 않습니다. 개인 X 수집·전수 내용 검토는 최신 요청에 따라 우선순위에서 내렸으며 이번 완료 범위에 포함하지 않습니다. 기존 개인 원본은 그대로 보존했습니다.

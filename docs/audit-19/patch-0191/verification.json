@@ -1,0 +1,94 @@
+{
+  "checkedAt": "2026-09-29T01:36:55.123172+00:00",
+  "version": "0.19.1",
+  "pullRequest": "https://github.com/pollmap/coin-desk/pull/36",
+  "codeMain": "aa2d4c196928accd435388e31177e3a44a3d9703",
+  "pullRequestCI": {
+    "conclusion": "success",
+    "headSha": "4648da6265b05497d429c9c54cd9060791c7f425",
+    "status": "completed",
+    "updatedAt": "2026-09-29T01:25:24Z",
+    "url": "https://github.com/pollmap/coin-desk/actions/runs/36507065231"
+  },
+  "mainCI": {
+    "conclusion": "success",
+    "headSha": "aa2d4c196928accd435388e31177e3a44a3d9703",
+    "status": "completed",
+    "updatedAt": "2026-09-29T01:35:55Z",
+    "url": "https://github.com/pollmap/coin-desk/actions/runs/36507912187"
+  },
+  "validation": {
+    "unitPassed": 468,
+    "recoveryPassed": 2,
+    "pullRequestBrowserPassed": 92,
+    "mainBrowserPassed": 92,
+    "mainRetriesObserved": false,
+    "privateOptInSkipped": 2,
+    "pullRequestRetriesObserved": false,
+    "localWebKitStatusPassed": 1,
+    "buildPassed": true
+  },
+  "deployment": {
+    "scope": "Main Worker and Pages only; collector Workers and extension unchanged",
+    "pages": "https://5f8a4689.coin-desk.pages.dev",
+    "workerVersion": "ec112aab-c88f-483e-a8d5-14b6d766fe68",
+    "workerCreatedAt": "2026-09-29T01:28:04.908616Z",
+    "deploymentObservedAt": "2026-09-29T01:29:41.538648+00:00",
+    "migrationsApplied": 0,
+    "filesMatched": 70
+  },
+  "publicAPIs": {
+    "checkedAt": "2026-09-29T01:28:42.952695+00:00",
+    "httpStatus": {
+      "status": 200,
+      "health": 200,
+      "signals": 200,
+      "briefings": 200,
+      "chain-context?asset=ETH&metric=tvl": 200,
+      "market-derivatives": 200,
+      "network?asset=BTC&metric=mvrv&limit=1": 200,
+      "derivatives?asset=BTC&metric=funding&limit=1": 200,
+      "network?asset=DOGE&metric=mvrv&limit=1": 200,
+      "derivatives?asset=DOGE&metric=funding&limit=1": 200,
+      "network?asset=ETH&metric=mvrv&limit=1": 200,
+      "derivatives?asset=ETH&metric=funding&limit=1": 200
+    },
+    "healthOK": true,
+    "activeSources": 103,
+    "healthyActiveSources": 103,
+    "observation48h": {
+      "from": 1790472360,
+      "until": 1790645160,
+      "firstRunAt": 1790472459,
+      "lastRunAt": 1790645137,
+      "ticks": 2576,
+      "failures": 224,
+      "expectedRuns": 2880,
+      "missingRuns": 304,
+      "successfulRuns": 2352,
+      "recordingRate": 0.8944444444444445,
+      "successRate": 0.8166666666666667,
+      "longestGapSeconds": 353,
+      "longestScheduledGapSeconds": 180,
+      "longestStartGapSeconds": 353,
+      "unresolvedErrors": [],
+      "windowSatisfied": true,
+      "healthy": false,
+      "ready": false,
+      "thresholds": {
+        "recordingRate": 0.99,
+        "longestGapSeconds": 180,
+        "graceSeconds": 120
+      }
+    }
+  },
+  "operationalSignoff": false,
+  "nextFullDay": {
+    "dayUTC": "2026-09-30",
+    "verifyNotBefore": "2026-10-01T01:00:00Z",
+    "preservePriorDayEvidence": true,
+    "historyReset": false
+  },
+  "appleDeviceVerified": false,
+  "privateCorpusReviewIncluded": false
+}

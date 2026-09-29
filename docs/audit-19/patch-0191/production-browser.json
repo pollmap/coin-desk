@@ -1,0 +1,9 @@
+{
+  "checkedAt": "2026-09-29T01:36:48.263Z",
+  "url": "https://coin-desk.pages.dev/status",
+  "browser": "Codex in-app Chromium",
+  "actualExecutionGapSeconds": 353,
+  "scheduledGapSeconds": 180,
+  "statusSummary": "서버 자동 갱신\n서버 실행 확인\n\n사이트를 닫아도 Cloudflare 서버에서 수집을 실행합니다.\n\n마지막 서버 실행\n2026. 09. 29. 오전 10:35 KST\n마지막 완료 작업\nBTC · Upbit 시간봉\n데이터 원천 상태\n103 / 103 정상\n48시간 자동 수집 관찰\n기간 충족 · 운영 확인 필요\n기록률 89.62% · 누락 299회 · 최장 공백 353초\n실제 실행 간격 353초 · 예약 기록 간격 180초\n성공률 81.91% · 실패 222회 · 미해결 0건",
+  "appleDeviceVerified": false
+}
