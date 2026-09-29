@@ -124,6 +124,13 @@ export function AutomationSummary({ compact = false }: { compact?: boolean }) {
                   기록률 {(a.observation48h.recordingRate * 100).toFixed(2)}% · 누락{' '}
                   {a.observation48h.missingRuns}회 · 최장 공백 {a.observation48h.longestGapSeconds}
                   초
+                  {a.observation48h.longestStartGapSeconds != null && (
+                    <>
+                      <br />
+                      실제 실행 간격 {a.observation48h.longestStartGapSeconds}초 · 예약 기록 간격{' '}
+                      {a.observation48h.longestScheduledGapSeconds}초
+                    </>
+                  )}
                   <br />
                   성공률 {(a.observation48h.successRate * 100).toFixed(2)}% · 실패{' '}
                   {a.observation48h.failures}회 · 미해결 {a.observation48h.unresolvedErrors.length}
@@ -246,8 +253,9 @@ export function DataStatusPage() {
           </div>
           <p className="watch-note">
             목표 주기는 성공 보장이 아닙니다. 실제 자료 시각과 마지막 수집 시각은 위 상태표에서
-            확인하세요. 48시간 관찰은 최근 2분의 실행 유예를 제외합니다. 기록률 99% 이상, 최장 공백
-            180초 이하, 미해결 오류가 없을 때 운영 기준 충족으로 표시합니다.
+            확인하세요. 48시간 관찰은 최근 2분의 실행 유예를 제외합니다. 최장 공백은 예약 기록과
+            실제 실행 사이 간격 중 큰 값입니다. 기록률 99% 이상, 최장 공백 180초 이하, 미해결 오류가
+            없을 때 운영 기준 충족으로 표시합니다.
           </p>
         </details>
       </section>

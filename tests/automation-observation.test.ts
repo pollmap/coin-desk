@@ -44,6 +44,49 @@ describe('48-hour automation evidence', () => {
     const r = runs().filter((_, i) => i < 20 || i > 22);
     expect(observeAutomation(r, now)).toMatchObject({ ready: false, longestGapSeconds: 240 });
   });
+  it('does not hide a real execution gap behind delayed scheduled deliveries', () => {
+    const all = runs();
+    const r = all.filter((_, i) => ![21, 22, 24, 26].includes(i));
+    all[23].started_at = all[20].started_at + 353;
+    all[23].completed_at = all[23].started_at + 1;
+    all[25].started_at = all[23].started_at + 8;
+    all[25].completed_at = all[25].started_at + 1;
+    const result = observeAutomation(r.reverse(), now);
+    expect(result.recordingRate).toBeGreaterThan(0.99);
+    expect(result).toMatchObject({
+      ready: false,
+      missingRuns: 4,
+      longestScheduledGapSeconds: 180,
+      longestStartGapSeconds: 353,
+      longestGapSeconds: 353,
+      unresolvedErrors: [],
+    });
+  });
+  it('includes mature window edges and does not credit starts during the grace period', () => {
+    const r = runs();
+    for (const run of r.slice(-4)) {
+      run.started_at = until + 30;
+      run.completed_at = until + 40;
+    }
+    expect(observeAutomation(r, now)).toMatchObject({
+      ready: false,
+      missingRuns: 0,
+      longestScheduledGapSeconds: 60,
+      longestStartGapSeconds: 297,
+      longestGapSeconds: 297,
+    });
+    const start = until - 48 * 3600;
+    const delayed = runs();
+    for (const run of delayed.slice(0, 5)) {
+      run.started_at = start + 300;
+      run.completed_at = start + 301;
+    }
+    expect(observeAutomation(delayed, now)).toMatchObject({
+      ready: false,
+      longestStartGapSeconds: 300,
+      longestGapSeconds: 300,
+    });
+  });
   it('retains failure counts after recovery but rejects unresolved and current source errors', () => {
     const r = runs();
     r[50].outcome = 'error';

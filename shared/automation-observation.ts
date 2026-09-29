@@ -20,12 +20,14 @@ export function observeAutomation(
   const from = until - 48 * 3600;
   const expectedRuns = 48 * 60;
   const byTick = new Map<number, ObservationRun>();
+  const actualStarts = new Set<number>();
   let firstEver = Infinity;
   for (const run of runs) {
     const startedTick = Math.floor(run.started_at / 60);
     const tick = startedTick - ((((startedTick - run.slot) % 4320) + 4320) % 4320);
     const scheduled = tick * 60;
     if (scheduled > now || run.started_at > now) continue;
+    if (run.started_at >= from && run.started_at < until) actualStarts.add(run.started_at);
     firstEver = Math.min(firstEver, scheduled);
     if (scheduled < from || scheduled >= until) continue;
     const previous = byTick.get(tick);
@@ -42,10 +44,10 @@ export function observeAutomation(
   const unresolved = new Set(currentErrors);
   let failures = 0;
   let successes = 0;
-  let longestGapSeconds = 0;
+  let longestScheduledGapSeconds = 0;
   let previous = from - 60;
   for (const [tick, run] of ordered) {
-    longestGapSeconds = Math.max(longestGapSeconds, tick * 60 - previous);
+    longestScheduledGapSeconds = Math.max(longestScheduledGapSeconds, tick * 60 - previous);
     previous = tick * 60;
     if (successful(run)) successes++;
     else {
@@ -54,7 +56,17 @@ export function observeAutomation(
         unresolved.add(run.job ?? `cron:${tick}`);
     }
   }
-  longestGapSeconds = Math.max(longestGapSeconds, until - previous);
+  longestScheduledGapSeconds = Math.max(longestScheduledGapSeconds, until - previous);
+  // Delayed deliveries may fill scheduled slots after a real execution outage.
+  // Keep the scheduled coverage, but never let it hide the elapsed start gap.
+  let longestStartGapSeconds = 0;
+  previous = from;
+  for (const started of [...actualStarts].sort((a, b) => a - b)) {
+    longestStartGapSeconds = Math.max(longestStartGapSeconds, started - previous);
+    previous = started;
+  }
+  longestStartGapSeconds = Math.max(longestStartGapSeconds, until - previous);
+  const longestGapSeconds = Math.max(longestScheduledGapSeconds, longestStartGapSeconds);
   const ticks = ordered.length;
   const recordingRate = ticks / expectedRuns;
   const windowSatisfied = firstEver <= from;
@@ -73,6 +85,8 @@ export function observeAutomation(
     recordingRate,
     successRate: successes / expectedRuns,
     longestGapSeconds,
+    longestScheduledGapSeconds,
+    longestStartGapSeconds,
     unresolvedErrors: [...unresolved].sort(),
     windowSatisfied,
     healthy,
