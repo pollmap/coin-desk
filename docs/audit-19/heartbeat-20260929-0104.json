@@ -1,0 +1,510 @@
+{
+  "checkedAt": "2026-09-29T01:13:39.557102+00:00",
+  "observedMain": "6e8448547c17d5a310bbffc6b65cbf07b427df2a",
+  "mainCI": {
+    "run": 36378722086,
+    "conclusion": "success",
+    "headSha": "1d30708133ee5d9f3620a75d6674acecdbc5f466"
+  },
+  "publicAPIs": {
+    "checkedAt": "2026-09-29T01:04:39.624983+00:00",
+    "httpStatus": {
+      "status": 200,
+      "health": 200,
+      "signals": 200,
+      "briefings": 200,
+      "chain-context?asset=ETH&metric=tvl": 200,
+      "market-derivatives": 200,
+      "network?asset=BTC&metric=mvrv&limit=1": 200,
+      "derivatives?asset=BTC&metric=funding&limit=1": 200,
+      "network?asset=DOGE&metric=mvrv&limit=1": 200,
+      "derivatives?asset=DOGE&metric=funding&limit=1": 200,
+      "network?asset=ETH&metric=mvrv&limit=1": 200,
+      "derivatives?asset=ETH&metric=funding&limit=1": 200
+    },
+    "healthOK": true,
+    "activeSources": 103,
+    "healthyActiveSources": 103,
+    "nonOKActiveSources": [],
+    "observation48hBeforeFix": {
+      "from": 1790470920,
+      "until": 1790643720,
+      "firstRunAt": 1790471079,
+      "lastRunAt": 1790643707,
+      "ticks": 2562,
+      "failures": 233,
+      "expectedRuns": 2880,
+      "missingRuns": 318,
+      "successfulRuns": 2329,
+      "recordingRate": 0.8895833333333333,
+      "successRate": 0.8086805555555555,
+      "longestGapSeconds": 180,
+      "unresolvedErrors": [],
+      "windowSatisfied": true,
+      "healthy": false,
+      "ready": false,
+      "thresholds": {
+        "recordingRate": 0.99,
+        "longestGapSeconds": 180,
+        "graceSeconds": 120
+      }
+    }
+  },
+  "accountDailyUsage": {
+    "checkedAt": "2026-09-29T01:05:50.369206+00:00",
+    "dayUTC": "2026-09-28",
+    "scope": "entire Cloudflare account",
+    "source": "https://developers.cloudflare.com/d1/observability/metrics-analytics/",
+    "rowsRead": 4011199,
+    "rowsWritten": 63397,
+    "limits": {
+      "rowsRead": 5000000,
+      "rowsWritten": 100000
+    },
+    "withinLimits": true,
+    "fullDayAfterDeployment": true,
+    "deployedAt": "2026-09-27T18:26:35Z",
+    "operationalSignoff": false,
+    "note": "Usage alone does not prove successful collection. Verify source freshness, cron completion and the next briefing separately."
+  },
+  "utcDayLedger": {
+    "checkedAt": "2026-09-29T01:07:16.238919+00:00",
+    "dayUTC": "2026-09-28",
+    "start": 1790553600,
+    "endExclusive": 1790640000,
+    "method": "Read-only scheduled background ledger. Successful runs plus current source checks do not establish that every intraday source observation was fresh or that there were no visitors.",
+    "daySummary": {
+      "expectedMinuteSlots": 1440,
+      "recordedRuns": 1435,
+      "recordedMinuteSlots": 1434,
+      "missingMinuteSlots": [
+        29843660,
+        29843801,
+        29843802,
+        29843803,
+        29843804,
+        29843805
+      ],
+      "duplicateMinuteRecords": 1,
+      "successfulRuns": 1434,
+      "failedOrUnfinishedRuns": [
+        {
+          "slot": 1099,
+          "started_at": 1790619577,
+          "completed_at": 1790619697,
+          "job": "BTC:binance:1d",
+          "outcome": "interrupted",
+          "error": "이전 실행이 완료되기 전에 중단되어 다시 예약했습니다."
+        }
+      ],
+      "longestStartGapSeconds": 353,
+      "firstRunAt": 1790553637,
+      "lastRunAt": 1790639977
+    },
+    "sinceDeployment": {
+      "from": 1790533595,
+      "runs": 1836,
+      "failedOrUnfinishedRuns": [
+        {
+          "slot": 1099,
+          "started_at": 1790619577,
+          "completed_at": 1790619697,
+          "job": "BTC:binance:1d",
+          "outcome": "interrupted",
+          "error": "이전 실행이 완료되기 전에 중단되어 다시 예약했습니다."
+        }
+      ],
+      "longestStartGapSeconds": 353
+    },
+    "rowsRead": 6063,
+    "rowsWritten": 0
+  },
+  "scheduledDayCoverage": {
+    "scheduledMinuteRecords": 1435,
+    "missingMinuteSlots": [
+      29843660,
+      29843801,
+      29843802,
+      29843804,
+      29843806
+    ],
+    "recordingRate": 0.9965277777777778
+  },
+  "dayGapEvidence": [
+    {
+      "before": {
+        "slot": 1099,
+        "started_at": 1790619577,
+        "completed_at": 1790619697,
+        "job": "BTC:binance:1d",
+        "outcome": "interrupted",
+        "error": "이전 실행이 완료되기 전에 중단되어 다시 예약했습니다."
+      },
+      "after": {
+        "slot": 1101,
+        "started_at": 1790619697,
+        "completed_at": 1790619698,
+        "job": "DOGE:binance:1d",
+        "outcome": "ok",
+        "error": null
+      },
+      "elapsedSeconds": 120
+    },
+    {
+      "before": {
+        "slot": 1240,
+        "started_at": 1790628037,
+        "completed_at": 1790628038,
+        "job": null,
+        "outcome": "idle",
+        "error": null
+      },
+      "after": {
+        "slot": 1243,
+        "started_at": 1790628390,
+        "completed_at": 1790628391,
+        "job": "derivatives:ETH:long_account_ratio_daily",
+        "outcome": "ok",
+        "error": null
+      },
+      "elapsedSeconds": 353
+    }
+  ],
+  "deploymentsBeforeFix": {
+    "btc-desk": {
+      "id": "65e087f0-c9d0-461c-a249-dc0fc37aee7a",
+      "created_on": "2026-09-27T18:25:43.593575Z",
+      "versions": [
+        {
+          "version_id": "7b917f0f-3b54-4c5c-bbed-3712db6b2100",
+          "percentage": 100
+        }
+      ]
+    },
+    "btc-desk-quotes": {
+      "id": "6ecbfd9b-c925-4ff6-a016-3d979764f873",
+      "created_on": "2026-09-27T18:25:18.864711Z",
+      "versions": [
+        {
+          "version_id": "649b29c4-5699-4770-8e1a-8bd1d271d7b7",
+          "percentage": 100
+        }
+      ]
+    },
+    "coin-desk-feed": {
+      "id": "5e2e3d3f-6d63-460b-a319-f8be86c779f2",
+      "created_on": "2026-09-27T18:25:12.026995Z",
+      "versions": [
+        {
+          "version_id": "c08bd05d-4c05-4113-8b16-07d27fdf132b",
+          "percentage": 100
+        }
+      ]
+    },
+    "btc-desk-background": {
+      "id": "c290bebf-5d7a-4b60-8695-ca1b8893eb3d",
+      "created_on": "2026-09-27T18:25:25.210091Z",
+      "versions": [
+        {
+          "version_id": "75872efb-9be6-4651-8658-8a5133ca3e4e",
+          "percentage": 100
+        }
+      ]
+    },
+    "btc-desk-analysis": {
+      "id": "7f1e006b-42fd-47bd-8216-76e9c0e91619",
+      "created_on": "2026-09-27T18:25:33.551277Z",
+      "versions": [
+        {
+          "version_id": "5b47aec3-7b2e-4e5e-b0eb-f1475cf1fa4a",
+          "percentage": 100
+        }
+      ]
+    }
+  },
+  "schedules": {
+    "btc-desk": {
+      "schedules": [
+        {
+          "cron": "* * * * *",
+          "created_on": "2026-09-19T16:06:56.138768Z",
+          "modified_on": "2026-09-27T18:25:45.731722Z"
+        }
+      ]
+    },
+    "btc-desk-quotes": {
+      "schedules": [
+        {
+          "cron": "* * * * *",
+          "created_on": "2026-09-27T10:22:25.312024Z",
+          "modified_on": "2026-09-27T18:25:20.349712Z"
+        }
+      ]
+    }
+  },
+  "verificationAttempt": {
+    "initialMetadataRead": "HTTP 404 for mistaken btc-desk-feed name; corrected to coin-desk-feed from wrangler.feed.jsonc. This was not a production API failure."
+  },
+  "naturalCollection": {
+    "method": "Remote SELECT only; no direct collection or overview requested by this task during the interval. Other visitors cannot be ruled out.",
+    "fromLastObservedTick": 1790643937,
+    "throughLastObservedTick": 1790644297,
+    "elapsedSeconds": 360,
+    "newCronRuns": [
+      {
+        "started_at": 1790644297,
+        "completed_at": 1790644300,
+        "job": "coinlore",
+        "outcome": "ok"
+      },
+      {
+        "started_at": 1790644237,
+        "completed_at": 1790644239,
+        "job": "reference:DOGE",
+        "outcome": "ok"
+      },
+      {
+        "started_at": 1790644177,
+        "completed_at": 1790644178,
+        "job": "ETH:upbit:1d",
+        "outcome": "ok"
+      },
+      {
+        "started_at": 1790644117,
+        "completed_at": 1790644118,
+        "job": "mempool:BTC",
+        "outcome": "ok"
+      },
+      {
+        "started_at": 1790644057,
+        "completed_at": 1790644058,
+        "job": "DOGE:upbit:1d",
+        "outcome": "ok"
+      },
+      {
+        "started_at": 1790643997,
+        "completed_at": 1790643998,
+        "job": "derivatives:SOL:funding",
+        "outcome": "ok"
+      }
+    ],
+    "ingestionChanges": [
+      {
+        "key": "derivatives:BTC:funding",
+        "beforeSuccess": 1790643938,
+        "afterSuccess": 1790644238,
+        "beforeDataAsOf": 1790640000,
+        "afterDataAsOf": 1790640000,
+        "failures": 0,
+        "error": null
+      },
+      {
+        "key": "derivatives:BTC:long_account_ratio",
+        "beforeSuccess": 1790643940,
+        "afterSuccess": 1790644240,
+        "beforeDataAsOf": 1790643600,
+        "afterDataAsOf": 1790643600,
+        "failures": 0,
+        "error": null
+      },
+      {
+        "key": "derivatives:BTC:long_account_ratio_daily",
+        "beforeSuccess": 1790643338,
+        "afterSuccess": 1790643338,
+        "beforeDataAsOf": 1790640000,
+        "afterDataAsOf": 1790640000,
+        "failures": 0,
+        "error": null
+      },
+      {
+        "key": "derivatives:BTC:open_interest",
+        "beforeSuccess": 1790643939,
+        "afterSuccess": 1790644239,
+        "beforeDataAsOf": 1790643600,
+        "afterDataAsOf": 1790643600,
+        "failures": 0,
+        "error": null
+      },
+      {
+        "key": "derivatives:BTC:open_interest_daily",
+        "beforeSuccess": 1790641299,
+        "afterSuccess": 1790641299,
+        "beforeDataAsOf": 1790640000,
+        "afterDataAsOf": 1790640000,
+        "failures": 0,
+        "error": null
+      },
+      {
+        "key": "derivatives:DOGE:funding",
+        "beforeSuccess": 1790643708,
+        "afterSuccess": 1790644298,
+        "beforeDataAsOf": 1790640000,
+        "afterDataAsOf": 1790640000,
+        "failures": 0,
+        "error": null
+      },
+      {
+        "key": "derivatives:DOGE:long_account_ratio",
+        "beforeSuccess": 1790643709,
+        "afterSuccess": 1790644300,
+        "beforeDataAsOf": 1790643600,
+        "afterDataAsOf": 1790643600,
+        "failures": 0,
+        "error": null
+      },
+      {
+        "key": "derivatives:DOGE:long_account_ratio_daily",
+        "beforeSuccess": 1790642678,
+        "afterSuccess": 1790642678,
+        "beforeDataAsOf": 1790640000,
+        "afterDataAsOf": 1790640000,
+        "failures": 0,
+        "error": null
+      },
+      {
+        "key": "derivatives:DOGE:open_interest",
+        "beforeSuccess": 1790643708,
+        "afterSuccess": 1790644299,
+        "beforeDataAsOf": 1790643600,
+        "afterDataAsOf": 1790643600,
+        "failures": 0,
+        "error": null
+      },
+      {
+        "key": "derivatives:DOGE:open_interest_daily",
+        "beforeSuccess": 1790643098,
+        "afterSuccess": 1790643098,
+        "beforeDataAsOf": 1790640000,
+        "afterDataAsOf": 1790640000,
+        "failures": 0,
+        "error": null
+      },
+      {
+        "key": "derivatives:ETH:funding",
+        "beforeSuccess": 1790643758,
+        "afterSuccess": 1790644058,
+        "beforeDataAsOf": 1790640000,
+        "afterDataAsOf": 1790640000,
+        "failures": 0,
+        "error": null
+      },
+      {
+        "key": "derivatives:ETH:long_account_ratio",
+        "beforeSuccess": 1790643760,
+        "afterSuccess": 1790644060,
+        "beforeDataAsOf": 1790643600,
+        "afterDataAsOf": 1790643600,
+        "failures": 0,
+        "error": null
+      },
+      {
+        "key": "derivatives:ETH:long_account_ratio_daily",
+        "beforeSuccess": 1790643039,
+        "afterSuccess": 1790643039,
+        "beforeDataAsOf": 1790640000,
+        "afterDataAsOf": 1790640000,
+        "failures": 0,
+        "error": null
+      },
+      {
+        "key": "derivatives:ETH:open_interest",
+        "beforeSuccess": 1790643759,
+        "afterSuccess": 1790644059,
+        "beforeDataAsOf": 1790643600,
+        "afterDataAsOf": 1790643600,
+        "failures": 0,
+        "error": null
+      },
+      {
+        "key": "derivatives:ETH:open_interest_daily",
+        "beforeSuccess": 1790642498,
+        "afterSuccess": 1790642498,
+        "beforeDataAsOf": 1790640000,
+        "afterDataAsOf": 1790640000,
+        "failures": 0,
+        "error": null
+      },
+      {
+        "key": "quote:BTC:binance",
+        "beforeSuccess": 1790643879,
+        "afterSuccess": 1790644298,
+        "beforeDataAsOf": 1790643879,
+        "afterDataAsOf": 1790644298,
+        "failures": 0,
+        "error": null
+      },
+      {
+        "key": "quote:BTC:upbit",
+        "beforeSuccess": 1790643939,
+        "afterSuccess": 1790644268,
+        "beforeDataAsOf": 1790643935,
+        "afterDataAsOf": 1790644267,
+        "failures": 0,
+        "error": null
+      },
+      {
+        "key": "quote:DOGE:binance",
+        "beforeSuccess": 1790643879,
+        "afterSuccess": 1790644298,
+        "beforeDataAsOf": 1790643878,
+        "afterDataAsOf": 1790644297,
+        "failures": 0,
+        "error": null
+      },
+      {
+        "key": "quote:DOGE:upbit",
+        "beforeSuccess": 1790643939,
+        "afterSuccess": 1790644268,
+        "beforeDataAsOf": 1790643926,
+        "afterDataAsOf": 1790644263,
+        "failures": 0,
+        "error": null
+      },
+      {
+        "key": "quote:ETH:binance",
+        "beforeSuccess": 1790643879,
+        "afterSuccess": 1790644298,
+        "beforeDataAsOf": 1790643879,
+        "afterDataAsOf": 1790644297,
+        "failures": 0,
+        "error": null
+      },
+      {
+        "key": "quote:ETH:upbit",
+        "beforeSuccess": 1790643939,
+        "afterSuccess": 1790644269,
+        "beforeDataAsOf": 1790643937,
+        "afterDataAsOf": 1790644267,
+        "failures": 0,
+        "error": null
+      }
+    ],
+    "backfillBudgetAndCursorStates": [],
+    "briefings": [
+      {
+        "id": "2026-09-29",
+        "created_at": 1790640638
+      },
+      {
+        "id": "2026-09-28",
+        "created_at": 1790554238
+      },
+      {
+        "id": "2026-09-27",
+        "created_at": 1790468260
+      }
+    ],
+    "readOnlyRowsWritten": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "operationalSignoff": false,
+  "finding": "A 353-second actual start gap was reported as 180 seconds because the health calculation only measured scheduled slots. Cost passed for 2026-09-28, but continuity did not. One interrupted daily-candle run recovered. Underlying scheduling/interruption causes are not established."
+}
