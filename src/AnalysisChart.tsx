@@ -17,6 +17,7 @@ import { ChartTools } from './ChartNavigator';
 import { DateNavigator } from './DateNavigator';
 import { availableWindow, type DateWindow } from '../shared/date-navigation';
 import { ChartDrawings } from './ChartDrawings';
+import { BandPrimitive, type BandRow } from './BandPrimitive';
 import type { Annotation, DrawingKind } from '../shared/annotations';
 import {
   adjacentObservation,
@@ -80,6 +81,8 @@ export const AnalysisChart = memo(function AnalysisChart({
   observations = EMPTY_OBSERVATIONS,
   onObservation,
   initialTool,
+  bands,
+  onReadingDate,
 }: {
   asset: string;
   unit: string;
@@ -103,6 +106,8 @@ export const AnalysisChart = memo(function AnalysisChart({
   observations?: ChartObservation[];
   onObservation?: (id: string) => void;
   initialTool?: DrawingKind;
+  bands?: BandRow[];
+  onReadingDate?: (time: number | null) => void;
 }) {
   const host = useRef<HTMLDivElement>(null),
     chartRef = useRef<IChartApi | null>(null);
@@ -126,7 +131,16 @@ export const AnalysisChart = memo(function AnalysisChart({
   const [selected, setSelected] = useState<number | null>(null),
     [tableCount, setTableCount] = useState(50);
   const [visibleWindow, setVisibleWindow] = useState<DateWindow | null>(null);
-  const key = asset + unit + step + (primary?.id ?? 'price');
+  const key = asset + unit + source + step + (primary?.id ?? 'price');
+  const structure = lines.map((l) => [l.id, l.pane, l.overlay].join(':')).join('|');
+  const ready = points.length > 0;
+  const candleMode = !!candles?.length;
+  const latest = useRef({ points, candles, lines, signals, observations, bands, initialWindow });
+  latest.current = { points, candles, lines, signals, observations, bands, initialWindow };
+  const updateSeries = useRef<() => void>(() => {});
+  const chartHeight = () =>
+    (host.current && host.current.clientWidth < 600 ? 330 : 440) +
+    panelCount(latest.current.lines) * 135;
   const display = (value: number | undefined) =>
     primary || !['USD', 'USDT', 'KRW'].includes(unit)
       ? numeric(value, readingDigits(value)) + ' ' + unit
@@ -140,6 +154,9 @@ export const AnalysisChart = memo(function AnalysisChart({
   const selectedTime = selectionKey === key ? selected : null;
   const time = selectedTime ?? points.at(-1)?.time;
   const priceValue = time === undefined ? undefined : readings.maps[0].get(time);
+  useEffect(() => {
+    onReadingDate?.(time ?? null);
+  }, [time, onReadingDate]);
   const timestamp = (t: number | undefined) =>
     t === undefined
       ? '—'
@@ -170,7 +187,7 @@ export const AnalysisChart = memo(function AnalysisChart({
     const chart = createDeskChart(host.current, {
       autoSize: false,
       width: Math.max(1, host.current.clientWidth),
-      height: 370 + panels * 135,
+      height: chartHeight(),
       layout: { textColor: '#9aa8b8', fontFamily: 'Inter, Segoe UI, Malgun Gothic, sans-serif' },
       rightPriceScale: {
         mode: settings.current.log ? PriceScaleMode.Logarithmic : PriceScaleMode.Normal,
@@ -199,6 +216,8 @@ export const AnalysisChart = memo(function AnalysisChart({
         });
     if (candles?.length) price.setData(candles.map((p) => ({ ...p, time: ts(p.time) })));
     else price.setData(gapData(points, step));
+    const bandPrimitive = bands ? new BandPrimitive(bands) : null;
+    if (bandPrimitive) price.attachPrimitive(bandPrimitive);
     if (primary)
       for (const level of primary.thresholds ??
         (primary.id.includes('mvrv') ? [1] : primary.id.includes('funding') ? [0] : [])) {
@@ -211,9 +230,11 @@ export const AnalysisChart = memo(function AnalysisChart({
           title: String(level),
         });
       }
-    const cursorSeries = [{ series: price, values: new Map(points.map((p) => [p.time, p.value])) }];
+    const cursorSeries = [
+      { id: 'primary', series: price, values: new Map(points.map((p) => [p.time, p.value])) },
+    ];
     const panes = new Map<string, number>();
-    for (const line of lines.filter((l) => l.data.length)) {
+    for (const line of lines) {
       const paneKey = line.pane ?? line.id;
       if (!line.overlay && !panes.has(paneKey)) panes.set(paneKey, panes.size + 1);
       const index = line.overlay ? 0 : panes.get(paneKey)!;
@@ -221,6 +242,7 @@ export const AnalysisChart = memo(function AnalysisChart({
         LineSeries,
         {
           title: line.title + ' · ' + line.unit,
+          lastValueVisible: !line.id.startsWith('band:'),
           color: line.color,
           lineWidth: 1,
           priceLineVisible: false,
@@ -232,7 +254,11 @@ export const AnalysisChart = memo(function AnalysisChart({
         index,
       );
       series.setData(gapData(line.data, line.step ?? 86400));
-      cursorSeries.push({ series, values: new Map(line.data.map((p) => [p.time, p.value])) });
+      cursorSeries.push({
+        id: line.id,
+        series,
+        values: new Map(line.data.map((p) => [p.time, p.value])),
+      });
       for (const level of line.thresholds ??
         (line.unit === 'RSI'
           ? [30, 70]
@@ -292,14 +318,16 @@ export const AnalysisChart = memo(function AnalysisChart({
       ].sort((a, b) => Number(a.time) - Number(b.time)),
     );
     chart.subscribeClick((e) => {
-      const observation = observations.find((o) => o.id && o.id === e.hoveredObjectId);
+      const observation = latest.current.observations.find(
+        (o) => o.id && o.id === e.hoveredObjectId,
+      );
       if (observation?.id) {
         observationClick.current?.(observation.id);
         return;
       }
       const s =
-        signals.find((s) => s.id === e.hoveredObjectId) ??
-        signals.find((s) => s.time === Number(e.time));
+        latest.current.signals.find((s) => s.id === e.hoveredObjectId) ??
+        latest.current.signals.find((s) => s.time === Number(e.time));
       if (s) click.current(s);
     });
     chart.subscribeCrosshairMove((e) => {
@@ -324,11 +352,73 @@ export const AnalysisChart = memo(function AnalysisChart({
       }
       chart.setCrosshairPosition(target.values.get(time)!, ts(time), target.series);
     };
+    updateSeries.current = () => {
+      const data = latest.current;
+      const range = chart.timeScale().getVisibleRange();
+      if (candleMode) price.setData((data.candles ?? []).map((p) => ({ ...p, time: ts(p.time) })));
+      else price.setData(gapData(data.points, step));
+      cursorSeries[0].values = new Map(data.points.map((p) => [p.time, p.value]));
+      for (const entry of cursorSeries.slice(1)) {
+        const line = data.lines.find((l) => l.id === entry.id);
+        entry.series.setData(gapData(line?.data ?? [], line?.step ?? 86400));
+        entry.values = new Map((line?.data ?? []).map((p) => [p.time, p.value]));
+      }
+      bandPrimitive?.setRows(data.bands ?? []);
+      const dates = new Set(data.points.map((p) => p.time));
+      markers.setMarkers(
+        [
+          ...data.signals
+            .filter((s) => s.status !== 'withdrawn' && dates.has(s.time))
+            .map((s) => ({
+              id: s.id,
+              time: ts(s.time),
+              position: 'aboveBar' as const,
+              color: '#e7c681',
+              shape: 'circle' as const,
+              text: '',
+            })),
+          ...data.observations
+            .filter((s) => dates.has(s.time))
+            .map((s) => ({
+              id: s.id ?? 'calculated:' + s.time,
+              time: ts(s.time),
+              position: s.direction === 'down' ? ('aboveBar' as const) : ('belowBar' as const),
+              color: s.direction === 'down' ? '#e98a98' : '#55c8af',
+              shape: s.direction === 'down' ? ('arrowDown' as const) : ('arrowUp' as const),
+              text: s.id ? '' : s.label,
+            })),
+        ].sort((a, b) => Number(a.time) - Number(b.time)),
+      );
+      host.current!.dataset.observations = String(data.points.length);
+      if (range && userRange.current) chart.timeScale().setVisibleRange(range);
+      else {
+        const explicit = availableWindow(
+          data.points.map((p) => p.time),
+          data.initialWindow,
+        );
+        const visible = data.points.filter(
+          (p) => p.time >= periodStart(settings.current.period, data.points.at(-1)?.time ?? 0),
+        );
+        if (explicit)
+          chart.timeScale().setVisibleRange({ from: ts(explicit.from), to: ts(explicit.to) });
+        else if (visible.length)
+          chart
+            .timeScale()
+            .setVisibleRange({ from: ts(visible[0].time), to: ts(visible.at(-1)!.time) });
+      }
+    };
     const prior = previous.current;
     const from = periodStart(settings.current.period, points.at(-1)!.time);
     const visible = points.filter((p) => p.time >= from);
     const restoreDefault = () => {
-      const explicit = availableWindow(readings.times, initialWindow);
+      const data = latest.current;
+      const visible = data.points.filter(
+        (p) => p.time >= periodStart(settings.current.period, data.points.at(-1)?.time ?? 0),
+      );
+      const explicit = availableWindow(
+        data.points.map((p) => p.time),
+        data.initialWindow,
+      );
       if (explicit)
         chart.timeScale().setVisibleRange({ from: ts(explicit.from), to: ts(explicit.to) });
       else if (visible.length)
@@ -358,7 +448,9 @@ export const AnalysisChart = memo(function AnalysisChart({
     surface.dataset.observations = String(points.length);
     const resize = new ResizeObserver(() => {
       const range = chart.timeScale().getVisibleRange();
-      chart.resize(Math.max(1, surface.clientWidth), 370 + panels * 135);
+      const height = chartHeight();
+      surface.style.height = height + 'px';
+      chart.resize(Math.max(1, surface.clientWidth), height);
       if (userRange.current && range) chart.timeScale().setVisibleRange(range);
       else restoreDefault();
     });
@@ -383,9 +475,13 @@ export const AnalysisChart = memo(function AnalysisChart({
       cancelAnimationFrame(frame);
       chart.remove();
       chartRef.current = null;
+      updateSeries.current = () => {};
       moveCursor.current = () => {};
     };
-  }, [key, points, candles, lines, signals, asset, unit, source, step, primary, observations]);
+  }, [key, structure, ready, candleMode]);
+  useEffect(() => {
+    updateSeries.current();
+  }, [points, candles, lines, signals, observations, bands]);
   useEffect(() => {
     chartRef.current
       ?.priceScale('right', 0)
@@ -437,31 +533,34 @@ export const AnalysisChart = memo(function AnalysisChart({
         <span>
           {timestamp(time)} <b>{display(priceValue)}</b>
         </span>
-        {lines.map((l, i) => (
-          <span key={l.id} title={l.source}>
-            <i style={{ background: l.color }} />
-            {l.title}{' '}
-            <b>
-              {metricNumber(
-                selectedTime === null
-                  ? l.data.at(-1)?.value
-                  : time === undefined
-                    ? undefined
-                    : readings.maps[i + 1].get(time),
+        {lines.map((l, i) =>
+          l.id.startsWith('band:') ? null : (
+            <span key={l.id} title={l.source}>
+              <i style={{ background: l.color }} />
+              {l.title}{' '}
+              <b>
+                {metricNumber(
+                  selectedTime === null
+                    ? l.data.at(-1)?.value
+                    : time === undefined
+                      ? undefined
+                      : readings.maps[i + 1].get(time),
+                )}
+              </b>{' '}
+              {l.unit}
+              {l.warning && <small role="status"> · {l.warning}</small>}
+              {selectedTime === null && l.data.at(-1)?.time !== time && (
+                <small> · {timestamp(l.data.at(-1)?.time).slice(0, 10)}</small>
               )}
-            </b>{' '}
-            {l.unit}
-            {selectedTime === null && l.data.at(-1)?.time !== time && (
-              <small> · {timestamp(l.data.at(-1)?.time).slice(0, 10)}</small>
-            )}
-          </span>
-        ))}
+            </span>
+          ),
+        )}
       </div>
       <div className={'analysis-surface' + (drawingKey ? ' with-drawings' : '')}>
         <div
           ref={host}
           className="analysis-canvas"
-          style={{ height: 370 + panelCount(lines) * 135 }}
+          style={{ height: 440 + panelCount(lines) * 135 }}
           data-chart-kind="analysis"
           data-asset={asset}
           data-primary-metric={primary?.id ?? 'price'}

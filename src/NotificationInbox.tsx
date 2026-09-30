@@ -16,10 +16,26 @@ export function NotificationInbox() {
   const [open, setOpen] = useState(false);
   const [read, setRead] = useState<string[]>(() => saved('inbox-read', []));
   const [rules, setRules] = useState<SignalRule[]>(() => saved('inbox-rules', [...SIGNAL_RULES]));
-  const btc = useData<{ data: ObservationSignal[] }>('/api/v1/signals?asset=BTC', false, 300000);
-  const doge = useData<{ data: ObservationSignal[] }>('/api/v1/signals?asset=DOGE', false, 300000);
-  const eth = useData<{ data: ObservationSignal[] }>('/api/v1/signals?asset=ETH', false, 300000);
-  const briefings = useData<{ data: DailyBriefing[] }>('/api/v1/briefings', false, 300000);
+  const btc = useData<{ data: ObservationSignal[] }>(
+    open ? '/api/v1/signals?asset=BTC' : null,
+    false,
+    300000,
+  );
+  const doge = useData<{ data: ObservationSignal[] }>(
+    open ? '/api/v1/signals?asset=DOGE' : null,
+    false,
+    300000,
+  );
+  const eth = useData<{ data: ObservationSignal[] }>(
+    open ? '/api/v1/signals?asset=ETH' : null,
+    false,
+    300000,
+  );
+  const briefings = useData<{ data: DailyBriefing[] }>(
+    open ? '/api/v1/briefings' : null,
+    false,
+    300000,
+  );
   const signals = [...(btc.data?.data ?? []), ...(doge.data?.data ?? []), ...(eth.data?.data ?? [])]
     .filter((s) => s.notify && s.status !== 'withdrawn' && rules.includes(s.rule))
     .sort((a, b) => b.time - a.time);

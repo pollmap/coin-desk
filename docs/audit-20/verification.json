@@ -1,0 +1,68 @@
+{
+  "webVersion": "0.20.0",
+  "collectorVersion": "0.17.1",
+  "statusApiVersion": "0.19.1",
+  "extensionVersion": "0.18.0",
+  "schema": "0009",
+  "baseMain": "fccdce5f0640a562f4c2d1e9bf29f59554b97bc5",
+  "validation": {
+    "previousUnitPassed": 476,
+    "recoveryPassed": 2,
+    "independentDecimalCases": 3,
+    "firstFullBrowserBodiesPassed": 108,
+    "firstFullBrowserOptInSkipped": 2,
+    "firstFullBrowserExit": "interrupted-after-Windows-teardown-did-not-finish",
+    "finalBrowser": {
+      "passed": 108,
+      "skipped": 2,
+      "failed": 0,
+      "flaky": 0,
+      "exitCode": 0,
+      "durationMs": 857950.0160000001,
+      "projects": {
+        "chromium": {
+          "passed": 54,
+          "skipped": 1,
+          "failed": 0,
+          "retries": 0
+        },
+        "webkit": {
+          "passed": 54,
+          "skipped": 1,
+          "failed": 0,
+          "retries": 0
+        }
+      },
+      "fixtureServer": "separately-started-isolated-memory-DB"
+    },
+    "retries": 0,
+    "appleSafariVoiceOver": "device-unavailable-pending",
+    "unitPassed": 476,
+    "buildPassed": true
+  },
+  "preview": {
+    "source": "isolated-fixture",
+    "width": 1280,
+    "chartTop": 238.5,
+    "chartHeight": 440
+  },
+  "pullRequest": null,
+  "ci": "blocked: GitHub write tool requires approval but policy is never",
+  "deployment": {
+    "status": "blocked: GitHub publishing and Cloudflare connection unavailable",
+    "preflight": "Cloudflare-fetch-failed-with-no-additional-network-permission",
+    "changedServices": [
+      "Pages"
+    ]
+  },
+  "operationalReadiness": {
+    "checkedAt": "2026-09-30T17:29:00Z",
+    "source": "existing-production-status-UI",
+    "activeSourcesReady": 103,
+    "activeSourcesTotal": 103,
+    "strict48hReady": false,
+    "longestGapSeconds": 353,
+    "separateFromWebRelease": true
+  },
+  "checkedAt": "2026-09-30T17:54:55.619863+00:00"
+}

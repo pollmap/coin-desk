@@ -8,6 +8,7 @@ import { AssetLogo } from './AssetLogo';
 import { AssetSections } from './AssetSections';
 import { useMarket } from './useMarket';
 import { ChevronDown } from 'lucide-react';
+import { validPriceBasis } from '../shared/indicator-catalog';
 
 export function AssetHeader({
   asset,
@@ -16,8 +17,10 @@ export function AssetHeader({
   assets = ASSETS.map((a) => a.id),
   href,
   trailing,
+  compact = false,
 }: {
   trailing?: ReactNode;
+  compact?: boolean;
   asset: Asset;
   current: string;
   subtitle: string;
@@ -35,8 +38,10 @@ export function AssetHeader({
     for (const key of ['price_source', 'market', 'log', 'interval', 'indicators', 'visual'])
       if (!url.searchParams.has(key) && context.has(key))
         url.searchParams.set(key, context.get(key)!);
-    if (!url.searchParams.has('price_source') && !url.searchParams.has('market'))
-      url.searchParams.set('price_source', 'reference');
+    url.searchParams.set(
+      'price_source',
+      validPriceBasis(next, url.searchParams.get('price_source') || url.searchParams.get('market')),
+    );
     return url.pathname + url.search + url.hash;
   };
   const [query, setQuery] = useState('');
@@ -58,7 +63,7 @@ export function AssetHeader({
   const coin = ASSETS.find((a) => a.id === asset)!;
   const results = ASSETS.filter((a) => matchesCoin(a.id, query));
   return (
-    <div className="asset-header">
+    <div className={'asset-header' + (compact ? ' compact-coins' : '')}>
       <div className="coin-context">
         <details
           className="coin-picker"
@@ -160,7 +165,10 @@ export function AssetHeader({
           </a>
         </div>
         <div className="coin-shortcuts" aria-label="자주 보는 코인">
-          {(['BTC', 'DOGE', 'ETH'] as Asset[]).map((a) => (
+          {(compact
+            ? (['BTC', 'DOGE', 'ETH', 'SOL', 'XRP', 'LINK', 'ONDO', 'PEPE'] as Asset[])
+            : (['BTC', 'DOGE', 'ETH'] as Asset[])
+          ).map((a) => (
             <Link
               key={a}
               to={target(a)}
@@ -176,7 +184,7 @@ export function AssetHeader({
         </div>
         {trailing}
       </div>
-      <AssetSections asset={asset} current={current} />
+      {!compact && <AssetSections asset={asset} current={current} />}
     </div>
   );
 }

@@ -7,12 +7,14 @@ test('ribbon settings preserve the selected date window and survive reload', asy
   const chart = page.locator('[data-chart-kind="analysis"]');
   await expect(chart).toHaveAttribute('data-range-ready', '1');
   const from = await chart.getAttribute('data-visible-from');
+  await page.getByRole('button', { name: '더보기', exact: true }).click();
   await page.getByRole('button', { name: '리본 설정', exact: true }).click();
   await page.getByRole('button', { name: /빠른 반응/ }).click();
   await page.getByRole('button', { name: '차트에 적용', exact: true }).click();
   await expect(page.locator('.analysis-legend')).toContainText('EMA 89봉');
   await expect(chart).toHaveAttribute('data-visible-from', from!);
   await page.reload();
+  await page.getByRole('button', { name: '더보기', exact: true }).click();
   await expect(page.locator('.analysis-legend')).toContainText('EMA 8봉');
   await page.getByRole('button', { name: '리본 설정', exact: true }).click();
   await page.getByLabel('리본 기간').fill('7, 7');

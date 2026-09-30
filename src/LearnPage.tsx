@@ -12,13 +12,15 @@ import {
 } from '../shared/learning-catalog';
 import { guideLesson } from '../shared/guide-lessons';
 import { PATTERNS, trendFilter } from '../shared/candle-patterns';
-import { ASSETS, PRIMARY_ASSETS } from '../shared/catalog';
+import { ASSETS } from '../shared/catalog';
+import { validPriceBasis } from '../shared/indicator-catalog';
 import { priceBasis, basisName, type PriceBasis } from '../shared/analysis-workspace';
 import { AssetLogo } from './AssetLogo';
 import { saved, save } from './lib';
 import { useData } from './hooks';
 import type { Asset } from '../shared/types';
 import './learn.css';
+const PRIMARY_ASSETS = ASSETS.map((a) => a.id);
 
 export function PatternExample({ id }: { id: string }) {
   const p = PATTERNS.find((p) => p.id === id);
@@ -208,7 +210,10 @@ export function LearnPage() {
   const asset = PRIMARY_ASSETS.includes(params.get('asset') as Asset)
     ? (params.get('asset') as Asset)
     : 'BTC';
-  const basis = priceBasis(params),
+  const basis = validPriceBasis(
+      asset,
+      params.get('price_source') || params.get('market'),
+    ) as PriceBasis,
     query = (params.get('q') ?? '').slice(0, 200),
     category = params.get('category') ?? '전체';
   const onlySaved = params.get('saved') === '1';

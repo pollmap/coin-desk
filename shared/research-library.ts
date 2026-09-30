@@ -286,8 +286,10 @@ export function recipeUrl(recipe: AnalysisRecipe, publishedAt?: string, after = 
   if (
     recipe.metric &&
     recipeMetrics(recipe.asset, recipe.section).some((m) => m.id === recipe.metric)
-  )
+  ) {
     params.set('panels', recipe.metric);
+    params.set('metric', recipe.metric);
+  }
   if (to !== undefined && Number.isFinite(to)) {
     params.set('chart_to', String(to));
     params.set('chart_from', String(recipe.from ?? Math.max(0, to - 365 * 86400)));

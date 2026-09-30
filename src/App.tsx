@@ -45,7 +45,7 @@ import { ASSETS, METRICS } from '../shared/catalog';
 import { validIndicators } from '../shared/indicators';
 import { WorkspaceBar, CardPicker, usePersonalDesk } from './PersonalDesk';
 const AnalysisWorkspace = lazy(() =>
-  import('./AnalysisWorkspace').then((m) => ({ default: m.AnalysisWorkspace })),
+  import('./IndicatorWorkspace').then((m) => ({ default: m.IndicatorWorkspace })),
 );
 const ExchangeHistoryPanel = lazy(() =>
   import('./ExchangeHistoryPanel').then((m) => ({ default: m.ExchangeHistoryPanel })),

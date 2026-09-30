@@ -28,6 +28,8 @@ import { saved, save } from './lib';
 import { AssetLogo } from './AssetLogo';
 import { useMarket } from './useMarket';
 import { GUIDE_ARTICLES, guideHref } from '../shared/learning-catalog';
+import { IndicatorNavigation, isIndicatorRoute } from './IndicatorNavigation';
+import { indicatorUrl, defaultIndicator } from '../shared/indicator-catalog';
 
 const featured = ASSETS.map((a) => a.id);
 const marketItems = [
@@ -116,6 +118,7 @@ export function DeskNavigation({ onNavigate }: { onNavigate: () => void }) {
       ? matchesCoin(e.asset as Asset, query)
       : e.aliases.toLowerCase().includes(query.toLowerCase().trim()),
   );
+  if (isIndicatorRoute(location.pathname)) return <IndicatorNavigation onNavigate={onNavigate} />;
   return (
     <>
       <label className="nav-search">
@@ -244,11 +247,21 @@ export function DeskTopbar({
       >
         {collapsed ? <PanelLeftOpen size={18} /> : <PanelLeftClose size={18} />}
       </button>
-      <span className="breadcrumb" aria-label="현재 위치">
-        <Link to="/">Coin Desk</Link>
-        <span>/</span>
-        <b>{title}</b>
-      </span>
+      {isIndicatorRoute(location.pathname) ? (
+        <nav className="desk-main-nav" aria-label="주요 화면">
+          <Link aria-current="page" to={indicatorUrl('BTC', defaultIndicator('BTC'))}>
+            지표 차트
+          </Link>
+          <Link to="/coins">시장·비교</Link>
+          <Link to="/workspace">내 저장</Link>
+        </nav>
+      ) : (
+        <span className="breadcrumb" aria-label="현재 위치">
+          <Link to="/">Coin Desk</Link>
+          <span>/</span>
+          <b>{title}</b>
+        </span>
+      )}
       <button
         className="icon-button theme-toggle"
         aria-label={theme === 'dark' ? '밝은 테마로 변경' : '어두운 테마로 변경'}
