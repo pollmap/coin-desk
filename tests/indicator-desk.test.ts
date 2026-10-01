@@ -35,6 +35,12 @@ describe('indicator entry and compatibility', () => {
     expect(resolveIndicator('DOGE', '/', new URLSearchParams('indicators=sma200')).id).toBe(
       'view:price',
     );
+    expect(
+      resolveIndicator('BTC', '/metrics/mvrv', new URLSearchParams('visual=price')),
+    ).toMatchObject({ id: 'btc:mvrv', period: '5y', supported: true });
+    expect(
+      resolveIndicator('BTC', '/metrics/mvrv', new URLSearchParams('metric=mvrv&period=all')),
+    ).toMatchObject({ id: 'btc:mvrv', period: 'all', supported: true });
   });
   it('switches unsupported MVRV and USD reference without cross-coin data', () => {
     for (const asset of ASSETS.map((a) => a.id)) {

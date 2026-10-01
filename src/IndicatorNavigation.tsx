@@ -10,12 +10,14 @@ import {
 } from '../shared/indicator-catalog';
 
 export const isIndicatorRoute = (path: string) =>
-  path === '/' || /^\/(chart|onchain|futures)\//.test(path);
+  path === '/' || /^\/(chart|onchain|futures|metrics)\//.test(path);
 export function IndicatorNavigation({ onNavigate }: { onNavigate: () => void }) {
   const location = useLocation(),
     p = new URLSearchParams(location.search);
   const asset =
-    ASSETS.find((a) => a.id === (location.pathname.split('/')[2] || p.get('asset')))?.id ?? 'BTC';
+    ASSETS.find((a) => a.id === location.pathname.split('/')[2])?.id ??
+    ASSETS.find((a) => a.id === p.get('asset'))?.id ??
+    'BTC';
   const active = resolveIndicator(asset, location.pathname, p);
   const [query, setQuery] = useState('');
   const matches = navigationIndicators(asset, active.id).filter(

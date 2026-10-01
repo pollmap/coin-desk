@@ -1161,7 +1161,7 @@ export default function App() {
               <Route path="/" element={<AnalysisWorkspace />} />
               <Route path="/chart/:asset" element={<AnalysisWorkspace />} />
               <Route path="/technical/:asset" element={<PricePage workspace />} />
-              <Route path="/metrics/:metric" element={<MetricPage />} />
+              <Route path="/metrics/:metric" element={<AnalysisWorkspace />} />
               <Route path="/coins" element={<WatchlistPage />} />
               <Route path="/workspace" element={<WorkspacePage />} />
               <Route path="/workspace/library" element={<ResearchLibrary />} />

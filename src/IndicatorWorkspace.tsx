@@ -479,6 +479,7 @@ export function IndicatorWorkspace() {
   context.set('metric', id);
   const error = remote.error || raw.error || benchmark.error || extraDaily.error;
   const response = d?.renderer === 'series' && !local ? remote : raw;
+  const waitingForCollection = response.errorCode === 'NO_DATA';
   const loading =
     !!supported && !error && (response.loading || (id === 'relative' && benchmark.loading));
   const chartPoints =
@@ -494,15 +495,19 @@ export function IndicatorWorkspace() {
     ? 'unsupported'
     : loading && !chartPoints.length
       ? 'loading'
-      : error && !chartPoints.length
-        ? 'error'
-        : bands && !bandRows.length && dailyPoints.length
-          ? 'insufficient-history'
-          : isStale || error
-            ? 'delayed'
-            : chartPoints.length
-              ? 'ready'
-              : 'pending';
+      : waitingForCollection && !chartPoints.length
+        ? 'pending'
+        : error && !chartPoints.length
+          ? 'error'
+          : bands && !bandRows.length && dailyPoints.length
+            ? 'insufficient-history'
+            : !chartPoints.length
+              ? 'pending'
+              : isStale || error
+                ? 'delayed'
+                : chartPoints.length
+                  ? 'ready'
+                  : 'pending';
   const lastBand =
     readingDate === null ? bandRows.at(-1) : bandRows.find((p) => p.time === readingDate);
   return (
@@ -694,11 +699,13 @@ export function IndicatorWorkspace() {
                 <strong>
                   {loading
                     ? '지표 이력을 불러오고 있습니다…'
-                    : error
-                      ? '이력을 불러오지 못했습니다.'
-                      : bands
-                        ? '밴드 계산에 필요한 이력이 부족합니다.'
-                        : '확보된 관측이 없습니다.'}
+                    : availability === 'pending'
+                      ? '아직 수집된 관측이 없습니다.'
+                      : error
+                        ? '이력을 불러오지 못했습니다.'
+                        : bands
+                          ? '밴드 계산에 필요한 이력이 부족합니다.'
+                          : '확보된 관측이 없습니다.'}
                 </strong>
                 <p>
                   {error ||

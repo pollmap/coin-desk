@@ -232,12 +232,13 @@ export function resolveIndicator(asset: Asset, path: string, params: URLSearchPa
   let id = params.get('metric');
   if (id && !id.includes(':') && path.startsWith('/onchain')) id = 'net:' + id;
   if (id && !id.includes(':') && path.startsWith('/futures')) id = 'futures:' + id;
+  if (id && !id.includes(':') && path.startsWith('/metrics/')) id = 'btc:' + id;
   if (!id) {
     if (path.startsWith('/onchain')) id = params.get('panels')?.split(',')[0] || 'net:mvrv';
     else if (path.startsWith('/futures'))
       id = params.get('panels')?.split(',')[0] || 'futures:funding';
-    else if (params.get('visual')) id = 'view:' + params.get('visual');
     else if (path.startsWith('/metrics/')) id = 'btc:' + path.split('/')[2];
+    else if (params.get('visual')) id = 'view:' + params.get('visual');
     else if (path.startsWith('/chart') || path.startsWith('/technical') || params.has('indicators'))
       id = 'view:price';
     else if (params.has('patterns') || params.has('draw_tool')) id = 'view:price';

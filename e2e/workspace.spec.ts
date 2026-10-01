@@ -71,6 +71,50 @@ test('market deep link, one-click selection and source survive back/reload/share
   await expect(chart(page)).toHaveAttribute('data-asset', 'DOGE');
   expect(new URL(page.url()).searchParams.get('price_source')).toBe('upbit');
 });
+test('legacy metric URLs use the same indicator workspace without automatic price comparison', async ({
+  page,
+}) => {
+  const requests: string[] = [];
+  page.on('request', (r) => {
+    if (/api\/v1\/(reference|candles|overview)\?/.test(r.url())) requests.push(r.url());
+  });
+  await page.goto('/metrics/mvrv?period=all&visual=price');
+  await expect(chart(page)).toHaveAttribute('data-primary-metric', 'btc:mvrv');
+  await expect(page.getByLabel('가격 비교', { exact: true })).not.toBeChecked();
+  await expect(page.getByRole('navigation', { name: '지표 목록', exact: true })).toBeVisible();
+  expect(requests).toEqual([]);
+  await page.goto('/metrics/mvrv?asset=ONDO');
+  await expect(page.locator('[data-availability]')).toHaveAttribute(
+    'data-availability',
+    'unsupported',
+  );
+  await expect(page.getByRole('navigation', { name: '지표 목록', exact: true })).not.toContainText(
+    'MVRV',
+  );
+  await page.getByRole('link', { name: '지원되는 원천·분석으로 열기' }).click();
+  await expect(chart(page)).toHaveAttribute('data-asset', 'ONDO');
+  await expect(chart(page)).toHaveAttribute('data-primary-metric', 'rsi');
+});
+test('initial collection is pending and waits for the normal refresh interval before retrying', async ({
+  page,
+}) => {
+  await page.clock.install();
+  let calls = 0;
+  await page.route('**/api/v1/series?asset=BTC**', (r) => {
+    calls++;
+    return r.fulfill({ status: 503, json: { code: 'NO_DATA', error: '온체인 초기 수집 대기' } });
+  });
+  await page.goto('/metrics/mvrv');
+  await expect(page.locator('[data-availability]')).toHaveAttribute('data-availability', 'pending');
+  await expect(page.getByText('아직 수집된 관측이 없습니다.')).toBeVisible();
+  await expect(page.getByText(/불러오고 있습니다|불러오지 못했습니다/)).toHaveCount(0);
+  const initialCalls = calls;
+  await page.clock.fastForward(60000);
+  expect(calls).toBe(initialCalls);
+  await page.clock.fastForward(240001);
+  await expect.poll(() => calls).toBeGreaterThan(initialCalls);
+  await expect(page.locator('[data-availability]')).toHaveAttribute('data-availability', 'pending');
+});
 test('unsupported URLs do not request data or retry and ONDO help retains asset', async ({
   page,
 }) => {
