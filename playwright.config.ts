@@ -20,10 +20,13 @@ export default defineConfig({
     { name: 'chromium', use: { ...devices['Desktop Chrome'] } },
     { name: 'webkit', use: { ...devices['Desktop Safari'] } },
   ],
-  webServer: {
-    command: 'node scripts/e2e-server.mjs',
-    url: baseURL,
-    reuseExistingServer: false,
-    timeout: 60000,
-  },
+  webServer:
+    process.env.COIN_DESK_FIXTURE_MANAGED_EXTERNALLY === '1'
+      ? undefined
+      : {
+          command: 'node scripts/e2e-server.mjs',
+          url: baseURL,
+          reuseExistingServer: false,
+          timeout: 60000,
+        },
 });

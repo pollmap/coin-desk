@@ -6,6 +6,8 @@
 
 [운영 사이트](https://coin-desk.pages.dev) · [경쟁 기능 비교표](docs/RELEASE15.md#기능-비교) · [데이터 정의](docs/DATA.md)
 
+**백엔드 VPS 이전 작업:** 기존 계산과 데이터를 보존하는 Node·SQLite·독립 수집·백업 실행부와 배포 도구를 구현하고 있습니다. 실제 VPS 연결·데이터 전환·배포는 대기 상태이며 Cloudflare 운영은 유지합니다. [구조·배포·복구](DEPLOYMENT.md) · [이전 검증](docs/audit-vps/README.md)
+
 ## 새 사용 흐름
 
 1. 처음 열면 **BTC MVRV · 최근 5년**을 바로 봅니다. 기존 URL과 저장 구성의 선택은 먼저 복원합니다.

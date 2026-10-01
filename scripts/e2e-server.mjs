@@ -156,10 +156,17 @@ server.on('request', async (req, res) => {
   }
 });
 server.listen(port, '127.0.0.1');
-for (const signal of ['SIGINT', 'SIGTERM'])
-  process.on(signal, async () => {
-    server.close();
-    await vite.close();
-    DB.sqlite.close();
-    process.exit(0);
-  });
+let closing = false;
+async function shutdown() {
+  if (closing) return;
+  closing = true;
+  server.closeAllConnections();
+  server.close();
+  await vite.close();
+  DB.sqlite.close();
+  process.exit(0);
+}
+for (const signal of ['SIGINT', 'SIGTERM']) process.on(signal, shutdown);
+process.on('message', (message) => {
+  if (message === 'shutdown') void shutdown();
+});

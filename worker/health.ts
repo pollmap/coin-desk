@@ -403,11 +403,17 @@ export async function operationStatus(env: Env) {
       market: job.market,
       lane: dedicated ?? 'background',
       worker:
-        dedicated === 'quotes'
-          ? 'btc-desk-quotes'
-          : dedicated === 'recent-futures'
-            ? 'btc-desk'
-            : 'btc-desk-background',
+        env.RUNTIME_KIND === 'vps'
+          ? dedicated === 'quotes'
+            ? 'quotes'
+            : dedicated === 'recent-futures'
+              ? 'recent'
+              : 'background'
+          : dedicated === 'quotes'
+            ? 'btc-desk-quotes'
+            : dedicated === 'recent-futures'
+              ? 'btc-desk'
+              : 'btc-desk-background',
       dedicatedCadenceSeconds: dedicated ? job.every : null,
       backgroundCadenceSeconds: queued?.every ?? null,
       dataInterval:
@@ -455,11 +461,17 @@ export async function operationStatus(env: Env) {
     rebuilding,
     health: { ok: !reasons.length, reasons, checkedAt: now },
     automation: {
-      runner: 'Cloudflare Cron',
-      cronWorkers: ['btc-desk', 'btc-desk-quotes'],
-      boundWorkers: ['btc-desk-background', 'btc-desk-analysis'],
-      collectors: ['btc-desk', 'btc-desk-quotes', 'btc-desk-background', 'btc-desk-analysis'],
-      observationScope: 'background Cron ledger; all active source freshness also required',
+      runner: env.RUNTIME_KIND === 'vps' ? 'VPS minute scheduler' : 'Cloudflare Cron',
+      cronWorkers: env.RUNTIME_KIND === 'vps' ? [] : ['btc-desk', 'btc-desk-quotes'],
+      boundWorkers: env.RUNTIME_KIND === 'vps' ? [] : ['btc-desk-background', 'btc-desk-analysis'],
+      collectors:
+        env.RUNTIME_KIND === 'vps'
+          ? ['quotes', 'background', 'recent', 'analysis']
+          : ['btc-desk', 'btc-desk-quotes', 'btc-desk-background', 'btc-desk-analysis'],
+      observationScope:
+        env.RUNTIME_KIND === 'vps'
+          ? 'preserved background scheduler ledger; all active source freshness also required'
+          : 'background Cron ledger; all active source freshness also required',
       analysisCycleSeconds: 1200,
       analysisParts,
       independentOfVisitors: true,
@@ -478,6 +490,7 @@ export async function operationStatus(env: Env) {
         quoteBackgroundTargetSeconds: BACKGROUND_QUOTE_SECONDS,
         quoteBackgroundDelaySeconds: 180,
         quoteOnDemandMinSeconds: QUOTE_REFRESH_SECONDS,
+        quoteOnDemandEnabled: !env.READ_ONLY_API,
         hourlyCandlesSeconds: 3600,
         dailyCandlesSeconds: DAILY_REFRESH_SECONDS,
         dailyUtcBoundaryRefresh: true,

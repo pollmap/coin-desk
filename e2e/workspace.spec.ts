@@ -11,6 +11,29 @@ test.beforeEach(async ({ page }) => {
     new URL(r.request().url()).hostname === '127.0.0.1' ? r.continue() : r.abort(),
   );
 });
+
+test('loading a band does not prematurely claim zero observations or insufficient history', async ({
+  page,
+}) => {
+  let release!: () => void;
+  const gate = new Promise<void>((resolve) => {
+    release = resolve;
+  });
+  await page.route('**/api/v1/reference?**', async (route) => {
+    await gate;
+    await route.continue();
+  });
+  try {
+    await page.goto('/?asset=BTC&metric=view%3Abtc_rainbow&period=all&price_source=reference');
+    await expect(page.getByText('지표 이력을 불러오고 있습니다…')).toBeVisible();
+    await expect(page.locator('.indicator-empty p')).toHaveCount(0);
+    await expect(page.getByText('밴드 계산에 필요한 이력이 부족합니다.')).toHaveCount(0);
+    release();
+    await expect(chart(page)).toBeVisible();
+  } finally {
+    release();
+  }
+});
 test('first entry is BTC MVRV; eight coins use supported metrics and sources', async ({ page }) => {
   await page.setViewportSize({ width: 1280, height: 800 });
   const requests: string[] = [];

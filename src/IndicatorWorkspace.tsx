@@ -707,12 +707,14 @@ export function IndicatorWorkspace() {
                           ? '밴드 계산에 필요한 이력이 부족합니다.'
                           : '확보된 관측이 없습니다.'}
                 </strong>
-                <p>
-                  {error ||
-                    (bands
-                      ? `표시일 이전 ${id === 'view:btc_rainbow' ? '유효한' : '연속'} 일별 가격 730개와 표시일 가격이 필요합니다. 현재 ${dailyPoints.length}개${dailyPoints.length ? ` · ${dateLabel(dailyPoints[0].time)}–${dateLabel(dailyPoints.at(-1)!.time)}` : ''}. 결측을 보간하지 않습니다.`
-                      : '수집 대기 상태입니다. 다른 코인의 자료를 표시하지 않습니다.')}
-                </p>
+                {!loading && (
+                  <p>
+                    {error ||
+                      (bands
+                        ? `표시일 이전 ${id === 'view:btc_rainbow' ? '유효한' : '연속'} 일별 가격 730개와 표시일 가격이 필요합니다. 현재 ${dailyPoints.length}개${dailyPoints.length ? ` · ${dateLabel(dailyPoints[0].time)}–${dateLabel(dailyPoints.at(-1)!.time)}` : ''}. 결측을 보간하지 않습니다.`
+                        : '수집 대기 상태입니다. 다른 코인의 자료를 표시하지 않습니다.')}
+                  </p>
+                )}
                 {error && (
                   <button
                     onClick={() => {

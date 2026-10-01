@@ -241,8 +241,10 @@ export const AnalysisChart = memo(function AnalysisChart({
       const series = chart.addSeries(
         LineSeries,
         {
-          title: line.title + ' · ' + line.unit,
+          // The library can still show a title badge when lastValueVisible is false.
+          title: line.id.startsWith('band:') ? '' : line.title + ' · ' + line.unit,
           lastValueVisible: !line.id.startsWith('band:'),
+          crosshairMarkerVisible: !line.id.startsWith('band:'),
           color: line.color,
           lineWidth: 1,
           priceLineVisible: false,

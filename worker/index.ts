@@ -147,6 +147,7 @@ async function overview(env: Env, asset: Asset, market: Market): Promise<Overvie
     .first<{ next_attempt: number }>();
   try {
     if (
+      !env.READ_ONLY_API &&
       (!saved || epoch() - saved.fetched_at >= QUOTE_REFRESH_SECONDS) &&
       (retry?.next_attempt || 0) <= epoch() &&
       (await claimRefresh(env.DB, key, QUOTE_REFRESH_SECONDS))
@@ -230,9 +231,10 @@ async function overview(env: Env, asset: Asset, market: Market): Promise<Overvie
     ).results.reverse();
     technical = dailyTechnical(daily.map((c) => ({ time: c.time, value: c.close })));
     // Derived-result caching is optional; read access must survive exhausted writes.
-    await putState(env.DB, technicalKey, { computedAt: epoch(), data: technical }).catch(
-      () => undefined,
-    );
+    if (!env.READ_ONLY_API)
+      await putState(env.DB, technicalKey, { computedAt: epoch(), data: technical }).catch(
+        () => undefined,
+      );
   }
   return {
     quote,
