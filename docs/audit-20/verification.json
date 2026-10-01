@@ -75,11 +75,10 @@
   "pullRequest": null,
   "ci": "blocked: GitHub write tool requires approval but policy is never",
   "deployment": {
-    "status": "blocked: GitHub publishing and Cloudflare connection unavailable",
+    "status": "blocked: GitHub publishing policy; 0.20 not merged or deployed",
     "preflight": "Cloudflare-fetch-failed-with-no-additional-network-permission",
-    "changedServices": [
-      "Pages"
-    ]
+    "changedServices": ["Pages"],
+    "cloudflareManagementUi": "authenticated-read-only-verification-available"
   },
   "operationalReadiness": {
     "checkedAt": "2026-10-01T01:24:12Z",
@@ -90,9 +89,15 @@
     "longestGapSeconds": 393,
     "separateFromWebRelease": true,
     "officialD1DailyUsageVerified": false,
-    "evidence": "production-ui-20261001.json"
+    "evidence": "production-ui-20261001.json",
+    "remoteSelectEvidence": "natural-cron-20261001.json",
+    "remoteGapEvidence": "cron-gaps-20261001.json",
+    "officialD1DailyUsageEvidence": "d1-daily-20260930-unverified.json",
+    "naturalCollectionSampleVerified": true,
+    "nextDayBriefingCreatedAt": "2026-10-01T00:10:51+00:00",
+    "remoteGapCheckAt": "2026-10-01T01:44:22Z"
   },
-  "checkedAt": "2026-10-01T01:27:38.679945+00:00",
+  "checkedAt": "2026-10-01T01:47:39.164177+00:00",
   "codeCommit": "2b5c501d61ea2af8bc96c493fbee3569188333e4",
   "fixesAdded20261001": [
     "Legacy /metrics/:metric uses the primary indicator workspace without automatic price comparison.",
@@ -124,7 +129,6 @@
     "remote-branch-PR-CI-main-merge",
     "Pages-deployment-and-production-asset-data-flow-verification",
     "official-account-full-UTC-day-D1-usage",
-    "natural-collection-remote-read-only-verification",
     "strict-48-hour-operational-observation"
   ]
 }

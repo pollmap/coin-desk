@@ -1,0 +1,157 @@
+{
+  "queriedAt": "2026-10-01T01:44:22Z",
+  "from": 1790646120,
+  "until": 1790818920,
+  "scheduledRuns": 2869,
+  "successes": 2854,
+  "failures": 15,
+  "longestInteriorStartGap": 393,
+  "longestInteriorScheduledGap": 300,
+  "gapsOver180": [
+    {
+      "previousStart": 1790793576,
+      "startedAt": 1790793955,
+      "gapSeconds": 379,
+      "job": "DOGE:binance:1h",
+      "outcome": "ok",
+      "previousStartUTC": "2026-09-30T18:39:36+00:00",
+      "startedAtUTC": "2026-09-30T18:45:55+00:00"
+    },
+    {
+      "previousStart": 1790816370,
+      "startedAt": 1790816763,
+      "gapSeconds": 393,
+      "job": "mempool:BTC",
+      "outcome": "ok",
+      "previousStartUTC": "2026-10-01T00:59:30+00:00",
+      "startedAtUTC": "2026-10-01T01:06:03+00:00"
+    }
+  ],
+  "failedRuns": [
+    {
+      "startedAt": 1790668055,
+      "completedAt": 1790668069,
+      "job": "ETH:binance:1h",
+      "outcome": "error"
+    },
+    {
+      "startedAt": 1790668485,
+      "completedAt": 1790668499,
+      "job": "ETH:binance:1h",
+      "outcome": "error"
+    },
+    {
+      "startedAt": 1790668779,
+      "completedAt": 1790668793,
+      "job": "DOGE:binance:1h",
+      "outcome": "error"
+    },
+    {
+      "startedAt": 1790684320,
+      "completedAt": 1790684469,
+      "job": "LINK:binance:1h",
+      "outcome": "interrupted"
+    },
+    {
+      "startedAt": 1790723312,
+      "completedAt": 1790723326,
+      "job": "derivatives:ETH:long_account_ratio_daily",
+      "outcome": "error"
+    },
+    {
+      "startedAt": 1790730071,
+      "completedAt": 1790730085,
+      "job": "derivatives:ETH:open_interest_daily",
+      "outcome": "error"
+    },
+    {
+      "startedAt": 1790730393,
+      "completedAt": 1790730407,
+      "job": "derivatives:ETH:open_interest_daily",
+      "outcome": "error"
+    },
+    {
+      "startedAt": 1790749413,
+      "completedAt": 1790749427,
+      "job": "derivatives:ETH:open_interest_daily",
+      "outcome": "error"
+    },
+    {
+      "startedAt": 1790780918,
+      "completedAt": 1790780931,
+      "job": "BTC:binance:1d",
+      "outcome": "error"
+    },
+    {
+      "startedAt": 1790781095,
+      "completedAt": 1790781109,
+      "job": "BTC:binance:1d",
+      "outcome": "error"
+    },
+    {
+      "startedAt": 1790781214,
+      "completedAt": 1790781228,
+      "job": "SOL:binance:1h",
+      "outcome": "error"
+    },
+    {
+      "startedAt": 1790781277,
+      "completedAt": 1790781290,
+      "job": "XRP:binance:1h",
+      "outcome": "error"
+    },
+    {
+      "startedAt": 1790781354,
+      "completedAt": 1790781367,
+      "job": "ETH:binance:1d",
+      "outcome": "error"
+    },
+    {
+      "startedAt": 1790781455,
+      "completedAt": 1790781468,
+      "job": "SOL:binance:1h",
+      "outcome": "error"
+    },
+    {
+      "startedAt": 1790781516,
+      "completedAt": 1790781530,
+      "job": "BTC:binance:1d",
+      "outcome": "error"
+    }
+  ],
+  "source": "Cloudflare authenticated D1 Console, bounded read-only query",
+  "expectedRuns": 2880,
+  "missingRuns": 11,
+  "recordingRate": 0.9961805555555555,
+  "strictReady": false,
+  "gapQueriesIncludeBoundaryGaps": false,
+  "note": "Interior gaps alone exceed 180 seconds. This independently proves failure of the gap criterion; this query is not a replacement for the full status readiness algorithm.",
+  "failureClasses": [
+    {
+      "outcome": "error",
+      "error": "HTTP 502",
+      "count": 14
+    },
+    {
+      "outcome": "interrupted",
+      "count": 1
+    }
+  ],
+  "rootCauseOfDeliveryGaps": "not-established",
+  "historyReset": false,
+  "gapPredecessors": [
+    {
+      "gapSeconds": 379,
+      "job": "XRP:upbit:1d",
+      "durationSeconds": 3,
+      "outcome": "ok"
+    },
+    {
+      "gapSeconds": 393,
+      "job": "SOL:binance:1h",
+      "durationSeconds": 2,
+      "outcome": "ok"
+    }
+  ],
+  "precedingJobLongRunningExplanation": "not-supported-by-neighbor-rows"
+}
