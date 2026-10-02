@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 root=/srv/services/coin-desk
+acme_root=/var/www/coin-desk-acme
 host=${1:?Pass a DNS-verified hostname}; port=${2:?Pass the verified port}
 [[ "$host" =~ ^[a-z0-9][a-z0-9.-]+[a-z0-9]$ && "$host" != *..* && ${#host} -lt 254 ]] || exit 2
 [[ "$port" =~ ^[0-9]+$ && "$port" -ge 1024 && "$port" -le 65535 ]] || exit 2
@@ -23,7 +24,11 @@ for path in pathlib.Path('/etc/nginx/sites-enabled').iterdir():
   for names in re.findall(r'server_name\s+([^;]+);',path.read_text()):
    assert host not in names.split(), 'Hostname already belongs to another service'
 PY
-mkdir -p "$root/shared/acme" "$root/audit/nginx"
+# /srv/services may intentionally be root-only on a shared VPS. Give Nginx
+# a dedicated public challenge directory without widening that parent access.
+test ! -L "$acme_root"
+install -d -m 755 "$acme_root"
+mkdir -p "$root/audit/nginx"
 backup="$root/audit/nginx/pre-coin-desk-$(date -u +%Y%m%dT%H%M%SZ).tar.gz"
 tar -czf "$backup" -C /etc/nginx sites-available sites-enabled
 chmod 600 "$backup"
@@ -32,7 +37,7 @@ cat > "$target" <<EOF
 server {
  listen 80;
  server_name $host;
- location /.well-known/acme-challenge/ { root $root/shared/acme; }
+ location /.well-known/acme-challenge/ { root $acme_root; }
  location / { return 503; }
 }
 EOF
@@ -40,13 +45,13 @@ ln -s "$target" "$link"
 rollback() { rm -f -- "$link" "$target"; nginx -t && systemctl reload nginx; }
 trap rollback ERR
 nginx -t; systemctl reload nginx
-certbot certonly --webroot -w "$root/shared/acme" -d "$host" --cert-name coin-desk --non-interactive --agree-tos --register-unsafely-without-email
+certbot certonly --webroot -w "$acme_root" -d "$host" --cert-name coin-desk --non-interactive --agree-tos --register-unsafely-without-email
 cat > "$target" <<EOF
 # Managed by Coin Desk: project-only route
 server {
  listen 80;
  server_name $host;
- location /.well-known/acme-challenge/ { root $root/shared/acme; }
+ location /.well-known/acme-challenge/ { root $acme_root; }
  location / { return 301 https://\$host\$request_uri; }
 }
 server {
