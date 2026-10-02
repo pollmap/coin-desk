@@ -1,7 +1,7 @@
 ARG NODE_IMAGE=node:24.18.0-bookworm-slim
 FROM ${NODE_IMAGE} AS build
 WORKDIR /app
-RUN apt-get update && apt-get install -y --no-install-recommends python3 && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install -y --no-install-recommends python3 python-is-python3 && rm -rf /var/lib/apt/lists/*
 COPY package*.json ./
 RUN npm ci
 COPY . .
