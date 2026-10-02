@@ -26,6 +26,7 @@ jobs:
       - run: python scripts/verify_custom.py
       - run: npm run check
       - run: npm run test:recovery
+      - run: npm run test:server
       - run: npm run build
       - run: npx playwright install --with-deps chromium webkit
       - run: npm run test:e2e
@@ -36,7 +37,11 @@ jobs:
           path: |
             playwright-report/
             test-results/
+            work/browser-checks/
           retention-days: 7
       - run: python scripts/check_docs.py
       - run: python scripts/check_brand.py
       - run: python scripts/package_release.py
+      - run: npm run package:vps
+      - run: docker build --tag coin-desk:ci .
+      - run: python scripts/container_smoke.py

@@ -1,0 +1,11 @@
+{
+  "release": "vps-229d149c5b2dc67d",
+  "archiveFile": "deployment-artifacts/vps-229d149c5b2dc67d.tar.gz",
+  "archiveSha256": "dc556639ae8a67c56c49bf5f44747d457497fa8c2af4a459e0700f50048bb716",
+  "sourceFiles": 273,
+  "archiveContentVerified": true,
+  "containsPrivateData": false,
+  "deployedToVps": false,
+  "dockerImageBuilt": false,
+  "reason": "Local source package only; actual server connection is blocked"
+}

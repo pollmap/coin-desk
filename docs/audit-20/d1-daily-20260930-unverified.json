@@ -1,0 +1,33 @@
+{
+  "checkedAt": "2026-10-01T01:47:39.164177+00:00",
+  "dayUTC": "2026-09-30",
+  "scopeRequired": "entire Cloudflare account",
+  "verified": false,
+  "rowsRead": null,
+  "rowsWritten": null,
+  "attempts": [
+    {
+      "path": "scripts/daily_usage.py preflight: Wrangler whoami",
+      "result": "fetch failed"
+    },
+    {
+      "path": "authenticated D1 account dashboard",
+      "result": "current day only; no historical day selector exposed"
+    },
+    {
+      "path": "Cloudflare official GraphQL API Explorer",
+      "result": "client schema failure before query result",
+      "error": "Type AccountImagesUniqueGroupsDimensions must define one or more fields.",
+      "schemaRefetchAttempted": true
+    }
+  ],
+  "cloudflareUserLoginConfirmed": true,
+  "officialExplorerReadOnlyScopes": ["Account Zone Read", "Account Read"],
+  "tokenOrCookieExtracted": false,
+  "firstPartyExplorer": true,
+  "fullDayAfterStatusApiDeploymentEligible": true,
+  "partialDayOrInsightsUsedAsCompletion": false,
+  "operationalSignoff": false,
+  "source": "https://developers.cloudflare.com/d1/observability/metrics-analytics/",
+  "explorer": "https://graphql.cloudflare.com/explorer"
+}

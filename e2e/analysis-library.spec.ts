@@ -13,7 +13,7 @@ test('initial full range survives resize and late panes; drawing is scoped and k
   const errors: string[] = [];
   page.on('pageerror', (e) => errors.push(e.message));
   await page.setViewportSize({ width: 1280, height: 800 });
-  await page.goto('/?asset=DOGE&price_source=upbit&period=all');
+  await page.goto('/?asset=DOGE&metric=view:price&price_source=upbit&period=all');
   await expect(chart(page)).toHaveAttribute('data-observations', '1100');
   await expect(chart(page)).toHaveAttribute('data-range-ready', '1');
   const from = Number(await chart(page).getAttribute('data-visible-from')),
@@ -24,11 +24,13 @@ test('initial full range survives resize and late panes; drawing is scoped and k
   await expect
     .poll(async () => Number(await chart(page).getAttribute('data-visible-from')))
     .toBe(from);
+  await page.getByRole('button', { name: '더보기', exact: true }).click();
   await page.getByRole('button', { name: '수평선', exact: true }).click();
   const box = (await chart(page).boundingBox())!;
   await page.mouse.click(box.x + box.width * 0.4, box.y + 90);
   await expect(page.locator('.drawing-overlay line')).toHaveCount(1);
   await page.reload();
+  await page.getByRole('button', { name: '더보기', exact: true }).click();
   await expect(page.locator('.drawing-overlay line')).toHaveCount(1);
   await page.getByLabel('가격 기준', { exact: true }).selectOption('binance');
   await expect(page.locator('.drawing-overlay line')).toHaveCount(0);
@@ -135,15 +137,35 @@ test('unknown extension nonce and malformed rows never enter the library', async
 });
 test('analysis recipes replace the main chart with calculated views', async ({ page }) => {
   await page.goto('/?asset=BTC&price_source=reference&period=all');
-  await page.getByLabel('차트 시각화').selectOption('ribbon');
+  await page.getByRole('button', { name: '지표 변경', exact: true }).click();
+  await page.getByLabel('지표 검색', { exact: true }).fill('이동평균 리본');
+  await page
+    .getByRole('navigation', { name: '지표 목록', exact: true })
+    .getByRole('link', { name: '이동평균 리본 가격', exact: true })
+    .click();
   await expect(page.locator('.analysis-legend')).toContainText('SMA 7봉');
-  await page.getByLabel('차트 시각화').selectOption('cycles');
+  await page.getByRole('button', { name: '지표 변경', exact: true }).click();
+  await page.getByLabel('지표 검색', { exact: true }).fill('반감기 사이클');
+  await page
+    .getByRole('navigation', { name: '지표 목록', exact: true })
+    .getByRole('link', { name: '반감기 사이클 가격', exact: true })
+    .click();
   await expect(page.getByRole('heading', { name: 'BTC 반감기 사이클' })).toBeVisible();
-  await page.getByLabel('차트 시각화').selectOption('seasonality');
+  await page.getByRole('button', { name: '지표 변경', exact: true }).click();
+  await page.getByLabel('지표 검색', { exact: true }).fill('계절성');
+  await page
+    .getByRole('navigation', { name: '지표 목록', exact: true })
+    .getByRole('link', { name: '계절성 가격', exact: true })
+    .click();
   await expect(page.getByRole('heading', { name: 'BTC 계절성' })).toBeVisible();
   await expect(page.getByLabel('봉 간격', { exact: true })).not.toBeVisible();
   await expect(page.getByRole('button', { name: '지표 추가', exact: true })).not.toBeVisible();
-  await page.getByLabel('차트 시각화').selectOption('relative');
+  await page.getByRole('button', { name: '지표 변경', exact: true }).click();
+  await page.getByLabel('지표 검색', { exact: true }).fill('상대강도·상관');
+  await page
+    .getByRole('navigation', { name: '지표 목록', exact: true })
+    .getByRole('link', { name: '상대강도·상관 가격', exact: true })
+    .click();
   await expect(page.getByLabel('비교 기준', { exact: true })).toBeVisible();
   await expect(chart(page)).toBeVisible();
   await page.getByLabel('비교 기준', { exact: true }).selectOption('ratio');
@@ -162,7 +184,7 @@ test('seasonality waits for the price history before reporting sample availabili
     await route.continue();
   });
   await page.goto('/?asset=BTC&price_source=reference&period=all&visual=seasonality');
-  await expect(page.getByText('분석할 가격 이력을 불러오고 있습니다…')).toBeVisible();
+  await expect(page.getByText('지표 이력을 불러오고 있습니다…')).toBeVisible();
   await expect(page.getByText(/현재 0개입니다/)).toHaveCount(0);
   release();
   await expect(page.getByRole('heading', { name: 'BTC 계절성' })).toBeVisible();

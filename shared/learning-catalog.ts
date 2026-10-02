@@ -1,4 +1,4 @@
-import { METRICS, PRIMARY_ASSETS } from './catalog';
+import { METRICS, ASSETS } from './catalog';
 import { NETWORK_METRICS } from './network-catalog';
 import { METRIC_GUIDES } from './metric-guides';
 import { PATTERNS, type PatternId } from './candle-patterns';
@@ -45,7 +45,7 @@ export interface GuideArticle {
   aliases?: string;
   advanced?: boolean;
 }
-const core = PRIMARY_ASSETS;
+const core = ASSETS.map((a) => a.id);
 const startSteps = [
   '코인과 가격 기준을 확인합니다.',
   '차트에 적용한 뒤 날짜를 옮겨 실제 수치를 확인합니다.',
@@ -565,6 +565,23 @@ const basics: GuideArticle[] = [
   ),
 ];
 export const GUIDE_ARTICLES: readonly GuideArticle[] = [
+  entry(
+    'btc-rainbow',
+    'BTC 레인보우 · Coin Desk 로그회귀',
+    '사이클·비교',
+    'BTC 가격이 이전 관측으로 계산한 장기 로그회귀에서 얼마나 떨어져 있는지 봅니다. 730일 가격 위치 밴드와 다른 모형입니다.',
+    '하단·중앙·상단은 회귀선 대비 위치입니다. 색상은 매수·매도 신호가 아니며, 실제 가격이 밴드 밖에 나갈 수 있습니다.',
+    '표시일 이전 유효 관측으로 x=ln(제네시스 이후 경과일), y=ln(BTC USD 가격). b=Σ(x−평균x)(y−평균y)/Σ(x−평균x)², a=평균y−b×평균x. σ=√(Σ(y−a−bx)²/N). 경계 exp(a+bx+kσ), k=−2.25,−1.75,…,2.25. 이전 관측 최소 730개. 예: 중심 100, σ=0.2이면 +0.25σ 경계는 exp(ln100+0.05)≈105.13입니다.',
+    'Coin Desk의 자체 모형으로 BlockchainCenter·CoinGlass와 동일한 결과가 아닙니다. 그날 이전의 관측만 사용하며 미래 연장·결측 보간을 하지 않습니다. σ=0이면 위치 점수는 계산하지 않습니다.',
+    { kind: 'view', id: 'btc_rainbow' },
+    {
+      assets: ['BTC'],
+      basis: ['reference'],
+      related: ['rainbow', 'powerlaw'],
+      source: 'https://www.blockchaincenter.net/bitcoin-rainbow-chart/',
+      unit: 'USD',
+    },
+  ),
   ...basics,
   ...technical,
   ...views,
@@ -596,7 +613,8 @@ export const GUIDE_ARTICLES: readonly GuideArticle[] = [
   ...futures,
   ...tools,
 ];
-export const guideArticle = (id: string) => GUIDE_ARTICLES.find((g) => g.id === id);
+export const guideArticle = (id: string) =>
+  GUIDE_ARTICLES.find((g) => g.id === (id === 'btc_rainbow' ? 'btc-rainbow' : id));
 export function guideForMetric(id: string) {
   const remote = id.match(/^(net|btc|futures|chain):([a-z_0-9]+)/);
   if (remote) return guideArticle(remote[1] + '-' + remote[2]);
@@ -652,6 +670,8 @@ export function guideContext(params: URLSearchParams) {
       : 'all',
   );
   next.set('log', params.get('log') === '0' ? '0' : '1');
+  if (/^[a-z_0-9:]{1,80}$/.test(params.get('metric') ?? ''))
+    next.set('metric', params.get('metric')!);
   if (['1h', '4h', '1d', '1w', '1M'].includes(params.get('interval') ?? ''))
     next.set('interval', params.get('interval')!);
   const range = readDateWindow(params);
@@ -686,15 +706,19 @@ export function guideChartLink(
     p.set('interval', '1d');
   p.set('guide', article.id);
   const a = article.action;
+  p.delete('metric');
   let path = '/';
   if (a.kind === 'panel') {
+    p.set('metric', a.id);
     p.set('panels', a.id);
     if (a.section !== 'price') path = `/${a.section}/${asset}`;
   } else if (a.kind === 'indicator') {
     p.set('indicators', validIndicators([a.id]).join(','));
     p.set('panels', '');
-  } else if (a.kind === 'view') p.set('visual', a.id);
-  else if (a.kind === 'pattern') {
+  } else if (a.kind === 'view') {
+    p.set('visual', a.id);
+    p.set('metric', 'view:' + a.id);
+  } else if (a.kind === 'pattern') {
     p.set('patterns', a.id);
     p.set(
       'pattern_trend',

@@ -1,11 +1,12 @@
 import { useEffect, useState } from 'react';
-import { json, pages } from './lib';
+import { ApiError, json, pages } from './lib';
 import { queryCache } from './query-cache';
 export function useData<T>(url: string | null, paged = false, refresh = 300000) {
   const [state, setState] = useState<{
     key: string | null;
     data?: T;
     error?: string;
+    errorCode?: string;
     loading: boolean;
   }>({ key: null, loading: true });
   const [revision, setRevision] = useState(0);
@@ -40,12 +41,15 @@ export function useData<T>(url: string | null, paged = false, refresh = 300000) 
             key,
             data: prev.key === key ? prev.data : undefined,
             error: String(e instanceof Error ? e.message : e),
+            errorCode: e instanceof ApiError ? e.code : undefined,
             loading: false,
           }));
           failures++;
           retryTimer = setTimeout(
             () => void load(true),
-            Math.min(refresh, 15000 * 2 ** Math.min(failures - 1, 2)),
+            e instanceof ApiError && e.code === 'NO_DATA'
+              ? refresh
+              : Math.min(refresh, 15000 * 2 ** Math.min(failures - 1, 2)),
           );
         }
       } finally {
@@ -71,7 +75,7 @@ export function useData<T>(url: string | null, paged = false, refresh = 300000) 
   return {
     ...(state.key === key
       ? state
-      : { loading: !!key && !cached, data: cached?.data, error: undefined }),
+      : { loading: !!key && !cached, data: cached?.data, error: undefined, errorCode: undefined }),
     reload: () => setRevision((v) => v + 1),
   };
 }

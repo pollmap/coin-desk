@@ -6,6 +6,7 @@ import { ANALYSIS_VIEWS, analysisView } from './advanced-analysis';
 import { validAnnotations, type Annotation } from './annotations';
 import { parseUtcDate, type DateWindow } from './date-navigation';
 import { validPatterns } from './candle-patterns';
+import { indicatorDefinition } from './indicator-catalog';
 
 export interface ChartSettings {
   asset: Asset;
@@ -21,6 +22,7 @@ export interface Workspace extends ChartSettings {
   cards: string[];
   priceSource?: 'reference' | 'upbit' | 'binance';
   visual?: string;
+  metric?: string;
   panels?: string[];
   section?: 'price' | 'onchain' | 'futures';
   signal?: string;
@@ -103,6 +105,9 @@ export function normalizeDesk(value: unknown): PersonalDesk {
         ? { priceSource: entry.priceSource }
         : {}),
       ...(entry.visual ? { visual: analysisView(entry.visual) } : {}),
+      ...(typeof entry.metric === 'string' && indicatorDefinition(entry.metric)
+        ? { metric: entry.metric }
+        : {}),
       ...validExtras(entry),
       ...(typeof entry.comparePrice === 'boolean' ? { comparePrice: entry.comparePrice } : {}),
       ...(Array.isArray(entry.panels)
@@ -155,6 +160,8 @@ export function importDesk(text: string): PersonalDesk {
       (w.visual !== undefined &&
         !(ANALYSIS_VIEWS as readonly string[]).includes(String(w.visual))) ||
       (w.comparePrice !== undefined && typeof w.comparePrice !== 'boolean') ||
+      (w.metric !== undefined &&
+        (typeof w.metric !== 'string' || !indicatorDefinition(w.metric))) ||
       (w.signal !== undefined &&
         (typeof w.signal !== 'string' ||
           !/^[A-Za-z0-9:_.-]{1,400}$/.test(w.signal) ||
@@ -188,6 +195,7 @@ export function workspaceUrl(workspace: Workspace): string {
   });
   if (workspace.priceSource) params.set('price_source', workspace.priceSource);
   if (workspace.visual) params.set('visual', workspace.visual);
+  if (workspace.metric) params.set('metric', workspace.metric);
   if (workspace.panels) params.set('panels', workspace.panels.join(','));
   if (workspace.comparePrice) params.set('compare_price', '1');
   if (workspace.signal) params.set('signal', workspace.signal);

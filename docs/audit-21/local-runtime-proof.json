@@ -1,0 +1,132 @@
+{
+  "checkedAt": "2026-10-02T18:18:21.111506+00:00",
+  "scope": "read-only local historical cache; not production",
+  "quotes": [
+    {
+      "key": "quote:BTC:binance",
+      "everySeconds": 60,
+      "freshnessLimitSeconds": 180,
+      "status": "delayed"
+    },
+    {
+      "key": "quote:BTC:upbit",
+      "everySeconds": 60,
+      "freshnessLimitSeconds": 180,
+      "status": "delayed"
+    },
+    {
+      "key": "quote:DOGE:binance",
+      "everySeconds": 60,
+      "freshnessLimitSeconds": 180,
+      "status": "delayed"
+    },
+    {
+      "key": "quote:DOGE:upbit",
+      "everySeconds": 60,
+      "freshnessLimitSeconds": 180,
+      "status": "delayed"
+    },
+    {
+      "key": "quote:ETH:binance",
+      "everySeconds": 60,
+      "freshnessLimitSeconds": 180,
+      "status": "delayed"
+    },
+    {
+      "key": "quote:ETH:upbit",
+      "everySeconds": 60,
+      "freshnessLimitSeconds": 180,
+      "status": "delayed"
+    },
+    {
+      "key": "quote:SOL:binance",
+      "everySeconds": 60,
+      "freshnessLimitSeconds": 180,
+      "status": "delayed"
+    },
+    {
+      "key": "quote:SOL:upbit",
+      "everySeconds": 60,
+      "freshnessLimitSeconds": 180,
+      "status": "delayed"
+    },
+    {
+      "key": "quote:XRP:binance",
+      "everySeconds": 60,
+      "freshnessLimitSeconds": 180,
+      "status": "delayed"
+    },
+    {
+      "key": "quote:XRP:upbit",
+      "everySeconds": 60,
+      "freshnessLimitSeconds": 180,
+      "status": "delayed"
+    },
+    {
+      "key": "quote:LINK:binance",
+      "everySeconds": 60,
+      "freshnessLimitSeconds": 180,
+      "status": "delayed"
+    },
+    {
+      "key": "quote:LINK:upbit",
+      "everySeconds": 60,
+      "freshnessLimitSeconds": 180,
+      "status": "delayed"
+    },
+    {
+      "key": "quote:ONDO:binance",
+      "everySeconds": 60,
+      "freshnessLimitSeconds": 180,
+      "status": "delayed"
+    },
+    {
+      "key": "quote:ONDO:upbit",
+      "everySeconds": 60,
+      "freshnessLimitSeconds": 180,
+      "status": "delayed"
+    },
+    {
+      "key": "quote:PEPE:binance",
+      "everySeconds": 60,
+      "freshnessLimitSeconds": 180,
+      "status": "delayed"
+    },
+    {
+      "key": "quote:PEPE:upbit",
+      "everySeconds": 60,
+      "freshnessLimitSeconds": 180,
+      "status": "delayed"
+    }
+  ],
+  "runtime": {
+    "kind": "vps",
+    "release": "local-vps",
+    "scheduler": [
+      {
+        "lane": "quotes",
+        "healthy": false,
+        "reason": "no_execution_ledger"
+      },
+      {
+        "lane": "background",
+        "healthy": false,
+        "reason": "no_execution_ledger"
+      },
+      {
+        "lane": "recent",
+        "healthy": false,
+        "reason": "no_execution_ledger"
+      },
+      {
+        "lane": "analysis",
+        "healthy": false,
+        "reason": "no_execution_ledger"
+      }
+    ],
+    "backup": {
+      "ok": false,
+      "reason": "no_verified_backup"
+    }
+  }
+}

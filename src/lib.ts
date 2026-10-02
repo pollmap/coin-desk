@@ -81,6 +81,16 @@ export function save(key: string, value: unknown): boolean {
     return false;
   }
 }
+export class ApiError extends Error {
+  constructor(
+    message: string,
+    public status: number,
+    public code?: string,
+  ) {
+    super(message);
+    this.name = 'ApiError';
+  }
+}
 export async function json<T>(url: string, signal?: AbortSignal): Promise<T> {
   const controller = new AbortController();
   let timedOut = false;
@@ -100,19 +110,21 @@ export async function json<T>(url: string, signal?: AbortSignal): Promise<T> {
           : '데이터 서버 응답을 확인할 수 없습니다. 잠시 후 다시 시도해 주세요.',
       );
     }
-    let data: { error?: string } | null;
+    let data: { error?: string; code?: string } | null;
     try {
-      data = (await r.json()) as { error?: string } | null;
+      data = (await r.json()) as { error?: string; code?: string } | null;
     } catch (error) {
       // Preserve caller/timeout cancellation while hiding parser fragments from bad proxies.
       if (controller.signal.aborted) throw error;
       throw new Error('데이터 서버의 JSON 응답이 손상되었습니다. 잠시 후 다시 시도해 주세요.');
     }
     if (!r.ok)
-      throw new Error(
+      throw new ApiError(
         typeof data?.error === 'string'
           ? friendlyError(data.error)
           : '데이터를 불러오지 못했습니다.',
+        r.status,
+        typeof data?.code === 'string' ? data.code : undefined,
       );
     if (!data || typeof data !== 'object') throw new Error('올바른 데이터 응답이 아닙니다.');
     return data as T;

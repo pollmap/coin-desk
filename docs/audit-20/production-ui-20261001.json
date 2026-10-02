@@ -1,0 +1,41 @@
+{
+  "checkedAt": "2026-10-01T01:24:12Z",
+  "source": "existing-production-status-UI-and-notification-inbox",
+  "web020Deployed": false,
+  "activeSourcesReady": 103,
+  "activeSourcesTotal": 103,
+  "observation48h": {
+    "periodSatisfied": true,
+    "recordRatePercentDisplayed": 99.62,
+    "missingRunsDisplayed": 11,
+    "longestStartGapSecondsDisplayed": 393,
+    "longestScheduledGapSecondsDisplayed": 300,
+    "successRatePercentDisplayed": 99.1,
+    "failedRunsDisplayed": 15,
+    "unresolvedFailuresDisplayed": 0,
+    "strictReady": false,
+    "reason": "Displayed execution gap exceeds the unchanged 180-second condition.",
+    "underlyingGapCause": "not-confirmed"
+  },
+  "lastCronDisplayedKST": "2026-10-01 10:23",
+  "lastCompletedTaskDisplayed": "XRP Bybit daily open interest",
+  "briefingsVisible": [
+    { "date": "2026-09-30", "observationCount": 3 },
+    { "date": "2026-10-01", "observationCount": 3 }
+  ],
+  "briefingEvidenceLimit": "UI presence only; actual DB creation timestamps were not read.",
+  "publicApiDirectNavigation": "blocked-by-client",
+  "wranglerAuthenticationPreflight": "fetch-failed",
+  "officialAccountDailyD1Usage": {
+    "dayUTC": "2026-09-30",
+    "eligibleForCompletedDayCheck": true,
+    "verified": false,
+    "rowsRead": null,
+    "rowsWritten": null,
+    "managementUiAuthentication": "user-sign-in-requested"
+  },
+  "naturalCollectionRemoteSelectVerifiedThisTurn": false,
+  "productCronModified": false,
+  "temporaryFollowupPaused": false,
+  "personalSourceIncluded": false
+}

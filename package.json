@@ -1,6 +1,6 @@
 {
   "name": "coin-desk",
-  "version": "0.19.1",
+  "version": "0.21.0",
   "private": true,
   "type": "module",
   "scripts": {
@@ -13,6 +13,10 @@
     "format": "prettier --write src shared worker tests/*.ts tests/*.mjs scripts/*.mjs *.json *.ts",
     "package:extension": "python scripts/package_extension.py",
     "build": "npm run package:extension && tsc -b && vite build",
+    "build:server": "node server/build.mjs",
+    "start:live": "node server/live.mjs",
+    "test:server": "npm run build:server && node --test server/tests/*.test.mjs && python -m unittest discover -s tests -p \"test_vps*.py\"",
+    "package:vps": "python scripts/vps_release.py",
     "test": "vitest run",
     "check": "tsc -b && vitest run",
     "db:init": "wrangler d1 migrations apply btc-desk --local",
@@ -22,7 +26,7 @@
     "seed:assets": "python scripts/bootstrap_assets.py",
     "deploy:pages": "wrangler pages deploy --cwd pages --project-name coin-desk --branch main",
     "db:assets": "node scripts/import_assets.mjs",
-    "test:e2e": "playwright test",
+    "test:e2e": "node scripts/run_browser_checks.mjs",
     "test:recovery": "python -m unittest discover -s tests -p \"test_backup*.py\"",
     "deploy:collectors": "wrangler deploy -c wrangler.feed.jsonc && wrangler deploy -c wrangler.quotes.jsonc && wrangler deploy -c wrangler.background.jsonc && wrangler deploy -c wrangler.analysis.jsonc"
   },

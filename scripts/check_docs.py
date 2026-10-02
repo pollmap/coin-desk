@@ -2,7 +2,7 @@
 import pathlib,re,json
 root=pathlib.Path(__file__).resolve().parents[1]
 errors=[]
-for path in [root/'README.md',*(root/'docs').rglob('*.md')]:
+for path in [root/'README.md',root/'DEPLOYMENT.md',*(root/'docs').rglob('*.md')]:
  for target in re.findall(r'\]\(([^)]+)\)',path.read_text(encoding='utf-8')):
   if target.startswith(('https:','http:','#','mailto:')):continue
   relative=target.split('#')[0].split(' "')[0]

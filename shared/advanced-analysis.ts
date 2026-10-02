@@ -4,6 +4,7 @@ import { DAY } from './math';
 export const ANALYSIS_VIEWS = [
   'price',
   'rainbow',
+  'btc_rainbow',
   'ribbon',
   'vwap',
   'relative',
@@ -18,6 +19,7 @@ export const analysisView = (v: unknown): AnalysisView =>
 export const ANALYSIS_LABELS: Record<AnalysisView, string> = {
   price: '가격·지표',
   rainbow: '가격 위치 밴드',
+  btc_rainbow: 'BTC 레인보우 · 로그회귀',
   ribbon: '이동평균 리본',
   vwap: '365일 VWAP',
   relative: '상대강도·상관',

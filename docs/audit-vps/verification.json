@@ -1,0 +1,78 @@
+{
+  "scope": "native-vps-runtime-and-migration-local-verification",
+  "dateKst": "2026-10-02",
+  "webVersion": "0.20.0",
+  "productionMigrationComplete": false,
+  "checks": {
+    "typescript": "passed",
+    "unitTests": {"passed": 479, "failed": 0},
+    "nativeRuntimeTests": {"passed": 5, "failed": 0},
+    "migrationBackupShadowTests": {"passed": 6, "failed": 0},
+    "existingRecoveryTests": {"passed": 2, "failed": 0},
+    "independentDecimalScenarios": {"passed": 3},
+    "browserIndicatorRegression": {"chromium": 27, "webkit": 27, "passed": 54, "failed": 0, "retries": 0, "normalExit": true},
+    "browserAfterAxisLabelCorrection": {"chromium": 6, "webkit": 6, "passed": 12, "failed": 0, "retries": 0, "normalExit": true},
+    "browserOtherFlows": "previous full 0.20 run: 112 passed; latest run focused on changed indicator flow",
+    "frontendBuild": "passed",
+    "serverBuild": "passed",
+    "composeYaml": "parsed: 7 services, loopback-only API mapping",
+    "dockerBuildAndComposeExecution": "not run locally: Docker unavailable",
+    "remoteCi": "not run for these changes"
+  },
+  "localDataRehearsal": {
+    "source": "read-only local cache, not production D1 export",
+    "tables": 18,
+    "rows": 122102,
+    "allTableHashesAndSchemaMatch": true,
+    "migrationsAcknowledgedWithoutReplay": 9,
+    "backupRestoreVerified": true,
+    "originalOverwritten": false
+  },
+  "nativeReadApiSample": {
+    "requests": 29,
+    "http200": 28,
+    "http503": 1,
+    "health503Reason": "local cache is old; collectors are intentionally stopped; delay is preserved",
+    "directCollectionOrOverviewCalled": false,
+    "productionVerified": false,
+    "evidence": "local-api.json"
+  },
+  "manualBrowser": {
+    "nativeServer": "127.0.0.1:5207",
+    "mvrvDisplayed": true,
+    "ondoFallback": "RSI 14 / Binance USDT; delayed cached values remain marked delayed",
+    "rainbowDisplayed": true,
+    "overlappingBandAxisBadgesRemoved": true,
+    "viewport": {"width": 1280, "height": 800, "chartTop": 238.5, "chartHeight": 440},
+    "consoleErrors": 0,
+    "source": "isolated local cache"
+  },
+  "observedFailuresAndCorrections": [
+    "Initial cache rehearsal caught CR/LF schema serialization changes; row hashes matched and original stayed read-only. Import/export now preserve line breaks including SQL strings; regression and repeated rehearsal passed.",
+    "Band loading prematurely displayed zero samples and insufficient history; corrected and verified with delayed responses in Chromium/WebKit.",
+    "First 54 browser test bodies passed but Windows shell teardown hung; only the known fixture PID was manually stopped. Direct fixture ownership and IPC shutdown then completed all 54 tests normally in 4.8 minutes with zero retries.",
+    "Rainbow band titles produced ten overlapping price-axis badges. Band labels and crosshair markers on that axis were removed; numerical boundaries and export data remain. The native-server browser screenshot and 12 focused regressions passed after the correction."
+  ],
+  "blockedExternalActions": {
+    "ssh": "port-22 socket connection Permission denied; not proven key/authentication failure",
+    "networkPermission": "request returned no granted network profile",
+    "automationView": "MCP tool call requires approval, but approval policy is never",
+    "actualVpsBaseline": "unverified",
+    "vpsUpstreamAccess": "8-source limited preflight implemented and fixture-tested; actual VPS probe not run",
+    "productionExportTransfer": "not performed",
+    "dnsHttpsAndImageDigest": "unverified",
+    "existingCloudflareCronAndD1": "unchanged"
+  },
+  "remainingGates": [
+    "remote push, CI and main merge",
+    "authorized VPS connection and measured baseline/headroom",
+    "production export and final complete content/schema comparison",
+    "Docker build, deployment, DNS and trusted HTTPS",
+    "natural collection, backup, next-day briefing and full UTC-day resources",
+    "strict preserved-history 48h stability",
+    "offsite backup destination is not configured",
+    "actual Safari/VoiceOver: Apple device unavailable"
+  ],
+  "privateData": "preserved locally; not packaged, uploaded or committed",
+  "complete": false
+}

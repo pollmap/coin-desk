@@ -5,7 +5,7 @@ import { selectedMarket } from '../shared/coin-search';
 import type { Market } from '../shared/types';
 export function useMarket() {
   const [params, setParams] = useSearchParams();
-  const market = selectedMarket(params.get('market'), saved<Market>('price-market', 'binance'));
+  const market = selectedMarket(params.get('market'), saved<Market>('price-market', 'upbit'));
   useEffect(() => {
     save('price-market', market);
   }, [market]);

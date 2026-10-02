@@ -3,26 +3,50 @@ import { createChart as createOriginalChart, ColorType } from 'lightweight-chart
 /** Repaint canvas options in place: a theme change never resets the user's viewport. */
 export function createDeskChart(...args: Parameters<typeof createOriginalChart>) {
   const chart = createOriginalChart(...args);
+  const timeScale = chart.timeScale();
+  const setVisibleRange = timeScale.setVisibleRange.bind(timeScale);
+  timeScale.setVisibleRange = (range) => {
+    const from = timeScale.timeToIndex(range.from, true);
+    const to = timeScale.timeToIndex(range.to, true);
+    if (from === null || to === null || from >= to) return setVisibleRange(range);
+    // LWC floors/ceils logical edges. Pixel/spacing roundoff at an integer edge
+    // can include the previous day (29.999999999999996 instead of 30).
+    // Keep both edges just inside the requested bars, without changing dates.
+    timeScale.setVisibleLogicalRange({ from: from + 1e-7, to: to - 1e-7 });
+  };
   const originalColors = new WeakMap<object, string>();
   const paint = () => {
     const light = document.documentElement.dataset.theme === 'light';
     chart.applyOptions({
       layout: {
-        background: { type: ColorType.Solid, color: light ? '#ffffff' : '#11171c' },
+        background: { type: ColorType.Solid, color: light ? '#ffffff' : '#101216' },
         textColor: light ? '#48576a' : '#a4b2c1',
       },
       grid: {
-        vertLines: { color: light ? '#e8edf1' : '#202a33' },
-        horzLines: { color: light ? '#e8edf1' : '#202a33' },
+        vertLines: { color: light ? '#e8edf1' : '#292e37' },
+        horzLines: { color: light ? '#e8edf1' : '#292e37' },
       },
       crosshair: {
-        vertLine: { labelBackgroundColor: '#326c67' },
-        horzLine: { labelBackgroundColor: '#326c67' },
+        vertLine: { labelBackgroundColor: '#465680' },
+        horzLine: { labelBackgroundColor: '#465680' },
       },
     });
     for (const pane of chart.panes())
       for (const series of pane.getSeries()) {
         const options = series.options();
+        if ('upColor' in options)
+          series.applyOptions({
+            upColor: light ? '#b62d43' : '#ff7f8b',
+            downColor: light ? '#255db8' : '#7faaff',
+            ...('wickUpColor' in options
+              ? {
+                  wickUpColor: light ? '#b62d43' : '#ff7f8b',
+                  wickDownColor: light ? '#255db8' : '#7faaff',
+                  borderUpColor: light ? '#b62d43' : '#ff7f8b',
+                  borderDownColor: light ? '#255db8' : '#7faaff',
+                }
+              : {}),
+          });
         if (!('color' in options) || typeof options.color !== 'string') continue;
         const original = originalColors.get(series) ?? options.color;
         originalColors.set(series, original);

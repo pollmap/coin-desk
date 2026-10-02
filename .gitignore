@@ -1,5 +1,10 @@
 node_modules/
 dist/
+server-dist/
+deployment-artifacts/
+*.sqlite
+*.sqlite-wal
+*.sqlite-shm
 .wrangler/
 .vite/
 .dev.vars

@@ -1,0 +1,134 @@
+{
+  "webVersion": "0.20.0",
+  "collectorVersion": "0.17.1",
+  "statusApiVersion": "0.19.1",
+  "extensionVersion": "0.18.0",
+  "schema": "0009",
+  "baseMain": "fccdce5f0640a562f4c2d1e9bf29f59554b97bc5",
+  "validation": {
+    "previousUnitPassed": 476,
+    "recoveryPassed": 2,
+    "independentDecimalCases": 3,
+    "firstFullBrowserBodiesPassed": 108,
+    "firstFullBrowserOptInSkipped": 2,
+    "firstFullBrowserExit": "interrupted-after-Windows-teardown-did-not-finish",
+    "finalBrowser": {
+      "passed": 112,
+      "skipped": 2,
+      "failed": 0,
+      "flaky": 0,
+      "exitCode": 0,
+      "durationMs": 689340.554,
+      "startedAt": "2026-10-01T01:12:45.209Z",
+      "projects": {
+        "chromium": {
+          "passed": 56,
+          "skipped": 1,
+          "failed": 0,
+          "retries": 0
+        },
+        "webkit": {
+          "passed": 56,
+          "skipped": 1,
+          "failed": 0,
+          "retries": 0
+        }
+      },
+      "fixtureServer": "separately-started-isolated-memory-DB"
+    },
+    "retries": 0,
+    "appleSafariVoiceOver": "device-unavailable-pending",
+    "unitPassed": 476,
+    "buildPassed": true,
+    "previousFinalBrowser": {
+      "passed": 108,
+      "skipped": 2,
+      "failed": 0,
+      "flaky": 0,
+      "exitCode": 0,
+      "durationMs": 857950.0160000001,
+      "projects": {
+        "chromium": {
+          "passed": 54,
+          "skipped": 1,
+          "failed": 0,
+          "retries": 0
+        },
+        "webkit": {
+          "passed": 54,
+          "skipped": 1,
+          "failed": 0,
+          "retries": 0
+        }
+      },
+      "fixtureServer": "separately-started-isolated-memory-DB"
+    },
+    "additionalFocusedBrowserPassed": 8,
+    "formatCheckPassed": true
+  },
+  "preview": {
+    "source": "isolated-fixture",
+    "width": 1280,
+    "chartTop": 238.5,
+    "chartHeight": 440
+  },
+  "pullRequest": null,
+  "ci": "blocked: GitHub write tool requires approval but policy is never",
+  "deployment": {
+    "status": "blocked: GitHub publishing policy; 0.20 not merged or deployed",
+    "preflight": "Cloudflare-fetch-failed-with-no-additional-network-permission",
+    "changedServices": ["Pages"],
+    "cloudflareManagementUi": "authenticated-read-only-verification-available"
+  },
+  "operationalReadiness": {
+    "checkedAt": "2026-10-01T01:24:12Z",
+    "source": "existing-production-status-UI-and-notification-inbox",
+    "activeSourcesReady": 103,
+    "activeSourcesTotal": 103,
+    "strict48hReady": false,
+    "longestGapSeconds": 393,
+    "separateFromWebRelease": true,
+    "officialD1DailyUsageVerified": false,
+    "evidence": "production-ui-20261001.json",
+    "remoteSelectEvidence": "natural-cron-20261001.json",
+    "remoteGapEvidence": "cron-gaps-20261001.json",
+    "officialD1DailyUsageEvidence": "d1-daily-20260930-unverified.json",
+    "naturalCollectionSampleVerified": true,
+    "nextDayBriefingCreatedAt": "2026-10-01T00:10:51+00:00",
+    "remoteGapCheckAt": "2026-10-01T01:44:22Z"
+  },
+  "checkedAt": "2026-10-01T01:47:39.164177+00:00",
+  "codeCommit": "2b5c501d61ea2af8bc96c493fbee3569188333e4",
+  "fixesAdded20261001": [
+    "Legacy /metrics/:metric uses the primary indicator workspace without automatic price comparison.",
+    "Legacy metric navigation preserves the selected asset, including unsupported ONDO links.",
+    "Initial NO_DATA collection remains pending and waits for the normal refresh interval.",
+    "Empty observations are distinguished from stale existing observations."
+  ],
+  "operationalReadinessHistory": [
+    {
+      "checkedAt": "2026-09-30T17:29:00Z",
+      "source": "existing-production-status-UI",
+      "activeSourcesReady": 103,
+      "activeSourcesTotal": 103,
+      "strict48hReady": false,
+      "longestGapSeconds": 353,
+      "separateFromWebRelease": true
+    }
+  ],
+  "remoteMainVerification": {
+    "head": "fccdce5f0640a562f4c2d1e9bf29f59554b97bc5",
+    "kind": "documentation-commit-with-skip-ci",
+    "latestCodeMain": "aa2d4c196928accd435388e31177e3a44a3d9703",
+    "latestCodeMainCi": 36507912187,
+    "latestCodeMainCiResult": "success",
+    "web020Ci": "not-published-not-run"
+  },
+  "fullPlanComplete": false,
+  "remainingGates": [
+    "remote-branch-PR-CI-main-merge",
+    "Pages-deployment-and-production-asset-data-flow-verification",
+    "official-account-full-UTC-day-D1-usage",
+    "strict-48-hour-operational-observation"
+  ]
+}

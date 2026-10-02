@@ -1,64 +1,42 @@
 import { Link } from 'react-router-dom';
 import './brand.css';
-
 export function BrandPage() {
   return (
     <div className="brand-page">
       <div className="page-heading">
         <div>
-          <div className="eyebrow">COIN DESK IDENTITY</div>
-          <h1>시장의 전체 흐름을 읽다</h1>
-          <p>전체 가격 이력부터 온체인 지표까지, 나의 코인 분석 대시보드.</p>
+          <h1>Coin Desk</h1>
+          <p>시세를 훑고, 지표를 깊게 보는 코인 서비스</p>
         </div>
-        <Link className="desk-button" to="/">
-          대시보드로
-        </Link>
+        <Link to="/">시장으로</Link>
       </div>
-      <section className="panel brand-showcase" aria-label="Coin Desk 공식 화면용 브랜드 자산">
+      <section className="brand-showcase" aria-label="Coin Desk 브랜드">
         <div className="brand-new-lockup">
-          <img src="/brand/coin-desk-shiba-smile.png" width="100" height="100" alt="웃는 시바견" />
-          <strong>
-            Coin<span>Desk</span>
-          </strong>
+          <img
+            src="/brand/coin-desk-shiba-smile.png"
+            width="100"
+            height="100"
+            alt="웃고 있는 시바견"
+          />
+          <strong>Coin Desk</strong>
         </div>
-        <p>웃는 시바견과 청록색 포인트. 복잡한 시장을 편하게 살펴보는 개인 분석 공간입니다.</p>
+        <p>
+          Coin Desk의 강아지 캐릭터입니다. 로고와 빈 관심목록에만 사용하고, 차트와 수치는 가리지
+          않습니다.
+        </p>
         <div className="brand-colors">
-          <span style={{ background: '#087b69', color: 'white' }}>Deep Teal · #087B69</span>
-          <span style={{ background: '#51dac2', color: '#14202c' }}>Teal · #51DAC2</span>
-          <span style={{ background: '#0b1014', color: '#d8e2ee' }}>Ink · #0B1014</span>
+          <span style={{ background: '#101216', color: '#edf0f5' }}>배경 · #101216</span>
+          <span style={{ background: '#a8b5f7', color: '#101216' }}>강조 · #A8B5F7</span>
+          <span style={{ background: '#191c22', color: '#ff7f8b' }}>상승 +</span>
+          <span style={{ background: '#191c22', color: '#7faaff' }}>하락 −</span>
         </div>
-        <div className="brand-downloads">
-          <a href="/brand/coin-desk-shiba-smile.png" download>
-            시바견 브랜드 이미지 PNG
-          </a>
-        </div>
-      </section>
-      <section className="panel brand-mascot" aria-label="Coin Desk 안내 캐릭터">
-        <img
-          src="/brand/coin-desk-shiba-smile.png"
-          width="160"
-          height="160"
-          loading="lazy"
-          alt="청록색 스카프를 두르고 웃는 Coin Desk 시바견"
-        />
-        <div>
-          <h2>Coin Desk 시바견</h2>
-          <p>분석 방법을 안내하는 캐릭터입니다. 공식 코인 로고나 매매 신호로 사용하지 않습니다.</p>
-          <a href="/brand/coin-desk-shiba-smile.png" download>
-            캐릭터 PNG 저장
-          </a>
-        </div>
-      </section>
-      <section className="panel brand-preview">
-        <h2>링크 공유 미리보기</h2>
-        <img
-          src="/brand/coin-desk-shiba-smile.png"
-          alt="Coin Desk, 시장의 전체 흐름을 읽다. BTC DOGE ETH"
-          width="1254"
-          height="1254"
-          loading="lazy"
-        />
-        <p>사이트 아이콘과 링크 미리보기에도 같은 시바견을 사용합니다.</p>
+        <p>
+          현재 가격, 확정된 지표값, 작성자의 해석을 구분합니다. 상승·하락은 색상과 부호를 함께
+          표시합니다.
+        </p>
+        <a href="/brand/coin-desk-shiba-smile.png" download>
+          강아지 이미지 저장
+        </a>
       </section>
     </div>
   );

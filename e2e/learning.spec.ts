@@ -40,6 +40,7 @@ test('guide search retains filters, favorites and source context; real OHLC is r
   expect(new URL(page.url()).searchParams.has('q')).toBe(false);
   await expect(page.getByRole('region', { name: '캔들 패턴 관찰' })).toContainText('0건');
   const picker = page.getByRole('button', { name: '캔들 패턴 1', exact: true });
+  await page.getByRole('button', { name: '더보기', exact: true }).click();
   await picker.click();
   await expect(page.getByRole('dialog', { name: '캔들 패턴' })).toBeVisible();
   await page.keyboard.press('Escape');
@@ -88,14 +89,13 @@ test('confirmed patterns navigate their chart, survive save/share and clear sele
     'data-visible-from',
     new URL(url).searchParams.get('chart_from')!,
   );
-  await page
-    .locator('.analysis-save > summary')
-    .filter({ hasText: '작업공간 저장·불러오기' })
-    .click();
+  await page.getByRole('button', { name: '작업공간 저장·불러오기', exact: true }).click();
   await page.getByLabel('작업공간 이름', { exact: true }).fill('도지 조건 확인');
   await page.getByRole('button', { name: '현재 구성 저장', exact: true }).click();
   await expect(page.getByRole('link', { name: /도지 조건 확인/ })).toBeVisible();
-  await page.getByRole('link', { name: '이더리움 ETH', exact: true }).click();
+  await page.getByRole('button', { name: /코인 변경/ }).click();
+  await page.getByRole('searchbox', { name: '코인 검색' }).fill('ETH');
+  await page.getByRole('searchbox', { name: '코인 검색' }).press('Enter');
   await expect(chart(page)).toHaveAttribute('data-asset', 'ETH');
   expect(new URL(page.url()).searchParams.has('pattern_focus')).toBe(false);
 });
@@ -118,6 +118,7 @@ test('onchain guides open the corresponding primary metric and unsupported coins
   await expect(page.locator('.guide-primary')).toContainText('BTC');
   await page.locator('.guide-primary').click();
   await expect(chart(page)).toHaveAttribute('data-asset', 'BTC');
+  await page.getByRole('button', { name: '더보기', exact: true }).click();
   await expect(page.getByLabel('가격 기준', { exact: true })).toHaveValue('reference');
 });
 
@@ -147,7 +148,12 @@ test('a guide activates a real drawing tool and Help follows the selected analys
   await page.mouse.click(channelBox.x + channelBox.width * 0.65, channelBox.y + 120);
   await page.mouse.click(channelBox.x + channelBox.width * 0.45, channelBox.y + 160);
   await expect(page.locator('.drawing-overlay line')).toHaveCount(2);
-  await page.getByLabel('차트 시각화', { exact: true }).selectOption('rainbow');
+  await page.getByRole('button', { name: '지표 변경', exact: true }).click();
+  await page.getByLabel('지표 검색', { exact: true }).fill('가격 위치');
+  await page
+    .getByRole('navigation', { name: '지표 목록', exact: true })
+    .getByRole('link', { name: /^가격 위치 밴드/ })
+    .click();
   await page.getByRole('link', { name: '현재 분석 설명', exact: true }).click();
   await expect(page.locator('.guide-title')).toContainText('가격 위치 밴드');
 });
@@ -183,6 +189,7 @@ for (const width of [320, 390, 768, 1000, 1280, 1440]) {
         await page.getByRole('button', { name: /테마로 변경/ }).click();
       }
     }
+    await page.getByRole('button', { name: '더보기', exact: true }).click();
     await page.getByRole('button', { name: '캔들 패턴 1', exact: true }).click();
     const scan = await new AxeBuilder({ page })
       .withTags(['wcag2a', 'wcag2aa', 'wcag21aa', 'wcag22aa'])
@@ -274,7 +281,7 @@ test('reading shortcuts stay in the dictionary, formulas are open and learning d
   await openApply(page);
   await expect(page.locator('.guide-primary')).toContainText('DOGE · Upbit KRW');
   await page.locator('.guide-primary').click();
-  await expect(page.locator('[data-chart-kind="position"]')).toBeVisible();
+  await expect(page.locator('[data-chart-kind="analysis"]')).toBeVisible();
 });
 
 test('chart application keeps the selected control visible and focused when its context changes', async ({

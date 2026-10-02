@@ -1,5 +1,8 @@
-import type { Candle } from '../shared/types';
+import type { Asset, Candle } from '../shared/types';
+import { isPrimaryAsset } from '../shared/catalog';
 export interface Env {
+  RUNTIME_KIND?: 'vps' | 'cloudflare';
+  READ_ONLY_API?: boolean;
   X_BEARER_TOKEN?: string;
   X_COLLECTION_ENABLED?: string;
   X_MAX_REQUESTS_PER_DAY?: string;
@@ -15,6 +18,10 @@ export interface Env {
 }
 export const epoch = () => Math.floor(Date.now() / 1000);
 export const QUOTE_REFRESH_SECONDS = 60;
+/** VPS collects all enabled coins each minute; preserve the edge cost policy. */
+export function quoteRefreshSeconds(asset: Asset, runtime?: Env['RUNTIME_KIND']) {
+  return runtime === 'vps' || isPrimaryAsset(asset) ? QUOTE_REFRESH_SECONDS : 300;
+}
 export function refreshLeaseStatement(db: D1Database, key: string, seconds: number, now = epoch()) {
   return db
     .prepare(

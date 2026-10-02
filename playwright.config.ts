@@ -7,10 +7,16 @@ export default defineConfig({
   fullyParallel: false,
   workers: 2,
   forbidOnly: !!process.env.CI,
-  retries: process.env.CI ? 1 : 0,
+  retries: 0,
   timeout: 45000,
   expect: { timeout: 12000 },
-  reporter: [['list'], ['html', { open: 'never' }]],
+  reporter: [
+    ['list'],
+    [
+      'html',
+      { open: 'never', outputFolder: process.env.COIN_DESK_TEST_REPORT_DIR || 'playwright-report' },
+    ],
+  ],
   use: {
     baseURL,
     trace: 'retain-on-failure',
@@ -20,10 +26,13 @@ export default defineConfig({
     { name: 'chromium', use: { ...devices['Desktop Chrome'] } },
     { name: 'webkit', use: { ...devices['Desktop Safari'] } },
   ],
-  webServer: {
-    command: 'node scripts/e2e-server.mjs',
-    url: baseURL,
-    reuseExistingServer: false,
-    timeout: 60000,
-  },
+  webServer:
+    process.env.COIN_DESK_FIXTURE_MANAGED_EXTERNALLY === '1'
+      ? undefined
+      : {
+          command: 'node scripts/e2e-server.mjs',
+          url: baseURL,
+          reuseExistingServer: false,
+          timeout: 60000,
+        },
 });
