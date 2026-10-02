@@ -655,7 +655,20 @@ body {
     flex-direction: column;
   }
   .market-leaders {
+    grid-template-columns: minmax(0, 1fr);
     gap: 12px;
+  }
+  .market-leader {
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    min-width: 0;
+  }
+  .market-leader > span:last-child {
+    grid-column: 1 / -1;
+    justify-content: flex-end;
+  }
+  .market-controls {
+    flex-wrap: wrap;
   }
   .market-leader strong {
     font-size: 17px;

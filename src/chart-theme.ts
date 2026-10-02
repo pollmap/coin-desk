@@ -3,6 +3,17 @@ import { createChart as createOriginalChart, ColorType } from 'lightweight-chart
 /** Repaint canvas options in place: a theme change never resets the user's viewport. */
 export function createDeskChart(...args: Parameters<typeof createOriginalChart>) {
   const chart = createOriginalChart(...args);
+  const timeScale = chart.timeScale();
+  const setVisibleRange = timeScale.setVisibleRange.bind(timeScale);
+  timeScale.setVisibleRange = (range) => {
+    const from = timeScale.timeToIndex(range.from, true);
+    const to = timeScale.timeToIndex(range.to, true);
+    if (from === null || to === null || from >= to) return setVisibleRange(range);
+    // LWC floors/ceils logical edges. Pixel/spacing roundoff at an integer edge
+    // can include the previous day (29.999999999999996 instead of 30).
+    // Keep both edges just inside the requested bars, without changing dates.
+    timeScale.setVisibleLogicalRange({ from: from + 1e-7, to: to - 1e-7 });
+  };
   const originalColors = new WeakMap<object, string>();
   const paint = () => {
     const light = document.documentElement.dataset.theme === 'light';
