@@ -2,7 +2,7 @@
   "name": "btc-desk",
   "main": "worker/vps-gateway.ts",
   "compatibility_date": "2026-09-19",
-  "compatibility_flags": ["global_fetch_strictly_public"],
+  "compatibility_flags": ["global_fetch_strictly_public", "enable_request_signal"],
   "assets": {
     "directory": "./dist",
     "binding": "ASSETS",
