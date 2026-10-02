@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import type { operationStatus } from '../worker/health';
 import { useData } from './hooks';
 import { dateLabel } from './lib';
+import { RuntimeStatus } from './RuntimeStatus';
 import './data-status.css';
 type OperationStatus = Awaited<ReturnType<typeof operationStatus>>;
 const statusName: Record<string, string> = {
@@ -80,14 +81,24 @@ export function AutomationSummary({ compact = false }: { compact?: boolean }) {
     <div className="automation-summary">
       <div className="automation-state">
         <b>서버 자동 갱신</b>
-        <span className={!a || a.stalled ? 'amber' : 'server-ok'}>
-          {a ? (a.stalled ? '실행 확인 필요' : '서버 실행 확인') : '상태 확인 중'}
+        <span className={error || !a || a.stalled ? 'amber' : 'server-ok'}>
+          {error
+            ? '상태 조회 실패'
+            : a
+              ? a.stalled
+                ? '실행 확인 필요'
+                : '서버 실행 확인'
+              : '상태 확인 중'}
         </span>
       </div>
       <p>
-        {a?.stalled
-          ? '현재 서버 실행을 확인하지 못했습니다. 표시 중인 데이터의 실제 시각을 확인해 주세요.'
-          : '사이트를 닫아도 Cloudflare 서버에서 수집을 실행합니다.'}
+        {error
+          ? '최신 서버 상태를 가져오지 못했습니다. 다시 확인해 주세요.'
+          : !a
+            ? '서버의 실행 기록을 확인하고 있습니다.'
+            : a.stalled
+              ? '현재 서버 실행을 확인하지 못했습니다. 표시 중인 데이터의 실제 시각을 확인해 주세요.'
+              : `사이트를 닫아도 ${a.runner === 'VPS minute scheduler' ? 'VPS' : 'Cloudflare'} 서버에서 수집을 실행합니다.`}
       </p>
       {error ? (
         <p role="alert" className="amber">
@@ -197,6 +208,7 @@ export function DataStatusPage() {
         </div>
       ) : null}
       <AutomationSummary />
+      {a?.runner === 'VPS minute scheduler' && <RuntimeStatus />}
       {data?.health && !data.health.ok ? (
         <div className="server-issues" role="status">
           <h2>확인이 필요한 원천 {data.health.reasons.length}개</h2>
@@ -233,8 +245,18 @@ export function DataStatusPage() {
               <p>대기 작업을 하나씩 처리하고, 중단된 작업은 잠금 만료 뒤 다시 예약합니다.</p>
             </div>
             <div>
-              <b>BTC · DOGE · ETH 시세 · 1분</b>
-              <p>핵심 3개 코인은 1분, 보조 코인은 5분마다 서버 갱신을 시도합니다.</p>
+              <b>
+                {a?.cadence.quoteSecondaryTargetSeconds === 60
+                  ? '여덟 코인 시세 · 1분'
+                  : '현재가 수집'}
+              </b>
+              <p>
+                {!a
+                  ? '서버 설정을 확인한 뒤 목표 주기를 표시합니다.'
+                  : a.cadence.quoteSecondaryTargetSeconds === 60
+                    ? '여덟 코인 모두 1분마다 저장 시세 갱신을 시도합니다. 실시간 연결은 체결을 초 단위로 전달합니다.'
+                    : '핵심 3개 코인은 1분, 보조 코인은 5분마다 서버 갱신을 시도합니다.'}
+              </p>
             </div>
             <div>
               <b>핵심 코인 최근 선물 · 별도 5분 수집</b>

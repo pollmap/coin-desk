@@ -10,7 +10,7 @@ import {
 } from '../shared/indicator-catalog';
 
 export const isIndicatorRoute = (path: string) =>
-  path === '/' || /^\/(chart|onchain|futures|metrics)\//.test(path);
+  path === '/' || /^\/(coins|chart|onchain|futures|metrics)\//.test(path);
 export function IndicatorNavigation({ onNavigate }: { onNavigate: () => void }) {
   const location = useLocation(),
     p = new URLSearchParams(location.search);
@@ -20,6 +20,7 @@ export function IndicatorNavigation({ onNavigate }: { onNavigate: () => void }) 
     'BTC';
   const active = resolveIndicator(asset, location.pathname, p);
   const [query, setQuery] = useState('');
+  const [group, setGroup] = useState<string>(active.definition?.group ?? INDICATOR_GROUPS[0]);
   const matches = navigationIndicators(asset, active.id).filter(
     (d) =>
       d.assets.includes(asset) &&
@@ -38,41 +39,26 @@ export function IndicatorNavigation({ onNavigate }: { onNavigate: () => void }) 
           }}
         />
       </label>
+      <div className="indicator-group-tabs" role="group" aria-label="지표 분류">
+        {INDICATOR_GROUPS.map((g) => (
+          <button
+            key={g}
+            aria-pressed={g === group}
+            onClick={() => {
+              setGroup(g);
+              setQuery('');
+            }}
+          >
+            {g}
+          </button>
+        ))}
+      </div>
       <nav aria-label="지표 목록" onClick={onNavigate}>
-        {!query && (
-          <div className="indicator-favorites">
-            <span className="sidebar-label">자주 보는 지표</span>
-            {['net:mvrv', 'view:rainbow', 'view:btc_rainbow', 'rsi', 'futures:funding'].flatMap(
-              (id) => {
-                const d = matches.find((d) => indicatorFamily(d.id) === indicatorFamily(id));
-                return d
-                  ? [
-                      <Link
-                        key={id}
-                        to={indicatorUrl(asset, d.id, p)}
-                        className={active.id === d.id ? 'active' : ''}
-                        aria-current={active.id === d.id ? 'page' : undefined}
-                      >
-                        {d.title}
-                      </Link>,
-                    ]
-                  : [];
-              },
-            )}
-          </div>
-        )}
-        {INDICATOR_GROUPS.map((group) => (
+        {INDICATOR_GROUPS.filter((g) => query || g === group).map((group) => (
           <div key={group} className="indicator-group">
             <span className="sidebar-label">{group}</span>
             {matches
-              .filter(
-                (d) =>
-                  d.group === group &&
-                  (query ||
-                    !['net:mvrv', 'view:rainbow', 'view:btc_rainbow', 'rsi', 'futures:funding']
-                      .map(indicatorFamily)
-                      .includes(indicatorFamily(d.id))),
-              )
+              .filter((d) => d.group === group)
               .map((d) => (
                 <Link
                   key={d.id}

@@ -115,6 +115,73 @@ afterEach(async () => {
   vi.unstubAllGlobals();
   vi.useRealTimers();
 });
+it.each(['vps', 'cloudflare'])(
+  'refreshes eligible quotes at the configured %s cadence without bypassing backoff',
+  async (runtime) => {
+    env.RUNTIME_KIND = runtime;
+    ready();
+    for (const asset of assets) source('quote:' + asset + ':binance', now - 60);
+    DB.sqlite
+      .prepare('UPDATE ingestion SET next_attempt=? WHERE key=?')
+      .run(now + 600, 'quote:PEPE:binance');
+    const states = () => DB.sqlite.prepare('SELECT * FROM ingestion').all();
+    const eligible = runtime === 'vps' ? assets.filter((a) => a !== 'PEPE') : assets.slice(0, 3);
+    const result = await updateQuoteBatch(env, assets, 'binance', states());
+    expect(result.attempted).toBe(eligible.length);
+    expect(getQuotes.mock.calls[0][0]).toEqual(eligible);
+    expect((await updateQuoteBatch(env, assets, 'binance', states())).attempted).toBe(0);
+    vi.setSystemTime((now + 60) * 1000);
+    expect((await updateQuoteBatch(env, assets, 'binance', states())).attempted).toBe(
+      eligible.length,
+    );
+    expect(
+      DB.sqlite.prepare('SELECT last_success FROM ingestion WHERE key=?').get('quote:PEPE:binance')
+        .last_success,
+    ).toBe(now - 60);
+  },
+);
+it('VPS quote latency does not skip the next scheduled minute or duplicate one minute', async () => {
+  env.RUNTIME_KIND = 'vps';
+  ready();
+  for (const asset of assets) source('quote:' + asset + ':binance', now - 60);
+  vi.setSystemTime((now + 2) * 1000);
+  getQuotes.mockImplementation(async (selected) => {
+    vi.setSystemTime(Date.now() + 3000);
+    return { quotes: selected.map(quote), errors: [] };
+  });
+  const states = () => DB.sqlite.prepare('SELECT * FROM ingestion').all();
+  expect((await updateQuoteBatch(env, assets, 'binance', states())).attempted).toBe(8);
+  expect((await updateQuoteBatch(env, assets, 'binance', states())).attempted).toBe(0);
+  expect(
+    DB.sqlite.prepare('SELECT last_success FROM ingestion WHERE key=?').get('quote:SOL:binance')
+      .last_success,
+  ).toBe(now + 5);
+  vi.setSystemTime((now + 60) * 1000);
+  // Only 55 seconds have elapsed since success, but this is a new scheduled minute.
+  expect((await updateQuoteBatch(env, assets, 'binance', states())).attempted).toBe(8);
+});
+it('VPS health exposes the eight-coin minute policy and flags stale secondary coins without relaxing trade freshness', async () => {
+  ready();
+  env.RUNTIME_KIND = 'vps';
+  source('quote:ONDO:binance', now - 181, now - 181);
+  let report = await operationStatus(env);
+  expect(report.automation.cadence.quoteSecondaryTargetSeconds).toBe(60);
+  expect(report.sources.find((s) => s.key === 'quote:ONDO:binance')).toMatchObject({
+    status: 'delayed',
+    expectedCadenceSeconds: 60,
+    dataFreshnessLimitSeconds: 180,
+    liveStale: false,
+  });
+  source('quote:ONDO:binance', now, now - 301);
+  report = await operationStatus(env);
+  expect(report.sources.find((s) => s.key === 'quote:ONDO:binance').liveStale).toBe(true);
+  env.RUNTIME_KIND = 'cloudflare';
+  report = await operationStatus(env);
+  expect(report.automation.cadence.quoteSecondaryTargetSeconds).toBe(300);
+  expect(report.sources.find((s) => s.key === 'quote:ONDO:binance').expectedCadenceSeconds).toBe(
+    300,
+  );
+});
 it('minute quotes run independently of overdue history, deduplicate delivery, and refresh again next minute', async () => {
   ready();
   DB.sqlite

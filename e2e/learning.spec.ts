@@ -93,7 +93,9 @@ test('confirmed patterns navigate their chart, survive save/share and clear sele
   await page.getByLabel('작업공간 이름', { exact: true }).fill('도지 조건 확인');
   await page.getByRole('button', { name: '현재 구성 저장', exact: true }).click();
   await expect(page.getByRole('link', { name: /도지 조건 확인/ })).toBeVisible();
-  await page.getByRole('link', { name: '이더리움 ETH', exact: true }).click();
+  await page.getByRole('button', { name: /코인 변경/ }).click();
+  await page.getByRole('searchbox', { name: '코인 검색' }).fill('ETH');
+  await page.getByRole('searchbox', { name: '코인 검색' }).press('Enter');
   await expect(chart(page)).toHaveAttribute('data-asset', 'ETH');
   expect(new URL(page.url()).searchParams.has('pattern_focus')).toBe(false);
 });
@@ -146,9 +148,11 @@ test('a guide activates a real drawing tool and Help follows the selected analys
   await page.mouse.click(channelBox.x + channelBox.width * 0.65, channelBox.y + 120);
   await page.mouse.click(channelBox.x + channelBox.width * 0.45, channelBox.y + 160);
   await expect(page.locator('.drawing-overlay line')).toHaveCount(2);
+  await page.getByRole('button', { name: '지표 변경', exact: true }).click();
+  await page.getByLabel('지표 검색', { exact: true }).fill('가격 위치');
   await page
     .getByRole('navigation', { name: '지표 목록', exact: true })
-    .getByRole('link', { name: '가격 위치 밴드', exact: true })
+    .getByRole('link', { name: /^가격 위치 밴드/ })
     .click();
   await page.getByRole('link', { name: '현재 분석 설명', exact: true }).click();
   await expect(page.locator('.guide-title')).toContainText('가격 위치 밴드');

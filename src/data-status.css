@@ -7,12 +7,18 @@
 }
 .automation-state {
   display: flex;
+  flex-wrap: wrap;
+  align-items: center;
   justify-content: space-between;
   gap: 12px;
   font-size: 16px;
 }
 .automation-state span {
   font-size: 12px;
+}
+.automation-state h2 {
+  margin: 0;
+  font-size: 18px;
 }
 .automation-summary p,
 .server-schedule p,
@@ -23,6 +29,9 @@
 }
 .server-ok {
   color: #71d3b1;
+}
+:root[data-theme='light'] .server-ok {
+  color: #176546;
 }
 .automation-facts {
   display: grid;

@@ -2,7 +2,7 @@ import { observeAutomation, type ObservationRun } from '../shared/automation-obs
 import { ASSETS, isPrimaryAsset } from '../shared/catalog';
 import { DAY } from '../shared/math';
 import type { Asset, Market } from '../shared/types';
-import { epoch, QUOTE_REFRESH_SECONDS, type Env } from './storage';
+import { epoch, QUOTE_REFRESH_SECONDS, quoteRefreshSeconds, type Env } from './storage';
 import { REFERENCE_ASSETS } from './reference-price';
 import { NETWORK_ASSETS, networkMetrics } from '../shared/network-catalog';
 import { DERIVATIVE_ASSETS, DERIVATIVE_METRICS } from './derivatives';
@@ -244,8 +244,8 @@ export async function operationStatus(env: Env) {
       expected.set('quote:' + asset + ':' + market, {
         key: 'quote:' + asset + ':' + market,
         kind: 'quote-batch',
-        every: isPrimaryAsset(asset) ? BACKGROUND_QUOTE_SECONDS : 300,
-        maxLag: isPrimaryAsset(asset) ? 180 : 600,
+        every: quoteRefreshSeconds(asset, env.RUNTIME_KIND),
+        maxLag: quoteRefreshSeconds(asset, env.RUNTIME_KIND) === 60 ? 180 : 600,
         market,
         assets: [asset],
       });
@@ -488,6 +488,7 @@ export async function operationStatus(env: Env) {
       observation48h,
       cadence: {
         quoteBackgroundTargetSeconds: BACKGROUND_QUOTE_SECONDS,
+        quoteSecondaryTargetSeconds: quoteRefreshSeconds('SOL', env.RUNTIME_KIND),
         quoteBackgroundDelaySeconds: 180,
         quoteOnDemandMinSeconds: QUOTE_REFRESH_SECONDS,
         quoteOnDemandEnabled: !env.READ_ONLY_API,

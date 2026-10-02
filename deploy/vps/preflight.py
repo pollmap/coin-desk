@@ -20,7 +20,7 @@ def inspect(port):
         containers.append({'name':row['Names'],'state':detail['Status'],'health':detail.get('Health',{}).get('Status'),'image':row['Image'],'ports':row['Ports']})
     memory={k:int(v.split()[0])*1024 for k,v in (line.split(':',1) for line in pathlib.Path('/proc/meminfo').read_text().splitlines())}
     disk=shutil.disk_usage('/srv')
-    if memory['MemAvailable'] < 3*1024**3 or disk.free < 8*1024**3:
+    if memory['MemAvailable'] < 3.5*1024**3 or disk.free < 8*1024**3:
         raise RuntimeError('Insufficient measured memory/disk headroom for the proposed resource limits')
     if not pathlib.Path('/srv/platform/templates/compose.yaml').is_file(): raise RuntimeError('Shared platform baseline is unavailable')
     if shutil.which('nginx') is None: raise RuntimeError('Existing Nginx is unavailable')

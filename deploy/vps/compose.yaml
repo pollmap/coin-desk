@@ -3,37 +3,48 @@ x-service: &service
   image: ${COIN_DESK_IMAGE:?Set a release-specific image tag}
   restart: unless-stopped
   init: true
-  user: "10001:10001"
+  user: '10001:10001'
   read_only: true
   cap_drop: [ALL]
   security_opt: [no-new-privileges:true]
-  tmpfs: [/tmp:size=64m,mode=1777]
+  tmpfs: [/tmp:size=64m, mode=1777]
   environment: &environment
     COIN_DESK_DB: /app/data/coin-desk.sqlite
     COIN_DESK_RELEASE: ${COIN_DESK_RELEASE:?Set the Git release ID}
     ENABLED_ASSETS: BTC,DOGE,ETH,SOL,XRP,LINK,ONDO,PEPE
-  volumes: ["${COIN_DESK_ROOT:?Set the isolated project root}/shared/data:/app/data"]
+  volumes: ['${COIN_DESK_ROOT:?Set the isolated project root}/shared/data:/app/data']
   logging:
     driver: json-file
-    options: {max-size: 10m, max-file: "3"}
+    options: { max-size: 10m, max-file: '3' }
   stop_grace_period: 30s
   depends_on:
-    migrate: {condition: service_completed_successfully}
+    migrate: { condition: service_completed_successfully }
   cpus: 0.25
   mem_limit: 384m
 
 services:
   migrate:
     <<: *service
-    restart: "no"
+    restart: 'no'
     depends_on: {}
     command: [node, server/migrate.mjs]
     mem_limit: 256m
   api:
     <<: *service
-    ports: ["127.0.0.1:${COIN_DESK_PORT:?Verify a free loopback port}:8080"]
+    ports: ['127.0.0.1:${COIN_DESK_PORT:?Verify a free loopback port}:8080']
     command: [node, server/index.mjs]
-    environment: {<<: *environment, HOST: 0.0.0.0, PORT: "8080"}
+    environment:
+      {
+        <<: *environment,
+        HOST: 0.0.0.0,
+        PORT: '8080',
+        COIN_DESK_PUBLIC_ORIGIN: '${COIN_DESK_PUBLIC_ORIGIN:-https://coin-desk.62.171.141.206.sslip.io}',
+        COIN_DESK_QUOTE_HUB: 'http://quote-hub:8091',
+        COIN_DESK_RETAINED_ASSETS: /app/retained-assets,
+      }
+    volumes:
+      - '${COIN_DESK_ROOT}/shared/data:/app/data'
+      - '${COIN_DESK_ROOT}/shared/assets:/app/retained-assets:ro'
     healthcheck:
       test: [CMD, node, server/healthcheck.mjs, api]
       interval: 30s
@@ -42,11 +53,28 @@ services:
       start_period: 30s
     cpus: 1.0
     mem_limit: 768m
+  quote-hub:
+    <<: *service
+    command: [node, server/quote-hub.mjs]
+    environment: { HOST: 0.0.0.0, PORT: '8091' }
+    volumes: []
+    mem_limit: 192m
+    healthcheck:
+      test:
+        [
+          CMD,
+          node,
+          -e,
+          "fetch('http://127.0.0.1:8091/healthz').then(r=>{if(!r.ok)process.exit(1)}).catch(()=>process.exit(1))",
+        ]
+      interval: 30s
+      timeout: 5s
+      retries: 3
   quotes:
     <<: *service
     profiles: [collectors]
     command: [node, server/scheduler.mjs]
-    environment: {<<: *environment, COIN_DESK_LANE: quotes}
+    environment: { <<: *environment, COIN_DESK_LANE: quotes }
     healthcheck: &collector-health
       test: [CMD, node, server/healthcheck.mjs, quotes]
       interval: 30s
@@ -57,27 +85,28 @@ services:
     <<: *service
     profiles: [collectors]
     command: [node, server/scheduler.mjs]
-    environment: {<<: *environment, COIN_DESK_LANE: background}
-    healthcheck: {<<: *collector-health, test: [CMD, node, server/healthcheck.mjs, background]}
+    environment: { <<: *environment, COIN_DESK_LANE: background }
+    healthcheck: { <<: *collector-health, test: [CMD, node, server/healthcheck.mjs, background] }
   recent:
     <<: *service
     profiles: [collectors]
     command: [node, server/scheduler.mjs]
-    environment: {<<: *environment, COIN_DESK_LANE: recent}
-    healthcheck: {<<: *collector-health, test: [CMD, node, server/healthcheck.mjs, recent]}
+    environment: { <<: *environment, COIN_DESK_LANE: recent }
+    healthcheck: { <<: *collector-health, test: [CMD, node, server/healthcheck.mjs, recent] }
   analysis:
     <<: *service
     profiles: [collectors]
     command: [node, server/scheduler.mjs]
-    environment: {<<: *environment, COIN_DESK_LANE: analysis}
-    healthcheck: {<<: *collector-health, test: [CMD, node, server/healthcheck.mjs, analysis]}
+    environment: { <<: *environment, COIN_DESK_LANE: analysis }
+    healthcheck: { <<: *collector-health, test: [CMD, node, server/healthcheck.mjs, analysis] }
   backup:
     <<: *service
     command: [node, server/backup-runner.mjs]
     volumes:
-      - "${COIN_DESK_ROOT}/shared/data:/app/data"
-      - "${COIN_DESK_ROOT}/backups:/app/backups"
-    environment: {<<: *environment, BACKUP_RETENTION_DAYS: "14", BACKUP_BUDGET_BYTES: "2147483648"}
+      - '${COIN_DESK_ROOT}/shared/data:/app/data'
+      - '${COIN_DESK_ROOT}/backups:/app/backups'
+    environment:
+      { <<: *environment, BACKUP_RETENTION_DAYS: '14', BACKUP_BUDGET_BYTES: '2147483648' }
     mem_limit: 512m
     healthcheck:
       test: [CMD, node, server/healthcheck.mjs, backup]
@@ -87,4 +116,4 @@ services:
       start_period: 5m
 
 networks:
-  default: {name: coin-desk-private}
+  default: { name: coin-desk-private }

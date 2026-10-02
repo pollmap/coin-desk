@@ -100,3 +100,32 @@ npm run package:vps
 SQLite 온라인 백업과 Node 내장 SQLite를 사용합니다. [SQLite 공식 백업 API](https://sqlite.org/backup.html) · [Node 24 SQLite](https://nodejs.org/docs/latest-v24.x/api/sqlite.html) · [Compose 준비 상태와 의존 순서](https://docs.docker.com/compose/how-tos/startup-order/).
 
 최신 검사와 실제 연결 한계는 [VPS 검증 기록](docs/audit-vps/README.md)에 보관합니다. 로컬 코드 검사, Docker 실행, 운영 데이터 이전, HTTPS 전환, 하루 안정성을 각각 구분합니다.
+
+
+## 0.21 시장·실시간 가격 추가
+
+`quote-hub`는 공개 거래소 스트림을 중앙 수신하고 API가 SSE를 중계합니다. 외부 포트와 DB 볼륨을 갖지 않습니다. `stage.sh`는 api·backup·quote-hub를 올리되 기존 수집기는 활성화하지 않습니다. Nginx의 `/api/v1/quotes/stream`은 버퍼링을 끕니다. 기존 quote 수집의 분 단위 저장은 유지하며 tick은 DB에 저장하지 않습니다.
+
+새 릴리스의 `/assets` 파일은 `/srv/services/coin-desk/shared/assets`에도 복사합니다. 현재 빌드에 없는 예전 해시 파일은 API가 이 읽기 전용 디렉터리에서 찾아 응답합니다. 충돌·경로 이탈을 거부하고 배포 시 예전 파일을 삭제하지 않습니다. 용량은 운영 디스크 관측에 포함합니다.
+
+`COIN_DESK_PUBLIC_ORIGIN`은 실제 HTTPS 호스트로 설정합니다. 기본 후보는 `https://coin-desk.62.171.141.206.sslip.io`이며 인증서 발급 성공을 뜻하지 않습니다. API는 이 고정 설정으로 HTML의 공개 주소 메타데이터를 맞추고 요청 Host 값을 신뢰해 생성하지 않습니다. 추가 시세 프로세스를 포함해 사전 자원 검사는 가용 메모리 3.5GiB를 요구합니다.
+
+[0.21 감사 기록](docs/audit-21/README.md). 이 작업 환경에는 Docker CLI가 없고 SSH/GitHub 연결이 제한되어 실제 컨테이너·운영 이관·HTTPS 검사를 수행하지 못했습니다.
+
+## 로컬에서 수집까지 연결하기
+
+읽기 전용 API만 실행하면 과거 캐시를 1분마다 다시 조회해도 시세가 최신으로 바뀌지 않습니다. 네트워크가 허용된 환경에서 다음 순서로 기존 공개 캐시의 별도 복사본을 준비합니다. 운영 D1 이전 완료 증거로 사용하지 않습니다.
+
+```powershell
+npm run build
+npm run build:server
+python scripts/vps_rehearsal.py --source work/local.sqlite --output work/live-runtime
+# 위 명령이 반환한 database 경로를 사용합니다. 원본 work/local.sqlite를 지정하지 않습니다.
+npm run start:live -- --database work/live-runtime/<생성된 폴더>/coin-desk.sqlite --port 5209 --hub-port 8091
+```
+
+`start:live`는 검증된 마이그레이션 원장·DB 무결성·포트·원천 접근을 먼저 확인합니다. 최소 한 거래소와 Coin Metrics 연결이 실패하면 수집을 시작하지 않고 진단을 남깁니다. 다른 원천 실패는 출력에 보존하며 모든 원천 정상으로 표시하지 않습니다. 통과하면 읽기 API·시세 hub·quotes/background/recent/analysis 수집기·백업의 7개 프로세스를 함께 실행합니다. 시작 직후부터 틱을 수신하고 분 단위 수집기는 다음 분 경계부터 실행합니다. 온체인 관측 주기와 기존 재시도·예약 예산은 유지합니다.
+
+한 프로세스가 종료되면 나머지 소유 프로세스도 종료해 API만 남는 상태를 방지합니다. Ctrl+C도 해당 묶음만 종료합니다. 로컬 재시작은 같은 명령으로 수행하며 VPS에서는 기존 Compose 재시작 정책을 사용합니다. DB 파일을 실행 중 덮어쓰지 않습니다. 브라우저 요청은 수집을 실행하지 않습니다.
+
+확인 항목은 `/api/v1/runtime`의 4개 수집 기록, `/api/v1/market`의 `collection`과 실제 `quote.time`/`fetchedAt`, `/api/v1/status`의 각 원천 관측일입니다. `healthz`의 프로세스 정상과 데이터 최신성을 구분합니다. `collection`이 없거나 미실행이면 현재가를 정상 수집 중으로 표현하지 않습니다. 가격은 초 단위 수신·분 단위 저장이며 온체인은 원천에서 새 확정 관측이 제공될 때 갱신됩니다.

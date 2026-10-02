@@ -307,24 +307,6 @@
   overflow: auto;
   padding: 20px !important;
 }
-@media (min-width: 1000px) {
-  .app:has(.indicator-workspace) .topbar {
-    height: auto;
-    min-height: 48px;
-    padding: 2px 12px;
-    flex-wrap: wrap;
-    gap: 8px;
-  }
-  .app:has(.indicator-workspace) main {
-    padding: 10px 16px;
-  }
-  .app:has(.indicator-workspace) .sidebar {
-    width: 224px;
-  }
-  .app:has(.indicator-workspace):not(.nav-collapsed) .main-shell {
-    margin-left: 224px;
-  }
-}
 @media (max-width: 999px) {
   .indicator-mobile-picker {
     display: block;

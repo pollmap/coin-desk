@@ -37,6 +37,7 @@ jobs:
           path: |
             playwright-report/
             test-results/
+            work/browser-checks/
           retention-days: 7
       - run: python scripts/check_docs.py
       - run: python scripts/check_brand.py

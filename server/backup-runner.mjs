@@ -5,16 +5,16 @@ let running,
 function execute() {
   if (stopped) return;
   running = spawn(
-    'python3',
+    process.platform === 'win32' ? 'python' : 'python3',
     [
       'scripts/vps_backup.py',
       'backup',
       '--source',
       process.env.COIN_DESK_DB || '/app/data/coin-desk.sqlite',
       '--folder',
-      '/app/backups',
+      process.env.COIN_DESK_BACKUP_FOLDER || '/app/backups',
       '--status',
-      '/app/data/backup-status.json',
+      process.env.COIN_DESK_BACKUP_STATUS || '/app/data/backup-status.json',
       '--retention-days',
       process.env.BACKUP_RETENTION_DAYS || '14',
       '--budget-bytes',

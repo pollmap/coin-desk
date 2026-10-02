@@ -22,7 +22,11 @@ export async function checkUpstreams(env, providers, request = fetch) {
       checks.push({
         source,
         ok: false,
-        reason: status ? 'HTTP ' + status[1] : 'connection-or-data-validation-failed',
+        reason: status
+          ? 'HTTP ' + status[1]
+          : ['EACCES', 'EPERM'].includes(error?.cause?.code || error?.code)
+            ? 'network-permission-denied'
+            : 'connection-or-data-validation-failed',
       });
     }
   };

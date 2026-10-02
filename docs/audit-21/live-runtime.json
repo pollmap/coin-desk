@@ -1,0 +1,84 @@
+{
+  "checkedAt": "2026-10-02T17:23:40.188864+00:00",
+  "cause": [
+    "preview_api_without_collectors",
+    "shell_network_permission_denied"
+  ],
+  "liveRuntimeImplemented": true,
+  "realLiveStarted": false,
+  "upstreams": {
+    "event": "upstream_preflight",
+    "checkedAt": "2026-10-02T17:20:24.325Z",
+    "scope": "limited-upstream-access-not-all-103-sources",
+    "databaseWrites": 0,
+    "ok": false,
+    "checks": [
+      {
+        "source": "binance",
+        "ok": false,
+        "reason": "connection-or-data-validation-failed"
+      },
+      {
+        "source": "bitview",
+        "ok": false,
+        "reason": "network-permission-denied"
+      },
+      {
+        "source": "bybit",
+        "ok": false,
+        "reason": "network-permission-denied"
+      },
+      {
+        "source": "coin-metrics",
+        "ok": false,
+        "reason": "network-permission-denied"
+      },
+      {
+        "source": "coinlore",
+        "ok": false,
+        "reason": "network-permission-denied"
+      },
+      {
+        "source": "defillama",
+        "ok": false,
+        "reason": "network-permission-denied"
+      },
+      {
+        "source": "mempool",
+        "ok": false,
+        "reason": "network-permission-denied"
+      },
+      {
+        "source": "upbit",
+        "ok": false,
+        "reason": "connection-or-data-validation-failed"
+      }
+    ]
+  },
+  "rehearsal": {
+    "verifiedAt": 1790961560,
+    "sourceKind": "local-cache-not-production-export",
+    "originalOpenedReadOnly": true,
+    "sourceCacheTables": 18,
+    "sourceCacheRows": 122102,
+    "allImportedTablesMatch": true,
+    "backupRestoreVerified": true,
+    "migrationsAcknowledged": 9,
+    "restoredTables": 19,
+    "productionDataOrServerVerified": false
+  },
+  "tests": {
+    "nodeServer": 13,
+    "pythonVps": 7,
+    "browser": 14,
+    "browserRetries": 0,
+    "typecheckAndWebBuild": true
+  },
+  "privateDataPublished": false,
+  "legacyCronChanged": false,
+  "releaseArchive": {
+    "path": "deployment-artifacts/vps-e2d278c374abde35.tar.gz",
+    "files": 290,
+    "sha256": "13719540309f2acffc09ecb8ae18316e1cc9d83668c2f92c15a0e1f96d81af91"
+  }
+}

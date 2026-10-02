@@ -1,13 +1,13 @@
 {
   "id": "/",
-  "name": "Coin Desk · 코인 분석 대시보드",
+  "name": "Coin Desk · 코인 시장과 지표 분석",
   "short_name": "Coin Desk",
-  "description": "전체 가격 이력과 온체인 지표를 읽는 나의 코인 대시보드",
+  "description": "여덟 코인의 시세와 온체인·가치·기술 지표",
   "lang": "ko",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#0b1014",
-  "theme_color": "#0b1014",
+  "background_color": "#101216",
+  "theme_color": "#101216",
   "icons": [
     {
       "src": "/brand/coin-desk-shiba-smile.png",

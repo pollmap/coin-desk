@@ -10,6 +10,8 @@ const app = createHttpServer({
   worker,
   env,
   database,
+  publicOrigin: process.env.COIN_DESK_PUBLIC_ORIGIN,
+  retainedAssetRoot: process.env.COIN_DESK_RETAINED_ASSETS,
   release: process.env.COIN_DESK_RELEASE || 'local-vps',
   backupStatusPath: process.env.COIN_DESK_BACKUP_STATUS || '/app/data/backup-status.json',
 });

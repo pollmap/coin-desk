@@ -10,7 +10,13 @@ export default defineConfig({
   retries: 0,
   timeout: 45000,
   expect: { timeout: 12000 },
-  reporter: [['list'], ['html', { open: 'never' }]],
+  reporter: [
+    ['list'],
+    [
+      'html',
+      { open: 'never', outputFolder: process.env.COIN_DESK_TEST_REPORT_DIR || 'playwright-report' },
+    ],
+  ],
   use: {
     baseURL,
     trace: 'retain-on-failure',

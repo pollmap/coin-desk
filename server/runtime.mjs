@@ -76,6 +76,11 @@ export class MinuteRunner {
   }
 }
 export function schedulerState(database, now = Math.floor(Date.now() / 1000)) {
+  const ledger = database.sqlite
+    .prepare("SELECT 1 FROM sqlite_schema WHERE type='table' AND name='_coin_desk_runtime_runs'")
+    .get();
+  if (!ledger)
+    return LANES.map((lane) => ({ lane, healthy: false, reason: 'no_execution_ledger' }));
   return LANES.map((lane) => {
     const row = database.sqlite
       .prepare(
@@ -85,6 +90,13 @@ export function schedulerState(database, now = Math.floor(Date.now() / 1000)) {
     return {
       lane,
       ...row,
+      reason: !row
+        ? 'not_started'
+        : row.outcome !== 'ok'
+          ? row.outcome
+          : now - row.completed_at > 180
+            ? 'execution_delayed'
+            : null,
       healthy:
         !!row &&
         row.outcome === 'ok' &&

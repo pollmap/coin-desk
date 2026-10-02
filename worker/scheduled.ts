@@ -1,4 +1,3 @@
-import { isPrimaryAsset } from '../shared/catalog';
 import { DAY, zStep, type ZState } from '../shared/math';
 import type { Asset, Market } from '../shared/types';
 import { bitviewPage, getQuotes, getRecentCandles } from './providers';
@@ -10,6 +9,7 @@ import {
   readState,
   success,
   QUOTE_REFRESH_SECONDS,
+  quoteRefreshSeconds,
   refreshLeaseStatement,
   successStatement,
   type Env,
@@ -263,13 +263,20 @@ export async function updateQuoteBatch(
     return (
       (!state?.next_attempt || state.next_attempt <= now) &&
       (!state?.last_success ||
-        now - state.last_success >= (isPrimaryAsset(asset) ? QUOTE_REFRESH_SECONDS : 300))
+        (env.RUNTIME_KIND === 'vps'
+          ? Math.floor(now / 60) > Math.floor(state.last_success / 60)
+          : now - state.last_success >= quoteRefreshSeconds(asset, env.RUNTIME_KIND)))
     );
   });
   if (!candidates.length) return { attempted: 0, failed: 0, requestFailed: false };
   const claims = await env.DB.batch(
     candidates.map((asset) =>
-      refreshLeaseStatement(env.DB, 'quote:' + asset + ':' + market, QUOTE_REFRESH_SECONDS, now),
+      refreshLeaseStatement(
+        env.DB,
+        'quote:' + asset + ':' + market,
+        env.RUNTIME_KIND === 'vps' ? 60 - (now % 60) : QUOTE_REFRESH_SECONDS,
+        now,
+      ),
     ),
   );
   const selected = candidates.filter((_asset, i) => claims[i].meta.changes > 0);

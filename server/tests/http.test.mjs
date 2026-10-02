@@ -10,7 +10,11 @@ import worker from '../../server-dist/api.mjs';
 
 test('Native server uses the real API, preserves units and errors, and never refreshes on a read', async () => {
   const root = mkdtempSync(join(tmpdir(), 'coin-http-'));
-  writeFileSync(join(root, 'index.html'), '<main>Coin Desk</main>');
+  writeFileSync(join(root, 'PriorChart-abcdef12.js'), 'export const prior = true;');
+  writeFileSync(
+    join(root, 'index.html'),
+    '<main>Coin Desk</main><meta content="https://coin-desk.pages.dev/brand/coin-desk-shiba-smile.png">',
+  );
   const writer = openSqlite(join(root, 'db.sqlite'));
   migrate(writer);
   await writer
@@ -24,6 +28,8 @@ test('Native server uses the real API, preserves units and errors, and never ref
     env,
     database: reader,
     staticRoot: root,
+    retainedAssetRoot: root,
+    publicOrigin: 'https://coins.example.test',
     release: 'test',
   });
   await new Promise((resolve) => app.server.listen(0, '127.0.0.1', resolve));
@@ -52,10 +58,20 @@ test('Native server uses the real API, preserves units and errors, and never ref
     assert.equal(upstream, 0);
     assert.equal(await writer.prepare('SELECT COUNT(*) n FROM ingestion').first('n'), 0);
     assert.equal((await fetch(base + '/api/v1/runtime')).status, 200);
+    const market = await (await fetch(base + '/api/v1/market?market=upbit')).json();
+    assert.equal(market.collection.healthy, false);
+    assert.equal(market.collection.reason, 'not_started');
     assert.equal((await fetch(base + '/api/v1/reference', { method: 'POST' })).status, 405);
     assert.equal((await fetch(base + '/.env')).status, 404);
     assert.equal((await fetch(base + '/assets/missing.js')).status, 404);
+    assert.match(await (await fetch(base + '/assets/PriorChart-abcdef12.js')).text(), /prior/);
+    assert.equal((await fetch(base + '/api/v1/quotes/stream?market=other')).status, 400);
+    assert.equal((await fetch(base + '/api/v1/quotes/stream?market=upbit')).status, 503);
     assert.match(await (await fetch(base + '/learn')).text(), /Coin Desk/);
+    assert.match(
+      await (await fetch(base + '/learn')).text(),
+      /https:\/\/coins.example.test\/brand/,
+    );
     assert.equal(await (await fetch(base + '/learn', { method: 'HEAD' })).text(), '');
   } finally {
     globalThis.fetch = original;

@@ -26,9 +26,25 @@ export function createHttpServer({
   env,
   database,
   staticRoot = 'dist',
+  retainedAssetRoot,
+  publicOrigin,
+  quoteHubUrl = process.env.COIN_DESK_QUOTE_HUB,
   backupStatusPath,
   release = 'development',
 }) {
+  if (publicOrigin) {
+    const origin = new URL(publicOrigin);
+    if (
+      origin.protocol !== 'https:' ||
+      origin.username ||
+      origin.password ||
+      origin.pathname !== '/' ||
+      origin.search ||
+      origin.hash
+    )
+      throw new Error('Invalid public HTTPS origin');
+    publicOrigin = origin.origin;
+  }
   const pending = new Set();
   const ctx = {
     waitUntil(p) {
@@ -85,8 +101,34 @@ export function createHttpServer({
             }
           }
           out = json({ kind: 'vps', release, scheduler: schedulerState(database), backup });
+        } else if (url.pathname === '/api/v1/quotes/stream' && req.method === 'GET') {
+          const market = url.searchParams.get('market');
+          if (
+            !['upbit', 'binance'].includes(market) ||
+            [...url.searchParams.keys()].some((k) => k !== 'market') ||
+            url.searchParams.getAll('market').length !== 1
+          ) {
+            out = json({ error: 'Invalid market' }, 400);
+          } else if (!quoteHubUrl) {
+            out = json({ error: 'Live stream unavailable; use minute snapshots' }, 503);
+          } else {
+            const controller = new AbortController();
+            res.on('close', () => controller.abort());
+            const deadline = setTimeout(() => controller.abort(), 5000);
+            try {
+              out = await fetch(`${quoteHubUrl}/stream?market=${market}`, {
+                signal: controller.signal,
+              });
+            } finally {
+              clearTimeout(deadline);
+            }
+          }
         } else if (url.pathname.startsWith('/api/')) {
           out = await worker.fetch(new Request(url, { method: 'GET' }), env, ctx);
+          if (url.pathname === '/api/v1/market' && out.ok) {
+            const collection = schedulerState(database).find((lane) => lane.lane === 'quotes');
+            out = json({ ...(await out.json()), collection });
+          }
         } else {
           let path;
           try {
@@ -111,18 +153,35 @@ export function createHttpServer({
             } catch {
               exists = false;
             }
+            if (!exists && retainedAssetRoot && /^\/assets\/[A-Za-z0-9_.-]+$/.test(path)) {
+              const retained = resolve(retainedAssetRoot);
+              try {
+                const candidate = await realpath(resolve(retained, path.slice('/assets/'.length)));
+                if (candidate.startsWith(retained + sep) && (await stat(candidate)).isFile()) {
+                  file = candidate;
+                  exists = true;
+                }
+              } catch {
+                /* Unknown historical assets remain a 404. */
+              }
+            }
             if (!exists && extname(path)) out = json({ error: 'Not found' }, 404);
             else {
               if (!exists) file = resolve(root, 'index.html');
               const data = await readFile(file);
-              out = new Response(data, {
-                headers: {
-                  'content-type': mime[extname(file)] || 'application/octet-stream',
-                  'cache-control': path.startsWith('/assets/')
-                    ? 'public, max-age=31536000, immutable'
-                    : 'no-cache',
+              out = new Response(
+                publicOrigin && extname(file) === '.html'
+                  ? data.toString('utf8').replaceAll('https://coin-desk.pages.dev', publicOrigin)
+                  : data,
+                {
+                  headers: {
+                    'content-type': mime[extname(file)] || 'application/octet-stream',
+                    'cache-control': path.startsWith('/assets/')
+                      ? 'public, max-age=31536000, immutable'
+                      : 'no-cache',
+                  },
                 },
-              });
+              );
             }
           }
         }
@@ -130,9 +189,14 @@ export function createHttpServer({
     } catch {
       out = json({ error: 'Service temporarily unavailable' }, 503);
     }
-    out.headers.set('X-Content-Type-Options', 'nosniff');
-    out.headers.set('Referrer-Policy', 'strict-origin-when-cross-origin');
-    res.writeHead(out.status, Object.fromEntries(out.headers));
+    if (res.destroyed) {
+      await out.body?.cancel().catch(() => {});
+      return;
+    }
+    const headers = new Headers(out.headers);
+    headers.set('X-Content-Type-Options', 'nosniff');
+    headers.set('Referrer-Policy', 'strict-origin-when-cross-origin');
+    res.writeHead(out.status, Object.fromEntries(headers));
     if (req.method === 'HEAD') {
       await out.body?.cancel();
       res.end();

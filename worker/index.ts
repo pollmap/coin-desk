@@ -1,4 +1,5 @@
 import { dailyTechnical } from '../shared/market-watch';
+import { marketSnapshot } from './market-snapshot';
 import { marketDerivatives } from './market-derivatives';
 import { refreshProviderWatch } from './provider-watch';
 import { ASSETS, CALC_VERSION, METRICS } from '../shared/catalog';
@@ -55,6 +56,7 @@ function canonicalRequest(request: Request) {
   if (url.href.length > 2048) throw new RequestError('Invalid URL length');
   const endpoint = url.pathname.slice('/api/v1/'.length);
   const fields: Record<string, string[]> = {
+    market: ['market'],
     overview: ['asset', 'market'],
     candles: ['asset', 'market', 'interval', 'from', 'to', 'limit'],
     series: ['asset', 'metric', 'from', 'to', 'limit'],
@@ -452,6 +454,7 @@ async function api(request: Request, env: Env): Promise<Response> {
   }
   if (!env.ENABLED_ASSETS.split(',').includes(asset))
     return response({ error: '아직 수집하지 않은 자산입니다.', code: 'NOT_ENABLED' }, 404);
+  if (endpoint === 'market') return response(await marketSnapshot(env, market));
   if (endpoint === 'overview') return response(await overview(env, asset, market));
   const from = number(q, 'from', 0),
     to = number(q, 'to', epoch() + DAY),
@@ -647,7 +650,7 @@ export default {
       const cache = (caches as unknown as { default: Cache }).default;
       // Quotes bypass edge caching so a newly committed scheduled snapshot is
       // visible immediately instead of waiting for an older response to expire.
-      const liveStatus = /\/(health|status|overview|dominance|research\/public)$/.test(
+      const liveStatus = /\/(health|status|market|overview|dominance|research\/public)$/.test(
         url.pathname,
       );
       const cached = liveStatus ? undefined : await cache.match(canonical).catch(() => undefined);

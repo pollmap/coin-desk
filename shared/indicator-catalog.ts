@@ -295,5 +295,5 @@ export function indicatorUrl(
     p.delete('patterns');
     p.delete('compare_price');
   }
-  return '/?' + p;
+  return '/coins/' + asset + '?' + p;
 }

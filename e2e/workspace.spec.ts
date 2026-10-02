@@ -1,11 +1,14 @@
 import { test, expect, type Page } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
 const chart = (p: Page) => p.locator('[data-chart-kind="analysis"]');
-const pick = (p: Page, name: string) =>
-  p
+const pick = async (p: Page, name: string) => {
+  await p.getByRole('button', { name: '지표 변경', exact: true }).click();
+  await p.getByLabel('지표 검색', { exact: true }).fill(name);
+  await p
     .getByRole('navigation', { name: '지표 목록', exact: true })
-    .getByRole('link', { name, exact: true })
+    .getByRole('link', { name: new RegExp('^' + name) })
     .click();
+};
 test.beforeEach(async ({ page }) => {
   await page.route('**/*', (r) =>
     new URL(r.request().url()).hostname === '127.0.0.1' ? r.continue() : r.abort(),
@@ -34,19 +37,29 @@ test('loading a band does not prematurely claim zero observations or insufficien
     release();
   }
 });
-test('first entry is BTC MVRV; eight coins use supported metrics and sources', async ({ page }) => {
+test('BTC detail defaults to MVRV; eight coins use supported metrics and sources', async ({
+  page,
+}) => {
   await page.setViewportSize({ width: 1280, height: 800 });
   const requests: string[] = [];
   page.on('request', (r) => {
     if (r.url().includes('/api/')) requests.push(r.url());
   });
-  await page.goto('/');
+  await page.goto('/?asset=BTC');
   await expect(chart(page)).toHaveAttribute('data-primary-metric', 'net:mvrv');
   await expect(page.getByRole('button', { name: '5년', exact: true })).toHaveAttribute(
     'aria-pressed',
     'true',
   );
-  expect(requests.every((u) => u.includes('/network?') || u.includes('/signals?'))).toBe(true);
+  expect(
+    requests.every(
+      (u) =>
+        u.includes('/network?') ||
+        u.includes('/signals?') ||
+        u.includes('/market?') ||
+        u.includes('/quotes/stream?'),
+    ),
+  ).toBe(true);
   const box = (await chart(page).boundingBox())!;
   expect(box.y).toBeLessThanOrEqual(240);
   expect(box.height).toBeGreaterThanOrEqual(420);
@@ -104,16 +117,18 @@ test('legacy metric URLs use the same indicator workspace without automatic pric
   await page.goto('/metrics/mvrv?period=all&visual=price');
   await expect(chart(page)).toHaveAttribute('data-primary-metric', 'btc:mvrv');
   await expect(page.getByLabel('가격 비교', { exact: true })).not.toBeChecked();
-  await expect(page.getByRole('navigation', { name: '지표 목록', exact: true })).toBeVisible();
+  await expect(page.getByRole('button', { name: '지표 변경', exact: true })).toBeVisible();
   expect(requests).toEqual([]);
   await page.goto('/metrics/mvrv?asset=ONDO');
   await expect(page.locator('[data-availability]')).toHaveAttribute(
     'data-availability',
     'unsupported',
   );
+  await page.getByRole('button', { name: '지표 변경', exact: true }).click();
   await expect(page.getByRole('navigation', { name: '지표 목록', exact: true })).not.toContainText(
     'MVRV',
   );
+  await page.keyboard.press('Escape');
   await page.getByRole('link', { name: '지원되는 원천·분석으로 열기' }).click();
   await expect(chart(page)).toHaveAttribute('data-asset', 'ONDO');
   await expect(chart(page)).toHaveAttribute('data-primary-metric', 'rsi');
@@ -154,6 +169,7 @@ test('unsupported URLs do not request data or retry and ONDO help retains asset'
   await expect(chart(page)).toHaveCount(0);
   await expect(page.getByText(/불러오고 있습니다/)).toHaveCount(0);
   expect(requests).toEqual([]);
+  await page.keyboard.press('Escape');
   await page.getByRole('link', { name: '지원되는 원천·분석으로 열기' }).click();
   await expect(chart(page)).toHaveAttribute('data-primary-metric', 'rsi');
   await page.getByRole('link', { name: '현재 분석 설명' }).click();
@@ -166,7 +182,7 @@ test('slow failures, logos and stale data never contaminate another asset', asyn
     await r.fulfill({ status: 503, json: { error: 'BTC fixture outage' } });
   });
   await page.route('**/coin-logos/btc.png', (r) => r.abort());
-  await page.goto('/');
+  await page.goto('/?asset=BTC');
   await expect(page.locator('.coin-picker .asset-logo.fallback')).toBeVisible();
   await page.getByRole('button', { name: /코인 변경/ }).click();
   await page.getByRole('searchbox', { name: '코인 검색' }).fill('DOGE');
@@ -184,7 +200,7 @@ test('slow failures, logos and stale data never contaminate another asset', asyn
   await page.goto('/?asset=ETH');
   await expect(chart(page)).toBeVisible();
   await expect(page.locator('.indicator-notice')).toContainText('갱신 지연');
-  await page.goto('/');
+  await page.goto('/?asset=BTC');
   await expect(page.getByText('이력을 불러오지 못했습니다.')).toBeVisible();
   await expect(page.getByText(/불러오고 있습니다/)).toHaveCount(0);
 });
@@ -221,7 +237,7 @@ for (const width of [320, 390, 768, 1000, 1280, 1440])
   });
 test('mobile search Escape focus and 200 percent keyboard reflow', async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 900 });
-  await page.goto('/');
+  await page.goto('/?asset=BTC');
   await expect(chart(page)).toBeVisible();
   const opener = page.getByRole('button', { name: '지표 변경' });
   await opener.click();
@@ -343,8 +359,10 @@ test('source selection stays separate and automatic refresh preserves the canvas
   await page.getByLabel('지표 원천', { exact: true }).selectOption('btc:mvrv');
   await expect(surface).toHaveAttribute('data-primary-metric', 'btc:mvrv');
   await expect(page.locator('.indicator-heading')).toContainText('Bitview');
+  await page.getByRole('button', { name: '지표 변경', exact: true }).click();
   const navLinks = page.getByRole('navigation', { name: '지표 목록', exact: true });
   await expect(navLinks.locator('a[aria-current=page]')).toHaveCount(1);
+  await page.keyboard.press('Escape');
   await page.getByRole('button', { name: '더보기', exact: true }).click();
   await page.getByLabel('보조 지표 1', { exact: true }).selectOption('rsi');
   await expect(page.locator('.analysis-legend')).toContainText('RSI 14');

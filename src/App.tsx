@@ -1,7 +1,8 @@
 import { NotificationInbox } from './NotificationInbox';
 import { useMarket } from './useMarket';
 import { MarketPicker } from './MarketPicker';
-import { DeskNavigation, DeskTopbar } from './DeskNavigation';
+import { ProductTopbar } from './ProductTopbar';
+import { resolveIndicator } from '../shared/indicator-catalog';
 import { AssetLogo } from './AssetLogo';
 import { AssetSections } from './AssetSections';
 import { AssetHeader } from './AssetHeader';
@@ -50,7 +51,8 @@ const AnalysisWorkspace = lazy(() =>
 const ExchangeHistoryPanel = lazy(() =>
   import('./ExchangeHistoryPanel').then((m) => ({ default: m.ExchangeHistoryPanel })),
 );
-const WatchlistPage = lazy(() =>
+const WatchlistPage = lazy(() => import('./MarketHome').then((m) => ({ default: m.MarketHome })));
+const LegacyWatchlist = lazy(() =>
   import('./WatchlistPage').then((m) => ({ default: m.WatchlistPage })),
 );
 const ComparePage = lazy(() => import('./ComparePage').then((m) => ({ default: m.ComparePage })));
@@ -118,6 +120,41 @@ const intervals: { id: Interval; label: string }[] = [
   { id: '1w', label: '주' },
   { id: '1M', label: '월' },
 ];
+function EntryRoute() {
+  const location = useLocation(),
+    p = new URLSearchParams(location.search);
+  if (
+    ['asset', 'metric', 'visual', 'panels', 'indicators', 'draw_tool', 'patterns'].some((k) =>
+      p.has(k),
+    )
+  ) {
+    const asset = ASSETS.find((a) => a.id === p.get('asset'))?.id ?? 'BTC';
+    p.set('asset', asset);
+    p.set('metric', resolveIndicator(asset, '/', p).id);
+    return (
+      <Navigate
+        replace
+        to={{ pathname: '/coins/' + asset, search: '?' + p, hash: location.hash }}
+      />
+    );
+  }
+  return <WatchlistPage />;
+}
+function MarketRoute() {
+  const [params] = useSearchParams();
+  return params.get('view') === 'derivatives' ? <LegacyWatchlist /> : <WatchlistPage />;
+}
+function LegacyIndicatorRoute() {
+  const route = useParams(),
+    location = useLocation(),
+    p = new URLSearchParams(location.search);
+  const asset = ASSETS.find((a) => a.id === (route.asset || p.get('asset')))?.id ?? 'BTC';
+  p.set('asset', asset);
+  p.set('metric', resolveIndicator(asset, location.pathname, p).id);
+  return (
+    <Navigate replace to={{ pathname: '/coins/' + asset, search: '?' + p, hash: location.hash }} />
+  );
+}
 function Loading({ message = '실제 데이터를 불러오고 있습니다…' }: { message?: string }) {
   return (
     <div className="loading" role="status" aria-live="polite">
@@ -992,64 +1029,14 @@ export default function App() {
       window.removeEventListener('coin-desk-storage-error', storage);
     };
   }, []);
-  const [collapsed, setCollapsed] = useState(() => saved('sidebar-collapsed', false));
   const [sources, setSources] = useState(false);
-  const [mobile, setMobile] = useState(false);
-  const [narrow, setNarrow] = useState(() => window.matchMedia('(max-width: 760px)').matches);
-  const sidebarRef = useRef<HTMLElement>(null);
-  const menuRef = useRef<HTMLButtonElement>(null);
   useEffect(() => {
-    const media = window.matchMedia('(max-width: 760px)');
-    const resized = () => {
-      setNarrow(media.matches);
-      if (!media.matches) setMobile(false);
+    const escape = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') setSources(false);
     };
-    media.addEventListener('change', resized);
-    return () => media.removeEventListener('change', resized);
-  }, []);
-  useEffect(() => {
-    if (!narrow || !mobile) return;
-    const sidebar = sidebarRef.current!;
-    const focusable = () =>
-      [
-        ...sidebar.querySelectorAll<HTMLElement>('a[href],button:not([disabled]),input,summary'),
-      ].filter((element) => element.getClientRects().length > 0);
-    const previousOverflow = document.body.style.overflow;
-    document.body.style.overflow = 'hidden';
-    focusable()[0]?.focus();
-    const trap = (event: KeyboardEvent) => {
-      if (event.key !== 'Tab') return;
-      const items = focusable(),
-        first = items[0],
-        last = items.at(-1);
-      if (event.shiftKey && document.activeElement === first) {
-        event.preventDefault();
-        last?.focus();
-      } else if (!event.shiftKey && document.activeElement === last) {
-        event.preventDefault();
-        first?.focus();
-      }
-    };
-    sidebar.addEventListener('keydown', trap);
-    return () => {
-      sidebar.removeEventListener('keydown', trap);
-      document.body.style.overflow = previousOverflow;
-      menuRef.current?.focus();
-    };
-  }, [narrow, mobile]);
-  useEffect(() => {
-    function escape(e: KeyboardEvent) {
-      if (e.key === 'Escape') {
-        setSources(false);
-        setMobile(false);
-      }
-    }
     window.addEventListener('keydown', escape);
     return () => window.removeEventListener('keydown', escape);
   }, []);
-  useEffect(() => {
-    setMobile(false);
-  }, [location.pathname, location.search]);
   const pageKey =
     location.pathname +
     ':' +
@@ -1059,7 +1046,12 @@ export default function App() {
   const previousPage = useRef(pageKey);
   useEffect(() => {
     const frame = requestAnimationFrame(() => {
-      if (previousPage.current !== pageKey && !location.hash) {
+      if (
+        previousPage.current !== pageKey &&
+        !location.hash &&
+        location.pathname !== '/' &&
+        location.pathname !== '/coins'
+      ) {
         window.scrollTo({ top: 0, behavior: 'instant' });
         const main = document.getElementById('main-content');
         // Reading pages focus their heading. Do not overwrite that destination
@@ -1072,68 +1064,13 @@ export default function App() {
     return () => cancelAnimationFrame(frame);
   }, [pageKey, location.hash]);
   return (
-    <div className={'app ' + (collapsed ? 'nav-collapsed' : '')}>
+    <div className="app product-desk">
       <a className="skip-link" href="#main-content">
         본문으로 바로가기
       </a>
-      <aside
-        ref={sidebarRef}
-        id="site-sidebar"
-        inert={narrow && !mobile}
-        className={'sidebar ' + (mobile ? 'open' : '')}
-      >
-        {narrow && mobile ? (
-          <button
-            className="sidebar-close"
-            onClick={() => setMobile(false)}
-            aria-label="탐색 메뉴 닫기"
-          >
-            <X size={20} />
-          </button>
-        ) : null}
-        <Link to="/" className="brand" onClick={() => setMobile(false)}>
-          <img
-            className="brand-symbol brand-wordmark-dark"
-            src="/brand/coin-desk-shiba-smile.png"
-            alt=""
-            width="32"
-            height="32"
-          />
-          <img
-            className="brand-symbol brand-wordmark-light"
-            src="/brand/coin-desk-shiba-smile.png"
-            alt=""
-            width="32"
-            height="32"
-          />
-          <b>
-            Coin<span>Desk</span>
-          </b>
-        </Link>
-        <DeskNavigation onNavigate={() => setMobile(false)} />
-      </aside>
-      {mobile ? <div className="mobile-shade" onClick={() => setMobile(false)} /> : null}
-      <div className="main-shell" inert={narrow && mobile}>
+      <div className="main-shell">
         <header className="topbar">
-          <button
-            className="icon-button mobile-menu"
-            ref={menuRef}
-            aria-label={mobile ? '메뉴 닫기' : '메뉴 열기'}
-            aria-expanded={mobile}
-            aria-controls="site-sidebar"
-            onClick={() => setMobile(!mobile)}
-          >
-            <Menu size={20} />
-          </button>
-          <DeskTopbar
-            collapsed={collapsed}
-            onCollapse={() =>
-              setCollapsed((v) => {
-                save('sidebar-collapsed', !v);
-                return !v;
-              })
-            }
-          />
+          <ProductTopbar />
           <NotificationInbox />
           <button
             className="source-button"
@@ -1158,11 +1095,12 @@ export default function App() {
         <main id="main-content" tabIndex={-1}>
           <Suspense fallback={<Loading message="화면을 열고 있습니다…" />}>
             <Routes>
-              <Route path="/" element={<AnalysisWorkspace />} />
-              <Route path="/chart/:asset" element={<AnalysisWorkspace />} />
+              <Route path="/" element={<EntryRoute />} />
+              <Route path="/coins/:asset" element={<AnalysisWorkspace />} />
+              <Route path="/chart/:asset" element={<LegacyIndicatorRoute />} />
               <Route path="/technical/:asset" element={<PricePage workspace />} />
-              <Route path="/metrics/:metric" element={<AnalysisWorkspace />} />
-              <Route path="/coins" element={<WatchlistPage />} />
+              <Route path="/metrics/:metric" element={<LegacyIndicatorRoute />} />
+              <Route path="/coins" element={<MarketRoute />} />
               <Route path="/workspace" element={<WorkspacePage />} />
               <Route path="/workspace/library" element={<ResearchLibrary />} />
               <Route path="/learn" element={<LearnPage />} />
@@ -1171,8 +1109,8 @@ export default function App() {
               <Route path="/explore" element={<MetricsExplorer />} />
               <Route path="/dominance" element={<DominancePage />} />
               <Route path="/status" element={<DataStatusPage />} />
-              <Route path="/onchain/:asset" element={<AnalysisWorkspace />} />
-              <Route path="/futures/:asset" element={<AnalysisWorkspace />} />
+              <Route path="/onchain/:asset" element={<LegacyIndicatorRoute />} />
+              <Route path="/futures/:asset" element={<LegacyIndicatorRoute />} />
               <Route
                 path="/research"
                 element={<Navigate to={{ pathname: '/', search: location.search }} replace />}
@@ -1186,7 +1124,7 @@ export default function App() {
                 path="*"
                 element={
                   <div className="empty-state">
-                    페이지를 찾지 못했습니다. <Link to="/">대시보드로 이동</Link>
+                    페이지를 찾지 못했습니다. <Link to="/">시장으로 이동</Link>
                   </div>
                 }
               />

@@ -1,0 +1,113 @@
+{
+  "checkedAt": "2026-10-02T16:49:24Z",
+  "version": "0.21.0",
+  "source": {
+    "branch": "feat/indicator-first-desk",
+    "baseCommit": "5f09e271898ecd94c07cb8524c7acc2194ec4e5e",
+    "uncommittedChanges": true
+  },
+  "unit": {
+    "files": 55,
+    "passed": 482
+  },
+  "nativeServer": {
+    "passed": 10
+  },
+  "pythonVps": {
+    "passed": 7
+  },
+  "recovery": {
+    "passed": 2
+  },
+  "independentCalculationScenarios": {
+    "passed": 3
+  },
+  "typecheckPassed": true,
+  "webBuildPassed": true,
+  "serverBuildPassed": true,
+  "nativeSseProxy": {
+    "passed": true
+  },
+  "localSseLoad": {
+    "clients": 100,
+    "allDeliveredMs": 818,
+    "simulatedTicks": true,
+    "productionLatencyEvidence": false
+  },
+  "browser": {
+    "state": "targeted_regressions_passed_full_final_suite_not_rerun",
+    "firstFullRun": {
+      "passed": 117,
+      "failed": 7,
+      "privateOptInSkipped": 2
+    },
+    "targetedRecheck": {
+      "passed": 18,
+      "newStreamTestsFailed": 2
+    },
+    "streamRecheckAfterAssertionFix": {
+      "passed": 2
+    },
+    "finalMarketAndStreamRun": {
+      "passed": 12,
+      "failed": 0
+    },
+    "exactPcSizesRun": {
+      "passed": 6,
+      "failed": 0,
+      "viewports": [
+        "1280x800",
+        "1440x900",
+        "1920x1080"
+      ]
+    },
+    "retries": 0,
+    "engines": [
+      "chromium",
+      "webkit"
+    ],
+    "actualWindowsChrome": {
+      "marketEightAssetsObserved": true,
+      "btcMvrvDetailObserved": true,
+      "allFlowsVerified": false,
+      "chartMeasurement": "not_confirmed_page_changed_before_measurement"
+    },
+    "actualSafariVoiceOver": "not_tested_no_apple_device"
+  },
+  "preview": {
+    "url": "http://127.0.0.1:5209/",
+    "source": "existing_local_public_data_cache",
+    "quoteDate": "2026-09-28",
+    "delaysVisible": true,
+    "liveExchangeStreamVerified": false,
+    "inAppChart": {
+      "topPx": 226,
+      "heightPx": 440
+    }
+  },
+  "releaseArchive": {
+    "path": "deployment-artifacts/vps-a433774ddb8d8656.tar.gz",
+    "files": 288,
+    "sha256": "dd68ddde7c68d58cc810db330bb1458fb2ea233d9d85440dc7bcf85da9403474",
+    "contentsVerified": true
+  },
+  "production": {
+    "deployed": false,
+    "githubReachable": false,
+    "sshReachable": false,
+    "dockerAvailableLocally": false,
+    "remoteCiVerified": false,
+    "databaseMigrated": false,
+    "httpsVerified": false,
+    "fullUtcDayVerified": false,
+    "strict48hVerified": false
+  },
+  "remainingLocalReview": [
+    "full_final_browser_suite",
+    "legacy_screen_copy_inventory_and_review",
+    "all_legacy_css_consolidation"
+  ],
+  "privateDataPublished": false,
+  "legacyCronChanged": false,
+  "latestFollowup": "dog-minute-followup.json"
+}

@@ -1,0 +1,95 @@
+{
+  "checkedAt": "2026-10-02T18:29:23.157126+00:00",
+  "scope": "dog restoration, all-eight-coin VPS minute polling, runtime status integration",
+  "mascot": {
+    "asset": "/brand/coin-desk-shiba-smile.png",
+    "originalReused": true,
+    "activeCatReferences": 0,
+    "verified": [
+      "market logo",
+      "brand page",
+      "download",
+      "favicon",
+      "share metadata"
+    ]
+  },
+  "quoteCadence": {
+    "vpsAllEightSeconds": 60,
+    "cloudflarePrimarySeconds": 60,
+    "cloudflareSecondarySeconds": 300,
+    "tradeFreshnessLimitSeconds": 300,
+    "backoffPreserved": true,
+    "onchainSourceCadenceUnchanged": true,
+    "vpsMinuteBoundaryEligibility": true,
+    "responseLatencyRegressionVerified": true
+  },
+  "tests": {
+    "unit": 486,
+    "unitFiles": 55,
+    "nativeServer": 13,
+    "pythonVps": 7,
+    "recovery": 2,
+    "typecheck": true,
+    "webBuild": true,
+    "brandMetadata": true,
+    "fullBrowser": {
+      "passed": 129,
+      "failed": 1,
+      "privateOptInSkipped": 2,
+      "retries": 0,
+      "failure": "WebKit 1000px context.close ENOENT missing trace file",
+      "changesDuringRun": [
+        "status stylesheet",
+        "quote scheduler"
+      ],
+      "finalFrozenWholeSuite": false
+    },
+    "browserFailureRecheck": {
+      "passed": 1,
+      "failed": 0,
+      "retries": 0,
+      "assertionsUnchanged": true,
+      "timeoutUnchanged": true
+    },
+    "runtimeAccessibility": {
+      "passed": 4,
+      "failed": 0,
+      "themes": [
+        "dark",
+        "light"
+      ],
+      "widths": [
+        320,
+        1280
+      ]
+    },
+    "isolatedEvidencePaths": {
+      "passed": 2,
+      "separateRunFoldersVerified": true,
+      "concurrentOverlapReproduction": false
+    }
+  },
+  "preview": {
+    "url": "http://127.0.0.1:5209/",
+    "source": "existing local historical cache",
+    "realLiveCollection": false,
+    "runtimeMissingLedgerVisible": true,
+    "missingBackupVisible": true
+  },
+  "archive": {
+    "path": "deployment-artifacts/vps-3cdba41c340f3a8b.tar.gz",
+    "files": 291,
+    "sha256": "b672f8ef2d1ca39328b3078e5f9e2e9f942532f5b2c67c406755ffbf0f863e1f"
+  },
+  "remoteDeployment": false,
+  "networkAccess": "Upbit retest EACCES; current task network permission restricted",
+  "remaining": [
+    "remote CI and merge",
+    "production export and VPS data migration",
+    "HTTPS and live upstream collection verification",
+    "real exchange stream latency and VPS load",
+    "full UTC day and strict 48h stability",
+    "remaining legacy copy/CSS audit",
+    "actual Safari/VoiceOver unavailable"
+  ]
+}

@@ -37,7 +37,11 @@ umask 077
 printf 'COIN_DESK_ROOT=%s\nCOIN_DESK_IMAGE=coin-desk:%s\nCOIN_DESK_RELEASE=%s\nCOIN_DESK_PORT=%s\n' "$root" "$release" "$release" "$port" > "$envfile"
 docker compose --env-file "$envfile" -f deploy/vps/compose.yaml config --quiet
 docker build --tag "coin-desk:$release" .
-docker compose --env-file "$envfile" -f deploy/vps/compose.yaml up -d --wait --wait-timeout 360 api backup
+test ! -L "$root/shared/assets"
+mkdir -p "$root/shared/assets"
+chmod 755 "$root/shared/assets"
+docker run --rm --network none --read-only --entrypoint tar "coin-desk:$release" -C /app/dist/assets -cf - . | python3 deploy/vps/retain_assets.py "$root/shared/assets"
+docker compose --env-file "$envfile" -f deploy/vps/compose.yaml up -d --wait --wait-timeout 360 api backup quote-hub
 docker compose --env-file "$envfile" -f deploy/vps/compose.yaml exec -T api node server/upstream-check.mjs > "$root/audit/$release/upstream-probe.json"
 python3 deploy/vps/verify_runtime.py --shadow --base "http://127.0.0.1:$port" --database "$root/shared/data/coin-desk.sqlite" --output "$root/audit/$release/shadow.json"
 printf 'Shadow API verified. Collectors are OFF. current is not promoted.\n'

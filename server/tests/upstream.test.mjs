@@ -43,4 +43,12 @@ test('Preflight uses public sources without a DB and records restricted access a
   const stale = await checkUpstreams(env, providers, request);
   assert.equal(stale.ok, false);
   assert.equal(JSON.stringify(stale).includes('token should not be logged'), false);
+  const permissionDenied = await checkUpstreams(env, providers, async () => {
+    throw new TypeError('sensitive connection details', { cause: { code: 'EACCES' } });
+  });
+  assert.equal(
+    permissionDenied.checks.find((r) => r.source === 'coin-metrics').reason,
+    'network-permission-denied',
+  );
+  assert.equal(JSON.stringify(permissionDenied).includes('sensitive connection details'), false);
 });

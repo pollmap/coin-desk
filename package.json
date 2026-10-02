@@ -1,6 +1,6 @@
 {
   "name": "coin-desk",
-  "version": "0.20.0",
+  "version": "0.21.0",
   "private": true,
   "type": "module",
   "scripts": {
@@ -14,6 +14,7 @@
     "package:extension": "python scripts/package_extension.py",
     "build": "npm run package:extension && tsc -b && vite build",
     "build:server": "node server/build.mjs",
+    "start:live": "node server/live.mjs",
     "test:server": "npm run build:server && node --test server/tests/*.test.mjs && python -m unittest discover -s tests -p \"test_vps*.py\"",
     "package:vps": "python scripts/vps_release.py",
     "test": "vitest run",

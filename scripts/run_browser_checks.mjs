@@ -3,6 +3,8 @@ import { spawn } from 'node:child_process';
 import { once } from 'node:events';
 import { createRequire } from 'node:module';
 import { setTimeout as delay } from 'node:timers/promises';
+import { resolve, join } from 'node:path';
+import { mkdirSync } from 'node:fs';
 const require = createRequire(import.meta.url);
 const port = process.env.COIN_DESK_TEST_PORT || '5190';
 if (!/^\d+$/.test(port) || Number(port) < 1024 || Number(port) > 65535)
@@ -34,12 +36,23 @@ try {
     await delay(250);
   }
   if (!ready) throw new Error('Isolated fixture did not become ready');
+  // A second run must not clean another run's traces while its context is closing.
+  const evidenceRoot = resolve('work/browser-checks', `${Date.now()}-${process.pid}`);
+  mkdirSync(evidenceRoot, { recursive: true });
+  const outputDir = process.env.COIN_DESK_TEST_OUTPUT_DIR || join(evidenceRoot, 'artifacts');
+  const reportDir = process.env.COIN_DESK_TEST_REPORT_DIR || join(evidenceRoot, 'report');
+  console.log(JSON.stringify({ event: 'browser_evidence', outputDir, reportDir }));
   testProcess = spawn(
     process.execPath,
     [require.resolve('@playwright/test/cli'), 'test', ...process.argv.slice(2)],
     {
       stdio: 'inherit',
-      env: { ...process.env, COIN_DESK_FIXTURE_MANAGED_EXTERNALLY: '1' },
+      env: {
+        ...process.env,
+        COIN_DESK_FIXTURE_MANAGED_EXTERNALLY: '1',
+        COIN_DESK_TEST_OUTPUT_DIR: outputDir,
+        COIN_DESK_TEST_REPORT_DIR: reportDir,
+      },
     },
   );
   const [code] = await once(testProcess, 'exit');
