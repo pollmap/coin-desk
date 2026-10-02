@@ -33,6 +33,11 @@ def import_export(source, destination, migrations=ROOT / 'migrations'):
     temporary = pathlib.Path(temporary_name)
     db = sqlite3.connect(temporary)
     try:
+        # D1 exports have no enclosing transaction. Avoid an fsync per INSERT in
+        # this disposable staging file only. Source and destination stay intact;
+        # integrity/content checks precede the separate fsynced O_EXCL publish.
+        db.execute('PRAGMA journal_mode=MEMORY')
+        db.execute('PRAGMA synchronous=OFF')
         def authorize(action, arg1, arg2, *_):
             if action in (sqlite3.SQLITE_ATTACH, sqlite3.SQLITE_DETACH): return sqlite3.SQLITE_DENY
             if action == sqlite3.SQLITE_FUNCTION and str(arg2).lower() in ('load_extension', 'readfile', 'writefile'):
