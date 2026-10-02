@@ -1,6 +1,38 @@
 import { afterEach, expect, it, vi } from 'vitest';
 import gateway from '../worker/vps-gateway';
-afterEach(() => vi.unstubAllGlobals());
+afterEach(() => {
+  vi.unstubAllGlobals();
+  vi.restoreAllMocks();
+  vi.useRealTimers();
+});
+it('keeps SSE alive after the header deadline and propagates client disconnect', async () => {
+  vi.useFakeTimers();
+  vi.spyOn(AbortSignal, 'timeout').mockImplementation((ms) => {
+    const controller = new AbortController();
+    setTimeout(() => controller.abort(), ms);
+    return controller.signal;
+  });
+  const fetcher = vi.fn(
+    async () => new Response('data: {}\n\n', { headers: { 'content-type': 'text/event-stream' } }),
+  );
+  vi.stubGlobal('fetch', fetcher);
+  const client = new AbortController();
+  const response = await gateway.fetch(
+    new Request('https://coin-desk.pages.dev/api/v1/quotes/stream?market=upbit', {
+      signal: client.signal,
+    }),
+    {
+      VPS_BASE_URL: 'https://coin-desk.example.org/',
+      ASSETS: {} as Fetcher,
+    },
+  );
+  const [, options] = fetcher.mock.calls[0] as unknown as [URL, RequestInit];
+  await vi.advanceTimersByTimeAsync(20000);
+  expect(options.signal?.aborted).toBe(false);
+  expect(await response.text()).toContain('data: {}');
+  client.abort();
+  expect(options.signal?.aborted).toBe(true);
+});
 it('Bridge keeps the old browser origin and never forwards credentials or private headers', async () => {
   const fetcher = vi.fn(
     async () =>

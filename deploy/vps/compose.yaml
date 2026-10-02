@@ -7,14 +7,14 @@ x-service: &service
   read_only: true
   cap_drop: [ALL]
   security_opt: [no-new-privileges:true]
-  tmpfs: [/tmp:size=64m, mode=1777]
+  tmpfs: ['/tmp:size=64m,mode=1777']
   environment: &environment
     COIN_DESK_DB: /app/data/coin-desk.sqlite
     COIN_DESK_RELEASE: ${COIN_DESK_RELEASE:?Set the Git release ID}
     ENABLED_ASSETS: BTC,DOGE,ETH,SOL,XRP,LINK,ONDO,PEPE
   volumes: ['${COIN_DESK_ROOT:?Set the isolated project root}/shared/data:/app/data']
   logging:
-    driver: json-file
+    driver: local
     options: { max-size: 10m, max-file: '3' }
   stop_grace_period: 30s
   depends_on:

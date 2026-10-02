@@ -36,12 +36,26 @@ export default {
         return unavailable();
       const target = new URL(incoming.pathname + incoming.search, origin);
       // Browser cookies, authorization, Origin, and personal headers never cross the migration bridge.
-      const response = await fetch(target, {
-        method: request.method,
-        headers: { accept: 'application/json', 'user-agent': 'Coin-Desk-owned-origin-bridge/1.0' },
-        redirect: 'error',
-        signal: AbortSignal.timeout(15000),
-      });
+      const stream = incoming.pathname === '/api/v1/quotes/stream';
+      const controller = new AbortController();
+      if (request.signal.aborted) controller.abort();
+      else request.signal.addEventListener('abort', () => controller.abort(), { once: true });
+      const deadline = stream ? setTimeout(() => controller.abort(), 15000) : undefined;
+      let response: Response;
+      try {
+        response = await fetch(target, {
+          method: request.method,
+          headers: {
+            accept: stream ? 'text/event-stream' : 'application/json',
+            'user-agent': 'Coin-Desk-owned-origin-bridge/1.0',
+          },
+          redirect: 'error',
+          signal: stream ? controller.signal : AbortSignal.timeout(15000),
+        });
+      } finally {
+        // A response-header deadline must not truncate a healthy, long-lived SSE body.
+        clearTimeout(deadline);
+      }
       const headers = new Headers(response.headers);
       headers.delete('set-cookie');
       headers.delete('access-control-allow-origin');
