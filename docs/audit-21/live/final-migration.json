@@ -1,0 +1,121 @@
+{
+  "checkedAt": "2026-10-02T20:53:37.492660+00:00",
+  "verified": true,
+  "source": "official D1 final export",
+  "exportSha256": "80b8d06e444430a919bd0c65499f524909113f6f8f54a115138e3ffb8e843523",
+  "schemaSha256": "a5da6869a63505965d4bf23dea44b4bfb883e3919e4f2f0cd1ecc19a2d4b0a7a",
+  "schemaObjects": 20,
+  "tables": {
+    "candles": {
+      "rows": 23002,
+      "sha256": "26dfd9b956b4043a47c48755c7c902b8700f6c6f82ca3a951e957d8fb1719c0a"
+    },
+    "chain_history": {
+      "rows": 218,
+      "sha256": "dd2124aadd61bb69ea9883233890e755cbf63918b4d0b44c32e5eaed4a458279"
+    },
+    "cron_runs": {
+      "rows": 4320,
+      "sha256": "e1cbba1da45340546c14991de4aa3583ed935cffd1dda8b7f1cf9c92740c6b22"
+    },
+    "cron_state": {
+      "rows": 1,
+      "sha256": "470acc70ddb9919108903334040392b38896514c51752ddfb987a450add4d380"
+    },
+    "d1_migrations": {
+      "rows": 9,
+      "sha256": "1054cb7c7494723f71b146faf3d1be036d975f1e823aa7c3df7ece9e6607c224"
+    },
+    "daily_briefings": {
+      "rows": 7,
+      "sha256": "3b28126252f895495951a977474ff59fe05f1122fafbd6d077708bb3ca5b99b8"
+    },
+    "derivative_series": {
+      "rows": 90605,
+      "sha256": "62eb4d4605e673804c171da0760d7ebdc050c270df95998b97f57d9058608fa5"
+    },
+    "dominance_history": {
+      "rows": 246,
+      "sha256": "17de3b54275b1a45ae777a7064672655bb1d6f72ea4349512f6385bd74704f9f"
+    },
+    "ingestion": {
+      "rows": 126,
+      "sha256": "7850dada70e8beb1f29657429039e588ad09d748a7116489be0138bcc2b0f9c3"
+    },
+    "network_coverage": {
+      "rows": 75,
+      "sha256": "c4574b9d78bf863ca094156dc9a3e57913bbdc3571864cfc3a38cb180602efaf"
+    },
+    "network_months": {
+      "rows": 781,
+      "sha256": "340b6f524338569a9961597110bf240b0a42aaa6a74918648d1f6b882e1ace48"
+    },
+    "observation_signals": {
+      "rows": 51,
+      "sha256": "700502aec3a2c110249bdfba4687e9ff94be9dc38faea4063459023a0283eb14"
+    },
+    "onchain": {
+      "rows": 6483,
+      "sha256": "d14afc2e4760b0803401abf46609e4411f6338bdf1c2aeddcd4f3517adc9286d"
+    },
+    "price_archive": {
+      "rows": 234,
+      "sha256": "87b6dbb2fafc2b82a4b1d07e3fb567d0da1e74cd3e6bc4de5ef6fefc0f8c336c"
+    },
+    "raw_samples": {
+      "rows": 447,
+      "sha256": "f8ff2669ca53541b07d5a969f23b0bfd006bd1aba54402ed2df82770d4182a40"
+    },
+    "reference_prices": {
+      "rows": 22349,
+      "sha256": "af331f856e3613f1eabf7e038ceb13ced426269286a3cb6043fe122e48a5190c"
+    },
+    "signal_revisions": {
+      "rows": 1,
+      "sha256": "0bf266fe411a13b6e3c86bd3c4937ab24afb186e6c94aca5a41062aa2b70a5e6"
+    },
+    "snapshots": {
+      "rows": 17,
+      "sha256": "e6d0ef78d888f072fc52a010170ec5164d05bd2e72868a4a5833c92f66c14f4f"
+    },
+    "state": {
+      "rows": 218,
+      "sha256": "53183da95f180f87d2d65141f5e98b6d03da41aa6cbd3d3ec0d64891fdfb0871"
+    }
+  },
+  "totalRows": 149190,
+  "remoteCountsMatch": true,
+  "migrationsAcknowledged": 9,
+  "restoreFingerprintMatched": true,
+  "legacySchedules": {
+    "btc-desk": {
+      "schedules": []
+    },
+    "btc-desk-quotes": {
+      "schedules": []
+    },
+    "btc-desk-background": {
+      "schedules": []
+    },
+    "btc-desk-analysis": {
+      "schedules": []
+    },
+    "coin-desk-feed": {
+      "schedules": []
+    }
+  },
+  "legacyD1MinimumRetentionDays": 30,
+  "freezeProof": {
+    "allProjectWritersFrozen": true,
+    "inflightDrained": true,
+    "includesOnDemandOverview": true,
+    "frozenRequestedAt": 1790972810,
+    "drainComparedAt": [
+      1790973372,
+      1790973913
+    ],
+    "drainSeconds": 541,
+    "databaseSha256": "a687c9f71bcb2af79a9b3c9b7814f87574df31799a419592e66de8c6a22bc819",
+    "finalExportSha256": "80b8d06e444430a919bd0c65499f524909113f6f8f54a115138e3ffb8e843523"
+  }
+}

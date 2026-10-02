@@ -1,0 +1,33 @@
+{
+  "checkedAtEpoch": 1790969865,
+  "base": "https://coin-desk.62.171.141.206.sslip.io",
+  "clients": 100,
+  "seconds": 30,
+  "elapsedSeconds": 32.23,
+  "errors": [],
+  "allConnected": true,
+  "minimumEvents": 30,
+  "samples": 9802,
+  "p95ReceiptMs": 864.4,
+  "maxReceiptMs": 1059.61,
+  "markets": {
+    "binance": [
+      "BTC",
+      "DOGE",
+      "ETH",
+      "LINK",
+      "ONDO",
+      "PEPE",
+      "SOL",
+      "XRP"
+    ],
+    "upbit": [
+      "BTC",
+      "DOGE",
+      "ETH",
+      "SOL",
+      "XRP"
+    ]
+  },
+  "scope": "Real exchange events to SSE client receipt; excludes browser paint; same-host run removes cross-host clock skew"
+}

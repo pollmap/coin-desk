@@ -1,0 +1,164 @@
+{
+  "checkedAt": 1790968701,
+  "workers": {
+    "btc-desk": {
+      "schedules": {
+        "schedules": [
+          {
+            "cron": "* * * * *",
+            "created_on": "2026-09-19T16:06:56.138768Z",
+            "modified_on": "2026-09-29T01:28:07.500176Z"
+          }
+        ]
+      },
+      "bindings": [
+        {
+          "name": "ANALYSIS_COLLECTOR",
+          "type": "service"
+        },
+        {
+          "name": "ASSETS",
+          "type": "assets"
+        },
+        {
+          "name": "BACKGROUND_COLLECTOR",
+          "type": "service"
+        },
+        {
+          "name": "BITVIEW_BASE_URL",
+          "type": "plain_text"
+        },
+        {
+          "name": "DB",
+          "type": "d1"
+        },
+        {
+          "name": "ENABLED_ASSETS",
+          "type": "plain_text"
+        },
+        {
+          "name": "FEED_TOKEN",
+          "type": "secret_text"
+        },
+        {
+          "name": "FEED_URL",
+          "type": "plain_text"
+        }
+      ]
+    },
+    "btc-desk-quotes": {
+      "schedules": {
+        "schedules": [
+          {
+            "cron": "* * * * *",
+            "created_on": "2026-09-27T10:22:25.312024Z",
+            "modified_on": "2026-09-27T18:25:20.349712Z"
+          }
+        ]
+      },
+      "bindings": [
+        {
+          "name": "BITVIEW_BASE_URL",
+          "type": "plain_text"
+        },
+        {
+          "name": "COLLECTOR_LANE",
+          "type": "plain_text"
+        },
+        {
+          "name": "DB",
+          "type": "d1"
+        },
+        {
+          "name": "ENABLED_ASSETS",
+          "type": "plain_text"
+        },
+        {
+          "name": "FEED_SERVICE",
+          "type": "service"
+        },
+        {
+          "name": "FEED_URL",
+          "type": "plain_text"
+        }
+      ]
+    },
+    "btc-desk-background": {
+      "schedules": {
+        "schedules": []
+      },
+      "bindings": [
+        {
+          "name": "BITVIEW_BASE_URL",
+          "type": "plain_text"
+        },
+        {
+          "name": "COLLECTOR_LANE",
+          "type": "plain_text"
+        },
+        {
+          "name": "DB",
+          "type": "d1"
+        },
+        {
+          "name": "ENABLED_ASSETS",
+          "type": "plain_text"
+        },
+        {
+          "name": "FEED_SERVICE",
+          "type": "service"
+        },
+        {
+          "name": "FEED_URL",
+          "type": "plain_text"
+        }
+      ]
+    },
+    "btc-desk-analysis": {
+      "schedules": {
+        "schedules": []
+      },
+      "bindings": [
+        {
+          "name": "BITVIEW_BASE_URL",
+          "type": "plain_text"
+        },
+        {
+          "name": "COLLECTOR_LANE",
+          "type": "plain_text"
+        },
+        {
+          "name": "DB",
+          "type": "d1"
+        },
+        {
+          "name": "ENABLED_ASSETS",
+          "type": "plain_text"
+        },
+        {
+          "name": "FEED_SERVICE",
+          "type": "service"
+        },
+        {
+          "name": "FEED_URL",
+          "type": "plain_text"
+        }
+      ]
+    },
+    "coin-desk-feed": {
+      "schedules": {
+        "schedules": []
+      },
+      "bindings": [
+        {
+          "name": "FEED_TOKEN",
+          "type": "secret_text"
+        },
+        {
+          "name": "PLACED_FEED",
+          "type": "service"
+        }
+      ]
+    }
+  }
+}

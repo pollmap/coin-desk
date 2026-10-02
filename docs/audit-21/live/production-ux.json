@@ -1,0 +1,95 @@
+{
+  "checkedAt": "2026-10-02T20:58:14.763Z",
+  "viewport": {
+    "width": 1280,
+    "height": 800
+  },
+  "records": [
+    {
+      "asset": "BTC",
+      "url": "https://coin-desk.pages.dev/coins/BTC?price_source=upbit&market=upbit&asset=BTC&metric=net%3Amvrv&period=5y",
+      "chartBox": {
+        "x": 28,
+        "y": 226,
+        "width": 1224,
+        "height": 440
+      }
+    },
+    {
+      "asset": "DOGE",
+      "url": "https://coin-desk.pages.dev/coins/DOGE?price_source=upbit&market=upbit&asset=DOGE&metric=net%3Amvrv&period=5y",
+      "chartBox": {
+        "x": 28,
+        "y": 225,
+        "width": 1224,
+        "height": 440
+      }
+    },
+    {
+      "asset": "ETH",
+      "url": "https://coin-desk.pages.dev/coins/ETH?price_source=upbit&market=upbit&asset=ETH&metric=net%3Amvrv&period=5y",
+      "chartBox": {
+        "x": 28,
+        "y": 225,
+        "width": 1224,
+        "height": 440
+      }
+    },
+    {
+      "asset": "SOL",
+      "url": "https://coin-desk.pages.dev/coins/SOL?price_source=upbit&market=upbit&asset=SOL&metric=rsi&period=1y",
+      "chartBox": {
+        "x": 28,
+        "y": 225,
+        "width": 1224,
+        "height": 440
+      }
+    },
+    {
+      "asset": "XRP",
+      "url": "https://coin-desk.pages.dev/coins/XRP?price_source=upbit&market=upbit&asset=XRP&metric=net%3Amvrv&period=5y",
+      "chartBox": {
+        "x": 28,
+        "y": 225,
+        "width": 1224,
+        "height": 440
+      }
+    },
+    {
+      "asset": "LINK",
+      "url": "https://coin-desk.pages.dev/coins/LINK?price_source=upbit&market=upbit&asset=LINK&metric=net%3Amvrv&period=5y",
+      "chartBox": {
+        "x": 28,
+        "y": 225,
+        "width": 1224,
+        "height": 440
+      }
+    },
+    {
+      "asset": "ONDO",
+      "url": "https://coin-desk.pages.dev/coins/ONDO?price_source=upbit&market=upbit&asset=ONDO&metric=rsi&period=1y",
+      "chartBox": {
+        "x": 28,
+        "y": 225,
+        "width": 1224,
+        "height": 440
+      }
+    },
+    {
+      "asset": "PEPE",
+      "url": "https://coin-desk.pages.dev/coins/PEPE?price_source=upbit&market=upbit&asset=PEPE&metric=rsi&period=1y",
+      "chartBox": {
+        "x": 28,
+        "y": 225,
+        "width": 1224,
+        "height": 440
+      }
+    }
+  ],
+  "unsupportedMvrv": true,
+  "axe": {
+    "dark": 0,
+    "light": 0
+  },
+  "retries": 0
+}

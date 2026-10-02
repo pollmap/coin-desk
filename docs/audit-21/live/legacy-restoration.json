@@ -1,0 +1,37 @@
+{
+  "checkedAt": 1790972309,
+  "purpose": "explicit recovery refresh on restored legacy API; not natural Cron evidence",
+  "overviewCalled": true,
+  "results": [
+    {
+      "path": "/api/v1/overview?asset=BTC&market=upbit",
+      "http": 200,
+      "quoteTime": 1790972306
+    },
+    {
+      "path": "/api/v1/overview?asset=BTC&market=binance",
+      "http": 200,
+      "quoteTime": 1790972307
+    },
+    {
+      "path": "/api/v1/overview?asset=DOGE&market=upbit",
+      "http": 200,
+      "quoteTime": 1790972296
+    },
+    {
+      "path": "/api/v1/overview?asset=DOGE&market=binance",
+      "http": 200,
+      "quoteTime": 1790972307
+    },
+    {
+      "path": "/api/v1/overview?asset=ETH&market=upbit",
+      "http": 200,
+      "quoteTime": 1790972291
+    },
+    {
+      "path": "/api/v1/overview?asset=ETH&market=binance",
+      "http": 200,
+      "quoteTime": 1790972307
+    }
+  ]
+}

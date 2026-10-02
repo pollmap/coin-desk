@@ -1,0 +1,36 @@
+{
+  "checkedAtEpoch": 1790968258,
+  "base": "http://127.0.0.1:5209",
+  "clients": 100,
+  "seconds": 30,
+  "elapsedSeconds": 30.74,
+  "errors": [],
+  "allConnected": true,
+  "minimumEvents": 32,
+  "samples": 12356,
+  "p95ReceiptMs": 867.88,
+  "maxReceiptMs": 1006.67,
+  "markets": {
+    "binance": [
+      "BTC",
+      "DOGE",
+      "ETH",
+      "LINK",
+      "ONDO",
+      "PEPE",
+      "SOL",
+      "XRP"
+    ],
+    "upbit": [
+      "BTC",
+      "DOGE",
+      "ETH",
+      "LINK",
+      "ONDO",
+      "PEPE",
+      "SOL",
+      "XRP"
+    ]
+  },
+  "scope": "Real exchange events to SSE client receipt; excludes browser paint; same-host run removes cross-host clock skew"
+}

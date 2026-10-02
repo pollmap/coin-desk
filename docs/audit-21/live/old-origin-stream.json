@@ -1,0 +1,17 @@
+{
+  "checkedAt": 1790972854,
+  "origin": "https://coin-desk.pages.dev",
+  "seconds": 22.31,
+  "events": 21,
+  "assets": [
+    "BTC",
+    "DOGE",
+    "ETH",
+    "LINK",
+    "ONDO",
+    "PEPE",
+    "SOL",
+    "XRP"
+  ],
+  "exceededFormer15SecondDeadline": true
+}

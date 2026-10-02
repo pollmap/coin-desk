@@ -1,0 +1,30 @@
+{
+  "base": "https://coin-desk.62.171.141.206.sslip.io",
+  "checkedAt": "2026-10-02T19:40:02.030Z",
+  "viewport": "1280x800",
+  "downlinkMbps": 10,
+  "uplinkMbps": 5,
+  "addedLatencyMs": 80,
+  "cpuThrottle": 4,
+  "browserVersion": "153.0.8010.12",
+  "freshContexts": 2,
+  "sharedBrowserProcess": true,
+  "lcpSamplesMs": [
+    6392,
+    4580
+  ],
+  "lcpP95Ms": 6392,
+  "quotePaintSamples": 3,
+  "receiptToPaintP95Ms": 31.099999994039536,
+  "exchangeReceiptToPaintP95Ms": 1363,
+  "clockErrorBoundMs": 673,
+  "conservativeEndToEndP95UpperMs": 2036,
+  "stage": "before entry split; shadow collectors off",
+  "clockCorrection": {
+    "reason": "server-minus-client clock offset must be ADDED to clientTime-serverTickTime; prior probe subtracted it",
+    "previousIncorrectP95Ms": 3461,
+    "rawBrowserMinusServerP95Ms": 2412,
+    "offsetReconstructedFromConstantAdjustmentMs": -1049,
+    "samplesInPreservedLog": 3
+  }
+}

@@ -1,0 +1,71 @@
+{
+  "checkedAt": "2026-10-02T21:06:51.098696+00:00",
+  "codeMain": "7ff1811b2011695f6c8ec7ba4a4261682cb805c2",
+  "pullRequests": [
+    37,
+    38,
+    39
+  ],
+  "mainCI": {
+    "run": 37061890773,
+    "conclusion": "success",
+    "unit": 487,
+    "node": 15,
+    "vpsPython": 7,
+    "recovery": 2,
+    "browserPassed": 132,
+    "browserPrivateOptInSkipped": 2,
+    "browserRetries": 0
+  },
+  "vpsRelease": "vps-f1546991c2aab31a",
+  "archiveSha256": "8284476b83df7037d404aa7f823fdcb4e30af41d7aa065f403db9a3871f2da15",
+  "pages": "https://5fe080db.coin-desk.pages.dev",
+  "public": "https://coin-desk.pages.dev",
+  "vps": "https://coin-desk.62.171.141.206.sslip.io",
+  "gateway": "97425be0-e9d3-4ae4-81bc-3de42ad69dfe",
+  "deploymentVerified": true,
+  "fullPlanComplete": false,
+  "httpsCertificateRenewalDryRun": "passed",
+  "naturalObservation": {
+    "start": 1790974205,
+    "seconds": 300,
+    "successfulLaneRuns": {
+      "quotes": 5,
+      "background": 5,
+      "recent": 5,
+      "analysis": 5
+    },
+    "sixCoreQuotesAdvanced": true,
+    "derivativeConfirmationsAdvanced": 12,
+    "directCollectionOrOverviewCalled": false,
+    "otherVisitorsAbsentGuaranteed": false,
+    "all16QuotesAdvanced": true
+  },
+  "migration": {
+    "userTables": 19,
+    "rows": 149190,
+    "sourceRemoteCountsMatched": true,
+    "schemaAndContentHashesMatched": true,
+    "legacyD1Preserved": true
+  },
+  "rollback": {
+    "cloudflareGatewayRollbackPerformed": true,
+    "vpsPreviousCodeOnProductionBackupPassed": true,
+    "vpsLiveRouteRollbackPerformed": false
+  },
+  "pending": [
+    "complete UTC day 2026-10-03 and next briefing/backup/resource growth",
+    "strict 48h readiness without deleting history",
+    "direct VPS cold LCP target",
+    "actual Apple Safari and VoiceOver unavailable",
+    "full X content review out of scope",
+    "full legacy CSS/copy review beyond changed flows"
+  ],
+  "followupAutomation": {
+    "id": "coin-desk",
+    "updateSucceeded": false,
+    "reason": "app reports automation does not exist; possible user deletion; not recreated"
+  },
+  "firstFullDayReviewNotBefore": "2026-10-04T01:00:00Z",
+  "strict48hNotBefore": "2026-10-04T20:50:00Z"
+}

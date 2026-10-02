@@ -1,0 +1,17 @@
+{
+  "checkedAt": 1790974910,
+  "previousImage": "coin-desk:vps-5958087093f1d3ee",
+  "currentRelease": "vps-f1546991c2aab31a",
+  "mode": "isolated previous-code compatibility rehearsal on online production backup",
+  "previousCodeHealth": {
+    "ok": true,
+    "kind": "process-and-database-only",
+    "release": "vps-5958087093f1d3ee"
+  },
+  "liveDataChanged": false,
+  "liveRouteChanged": false,
+  "collectorsStarted": false,
+  "network": "none",
+  "databaseRestoreIntegrity": "ok",
+  "fullProductionRollbackPerformed": false
+}

@@ -1,0 +1,28 @@
+{
+  "base": "https://btc-desk.lch68-workers.workers.dev",
+  "calibrationBase": "https://coin-desk.62.171.141.206.sslip.io",
+  "clockOffsetServerMinusBrowserMs": -1337.5,
+  "clockCalibrationSamples": 20,
+  "checkedAt": "2026-10-02T20:29:19.138Z",
+  "viewport": "1280x800",
+  "downlinkMbps": 10,
+  "uplinkMbps": 5,
+  "addedLatencyMs": 0,
+  "cpuThrottle": 1,
+  "browserVersion": "153.0.8010.12",
+  "freshContexts": 5,
+  "sharedBrowserProcess": true,
+  "lcpSamplesMs": [
+    5012,
+    2148,
+    1752,
+    1320,
+    2020
+  ],
+  "lcpP95Ms": 5012,
+  "quotePaintSamples": 21,
+  "receiptToPaintP95Ms": 17.299999982118607,
+  "exchangeReceiptToPaintP95Ms": 1190.5,
+  "clockErrorBoundMs": 194.5,
+  "conservativeEndToEndP95UpperMs": 1385
+}

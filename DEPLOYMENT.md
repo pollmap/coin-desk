@@ -1,6 +1,8 @@
 # Coin Desk VPS 이전과 배포
 
-2026-10-02 KST 기준 **VPS 실행부와 이관·배포 도구를 구현했으며, 실제 서버 전환은 미완료**입니다. 이 실행 환경의 SSH 소켓 연결이 `Permission denied`로 차단됐습니다. 키 인증 실패라고 단정하지 않습니다. Docker도 로컬에 없어 컨테이너 빌드·Compose 실행·Nginx·인증서는 서버에서 확인해야 합니다. 기존 Cloudflare 서비스와 데이터를 변경하지 않았습니다.
+2026-10-03 KST 기준 **VPS 운영 전환 완료**, 하루·엄격한 48시간 검증은 진행 전입니다. [실제 전환 기록](docs/audit-21/live/README.md)을 우선합니다. 과거 네트워크 차단은 해소됐으며 운영 D1 19개 테이블·149,190행을 검증해 이관했습니다. `/srv/services/coin-desk/current`는 `vps-f1546991c2aab31a`, 루프백 포트는 `18420`, HTTPS는 `https://coin-desk.62.171.141.206.sslip.io`입니다. 기존 Pages도 동일 VPS의 읽기 API에 연결합니다.
+
+**이관 후 `npm run deploy`와 `npm run deploy:collectors`를 실행하지 마세요.** 이 명령은 과거 Cloudflare 수집기를 다시 배포합니다. 예전 프로젝트 Cron은 중지했고 VPS 네 수집기가 운영 쓰기를 담당합니다. D1은 최소 30일 보존합니다. 후속 웹 배포는 기존 해시 자산 보존 후 `npm run deploy:pages`, 서버 변경은 검증된 새 VPS 릴리스만 배포합니다. 아래 단계는 재배포 명령 묶음이 아니라 최초 이관 절차와 복구 안내입니다.
 
 ## 유지하는 제품
 
@@ -31,20 +33,21 @@ flowchart LR
 
 ## 격리와 자원
 
-프로젝트 루트는 `/srv/services/coin-desk`, Compose 이름은 `coin-desk`, 네트워크는 `coin-desk-private`입니다. 외부에 DB 포트를 열지 않습니다. API는 호스트 `127.0.0.1`의 검증된 빈 포트에만 바인딩합니다. `18420`은 예시 후보이며 배정 완료가 아닙니다.
+프로젝트 루트는 `/srv/services/coin-desk`, Compose 이름은 `coin-desk`, 네트워크는 `coin-desk-private`입니다. 외부에 DB 포트를 열지 않습니다. API는 소유권을 검증한 `127.0.0.1:18420`에 바인딩합니다.
 
 ```text
 /srv/services/coin-desk/
   releases/vps-<내용해시>/     변경 없는 릴리스 소스
   shared/data/                coin-desk.sqlite와 백업 상태
   shared/secrets/             릴리스별 env, 디렉터리 700·파일 600
-  shared/acme/                인증서 챌린지
   backups/                    검증된 DB 스냅샷
   audit/                      비공개 운영·전환 증거
   current -> releases/...     검증 이후에만 승격
 ```
 
-컨테이너는 UID 10001, 읽기 전용 루트, 권한 제거, 임시 공간 제한, 로그 10 MiB×3, `restart: unless-stopped`를 사용합니다. API 1 CPU/768 MiB, 각 수집 0.25 CPU/384 MiB, 백업 0.25 CPU/512 MiB를 제안합니다. 배포 전 **실제 여유 메모리 3 GiB·디스크 8 GiB 이상**을 요구하며 부족하면 설치를 중단합니다. 이는 아직 서버에서 측정한 값이 아닙니다. Node 이미지는 `24.18.0-bookworm-slim` 태그를 고정했으며 서버에서 실제 pull/build 성공과 이미지 digest를 기록해야 합니다.
+ACME 공개 챌린지는 `/var/www/coin-desk-acme`에 분리했습니다. 서비스 루트 접근 권한을 넓히지 않습니다. Nginx·라우팅·코드 롤백 중 전역 Nginx를 변경할 때는 `flock -w 30 /srv/platform/nginx-edit.lock`으로 해당 작업을 직렬화합니다.
+
+컨테이너는 UID 10001, 읽기 전용 루트, 권한 제거, 임시 공간 제한, 로그 10 MiB×3, `restart: unless-stopped`를 사용합니다. API 1 CPU/768 MiB, 각 수집 0.25 CPU/384 MiB, 백업 0.25 CPU/512 MiB를 제안합니다. 배포 전 **실제 여유 메모리 3 GiB·디스크 8 GiB 이상**을 요구하며 부족하면 설치를 중단합니다. 실제 사전 검사에서 여유 자원을 확인했습니다. Node 이미지는 `24.18.0-bookworm-slim` 태그를 고정했으며 서버 Docker 빌드와 실행을 검증했습니다.
 
 `/srv/hannun`, `/opt/codex-gateway`, `/opt/llama.cpp`, 기존 포트·Nginx·DB·플랫폼 timer를 보존합니다. 삭제된 `/srv/mirae`를 복원하지 않습니다. 전역 Docker prune나 다른 Compose 프로젝트의 down을 실행하지 않습니다.
 
@@ -72,7 +75,7 @@ npm run package:vps
 
    검증 보고서는 새 DB 옆 `coin-desk.import.json`입니다. 신규 DB와 보고서를 프로젝트 `shared/data`에 설치하고 원본 export는 비공개로 보관합니다. Node 부트스트랩에서 import 검증 없이 기존 DB에 마이그레이션을 재적용하지 않습니다.
 4. 내용을 검증한 릴리스 압축을 **새** `releases/vps-<해시>` 폴더에 풀고 그 폴더에서 `bash deploy/vps/stage.sh <빈 포트>`를 실행합니다. 소스 체크섬→기존 서비스 기준선→Docker 빌드→추가형 마이그레이션→읽기 전용 API·백업 검사 순서입니다. 수집 프로파일과 `current` 승격은 아직 꺼져 있습니다. 이 단계의 shadow 검사는 정지된 수집에 따른 `/health` 503을 그대로 기록하며 원천 정상이라고 판정하지 않습니다. 활성화 이후 검사는 이 예외 없이 health 200을 요구합니다.
-5. 소유한 호스트 또는 DNS를 확인한 sslip.io 호스트를 지정합니다. 아직 호스트를 배정하지 않았습니다. 기존 Certbot·갱신 timer를 확인한 뒤 `bash deploy/vps/https.sh <검증된 호스트> <포트>`를 실행합니다. DNS가 승인된 VPS로 향하는지 확인하고 다른 사이트의 호스트 소유권을 검사합니다. 새 Coin Desk 설정만 작성하며 기존 설정을 백업하고 `nginx -t` 후 reload합니다. 인증서 발급 실패 때 해당 새 라우트를 복구합니다. 자체 서명 인증서나 `--insecure`로 통과시키지 않습니다. HTTPS와 갱신 예약도 실제로 검증합니다.
+5. 소유한 호스트 또는 DNS를 확인한 sslip.io 호스트를 지정합니다. 현재 운영 호스트는 coin-desk.62.171.141.206.sslip.io입니다. 기존 Certbot·갱신 timer를 확인한 뒤 `bash deploy/vps/https.sh <검증된 호스트> <포트>`를 실행합니다. DNS가 승인된 VPS로 향하는지 확인하고 다른 사이트의 호스트 소유권을 검사합니다. 새 Coin Desk 설정만 작성하며 기존 설정을 백업하고 `nginx -t` 후 reload합니다. 인증서 발급 실패 때 해당 새 라우트를 복구합니다. 자체 서명 인증서나 `--insecure`로 통과시키지 않습니다. HTTPS와 갱신 예약도 실제로 검증합니다.
 6. 공개 주소의 읽기 API·BTC MVRV 실제 이력·여덟 코인·데이터 단위와 백업을 검사합니다. stage는 DB 쓰기 없이 8개 원천의 제한된 접근 검사를 수행하며 실패하면 중단합니다. 이것은 103개 원천의 전체 정상 검사가 아닙니다. 운영 원천 접근성이 아직 확인되지 않은 상태에서 Cloudflare 수집을 끄지 않습니다.
 7. 전환 때 기존 `btc-desk` main과 `btc-desk-quotes`의 예약 및 **overview 수동 갱신**까지 모두 동결합니다. 실행 중 수집이 끝났는지 확인하고 마지막 전체 D1 export를 다시 대조합니다. 배경·분석 Worker의 서비스 호출도 멈춘 상태인지 확인합니다. 다른 프로젝트 Cron을 변경하지 않습니다. 필요하면 잠깐 읽기 전용 전환 안내를 표시합니다.
 8. VPS 프로젝트 컨테이너를 정지한 동안 **최종 검증 DB**를 설치합니다. 기존 스냅샷은 프로젝트 백업에 보존하며 라이브 DB 파일을 실행 중 덮어쓰지 않습니다. 원장·스키마·행 수·내용 해시·예산과 커서를 최종 대조합니다. 예산/커서 키가 원래 없으면 유실로 표시하지 않습니다.
@@ -99,7 +102,7 @@ npm run package:vps
 
 SQLite 온라인 백업과 Node 내장 SQLite를 사용합니다. [SQLite 공식 백업 API](https://sqlite.org/backup.html) · [Node 24 SQLite](https://nodejs.org/docs/latest-v24.x/api/sqlite.html) · [Compose 준비 상태와 의존 순서](https://docs.docker.com/compose/how-tos/startup-order/).
 
-최신 검사와 실제 연결 한계는 [VPS 검증 기록](docs/audit-vps/README.md)에 보관합니다. 로컬 코드 검사, Docker 실행, 운영 데이터 이전, HTTPS 전환, 하루 안정성을 각각 구분합니다.
+최신 검사는 [실제 운영 기록](docs/audit-21/live/README.md), 이전 단계는 [VPS 검증 기록](docs/audit-vps/README.md)에 보관합니다. 로컬 코드 검사, Docker 실행, 운영 데이터 이전, HTTPS 전환, 하루 안정성을 각각 구분합니다.
 
 
 ## 0.21 시장·실시간 가격 추가
@@ -108,9 +111,9 @@ SQLite 온라인 백업과 Node 내장 SQLite를 사용합니다. [SQLite 공식
 
 새 릴리스의 `/assets` 파일은 `/srv/services/coin-desk/shared/assets`에도 복사합니다. 현재 빌드에 없는 예전 해시 파일은 API가 이 읽기 전용 디렉터리에서 찾아 응답합니다. 충돌·경로 이탈을 거부하고 배포 시 예전 파일을 삭제하지 않습니다. 용량은 운영 디스크 관측에 포함합니다.
 
-`COIN_DESK_PUBLIC_ORIGIN`은 실제 HTTPS 호스트로 설정합니다. 기본 후보는 `https://coin-desk.62.171.141.206.sslip.io`이며 인증서 발급 성공을 뜻하지 않습니다. API는 이 고정 설정으로 HTML의 공개 주소 메타데이터를 맞추고 요청 Host 값을 신뢰해 생성하지 않습니다. 추가 시세 프로세스를 포함해 사전 자원 검사는 가용 메모리 3.5GiB를 요구합니다.
+`COIN_DESK_PUBLIC_ORIGIN`은 실제 HTTPS 호스트로 설정합니다. 현재 값은 `https://coin-desk.62.171.141.206.sslip.io`이며 인증서 발급과 갱신 모의 실행을 확인했습니다. API는 이 고정 설정으로 HTML의 공개 주소 메타데이터를 맞추고 요청 Host 값을 신뢰해 생성하지 않습니다. 추가 시세 프로세스를 포함해 사전 자원 검사는 가용 메모리 3.5GiB를 요구합니다.
 
-[0.21 감사 기록](docs/audit-21/README.md). 이 작업 환경에는 Docker CLI가 없고 SSH/GitHub 연결이 제한되어 실제 컨테이너·운영 이관·HTTPS 검사를 수행하지 못했습니다.
+[0.21 감사 기록](docs/audit-21/README.md). 로컬 Docker 대신 VPS에서 실제 컨테이너·운영 이관·HTTPS를 검증했습니다. 최초 네트워크 차단 기록은 과거 이력입니다.
 
 ## 로컬에서 수집까지 연결하기
 
