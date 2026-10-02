@@ -240,7 +240,14 @@ export function MarketHome() {
         <h2>관심 코인</h2>
         {!starred.length && (
           <div className="market-empty">
-            <img src="/brand/coin-desk-shiba-smile.png" alt="" width="64" height="64" />
+            <img
+              fetchPriority="low"
+              decoding="async"
+              src="/brand/coin-desk-shiba-smile.png"
+              alt=""
+              width="64"
+              height="64"
+            />
             <p>별을 눌러 자주 보는 코인을 모아보세요.</p>
           </div>
         )}

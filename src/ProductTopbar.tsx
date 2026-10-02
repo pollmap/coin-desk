@@ -80,7 +80,14 @@ export function ProductTopbar() {
   return (
     <>
       <Link to="/" className="product-brand" aria-label="Coin Desk 시장 홈">
-        <img src="/brand/coin-desk-shiba-smile.png" width="34" height="34" alt="" />
+        <img
+          fetchPriority="low"
+          decoding="async"
+          src="/brand/coin-desk-shiba-smile.png"
+          width="34"
+          height="34"
+          alt=""
+        />
         <b>Coin Desk</b>
       </Link>
       <nav className="product-nav" aria-label="주요 화면">
