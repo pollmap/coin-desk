@@ -3,7 +3,13 @@ import { dateLabel } from './lib';
 
 interface RuntimeReport {
   kind: 'vps';
-  scheduler: { lane: string; healthy: boolean; reason: string | null; completed_at?: number }[];
+  scheduler: {
+    lane: string;
+    healthy: boolean;
+    reason: string | null;
+    completed_at?: number;
+    last_success?: number;
+  }[];
   backup: { ok: boolean; verified?: boolean; lastCompletedAt?: number };
 }
 const names: Record<string, string> = {
@@ -51,11 +57,13 @@ export function RuntimeStatus() {
                   <dd>
                     <span className={record?.healthy ? 'server-ok' : 'amber'}>
                       {record?.healthy
-                        ? '최근 실행 완료'
+                        ? record.reason === 'running'
+                          ? '갱신 중 · 최근 실행 정상'
+                          : '최근 실행 완료'
                         : (reasons[record?.reason ?? ''] ?? '실행 확인 필요')}
                     </span>
                     <br />
-                    {dateLabel(record?.completed_at, true)}
+                    {dateLabel(record?.last_success ?? record?.completed_at, true)}
                   </dd>
                 </div>
               );

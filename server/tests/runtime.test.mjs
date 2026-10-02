@@ -6,6 +6,28 @@ import { join } from 'node:path';
 import { openSqlite, migrate } from '../sqlite.mjs';
 import { MinuteRunner, schedulerState } from '../runtime.mjs';
 
+test('A normal minute refresh preserves recent success without hiding failures or stuck jobs', () => {
+  const db = openSqlite(':memory:');
+  try {
+    migrate(db);
+    const insert = db.sqlite.prepare('INSERT INTO _coin_desk_runtime_runs VALUES(?,?,?,?,?,?)');
+    insert.run('quotes', 1, 60, 60, 65, 'ok');
+    insert.run('quotes', 2, 120, 120, null, 'running');
+    const state = (now) => schedulerState(db, now).find((r) => r.lane === 'quotes');
+    assert.equal(state(122).healthy, true);
+    assert.equal(state(122).reason, 'running');
+    assert.equal(state(122).last_success, 65);
+    assert.equal(state(246).healthy, false);
+    insert.run('quotes', 3, 180, 180, 181, 'error');
+    assert.equal(state(181).healthy, false);
+    assert.equal(state(181).reason, 'error');
+    insert.run('recent', 2, 120, 120, null, 'running');
+    assert.equal(schedulerState(db, 122).find((r) => r.lane === 'recent').healthy, false);
+  } finally {
+    db.sqlite.close();
+  }
+});
+
 test('SQLite batch is atomic, validates ownership, and read-only connections reject writes', async () => {
   const folder = mkdtempSync(join(tmpdir(), 'coin-sql-'));
   const db = openSqlite(join(folder, 'test.sqlite')),

@@ -87,9 +87,18 @@ export function schedulerState(database, now = Math.floor(Date.now() / 1000)) {
         'SELECT scheduled_at,started_at,completed_at,outcome FROM _coin_desk_runtime_runs WHERE lane=? ORDER BY scheduled_at DESC LIMIT 1',
       )
       .get(lane);
+    const lastSuccess = database.sqlite
+      .prepare(
+        "SELECT MAX(completed_at) AS at FROM _coin_desk_runtime_runs WHERE lane=? AND outcome='ok'",
+      )
+      .get(lane).at;
+    const recentSuccess = lastSuccess !== null && now >= lastSuccess && now - lastSuccess <= 180;
+    const runningNormally =
+      row?.outcome === 'running' && now >= row.started_at && now - row.started_at <= 180;
     return {
       lane,
       ...row,
+      last_success: lastSuccess,
       reason: !row
         ? 'not_started'
         : row.outcome !== 'ok'
@@ -97,11 +106,7 @@ export function schedulerState(database, now = Math.floor(Date.now() / 1000)) {
           : now - row.completed_at > 180
             ? 'execution_delayed'
             : null,
-      healthy:
-        !!row &&
-        row.outcome === 'ok' &&
-        now - row.completed_at >= 0 &&
-        now - row.completed_at <= 180,
+      healthy: !!row && (row.outcome === 'ok' || runningNormally) && recentSuccess,
     };
   });
 }
