@@ -49,12 +49,17 @@ export default {
             accept: stream ? 'text/event-stream' : 'application/json',
             'user-agent': 'Coin-Desk-owned-origin-bridge/1.0',
           },
-          redirect: 'error',
+          // workerd supports follow/manual only. Never follow an upstream redirect.
+          redirect: 'manual',
           signal: stream ? controller.signal : AbortSignal.timeout(15000),
         });
       } finally {
         // A response-header deadline must not truncate a healthy, long-lived SSE body.
         clearTimeout(deadline);
+      }
+      if (response.status >= 300 && response.status < 400) {
+        await response.body?.cancel();
+        return unavailable();
       }
       const headers = new Headers(response.headers);
       headers.delete('set-cookie');
