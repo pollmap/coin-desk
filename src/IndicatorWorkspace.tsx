@@ -44,6 +44,7 @@ import { IndicatorNavigation } from './IndicatorNavigation';
 import { dateLabel, save, saved, money } from './lib';
 import { SpotQuote } from './SpotQuote';
 import { IndicatorShortcuts } from './IndicatorShortcuts';
+import { RelativeControls } from './RelativeControls';
 import './analysis-workspace.css';
 import './analysis-library.css';
 import './indicator-workspace.css';
@@ -613,6 +614,7 @@ export function IndicatorWorkspace() {
                 setRevision((r) => r + 1);
               }}
             />
+            {isRelative && <RelativeControls asset={asset} params={context} change={change} />}
             <label className="price-toggle">
               <input
                 type="checkbox"
@@ -654,6 +656,7 @@ export function IndicatorWorkspace() {
               {lab && dailyPoints.length ? (
                 <Suspense fallback={<p role="status">분석 도구를 여는 중…</p>}>
                   <AnalysisLab
+                    controlsInToolbar={isRelative}
                     view={view}
                     asset={asset}
                     basis={basis}

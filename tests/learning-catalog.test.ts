@@ -106,3 +106,18 @@ it('preserves supported pattern choices in local workspace save, restore and pub
   expect(href).not.toContain('secret');
   expect(validAnalysisOption('patterns', 'unknown')).toBe(false);
 });
+
+it('keeps the explicit comparison through the guide without private context', () => {
+  const params = new URLSearchParams(
+    'asset=ONDO&metric=view:relative&benchmark_asset=LINK&normalization=ratio&correlation=365&price_source=binance&period=1y&memo=private',
+  );
+  const guide = new URL(guideHref('relative', params), 'https://example.com');
+  const back = new URL(
+    guideChartLink(guideArticle('relative')!, 'ONDO', 'binance', guide.searchParams)!,
+    'https://example.com',
+  );
+  expect(back.searchParams.get('benchmark_asset')).toBe('LINK');
+  expect(back.searchParams.get('normalization')).toBe('ratio');
+  expect(back.searchParams.get('correlation')).toBe('365');
+  expect(back.searchParams.has('memo')).toBe(false);
+});

@@ -113,7 +113,9 @@ export default function App() {
     ':' +
     (location.pathname === '/learn' || location.pathname.startsWith('/learn/')
       ? ''
-      : new URLSearchParams(location.search).get('asset') || '');
+      : location.pathname.match(/^\/coins\/([^/]+)$/)?.[1] ||
+        new URLSearchParams(location.search).get('asset') ||
+        '');
   const previousPage = useRef(pageKey);
   useEffect(() => {
     const frame = requestAnimationFrame(() => {

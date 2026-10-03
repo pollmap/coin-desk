@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react';
-import { ASSETS } from '../shared/catalog';
+import { RelativeControls } from './RelativeControls';
 import { supportsReference } from '../shared/indicator-catalog';
 import { relativePair } from '../shared/relative-pair';
 import { useData } from './hooks';
@@ -401,6 +401,7 @@ function RelativeView({
   change,
   period,
   initialWindow,
+  controlsInToolbar = false,
 }: {
   asset: Asset;
   basis: PriceBasis;
@@ -408,6 +409,7 @@ function RelativeView({
   change: (p: Record<string, string | null>) => void;
   period: Period;
   initialWindow?: DateWindow | null;
+  controlsInToolbar?: boolean;
 }) {
   const pair = relativePair(asset, params);
   const supported =
@@ -456,7 +458,7 @@ function RelativeView({
         : []),
       {
         id: 'correlation',
-        title: `${pair.asset}/${pair.benchmark} ${window}일 수익률 상관`,
+        title: `${pair.asset}/${pair.benchmark} ${window}일 상관`,
         unit: 'r',
         source: basisName(basis),
         data: corr,
@@ -474,48 +476,7 @@ function RelativeView({
       data-relative-asset={pair.asset}
       data-relative-benchmark={pair.benchmark}
     >
-      <div className="lab-controls">
-        <label>
-          비교 코인
-          <select
-            aria-label="비교 코인"
-            value={pair.benchmark}
-            onChange={(e) => change({ benchmark_asset: e.target.value, correlation_asset: null })}
-          >
-            {ASSETS.filter((a) => a.id !== pair.asset).map((a) => (
-              <option key={a.id} value={a.id}>
-                {a.name} · {a.id}
-              </option>
-            ))}
-          </select>
-        </label>
-        <label>
-          비교 기준
-          <select
-            aria-label="비교 기준"
-            value={mode}
-            onChange={(e) => change({ normalization: e.target.value })}
-          >
-            <option value="index">시작값 100</option>
-            <option value="percent">% 변화</option>
-            <option value="ratio">가격 비율</option>
-          </select>
-        </label>
-        <label>
-          상관 기간
-          <select
-            aria-label="상관 기간"
-            value={window}
-            onChange={(e) => change({ correlation: e.target.value })}
-          >
-            {[30, 90, 365].map((n) => (
-              <option key={n} value={n}>
-                {n}일
-              </option>
-            ))}
-          </select>
-        </label>
-      </div>
+      {!controlsInToolbar && <RelativeControls asset={asset} params={params} change={change} />}
       {!supported ? (
         <p role="status">
           {pair.asset}·{pair.benchmark}의 공통 USD 참조 원천이 없습니다. 더보기에서 공통 거래소
@@ -535,11 +496,6 @@ function RelativeView({
         </p>
       ) : aligned[1]?.data.length ? (
         <>
-          {mode === 'ratio' && (
-            <p className="relative-ratio-label">
-              1 {pair.asset}의 가격을 {pair.benchmark} 수량으로 표시합니다.
-            </p>
-          )}
           <AnalysisChart
             asset={pair.asset}
             exportName={`${pair.asset}-${pair.benchmark}-${mode}`}
@@ -562,6 +518,11 @@ function RelativeView({
             onSignal={() => {}}
             initialWindow={initialWindow}
           />
+          {mode === 'ratio' && (
+            <p className="relative-ratio-label">
+              1 {pair.asset}의 가격을 {pair.benchmark} 수량으로 표시합니다.
+            </p>
+          )}
           {!corr.length && (
             <p className="muted">
               {window}일 상관에는 연속 {window + 1}개 공통 일별 종가와 변동이 필요합니다.
@@ -596,6 +557,7 @@ export function AnalysisLab({
   change,
   period,
   initialWindow,
+  controlsInToolbar = false,
 }: {
   view: AnalysisView;
   points: Point[];
@@ -605,6 +567,7 @@ export function AnalysisLab({
   change: (p: Record<string, string | null>) => void;
   period: Period;
   initialWindow?: DateWindow | null;
+  controlsInToolbar?: boolean;
 }) {
   const scoped = useMemo(
     () => (initialWindow ? points.filter((p) => p.time <= initialWindow.to) : points),
@@ -633,6 +596,7 @@ export function AnalysisLab({
     );
   return (
     <RelativeView
+      controlsInToolbar={controlsInToolbar}
       asset={asset}
       basis={basis}
       params={params}

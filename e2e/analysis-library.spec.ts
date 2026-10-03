@@ -167,6 +167,7 @@ test('analysis recipes replace the main chart with calculated views', async ({ p
     .getByRole('navigation', { name: '지표 목록', exact: true })
     .getByRole('link', { name: '상대강도·상관 가격', exact: true })
     .click();
+  await page.getByLabel('비교 설정', { exact: true }).click();
   await expect(page.getByLabel('비교 기준', { exact: true })).toBeVisible();
   await expect(chart(page)).toBeVisible();
   await page.getByLabel('비교 기준', { exact: true }).selectOption('ratio');
