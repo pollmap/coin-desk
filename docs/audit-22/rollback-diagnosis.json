@@ -1,0 +1,169 @@
+{
+  "at": "2026-10-03T15:06:54.597739+00:00",
+  "checks": [
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "/healthz",
+      "status": 200,
+      "ok": true,
+      "reasons": null,
+      "coverage": null,
+      "release": "vps-f36ec8c1b4e11fcd"
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "/api/v1/runtime",
+      "status": 200,
+      "ok": null,
+      "reasons": null,
+      "coverage": null,
+      "release": "vps-f36ec8c1b4e11fcd"
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "/api/v1/status",
+      "status": 200,
+      "ok": null,
+      "reasons": null,
+      "coverage": {
+        "expectedSources": 103,
+        "healthySources": 103,
+        "priceMarkets": 16,
+        "histories": 32
+      },
+      "release": null
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "/api/v1/health",
+      "status": 200,
+      "ok": true,
+      "reasons": [],
+      "coverage": {
+        "expectedSources": 103,
+        "healthySources": 103,
+        "priceMarkets": 16,
+        "histories": 32
+      },
+      "release": null
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "/api/v1/signals",
+      "status": 200,
+      "ok": null,
+      "reasons": null,
+      "coverage": null,
+      "release": null
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "/api/v1/briefings",
+      "status": 200,
+      "ok": null,
+      "reasons": null,
+      "coverage": null,
+      "release": null
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "/api/v1/market-derivatives",
+      "status": 200,
+      "ok": null,
+      "reasons": null,
+      "coverage": null,
+      "release": null
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "/api/v1/chain-context?asset=ETH&metric=tvl",
+      "status": 200,
+      "ok": null,
+      "reasons": null,
+      "coverage": null,
+      "release": null
+    },
+    {
+      "base": "http://127.0.0.1:18421",
+      "path": "/healthz",
+      "status": 200,
+      "ok": true,
+      "reasons": null,
+      "coverage": null,
+      "release": "vps-9435cadabaa44937"
+    },
+    {
+      "base": "http://127.0.0.1:18421",
+      "path": "/api/v1/runtime",
+      "status": 200,
+      "ok": null,
+      "reasons": null,
+      "coverage": null,
+      "release": "vps-9435cadabaa44937"
+    },
+    {
+      "base": "http://127.0.0.1:18421",
+      "path": "/api/v1/status",
+      "status": 200,
+      "ok": null,
+      "reasons": null,
+      "coverage": {
+        "expectedSources": 103,
+        "healthySources": 103,
+        "priceMarkets": 16,
+        "histories": 32
+      },
+      "release": null
+    },
+    {
+      "base": "http://127.0.0.1:18421",
+      "path": "/api/v1/health",
+      "status": 200,
+      "ok": true,
+      "reasons": [],
+      "coverage": {
+        "expectedSources": 103,
+        "healthySources": 103,
+        "priceMarkets": 16,
+        "histories": 32
+      },
+      "release": null
+    },
+    {
+      "base": "http://127.0.0.1:18421",
+      "path": "/api/v1/signals",
+      "status": 200,
+      "ok": null,
+      "reasons": null,
+      "coverage": null,
+      "release": null
+    },
+    {
+      "base": "http://127.0.0.1:18421",
+      "path": "/api/v1/briefings",
+      "status": 200,
+      "ok": null,
+      "reasons": null,
+      "coverage": null,
+      "release": null
+    },
+    {
+      "base": "http://127.0.0.1:18421",
+      "path": "/api/v1/market-derivatives",
+      "status": 200,
+      "ok": null,
+      "reasons": null,
+      "coverage": null,
+      "release": null
+    },
+    {
+      "base": "http://127.0.0.1:18421",
+      "path": "/api/v1/chain-context?asset=ETH&metric=tvl",
+      "status": 200,
+      "ok": null,
+      "reasons": null,
+      "coverage": null,
+      "release": null
+    }
+  ]
+}

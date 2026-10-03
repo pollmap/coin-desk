@@ -1,0 +1,28 @@
+{
+  "checkedAt": "2026-10-03T15:09:04.682Z",
+  "base": "https://coin-desk.62.171.141.206.sslip.io",
+  "asset": "/assets/index-BAXHNn6E.js",
+  "encodings": [
+    {
+      "encoding": "identity",
+      "bytes": 381591,
+      "sha256": "d969570418a1939a8e218caeba286aeae9b5f46397aa9edd1672cb8451ed08fb"
+    },
+    {
+      "encoding": "gzip",
+      "bytes": 125410,
+      "sha256": "d969570418a1939a8e218caeba286aeae9b5f46397aa9edd1672cb8451ed08fb"
+    },
+    {
+      "encoding": "br",
+      "bytes": 118555,
+      "sha256": "d969570418a1939a8e218caeba286aeae9b5f46397aa9edd1672cb8451ed08fb"
+    }
+  ],
+  "dogRevalidation": {
+    "firstBytes": 789844,
+    "status": 304,
+    "bytes": 0
+  },
+  "apiCacheControl": "no-store"
+}

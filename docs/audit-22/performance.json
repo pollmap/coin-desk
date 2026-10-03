@@ -1,0 +1,230 @@
+{
+  "before": {
+    "base": "https://coin-desk.62.171.141.206.sslip.io",
+    "calibrationBase": "https://coin-desk.62.171.141.206.sslip.io",
+    "clockOffsetServerMinusBrowserMs": -874,
+    "clockCalibrationSamples": 20,
+    "checkedAt": "2026-10-03T13:02:29.021Z",
+    "viewport": "1280x800",
+    "downlinkMbps": 10,
+    "uplinkMbps": 5,
+    "addedLatencyMs": 0,
+    "cpuThrottle": 1,
+    "browserVersion": "153.0.8010.12",
+    "freshContexts": 5,
+    "sharedBrowserProcess": true,
+    "lcpSamplesMs": [
+      5344,
+      2204,
+      2224,
+      2440,
+      2176
+    ],
+    "lcpP95Ms": 5344,
+    "quotePaintSamples": 16,
+    "receiptToPaintP95Ms": 30.899999976158142,
+    "exchangeReceiptToPaintP95Ms": 2969,
+    "clockErrorBoundMs": 229,
+    "conservativeEndToEndP95UpperMs": 3198
+  },
+  "before-pages": {
+    "base": "https://coin-desk.pages.dev",
+    "calibrationBase": "https://coin-desk.62.171.141.206.sslip.io",
+    "clockOffsetServerMinusBrowserMs": -939,
+    "clockCalibrationSamples": 20,
+    "checkedAt": "2026-10-03T13:04:29.097Z",
+    "viewport": "1280x800",
+    "downlinkMbps": 10,
+    "uplinkMbps": 5,
+    "addedLatencyMs": 0,
+    "cpuThrottle": 1,
+    "browserVersion": "153.0.8010.12",
+    "freshContexts": 5,
+    "sharedBrowserProcess": true,
+    "lcpSamplesMs": [
+      496,
+      324,
+      440,
+      356,
+      348
+    ],
+    "lcpP95Ms": 496,
+    "quotePaintSamples": 28,
+    "receiptToPaintP95Ms": 17,
+    "exchangeReceiptToPaintP95Ms": 1030,
+    "clockErrorBoundMs": 188,
+    "conservativeEndToEndP95UpperMs": 1218
+  },
+  "after": {
+    "base": "https://coin-desk.62.171.141.206.sslip.io",
+    "calibrationBase": "https://coin-desk.62.171.141.206.sslip.io",
+    "clockOffsetServerMinusBrowserMs": -946.5,
+    "clockCalibrationSamples": 20,
+    "checkedAt": "2026-10-03T13:34:37.074Z",
+    "viewport": "1280x800",
+    "downlinkMbps": 10,
+    "uplinkMbps": 5,
+    "addedLatencyMs": 0,
+    "cpuThrottle": 1,
+    "browserVersion": "153.0.8010.12",
+    "freshContexts": 5,
+    "sharedBrowserProcess": true,
+    "lcpSamplesMs": [
+      5036,
+      2392,
+      2276,
+      2220,
+      3988
+    ],
+    "lcpP95Ms": 5036,
+    "quotePaintSamples": 15,
+    "receiptToPaintP95Ms": 20.19999998807907,
+    "exchangeReceiptToPaintP95Ms": 1731.5,
+    "clockErrorBoundMs": 220.5,
+    "conservativeEndToEndP95UpperMs": 1952
+  },
+  "after-pages": {
+    "base": "https://coin-desk.pages.dev",
+    "calibrationBase": "https://coin-desk.62.171.141.206.sslip.io",
+    "clockOffsetServerMinusBrowserMs": -928.5,
+    "clockCalibrationSamples": 20,
+    "checkedAt": "2026-10-03T13:35:53.384Z",
+    "viewport": "1280x800",
+    "downlinkMbps": 10,
+    "uplinkMbps": 5,
+    "addedLatencyMs": 0,
+    "cpuThrottle": 1,
+    "browserVersion": "153.0.8010.12",
+    "freshContexts": 5,
+    "sharedBrowserProcess": true,
+    "lcpSamplesMs": [
+      1452,
+      1120,
+      628,
+      952,
+      560
+    ],
+    "lcpP95Ms": 1452,
+    "quotePaintSamples": 21,
+    "receiptToPaintP95Ms": 16.5,
+    "exchangeReceiptToPaintP95Ms": 1047.5,
+    "clockErrorBoundMs": 243.5,
+    "conservativeEndToEndP95UpperMs": 1291
+  },
+  "alternatingAB": {
+    "checkedAt": "2026-10-03T13:47:22.904Z",
+    "browser": "153.0.8010.12",
+    "conditions": {
+      "viewport": "1280x800",
+      "downMbps": 10,
+      "upMbps": 5,
+      "latencyMs": 0,
+      "cpuThrottle": 1,
+      "freshContexts": true,
+      "order": "alternating counterbalanced",
+      "samplesPerRelease": 5
+    },
+    "old": {
+      "url": "https://e13e0d55.coin-desk.pages.dev",
+      "lcpSamplesMs": [
+        840,
+        376,
+        528,
+        492,
+        572
+      ],
+      "medianMs": 528,
+      "maximumMs": 840,
+      "longTaskTotalMs": [
+        159,
+        76,
+        0,
+        0,
+        0
+      ]
+    },
+    "new": {
+      "url": "https://coin-desk.pages.dev",
+      "lcpSamplesMs": [
+        484,
+        436,
+        540,
+        396,
+        524
+      ],
+      "medianMs": 484,
+      "maximumMs": 540,
+      "longTaskTotalMs": [
+        0,
+        0,
+        236,
+        0,
+        0
+      ]
+    }
+  },
+  "limits": [
+    "Five samples per release are not a field percentile or SLA.",
+    "Initial sequential Pages samples worsened; alternating repeated comparison did not reproduce that regression. All earlier results retained.",
+    "VPS cold navigation still includes long-haul network latency; not a claim that every direct VPS visit is under 2.5 seconds."
+  ],
+  "finalInterleaved": {
+    "conditions": {
+      "viewport": "1280x800",
+      "downMbps": 10,
+      "upMbps": 5,
+      "latencyMs": 0,
+      "cpuThrottle": 1,
+      "freshContexts": true,
+      "order": "alternating counterbalanced",
+      "samplesPerRelease": 5
+    },
+    "browser": "153.0.8010.12",
+    "checkedAt": "2026-10-03T15:14:47.466Z",
+    "samples": {
+      "old": [
+        996,
+        444,
+        476,
+        556,
+        448
+      ],
+      "new": [
+        464,
+        440,
+        504,
+        376,
+        452
+      ]
+    }
+  },
+  "finalPages": {
+    "base": "https://coin-desk.pages.dev",
+    "calibrationBase": "https://coin-desk.62.171.141.206.sslip.io",
+    "clockOffsetServerMinusBrowserMs": -1130,
+    "clockCalibrationSamples": 20,
+    "checkedAt": "2026-10-03T15:15:56.592Z",
+    "viewport": "1280x800",
+    "downlinkMbps": 10,
+    "uplinkMbps": 5,
+    "addedLatencyMs": 0,
+    "cpuThrottle": 1,
+    "browserVersion": "153.0.8010.12",
+    "freshContexts": 5,
+    "sharedBrowserProcess": true,
+    "lcpSamplesMs": [
+      472,
+      344,
+      492,
+      364,
+      460
+    ],
+    "lcpP95Ms": 492,
+    "quotePaintSamples": 9,
+    "receiptToPaintP95Ms": 11.800000011920929,
+    "exchangeReceiptToPaintP95Ms": 908,
+    "clockErrorBoundMs": 193,
+    "conservativeEndToEndP95UpperMs": 1101
+  },
+  "interpretation": "Five fresh contexts per release are a controlled sample, not a field SLA. No regression reproduced in counterbalanced interleaved comparison. Direct VPS cold-load samples previously exceeded 2.5s; this is not claimed fixed for every network."
+}

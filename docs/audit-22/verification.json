@@ -1,0 +1,107 @@
+{
+  "release": "0.22.0",
+  "brand": "보리차트",
+  "mascot": "보리",
+  "codeStatus": "implemented",
+  "finalPullRequest": 47,
+  "finalCi": {
+    "run": 37131077091,
+    "status": "success",
+    "head": "4f331aba59cb37691c4dff62636c8e4d0cd2b843",
+    "unit": 495,
+    "serverNode": 17,
+    "serverPython": 15,
+    "recovery": 2,
+    "browserPassed": 156,
+    "privateOptInSkipped": 2,
+    "retries": 0
+  },
+  "local": {
+    "unit": 495,
+    "webkitFocusedRepeat": {
+      "passed": 10,
+      "retries": 0
+    },
+    "candidateRealDataFlow": "passed on final candidate",
+    "finalWebkitFlows": 5
+  },
+  "previousCi": [
+    {
+      "run": 37125365261,
+      "result": "success",
+      "unit": 493,
+      "browserPassed": 154,
+      "privateOptInSkipped": 2
+    },
+    {
+      "run": 37126106449,
+      "result": "failure",
+      "attempts": 2,
+      "details": "Initial request waits; save/undo destination race corrected. Request-wait cause unconfirmed."
+    },
+    {
+      "run": 37129204173,
+      "result": "failure",
+      "browserPassed": 155,
+      "browserFailed": 1,
+      "privateOptInSkipped": 2,
+      "details": "Linux WebKit paged request had no response headers. Fixture HTTP/1 reuse isolated; production protocol unchanged."
+    },
+    {
+      "run": 37128646794,
+      "result": "cancelled",
+      "details": "Superseded by mobile readability commit."
+    },
+    {
+      "run": 37130073210,
+      "result": "failure",
+      "browserPassed": 153,
+      "browserFailed": 3,
+      "privateOptInSkipped": 2,
+      "details": "Two WebKit request waits and 768px legend top 241px. Connection-close experiment reverted; request remount reuse and legend spacing corrected."
+    }
+  ],
+  "calculationAudit": {
+    "exposedDefinitions": 48,
+    "independentChecks": [
+      "ratio",
+      "rebased performance",
+      "return correlation",
+      "history band",
+      "past-only regression"
+    ],
+    "providerLedgerIndependentlyRecomputed": false
+  },
+  "fortyEightHourGateRequired": false,
+  "externalUnverified": [
+    "Apple Safari and VoiceOver on physical device",
+    "Human user acceptance trial",
+    "Trademark registration and new domain availability"
+  ],
+  "privateDataPublished": false,
+  "codeCommit": "ed6642dbe820e0a7863bd4669ac3b6615466df2e",
+  "mainCi": {
+    "run": 37131949318,
+    "status": "success",
+    "head": "ed6642dbe820e0a7863bd4669ac3b6615466df2e",
+    "unit": 495,
+    "serverNode": 17,
+    "serverPython": 15,
+    "recovery": 2,
+    "browserPassed": 156,
+    "privateOptInSkipped": 2,
+    "retries": 0
+  },
+  "liveUi": {
+    "origins": [
+      "https://coin-desk.pages.dev",
+      "https://coin-desk.62.171.141.206.sslip.io"
+    ],
+    "eightAssets": true,
+    "relativePairSaveRestore": true,
+    "unsupportedMvrv": true,
+    "lightDarkAxeViolations": 0,
+    "agentManualBrowserReview": true,
+    "humanUserTrial": false
+  }
+}

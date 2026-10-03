@@ -1,0 +1,50 @@
+{
+  "checkedAt": "2026-10-03T15:17:50.473180+00:00",
+  "scope": "Approved Bori Chart redesign",
+  "code": "complete",
+  "productionDeployment": "complete",
+  "liveDataIntegration": "verified",
+  "codeCommit": "ed6642dbe820e0a7863bd4669ac3b6615466df2e",
+  "pullRequests": [
+    46,
+    47
+  ],
+  "prCi": 37131077091,
+  "mainCi": 37131949318,
+  "apiRelease": "vps-9435cadabaa44937",
+  "pagesDeployment": "https://56f9da0c.coin-desk.pages.dev",
+  "displayBrand": "보리차트",
+  "mascot": "보리",
+  "fortyEightHourGateRequired": false,
+  "knownCalculationTargetOrUnitMixingErrors": [],
+  "intentionalLimits": [
+    "Eight assets; five current MVRV source assets",
+    "No new paid data, exchanges, trade execution or X collection",
+    "Provider-supplied ledgers not independently recomputed",
+    "Relative normalization uses first common observation; zoom does not rebase it",
+    "Local private storage and existing keys/URLs preserved"
+  ],
+  "externalUnverified": [
+    "Apple Safari/VoiceOver physical-device review",
+    "Human user acceptance trial",
+    "Trademark/domain registration availability"
+  ],
+  "observedIncidents": [
+    {
+      "kind": "Initial production promotion",
+      "result": "503 triggered automatic rollback; both old/candidate 16 read checks then all 29 final read APIs succeeded; promoted on second attempt",
+      "cause": "unconfirmed",
+      "firstFailingEndpoint": "not captured"
+    },
+    {
+      "kind": "Earlier Linux WebKit API wait",
+      "result": "Previous failures retained; same-turn request cancellation reduced; final PR and main browser suites passed without retries",
+      "cause": "not all historical waits independently explained"
+    }
+  ],
+  "performanceCaveat": "Controlled five-context samples; not a guarantee for all devices/networks. Direct VPS cold-load latency can exceed 2.5 seconds.",
+  "personalOriginalsPublished": false,
+  "databaseMigratedOrRestored": false,
+  "collectorOrBackupContainersRestarted": false,
+  "evidenceOnlyCommitRequiresRedeploy": false
+}

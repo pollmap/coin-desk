@@ -1,0 +1,128 @@
+{
+  "collectedAt": 1791034327,
+  "observationSeconds": 300,
+  "progress": {
+    "successfulLaneRuns": {
+      "quotes": 5,
+      "background": 5,
+      "recent": 5,
+      "analysis": 5
+    },
+    "sixCoreQuotesAdvanced": true,
+    "derivativeConfirmationsAdvanced": 10,
+    "directCollectionOrOverviewCalled": false,
+    "otherVisitorsAbsentGuaranteed": false
+  },
+  "naturalProgressVerified": true,
+  "health": {
+    "ok": true,
+    "reasons": []
+  },
+  "coverage": {
+    "expectedSources": 103,
+    "healthySources": 103,
+    "priceMarkets": 16,
+    "histories": 32
+  },
+  "apiChecks": {
+    "/healthz": 200,
+    "/api/v1/runtime": 200,
+    "/api/v1/status": 200,
+    "/api/v1/health": 200,
+    "/api/v1/signals": 200,
+    "/api/v1/briefings": 200,
+    "/api/v1/market-derivatives": 200,
+    "/api/v1/chain-context?asset=ETH&metric=tvl": 200,
+    "/api/v1/candles?asset=BTC&market=binance&limit=2": 200,
+    "/api/v1/derivatives?asset=BTC&metric=funding&limit=2": 200,
+    "/api/v1/network?asset=BTC&metric=mvrv&limit=2": 200,
+    "/api/v1/candles?asset=DOGE&market=binance&limit=2": 200,
+    "/api/v1/derivatives?asset=DOGE&metric=funding&limit=2": 200,
+    "/api/v1/network?asset=DOGE&metric=mvrv&limit=2": 200,
+    "/api/v1/candles?asset=ETH&market=binance&limit=2": 200,
+    "/api/v1/derivatives?asset=ETH&metric=funding&limit=2": 200,
+    "/api/v1/network?asset=ETH&metric=mvrv&limit=2": 200,
+    "/api/v1/candles?asset=SOL&market=binance&limit=2": 200,
+    "/api/v1/derivatives?asset=SOL&metric=funding&limit=2": 200,
+    "/api/v1/candles?asset=XRP&market=binance&limit=2": 200,
+    "/api/v1/derivatives?asset=XRP&metric=funding&limit=2": 200,
+    "/api/v1/network?asset=XRP&metric=mvrv&limit=2": 200,
+    "/api/v1/candles?asset=LINK&market=binance&limit=2": 200,
+    "/api/v1/derivatives?asset=LINK&metric=funding&limit=2": 200,
+    "/api/v1/network?asset=LINK&metric=mvrv&limit=2": 200,
+    "/api/v1/candles?asset=ONDO&market=binance&limit=2": 200,
+    "/api/v1/derivatives?asset=ONDO&metric=funding&limit=2": 200,
+    "/api/v1/candles?asset=PEPE&market=binance&limit=2": 200,
+    "/api/v1/derivatives?asset=PEPE&metric=funding&limit=2": 200
+  },
+  "budgetAndCursorCounts": {
+    "before": 0,
+    "after": 0
+  },
+  "unchangedCollectors": true,
+  "fortyEightHourGateRequired": false,
+  "beforeCoreQuotes": [
+    [
+      "quote:BTC:binance",
+      1791034321,
+      1791034321
+    ],
+    [
+      "quote:BTC:upbit",
+      1791034325,
+      1791034322
+    ],
+    [
+      "quote:DOGE:binance",
+      1791034321,
+      1791034320
+    ],
+    [
+      "quote:DOGE:upbit",
+      1791034325,
+      1791034315
+    ],
+    [
+      "quote:ETH:binance",
+      1791034321,
+      1791034321
+    ],
+    [
+      "quote:ETH:upbit",
+      1791034325,
+      1791034320
+    ]
+  ],
+  "afterCoreQuotes": [
+    [
+      "quote:BTC:binance",
+      1791034621,
+      1791034621
+    ],
+    [
+      "quote:BTC:upbit",
+      1791034623,
+      1791034620
+    ],
+    [
+      "quote:DOGE:binance",
+      1791034621,
+      1791034620
+    ],
+    [
+      "quote:DOGE:upbit",
+      1791034623,
+      1791034598
+    ],
+    [
+      "quote:ETH:binance",
+      1791034621,
+      1791034621
+    ],
+    [
+      "quote:ETH:upbit",
+      1791034623,
+      1791034620
+    ]
+  ]
+}

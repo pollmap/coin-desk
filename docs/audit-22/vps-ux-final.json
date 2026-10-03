@@ -1,0 +1,122 @@
+{
+  "checkedAt": "2026-10-03T15:11:44.400Z",
+  "viewport": {
+    "width": 1280,
+    "height": 800
+  },
+  "records": [
+    {
+      "asset": "BTC",
+      "url": "https://coin-desk.62.171.141.206.sslip.io/coins/BTC?price_source=upbit&market=upbit&asset=BTC&metric=net%3Amvrv&period=5y",
+      "chartBox": {
+        "x": 28,
+        "y": 222,
+        "width": 1224,
+        "height": 440
+      }
+    },
+    {
+      "asset": "DOGE",
+      "url": "https://coin-desk.62.171.141.206.sslip.io/coins/DOGE?price_source=upbit&market=upbit&asset=DOGE&metric=net%3Amvrv&period=5y",
+      "chartBox": {
+        "x": 28,
+        "y": 221,
+        "width": 1224,
+        "height": 440
+      }
+    },
+    {
+      "asset": "ETH",
+      "url": "https://coin-desk.62.171.141.206.sslip.io/coins/ETH?price_source=upbit&market=upbit&asset=ETH&metric=net%3Amvrv&period=5y",
+      "chartBox": {
+        "x": 28,
+        "y": 221,
+        "width": 1224,
+        "height": 440
+      }
+    },
+    {
+      "asset": "SOL",
+      "url": "https://coin-desk.62.171.141.206.sslip.io/coins/SOL?price_source=upbit&market=upbit&asset=SOL&metric=rsi&period=1y",
+      "chartBox": {
+        "x": 28,
+        "y": 221,
+        "width": 1224,
+        "height": 440
+      }
+    },
+    {
+      "asset": "XRP",
+      "url": "https://coin-desk.62.171.141.206.sslip.io/coins/XRP?price_source=upbit&market=upbit&asset=XRP&metric=net%3Amvrv&period=5y",
+      "chartBox": {
+        "x": 28,
+        "y": 221,
+        "width": 1224,
+        "height": 440
+      }
+    },
+    {
+      "asset": "LINK",
+      "url": "https://coin-desk.62.171.141.206.sslip.io/coins/LINK?price_source=upbit&market=upbit&asset=LINK&metric=net%3Amvrv&period=5y",
+      "chartBox": {
+        "x": 28,
+        "y": 221,
+        "width": 1224,
+        "height": 440
+      }
+    },
+    {
+      "asset": "ONDO",
+      "url": "https://coin-desk.62.171.141.206.sslip.io/coins/ONDO?price_source=upbit&market=upbit&asset=ONDO&metric=rsi&period=1y",
+      "chartBox": {
+        "x": 28,
+        "y": 221,
+        "width": 1224,
+        "height": 440
+      }
+    },
+    {
+      "asset": "PEPE",
+      "url": "https://coin-desk.62.171.141.206.sslip.io/coins/PEPE?price_source=upbit&market=upbit&asset=PEPE&metric=rsi&period=1y",
+      "chartBox": {
+        "x": 28,
+        "y": 221,
+        "width": 1224,
+        "height": 440
+      }
+    }
+  ],
+  "relativeLayouts": [
+    {
+      "width": 320,
+      "top": 290
+    },
+    {
+      "width": 390,
+      "top": 282
+    },
+    {
+      "width": 768,
+      "top": 222
+    },
+    {
+      "width": 1000,
+      "top": 221
+    },
+    {
+      "width": 1280,
+      "top": 221
+    },
+    {
+      "width": 1440,
+      "top": 221
+    }
+  ],
+  "unsupportedMvrv": true,
+  "relativePairSavedRestored": true,
+  "axe": {
+    "dark": 0,
+    "light": 0
+  },
+  "retries": 0
+}

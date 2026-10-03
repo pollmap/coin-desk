@@ -1,0 +1,10 @@
+{
+  "checkedAt": 1791039924,
+  "previousApiRelease": "vps-f36ec8c1b4e11fcd",
+  "apiRelease": "vps-9435cadabaa44937",
+  "collectorRelease": "coin-desk:vps-f1546991c2aab31a",
+  "onlyApiChanged": true,
+  "nginxChanged": false,
+  "databaseRestoredOrMigrated": false,
+  "rolledBack": true
+}

@@ -1,0 +1,58 @@
+{
+  "checkedAt": 1791040126,
+  "previousApiRelease": "vps-f36ec8c1b4e11fcd",
+  "apiRelease": "vps-9435cadabaa44937",
+  "collectorRelease": "coin-desk:vps-f1546991c2aab31a",
+  "onlyApiChanged": true,
+  "nginxChanged": false,
+  "databaseRestoredOrMigrated": false,
+  "preservedServices": {
+    "coin-desk-quotes-1": {
+      "image": "coin-desk:vps-f1546991c2aab31a",
+      "startedAt": "2026-10-02T20:49:32.258525215Z",
+      "sameContainer": true
+    },
+    "coin-desk-background-1": {
+      "image": "coin-desk:vps-f1546991c2aab31a",
+      "startedAt": "2026-10-02T20:49:32.275165889Z",
+      "sameContainer": true
+    },
+    "coin-desk-recent-1": {
+      "image": "coin-desk:vps-f1546991c2aab31a",
+      "startedAt": "2026-10-02T20:49:32.28598748Z",
+      "sameContainer": true
+    },
+    "coin-desk-analysis-1": {
+      "image": "coin-desk:vps-f1546991c2aab31a",
+      "startedAt": "2026-10-02T20:49:32.267752761Z",
+      "sameContainer": true
+    },
+    "coin-desk-backup-1": {
+      "image": "coin-desk:vps-f1546991c2aab31a",
+      "startedAt": "2026-10-02T20:49:32.279581281Z",
+      "sameContainer": true
+    },
+    "coin-desk-quote-hub-1": {
+      "image": "coin-desk:vps-f1546991c2aab31a",
+      "startedAt": "2026-10-02T20:45:58.470920476Z",
+      "sameContainer": true
+    }
+  },
+  "promoted": true,
+  "codeCommit": "ed6642dbe820e0a7863bd4669ac3b6615466df2e",
+  "displayVersion": "0.22.0",
+  "archiveSha256": "7e94b016436fa57bbbda5fb9c94e8e5bce1b8a2acb2f2685a6f46a6b29275b21",
+  "sourceFiles": 301,
+  "fortyEightHourGateRequired": false,
+  "pagesDeployment": "https://56f9da0c.coin-desk.pages.dev",
+  "primaryUrl": "https://coin-desk.pages.dev",
+  "vpsUrl": "https://coin-desk.62.171.141.206.sslip.io",
+  "firstAttempt": {
+    "httpFailure": 503,
+    "failedEndpoint": "not captured",
+    "rolledBack": true,
+    "cause": "unconfirmed",
+    "nextReadChecks": 16,
+    "nextReadChecksAll200": true
+  }
+}

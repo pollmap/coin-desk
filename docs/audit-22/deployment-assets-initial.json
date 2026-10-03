@@ -1,0 +1,4220 @@
+{
+  "checkedAt": 1791034741.8463771,
+  "filesPerOrigin": 300,
+  "origins": [
+    "https://coin-desk.pages.dev",
+    "https://coin-desk.62.171.141.206.sslip.io"
+  ],
+  "results": [
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/analysis-library-DFsjZHI7.css",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 8295
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/analysis-workspace-D11rO17R.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 1370
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/analysis-workspace-D8GYx781.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 1370
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/analysis-workspace-DgFebX9v.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 1370
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/analysis-workspace-DnlhcChe.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 1370
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/analysis-workspace-XlqkfbjI.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 1370
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/analysis-workspace-zZs8eBj_.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 1370
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/AnalysisLab-6oCW40cL.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 11515
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/AnalysisLab-B6p8LGV-.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 11515
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/AnalysisLab-Cfwxcqop.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 11362
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/AnalysisLab-CoQVrK3h.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 11515
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/AnalysisLab-CZCotQb4.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 11515
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/AnalysisLab-Czta-l7N.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 11515
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/AnalysisLab-DfcrMfY9.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 11515
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/AnalysisLab-nKgadWea.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 12232
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/arrow-up-right-0m9BffZf.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 162
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/arrow-up-right-2VAqrlps.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 162
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/arrow-up-right-bpLPmj_i.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 162
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/arrow-up-right-D3IlMyQH.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 162
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/arrow-up-right-ENmXUWFs.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 162
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/arrow-up-right-favjtTFq.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 162
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/arrow-up-right-rm618cHv.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 162
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/AssetHeader-6kOtmLdb.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 5130
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/AssetHeader-BAzkdZkm.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 5130
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/AssetHeader-BIQn_qPV.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 5130
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/AssetHeader-BZQNIkW0.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 5130
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/AssetHeader-Cmz59JsF.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 5087
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/AssetHeader-TjHdba1g.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 5130
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/AssetHeader-XOmudmSU.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 5130
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/BrandPage-BaVxL8-O.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 1496
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/BrandPage-BcKUZJdB.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 1496
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/BrandPage-CCPnLSIl.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 1509
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/BrandPage-CHr_TqBi.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 1496
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/BrandPage-CqEr3Emy.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 1496
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/BrandPage-cv60eTgX.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 1496
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/BrandPage-CYmpMjQ3.css",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 1313
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/BrandPage-DK2JcBg5.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 1496
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/BrandPage-J2eBIr4N.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 1496
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/chart-pie-BvhKfsdN.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 463
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/chart-pie-ByTgn0N-.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 463
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/chart-pie-C1QoWJfT.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 463
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/chart-pie-Duv-SVoo.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 463
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/chart-pie-DW8VUmwE.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 463
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/chart-pie-DYlwG1Vh.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 463
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/chart-pie-GmuolgWW.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 463
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/chart-range-CpF_4IqK.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 1100
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/chart-theme-Dze8Gpee.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 181938
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/ChartNavigator-B31r2fvx.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 4669
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/ChartNavigator-BcMyFBB8.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 4650
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/ChartNavigator-Bua6a14Z.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 4650
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/ChartNavigator-CJufqwyf.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 4650
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/ChartNavigator-CtFNZvmI.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 4650
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/ChartNavigator-DhrF3uKZ.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 4650
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/ChartNavigator-DQpDAPs_.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 4650
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/ChartNavigator-EHOUhiCp.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 4650
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/ChartRangeControl-3-krb6Z9.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 3222
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/ChartRangeControl-B4sq20kI.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 3222
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/ChartRangeControl-BiqKXcHs.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 3222
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/ChartRangeControl-CJjAOweP.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 2193
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/ChartRangeControl-Ckcn8V4n.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 3222
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/ChartRangeControl-CR7FGUNm.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 3222
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/ChartRangeControl-DPybD3A0.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 3222
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/ChartRangeControl-qOT4uuPt.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 3222
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/ComparePage-2FsnImKr.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 27428
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/ComparePage-B7nxaAFu.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 26517
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/ComparePage-BeZ9C5Dk.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 26548
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/ComparePage-Cgb3jZCy.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 27231
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/ComparePage-ChUVn-V4.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 27231
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/ComparePage-D3-VQxd5.css",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 8748
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/ComparePage-DfSLUnlJ.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 27646
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/ComparePage-DlafYrSZ.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 26548
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/ComparePage-DX3iEeTr.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 27428
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/ComparePage-DXR9keeU.css",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 7288
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/ComparePage-Vj3lqYWT.css",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 9114
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/data-status-CSQh4Yvx.css",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 4339
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/DataStatusPage-7UGu5kAB.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 14045
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/DataStatusPage-BANM-R2W.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 14037
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/DataStatusPage-BixjI63O.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 14045
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/DataStatusPage-ChYgR_Q2.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 14037
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/DataStatusPage-Cv8n6FF6.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 14037
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/DataStatusPage-DCMRBQL_.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 14037
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/DataStatusPage-Duaw65-4.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 14037
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/DataStatusPage-HY0zCE_h.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 14045
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/DateNavigator-AJZH_DP0.css",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 2199
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/DateNavigator-B3n8tn1P.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 4843
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/DateNavigator-B5HoSkIx.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 4843
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/DateNavigator-B7E48DL8.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 4843
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/DateNavigator-BnUO8d7T.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 4804
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/DateNavigator-Ck4M-t0O.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 4843
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/DateNavigator-CnaecvBP.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 4843
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/DateNavigator-DChYi2Fe.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 4843
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/DateNavigator-RV8sKXvF.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 4843
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/DominancePanel-B2LnsrQU.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 7648
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/DominancePanel-Bsu7AjOD.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 7608
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/DominancePanel-C7Dmytk4.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 7648
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/DominancePanel-C9t7XTqr.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 7648
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/DominancePanel-D6AChBr-.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 7648
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/DominancePanel-DB9xaWCC.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 7648
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/DominancePanel-DXudQF7w.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 7572
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/DominancePanel-DxZiVEZY.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 7648
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/ExchangeHistoryPanel-B5JlCVnT.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 2193
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/ExchangeHistoryPanel-BDIjxgHd.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 2193
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/ExchangeHistoryPanel-CcFEh8Ll.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 2159
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/ExchangeHistoryPanel-COLiVJ96.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 2113
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/ExchangeHistoryPanel-DCny4TNk.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 1903
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/ExchangeHistoryPanel-DhUQWHJ4.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 2193
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/ExchangeHistoryPanel-Dx5s5juh.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 2193
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/ExchangeHistoryPanel-mrwh9ZGu.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 2159
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/FuturesPage-B1PB9UE3.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 9466
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/guide-lessons-BWnqnkR6.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 33723
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/guide-lessons-BZ8BCSGg.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 33723
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/guide-lessons-DCUgIycW.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 33723
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/guide-lessons-DiZBUEHS.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 33701
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/guide-lessons-DMNCDgTX.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 33723
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/history-bands-ALtHuogT.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 973
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/history-bands-BkXxGROr.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 973
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/history-bands-BSQ0L2bG.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 973
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/history-bands-CAYExDGy.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 973
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/history-bands-CvUPhGMn.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 973
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/history-bands-CWCcfwiH.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 973
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/history-bands-Digdg4-R.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 973
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/history-bands-xNcI5--s.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 973
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/HistoryPositionPanel-B42k25-H.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 9770
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/HistoryPositionPanel-BF3-LdCH.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 9650
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/HistoryPositionPanel-CZN7Ex4a.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 9770
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/HistoryPositionPanel-DBaHjxFJ.css",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 3233
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/HistoryPositionPanel-DBi9dHTY.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 9685
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/HistoryPositionPanel-DYLe_YH6.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 9770
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/HistoryPositionPanel-DYWiXAN_.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 9770
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/HistoryPositionPanel-OG8vcXW9.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 9770
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/HistoryPositionPanel-WylGYX0U.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 9770
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/index-2yF7ksHO.css",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 117250
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/index-BAxzPrvF.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 346013
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/index-BEOKVnL3.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 345524
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/index-BSpP61IH.css",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 131574
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/index-CSbeOsq4.css",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 118253
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/index-Ctk8WB8o.css",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 117296
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/index-D1njWYan.css",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 117268
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/index-D6INRA9j.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 413711
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/index-Danldnez.css",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 124335
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/index-FCCzY6a9.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 346013
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/index-kDp1AJwI.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 345874
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/index-Ng1Fng-U.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 381227
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/index-NZ4_P9Pn.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 345524
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/index-V32y3mPP.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 345669
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/IndicatorMethod-BkYyj3R8.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 721
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/IndicatorMethod-BOrkoBlY.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 721
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/IndicatorMethod-BPEBNDlp.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 721
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/IndicatorMethod-CZ0lner0.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 641
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/IndicatorMethod-D7wSgT-W.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 721
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/IndicatorWorkspace-BCHseP_E.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 52416
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/IndicatorWorkspace-BNnI-UpN.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 51363
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/IndicatorWorkspace-BxL0C95Q.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 52416
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/IndicatorWorkspace-BYQo9RRj.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 51087
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/IndicatorWorkspace-C2MEZaWN.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 55088
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/IndicatorWorkspace-CYjCPsOJ.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 51363
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/IndicatorWorkspace-Dlnuz40z.css",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 6225
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/IndicatorWorkspace-Dpi52ULS.css",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 5890
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/IndicatorWorkspace-DqmmWyDO.css",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 6423
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/IndicatorWorkspace-HLugWyPS.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 52416
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/IndicatorWorkspace-qrjBKiTY.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 52403
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/learn-Bhg32d3L.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 275
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/learn-Bm9j-d_Y.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 275
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/learn-BTQcf6XA.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 275
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/learn-BVrZFsG_.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 275
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/learn-C0YYm5ps.css",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 11134
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/learn-Cq5jehNv.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 275
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/learn-CWZN-96H.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 275
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/learn-CZV2K_k1.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 275
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/learn-DopCUBEJ.css",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 11150
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/learn-L8eNEZP6.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 275
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/learning-catalog-7ZSNOzrz.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 32303
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/learning-catalog-9p6ZTvnF.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 32502
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/learning-catalog-BHNLW1m-.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 32502
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/learning-catalog-BqrvO2TL.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 32303
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/learning-catalog-Do2wXcyo.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 32502
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/learning-catalog-iKv8dtaS.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 32502
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/LearnPage-BDfZg4DU.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 13666
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/LearnPage-BEnsxgXe.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 13634
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/LearnPage-BRo8XMTT.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 46974
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/LearnPage-BsUC4PjE.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 13876
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/LearnPage-C-cep6lB.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 13876
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/LearnPage-CO_jdS6Z.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 46848
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/LearnPage-DlaupWvz.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 46974
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/LearnPage-XuygjHN3.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 13666
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/LegacyPages-B4KmeONC.css",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 7813
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/LegacyPages-BX0v438n.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 29273
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/LegacyPages-C-NcchdE.css",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 4895
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/LegacyPages-CgbrTl-c.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 29356
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/LegacyPages-CufL2HAh.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 29273
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/LegacyPages-D2elTWdq.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 29356
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/LegacyPages-GjIQTUsF.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 29356
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/LegacyPages-Nhg_ijBm.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 28670
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/LegacyPages-tgyBWovP.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 29356
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/library-worker-B-2ZX0WD.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 17798
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/LongHistoryChart-BA4nc7RY.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 7369
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/LongHistoryChart-Bny9Ru_B.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 7364
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/LongHistoryChart-CsoNpmXi.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 7364
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/LongHistoryChart-D7tj7HQo.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 7364
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/LongHistoryChart-DG1eRuvn.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 7364
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/LongHistoryChart-f5FCxSui.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 7364
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/LongHistoryChart-pHXOjZFl.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 7364
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/LongHistoryChart-qZOjKdlR.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 7364
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/LongHistoryPanel-BwDKuPIv.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 4855
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/LongHistoryPanel-CR1WD4QH.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 4935
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/LongHistoryPanel-DeyDpHnK.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 4935
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/LongHistoryPanel-DfdKV5DP.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 4645
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/LongHistoryPanel-DSgqqynh.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 4935
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/LongHistoryPanel-DTG-Rj9K.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 4901
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/LongHistoryPanel-NyrxkQpQ.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 4935
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/LongHistoryPanel-Pc2NXS-1.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 4901
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/MarketHome-Ck7t6508.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 7057
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/MarketNavigation-4b2OmhEW.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 843
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/MarketNavigation-BjgiJUpK.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 808
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/MarketNavigation-C67AJ_zc.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 843
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/MarketNavigation-C8W_Wk6m.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 843
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/MarketNavigation-CR64cg-g.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 843
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/MarketNavigation-CRcP9oYd.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 843
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/MarketNavigation-CSfTcahD.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 843
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/MarketNavigation-epYoTYLh.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 843
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/MempoolPanel-BX59eqQS.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 1646
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/MempoolPanel-By1-K60g.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 1646
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/MempoolPanel-CUflI9yD.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 1646
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/MempoolPanel-CZTMeswO.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 1646
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/MempoolPanel-D5JeUav8.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 1646
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/MempoolPanel-DUa7swng.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 1646
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/MempoolPanel-FgObfuou.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 1646
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/MempoolPanel-UjQYZCBj.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 1646
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/MetricChart-BjNNW7Xd.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 10200
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/MetricChart-Cg_Yi20i.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 10120
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/MetricChart-CJ-jJvRT.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 10200
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/MetricChart-Czg_Afse.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 10166
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/MetricChart-DSlzud5F.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 10166
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/MetricChart-DTg6xVyY.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 9135
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/MetricChart-u3QRLtix.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 10200
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/MetricChart-X8jOp76n.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 10200
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/MetricGuide-B3K3G5TO.css",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 2346
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/MetricGuide-Biqg8-mo.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 9149
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/MetricGuide-Bz4SGSlN.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 9107
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/MetricGuide-CPE9cfMK.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 9149
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/MetricGuide-DHO5ZKRL.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 9149
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/MetricGuide-Du71u7j-.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 9149
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/MetricGuide-DXAZCU_O.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 9149
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/MetricGuide-vllksjHB.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 9149
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/MetricsExplorer-8J1Gx8Eu.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 9839
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/MetricsExplorer-BBUS8jE3.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 9757
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/MetricsExplorer-BEjlWsqn.css",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 1864
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/MetricsExplorer-BOoAPL7x.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 9839
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/MetricsExplorer-BYm9WvGO.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 9839
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/MetricsExplorer-DeXTwQ3q.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 9719
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/MetricsExplorer-DtQJScKJ.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 9839
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/MetricsExplorer-D_rR3A4d.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 9839
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/MetricsExplorer-SQ-i2V3X.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 9839
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/NetworkPage-CQXlsuLF.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 16251
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/PeriodPicker-BKSuiVd-.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 695
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/PeriodPicker-CERzLaxv.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 695
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/PeriodPicker-COtFYrab.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 695
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/PeriodPicker-DaEYfr9e.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 695
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/PeriodPicker-DBEOs5si.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 695
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/PeriodPicker-DdCQwJ-7.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 695
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/PeriodPicker-MfggYZTJ.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 695
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/price-history-BbpouwUT.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 190
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/PriceChart-B9Rq0KS8.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 18560
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/PriceChart-BmmKVdau.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 18594
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/PriceChart-Bs3KzBCB.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 18594
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/PriceChart-BXT-HcB1.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 18560
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/PriceChart-CI4U4N7H.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 18594
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/PriceChart-Dsd47-_c.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 18311
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/PriceChart-Dx1wzQpe.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 18514
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/PriceChart-TCu_e_Au.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 18594
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/RelativeAnalysisPanel-BBBafRFP.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 4009
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/RelativeAnalysisPanel-Bi7L2Yy9.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 4009
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/RelativeAnalysisPanel-C5ABQZ8U.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 4009
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/RelativeAnalysisPanel-CqXvct_W.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 4009
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/RelativeAnalysisPanel-CtBNZchV.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 4009
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/RelativeAnalysisPanel-D2_KaK2r.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 4009
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/RelativeAnalysisPanel-DlAVx6tk.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 4009
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/RelativeAnalysisPanel-DQxX7W0J.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 4009
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/ResearchLibrary-Bt0EjKkR.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 35526
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/ResearchLibrary-BtG-Uj50.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 35526
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/ResearchLibrary-CUF91nHU.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 35526
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/ResearchLibrary-DhQ269uW.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 35526
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/ResearchLibrary-DN08H0Ot.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 35526
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/ResearchLibrary-EifYpbEr.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 35526
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/ResearchLibrary-O56pZY0X.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 35526
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/ResearchLibrary-VFUSc6cx.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 35526
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/ThresholdBands-CEcs3-UM.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 888
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/ThresholdSummary-k00_o8Nb.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 905
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/useQuoteFeed-BbuLEW2W.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 1918
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/WatchlistPage-Bg8HOghV.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 9606
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/WatchlistPage-BsbDdqCQ.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 9610
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/WatchlistPage-CblsRyAq.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 9606
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/WatchlistPage-CsSPYD5K.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 9578
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/WatchlistPage-D30KLRCa.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 9606
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/WatchlistPage-DA5dQCVN.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 9606
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/WatchlistPage-DqQ2mpbm.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 9606
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "assets/WatchlistPage-D_a9JGBf.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 9606
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "brand/coin-desk-shiba-smile.png",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 789844
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "index.html",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 1993
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "site.webmanifest",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 469
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/analysis-library-DFsjZHI7.css",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 8295
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/analysis-workspace-D11rO17R.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 1370
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/analysis-workspace-D8GYx781.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 1370
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/analysis-workspace-DgFebX9v.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 1370
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/analysis-workspace-DnlhcChe.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 1370
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/analysis-workspace-XlqkfbjI.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 1370
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/analysis-workspace-zZs8eBj_.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 1370
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/AnalysisLab-6oCW40cL.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 11515
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/AnalysisLab-B6p8LGV-.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 11515
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/AnalysisLab-Cfwxcqop.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 11362
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/AnalysisLab-CoQVrK3h.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 11515
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/AnalysisLab-CZCotQb4.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 11515
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/AnalysisLab-Czta-l7N.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 11515
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/AnalysisLab-DfcrMfY9.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 11515
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/AnalysisLab-nKgadWea.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 12232
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/arrow-up-right-0m9BffZf.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 162
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/arrow-up-right-2VAqrlps.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 162
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/arrow-up-right-bpLPmj_i.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 162
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/arrow-up-right-D3IlMyQH.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 162
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/arrow-up-right-ENmXUWFs.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 162
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/arrow-up-right-favjtTFq.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 162
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/arrow-up-right-rm618cHv.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 162
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/AssetHeader-6kOtmLdb.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 5130
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/AssetHeader-BAzkdZkm.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 5130
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/AssetHeader-BIQn_qPV.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 5130
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/AssetHeader-BZQNIkW0.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 5130
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/AssetHeader-Cmz59JsF.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 5087
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/AssetHeader-TjHdba1g.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 5130
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/AssetHeader-XOmudmSU.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 5130
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/BrandPage-BaVxL8-O.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 1496
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/BrandPage-BcKUZJdB.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 1496
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/BrandPage-CCPnLSIl.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 1509
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/BrandPage-CHr_TqBi.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 1496
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/BrandPage-CqEr3Emy.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 1496
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/BrandPage-cv60eTgX.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 1496
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/BrandPage-CYmpMjQ3.css",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 1313
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/BrandPage-DK2JcBg5.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 1496
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/BrandPage-J2eBIr4N.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 1496
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/chart-pie-BvhKfsdN.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 463
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/chart-pie-ByTgn0N-.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 463
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/chart-pie-C1QoWJfT.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 463
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/chart-pie-Duv-SVoo.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 463
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/chart-pie-DW8VUmwE.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 463
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/chart-pie-DYlwG1Vh.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 463
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/chart-pie-GmuolgWW.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 463
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/chart-range-CpF_4IqK.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 1100
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/chart-theme-Dze8Gpee.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 181938
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/ChartNavigator-B31r2fvx.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 4669
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/ChartNavigator-BcMyFBB8.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 4650
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/ChartNavigator-Bua6a14Z.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 4650
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/ChartNavigator-CJufqwyf.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 4650
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/ChartNavigator-CtFNZvmI.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 4650
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/ChartNavigator-DhrF3uKZ.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 4650
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/ChartNavigator-DQpDAPs_.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 4650
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/ChartNavigator-EHOUhiCp.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 4650
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/ChartRangeControl-3-krb6Z9.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 3222
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/ChartRangeControl-B4sq20kI.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 3222
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/ChartRangeControl-BiqKXcHs.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 3222
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/ChartRangeControl-CJjAOweP.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 2193
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/ChartRangeControl-Ckcn8V4n.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 3222
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/ChartRangeControl-CR7FGUNm.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 3222
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/ChartRangeControl-DPybD3A0.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 3222
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/ChartRangeControl-qOT4uuPt.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 3222
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/ComparePage-2FsnImKr.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 27428
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/ComparePage-B7nxaAFu.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 26517
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/ComparePage-BeZ9C5Dk.js",
+      "initialResult": {
+        "error": "TimeoutError: The read operation timed out"
+      },
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 26548
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/ComparePage-Cgb3jZCy.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 27231
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/ComparePage-ChUVn-V4.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 27231
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/ComparePage-D3-VQxd5.css",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 8748
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/ComparePage-DfSLUnlJ.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 27646
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/ComparePage-DlafYrSZ.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 26548
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/ComparePage-DX3iEeTr.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 27428
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/ComparePage-DXR9keeU.css",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 7288
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/ComparePage-Vj3lqYWT.css",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 9114
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/data-status-CSQh4Yvx.css",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 4339
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/DataStatusPage-7UGu5kAB.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 14045
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/DataStatusPage-BANM-R2W.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 14037
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/DataStatusPage-BixjI63O.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 14045
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/DataStatusPage-ChYgR_Q2.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 14037
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/DataStatusPage-Cv8n6FF6.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 14037
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/DataStatusPage-DCMRBQL_.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 14037
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/DataStatusPage-Duaw65-4.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 14037
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/DataStatusPage-HY0zCE_h.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 14045
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/DateNavigator-AJZH_DP0.css",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 2199
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/DateNavigator-B3n8tn1P.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 4843
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/DateNavigator-B5HoSkIx.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 4843
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/DateNavigator-B7E48DL8.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 4843
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/DateNavigator-BnUO8d7T.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 4804
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/DateNavigator-Ck4M-t0O.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 4843
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/DateNavigator-CnaecvBP.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 4843
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/DateNavigator-DChYi2Fe.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 4843
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/DateNavigator-RV8sKXvF.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 4843
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/DominancePanel-B2LnsrQU.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 7648
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/DominancePanel-Bsu7AjOD.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 7608
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/DominancePanel-C7Dmytk4.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 7648
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/DominancePanel-C9t7XTqr.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 7648
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/DominancePanel-D6AChBr-.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 7648
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/DominancePanel-DB9xaWCC.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 7648
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/DominancePanel-DXudQF7w.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 7572
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/DominancePanel-DxZiVEZY.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 7648
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/ExchangeHistoryPanel-B5JlCVnT.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 2193
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/ExchangeHistoryPanel-BDIjxgHd.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 2193
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/ExchangeHistoryPanel-CcFEh8Ll.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 2159
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/ExchangeHistoryPanel-COLiVJ96.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 2113
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/ExchangeHistoryPanel-DCny4TNk.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 1903
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/ExchangeHistoryPanel-DhUQWHJ4.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 2193
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/ExchangeHistoryPanel-Dx5s5juh.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 2193
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/ExchangeHistoryPanel-mrwh9ZGu.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 2159
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/FuturesPage-B1PB9UE3.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 9466
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/guide-lessons-BWnqnkR6.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 33723
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/guide-lessons-BZ8BCSGg.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 33723
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/guide-lessons-DCUgIycW.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 33723
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/guide-lessons-DiZBUEHS.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 33701
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/guide-lessons-DMNCDgTX.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 33723
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/history-bands-ALtHuogT.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 973
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/history-bands-BkXxGROr.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 973
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/history-bands-BSQ0L2bG.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 973
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/history-bands-CAYExDGy.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 973
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/history-bands-CvUPhGMn.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 973
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/history-bands-CWCcfwiH.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 973
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/history-bands-Digdg4-R.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 973
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/history-bands-xNcI5--s.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 973
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/HistoryPositionPanel-B42k25-H.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 9770
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/HistoryPositionPanel-BF3-LdCH.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 9650
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/HistoryPositionPanel-CZN7Ex4a.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 9770
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/HistoryPositionPanel-DBaHjxFJ.css",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 3233
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/HistoryPositionPanel-DBi9dHTY.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 9685
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/HistoryPositionPanel-DYLe_YH6.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 9770
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/HistoryPositionPanel-DYWiXAN_.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 9770
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/HistoryPositionPanel-OG8vcXW9.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 9770
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/HistoryPositionPanel-WylGYX0U.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 9770
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/index-2yF7ksHO.css",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 117250
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/index-BAxzPrvF.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 346013
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/index-BEOKVnL3.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 345524
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/index-BSpP61IH.css",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 131574
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/index-CSbeOsq4.css",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 118253
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/index-Ctk8WB8o.css",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 117296
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/index-D1njWYan.css",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 117268
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/index-D6INRA9j.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 413711
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/index-Danldnez.css",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 124335
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/index-FCCzY6a9.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 346013
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/index-kDp1AJwI.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 345874
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/index-Ng1Fng-U.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 381227
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/index-NZ4_P9Pn.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 345524
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/index-V32y3mPP.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 345669
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/IndicatorMethod-BkYyj3R8.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 721
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/IndicatorMethod-BOrkoBlY.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 721
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/IndicatorMethod-BPEBNDlp.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 721
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/IndicatorMethod-CZ0lner0.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 641
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/IndicatorMethod-D7wSgT-W.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 721
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/IndicatorWorkspace-BCHseP_E.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 52416
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/IndicatorWorkspace-BNnI-UpN.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 51363
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/IndicatorWorkspace-BxL0C95Q.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 52416
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/IndicatorWorkspace-BYQo9RRj.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 51087
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/IndicatorWorkspace-C2MEZaWN.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 55088
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/IndicatorWorkspace-CYjCPsOJ.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 51363
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/IndicatorWorkspace-Dlnuz40z.css",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 6225
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/IndicatorWorkspace-Dpi52ULS.css",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 5890
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/IndicatorWorkspace-DqmmWyDO.css",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 6423
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/IndicatorWorkspace-HLugWyPS.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 52416
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/IndicatorWorkspace-qrjBKiTY.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 52403
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/learn-Bhg32d3L.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 275
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/learn-Bm9j-d_Y.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 275
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/learn-BTQcf6XA.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 275
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/learn-BVrZFsG_.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 275
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/learn-C0YYm5ps.css",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 11134
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/learn-Cq5jehNv.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 275
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/learn-CWZN-96H.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 275
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/learn-CZV2K_k1.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 275
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/learn-DopCUBEJ.css",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 11150
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/learn-L8eNEZP6.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 275
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/learning-catalog-7ZSNOzrz.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 32303
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/learning-catalog-9p6ZTvnF.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 32502
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/learning-catalog-BHNLW1m-.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 32502
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/learning-catalog-BqrvO2TL.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 32303
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/learning-catalog-Do2wXcyo.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 32502
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/learning-catalog-iKv8dtaS.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 32502
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/LearnPage-BDfZg4DU.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 13666
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/LearnPage-BEnsxgXe.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 13634
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/LearnPage-BRo8XMTT.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 46974
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/LearnPage-BsUC4PjE.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 13876
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/LearnPage-C-cep6lB.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 13876
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/LearnPage-CO_jdS6Z.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 46848
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/LearnPage-DlaupWvz.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 46974
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/LearnPage-XuygjHN3.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 13666
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/LegacyPages-B4KmeONC.css",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 7813
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/LegacyPages-BX0v438n.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 29273
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/LegacyPages-C-NcchdE.css",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 4895
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/LegacyPages-CgbrTl-c.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 29356
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/LegacyPages-CufL2HAh.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 29273
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/LegacyPages-D2elTWdq.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 29356
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/LegacyPages-GjIQTUsF.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 29356
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/LegacyPages-Nhg_ijBm.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 28670
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/LegacyPages-tgyBWovP.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 29356
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/library-worker-B-2ZX0WD.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 17798
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/LongHistoryChart-BA4nc7RY.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 7369
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/LongHistoryChart-Bny9Ru_B.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 7364
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/LongHistoryChart-CsoNpmXi.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 7364
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/LongHistoryChart-D7tj7HQo.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 7364
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/LongHistoryChart-DG1eRuvn.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 7364
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/LongHistoryChart-f5FCxSui.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 7364
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/LongHistoryChart-pHXOjZFl.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 7364
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/LongHistoryChart-qZOjKdlR.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 7364
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/LongHistoryPanel-BwDKuPIv.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 4855
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/LongHistoryPanel-CR1WD4QH.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 4935
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/LongHistoryPanel-DeyDpHnK.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 4935
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/LongHistoryPanel-DfdKV5DP.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 4645
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/LongHistoryPanel-DSgqqynh.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 4935
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/LongHistoryPanel-DTG-Rj9K.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 4901
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/LongHistoryPanel-NyrxkQpQ.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 4935
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/LongHistoryPanel-Pc2NXS-1.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 4901
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/MarketHome-Ck7t6508.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 7057
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/MarketNavigation-4b2OmhEW.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 843
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/MarketNavigation-BjgiJUpK.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 808
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/MarketNavigation-C67AJ_zc.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 843
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/MarketNavigation-C8W_Wk6m.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 843
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/MarketNavigation-CR64cg-g.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 843
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/MarketNavigation-CRcP9oYd.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 843
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/MarketNavigation-CSfTcahD.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 843
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/MarketNavigation-epYoTYLh.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 843
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/MempoolPanel-BX59eqQS.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 1646
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/MempoolPanel-By1-K60g.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 1646
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/MempoolPanel-CUflI9yD.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 1646
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/MempoolPanel-CZTMeswO.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 1646
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/MempoolPanel-D5JeUav8.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 1646
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/MempoolPanel-DUa7swng.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 1646
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/MempoolPanel-FgObfuou.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 1646
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/MempoolPanel-UjQYZCBj.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 1646
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/MetricChart-BjNNW7Xd.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 10200
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/MetricChart-Cg_Yi20i.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 10120
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/MetricChart-CJ-jJvRT.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 10200
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/MetricChart-Czg_Afse.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 10166
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/MetricChart-DSlzud5F.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 10166
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/MetricChart-DTg6xVyY.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 9135
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/MetricChart-u3QRLtix.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 10200
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/MetricChart-X8jOp76n.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 10200
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/MetricGuide-B3K3G5TO.css",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 2346
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/MetricGuide-Biqg8-mo.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 9149
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/MetricGuide-Bz4SGSlN.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 9107
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/MetricGuide-CPE9cfMK.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 9149
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/MetricGuide-DHO5ZKRL.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 9149
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/MetricGuide-Du71u7j-.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 9149
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/MetricGuide-DXAZCU_O.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 9149
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/MetricGuide-vllksjHB.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 9149
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/MetricsExplorer-8J1Gx8Eu.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 9839
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/MetricsExplorer-BBUS8jE3.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 9757
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/MetricsExplorer-BEjlWsqn.css",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 1864
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/MetricsExplorer-BOoAPL7x.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 9839
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/MetricsExplorer-BYm9WvGO.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 9839
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/MetricsExplorer-DeXTwQ3q.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 9719
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/MetricsExplorer-DtQJScKJ.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 9839
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/MetricsExplorer-D_rR3A4d.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 9839
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/MetricsExplorer-SQ-i2V3X.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 9839
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/NetworkPage-CQXlsuLF.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 16251
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/PeriodPicker-BKSuiVd-.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 695
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/PeriodPicker-CERzLaxv.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 695
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/PeriodPicker-COtFYrab.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 695
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/PeriodPicker-DaEYfr9e.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 695
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/PeriodPicker-DBEOs5si.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 695
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/PeriodPicker-DdCQwJ-7.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 695
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/PeriodPicker-MfggYZTJ.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 695
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/price-history-BbpouwUT.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 190
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/PriceChart-B9Rq0KS8.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 18560
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/PriceChart-BmmKVdau.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 18594
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/PriceChart-Bs3KzBCB.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 18594
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/PriceChart-BXT-HcB1.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 18560
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/PriceChart-CI4U4N7H.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 18594
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/PriceChart-Dsd47-_c.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 18311
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/PriceChart-Dx1wzQpe.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 18514
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/PriceChart-TCu_e_Au.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 18594
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/RelativeAnalysisPanel-BBBafRFP.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 4009
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/RelativeAnalysisPanel-Bi7L2Yy9.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 4009
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/RelativeAnalysisPanel-C5ABQZ8U.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 4009
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/RelativeAnalysisPanel-CqXvct_W.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 4009
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/RelativeAnalysisPanel-CtBNZchV.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 4009
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/RelativeAnalysisPanel-D2_KaK2r.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 4009
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/RelativeAnalysisPanel-DlAVx6tk.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 4009
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/RelativeAnalysisPanel-DQxX7W0J.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 4009
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/ResearchLibrary-Bt0EjKkR.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 35526
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/ResearchLibrary-BtG-Uj50.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 35526
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/ResearchLibrary-CUF91nHU.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 35526
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/ResearchLibrary-DhQ269uW.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 35526
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/ResearchLibrary-DN08H0Ot.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 35526
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/ResearchLibrary-EifYpbEr.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 35526
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/ResearchLibrary-O56pZY0X.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 35526
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/ResearchLibrary-VFUSc6cx.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 35526
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/ThresholdBands-CEcs3-UM.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 888
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/ThresholdSummary-k00_o8Nb.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 905
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/useQuoteFeed-BbuLEW2W.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 1918
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/WatchlistPage-Bg8HOghV.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 9606
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/WatchlistPage-BsbDdqCQ.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 9610
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/WatchlistPage-CblsRyAq.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 9606
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/WatchlistPage-CsSPYD5K.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 9578
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/WatchlistPage-D30KLRCa.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 9606
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/WatchlistPage-DA5dQCVN.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 9606
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/WatchlistPage-DqQ2mpbm.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 9606
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "assets/WatchlistPage-D_a9JGBf.js",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 9606
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "brand/coin-desk-shiba-smile.png",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 789844
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "index.html",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 2021,
+      "expectedTransform": "server/static-response.mjs public origin substitution for social images",
+      "initialResult": {
+        "status": 200,
+        "sha256Match": false
+      }
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "site.webmanifest",
+      "status": 200,
+      "sha256Match": true,
+      "bytes": 469
+    }
+  ],
+  "allMatched": true,
+  "recheckedAt": 1791035122.5121534
+}
