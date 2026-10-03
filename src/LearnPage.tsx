@@ -1,3 +1,4 @@
+import { INDICATORS_CATALOG } from '../shared/indicator-catalog';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { Link, useLocation, useParams, useSearchParams } from 'react-router-dom';
 import { ArrowLeft, ArrowRight, ArrowUpRight, BookOpen, Search, Star, X } from 'lucide-react';
@@ -250,7 +251,7 @@ export function LearnPage() {
     save('guide-favorites', next);
   }
   useEffect(() => {
-    document.title = (article?.title ?? '분석 사전') + ' | Coin Desk';
+    document.title = (article?.title ?? '분석 사전') + ' | 보리차트';
     const sectionId = hash.slice(1);
     const section = ['meaning', 'method', 'example', 'data', 'limits'].includes(sectionId)
       ? heading.current?.querySelector<HTMLElement>(`#${sectionId}`)
@@ -318,7 +319,10 @@ export function LearnPage() {
                 </button>
               </div>
               {article.english && <p className="guide-english">{article.english}</p>}
-              <p className="guide-intro">{article.summary}</p>
+              <p className="guide-intro">
+                {INDICATORS_CATALOG.find((d) => d.guide === article.id)?.shortMeaning ??
+                  article.summary}
+              </p>
               <section id="meaning" tabIndex={-1}>
                 <h2>{lesson.question}</h2>
                 <p>{article.read}</p>

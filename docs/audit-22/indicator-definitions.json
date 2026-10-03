@@ -1,0 +1,1532 @@
+{
+  "version": "0.22.0",
+  "count": 48,
+  "indicators": [
+    {
+      "id": "net:mvrv",
+      "title": "MVRV",
+      "group": "가치·사이클",
+      "assets": [
+        "BTC",
+        "DOGE",
+        "ETH",
+        "XRP",
+        "LINK"
+      ],
+      "unit": "배",
+      "source": "Coin Metrics",
+      "formula": "Coin Metrics CapMVRVCur = CapMrktCurUSD / CapRealUSD",
+      "defaultPeriod": "5y",
+      "renderer": "series",
+      "guide": "net-mvrv",
+      "thresholds": [
+        1
+      ],
+      "shortMeaning": "시가총액 ÷ 실현시가총액",
+      "baselineMeaning": "1배는 현재 평가액과 실현평가액이 같다는 뜻입니다. 1.5배라면 현재 평가액이 50% 큽니다. 개인의 수익률이나 확정 매매 신호는 아닙니다.",
+      "observationCadence": "일별 확정 관측",
+      "measurementScope": "Coin Metrics의 지원 코인별 정의 · 코인 간 저평가 순위가 아님",
+      "guideExample": [
+        "시가총액 150 / 실현시가총액 100 = 1.5배."
+      ],
+      "guideMethod": [
+        "MVRV = 시가총액 / 실현시가총액"
+      ],
+      "implementation": "shared/network-catalog.ts; worker/network-data.ts",
+      "verification": "카탈로그·설명 연결 대조; 계산별 독립 검사는 감사 README 참조"
+    },
+    {
+      "id": "net:active_addresses",
+      "title": "활성 주소",
+      "group": "온체인",
+      "assets": [
+        "BTC",
+        "DOGE",
+        "ETH",
+        "XRP",
+        "LINK"
+      ],
+      "unit": "주소 / 일",
+      "source": "Coin Metrics",
+      "formula": "UTC 하루 동안 활동한 고유 주소의 수",
+      "defaultPeriod": "5y",
+      "renderer": "series",
+      "guide": "net-active_addresses",
+      "shortMeaning": "하루 동안 송수신 등 원장 활동이 관찰된 고유 주소 수입니다. 사람이나 실제 이용자 수가 아니며, 체인별 집계 규칙이 다릅니다.",
+      "baselineMeaning": "선택 코인의 관측 기간과 단위를 확인하고 같은 날짜의 가격과 비교합니다.",
+      "observationCadence": "일별 확정 관측",
+      "measurementScope": "Coin Metrics의 지원 코인별 정의 · 코인 간 저평가 순위가 아님",
+      "guideExample": [
+        "A가 3번, B가 2번 활동하면 주소 수는 5개가 아니라 2개입니다."
+      ],
+      "guideMethod": [
+        "활성 주소 수 = UTC 하루에 활동 조건을 충족한 서로 다른 주소의 수"
+      ],
+      "implementation": "shared/network-catalog.ts; worker/network-data.ts",
+      "verification": "카탈로그·설명 연결 대조; 계산별 독립 검사는 감사 README 참조"
+    },
+    {
+      "id": "net:balance_addresses",
+      "title": "잔고 보유 주소",
+      "group": "온체인",
+      "assets": [
+        "BTC",
+        "DOGE",
+        "ETH",
+        "XRP",
+        "LINK"
+      ],
+      "unit": "주소",
+      "source": "Coin Metrics",
+      "formula": "UTC 일말 잔고가 0보다 큰 주소 수",
+      "defaultPeriod": "5y",
+      "renderer": "series",
+      "guide": "net-balance_addresses",
+      "shortMeaning": "해당 자산의 양수 잔고를 가진 주소 수입니다. 한 사람이 여러 주소를 쓸 수 있으며 거래소 한 주소에 여러 고객의 자산이 모일 수 있습니다.",
+      "baselineMeaning": "선택 코인의 관측 기간과 단위를 확인하고 같은 날짜의 가격과 비교합니다.",
+      "observationCadence": "일별 확정 관측",
+      "measurementScope": "Coin Metrics의 지원 코인별 정의 · 코인 간 저평가 순위가 아님",
+      "guideExample": [
+        "일말 잔고가 A=1, B=0, C=2이면 양수 잔고 주소는 2개입니다."
+      ],
+      "guideMethod": [
+        "잔고 주소 수 = UTC 일말 잔고 > 0인 주소의 수"
+      ],
+      "implementation": "shared/network-catalog.ts; worker/network-data.ts",
+      "verification": "카탈로그·설명 연결 대조; 계산별 독립 검사는 감사 README 참조"
+    },
+    {
+      "id": "net:transactions",
+      "title": "거래 수",
+      "group": "온체인",
+      "assets": [
+        "BTC",
+        "DOGE",
+        "ETH",
+        "XRP",
+        "LINK"
+      ],
+      "unit": "건 / 일",
+      "source": "Coin Metrics",
+      "formula": "UTC 하루의 온체인 거래 수 · 원천의 체인별 포함 규칙",
+      "defaultPeriod": "5y",
+      "renderer": "series",
+      "guide": "net-transactions",
+      "shortMeaning": "하루 동안 원장에 기록된 거래 수입니다. 거래소 매매 횟수가 아닙니다. LINK는 토큰 관련 거래이며 ETH 전체 거래와 범위가 다릅니다.",
+      "baselineMeaning": "선택 코인의 관측 기간과 단위를 확인하고 같은 날짜의 가격과 비교합니다.",
+      "observationCadence": "일별 확정 관측",
+      "measurementScope": "Coin Metrics의 지원 코인별 정의 · 코인 간 저평가 순위가 아님",
+      "guideExample": [
+        "블록 A에 2건, B에 3건이 포함되고 모두 집계 대상이면 합계 5건입니다."
+      ],
+      "guideMethod": [
+        "거래 수 = UTC 하루 동안 원천의 집계 규칙에 포함된 온체인 거래 수"
+      ],
+      "implementation": "shared/network-catalog.ts; worker/network-data.ts",
+      "verification": "카탈로그·설명 연결 대조; 계산별 독립 검사는 감사 README 참조"
+    },
+    {
+      "id": "net:transfers",
+      "title": "전송 수",
+      "group": "온체인",
+      "assets": [
+        "BTC",
+        "DOGE",
+        "ETH",
+        "XRP",
+        "LINK"
+      ],
+      "unit": "건 / 일",
+      "source": "Coin Metrics",
+      "formula": "UTC 하루의 양수 자산 전송 수 · 수수료와 신규 발행 제외",
+      "defaultPeriod": "5y",
+      "renderer": "series",
+      "guide": "net-transfers",
+      "shortMeaning": "자산이 이동한 전송 수입니다. 한 거래에 여러 전송이 포함될 수 있습니다. ETH는 ETH 전송으로, 모든 ERC-20 토큰 전송 합계가 아닙니다.",
+      "baselineMeaning": "선택 코인의 관측 기간과 단위를 확인하고 같은 날짜의 가격과 비교합니다.",
+      "observationCadence": "일별 확정 관측",
+      "measurementScope": "Coin Metrics의 지원 코인별 정의 · 코인 간 저평가 순위가 아님",
+      "guideExample": [
+        "거래 1건이 수신처 3곳에 양수 금액을 보내면 전송이 여러 건으로 집계될 수 있습니다."
+      ],
+      "guideMethod": [
+        "전송 수 = 양수 자산 전송의 개수 (수수료와 신규 발행 제외)"
+      ],
+      "implementation": "shared/network-catalog.ts; worker/network-data.ts",
+      "verification": "카탈로그·설명 연결 대조; 계산별 독립 검사는 감사 README 참조"
+    },
+    {
+      "id": "net:supply",
+      "title": "현재 원장 공급량",
+      "group": "온체인",
+      "assets": [
+        "BTC",
+        "DOGE",
+        "ETH",
+        "XRP",
+        "LINK"
+      ],
+      "unit": "자산 단위",
+      "source": "Coin Metrics",
+      "formula": "Coin Metrics SplyCur · 원장 잔고 기준",
+      "defaultPeriod": "5y",
+      "renderer": "series",
+      "guide": "net-supply",
+      "shortMeaning": "현재 원장에 존재하는 공급량입니다. 거래 가능한 유통량과 다릅니다. XRP 에스크로와 LINK의 잠긴 물량 등이 포함될 수 있습니다.",
+      "baselineMeaning": "선택 코인의 관측 기간과 단위를 확인하고 같은 날짜의 가격과 비교합니다.",
+      "observationCadence": "일별 확정 관측",
+      "measurementScope": "Coin Metrics의 지원 코인별 정의 · 코인 간 저평가 순위가 아님",
+      "guideExample": [
+        "집계 대상 원장 잔고가 40·60개이면 합계는 100개입니다."
+      ],
+      "guideMethod": [
+        "공급량 = 원천의 체인별 원장 잔고 집계 (SplyCur)"
+      ],
+      "implementation": "shared/network-catalog.ts; worker/network-data.ts",
+      "verification": "카탈로그·설명 연결 대조; 계산별 독립 검사는 감사 README 참조"
+    },
+    {
+      "id": "net:market_cap",
+      "title": "원장 공급 기준 시가총액",
+      "group": "온체인",
+      "assets": [
+        "BTC",
+        "DOGE",
+        "ETH",
+        "XRP",
+        "LINK"
+      ],
+      "unit": "USD",
+      "source": "Coin Metrics",
+      "formula": "SplyCur × PriceUSD",
+      "defaultPeriod": "5y",
+      "renderer": "series",
+      "guide": "net-market_cap",
+      "shortMeaning": "원장 공급량에 동일 원천의 USD 가격을 곱한 총액입니다. 유통량 기준 CoinGecko 등의 시가총액과 다릅니다.",
+      "baselineMeaning": "선택 코인의 관측 기간과 단위를 확인하고 같은 날짜의 가격과 비교합니다.",
+      "observationCadence": "일별 확정 관측",
+      "measurementScope": "Coin Metrics의 지원 코인별 정의 · 코인 간 저평가 순위가 아님",
+      "guideExample": [
+        "공급량 100개 × 단가 2 USD = 시가총액 200 USD."
+      ],
+      "guideMethod": [
+        "시가총액 = SplyCur × PriceUSD"
+      ],
+      "implementation": "shared/network-catalog.ts; worker/network-data.ts",
+      "verification": "카탈로그·설명 연결 대조; 계산별 독립 검사는 감사 README 참조"
+    },
+    {
+      "id": "net:fees_native",
+      "title": "총 거래 수수료",
+      "group": "온체인",
+      "assets": [
+        "BTC",
+        "DOGE",
+        "ETH",
+        "XRP"
+      ],
+      "unit": "자산 단위 / 일",
+      "source": "Coin Metrics",
+      "formula": "UTC 하루의 거래 수수료 합계 (네이티브 단위)",
+      "defaultPeriod": "5y",
+      "renderer": "series",
+      "guide": "net-fees_native",
+      "shortMeaning": "하루 동안 지불된 총 온체인 수수료로, 소각된 수수료도 포함합니다. ETH는 실행 수수료와 블롭 수수료를 포함합니다. 단가가 아닌 합계이며 LINK의 가스비는 ETH로 지불됩니다.",
+      "baselineMeaning": "선택 코인의 관측 기간과 단위를 확인하고 같은 날짜의 가격과 비교합니다.",
+      "observationCadence": "일별 확정 관측",
+      "measurementScope": "Coin Metrics의 지원 코인별 정의 · 코인 간 저평가 순위가 아님",
+      "guideExample": [
+        "수수료가 0.01개·0.02개인 거래가 있다면 합계는 0.03개입니다."
+      ],
+      "guideMethod": [
+        "일별 수수료 = 해당 UTC 하루의 네이티브 코인 수수료 합"
+      ],
+      "implementation": "shared/network-catalog.ts; worker/network-data.ts",
+      "verification": "카탈로그·설명 연결 대조; 계산별 독립 검사는 감사 README 참조"
+    },
+    {
+      "id": "net:hashrate",
+      "title": "평균 해시레이트",
+      "group": "온체인",
+      "assets": [
+        "BTC",
+        "DOGE"
+      ],
+      "unit": "TH/s",
+      "source": "Coin Metrics",
+      "formula": "원천의 난이도·블록 생성 간격 기반 추정 · 1 TH/s = 초당 10¹² 해시",
+      "defaultPeriod": "5y",
+      "renderer": "series",
+      "guide": "net-hashrate",
+      "shortMeaning": "난이도와 블록 간격으로 추정한 하루 평균 채굴 연산량입니다. BTC와 DOGE의 해시 함수가 달라 수치 크기만으로 보안을 직접 비교하지 않습니다.",
+      "baselineMeaning": "선택 코인의 관측 기간과 단위를 확인하고 같은 날짜의 가격과 비교합니다.",
+      "observationCadence": "일별 확정 관측",
+      "measurementScope": "Coin Metrics의 지원 코인별 정의 · 코인 간 저평가 순위가 아님",
+      "guideExample": [
+        "1 TH/s는 초당 1조 회의 해시 계산입니다. 2 TH/s는 초당 2조 회입니다."
+      ],
+      "guideMethod": [
+        "원천이 난이도·블록 생성 간격으로 추정한 HashRate를 사용",
+        "1 TH/s = 10¹² hash/s"
+      ],
+      "implementation": "shared/network-catalog.ts; worker/network-data.ts",
+      "verification": "카탈로그·설명 연결 대조; 계산별 독립 검사는 감사 README 참조"
+    },
+    {
+      "id": "net:blocks",
+      "title": "하루 생성 블록",
+      "group": "온체인",
+      "assets": [
+        "BTC",
+        "DOGE",
+        "ETH"
+      ],
+      "unit": "블록 / 일",
+      "source": "Coin Metrics",
+      "formula": "Coin Metrics BlkCnt · UTC 일별 블록 수",
+      "defaultPeriod": "5y",
+      "renderer": "series",
+      "guide": "net-blocks",
+      "shortMeaning": "UTC 하루에 생성된 블록 수입니다. 체인별 블록 간격과 합의 방식이 달라 수치 크기를 직접 비교하지 않습니다.",
+      "baselineMeaning": "선택 코인의 관측 기간과 단위를 확인하고 같은 날짜의 가격과 비교합니다.",
+      "observationCadence": "일별 확정 관측",
+      "measurementScope": "Coin Metrics의 지원 코인별 정의 · 코인 간 저평가 순위가 아님",
+      "guideExample": [
+        "관측된 블록이 100개라면 일별 블록 수는 100입니다."
+      ],
+      "guideMethod": [
+        "블록 수 = UTC 하루에 생성된 집계 대상 블록 개수"
+      ],
+      "implementation": "shared/network-catalog.ts; worker/network-data.ts",
+      "verification": "카탈로그·설명 연결 대조; 계산별 독립 검사는 감사 README 참조"
+    },
+    {
+      "id": "net:issuance",
+      "title": "신규 발행량",
+      "group": "온체인",
+      "assets": [
+        "BTC",
+        "DOGE",
+        "ETH"
+      ],
+      "unit": "자산 단위 / 일",
+      "source": "Coin Metrics",
+      "formula": "Coin Metrics IssTotNtv · 신규 발행 자산 수량",
+      "defaultPeriod": "5y",
+      "renderer": "series",
+      "guide": "net-issuance",
+      "shortMeaning": "UTC 하루 동안 새로 발행된 자산의 수량입니다. 거래소 매수세나 순유입량이 아닙니다.",
+      "baselineMeaning": "선택 코인의 관측 기간과 단위를 확인하고 같은 날짜의 가격과 비교합니다.",
+      "observationCadence": "일별 확정 관측",
+      "measurementScope": "Coin Metrics의 지원 코인별 정의 · 코인 간 저평가 순위가 아님",
+      "guideExample": [
+        "집계 대상 신규 발행이 10개·15개이면 발행량은 25개입니다."
+      ],
+      "guideMethod": [
+        "신규 발행량 = UTC 하루에 발행된 자산 수량의 합 (IssTotNtv)"
+      ],
+      "implementation": "shared/network-catalog.ts; worker/network-data.ts",
+      "verification": "카탈로그·설명 연결 대조; 계산별 독립 검사는 감사 README 참조"
+    },
+    {
+      "id": "net:exchange_inflow",
+      "title": "거래소 유입",
+      "group": "온체인",
+      "assets": [
+        "BTC",
+        "ETH"
+      ],
+      "unit": "자산 단위 / 일",
+      "source": "Coin Metrics",
+      "formula": "Coin Metrics FlowInExNtv",
+      "defaultPeriod": "5y",
+      "renderer": "series",
+      "guide": "net-exchange_inflow",
+      "shortMeaning": "원천이 거래소로 식별한 주소에 하루 동안 유입된 수량입니다. 거래소 주소 분류가 바뀌면 과거 값도 수정될 수 있습니다. 전체 거래소와 모든 지갑을 완전히 포괄하지 않습니다.",
+      "baselineMeaning": "선택 코인의 관측 기간과 단위를 확인하고 같은 날짜의 가격과 비교합니다.",
+      "observationCadence": "일별 확정 관측",
+      "measurementScope": "Coin Metrics의 지원 코인별 정의 · 코인 간 저평가 순위가 아님",
+      "guideExample": [
+        "원천이 거래소로 분류한 주소에 3개·7개가 들어왔다면 유입량은 10개입니다."
+      ],
+      "guideMethod": [
+        "유입량 = 거래소로 분류된 주소에 들어온 일별 코인 수량 합"
+      ],
+      "implementation": "shared/network-catalog.ts; worker/network-data.ts",
+      "verification": "카탈로그·설명 연결 대조; 계산별 독립 검사는 감사 README 참조"
+    },
+    {
+      "id": "net:exchange_outflow",
+      "title": "거래소 유출",
+      "group": "온체인",
+      "assets": [
+        "BTC",
+        "ETH"
+      ],
+      "unit": "자산 단위 / 일",
+      "source": "Coin Metrics",
+      "formula": "Coin Metrics FlowOutExNtv",
+      "defaultPeriod": "5y",
+      "renderer": "series",
+      "guide": "net-exchange_outflow",
+      "shortMeaning": "원천이 거래소로 식별한 주소에서 하루 동안 유출된 수량입니다. 분류 변경으로 과거 값이 수정될 수 있습니다.",
+      "baselineMeaning": "선택 코인의 관측 기간과 단위를 확인하고 같은 날짜의 가격과 비교합니다.",
+      "observationCadence": "일별 확정 관측",
+      "measurementScope": "Coin Metrics의 지원 코인별 정의 · 코인 간 저평가 순위가 아님",
+      "guideExample": [
+        "집계 대상 거래소 주소에서 3개·2개가 나가면 유출량은 5개입니다."
+      ],
+      "guideMethod": [
+        "유출량 = 거래소로 분류된 주소에서 나간 일별 코인 수량 합"
+      ],
+      "implementation": "shared/network-catalog.ts; worker/network-data.ts",
+      "verification": "카탈로그·설명 연결 대조; 계산별 독립 검사는 감사 README 참조"
+    },
+    {
+      "id": "net:exchange_balance",
+      "title": "거래소 보유량",
+      "group": "온체인",
+      "assets": [
+        "BTC",
+        "ETH"
+      ],
+      "unit": "자산 단위",
+      "source": "Coin Metrics",
+      "formula": "Coin Metrics SplyExNtv",
+      "defaultPeriod": "5y",
+      "renderer": "series",
+      "guide": "net-exchange_balance",
+      "shortMeaning": "원천이 거래소로 식별한 주소들의 추정 보유량입니다. 거래소 전체 보유량의 확정치가 아니며 주소 분류에 따라 수정될 수 있습니다.",
+      "baselineMeaning": "선택 코인의 관측 기간과 단위를 확인하고 같은 날짜의 가격과 비교합니다.",
+      "observationCadence": "일별 확정 관측",
+      "measurementScope": "Coin Metrics의 지원 코인별 정의 · 코인 간 저평가 순위가 아님",
+      "guideExample": [
+        "분류된 두 주소의 잔고가 40개·60개라면 추정 보유량은 100개입니다."
+      ],
+      "guideMethod": [
+        "거래소 보유량 = 원천이 거래소로 식별한 주소들의 잔고 합"
+      ],
+      "implementation": "shared/network-catalog.ts; worker/network-data.ts",
+      "verification": "카탈로그·설명 연결 대조; 계산별 독립 검사는 감사 README 참조"
+    },
+    {
+      "id": "net:exchange_netflow",
+      "title": "거래소 순유입 · 계산",
+      "group": "온체인",
+      "assets": [
+        "BTC",
+        "ETH"
+      ],
+      "unit": "자산 단위 / 일",
+      "source": "Coin Metrics",
+      "formula": "FlowInExNtv − FlowOutExNtv",
+      "defaultPeriod": "5y",
+      "renderer": "series",
+      "guide": "net-exchange_netflow",
+      "shortMeaning": "같은 원천의 하루 거래소 유입량에서 유출량을 뺀 계산값입니다. 양수는 순유입이고 음수는 순유출입니다. 주소 분류 변경 시 다시 계산됩니다.",
+      "baselineMeaning": "원천값에서 계산한 파생 지표입니다. 함께 쓰는 입력 지표와 중복된 정보를 확인하세요.",
+      "observationCadence": "일별 확정 관측",
+      "measurementScope": "Coin Metrics의 지원 코인별 정의 · 코인 간 저평가 순위가 아님",
+      "guideExample": [
+        "같은 날 유입 10개 − 유출 7개 = 순유입 +3개."
+      ],
+      "guideMethod": [
+        "순유입 = 같은 원천의 FlowInExNtv − FlowOutExNtv"
+      ],
+      "implementation": "shared/network-catalog.ts; worker/network-data.ts",
+      "verification": "카탈로그·설명 연결 대조; 계산별 독립 검사는 감사 README 참조"
+    },
+    {
+      "id": "net:realized_cap",
+      "title": "실현시가총액 · 역산",
+      "group": "가치·사이클",
+      "assets": [
+        "BTC",
+        "DOGE",
+        "ETH",
+        "XRP",
+        "LINK"
+      ],
+      "unit": "USD",
+      "source": "Coin Metrics",
+      "formula": "CapMrktCurUSD / CapMVRVCur (MVRV > 0)",
+      "defaultPeriod": "5y",
+      "renderer": "series",
+      "guide": "net-realized_cap",
+      "shortMeaning": "무료로 받은 시가총액과 MVRV에서 역산한 값입니다. CapRealUSD 원본을 직접 받은 값이나 별도 노드로 검산한 값이 아닙니다.",
+      "baselineMeaning": "원천값에서 계산한 파생 지표입니다. 함께 쓰는 입력 지표와 중복된 정보를 확인하세요.",
+      "observationCadence": "일별 확정 관측",
+      "measurementScope": "Coin Metrics의 지원 코인별 정의 · 코인 간 저평가 순위가 아님",
+      "guideExample": [
+        "시가총액 150 USD / MVRV 1.5 = 실현시가총액 100 USD."
+      ],
+      "guideMethod": [
+        "실현시가총액 = CapMrktCurUSD / CapMVRVCur, MVRV > 0"
+      ],
+      "implementation": "shared/network-catalog.ts; worker/network-data.ts",
+      "verification": "카탈로그·설명 연결 대조; 계산별 독립 검사는 감사 README 참조"
+    },
+    {
+      "id": "net:realized_price",
+      "title": "실현가격 · 역산",
+      "group": "가치·사이클",
+      "assets": [
+        "BTC",
+        "DOGE",
+        "ETH",
+        "XRP",
+        "LINK"
+      ],
+      "unit": "USD",
+      "source": "Coin Metrics",
+      "formula": "PriceUSD / CapMVRVCur (MVRV > 0)",
+      "defaultPeriod": "5y",
+      "renderer": "series",
+      "guide": "net-realized_price",
+      "shortMeaning": "동일 원천 USD 가격을 MVRV로 나눈 공급량당 실현 가치입니다. 개인의 실제 평균 매수가를 의미하지 않습니다.",
+      "baselineMeaning": "원천값에서 계산한 파생 지표입니다. 함께 쓰는 입력 지표와 중복된 정보를 확인하세요.",
+      "observationCadence": "일별 확정 관측",
+      "measurementScope": "Coin Metrics의 지원 코인별 정의 · 코인 간 저평가 순위가 아님",
+      "guideExample": [
+        "USD 가격 120 / MVRV 1.5 = 실현가격 80 USD."
+      ],
+      "guideMethod": [
+        "실현가격 = PriceUSD / CapMVRVCur, MVRV > 0"
+      ],
+      "implementation": "shared/network-catalog.ts; worker/network-data.ts",
+      "verification": "카탈로그·설명 연결 대조; 계산별 독립 검사는 감사 README 참조"
+    },
+    {
+      "id": "net:nupl",
+      "title": "NUPL · 역산",
+      "group": "온체인",
+      "assets": [
+        "BTC",
+        "DOGE",
+        "ETH",
+        "XRP",
+        "LINK"
+      ],
+      "unit": "비율",
+      "source": "Coin Metrics",
+      "formula": "1 − 1 / CapMVRVCur (MVRV > 0)",
+      "defaultPeriod": "5y",
+      "renderer": "series",
+      "guide": "net-nupl",
+      "thresholds": [
+        0
+      ],
+      "shortMeaning": "MVRV에서 역산한 미실현 손익 비율입니다. 0.25는 25%이며 음수도 가능합니다. 개별 보유자의 실제 손익 분포와는 다릅니다.",
+      "baselineMeaning": "원천값에서 계산한 파생 지표입니다. 함께 쓰는 입력 지표와 중복된 정보를 확인하세요.",
+      "observationCadence": "일별 확정 관측",
+      "measurementScope": "Coin Metrics의 지원 코인별 정의 · 코인 간 저평가 순위가 아님",
+      "guideExample": [
+        "MVRV 2이면 1 − 1/2 = 0.5 = 50%. MVRV 0.8이면 −0.25 = −25%."
+      ],
+      "guideMethod": [
+        "NUPL = 1 − 1 / CapMVRVCur, MVRV > 0"
+      ],
+      "implementation": "shared/network-catalog.ts; worker/network-data.ts",
+      "verification": "카탈로그·설명 연결 대조; 계산별 독립 검사는 감사 README 참조"
+    },
+    {
+      "id": "btc:mvrv",
+      "title": "MVRV",
+      "group": "가치·사이클",
+      "assets": [
+        "BTC"
+      ],
+      "unit": "배",
+      "source": "Bitview",
+      "formula": "시가총액 ÷ 실현시가총액",
+      "defaultPeriod": "5y",
+      "renderer": "series",
+      "guide": "btc-mvrv",
+      "thresholds": [
+        1
+      ],
+      "shortMeaning": "시가총액 ÷ 실현시가총액",
+      "baselineMeaning": "1 미만은 저평가 참고, 3.7 초과는 과열 참고 구간으로 색을 표시합니다. 1은 손익분기이며 경계값에 정확히 닿으면 경계로 표시합니다.",
+      "observationCadence": "일별 확정 관측",
+      "measurementScope": "Bitview의 지원 코인별 정의 · 코인 간 저평가 순위가 아님",
+      "guideExample": [
+        "1.5배는 현재 평가액이 실현평가액보다 50% 크다는 뜻입니다. 현재 시장 수치를 뜻하는 예시는 아닙니다."
+      ],
+      "guideMethod": [
+        "시가총액 ÷ 실현시가총액"
+      ],
+      "implementation": "shared/catalog.ts; worker/providers.ts",
+      "verification": "원천 제공값: 내부 재계산 불가, 원천 정의·표시 대조"
+    },
+    {
+      "id": "btc:realized_price",
+      "title": "실현가격",
+      "group": "가치·사이클",
+      "assets": [
+        "BTC"
+      ],
+      "unit": "USD",
+      "source": "Bitview",
+      "formula": "실현시가총액 ÷ 공급량",
+      "defaultPeriod": "5y",
+      "renderer": "series",
+      "guide": "btc-realized_price",
+      "shortMeaning": "현재 남아 있는 UTXO를 마지막 이동 시점 가격으로 평가한 평균 가격입니다. 실제 투자자의 평균 매수가와는 다릅니다.",
+      "baselineMeaning": "같은 Bitview 추정 USD 가격선이 실현가격 위·아래에 있는지, 둘 사이의 간격이 커지는지 살펴보세요.",
+      "observationCadence": "일별 확정 관측",
+      "measurementScope": "Bitview의 지원 코인별 정의 · 코인 간 저평가 순위가 아님",
+      "guideExample": [
+        "실현평가액 1,000억 달러 / 공급 100만 개 = 실현가격 10만 달러."
+      ],
+      "guideMethod": [
+        "실현시가총액 ÷ 공급량"
+      ],
+      "implementation": "shared/catalog.ts; worker/providers.ts",
+      "verification": "원천 제공값: 내부 재계산 불가, 원천 정의·표시 대조"
+    },
+    {
+      "id": "btc:sopr_24h",
+      "title": "SOPR",
+      "group": "온체인",
+      "assets": [
+        "BTC"
+      ],
+      "unit": "배",
+      "source": "Bitview",
+      "formula": "24시간 사용된 출력의 이동 시점 가치 합 ÷ 생성 시점 가치 합",
+      "defaultPeriod": "5y",
+      "renderer": "series",
+      "guide": "btc-sopr_24h",
+      "thresholds": [
+        1
+      ],
+      "shortMeaning": "최근 24시간에 사용된 UTXO의 이동 시점 가치와 생성 시점 가치의 비율입니다. 1을 기준으로 총이익과 총손실을 구분합니다.",
+      "baselineMeaning": "1 위는 이동 시점 가치 합이 생성 시점 가치 합보다 큼을, 1 아래는 그 반대를 뜻합니다. 하루 값과 지속 기간을 구분하세요.",
+      "observationCadence": "일별 확정 관측",
+      "measurementScope": "Bitview의 지원 코인별 정의 · 코인 간 저평가 순위가 아님",
+      "guideExample": [
+        "1.02는 이 지표가 집계한 가치 비율이 2% 높다는 뜻입니다. 투자자 모두가 2% 이익이라는 의미는 아닙니다."
+      ],
+      "guideMethod": [
+        "24시간 사용된 출력의 이동 시점 가치 합 ÷ 생성 시점 가치 합"
+      ],
+      "implementation": "shared/catalog.ts; worker/providers.ts",
+      "verification": "원천 제공값: 내부 재계산 불가, 원천 정의·표시 대조"
+    },
+    {
+      "id": "btc:nupl",
+      "title": "NUPL",
+      "group": "온체인",
+      "assets": [
+        "BTC"
+      ],
+      "unit": "%",
+      "source": "Bitview",
+      "formula": "(시가총액 − 실현시가총액) ÷ 시가총액",
+      "defaultPeriod": "5y",
+      "renderer": "series",
+      "guide": "btc-nupl",
+      "thresholds": [
+        0
+      ],
+      "shortMeaning": "전체 미실현 손익이 현재 시가총액에서 차지하는 비율입니다. 아래 값은 퍼센트로 표시됩니다.",
+      "baselineMeaning": "0 위는 순미실현 이익, 0 아래는 순미실현 손실입니다. 0·25·50·75%를 경계로 이익 정도를 색으로 나누며 75% 초과는 과열 참고 구간입니다.",
+      "observationCadence": "일별 확정 관측",
+      "measurementScope": "Bitview의 지원 코인별 정의 · 코인 간 저평가 순위가 아님",
+      "guideExample": [
+        "NUPL 0.25는 화면에서 25%로 표시됩니다. 값이 25→30%이면 변화는 +5%p입니다."
+      ],
+      "guideMethod": [
+        "(시가총액 − 실현시가총액) ÷ 시가총액"
+      ],
+      "implementation": "shared/catalog.ts; worker/providers.ts",
+      "verification": "원천 제공값: 내부 재계산 불가, 원천 정의·표시 대조"
+    },
+    {
+      "id": "btc:mvrv_z",
+      "title": "MVRV-Z",
+      "group": "온체인",
+      "assets": [
+        "BTC"
+      ],
+      "unit": "Z",
+      "source": "Bitview",
+      "formula": "(시가총액 − 실현시가총액) ÷ 해당일까지의 시가총액 모집단 표준편차 · 최소 365개 유효 일별 표본",
+      "defaultPeriod": "5y",
+      "renderer": "series",
+      "guide": "btc-mvrv_z",
+      "thresholds": [
+        0
+      ],
+      "shortMeaning": "시가총액과 실현시가총액의 차이를 시가총액의 누적 변동 폭으로 나눈 값입니다. Bitview 기준 데이터를 사용하며, 타사 값과 같다고 보장하지 않습니다.",
+      "baselineMeaning": "각 날짜까지의 시가총액 모집단 표준편차를 분모로 사용합니다. 첫 365개 유효 일별 표본이 쌓이기 전에는 표시하지 않습니다.",
+      "observationCadence": "일별 확정 관측",
+      "measurementScope": "Bitview의 지원 코인별 정의 · 코인 간 저평가 순위가 아님",
+      "guideExample": [
+        "평가액 차이 3 / 누적 표준편차 2 = Z 1.5. 배수나 퍼센트와는 다른 단위입니다."
+      ],
+      "guideMethod": [
+        "(시가총액 − 실현시가총액) ÷ 해당일까지의 시가총액 모집단 표준편차 · 최소 365개 유효 일별 표본"
+      ],
+      "implementation": "shared/catalog.ts; worker/providers.ts",
+      "verification": "원천 제공값: 내부 재계산 불가, 원천 정의·표시 대조"
+    },
+    {
+      "id": "btc:sth_mvrv",
+      "title": "단기 보유자 MVRV",
+      "group": "온체인",
+      "assets": [
+        "BTC"
+      ],
+      "unit": "배",
+      "source": "Bitview",
+      "formula": "BTC 가격 ÷ 단기 보유자 실현가격",
+      "defaultPeriod": "5y",
+      "renderer": "series",
+      "guide": "btc-sth_mvrv",
+      "thresholds": [
+        1
+      ],
+      "shortMeaning": "Bitview의 단기 보유자 UTXO 집단에 대한 MVRV입니다. 집단 구분은 원천의 정의를 따릅니다.",
+      "baselineMeaning": "Bitview 단기 보유자 집단에서 1을 기준으로 가격과 실현가격의 상대 위치를 살펴봅니다.",
+      "observationCadence": "일별 확정 관측",
+      "measurementScope": "Bitview의 지원 코인별 정의 · 코인 간 저평가 순위가 아님",
+      "guideExample": [
+        "동일 원천 BTC 가격 110 / 단기 실현가격 100 = 1.1배."
+      ],
+      "guideMethod": [
+        "BTC 가격 ÷ 단기 보유자 실현가격"
+      ],
+      "implementation": "shared/catalog.ts; worker/providers.ts",
+      "verification": "원천 제공값: 내부 재계산 불가, 원천 정의·표시 대조"
+    },
+    {
+      "id": "btc:lth_mvrv",
+      "title": "장기 보유자 MVRV",
+      "group": "온체인",
+      "assets": [
+        "BTC"
+      ],
+      "unit": "배",
+      "source": "Bitview",
+      "formula": "BTC 가격 ÷ 장기 보유자 실현가격",
+      "defaultPeriod": "5y",
+      "renderer": "series",
+      "guide": "btc-lth_mvrv",
+      "thresholds": [
+        1
+      ],
+      "shortMeaning": "Bitview의 장기 보유자 UTXO 집단에 대한 MVRV입니다. 서로 다른 제공자의 집단 정의를 혼합하지 않습니다.",
+      "baselineMeaning": "Bitview 장기 보유자 집단의 실현평가와 현재 가격을 비교합니다. 단기 집단과 값의 차이 및 추이를 살펴보세요.",
+      "observationCadence": "일별 확정 관측",
+      "measurementScope": "Bitview의 지원 코인별 정의 · 코인 간 저평가 순위가 아님",
+      "guideExample": [
+        "동일 원천 BTC 가격 150 / 장기 실현가격 100 = 1.5배."
+      ],
+      "guideMethod": [
+        "BTC 가격 ÷ 장기 보유자 실현가격"
+      ],
+      "implementation": "shared/catalog.ts; worker/providers.ts",
+      "verification": "원천 제공값: 내부 재계산 불가, 원천 정의·표시 대조"
+    },
+    {
+      "id": "btc:sth_realized_price",
+      "title": "단기 보유자 실현가격",
+      "group": "온체인",
+      "assets": [
+        "BTC"
+      ],
+      "unit": "USD",
+      "source": "Bitview",
+      "formula": "단기 보유자 실현시가총액 ÷ 해당 집단 공급량",
+      "defaultPeriod": "5y",
+      "renderer": "series",
+      "guide": "btc-sth_realized_price",
+      "shortMeaning": "단기 보유자 UTXO 집단의 마지막 이동 가격으로 계산한 실현가격입니다.",
+      "baselineMeaning": "같은 원천 BTC 추정 가격이 이 선에서 얼마나 떨어져 있는지 봅니다. 단기 MVRV는 이 관계를 비율로 표현합니다.",
+      "observationCadence": "일별 확정 관측",
+      "measurementScope": "Bitview의 지원 코인별 정의 · 코인 간 저평가 순위가 아님",
+      "guideExample": [
+        "집단 실현평가액 500억 달러 / 해당 공급 50만 개 = 10만 달러."
+      ],
+      "guideMethod": [
+        "단기 보유자 실현시가총액 ÷ 해당 집단 공급량"
+      ],
+      "implementation": "shared/catalog.ts; worker/providers.ts",
+      "verification": "원천 제공값: 내부 재계산 불가, 원천 정의·표시 대조"
+    },
+    {
+      "id": "futures:funding",
+      "title": "확정 펀딩률",
+      "unit": "%",
+      "formula": "실제 정산 펀딩 비율 × 100",
+      "guide": "futures-funding",
+      "group": "선물",
+      "assets": [
+        "BTC",
+        "DOGE",
+        "ETH",
+        "SOL",
+        "XRP",
+        "LINK",
+        "ONDO",
+        "PEPE"
+      ],
+      "source": "Bybit USDT 무기한",
+      "defaultPeriod": "3m",
+      "renderer": "series",
+      "thresholds": [
+        0
+      ],
+      "shortMeaning": "무기한 계약의 실제 정산 비율입니다.",
+      "baselineMeaning": "양수·음수와 전환 시점을 보며 해당 거래소의 정산 간격을 확인합니다.",
+      "observationCadence": "거래소 정산 주기",
+      "measurementScope": "Bybit USDT 무기한 계약 · 거래소 전체 시장과 구분",
+      "guideExample": [
+        "fundingRate = 0.0001이면 +0.01%입니다.",
+        "해당 정산의 포지션 가치가 10,000 USDT라면 비율상 비용은 1 USDT입니다."
+      ],
+      "guideMethod": [
+        "화면 펀딩률(%) = 원천 fundingRate × 100"
+      ],
+      "implementation": "shared/derivative-contracts.ts; worker/derivatives.ts",
+      "verification": "카탈로그·설명 연결 대조; 계산별 독립 검사는 감사 README 참조"
+    },
+    {
+      "id": "futures:open_interest",
+      "title": "미결제약정 · 시간별",
+      "unit": "자산",
+      "formula": "Bybit USDT 무기한 계약의 코인 수량",
+      "guide": "futures-open_interest",
+      "group": "선물",
+      "assets": [
+        "BTC",
+        "DOGE",
+        "ETH",
+        "SOL",
+        "XRP",
+        "LINK",
+        "ONDO",
+        "PEPE"
+      ],
+      "source": "Bybit USDT 무기한",
+      "defaultPeriod": "3m",
+      "renderer": "series",
+      "shortMeaning": "아직 청산·상쇄되지 않은 계약의 코인 수량입니다.",
+      "baselineMeaning": "가격·펀딩과 함께 증가와 감소를 봅니다. 미결제약정만으로 롱·숏 방향을 알 수 없습니다.",
+      "observationCadence": "시간별",
+      "measurementScope": "Bybit USDT 무기한 계약 · 거래소 전체 시장과 구분",
+      "guideExample": [
+        "원천의 BTC openInterest가 100이면 100 BTC 규모입니다. 100 USD나 100개 계정이 아닙니다."
+      ],
+      "guideMethod": [
+        "Bybit USDT 선형 계약의 openInterest를 기초 코인 수량으로 표시"
+      ],
+      "implementation": "shared/derivative-contracts.ts; worker/derivatives.ts",
+      "verification": "카탈로그·설명 연결 대조; 계산별 독립 검사는 감사 README 참조"
+    },
+    {
+      "id": "futures:open_interest_daily",
+      "title": "미결제약정 · 일별",
+      "unit": "자산",
+      "formula": "Bybit USDT 무기한 계약의 코인 수량 · 일별",
+      "guide": "futures-open_interest_daily",
+      "group": "선물",
+      "assets": [
+        "BTC",
+        "DOGE",
+        "ETH",
+        "SOL",
+        "XRP",
+        "LINK",
+        "ONDO",
+        "PEPE"
+      ],
+      "source": "Bybit USDT 무기한",
+      "defaultPeriod": "3m",
+      "renderer": "series",
+      "shortMeaning": "아직 청산·상쇄되지 않은 계약의 코인 수량입니다.",
+      "baselineMeaning": "가격·펀딩과 함께 증가와 감소를 봅니다. 미결제약정만으로 롱·숏 방향을 알 수 없습니다.",
+      "observationCadence": "일별 확정 관측",
+      "measurementScope": "Bybit USDT 무기한 계약 · 거래소 전체 시장과 구분",
+      "guideExample": [
+        "원천의 BTC openInterest가 100이면 100 BTC 규모입니다. 100 USD나 100개 계정이 아닙니다."
+      ],
+      "guideMethod": [
+        "Bybit USDT 선형 계약의 openInterest를 기초 코인 수량으로 표시"
+      ],
+      "implementation": "shared/derivative-contracts.ts; worker/derivatives.ts",
+      "verification": "카탈로그·설명 연결 대조; 계산별 독립 검사는 감사 README 참조"
+    },
+    {
+      "id": "futures:long_account_ratio",
+      "title": "롱 계정 비중 · 시간별",
+      "unit": "%",
+      "formula": "롱 보유 계정 / 전체 포지션 보유 계정 × 100",
+      "guide": "futures-long_account_ratio",
+      "group": "선물",
+      "assets": [
+        "BTC",
+        "DOGE",
+        "ETH",
+        "SOL",
+        "XRP",
+        "LINK",
+        "ONDO",
+        "PEPE"
+      ],
+      "source": "Bybit USDT 무기한",
+      "defaultPeriod": "3m",
+      "renderer": "series",
+      "shortMeaning": "롱을 보유한 계정의 비중으로 포지션 금액 비중과 다릅니다.",
+      "baselineMeaning": "계정 수의 편향과 가격 변화를 함께 봅니다. 롱 계정이 많아도 총 포지션 금액이 큰 것은 아닙니다.",
+      "observationCadence": "시간별",
+      "measurementScope": "Bybit USDT 무기한 계약 · 거래소 전체 시장과 구분",
+      "guideExample": [
+        "buyRatio = 0.6이면 롱 계정 비중 60%, 나머지 숏 계정 비중은 40%입니다."
+      ],
+      "guideMethod": [
+        "롱 계정 비중(%) = Bybit buyRatio × 100"
+      ],
+      "implementation": "shared/derivative-contracts.ts; worker/derivatives.ts",
+      "verification": "카탈로그·설명 연결 대조; 계산별 독립 검사는 감사 README 참조"
+    },
+    {
+      "id": "futures:long_account_ratio_daily",
+      "title": "롱 계정 비중 · 일별",
+      "unit": "%",
+      "formula": "롱 보유 계정 / 전체 포지션 보유 계정 × 100 · 일별",
+      "guide": "futures-long_account_ratio_daily",
+      "group": "선물",
+      "assets": [
+        "BTC",
+        "DOGE",
+        "ETH",
+        "SOL",
+        "XRP",
+        "LINK",
+        "ONDO",
+        "PEPE"
+      ],
+      "source": "Bybit USDT 무기한",
+      "defaultPeriod": "3m",
+      "renderer": "series",
+      "shortMeaning": "롱을 보유한 계정의 비중으로 포지션 금액 비중과 다릅니다.",
+      "baselineMeaning": "계정 수의 편향과 가격 변화를 함께 봅니다. 롱 계정이 많아도 총 포지션 금액이 큰 것은 아닙니다.",
+      "observationCadence": "일별 확정 관측",
+      "measurementScope": "Bybit USDT 무기한 계약 · 거래소 전체 시장과 구분",
+      "guideExample": [
+        "buyRatio = 0.6이면 롱 계정 비중 60%, 나머지 숏 계정 비중은 40%입니다."
+      ],
+      "guideMethod": [
+        "롱 계정 비중(%) = Bybit buyRatio × 100"
+      ],
+      "implementation": "shared/derivative-contracts.ts; worker/derivatives.ts",
+      "verification": "카탈로그·설명 연결 대조; 계산별 독립 검사는 감사 README 참조"
+    },
+    {
+      "id": "rsi",
+      "title": "RSI 14",
+      "unit": "RSI",
+      "formula": "RSI = 100 − 100 / (1 + 평균 상승폭 / 평균 하락폭) · Wilder 14일",
+      "guide": "rsi",
+      "group": "기술·성과",
+      "assets": [
+        "BTC",
+        "DOGE",
+        "ETH",
+        "SOL",
+        "XRP",
+        "LINK",
+        "ONDO",
+        "PEPE"
+      ],
+      "source": "선택 가격 원천",
+      "defaultPeriod": "1y",
+      "renderer": "series",
+      "thresholds": [
+        30,
+        70
+      ],
+      "shortMeaning": "상승폭과 하락폭의 균형을 0~100으로 봅니다.",
+      "baselineMeaning": "30·70 경계와 지속 기간을 함께 봅니다. 강한 추세에서는 경계 밖에 오래 머물 수 있습니다.",
+      "observationCadence": "일별 확정 관측",
+      "measurementScope": "선택 원천의 가격 이력 · 원천을 이어 붙이지 않음",
+      "guideExample": [
+        "평균 상승폭 2, 평균 하락폭 1이면 RS = 2입니다.",
+        "RSI = 100 − 100 / 3 ≈ 66.67."
+      ],
+      "guideMethod": [
+        "변화 Δ = 이번 종가 − 직전 종가",
+        "상승폭 G = max(Δ, 0), 하락폭 L = max(−Δ, 0)",
+        "초기 평균 = 첫 N개 변화의 평균",
+        "이후 평균 = [직전 평균 × (N−1) + 이번 폭] / N",
+        "RS = 평균 상승폭 / 평균 하락폭",
+        "RSI = 100 − 100 / (1 + RS)",
+        "기본 N = 14. 차트에서 기간을 바꾸면 N도 바뀝니다."
+      ],
+      "implementation": "shared/indicators.ts; src/IndicatorWorkspace.tsx",
+      "verification": "카탈로그·설명 연결 대조; 계산별 독립 검사는 감사 README 참조"
+    },
+    {
+      "id": "drawdown",
+      "title": "고점 대비 낙폭",
+      "unit": "%",
+      "formula": "(당일 종가 / 그날까지 최고 종가 − 1) × 100",
+      "guide": "drawdown",
+      "group": "기술·성과",
+      "assets": [
+        "BTC",
+        "DOGE",
+        "ETH",
+        "SOL",
+        "XRP",
+        "LINK",
+        "ONDO",
+        "PEPE"
+      ],
+      "source": "선택 가격 원천",
+      "defaultPeriod": "1y",
+      "renderer": "series",
+      "thresholds": [
+        0
+      ],
+      "shortMeaning": "과거 최고 종가에서 얼마나 내려왔는지 봅니다.",
+      "baselineMeaning": "0%가 최고 종가입니다. 원천의 관측 시작일과 회복에 걸린 기간을 확인합니다.",
+      "observationCadence": "일별 확정 관측",
+      "measurementScope": "선택 원천의 가격 이력 · 원천을 이어 붙이지 않음",
+      "guideExample": [
+        "그때까지 최고 종가가 200이고 오늘 종가가 120이면 (120 / 200 − 1) × 100 = −40%.",
+        "120에서 다시 200으로 오르려면 (200 / 120 − 1) × 100 ≈ +66.67%가 필요합니다."
+      ],
+      "guideMethod": [
+        "Hₜ = 관측 시작일부터 t일까지의 최고 종가",
+        "낙폭 Dₜ = (Pₜ / Hₜ − 1) × 100"
+      ],
+      "implementation": "shared/indicators.ts; src/IndicatorWorkspace.tsx",
+      "verification": "카탈로그·설명 연결 대조; 계산별 독립 검사는 감사 README 참조"
+    },
+    {
+      "id": "relative",
+      "title": "BTC 대비 가격 비율",
+      "unit": "BTC/자산",
+      "formula": "같은 원천·통화·UTC 날짜의 코인 종가 / BTC 종가",
+      "guide": "relative",
+      "group": "기술·성과",
+      "assets": [
+        "DOGE",
+        "ETH",
+        "SOL",
+        "XRP",
+        "LINK",
+        "ONDO",
+        "PEPE"
+      ],
+      "source": "선택 가격 원천",
+      "defaultPeriod": "1y",
+      "renderer": "series",
+      "shortMeaning": "선택 코인과 비교 코인의 성과와 동행 정도를 비교합니다.",
+      "baselineMeaning": "시작값 100·백분율 변화·선택 코인 ÷ 비교 코인 가격 비율을 고릅니다.",
+      "observationCadence": "일별 확정 관측",
+      "measurementScope": "선택 원천의 가격 이력 · 원천을 이어 붙이지 않음",
+      "guideExample": [
+        "ETH 2,000→3,000이면 시작값 100은 150, 변화율은 +50%입니다.",
+        "같은 날 BTC가 60,000이면 ETH/BTC = 3,000 / 60,000 = 0.05 BTC입니다."
+      ],
+      "guideMethod": [
+        "시작값 100 = Pₜ / P₀ × 100",
+        "백분율 변화 = (Pₜ / P₀ − 1) × 100",
+        "가격 비율 = 선택 코인 가격 / 비교 코인 가격",
+        "일별 로그수익률 rₜ = ln(Pₜ / Pₜ₋₁)",
+        "상관 ρ = Σ[(rA − 평균rA)(rB − 평균rB)] / √[Σ(rA − 평균rA)² × Σ(rB − 평균rB)²]"
+      ],
+      "implementation": "shared/indicators.ts; src/IndicatorWorkspace.tsx",
+      "verification": "카탈로그·설명 연결 대조; 계산별 독립 검사는 감사 README 참조"
+    },
+    {
+      "id": "volume",
+      "title": "거래량",
+      "unit": "자산",
+      "formula": "선택 거래소의 확정 일봉 거래량",
+      "guide": "volume",
+      "group": "기술·성과",
+      "assets": [
+        "BTC",
+        "DOGE",
+        "ETH",
+        "SOL",
+        "XRP",
+        "LINK",
+        "ONDO",
+        "PEPE"
+      ],
+      "source": "선택 가격 원천",
+      "defaultPeriod": "1y",
+      "renderer": "series",
+      "shortMeaning": "선택 거래소에서 거래된 코인 수량을 봅니다.",
+      "baselineMeaning": "가격 변화와 거래량 확대를 함께 봅니다. 시장 전체 거래량으로 해석하지 않습니다.",
+      "observationCadence": "일별 확정 관측",
+      "measurementScope": "선택 원천의 가격 이력 · 원천을 이어 붙이지 않음",
+      "guideExample": [
+        "거래 3건의 수량이 BTC 2개, 3개, 5개라면 거래량 합은 10 BTC입니다.",
+        "각 체결 가격이 다르면 10 BTC × 마지막 가격은 실제 거래대금 합계와 다를 수 있습니다."
+      ],
+      "guideMethod": [
+        "거래량 = 해당 거래소 확정 일봉 안에서 체결된 기초 코인 수량의 합"
+      ],
+      "implementation": "shared/indicators.ts; src/IndicatorWorkspace.tsx",
+      "verification": "카탈로그·설명 연결 대조; 계산별 독립 검사는 감사 README 참조"
+    },
+    {
+      "id": "view:price",
+      "title": "가격·지표",
+      "group": "기술·성과",
+      "assets": [
+        "BTC",
+        "DOGE",
+        "ETH",
+        "SOL",
+        "XRP",
+        "LINK",
+        "ONDO",
+        "PEPE"
+      ],
+      "unit": "가격",
+      "source": "선택 가격 원천",
+      "formula": "몸통=|종가−시가|, 범위=고가−저가",
+      "defaultPeriod": "1y",
+      "renderer": "price",
+      "guide": "candles",
+      "view": "price",
+      "shortMeaning": "한 봉의 시가·고가·저가·종가와 진행 상태를 읽습니다.",
+      "baselineMeaning": "몸통은 시가~종가, 꼬리는 고가~저가입니다. 진행 봉은 마감 전까지 모양이 바뀝니다.",
+      "observationCadence": "일별 확정 관측",
+      "measurementScope": "선택 원천의 가격 이력 · 원천을 이어 붙이지 않음",
+      "guideExample": [
+        "시가 100, 고가 115, 저가 95, 종가 110이면 몸통 10, 범위 20, 위·아래꼬리는 각각 5입니다."
+      ],
+      "guideMethod": [
+        "몸통 = |종가 − 시가|",
+        "전체 범위 = 고가 − 저가",
+        "위꼬리 = 고가 − max(시가, 종가)",
+        "아래꼬리 = min(시가, 종가) − 저가"
+      ],
+      "implementation": "shared/advanced-analysis.ts; src/IndicatorWorkspace.tsx; src/AnalysisLab.tsx",
+      "verification": "카탈로그·설명 연결 대조; 계산별 독립 검사는 감사 README 참조"
+    },
+    {
+      "id": "view:rainbow",
+      "title": "가격 위치 밴드",
+      "group": "가치·사이클",
+      "assets": [
+        "BTC",
+        "DOGE",
+        "ETH",
+        "SOL",
+        "XRP",
+        "LINK",
+        "ONDO",
+        "PEPE"
+      ],
+      "unit": "가격",
+      "source": "선택 가격 원천",
+      "formula": "exp(μ + kσ) · 표시일 이전 연속 730일 로그가격",
+      "defaultPeriod": "all",
+      "renderer": "bands",
+      "guide": "rainbow",
+      "view": "rainbow",
+      "shortMeaning": "과거 730일 분포에서 현재 가격의 위치를 봅니다.",
+      "baselineMeaning": "색 띠는 그날 이전 730일의 가격을 요약한 범위이고, 실제 가격선은 비교할 종가입니다. 가격선이 띠의 위쪽에 있으면 최근 2년과 비교해 높은 위치, 아래쪽이면 낮은 위치입니다. 매일 비교 표본이 달라지므로 가격이 같아도 위치는 바뀔 수 있습니다.",
+      "observationCadence": "일별 확정 관측",
+      "measurementScope": "선택 원천의 가격 이력 · 원천을 이어 붙이지 않음",
+      "guideExample": [
+        "직전 730일을 계산한 결과 μ = ln(100), σ = 0.20이라고 가정합니다.",
+        "오늘 종가가 120이면 z = ln(120 / 100) / 0.20 ≈ +0.91입니다.",
+        "+0.55σ 경계는 100 × exp(0.55 × 0.20) ≈ 111.63, +1.3σ 경계는 약 129.69입니다."
+      ],
+      "guideMethod": [
+        "N = 730, xᵢ = ln(Pₜ₋ᵢ), i = 1…N",
+        "μ = (x₁ + … + xₙ) / N",
+        "σ = √[Σ(xᵢ − μ)² / N]",
+        "중심 가격 = exp(μ)",
+        "각 경계 가격 Bₖ = exp(μ + k × σ)",
+        "k = -2, -1.3, -0.55, 0.55, 1.3, 2",
+        "오늘의 위치 z = [ln(Pₜ) − μ] / σ"
+      ],
+      "implementation": "shared/history-bands.ts; src/IndicatorWorkspace.tsx",
+      "verification": "카탈로그·설명 연결 대조; 계산별 독립 검사는 감사 README 참조"
+    },
+    {
+      "id": "view:btc_rainbow",
+      "title": "BTC 레인보우 · 로그회귀",
+      "group": "가치·사이클",
+      "assets": [
+        "BTC"
+      ],
+      "unit": "가격",
+      "source": "선택 가격 원천",
+      "formula": "ln(P) = a + b × ln(제네시스 이후 경과일) · 과거 관측만 회귀",
+      "defaultPeriod": "all",
+      "renderer": "bands",
+      "guide": "btc-rainbow",
+      "view": "btc_rainbow",
+      "shortMeaning": "BTC 가격이 이전 관측으로 계산한 장기 로그회귀에서 얼마나 떨어져 있는지 봅니다. 730일 가격 위치 밴드와 다른 모형입니다.",
+      "baselineMeaning": "하단·중앙·상단은 회귀선 대비 위치입니다. 색상은 매수·매도 신호가 아니며, 실제 가격이 밴드 밖에 나갈 수 있습니다.",
+      "observationCadence": "일별 확정 관측",
+      "measurementScope": "선택 원천의 가격 이력 · 원천을 이어 붙이지 않음",
+      "guideExample": [
+        "중심 가격 100, σ=0.2라고 가정하면 +0.25σ 경계는 100×exp(0.05)≈105.13입니다.",
+        "당일 가격 120이면 z=ln(1.2)/0.2≈0.91입니다."
+      ],
+      "guideMethod": [
+        "x = ln(2009-01-03 이후 경과일), y = ln(BTC USD 종가)",
+        "표시일 이전 유효 관측 N≥730개만 사용",
+        "b = Σ(x−평균x)(y−평균y) / Σ(x−평균x)², a = 평균y − b×평균x",
+        "σ = √[Σ(y−a−bx)² / N]",
+        "경계 = exp(a+bx+kσ), k=−2.25부터 +2.25까지 0.5 간격, 10개 경계·9개 구간",
+        "z = [ln(P)−a−bx]/σ. σ=0이면 z는 비어 있습니다."
+      ],
+      "implementation": "shared/btc-rainbow.ts; src/IndicatorWorkspace.tsx",
+      "verification": "카탈로그·설명 연결 대조; 계산별 독립 검사는 감사 README 참조"
+    },
+    {
+      "id": "view:ribbon",
+      "title": "이동평균 리본",
+      "group": "기술·성과",
+      "assets": [
+        "BTC",
+        "DOGE",
+        "ETH",
+        "SOL",
+        "XRP",
+        "LINK",
+        "ONDO",
+        "PEPE"
+      ],
+      "unit": "가격",
+      "source": "선택 가격 원천",
+      "formula": "기본 SMA 7·25·50·100, 장기 SMA 20·50·100·200, 빠른 EMA 8·13·21·34·55·89. 선택 봉의 확정 종가 기준.",
+      "defaultPeriod": "1y",
+      "renderer": "price",
+      "guide": "ribbon",
+      "view": "ribbon",
+      "shortMeaning": "짧고 긴 이동평균의 배열을 한 번에 봅니다. 리본 설정에서 방식·기간을 바꿉니다.",
+      "baselineMeaning": "선의 순서·간격·방향이 바뀌는지 확인합니다.",
+      "observationCadence": "선택한 확정 봉",
+      "measurementScope": "선택 원천의 가격 이력 · 원천을 이어 붙이지 않음",
+      "guideExample": [
+        "SMA7 = 120, SMA25 = 110, SMA50 = 100, SMA100 = 90이라고 가정합니다.",
+        "짧은 기간의 평균일수록 위에 놓입니다. 다음에는 이 선들이 함께 오르는지도 봅니다."
+      ],
+      "guideMethod": [
+        "SMA 리본: 각 N에 대해 Σ(최근 N개 확정 종가) / N",
+        "EMA 리본: α = 2/(N+1), EMAₜ = αPₜ + (1−α)EMAₜ₋₁",
+        "기본 SMA: 7·25·50·100 / 장기 SMA: 20·50·100·200 / 빠른 EMA: 8·13·21·34·55·89"
+      ],
+      "implementation": "shared/indicators.ts; src/IndicatorWorkspace.tsx",
+      "verification": "카탈로그·설명 연결 대조; 계산별 독립 검사는 감사 README 참조"
+    },
+    {
+      "id": "view:vwap",
+      "title": "365일 VWAP",
+      "group": "기술·성과",
+      "assets": [
+        "BTC",
+        "DOGE",
+        "ETH",
+        "SOL",
+        "XRP",
+        "LINK",
+        "ONDO",
+        "PEPE"
+      ],
+      "unit": "가격",
+      "source": "선택 가격 원천",
+      "formula": "연속 365일 Σ((고가+저가+종가)/3 × 코인 거래량) / Σ거래량",
+      "defaultPeriod": "1y",
+      "renderer": "price",
+      "guide": "vwap",
+      "view": "vwap",
+      "shortMeaning": "거래량이 큰 날에 더 무게를 둔 평균 가격입니다.",
+      "baselineMeaning": "100개 확정 일봉 연속 하회 후 7개 연속 상회하면 재돌파 관찰을 한 번 표시합니다.",
+      "observationCadence": "일별 확정 관측",
+      "measurementScope": "선택 원천의 가격 이력 · 원천을 이어 붙이지 않음",
+      "guideExample": [
+        "원리를 보여 주는 2일 축약 예: HLC3가 100·120, 거래량이 1·3입니다.",
+        "(100 × 1 + 120 × 3) / (1 + 3) = 115. 단순 평균은 110입니다."
+      ],
+      "guideMethod": [
+        "HLC3ᵢ = (고가ᵢ + 저가ᵢ + 종가ᵢ) / 3",
+        "VWAP₃₆₅ = Σ(HLC3ᵢ × Vᵢ) / Σ Vᵢ",
+        "오늘을 포함한 연속 365개 확정 일봉을 사용",
+        "재돌파 관찰: 100일 연속 종가 < VWAP 뒤 7일 연속 종가 > VWAP"
+      ],
+      "implementation": "shared/advanced-analysis.ts; src/IndicatorWorkspace.tsx; src/AnalysisLab.tsx",
+      "verification": "카탈로그·설명 연결 대조; 계산별 독립 검사는 감사 README 참조"
+    },
+    {
+      "id": "view:bb",
+      "title": "볼린저밴드",
+      "group": "기술·성과",
+      "assets": [
+        "BTC",
+        "DOGE",
+        "ETH",
+        "SOL",
+        "XRP",
+        "LINK",
+        "ONDO",
+        "PEPE"
+      ],
+      "unit": "가격",
+      "source": "선택 가격 원천",
+      "formula": "20개 확정 종가의 SMA ± 2 × 모집단 표준편차",
+      "defaultPeriod": "1y",
+      "renderer": "price",
+      "guide": "bb",
+      "view": "price",
+      "shortMeaning": "평균 주위의 가격 변동 폭을 봅니다.",
+      "baselineMeaning": "밴드가 좁아지는지, 넓어지는지와 종가 위치를 함께 봅니다.",
+      "observationCadence": "일별 확정 관측",
+      "measurementScope": "선택 원천의 가격 이력 · 원천을 이어 붙이지 않음",
+      "guideExample": [
+        "20개 종가의 평균이 100, 표준편차가 5라고 가정합니다.",
+        "상단 = 100 + 2 × 5 = 110, 하단 = 100 − 2 × 5 = 90."
+      ],
+      "guideMethod": [
+        "중심선 M = 최근 N개 종가의 평균",
+        "σ = √[Σ(Pᵢ − M)² / N]",
+        "상단 = M + K × σ, 하단 = M − K × σ",
+        "기본 N = 20봉, K = 2"
+      ],
+      "implementation": "shared/indicators.ts; src/IndicatorWorkspace.tsx",
+      "verification": "카탈로그·설명 연결 대조; 계산별 독립 검사는 감사 README 참조"
+    },
+    {
+      "id": "view:relative",
+      "title": "상대강도·상관",
+      "group": "기술·성과",
+      "assets": [
+        "BTC",
+        "DOGE",
+        "ETH",
+        "SOL",
+        "XRP",
+        "LINK",
+        "ONDO",
+        "PEPE"
+      ],
+      "unit": "가격",
+      "source": "선택 가격 원천",
+      "formula": "공통 날짜 정렬; 상관은 연속 30·90·365일 로그수익률의 Pearson 계수",
+      "defaultPeriod": "1y",
+      "renderer": "lab",
+      "guide": "relative",
+      "view": "relative",
+      "shortMeaning": "선택 코인과 비교 코인의 성과와 동행 정도를 비교합니다.",
+      "baselineMeaning": "시작값 100·백분율 변화·선택 코인 ÷ 비교 코인 가격 비율을 고릅니다.",
+      "observationCadence": "일별 확정 관측",
+      "measurementScope": "선택 코인과 비교 코인 · 동일 원천·통화·공통 날짜",
+      "guideExample": [
+        "ETH 2,000→3,000이면 시작값 100은 150, 변화율은 +50%입니다.",
+        "같은 날 BTC가 60,000이면 ETH/BTC = 3,000 / 60,000 = 0.05 BTC입니다."
+      ],
+      "guideMethod": [
+        "시작값 100 = Pₜ / P₀ × 100",
+        "백분율 변화 = (Pₜ / P₀ − 1) × 100",
+        "가격 비율 = 선택 코인 가격 / 비교 코인 가격",
+        "일별 로그수익률 rₜ = ln(Pₜ / Pₜ₋₁)",
+        "상관 ρ = Σ[(rA − 평균rA)(rB − 평균rB)] / √[Σ(rA − 평균rA)² × Σ(rB − 평균rB)²]"
+      ],
+      "implementation": "shared/advanced-analysis.ts; src/IndicatorWorkspace.tsx; src/AnalysisLab.tsx",
+      "verification": "카탈로그·설명 연결 대조; 계산별 독립 검사는 감사 README 참조"
+    },
+    {
+      "id": "view:cycles",
+      "title": "반감기 사이클",
+      "group": "가치·사이클",
+      "assets": [
+        "BTC"
+      ],
+      "unit": "가격",
+      "source": "선택 가격 원천",
+      "formula": "각 구간 첫 관측을 100으로 정규화 · 실제 경과일 축",
+      "defaultPeriod": "all",
+      "renderer": "lab",
+      "guide": "cycles",
+      "view": "cycles",
+      "shortMeaning": "반감기 이후 경과일을 맞춰 과거 경로를 비교합니다.",
+      "baselineMeaning": "반감기 날짜와 실제 첫 관측일을 구분하고 진행 중인 구간의 길이를 확인합니다.",
+      "observationCadence": "일별 확정 관측",
+      "measurementScope": "선택 원천의 가격 이력 · 원천을 이어 붙이지 않음",
+      "guideExample": [
+        "첫 관측 10,000, 100일 뒤 15,000이면 (100일, 150)으로 표시합니다.",
+        "다른 사이클이 100일째 120이면 각각 +50%, +20%라는 뜻입니다."
+      ],
+      "guideMethod": [
+        "정규화 가격 = 해당 종가 / 구간 첫 실제 종가 × 100",
+        "가로축 = (관측 날짜 − 첫 실제 관측 날짜)의 UTC 경과일",
+        "반감기 기준: 2012-11-28, 2016-07-09, 2020-05-11, 2024-04-20"
+      ],
+      "implementation": "shared/advanced-analysis.ts; src/IndicatorWorkspace.tsx; src/AnalysisLab.tsx",
+      "verification": "카탈로그·설명 연결 대조; 계산별 독립 검사는 감사 README 참조"
+    },
+    {
+      "id": "view:windows",
+      "title": "과거 구간 비교",
+      "group": "기술·성과",
+      "assets": [
+        "BTC",
+        "DOGE",
+        "ETH",
+        "SOL",
+        "XRP",
+        "LINK",
+        "ONDO",
+        "PEPE"
+      ],
+      "unit": "가격",
+      "source": "선택 가격 원천",
+      "formula": "각 구간 첫 관측=100 · 경과일 정렬",
+      "defaultPeriod": "1y",
+      "renderer": "lab",
+      "guide": "windows",
+      "view": "windows",
+      "shortMeaning": "직접 고른 두 기간을 겹치거나 나란히 봅니다.",
+      "baselineMeaning": "각 기간의 시작일과 첫 관측을 확인한 뒤 형태·수익률 차이를 봅니다.",
+      "observationCadence": "일별 확정 관측",
+      "measurementScope": "선택 원천의 가격 이력 · 원천을 이어 붙이지 않음",
+      "guideExample": [
+        "A 구간 100→120, B 구간 200→240은 둘 다 100→120으로 표시됩니다.",
+        "가격이 두 배 다른 두 구간이 같은 +20% 상승을 보인 예입니다."
+      ],
+      "guideMethod": [
+        "구간별 시작값 = 100",
+        "이후 값 = 가격 / 각 구간 첫 실제 가격 × 100",
+        "날짜축 = 각 구간의 첫 실제 관측부터 경과일"
+      ],
+      "implementation": "shared/advanced-analysis.ts; src/IndicatorWorkspace.tsx; src/AnalysisLab.tsx",
+      "verification": "카탈로그·설명 연결 대조; 계산별 독립 검사는 감사 README 참조"
+    },
+    {
+      "id": "view:seasonality",
+      "title": "계절성",
+      "group": "기술·성과",
+      "assets": [
+        "BTC",
+        "DOGE",
+        "ETH",
+        "SOL",
+        "XRP",
+        "LINK",
+        "ONDO",
+        "PEPE"
+      ],
+      "unit": "가격",
+      "source": "선택 가격 원천",
+      "formula": "완전 연도 최소 3개 · 전년 말 종가 대비 누적수익률; 올해는 관측까지만 별도",
+      "defaultPeriod": "all",
+      "renderer": "lab",
+      "guide": "seasonality",
+      "view": "seasonality",
+      "shortMeaning": "달력상 같은 시기의 과거 수익률 분포를 봅니다.",
+      "baselineMeaning": "중앙값·평균·사분위 범위를 함께 보고 연도별 경로로 급등 연도 영향을 확인합니다.",
+      "observationCadence": "일별 확정 관측",
+      "measurementScope": "선택 원천의 가격 이력 · 원천을 이어 붙이지 않음",
+      "guideExample": [
+        "같은 날짜의 연도별 수익률이 −10%, +10%, +90%이면 평균은 +30%, 중앙값은 +10%입니다.",
+        "25% 위치는 0%, 75% 위치는 +50%로 표시합니다."
+      ],
+      "guideMethod": [
+        "연도 y, 날짜 d의 누적수익률 Rᵧ,ᵈ = (Pᵧ,ᵈ / 직전 연도 12월 31일 종가 − 1) × 100",
+        "평균 = 같은 월·일 R의 합 / 완전 연도 수",
+        "중앙값 = R을 정렬한 50% 위치",
+        "사분위 범위 = 정렬된 R의 25%~75% 위치 (두 관측 사이 선형 보간)",
+        "로그 방식 = {exp[달력 첫날부터의 일별 평균 로그수익률 누적합] − 1} × 100",
+        "월별 수익률 = (월말 종가 / 직전 월말 종가 − 1) × 100"
+      ],
+      "implementation": "shared/advanced-analysis.ts; src/IndicatorWorkspace.tsx; src/AnalysisLab.tsx",
+      "verification": "카탈로그·설명 연결 대조; 계산별 독립 검사는 감사 README 참조"
+    },
+    {
+      "id": "view:powerlaw",
+      "title": "BTC 파워로 기준선",
+      "group": "가치·사이클",
+      "assets": [
+        "BTC"
+      ],
+      "unit": "가격",
+      "source": "선택 가격 원천",
+      "formula": "4.42×10⁻¹⁷ × (2009-01-03 이후 일수)^5.6",
+      "defaultPeriod": "all",
+      "renderer": "price",
+      "guide": "powerlaw",
+      "view": "powerlaw",
+      "shortMeaning": "BTC의 장기 가격을 고정된 수식과 비교하는 참고 모형입니다.",
+      "baselineMeaning": "실제 가격과 기준선의 차이를 과거 관측 범위에서 봅니다.",
+      "observationCadence": "일별 확정 관측",
+      "measurementScope": "선택 원천의 가격 이력 · 원천을 이어 붙이지 않음",
+      "guideExample": [
+        "d = 1,000일이면 4.42 × 10⁻¹⁷ × 1,000⁵·⁶ ≈ 2.79 USD입니다."
+      ],
+      "guideMethod": [
+        "기준 가격(USD) = 4.42 × 10⁻¹⁷ × d⁵·⁶",
+        "d = 2009-01-03부터 해당 관측일까지의 UTC 경과일"
+      ],
+      "implementation": "shared/advanced-analysis.ts; src/IndicatorWorkspace.tsx; src/AnalysisLab.tsx",
+      "verification": "카탈로그·설명 연결 대조; 계산별 독립 검사는 감사 README 참조"
+    },
+    {
+      "id": "chain:tvl",
+      "title": "Ethereum DeFi TVL",
+      "group": "온체인",
+      "assets": [
+        "ETH"
+      ],
+      "unit": "USD",
+      "source": "DefiLlama · Ethereum",
+      "formula": "Ethereum 체인의 DeFi 예치 가치 · ETH 토큰 시가총액과 별개",
+      "defaultPeriod": "5y",
+      "renderer": "series",
+      "guide": "chain-tvl",
+      "shortMeaning": "Ethereum 체인 DeFi에 예치된 자산의 USD 평가액입니다.",
+      "baselineMeaning": "체인 활동·유동성의 맥락으로 보고 ETH 토큰 가격과 구분합니다.",
+      "observationCadence": "일별 확정 관측",
+      "measurementScope": "Ethereum 체인 · ETH 토큰 자체의 가치와 구분",
+      "guideExample": [
+        "예치 수량이 10개로 그대로여도 단가가 100→120 USD이면 그 자산의 평가액은 1,000→1,200 USD가 됩니다."
+      ],
+      "guideMethod": [
+        "DefiLlama가 Ethereum 체인에 집계한 예치 자산의 USD 평가액 (TVL)을 사용"
+      ],
+      "implementation": "worker/ethereum-context.ts",
+      "verification": "카탈로그·설명 연결 대조; 계산별 독립 검사는 감사 README 참조"
+    },
+    {
+      "id": "chain:stablecoins",
+      "title": "Ethereum 스테이블코인 공급",
+      "group": "온체인",
+      "assets": [
+        "ETH"
+      ],
+      "unit": "USD",
+      "source": "DefiLlama · Ethereum",
+      "formula": "Ethereum 체인 스테이블코인의 USD 평가액 합계",
+      "defaultPeriod": "5y",
+      "renderer": "series",
+      "guide": "chain-stablecoins",
+      "shortMeaning": "Ethereum 체인의 스테이블코인 공급을 USD로 평가한 합계입니다.",
+      "baselineMeaning": "체인 활동·유동성의 맥락으로 보고 ETH 토큰 가격과 구분합니다.",
+      "observationCadence": "일별 확정 관측",
+      "measurementScope": "Ethereum 체인 · ETH 토큰 자체의 가치와 구분",
+      "guideExample": [
+        "A 스테이블코인 100 USD와 B 200 USD가 해당 체인에 집계되면 합계는 300 USD입니다."
+      ],
+      "guideMethod": [
+        "공급 평가액 = DefiLlama의 Ethereum 체인별 스테이블코인 USD 평가액 합"
+      ],
+      "implementation": "worker/ethereum-context.ts",
+      "verification": "카탈로그·설명 연결 대조; 계산별 독립 검사는 감사 README 참조"
+    }
+  ]
+}

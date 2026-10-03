@@ -14,7 +14,7 @@ class Metadata(HTMLParser):
         if tag == 'link': self.links.append(row)
 doc = Metadata(); doc.feed((root/'index.html').read_text(encoding='utf-8'))
 manifest = json.loads((root/'public/site.webmanifest').read_text(encoding='utf-8'))
-assert manifest['name'].startswith('Coin Desk')
+assert manifest['name'].startswith('보리차트')
 sizes = {'favicon-32.png': (32,32), 'apple-touch-icon.png': (180,180), 'icon-192.png': (192,192), 'icon-512.png': (512,512), 'og-card-v2.png': (1200,630), 'coin-desk-shiba-smile.png': (1254,1254)}
 for name, expected in sizes.items():
     data = (root/'public/brand'/name).read_bytes()

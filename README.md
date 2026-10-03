@@ -1,4 +1,4 @@
-# Coin Desk
+# 보리차트
 
 **0.21 VPS 운영과 후속 차트·복구 도구 수정을 배포했습니다.** 시장 홈 → 지표 상세, 기존 강아지, 일괄 시세 API와 중앙 SSE를 제공합니다. 2026-10-03 사용자 요청으로 48시간 점검·대기 조건은 폐지했습니다. [현재 릴리스](docs/RELEASE21.md) · [운영 전환 증거](docs/audit-21/live/README.md) · [최신 검사와 한계](docs/audit-21/completion/README.md).
 
@@ -174,4 +174,4 @@ docs/            데이터 정의·운영·검증·화면 기록
 - [CoinLore 무료 API](https://www.coinlore.com/cryptocurrency-data-api), [DefiLlama Stablecoins](https://defillama.com/stablecoins)
 - [TradingView Lightweight Charts](https://github.com/tradingview/lightweight-charts), Apache-2.0. 화면의 귀속 로고와 저작권 표시를 유지합니다.
 
-Coin Desk는 독립적으로 만든 개인 분석 도구이며 CoinDesk 뉴스, CoinGlass, TradingView 또는 데이터 제공자의 공식 서비스가 아닙니다. 타사 화면 이미지를 제품 자산으로 재배포하지 않습니다. 저장소 자체 소스에는 별도의 배포 라이선스를 아직 지정하지 않았습니다.
+보리차트는 독립적으로 만든 개인 분석 도구이며 CoinDesk 뉴스, CoinGlass, TradingView 또는 데이터 제공자의 공식 서비스가 아닙니다. 타사 화면 이미지를 제품 자산으로 재배포하지 않습니다. 저장소 자체 소스에는 별도의 배포 라이선스를 아직 지정하지 않았습니다.

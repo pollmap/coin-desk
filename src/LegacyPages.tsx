@@ -722,35 +722,16 @@ export function PricePage({ workspace = false }: { workspace?: boolean }) {
 }
 export function WorkspacePage() {
   const preferences = chartSettings(saved('preferences', {}));
-  const asset = saved<Asset>('lastAsset', 'BTC');
   const { desk } = usePersonalDesk();
   return (
     <>
       <div className="page-heading">
-        <div>
-          <div className="eyebrow">MY WORKSPACE</div>
-          <h1>내 작업공간</h1>
-          <p>저장한 차트 설정을 불러오고 다른 브라우저로 옮겨 보세요.</p>
-        </div>
+        <h1>내 저장</h1>
       </div>
-      <section className="panel workspace-page">
-        <Link className="desk-button" to="/workspace/library">
-          개인 자료함 · 글·차트 가져오기 ↗
-        </Link>
-        <WorkspaceBar
-          current={{
-            ...preferences,
-            asset: ASSETS.some((a) => a.id === asset) ? asset : 'BTC',
-            cards: desk.cards,
-            view: 'chart',
-          }}
-        />
-        <Link className="desk-button" to={'/chart/' + asset}>
-          차트 작업공간 열기 ↗
-        </Link>
+      <section className="workspace-page">
+        <WorkspaceBar listOnly current={{ ...preferences, cards: desk.cards, view: 'chart' }} />
         <p className="muted">
-          설정은 이 브라우저에만 저장됩니다. 공유 링크에는 화면 설정만 포함되며 개인 메모는 전송하지
-          않습니다.
+          이 브라우저에 저장됩니다. 다른 기기로 옮길 때는 백업·복원을 이용하세요.
         </p>
       </section>
     </>

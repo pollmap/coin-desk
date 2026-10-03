@@ -447,3 +447,30 @@ textarea:focus-visible {
     grid-row: 2;
   }
 }
+
+.saved-empty {
+  display: grid;
+  justify-items: start;
+  gap: 12px;
+  padding: 24px 0;
+}
+.saved-empty p {
+  margin: 0;
+}
+.saved-empty a {
+  color: var(--accent);
+}
+.workspace-page .desk-editor {
+  border: 0;
+  padding: 0;
+}
+.workspace-page .saved-workspaces {
+  margin-bottom: 20px;
+}
+.saved-workspaces a {
+  min-width: 0;
+  flex-wrap: wrap;
+}
+.saved-workspaces small {
+  overflow-wrap: anywhere;
+}

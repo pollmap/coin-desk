@@ -57,7 +57,7 @@ export function NotificationInbox() {
       <button
         ref={trigger}
         className="icon-button inbox-trigger"
-        aria-label={`알림함${unread ? ` · 읽지 않은 항목 ${unread}개` : ''}`}
+        aria-label={`관측 신호${unread ? ` · 읽지 않은 항목 ${unread}개` : ''}`}
         aria-expanded={open}
         onClick={() => {
           setOpen(true);
@@ -78,8 +78,8 @@ export function NotificationInbox() {
         }}
       >
         <div className="picker-heading">
-          <h2 id="inbox-title">알림함</h2>
-          <button aria-label="알림함 닫기" onClick={close}>
+          <h2 id="inbox-title">관측 신호</h2>
+          <button aria-label="관측 신호 닫기" onClick={close}>
             <X />
           </button>
         </div>

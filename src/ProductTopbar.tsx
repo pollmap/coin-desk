@@ -49,7 +49,7 @@ export function ProductTopbar() {
     if (help.current) help.current.open = false;
     document.title =
       (location.pathname === '/'
-        ? '코인 시장'
+        ? '주요 8코인'
         : location.pathname.startsWith('/coins/')
           ? asset + ' · 지표 분석'
           : location.pathname.startsWith('/learn')
@@ -60,7 +60,7 @@ export function ProductTopbar() {
                 ? '코인 비교'
                 : location.pathname === '/status'
                   ? '데이터 상태'
-                  : 'Coin Desk') + ' | Coin Desk';
+                  : '보리차트') + ' | 보리차트';
   }, [location.pathname, location.search]);
   useEffect(() => {
     const keyboard = (e: KeyboardEvent) => {
@@ -81,16 +81,16 @@ export function ProductTopbar() {
   }, []);
   return (
     <>
-      <Link to="/" className="product-brand" aria-label="Coin Desk 시장 홈">
+      <Link to="/" className="product-brand" aria-label="보리차트 시장 홈">
         <img
           fetchPriority="low"
           decoding="async"
           src="/brand/coin-desk-shiba-smile.png"
-          width="34"
-          height="34"
+          width="32"
+          height="32"
           alt=""
         />
-        <b>Coin Desk</b>
+        <b>보리차트</b>
       </Link>
       <nav className="product-nav" aria-label="주요 화면">
         <NavLink to="/" end>

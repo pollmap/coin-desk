@@ -1,4 +1,7 @@
 import { useMemo, useState } from 'react';
+import { ASSETS } from '../shared/catalog';
+import { supportsReference } from '../shared/indicator-catalog';
+import { relativePair } from '../shared/relative-pair';
 import { useData } from './hooks';
 import { AnalysisChart, type AnalysisLine } from './AnalysisChart';
 import {
@@ -380,11 +383,13 @@ function CyclesView({
     </section>
   );
 }
-function usePrice(asset: string, basis: PriceBasis) {
+function usePrice(asset: string, basis: PriceBasis, enabled = true) {
   return useData<SeriesResponse | CandleResponse>(
-    basis === 'reference'
-      ? `/api/v1/reference?asset=${asset}&limit=1000`
-      : `/api/v1/candles?asset=${asset}&market=${basis}&interval=1d&limit=1000`,
+    !enabled
+      ? null
+      : basis === 'reference'
+        ? `/api/v1/reference?asset=${asset}&limit=1000`
+        : `/api/v1/candles?asset=${asset}&market=${basis}&interval=1d&limit=1000`,
     true,
     basis === 'reference' ? 3600000 : 60000,
   );
@@ -404,9 +409,11 @@ function RelativeView({
   period: Period;
   initialWindow?: DateWindow | null;
 }) {
-  const btc = usePrice('BTC', basis),
-    doge = usePrice('DOGE', basis),
-    eth = usePrice('ETH', basis);
+  const pair = relativePair(asset, params);
+  const supported =
+    basis !== 'reference' || (supportsReference(pair.asset) && supportsReference(pair.benchmark));
+  const left = usePrice(pair.asset, basis, supported);
+  const right = usePrice(pair.benchmark, basis, supported);
   const mode: Normalization = ['percent', 'index', 'ratio'].includes(
     params.get('normalization') ?? '',
   )
@@ -417,42 +424,39 @@ function RelativeView({
     : 90;
   const raw = useMemo(
     () =>
-      [btc, doge, eth]
-        .map((r, i) => ({
-          name: ['BTC', 'DOGE', 'ETH'][i],
-          data: r.data
-            ? basis === 'reference'
-              ? (r.data as SeriesResponse).data
-              : closeHistory(r.data as CandleResponse).data
-            : NO_POINTS,
-        }))
-        .map((r) => ({
-          ...r,
-          data: initialWindow ? r.data.filter((p) => p.time <= initialWindow.to) : r.data,
-        })),
-    [btc.data, doge.data, eth.data, basis, initialWindow?.to],
+      [right, left].map((r, i) => ({
+        name: [pair.benchmark, pair.asset][i],
+        data: (r.data
+          ? basis === 'reference'
+            ? (r.data as SeriesResponse).data
+            : closeHistory(r.data as CandleResponse).data
+          : NO_POINTS
+        ).filter((p) => !initialWindow || p.time <= initialWindow.to),
+      })),
+    [left.data, right.data, pair.asset, pair.benchmark, basis, initialWindow?.to],
   );
   const aligned = useMemo(() => alignComparison(raw, mode), [raw, mode]);
-  const selected = (params.get('correlation_asset') ?? asset) === 'DOGE' ? 1 : 2;
-  const corr = useMemo(
-    () => rollingCorrelation(raw[0].data, raw[selected].data, window),
-    [raw, selected, window],
-  );
+  const corr = useMemo(() => rollingCorrelation(raw[0].data, raw[1].data, window), [raw, window]);
+  const unit =
+    mode === 'ratio' ? `${pair.benchmark}/${pair.asset}` : mode === 'percent' ? '%' : '100 기준';
   const lines = useMemo<AnalysisLine[]>(
     () => [
-      ...aligned.slice(1).map((s, i) => ({
-        id: s.name,
-        title: s.name,
-        unit: mode === 'ratio' ? 'BTC/coin' : mode === 'percent' ? '%' : '100 기준',
-        source: basisName(basis),
-        data: s.data,
-        color: COLORS[i + 1],
-        overlay: mode !== 'ratio',
-        pane: mode === 'ratio' ? s.name : undefined,
-      })),
+      ...(mode !== 'ratio'
+        ? [
+            {
+              id: pair.benchmark,
+              title: pair.benchmark,
+              unit,
+              source: basisName(basis),
+              data: aligned[0]?.data ?? [],
+              color: COLORS[1],
+              overlay: true,
+            },
+          ]
+        : []),
       {
         id: 'correlation',
-        title: raw[selected].name + '/BTC ' + window + '일 수익률 상관',
+        title: `${pair.asset}/${pair.benchmark} ${window}일 수익률 상관`,
         unit: 'r',
         source: basisName(basis),
         data: corr,
@@ -460,11 +464,31 @@ function RelativeView({
         thresholds: [-1, 0, 1],
       },
     ],
-    [aligned, mode, basis, corr, window, selected],
+    [pair.asset, pair.benchmark, mode, unit, basis, aligned, corr, window],
   );
+  const error = left.error || right.error;
+  const loading = left.loading || right.loading;
   return (
-    <section className="analysis-lab">
+    <section
+      className="analysis-lab"
+      data-relative-asset={pair.asset}
+      data-relative-benchmark={pair.benchmark}
+    >
       <div className="lab-controls">
+        <label>
+          비교 코인
+          <select
+            aria-label="비교 코인"
+            value={pair.benchmark}
+            onChange={(e) => change({ benchmark_asset: e.target.value, correlation_asset: null })}
+          >
+            {ASSETS.filter((a) => a.id !== pair.asset).map((a) => (
+              <option key={a.id} value={a.id}>
+                {a.name} · {a.id}
+              </option>
+            ))}
+          </select>
+        </label>
         <label>
           비교 기준
           <select
@@ -474,7 +498,7 @@ function RelativeView({
           >
             <option value="index">시작값 100</option>
             <option value="percent">% 변화</option>
-            <option value="ratio">BTC 가격 비율</option>
+            <option value="ratio">가격 비율</option>
           </select>
         </label>
         <label>
@@ -491,52 +515,78 @@ function RelativeView({
             ))}
           </select>
         </label>
-        <label>
-          상관 대상
-          <select
-            value={raw[selected].name}
-            onChange={(e) => change({ correlation_asset: e.target.value })}
-          >
-            <option value="DOGE">DOGE / BTC</option>
-            <option value="ETH">ETH / BTC</option>
-          </select>
-        </label>
-        <span>{basisName(basis)} · 공통 확정 종가</span>
       </div>
-      {btc.error || doge.error || eth.error ? (
+      {!supported ? (
         <p role="status">
-          일부 코인 가격을 불러오지 못했습니다. {btc.error || doge.error || eth.error}
+          {pair.asset}·{pair.benchmark}의 공통 USD 참조 원천이 없습니다. 더보기에서 공통 거래소
+          원천을 선택하세요.
         </p>
-      ) : null}
-      {aligned[0]?.data.length ? (
-        <AnalysisChart
-          asset="BTC·DOGE·ETH"
-          unit={mode === 'ratio' ? basisUnit(basis) : mode === 'percent' ? '%' : '100 기준'}
-          source={basisName(basis)}
-          points={mode === 'ratio' ? raw[0].data : aligned[0].data}
-          lines={lines}
-          signals={NO_SIGNALS}
-          period={period}
-          log={false}
-          onAll={() => change({ period: 'all' })}
-          onSignal={() => {}}
-          initialWindow={initialWindow}
-        />
+      ) : error ? (
+        <p role="alert">
+          비교 이력을 불러오지 못했습니다.{' '}
+          <button
+            onClick={() => {
+              left.reload();
+              right.reload();
+            }}
+          >
+            다시 시도
+          </button>
+        </p>
+      ) : aligned[1]?.data.length ? (
+        <>
+          {mode === 'ratio' && (
+            <p className="relative-ratio-label">
+              1 {pair.asset}의 가격을 {pair.benchmark} 수량으로 표시합니다.
+            </p>
+          )}
+          <AnalysisChart
+            asset={pair.asset}
+            exportName={`${pair.asset}-${pair.benchmark}-${mode}`}
+            primary={{
+              id: `relative:${pair.asset}:${pair.benchmark}:${mode}`,
+              title: `${pair.asset}/${pair.benchmark} ${mode === 'ratio' ? '가격 비율' : mode === 'percent' ? '수익률' : '시작값 100'}`,
+              unit,
+              source: basisName(basis),
+              color: COLORS[0],
+              data: aligned[1].data,
+            }}
+            unit={unit}
+            source={basisName(basis)}
+            points={aligned[1].data}
+            lines={lines}
+            signals={NO_SIGNALS}
+            period={period}
+            log={false}
+            onAll={() => change({ period: 'all' })}
+            onSignal={() => {}}
+            initialWindow={initialWindow}
+          />
+          {!corr.length && (
+            <p className="muted">
+              {window}일 상관에는 연속 {window + 1}개 공통 일별 종가와 변동이 필요합니다.
+            </p>
+          )}
+        </>
       ) : (
-        <p role="status">세 코인의 공통 이력을 불러오고 있습니다.</p>
+        <p role="status">
+          {loading
+            ? '두 코인의 공통 이력을 불러오는 중…'
+            : '선택 원천에서 두 코인의 공통 확정 이력이 없습니다.'}
+        </p>
       )}
       <details>
         <summary>정규화·상관 기준</summary>
         <p>
-          선택 원천의 공통 시작일을 기준으로 정규화합니다. 기간을 확대해도 기준일은 바뀌지 않습니다.
-          가격 비율은 각 코인 가격을 BTC 가격으로 나눈 값이며 단위별 패널을 분리합니다. 상관은 연속
-          일간 로그수익률의 Pearson 상관입니다. 결측 구간은 건너뛰어 연결하지 않으며 상관은
-          인과관계가 아닙니다.
+          공통 첫 관측을 기준으로 정규화하며 확대해도 기준일은 바뀌지 않습니다. 가격 비율은{' '}
+          {pair.asset} 종가 ÷ {pair.benchmark} 종가입니다. 상관은 연속 일간 로그수익률의 Pearson
+          상관입니다. 결측을 이어 붙이지 않으며 상관은 인과관계가 아닙니다.
         </p>
       </details>
     </section>
   );
 }
+
 export function AnalysisLab({
   view,
   points,

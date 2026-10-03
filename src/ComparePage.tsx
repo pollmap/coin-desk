@@ -9,6 +9,7 @@ import {
   LineSeries,
   LineStyle,
   type IChartApi,
+  type ISeriesApi,
   type UTCTimestamp,
 } from 'lightweight-charts';
 import { ASSETS } from '../shared/catalog';
@@ -54,12 +55,16 @@ function selectedAssets(value: unknown): Asset[] {
 function ComparisonChart({
   comparison,
   onExport,
+  resetKey,
 }: {
+  resetKey: string;
   comparison: ComparisonResult;
   onExport: () => void;
 }) {
   const container = useRef<HTMLDivElement>(null);
   const chart = useRef<IChartApi | null>(null);
+  const series = useRef(new Map<string, ISeriesApi<'Line'>>());
+  const previousKey = useRef('');
   const [hover, setHover] = useState<number | null>(null);
   const values = useMemo(
     () =>
@@ -72,10 +77,10 @@ function ComparisonChart({
     [comparison],
   );
   useEffect(() => {
-    if (!container.current || !comparison.rows.length) return;
+    if (!container.current) return;
     const api = createChart(container.current, {
       autoSize: true,
-      height: 390,
+      height: 420,
       layout: {
         background: { type: ColorType.Solid, color: '#111721' },
         textColor: '#a1aec0',
@@ -94,15 +99,53 @@ function ComparisonChart({
       },
     });
     chart.current = api;
-    setHover(null);
+    api.subscribeCrosshairMove((event) =>
+      setHover(typeof event.time === 'number' ? event.time : null),
+    );
+    const node = container.current;
+    const publishRange = () => {
+      const visible = api.timeScale().getVisibleRange();
+      const logical = api.timeScale().getVisibleLogicalRange();
+      node.dataset.visibleFrom = String(visible?.from ?? '');
+      node.dataset.visibleTo = String(visible?.to ?? '');
+      node.dataset.logicalFrom = String(logical?.from ?? '');
+      node.dataset.logicalTo = String(logical?.to ?? '');
+    };
+    api.timeScale().subscribeVisibleLogicalRangeChange(publishRange);
+    const frame = requestAnimationFrame(publishRange);
+    return () => {
+      cancelAnimationFrame(frame);
+      api.timeScale().unsubscribeVisibleLogicalRangeChange(publishRange);
+      chart.current = null;
+      series.current.clear();
+      previousKey.current = '';
+      api.remove();
+    };
+  }, []);
+  useEffect(() => {
+    const api = chart.current;
+    const node = container.current;
+    if (!api || !node) return;
+    const visible = api.timeScale().getVisibleLogicalRange();
+    for (const [asset, line] of series.current) {
+      if (!comparison.rows.some((row) => row.asset === asset)) {
+        api.removeSeries(line);
+        series.current.delete(asset);
+      }
+    }
+    if (previousKey.current !== resetKey) setHover(null);
     comparison.rows.forEach((row, index) => {
-      const line = api.addSeries(LineSeries, {
-        color: ASSETS.find((asset) => asset.id === row.asset)!.color,
-        lineWidth: 2,
-        title: row.asset,
-        lastValueVisible: false,
-        priceLineVisible: false,
-      });
+      let line = series.current.get(row.asset);
+      const isNew = !line;
+      if (!line)
+        line = api.addSeries(LineSeries, {
+          color: ASSETS.find((asset) => asset.id === row.asset)!.color,
+          lineWidth: 2,
+          title: row.asset,
+          lastValueVisible: false,
+          priceLineVisible: false,
+        });
+      series.current.set(row.asset, line);
       const points = new Map(row.points.map((point) => [point.time, point.value]));
       const data = [];
       for (let time = comparison.start!; time <= comparison.end!; time += DAY) {
@@ -114,7 +157,7 @@ function ComparisonChart({
         );
       }
       line.setData(data);
-      if (index === 0)
+      if (index === 0 && isNew)
         line.createPriceLine({
           price: 100,
           color: '#6a7688',
@@ -124,31 +167,20 @@ function ComparisonChart({
           title: '시작 100',
         });
     });
-    api.subscribeCrosshairMove((event) =>
-      setHover(typeof event.time === 'number' ? event.time : null),
-    );
-    const node = container.current;
     node.dataset.points = String(comparison.observations);
     node.dataset.expectedFrom = String(comparison.start);
     node.dataset.expectedTo = String(comparison.end);
-    const publishRange = () => {
-      const visible = api.timeScale().getVisibleRange();
-      const logical = api.timeScale().getVisibleLogicalRange();
-      node.dataset.visibleFrom = String(visible?.from ?? '');
-      node.dataset.visibleTo = String(visible?.to ?? '');
-      node.dataset.logicalFrom = String(logical?.from ?? '');
-      node.dataset.logicalTo = String(logical?.to ?? '');
-    };
-    api.timeScale().subscribeVisibleLogicalRangeChange(publishRange);
-    api.timeScale().fitContent();
-    const frame = requestAnimationFrame(publishRange);
-    return () => {
-      cancelAnimationFrame(frame);
-      api.timeScale().unsubscribeVisibleLogicalRangeChange(publishRange);
-      chart.current = null;
-      api.remove();
-    };
-  }, [comparison]);
+
+    if (previousKey.current !== resetKey || !visible) api.timeScale().fitContent();
+    else api.timeScale().setVisibleLogicalRange(visible);
+    const reset = previousKey.current !== resetKey || !visible;
+    previousKey.current = resetKey;
+    const frame = requestAnimationFrame(() => {
+      if (reset) api.timeScale().fitContent();
+      node.dataset.renderReady = '1';
+    });
+    return () => cancelAnimationFrame(frame);
+  }, [comparison, resetKey]);
   const visibleTime = hover ?? comparison.end;
   return (
     <>
@@ -187,6 +219,7 @@ function ComparisonChart({
             label={comparison.rows[0].asset + ' 비교 기간'}
           />
           <ChartTools
+            hideShare
             chart={chart}
             rows={comparison.rows[0].points}
             label="코인 성과 비교"
@@ -410,7 +443,7 @@ export function ComparePage() {
     );
     const anchor = document.createElement('a');
     anchor.href = url;
-    anchor.download = `coin-desk-comparison-${market}-${utcDate(comparison.end!)}.csv`;
+    anchor.download = `borichart-comparison-${market}-${utcDate(comparison.end!)}.csv`;
     anchor.click();
     setTimeout(() => URL.revokeObjectURL(url), 1000);
   }
@@ -423,7 +456,6 @@ export function ComparePage() {
           <h1>코인 성과 비교</h1>
         </div>
       </div>
-      <MarketNavigation current="compare" market={market} assets={assets} />
       <section className="panel comparison-controls" aria-label="비교 설정">
         <details className="comparison-selection">
           <summary>
@@ -610,23 +642,19 @@ export function ComparePage() {
           {comparison.error}
         </div>
       ) : null}
-      {!loading && hasStale ? (
-        <div className="comparison-notice amber" role="status">
-          수집 지연 · 마지막 정상 일봉으로 비교합니다. 수집 시각은 아래 이력에서 확인하세요.
-        </div>
-      ) : null}
       {comparison?.rows.length ? (
         <>
           <section className="panel comparison-result">
             <div className="panel-title">
               <div>
-                <h2>상대 성과 · 시작점 100</h2>
+                <h2>시작값 100{!loading && hasStale ? ' · 수집 지연' : ''}</h2>
                 <p>
                   {utcDate(comparison.start!)} → {utcDate(comparison.end!)} UTC · 공통 관측{' '}
                   {comparison.observations.toLocaleString()}일
                 </p>
               </div>
             </div>
+            <ComparisonChart comparison={comparison} resetKey={requestKey} onExport={download} />
             {comparison.shortened || comparison.endShortened ? (
               <div className="comparison-notice amber" role="status">
                 요청한 기간 전체에 공통 이력이 없어, 위에 표시한 실제 관측 기간으로 비교합니다. 아래
@@ -646,7 +674,6 @@ export function ComparePage() {
                 비교를 마칩니다.
               </div>
             ) : null}
-            <ComparisonChart comparison={comparison} onExport={download} />
           </section>
           <section className="panel comparison-statistics">
             <div className="panel-title">
@@ -840,6 +867,7 @@ export function ComparePage() {
           {cooldown ? '잠시 후 갱신 가능' : '데이터 다시 확인'}
         </button>
       </div>
+      <MarketNavigation current="compare" market={market} assets={assets} />
       <details className="panel comparison-method">
         <summary>비교 산식 · 데이터 원천 · 읽는 방법</summary>
         <p>

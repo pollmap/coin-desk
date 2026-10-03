@@ -286,7 +286,7 @@ chrome.runtime.onMessage.addListener((m, sender, reply) => {
     if (m.type === 'SEND') {
       const { connection: c } = await chrome.storage.session.get('connection');
       if (!c || c.expires < Date.now())
-        throw new Error('Coin Desk 자료함에서 Chrome 연결을 먼저 눌러 주세요.');
+        throw new Error('보리차트 자료함에서 Chrome 연결을 먼저 눌러 주세요.');
       const tab = await chrome.tabs.get(c.tabId);
       if (!allowedSite(tab.url) || new URL(tab.url).origin !== new URL(c.url).origin)
         throw new Error('연결했던 자료함 탭이 변경됐습니다.');

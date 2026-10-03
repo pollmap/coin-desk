@@ -191,9 +191,9 @@ export function DeskNavigation({ onNavigate }: { onNavigate: () => void }) {
           <Database size={15} />
           <span>데이터 · 자동 갱신</span>
         </NavLink>
-        <NavLink to="/brand" aria-label="Coin Desk 브랜드" title="Coin Desk 브랜드">
+        <NavLink to="/brand" aria-label="보리차트 브랜드" title="보리차트 브랜드">
           <Dog size={15} />
-          <span>Coin Desk 브랜드</span>
+          <span>보리차트 브랜드</span>
         </NavLink>
       </nav>
     </>
@@ -234,7 +234,7 @@ export function DeskTopbar({
           ? `${id} 온체인`
           : names[location.pathname.split('/')[1]] || '코인 분석';
   useEffect(() => {
-    document.title = (title || '코인 분석') + ' | Coin Desk';
+    document.title = (title || '코인 분석') + ' | 보리차트';
   }, [title]);
   return (
     <>
@@ -257,7 +257,7 @@ export function DeskTopbar({
         </nav>
       ) : (
         <span className="breadcrumb" aria-label="현재 위치">
-          <Link to="/">Coin Desk</Link>
+          <Link to="/">보리차트</Link>
           <span>/</span>
           <b>{title}</b>
         </span>

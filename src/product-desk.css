@@ -7,8 +7,8 @@
   --border: #30343d;
   --hover: #252a34;
   --surface: #191c22;
-  --accent-bg: #292e45;
-  --accent: #a8b5f7;
+  --accent-bg: #183b3d;
+  --accent: #76cbc7;
   --up: #ff7f8b;
   --down: #7faaff;
   --green: #ff7f8b;
@@ -23,8 +23,8 @@
   --border: #dbe0e8;
   --hover: #eef1f5;
   --surface: #f5f6f8;
-  --accent-bg: #e5e9fa;
-  --accent: #4456aa;
+  --accent-bg: #e7f3f2;
+  --accent: #0f666b;
   --up: #b62d43;
   --down: #255db8;
   --green: #b62d43;
@@ -241,33 +241,6 @@ body {
   color: var(--muted);
   font-size: 12px;
 }
-.market-leaders {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  border-bottom: 1px solid var(--border);
-  padding-bottom: 24px;
-  gap: 24px;
-}
-.market-leader {
-  display: grid;
-  gap: 9px;
-  color: var(--text);
-  padding: 2px 0;
-}
-.market-leader > span {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  flex-wrap: wrap;
-}
-.market-leader strong {
-  font-size: 25px;
-  letter-spacing: -0.7px;
-  font-weight: 650;
-}
-.market-leader small {
-  color: var(--muted);
-}
 .market-controls {
   display: flex;
   align-items: center;
@@ -302,6 +275,39 @@ body {
   border: 0;
   padding: 7px;
   font-size: 13px;
+}
+.market-resume {
+  margin: 0 0 16px;
+  font-size: 14px;
+}
+.market-resume a {
+  color: var(--accent);
+}
+.market-table .market-spark {
+  color: var(--muted);
+}
+.market-time {
+  font-size: 12px;
+  color: var(--muted);
+}
+.market-table td:nth-child(3) > a {
+  display: inline-block;
+  min-height: 24px;
+}
+.market-time summary {
+  display: inline-block;
+  min-height: 24px;
+  min-width: 24px;
+  cursor: pointer;
+  list-style: none;
+}
+.market-time[open] {
+  white-space: normal;
+  max-width: 180px;
+}
+.market-time summary:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
 }
 .market-table-wrap {
   overflow-x: auto;
@@ -351,10 +357,10 @@ body {
   margin-top: 3px;
 }
 .market-table tbody tr:hover {
-  background: var(--panel);
+  background: var(--hover);
 }
 .market-table tbody tr:focus-within {
-  background: var(--panel);
+  background: var(--hover);
 }
 .market-table svg {
   display: block;
@@ -370,11 +376,10 @@ body {
 .favorite-button[aria-pressed='true'] {
   color: #e9ba62;
 }
-.market-table .stale-label,
-.market-leader .stale-label {
+.market-table .stale-label {
   color: #e4b85f;
 }
-:root[data-theme='light'] :is(.market-table, .market-leader) .stale-label {
+:root[data-theme='light'] .market-table .stale-label {
   color: #855600;
 }
 .market-rail {
@@ -581,7 +586,7 @@ body {
   align-items: flex-start;
   gap: 2px;
 }
-@media (min-width: 1000px) {
+@media (min-width: 768px) {
   .product-desk #main-content:has(.indicator-workspace) {
     padding-top: 0;
   }
@@ -599,6 +604,11 @@ body {
   .indicator-shortcuts a {
     padding: 7px 8px;
     font-size: 12px;
+  }
+}
+@media (min-width: 768px) and (max-width: 999px) {
+  .product-desk .indicator-shortcuts {
+    display: none;
   }
 }
 @media (min-width: 1440px) {
@@ -630,7 +640,9 @@ body {
     width: 230px;
   }
   .product-nav {
-    gap: 18px;
+    white-space: nowrap;
+    flex-shrink: 0;
+    gap: 12px;
   }
 }
 @media (max-width: 760px) {
@@ -666,27 +678,8 @@ body {
     align-items: flex-start;
     flex-direction: column;
   }
-  .market-leaders {
-    grid-template-columns: minmax(0, 1fr);
-    gap: 12px;
-  }
-  .market-leader {
-    grid-template-columns: minmax(0, 1fr) auto;
-    align-items: center;
-    min-width: 0;
-  }
-  .market-leader > span:last-child {
-    grid-column: 1 / -1;
-    justify-content: flex-end;
-  }
   .market-controls {
     flex-wrap: wrap;
-  }
-  .market-leader strong {
-    font-size: 17px;
-  }
-  .market-leader > span {
-    font-size: 12px;
   }
   .market-table {
     min-width: 690px;
@@ -734,7 +727,7 @@ body {
 @media (max-width: 760px) {
   .product-desk .topbar {
     display: flex;
-    gap: 10px;
+    gap: 4px 10px;
     padding: 0 12px;
   }
   .product-brand b {
@@ -756,31 +749,55 @@ body {
     flex-wrap: nowrap;
     gap: 10px;
     min-height: 44px;
-    margin-bottom: 6px;
+    margin-bottom: 2px;
   }
   .product-desk .indicator-workspace .coin-picker {
-    min-width: 140px;
-    width: 140px;
+    min-width: 132px;
+    width: 132px;
+  }
+  .product-desk .indicator-workspace .coin-picker summary {
+    padding: 4px;
+    gap: 4px;
+  }
+  .product-desk .indicator-workspace .coin-picker h1 {
+    white-space: nowrap;
+    font-size: 14px;
+  }
+  .product-desk.app .indicator-workspace .coin-context {
+    flex-wrap: nowrap;
+    gap: 8px;
+  }
+  .product-desk .indicator-workspace .detail-quote {
+    max-width: 170px;
+    flex: 1;
+    min-width: 0;
   }
   .product-desk .indicator-workspace .detail-quote strong {
     font-size: 16px;
   }
   .product-desk.app .indicator-workspace .indicator-heading {
-    gap: 8px;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 2px 8px;
     min-height: 38px;
   }
   .product-desk .indicator-heading > div:first-child {
-    gap: 2px;
-    flex: 1;
+    grid-column: 1 / -1;
+    gap: 8px;
+    flex-wrap: nowrap;
     min-width: 0;
   }
   .product-desk .indicator-heading h1 {
     font-size: 18px;
   }
+  .product-desk .indicator-heading > div > span:last-child {
+    display: none;
+  }
   .product-desk .indicator-heading span {
     font-size: 12px;
   }
   .product-desk .indicator-source {
+    margin-left: 0;
     font-size: 0;
     gap: 0;
   }
@@ -789,6 +806,23 @@ body {
     font-size: 12px;
     min-height: 34px;
     padding: 4px;
+  }
+  .product-desk.app .indicator-workspace .indicator-toolbar {
+    flex-wrap: nowrap;
+    gap: 4px;
+  }
+  .product-desk .indicator-toolbar .period-picker {
+    max-width: 70px;
+    min-width: 0;
+  }
+  .product-desk .indicator-toolbar .period-picker select {
+    width: 70px;
+    min-width: 0;
+    padding: 4px;
+  }
+  .product-desk .indicator-toolbar button {
+    padding: 4px;
+    white-space: nowrap;
   }
   .product-desk .indicator-mobile-picker {
     white-space: nowrap;
@@ -826,7 +860,7 @@ body {
 /* Keep all header actions on the first row even at 320px. */
 @media (max-width: 380px) {
   .product-desk .topbar {
-    gap: 4px;
+    gap: 0 4px;
   }
   .product-desk .product-nav {
     gap: 10px;

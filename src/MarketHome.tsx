@@ -2,7 +2,7 @@ import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { Link, useSearchParams, useNavigate } from 'react-router-dom';
 import { Star } from 'lucide-react';
 import { ASSETS } from '../shared/catalog';
-import { defaultIndicator, indicatorUrl } from '../shared/indicator-catalog';
+import { defaultIndicator, indicatorDefinition, indicatorUrl } from '../shared/indicator-catalog';
 import type { Asset, Point } from '../shared/types';
 import { AssetLogo } from './AssetLogo';
 import { useQuoteFeed } from './useQuoteFeed';
@@ -41,6 +41,12 @@ export function MarketHome() {
   const [params, setParams] = useSearchParams();
   const sort = params.get('sort') || saved('market-sort', 'default');
   const recent = saved<Asset[]>('recent-coins', []);
+  const resume = saved<{ href?: string; asset?: string }>('recent-analysis', {});
+  const resumeHref =
+    typeof resume.href === 'string' &&
+    /^\/coins\/(BTC|DOGE|ETH|SOL|XRP|LINK|ONDO|PEPE)(\?|$)/.test(resume.href)
+      ? resume.href
+      : null;
   const unit = market === 'upbit' ? 'KRW' : 'USDT';
   const scroll = useRef(saved('market-scroll', 0));
   useLayoutEffect(() => {
@@ -86,7 +92,7 @@ export function MarketHome() {
     <div className="market-home">
       <div className="market-body">
         <div className="market-heading">
-          <h1>코인 시장</h1>
+          <h1>주요 8코인</h1>
           <span className="market-feed-state">
             {feed.rows.some((row) => row.live)
               ? '실시간 가격'
@@ -103,26 +109,11 @@ export function MarketHome() {
             <Link to="/status">데이터 상태</Link>
           </p>
         )}
-        <section className="market-leaders" aria-label="주요 코인">
-          {ASSETS.slice(0, 3).map((a) => {
-            const row = feed.rows.find((r) => r.asset === a.id);
-            return (
-              <Link to={href(a.id)} key={a.id} className="market-leader">
-                <span>
-                  <AssetLogo asset={a.id} size={24} />
-                  {a.name}
-                  <small>{a.id}</small>
-                </span>
-                <strong>{money(row?.displayPrice, unit)}</strong>
-                <span className={(row?.quote?.change24h ?? 0) >= 0 ? 'up' : 'down'}>
-                  {changeText(row?.quote?.change24h)}
-                  <small>24시간</small>
-                  {row?.stale && <small className="stale-label">갱신 지연</small>}
-                </span>
-              </Link>
-            );
-          })}
-        </section>
+        {resumeHref && (
+          <p className="market-resume">
+            <Link to={resumeHref}>{resume.asset} 분석 이어 보기</Link>
+          </p>
+        )}
         <div className="market-controls">
           <div role="group" aria-label="시세 거래소">
             <button aria-pressed={market === 'upbit'} onClick={() => changeMarket('upbit')}>
@@ -156,7 +147,7 @@ export function MarketHome() {
             시세를 가져오지 못했습니다. <button onClick={feed.reload}>다시 시도</button>
           </div>
         )}
-        {feed.loading && !feed.data && <p role="status">시세를 불러오는 중…</p>}
+        {!feed.error && feed.loading && !feed.data && <p role="status">시세를 불러오는 중…</p>}
         <div className="market-table-wrap">
           <table className="market-table">
             <thead>
@@ -171,6 +162,7 @@ export function MarketHome() {
                 <th>24시간 변동</th>
                 <th>24시간 거래대금</th>
                 <th>최근 30일</th>
+                <th>분석</th>
               </tr>
             </thead>
             <tbody>
@@ -178,7 +170,7 @@ export function MarketHome() {
                 <tr
                   key={id}
                   onClick={(e) => {
-                    if (!(e.target as HTMLElement).closest('a,button')) navigate(href(id));
+                    if (!(e.target as HTMLElement).closest('a,button,details')) navigate(href(id));
                   }}
                 >
                   <td>
@@ -202,28 +194,44 @@ export function MarketHome() {
                   </th>
                   <td>
                     <Link to={href(id)}>{money(r?.displayPrice, unit)}</Link>
-                    <small className={r?.stale ? 'stale-label' : 'muted'}>
-                      {r?.displayTime
-                        ? `${r.status === 'error' ? '분 단위 확인 실패 · ' : r.stale ? '갱신 지연 · ' : ''}${dateLabel(r.displayTime, true)}`
-                        : feed.loading
-                          ? '불러오는 중'
-                          : r?.status === 'unsupported'
-                            ? '거래 미지원'
-                            : r?.status === 'error'
-                              ? '시세 확인 필요'
-                              : '수집 대기'}
-                    </small>
+                    {r?.displayTime ? (
+                      <details className={'market-time' + (r.stale ? ' stale-label' : '')}>
+                        <summary>
+                          {r.status === 'error' ? '확인 실패 · ' : r.stale ? '갱신 지연 · ' : ''}
+                          {Math.max(0, Math.floor((Date.now() / 1000 - r.displayTime) / 60)) < 1
+                            ? '방금'
+                            : `${Math.max(0, Math.floor((Date.now() / 1000 - r.displayTime) / 60))}분 전`}
+                        </summary>
+                        <span>실제 체결 {dateLabel(r.displayTime, true)}</span>
+                      </details>
+                    ) : (
+                      <small>
+                        {feed.error
+                          ? '시세 확인 필요'
+                          : feed.loading
+                            ? '불러오는 중'
+                            : r?.status === 'unsupported'
+                              ? '거래 미지원'
+                              : r?.status === 'error'
+                                ? '시세 확인 필요'
+                                : '수집 대기'}
+                      </small>
+                    )}
                   </td>
                   <td className={(r?.quote?.change24h ?? 0) >= 0 ? 'up' : 'down'}>
                     {changeText(r?.quote?.change24h)}
                   </td>
                   <td>{turnover(r?.quote?.volume24h, unit)}</td>
-                  <td
-                    className={
-                      (r?.spark.at(-1)?.value ?? 0) >= (r?.spark[0]?.value ?? 0) ? 'up' : 'down'
-                    }
-                  >
+                  <td className="market-spark">
                     <Spark points={r?.spark ?? []} />
+                  </td>
+                  <td>
+                    <Link
+                      to={href(id)}
+                      aria-label={`${name} ${indicatorDefinition(defaultIndicator(id))?.title} 분석`}
+                    >
+                      {defaultIndicator(id) === 'rsi' ? 'RSI 14' : 'MVRV'} ↗
+                    </Link>
                   </td>
                 </tr>
               ))}

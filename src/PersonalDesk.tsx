@@ -1,3 +1,4 @@
+import { indicatorDefinition } from '../shared/indicator-catalog';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { BookmarkPlus, ChevronDown, ChevronUp, Download, Star, Trash2 } from 'lucide-react';
@@ -109,14 +110,16 @@ export function CardPicker({
 export function WorkspaceBar({
   current,
   embedded = false,
+  listOnly = false,
   resolveCurrent,
 }: {
   current: Omit<Workspace, 'name'>;
   embedded?: boolean;
+  listOnly?: boolean;
   resolveCurrent?: (current: Omit<Workspace, 'name'>) => Omit<Workspace, 'name'>;
 }) {
   const { desk, update } = usePersonalDesk();
-  const [open, setOpen] = useState(embedded);
+  const [open, setOpen] = useState(embedded || listOnly);
   const [name, setName] = useState('');
   const [message, setMessage] = useState('');
   const [transfer, setTransfer] = useState(false);
@@ -132,7 +135,12 @@ export function WorkspaceBar({
   const persist = () =>
     act(() => {
       const title = name.trim();
-      if (!title) throw new Error('작업공간 이름을 입력해 주세요.');
+      if (!title) throw new Error('분석 이름을 입력해 주세요.');
+      if (
+        readDesk().workspaces.some((w) => w.name === title) &&
+        !window.confirm(`‘${title}’ 분석을 현재 설정으로 덮어쓸까요?`)
+      )
+        return;
       update((d) => {
         const found = d.workspaces.some((w) => w.name === title);
         if (!found && d.workspaces.length >= 12)
@@ -149,7 +157,7 @@ export function WorkspaceBar({
     });
   return (
     <section className="workspace-bar" aria-label="나의 작업공간">
-      {!embedded && (
+      {!embedded && !listOnly && (
         <div className="workspace-actions">
           <button className="desk-button" aria-expanded={open} onClick={() => setOpen(!open)}>
             <BookmarkPlus size={16} />
@@ -165,37 +173,38 @@ export function WorkspaceBar({
       )}
       {open ? (
         <div className="desk-editor">
-          <form
-            className="workspace-save"
-            onSubmit={(e) => {
-              e.preventDefault();
-              persist();
-            }}
-          >
-            <label>
-              작업공간 이름
-              <input
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                maxLength={40}
-                placeholder="예: DOGE 장기 추세"
-              />
-            </label>
-            <button className="desk-button primary" type="submit">
-              {desk.workspaces.some((w) => w.name === name.trim())
-                ? '같은 이름 덮어쓰기'
-                : '현재 구성 저장'}
-            </button>
-            <button
-              className="desk-button"
-              type="button"
-              aria-expanded={transfer}
-              onClick={() => setTransfer(!transfer)}
+          {!listOnly && (
+            <form
+              className="workspace-save"
+              onSubmit={(e) => {
+                e.preventDefault();
+                persist();
+              }}
             >
-              설정 백업·이동
-            </button>
-          </form>
-          <p>코인·원천·분석·날짜 구간·지표·주석을 이 기기에 보관합니다.</p>
+              <label>
+                작업공간 이름
+                <input
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  maxLength={40}
+                  placeholder="예: DOGE 장기 추세"
+                />
+              </label>
+              <button className="desk-button primary" type="submit">
+                {desk.workspaces.some((w) => w.name === name.trim())
+                  ? '같은 이름 덮어쓰기'
+                  : '현재 구성 저장'}
+              </button>
+              <button
+                className="desk-button"
+                type="button"
+                aria-expanded={transfer}
+                onClick={() => setTransfer(!transfer)}
+              >
+                설정 백업·이동
+              </button>
+            </form>
+          )}
           <div className="saved-workspaces">
             {desk.workspaces.length ? (
               desk.workspaces.map((w) => (
@@ -217,19 +226,23 @@ export function WorkspaceBar({
                           JSON.stringify(w.annotations),
                         );
                       window.dispatchEvent(new Event('coin-desk-annotations'));
-                      setOpen(false);
+                      if (!listOnly) setOpen(false);
                       setMessage('');
                     }}
                   >
                     <Star size={14} />
                     <b>{w.name}</b>
                     <small>
-                      {w.asset} ·{' '}
+                      {w.asset} · {indicatorDefinition(w.metric ?? '')?.title ?? '가격·지표'} ·{' '}
+                      {w.dateWindow
+                        ? `${new Date(w.dateWindow.from * 1000).toISOString().slice(0, 10)}~${new Date(w.dateWindow.to * 1000).toISOString().slice(0, 10)}`
+                        : w.period}{' '}
+                      ·{' '}
                       {w.priceSource === 'reference'
                         ? 'USD 참조'
-                        : w.market === 'upbit'
-                          ? 'KRW'
-                          : 'USDT'}
+                        : (w.priceSource ?? w.market) === 'upbit'
+                          ? 'Upbit KRW'
+                          : 'Binance USDT'}
                     </small>
                   </Link>
                   <button
@@ -250,7 +263,11 @@ export function WorkspaceBar({
                 </div>
               ))
             ) : (
-              <p>저장한 작업공간이 없습니다.</p>
+              <div className="saved-empty">
+                <img src="/brand/coin-desk-shiba-smile.png" alt="보리" width="64" height="64" />
+                <p>저장한 분석이 없습니다.</p>
+                <Link to="/coins/BTC?metric=net%3Amvrv&period=5y">분석 열기</Link>
+              </div>
             )}
           </div>
           {removed ? (
@@ -274,6 +291,20 @@ export function WorkspaceBar({
               삭제 취소
             </button>
           ) : null}
+          {listOnly && (
+            <div className="workspace-actions">
+              <Link className="desk-button" to="/workspace/library">
+                개인 자료함
+              </Link>
+              <button
+                className="desk-button"
+                aria-expanded={transfer}
+                onClick={() => setTransfer(!transfer)}
+              >
+                백업·복원
+              </button>
+            </div>
+          )}
           {transfer ? (
             <div className="settings-transfer">
               <button
@@ -284,7 +315,7 @@ export function WorkspaceBar({
                   const url = URL.createObjectURL(new Blob([data], { type: 'application/json' }));
                   const a = document.createElement('a');
                   a.href = url;
-                  a.download = 'coin-desk-settings.json';
+                  a.download = 'borichart-settings.json';
                   a.click();
                   setTimeout(() => URL.revokeObjectURL(url), 1000);
                 }}

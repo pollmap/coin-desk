@@ -139,6 +139,7 @@ export function ChartTools({
   onReset,
   getVisibleRange,
   shareVisibleRange = false,
+  hideShare = false,
   exportLabel = '보이는 구간 CSV',
 }: {
   chart: RefObject<IChartApi | null>;
@@ -151,6 +152,7 @@ export function ChartTools({
   onReset?: () => void;
   getVisibleRange?: () => { from: number; to: number } | null;
   shareVisibleRange?: boolean;
+  hideShare?: boolean;
   exportLabel?: string;
 }) {
   const host = useRef<HTMLDivElement>(null);
@@ -174,7 +176,7 @@ export function ChartTools({
     const url = URL.createObjectURL(new Blob([content], { type: 'text/csv;charset=utf-8' }));
     const a = document.createElement('a');
     a.href = url;
-    a.download = `Coin-Desk-${label}.csv`;
+    a.download = `borichart-${label}.csv`;
     a.click();
     setTimeout(() => URL.revokeObjectURL(url), 1000);
     setMessage(`${visible.length.toLocaleString()}개 관측을 내보냈습니다.`);
@@ -209,26 +211,28 @@ export function ChartTools({
         >
           전체화면
         </button>
-        <button
-          onClick={async () => {
-            const url = new URL(location.href);
-            const range = getVisibleRange?.() ?? chart.current?.timeScale().getVisibleRange();
-            if (shareVisibleRange && range) {
-              url.searchParams.set('chart_from', String(range.from));
-              url.searchParams.set('chart_to', String(range.to));
-            }
-            const address = url.toString();
-            setShare(address);
-            try {
-              await navigator.clipboard.writeText(address);
-              setMessage('화면 링크를 복사했습니다.');
-            } catch {
-              setMessage('주소를 선택해 복사해 주세요.');
-            }
-          }}
-        >
-          링크 공유
-        </button>
+        {!hideShare && (
+          <button
+            onClick={async () => {
+              const url = new URL(location.href);
+              const range = getVisibleRange?.() ?? chart.current?.timeScale().getVisibleRange();
+              if (shareVisibleRange && range) {
+                url.searchParams.set('chart_from', String(range.from));
+                url.searchParams.set('chart_to', String(range.to));
+              }
+              const address = url.toString();
+              setShare(address);
+              try {
+                await navigator.clipboard.writeText(address);
+                setMessage('화면 링크를 복사했습니다.');
+              } catch {
+                setMessage('주소를 선택해 복사해 주세요.');
+              }
+            }}
+          >
+            링크 공유
+          </button>
+        )}
         <button onClick={onExport ?? csv} disabled={!rows.length}>
           {exportLabel}
         </button>
