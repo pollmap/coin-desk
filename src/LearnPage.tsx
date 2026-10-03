@@ -285,7 +285,6 @@ export function LearnPage() {
               <h1 tabIndex={-1} data-route-focus>
                 분석 사전
               </h1>
-              <p>지표의 뜻부터 계산식과 숫자 예시까지.</p>
             </>
           )}
         </div>
@@ -587,9 +586,6 @@ export function LearnPage() {
               </button>
             </div>
           )}
-          <p className="learn-footnote">
-            설명과 적용 기준은 Coin Desk의 현재 지원 기능을 따릅니다.
-          </p>
         </>
       )}
     </div>

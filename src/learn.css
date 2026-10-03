@@ -18,8 +18,7 @@
   letter-spacing: -0.7px;
   margin: 8px 0;
 }
-.learn-heading p,
-.learn-footnote {
+.learn-heading p {
   color: var(--muted);
   font-size: 13px;
   line-height: 1.6;

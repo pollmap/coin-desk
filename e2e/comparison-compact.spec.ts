@@ -44,8 +44,8 @@ test('compact comparison keeps the chart first and settings preserve its range',
   await expect(page.getByText('실제로 비교하는 기간', { exact: true })).toBeVisible();
   await expect(page.getByRole('button', { name: '비교 CSV', exact: true })).toHaveCount(1);
   await expect(page.getByRole('button', { name: 'CSV 내려받기', exact: true })).toHaveCount(0);
-  for (const theme of ['dark', 'light']) {
-    if (theme === 'light') await page.getByRole('button', { name: '밝은 테마로 변경' }).click();
+  for (const theme of ['light', 'dark']) {
+    if (theme === 'dark') await page.getByRole('button', { name: '어두운 테마로 변경' }).click();
     expect(
       (
         await new AxeBuilder({ page })

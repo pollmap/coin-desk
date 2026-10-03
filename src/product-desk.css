@@ -15,14 +15,14 @@
   --red: #7faaff;
 }
 :root[data-theme='light'] {
-  --bg: #f7f8fa;
+  --bg: #fff;
   --panel: #fff;
-  --panel2: #fff;
+  --panel2: #f5f6f8;
   --text: #202633;
   --muted: #596579;
   --border: #dbe0e8;
-  --hover: #edf0f6;
-  --surface: #fff;
+  --hover: #eef1f5;
+  --surface: #f5f6f8;
   --accent-bg: #e5e9fa;
   --accent: #4456aa;
   --up: #b62d43;
@@ -130,7 +130,6 @@ body {
   background: var(--panel);
   border: 1px solid var(--border);
   border-radius: 10px;
-  box-shadow: 0 12px 24px #0003;
 }
 .product-search-results a {
   display: flex;
@@ -195,6 +194,21 @@ body {
 .product-desk :is(button, input, select, a, summary):focus-visible {
   outline: 2px solid var(--accent);
   outline-offset: 3px;
+}
+.product-desk :is(button, [role='button'], summary) {
+  animation: none;
+  transform: none;
+  transition:
+    background-color 120ms,
+    color 120ms,
+    border-color 120ms;
+}
+.product-desk :is(button, [role='button'], summary):hover {
+  background-color: var(--hover);
+  color: var(--text);
+}
+.product-desk :is(button, [role='button'], summary):active {
+  transform: none;
 }
 .product-desk .up {
   color: var(--up);
@@ -365,12 +379,6 @@ body {
 :root[data-theme='light'] :is(.market-table, .market-leader) .stale-label {
   color: #855600;
 }
-.market-footnote {
-  font-size: 12px;
-  line-height: 1.7;
-  color: var(--muted);
-  margin: 14px 0;
-}
 .market-rail {
   border-left: 1px solid var(--border);
   padding: 4px 0 0 24px;
@@ -407,13 +415,19 @@ body {
   line-height: 1.6;
   font-size: 13px;
 }
-.market-empty img {
-  object-fit: contain;
+.market-data-note {
+  margin-top: 12px;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.7;
 }
-.market-rail .market-learn {
-  border-top: 1px solid var(--border);
-  margin-top: 24px;
-  color: var(--accent);
+.market-data-note summary {
+  cursor: pointer;
+  width: fit-content;
+  padding: 4px 0;
+}
+.market-data-note p {
+  margin-top: 6px;
 }
 .product-desk .indicator-workspace {
   position: relative;
