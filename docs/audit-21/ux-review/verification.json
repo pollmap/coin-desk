@@ -1,0 +1,52 @@
+{
+  "date": "2026-10-03",
+  "base": "ca3df15",
+  "scope": "Indicator reading clarity, unsupported categories, shared calculation help",
+  "publicObservation": {
+    "observedAtKST": "2026-10-03T14:19:00+09:00",
+    "activeSourcesHealthy": 103,
+    "activeSourcesTotal": 103,
+    "strict48hReady": false,
+    "strict48hRecordedPercent": 97.99,
+    "strict48hLongestGapSeconds": 2700,
+    "evidence": "07-status.png"
+  },
+  "checks": {
+    "typescript": "passed",
+    "unitTests": { "passed": 487 },
+    "focusedBrowser": { "passed": 18, "retries": 0 },
+    "fullBrowser": {
+      "passed": 138,
+      "skipped": 2,
+      "skipReason": "Private local archive opt-in paths",
+      "retries": 0,
+      "durationMinutes": 17.5,
+      "artifactDirectory": "work/browser-checks/1791005488222-395024"
+    },
+    "finalFocusReturnFollowup": { "passed": 6, "retries": 0 },
+    "build": "passed after final focus change",
+    "realAppleSafariVoiceOver": "not tested; no device"
+  },
+  "earlierTestFailures": [
+    {
+      "failed": 1,
+      "cause": "Test sampled the visible range before initial chart layout readiness",
+      "artifactDirectory": "work/browser-checks/1791004813486-319048"
+    },
+    {
+      "failed": 2,
+      "cause": "Test compared the pre-keyboard window although keyboard navigation intentionally pans to the selected observation",
+      "artifactDirectory": "work/browser-checks/1791005153320-28388"
+    }
+  ],
+  "manualLocalBrowser": "A separate fixture preview on port 5214 refused connection; automated isolated browser verification and its screenshots are recorded separately",
+  "deployment": {
+    "uxPatchDeployed": false,
+    "remoteCI": "pending",
+    "blocker": "Current execution environment denies shell external network access",
+    "existingProductionCode": "3cc0c807f16e2212ce9d03614118ca441398bd10",
+    "collectorsChanged": false,
+    "databaseChanged": false,
+    "privateDataChanged": false
+  }
+}

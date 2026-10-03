@@ -1,0 +1,63 @@
+{
+  "checkedAt": 1790997756,
+  "since": 1790974200,
+  "until": 1790997600,
+  "completeUtcDay": false,
+  "scope": "post-cutover partial interval; not a substitute for preserved 48h window",
+  "lanes": {
+    "quotes": {
+      "expected": 390,
+      "recorded": 390,
+      "ok": 390,
+      "failures": [],
+      "maxScheduledGapSeconds": 60,
+      "maxStartGapSeconds": 60
+    },
+    "background": {
+      "expected": 390,
+      "recorded": 390,
+      "ok": 390,
+      "failures": [],
+      "maxScheduledGapSeconds": 60,
+      "maxStartGapSeconds": 60
+    },
+    "recent": {
+      "expected": 390,
+      "recorded": 390,
+      "ok": 390,
+      "failures": [],
+      "maxScheduledGapSeconds": 60,
+      "maxStartGapSeconds": 60
+    },
+    "analysis": {
+      "expected": 390,
+      "recorded": 390,
+      "ok": 390,
+      "failures": [],
+      "maxScheduledGapSeconds": 60,
+      "maxStartGapSeconds": 60
+    }
+  },
+  "dbBytes": 42733408,
+  "backupBytes": 191950609,
+  "briefings": [
+    [
+      "2026-10-03",
+      1790986200
+    ],
+    [
+      "2026-10-02",
+      1790899852
+    ]
+  ],
+  "containerUsage": [
+    "coin-desk-api-candidate 35.65MiB / 768MiB 0.00%",
+    "coin-desk-analysis-1 58.43MiB / 384MiB 0.00%",
+    "coin-desk-recent-1 43.77MiB / 384MiB 0.01%",
+    "coin-desk-quotes-1 51.23MiB / 384MiB 0.00%",
+    "coin-desk-background-1 47.77MiB / 384MiB 0.01%",
+    "coin-desk-api-1 60.88MiB / 768MiB 0.11%",
+    "coin-desk-backup-1 9.906MiB / 512MiB 0.01%",
+    "coin-desk-quote-hub-1 43.66MiB / 192MiB 3.71%"
+  ]
+}

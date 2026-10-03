@@ -1,0 +1,113 @@
+{
+  "checkedAt": "2026-10-03T06:49:22.033191+00:00",
+  "codeCommit": "d77a093",
+  "status": "local_verified_remote_ci_and_deploy_blocked",
+  "waiting48hRequired": false,
+  "observation48h": "legacy read-only history preserved; not a release gate",
+  "dailyOperationsCheck": "retained separately; current full UTC day not yet complete",
+  "checks": {
+    "typecheck": "pass",
+    "unitTests": 487,
+    "backupRecoveryTests": 2,
+    "productionBuild": "pass",
+    "docs": "pass",
+    "brand": "pass",
+    "browser": {
+      "retries": 0,
+      "marketAndStatus": 16,
+      "indicatorClarity": 6,
+      "comparisonFinal": 4,
+      "totalDistinctPassed": 26,
+      "fullSuiteRerunThisTurn": false,
+      "fixture": true,
+      "engines": [
+        "chromium",
+        "webkit"
+      ],
+      "accessibility": "axe WCAG 2 A/AA both themes passed for comparison; market tests also passed",
+      "comparisonLayoutReports": [
+        [
+          {
+            "width": 320,
+            "chartTop": 665.359375,
+            "controlsHeight": 173.1875
+          },
+          {
+            "width": 390,
+            "chartTop": 647.359375,
+            "controlsHeight": 173.1875
+          },
+          {
+            "width": 810,
+            "chartTop": 580.171875,
+            "controlsHeight": 163.1875
+          },
+          {
+            "width": 1280,
+            "chartTop": 582.171875,
+            "controlsHeight": 165.1875
+          }
+        ],
+        [
+          {
+            "width": 320,
+            "chartTop": 668.359375,
+            "controlsHeight": 176.1875
+          },
+          {
+            "width": 390,
+            "chartTop": 650.359375,
+            "controlsHeight": 176.1875
+          },
+          {
+            "width": 810,
+            "chartTop": 588.171875,
+            "controlsHeight": 171.1875
+          },
+          {
+            "width": 1280,
+            "chartTop": 588.171875,
+            "controlsHeight": 171.1875
+          }
+        ]
+      ]
+    }
+  },
+  "performance": {
+    "initialCssKb": 117.27,
+    "initialCssGzipKb": 20.93,
+    "previousInitialCssKb": 124.34,
+    "previousInitialCssGzipKb": 22.08,
+    "initialJsKb": 346.01,
+    "initialJsGzipKb": 113.35,
+    "productionLcpRetested": false,
+    "previousDirectVpsLcpP95Ms": 4992,
+    "lcpTargetMet": false
+  },
+  "releaseCandidate": {
+    "release": "vps-710041fe2a2d533d",
+    "archive": "deployment-artifacts/vps-710041fe2a2d533d.tar.gz",
+    "files": 295,
+    "sha256": "d92bf7bda64eab33590bcae5152778e3bfd1868c10b5c171fdb79a3d9b19861d"
+  },
+  "productionChanged": false,
+  "migrationNeeded": false,
+  "networkBlockers": [
+    "GitHub 443 socket permission denied",
+    "VPS SSH 22 permission denied"
+  ],
+  "automationConfigurationChanged": false,
+  "automationCheck": "tool requires approval while approval policy is never",
+  "historicalFailures": [
+    "Initial 320px comparison chart started around 868-874px; controls and header compacted.",
+    "New comparison geometry assertion initially assumed 480/600px without a comparison-specific product threshold; changed to first-viewport visibility and settings-height checks. Indicator-detail acceptance unchanged.",
+    "axe found TradingView link nested inside chart role=img; changed to labelled group; final 4 comparison checks passed."
+  ],
+  "unverified": [
+    "remote CI and deployment of pending UX commits",
+    "post-deployment live APIs and natural refresh",
+    "direct VPS first-load performance target",
+    "Apple Safari and VoiceOver hardware",
+    "X complete collection and private archive full review"
+  ]
+}

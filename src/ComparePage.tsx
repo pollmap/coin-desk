@@ -162,7 +162,7 @@ function ComparisonChart({
           return (
             <span key={row.asset}>
               <AssetLogo asset={row.asset} size={16} />
-              <b>{row.asset}</b> {value === undefined ? '관측 없음' : numeric(value)}
+              <b>{row.asset}</b> <span>{value === undefined ? '관측 없음' : numeric(value)}</span>
               {value !== undefined ? (
                 <small className={value >= 100 ? 'up' : 'down'}>
                   {' '}
@@ -176,7 +176,7 @@ function ComparisonChart({
       <div
         className="comparison-chart"
         ref={container}
-        role="img"
+        role="group"
         aria-label="같은 날짜를 100으로 맞춘 코인 성과 비교 차트. 정확한 수치는 아래 표에서 확인할 수 있습니다."
       />
       {comparison.rows[0] ? (
@@ -429,33 +429,38 @@ export function ComparePage() {
       </div>
       <MarketNavigation current="compare" market={market} assets={assets} />
       <section className="panel comparison-controls" aria-label="비교 설정">
-        <div className="comparison-control-heading">
-          <h2>
-            비교할 코인 <small>{assets.length}/8</small>
-          </h2>
-          <button onClick={() => change({ assets: DEFAULT_ASSETS })}>BTC · DOGE · ETH</button>
-        </div>
-        <div className="comparison-assets">
-          {ASSETS.map((asset) => (
-            <button
-              key={asset.id}
-              aria-pressed={assets.includes(asset.id)}
-              disabled={assets.length === 2 && assets.includes(asset.id)}
-              title={asset.name}
-              onClick={() =>
-                change({
-                  assets: assets.includes(asset.id)
-                    ? assets.filter((id) => id !== asset.id)
-                    : [...assets, asset.id],
-                })
-              }
-            >
-              <AssetLogo asset={asset.id} size={19} />
-              <b>{asset.id}</b>
-              <span>{asset.name}</span>
-            </button>
-          ))}
-        </div>
+        <details className="comparison-selection">
+          <summary>
+            비교 코인 · {assets.join(' · ')} <span>변경</span>
+          </summary>
+          <div className="comparison-control-heading">
+            <h2>
+              비교할 코인 <small>{assets.length}/8</small>
+            </h2>
+            <button onClick={() => change({ assets: DEFAULT_ASSETS })}>BTC · DOGE · ETH</button>
+          </div>
+          <div className="comparison-assets">
+            {ASSETS.map((asset) => (
+              <button
+                key={asset.id}
+                aria-pressed={assets.includes(asset.id)}
+                disabled={assets.length === 2 && assets.includes(asset.id)}
+                title={asset.name}
+                onClick={() =>
+                  change({
+                    assets: assets.includes(asset.id)
+                      ? assets.filter((id) => id !== asset.id)
+                      : [...assets, asset.id],
+                  })
+                }
+              >
+                <AssetLogo asset={asset.id} size={19} />
+                <b>{asset.id}</b>
+                <span>{asset.name}</span>
+              </button>
+            ))}
+          </div>
+        </details>
         <div className="comparison-options">
           <label>
             거래소 · 기준 통화{' '}
@@ -467,7 +472,30 @@ export function ComparePage() {
               <option value="upbit">Upbit · KRW</option>
             </select>
           </label>
-          <div className="segments" aria-label="비교 기간">
+          <label className="comparison-period-compact">
+            비교 기간
+            <select
+              aria-label="비교 기간"
+              value={hasCustom ? 'custom' : period}
+              onChange={(event) => {
+                dateForm.current?.reset();
+                setDraftError('');
+                change({ period: event.target.value as RangePeriod });
+              }}
+            >
+              {hasCustom && (
+                <option value="custom" disabled>
+                  직접 지정
+                </option>
+              )}
+              {PERIOD_OPTIONS.map((entry) => (
+                <option key={entry.id} value={entry.id}>
+                  {entry.label}
+                </option>
+              ))}
+            </select>
+          </label>
+          <div className="segments comparison-period-wide" aria-label="비교 기간">
             {PERIOD_OPTIONS.map((entry) => (
               <button
                 key={entry.id}
@@ -483,13 +511,6 @@ export function ComparePage() {
               </button>
             ))}
           </div>
-          <button
-            className="comparison-share"
-            disabled={!!parsed.error}
-            onClick={() => void share()}
-          >
-            비교 링크 복사
-          </button>
         </div>
         <details
           className="comparison-custom-dates"
@@ -553,6 +574,9 @@ export function ComparePage() {
             </p>
           ) : null}
         </details>
+        <button className="comparison-share" disabled={!!parsed.error} onClick={() => void share()}>
+          비교 링크 복사
+        </button>
         {shareUrl ? (
           <div className="comparison-share-result">
             <span role="status">{shareNote}</span>
@@ -592,81 +616,8 @@ export function ComparePage() {
       ) : null}
       {!loading && hasStale ? (
         <div className="comparison-notice amber" role="status">
-          갱신이 지연된 원천이 있습니다. 마지막 정상 수집 일봉으로 비교하며 아래 원천별 수집 시각을
-          확인해 주세요.
+          수집 지연 · 마지막 정상 일봉으로 비교합니다. 수집 시각은 아래 이력에서 확인하세요.
         </div>
-      ) : null}
-      {comparison ? (
-        <section className="comparison-coverage" aria-label="요청 기간과 실제 비교 범위">
-          <div>
-            <span>요청한 기간</span>
-            <strong>
-              {comparison.requestedStart !== null
-                ? utcDate(comparison.requestedStart)
-                : '거래소 공통 이력 시작'}{' '}
-              →{' '}
-              {comparison.requestedEnd !== null
-                ? utcDate(comparison.requestedEnd)
-                : '확정 일봉 마지막 날'}
-            </strong>
-          </div>
-          <div>
-            <span>실제로 비교하는 기간</span>
-            <strong>
-              {comparison.start !== null && comparison.end !== null
-                ? `${utcDate(comparison.start)} → ${utcDate(comparison.end)} UTC`
-                : '겹치는 확정 이력 부족'}
-            </strong>
-          </div>
-          {period === 'all' && !parsed.range && comparison.rows.length > 0 ? (
-            <p>
-              전체 비교는 선택한 모든 코인에 값이 있는 구간입니다.{' '}
-              {comparison.coverage.some((source) => source.first === comparison.start)
-                ? `${comparison.coverage
-                    .filter((source) => source.first === comparison.start)
-                    .map((source) => source.asset)
-                    .join(
-                      '·',
-                    )} 수집 이력이 ${utcDate(comparison.start!)}부터여서 이 날짜에서 함께 출발합니다.`
-                : `확정 종가가 처음 겹치는 ${utcDate(comparison.start!)}에서 함께 출발합니다.`}{' '}
-              코인 선택에 따라 비교 시작일이 달라집니다.
-            </p>
-          ) : null}
-          {comparison.shortened ? (
-            <p className="amber">
-              {comparison.coverage
-                .filter(
-                  (source) =>
-                    source.first !== null && source.first > (comparison.requestedStart ?? 0),
-                )
-                .map((source) => `${source.asset} 수집 이력은 ${utcDate(source.first!)}부터`)
-                .join(' · ') || '시작일에 모든 코인의 관측이 함께 존재하지 않습니다.'}
-              . 공통 관측이 시작되는 날을 100으로 맞췄습니다.
-            </p>
-          ) : null}
-          {comparison.endShortened ? (
-            <p className="amber">
-              요청한 종료일까지 확정 일봉이 모두 갖춰지지 않아 {utcDate(comparison.end!)}에서
-              마칩니다. 오늘 진행 중인 봉과 아직 확보하지 못한 날짜를 채워 넣지 않습니다.
-            </p>
-          ) : null}
-          <details>
-            <summary>코인별 수집 이력 보기</summary>
-            <ul>
-              {comparison.coverage.map((source) => (
-                <li key={source.asset}>
-                  <b>{source.asset}</b> 수집 시작{' '}
-                  {source.first === null ? '미확인' : utcDate(source.first)} · 이 조회의 마지막
-                  확정일 {source.last === null ? '없음' : utcDate(source.last)}
-                </li>
-              ))}
-            </ul>
-            <p>
-              거래소 제공·수집 이력이며 코인의 탄생일부터 확보한 가격이 아닙니다. Binance BTC 일봉은
-              2017년 8월부터입니다.
-            </p>
-          </details>
-        </section>
       ) : null}
       {comparison?.rows.length ? (
         <>
@@ -679,8 +630,13 @@ export function ComparePage() {
                   {comparison.observations.toLocaleString()}일
                 </p>
               </div>
-              <button onClick={download}>CSV 내려받기</button>
             </div>
+            {comparison.shortened || comparison.endShortened ? (
+              <div className="comparison-notice amber" role="status">
+                요청한 기간 전체에 공통 이력이 없어, 위에 표시한 실제 관측 기간으로 비교합니다. 아래
+                ‘비교 기간과 코인별 수집 이력’에서 차이를 확인할 수 있습니다.
+              </div>
+            ) : null}
             {comparison.missingCommonDays > 0 ? (
               <div className="comparison-notice amber">
                 공통 기간 중 {comparison.missingCommonDays}일은 한 개 이상의 코인에 관측값이
@@ -798,6 +754,79 @@ export function ComparePage() {
             </p>
           </section>
         </>
+      ) : null}
+      {comparison ? (
+        <details className="comparison-coverage" aria-label="요청 기간과 실제 비교 범위">
+          <summary>비교 기간과 코인별 수집 이력</summary>
+          <div>
+            <span>요청한 기간</span>
+            <strong>
+              {comparison.requestedStart !== null
+                ? utcDate(comparison.requestedStart)
+                : '거래소 공통 이력 시작'}{' '}
+              →{' '}
+              {comparison.requestedEnd !== null
+                ? utcDate(comparison.requestedEnd)
+                : '확정 일봉 마지막 날'}
+            </strong>
+          </div>
+          <div>
+            <span>실제로 비교하는 기간</span>
+            <strong>
+              {comparison.start !== null && comparison.end !== null
+                ? `${utcDate(comparison.start)} → ${utcDate(comparison.end)} UTC`
+                : '겹치는 확정 이력 부족'}
+            </strong>
+          </div>
+          {period === 'all' && !parsed.range && comparison.rows.length > 0 ? (
+            <p>
+              전체 비교는 선택한 모든 코인에 값이 있는 구간입니다.{' '}
+              {comparison.coverage.some((source) => source.first === comparison.start)
+                ? `${comparison.coverage
+                    .filter((source) => source.first === comparison.start)
+                    .map((source) => source.asset)
+                    .join(
+                      '·',
+                    )} 수집 이력이 ${utcDate(comparison.start!)}부터여서 이 날짜에서 함께 출발합니다.`
+                : `확정 종가가 처음 겹치는 ${utcDate(comparison.start!)}에서 함께 출발합니다.`}{' '}
+              코인 선택에 따라 비교 시작일이 달라집니다.
+            </p>
+          ) : null}
+          {comparison.shortened ? (
+            <p className="amber">
+              {comparison.coverage
+                .filter(
+                  (source) =>
+                    source.first !== null && source.first > (comparison.requestedStart ?? 0),
+                )
+                .map((source) => `${source.asset} 수집 이력은 ${utcDate(source.first!)}부터`)
+                .join(' · ') || '시작일에 모든 코인의 관측이 함께 존재하지 않습니다.'}
+              . 공통 관측이 시작되는 날을 100으로 맞췄습니다.
+            </p>
+          ) : null}
+          {comparison.endShortened ? (
+            <p className="amber">
+              요청한 종료일까지 확정 일봉이 모두 갖춰지지 않아 {utcDate(comparison.end!)}에서
+              마칩니다. 오늘 진행 중인 봉과 아직 확보하지 못한 날짜를 채워 넣지 않습니다.
+            </p>
+          ) : null}
+          <details>
+            <summary>코인별 수집 이력 보기</summary>
+            <ul>
+              {comparison.coverage.map((source) => (
+                <li key={source.asset}>
+                  <b>{source.asset}</b> 수집 시작{' '}
+                  {source.first === null ? '미확인' : utcDate(source.first)} · 이 조회의 마지막
+                  확정일 {source.last === null ? '없음' : utcDate(source.last)}
+                </li>
+              ))}
+            </ul>
+            <p>
+              거래소 제공·수집 이력이며 코인의 탄생일부터 확보한 가격이 아닙니다. Binance BTC 일봉은
+              2017년 8월부터입니다.
+            </p>
+          </details>
+        </details>
       ) : null}
       <div className="comparison-refresh">
         <span>

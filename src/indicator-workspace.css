@@ -186,8 +186,33 @@
   align-items: baseline;
   justify-content: flex-end;
   gap: 14px;
-  font-size: 11px;
+  font-size: 12px;
   color: var(--muted);
+}
+.analysis-reading-reset {
+  min-height: 32px;
+  padding: 4px 8px;
+  font-size: 12px;
+}
+.analysis-reading-date {
+  overflow-wrap: anywhere;
+}
+.indicator-method dl {
+  margin: 12px 0;
+}
+.indicator-method dt {
+  font-weight: 600;
+}
+.indicator-method dd {
+  margin: 2px 0 10px;
+  color: var(--muted);
+}
+.indicator-no-results {
+  padding: 12px;
+  line-height: 1.6;
+}
+.indicator-no-results p {
+  margin-top: 0;
 }
 .indicator-workspace .analysis-legend > span:nth-child(2) > b {
   font-size: 25px;

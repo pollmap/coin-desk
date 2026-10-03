@@ -471,6 +471,18 @@ for (const m of NETWORK_METRICS) {
     [example],
     conclusion,
     [
+      ...(['mvrv', 'realized_cap', 'realized_price', 'nupl'].includes(m.id)
+        ? ([
+            [
+              '시가총액',
+              '이 지표에서는 현재 원장에 있는 공급량 × USD 가격입니다. 거래 가능한 유통량 기준 시가총액과 다를 수 있습니다.',
+            ],
+            [
+              '실현시가총액',
+              '각 원장 잔고를 마지막 이동 시점의 가격으로 평가해 더한 값입니다. 체인별 이동 판정이 다르며, 거래소에서 실제 매수한 금액의 합계는 아닙니다.',
+            ],
+          ] as [string, string][])
+        : []),
       [
         m.sourceMetric ?? '자체 계산',
         m.derived

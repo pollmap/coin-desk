@@ -83,7 +83,7 @@ test('status explains delayed execution without declaring stable operation', asy
   });
   await page.goto('/status');
   const summary = page.locator('.automation-summary');
-  await expect(summary).toContainText('기간 충족 · 운영 확인 필요');
+  await expect(summary).toContainText('최근 48시간 기록 · 출시 완료 판정에 사용하지 않습니다');
   await expect(summary).toContainText('기록률 99.86%');
   await expect(summary).toContainText('최장 공백 353초');
   await expect(summary).toContainText('실제 실행 간격 353초 · 예약 기록 간격 180초');
