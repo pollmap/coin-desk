@@ -1,0 +1,366 @@
+{
+  "before": [
+    {
+      "lcpMs": 5100,
+      "element": "<p class=\"muted\">코인을 열면 여기에 남습니다.</p>",
+      "navigation": {
+        "fetchStart": 0.10000002384185791,
+        "domainLookupStart": 2721.100000023842,
+        "domainLookupEnd": 2732.600000023842,
+        "connectStart": 2732.600000023842,
+        "connectEnd": 3325.9000000059605,
+        "requestStart": 3329.5,
+        "responseStart": 3615.300000011921
+      },
+      "initialResources": [
+        {
+          "url": "https://coin-desk.62.171.141.206.sslip.io/assets/index-kDp1AJwI.js",
+          "start": 3666.7000000178814,
+          "duration": 1183.199999988079,
+          "ttfb": 567.1000000238419,
+          "size": 131526
+        },
+        {
+          "url": "https://coin-desk.62.171.141.206.sslip.io/assets/index-Danldnez.css",
+          "start": 3667.600000023842,
+          "duration": 914.5999999940395,
+          "ttfb": 856,
+          "size": 31657
+        },
+        {
+          "url": "https://coin-desk.62.171.141.206.sslip.io/brand/coin-desk-shiba-smile.png",
+          "start": 4945.9000000059605,
+          "duration": 2137.2000000178814,
+          "ttfb": 332.59999999403954,
+          "size": 790144
+        }
+      ]
+    },
+    {
+      "lcpMs": 2220,
+      "element": "<p class=\"muted\">코인을 열면 여기에 남습니다.</p>",
+      "navigation": {
+        "fetchStart": 0.09999999403953552,
+        "domainLookupStart": 2.199999988079071,
+        "domainLookupEnd": 3.199999988079071,
+        "connectStart": 3.199999988079071,
+        "connectEnd": 583.7999999821186,
+        "requestStart": 583.9000000059605,
+        "responseStart": 877.5
+      },
+      "initialResources": [
+        {
+          "url": "https://coin-desk.62.171.141.206.sslip.io/assets/index-kDp1AJwI.js",
+          "start": 886.4000000059605,
+          "duration": 1217.199999988079,
+          "ttfb": 876.2000000178814,
+          "size": 131526
+        },
+        {
+          "url": "https://coin-desk.62.171.141.206.sslip.io/assets/index-Danldnez.css",
+          "start": 886.7999999821186,
+          "duration": 635.9000000059605,
+          "ttfb": 588.5999999940395,
+          "size": 31657
+        },
+        {
+          "url": "https://coin-desk.62.171.141.206.sslip.io/brand/coin-desk-shiba-smile.png",
+          "start": 2142.199999988079,
+          "duration": 2426.2000000178814,
+          "ttfb": 295.80000001192093,
+          "size": 790144
+        }
+      ]
+    },
+    {
+      "lcpMs": 2216,
+      "element": "<p class=\"muted\">코인을 열면 여기에 남습니다.</p>",
+      "navigation": {
+        "fetchStart": 0.09999999403953552,
+        "domainLookupStart": 2,
+        "domainLookupEnd": 2.9000000059604645,
+        "connectStart": 2.9000000059604645,
+        "connectEnd": 571.9000000059605,
+        "requestStart": 572.0999999940395,
+        "responseStart": 860.8000000119209
+      },
+      "initialResources": [
+        {
+          "url": "https://coin-desk.62.171.141.206.sslip.io/assets/index-kDp1AJwI.js",
+          "start": 874.5999999940395,
+          "duration": 1197.5,
+          "ttfb": 572.5999999940395,
+          "size": 131526
+        },
+        {
+          "url": "https://coin-desk.62.171.141.206.sslip.io/assets/index-Danldnez.css",
+          "start": 874.8000000119209,
+          "duration": 881.1999999880791,
+          "ttfb": 574.9000000059605,
+          "size": 31657
+        },
+        {
+          "url": "https://coin-desk.62.171.141.206.sslip.io/brand/coin-desk-shiba-smile.png",
+          "start": 2110.5,
+          "duration": 1964.800000011921,
+          "ttfb": 288.30000001192093,
+          "size": 790144
+        }
+      ]
+    },
+    {
+      "lcpMs": 3840,
+      "element": "<p class=\"muted\">코인을 열면 여기에 남습니다.</p>",
+      "navigation": {
+        "fetchStart": 0.19999998807907104,
+        "domainLookupStart": 2.9000000059604645,
+        "domainLookupEnd": 4.199999988079071,
+        "connectStart": 4.199999988079071,
+        "connectEnd": 568.0999999940395,
+        "requestStart": 568.3000000119209,
+        "responseStart": 854.9000000059605
+      },
+      "initialResources": [
+        {
+          "url": "https://coin-desk.62.171.141.206.sslip.io/assets/index-Danldnez.css",
+          "start": 862.5999999940395,
+          "duration": 883.3000000119209,
+          "ttfb": 570.1999999880791,
+          "size": 31657
+        },
+        {
+          "url": "https://coin-desk.62.171.141.206.sslip.io/assets/index-kDp1AJwI.js",
+          "start": 862.5999999940395,
+          "duration": 2814.4000000059605,
+          "ttfb": 568,
+          "size": 131526
+        },
+        {
+          "url": "https://coin-desk.62.171.141.206.sslip.io/brand/coin-desk-shiba-smile.png",
+          "start": 3727.5,
+          "duration": 2891.199999988079,
+          "ttfb": 286,
+          "size": 790144
+        }
+      ]
+    },
+    {
+      "lcpMs": 2212,
+      "element": "<p class=\"muted\">코인을 열면 여기에 남습니다.</p>",
+      "navigation": {
+        "fetchStart": 0.09999999403953552,
+        "domainLookupStart": 2,
+        "domainLookupEnd": 3,
+        "connectStart": 3,
+        "connectEnd": 577.6999999880791,
+        "requestStart": 577.7999999821186,
+        "responseStart": 867.5
+      },
+      "initialResources": [
+        {
+          "url": "https://coin-desk.62.171.141.206.sslip.io/assets/index-kDp1AJwI.js",
+          "start": 889.5,
+          "duration": 1202.199999988079,
+          "ttfb": 861.5,
+          "size": 131526
+        },
+        {
+          "url": "https://coin-desk.62.171.141.206.sslip.io/assets/index-Danldnez.css",
+          "start": 889.7999999821186,
+          "duration": 619.5,
+          "ttfb": 577.9000000059605,
+          "size": 31657
+        },
+        {
+          "url": "https://coin-desk.62.171.141.206.sslip.io/brand/coin-desk-shiba-smile.png",
+          "start": 2129.5,
+          "duration": 1889.5999999940395,
+          "ttfb": 295.2000000178814,
+          "size": 790144
+        }
+      ]
+    }
+  ],
+  "after": [
+    {
+      "lcpMs": 4992,
+      "element": "<p class=\"muted\">코인을 열면 여기에 남습니다.</p>",
+      "navigation": {
+        "fetchStart": 0.20000001788139343,
+        "domainLookupStart": 2713,
+        "domainLookupEnd": 2725.800000011921,
+        "connectStart": 2725.800000011921,
+        "connectEnd": 3307.2000000178814,
+        "requestStart": 3307.5999999940395,
+        "responseStart": 3602.300000011921
+      },
+      "initialResources": [
+        {
+          "url": "https://coin-desk.62.171.141.206.sslip.io/assets/index-kDp1AJwI.js",
+          "start": 3623.9000000059605,
+          "duration": 1144.699999988079,
+          "ttfb": 287.80000001192093,
+          "size": 107760
+        },
+        {
+          "url": "https://coin-desk.62.171.141.206.sslip.io/assets/index-Danldnez.css",
+          "start": 3624.300000011921,
+          "duration": 1192.2999999821186,
+          "ttfb": 1157.5,
+          "size": 22144
+        },
+        {
+          "url": "https://coin-desk.62.171.141.206.sslip.io/brand/coin-desk-shiba-smile.png",
+          "start": 4863.700000017881,
+          "duration": 2400.5,
+          "ttfb": 291.7000000178814,
+          "size": 790144
+        }
+      ]
+    },
+    {
+      "lcpMs": 2248,
+      "element": "<p class=\"muted\">코인을 열면 여기에 남습니다.</p>",
+      "navigation": {
+        "fetchStart": 0.09999999403953552,
+        "domainLookupStart": 2.199999988079071,
+        "domainLookupEnd": 3.199999988079071,
+        "connectStart": 3.199999988079071,
+        "connectEnd": 593.4000000059605,
+        "requestStart": 593.5999999940395,
+        "responseStart": 891.5
+      },
+      "initialResources": [
+        {
+          "url": "https://coin-desk.62.171.141.206.sslip.io/assets/index-kDp1AJwI.js",
+          "start": 904.6999999880791,
+          "duration": 1198,
+          "ttfb": 296.60000002384186,
+          "size": 107760
+        },
+        {
+          "url": "https://coin-desk.62.171.141.206.sslip.io/assets/index-Danldnez.css",
+          "start": 905,
+          "duration": 1212.9000000059605,
+          "ttfb": 1178.5,
+          "size": 22144
+        },
+        {
+          "url": "https://coin-desk.62.171.141.206.sslip.io/brand/coin-desk-shiba-smile.png",
+          "start": 2155.5,
+          "duration": 2429.5999999940395,
+          "ttfb": 299.09999999403954,
+          "size": 790144
+        }
+      ]
+    },
+    {
+      "lcpMs": 2244,
+      "element": "<p class=\"muted\">코인을 열면 여기에 남습니다.</p>",
+      "navigation": {
+        "fetchStart": 0.09999999403953552,
+        "domainLookupStart": 1.800000011920929,
+        "domainLookupEnd": 2.5999999940395355,
+        "connectStart": 2.5999999940395355,
+        "connectEnd": 578.4000000059605,
+        "requestStart": 578.5,
+        "responseStart": 868.3000000119209
+      },
+      "initialResources": [
+        {
+          "url": "https://coin-desk.62.171.141.206.sslip.io/assets/index-kDp1AJwI.js",
+          "start": 880.5999999940395,
+          "duration": 1183.300000011921,
+          "ttfb": 290.19999998807907,
+          "size": 107760
+        },
+        {
+          "url": "https://coin-desk.62.171.141.206.sslip.io/assets/index-Danldnez.css",
+          "start": 880.8000000119209,
+          "duration": 1198.199999988079,
+          "ttfb": 1157.9000000059605,
+          "size": 22144
+        },
+        {
+          "url": "https://coin-desk.62.171.141.206.sslip.io/brand/coin-desk-shiba-smile.png",
+          "start": 2120.5999999940395,
+          "duration": 2439,
+          "ttfb": 297.7000000178814,
+          "size": 790144
+        }
+      ]
+    },
+    {
+      "lcpMs": 2224,
+      "element": "<p class=\"muted\">코인을 열면 여기에 남습니다.</p>",
+      "navigation": {
+        "fetchStart": 0.09999999403953552,
+        "domainLookupStart": 2.199999988079071,
+        "domainLookupEnd": 3.2999999821186066,
+        "connectStart": 3.2999999821186066,
+        "connectEnd": 585.0999999940395,
+        "requestStart": 585.2999999821186,
+        "responseStart": 878.5999999940395
+      },
+      "initialResources": [
+        {
+          "url": "https://coin-desk.62.171.141.206.sslip.io/assets/index-kDp1AJwI.js",
+          "start": 891.0999999940395,
+          "duration": 1185.0999999940395,
+          "ttfb": 293.60000002384186,
+          "size": 107760
+        },
+        {
+          "url": "https://coin-desk.62.171.141.206.sslip.io/assets/index-Danldnez.css",
+          "start": 891.1999999880791,
+          "duration": 1200.800000011921,
+          "ttfb": 1164.9000000059605,
+          "size": 22144
+        },
+        {
+          "url": "https://coin-desk.62.171.141.206.sslip.io/brand/coin-desk-shiba-smile.png",
+          "start": 2131.199999988079,
+          "duration": 2899.199999988079,
+          "ttfb": 296.5,
+          "size": 790144
+        }
+      ]
+    },
+    {
+      "lcpMs": 2188,
+      "element": "<p class=\"muted\">코인을 열면 여기에 남습니다.</p>",
+      "navigation": {
+        "fetchStart": 0.09999999403953552,
+        "domainLookupStart": 2.199999988079071,
+        "domainLookupEnd": 10.900000005960464,
+        "connectStart": 10.900000005960464,
+        "connectEnd": 581.5,
+        "requestStart": 581.6999999880791,
+        "responseStart": 867.5
+      },
+      "initialResources": [
+        {
+          "url": "https://coin-desk.62.171.141.206.sslip.io/assets/index-kDp1AJwI.js",
+          "start": 886.5999999940395,
+          "duration": 1168.2000000178814,
+          "ttfb": 575.1999999880791,
+          "size": 107760
+        },
+        {
+          "url": "https://coin-desk.62.171.141.206.sslip.io/assets/index-Danldnez.css",
+          "start": 886.8000000119209,
+          "duration": 618.8999999761581,
+          "ttfb": 572.5,
+          "size": 22144
+        },
+        {
+          "url": "https://coin-desk.62.171.141.206.sslip.io/brand/coin-desk-shiba-smile.png",
+          "start": 2095.300000011921,
+          "duration": 1840.699999988079,
+          "ttfb": 294.59999999403954,
+          "size": 790144
+        }
+      ]
+    }
+  ]
+}

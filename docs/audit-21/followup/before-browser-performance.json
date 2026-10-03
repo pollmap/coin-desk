@@ -1,0 +1,28 @@
+{
+  "base": "https://coin-desk.62.171.141.206.sslip.io",
+  "calibrationBase": "https://coin-desk.62.171.141.206.sslip.io",
+  "clockOffsetServerMinusBrowserMs": -103,
+  "clockCalibrationSamples": 20,
+  "checkedAt": "2026-10-03T03:14:03.284Z",
+  "viewport": "1280x800",
+  "downlinkMbps": 10,
+  "uplinkMbps": 5,
+  "addedLatencyMs": 0,
+  "cpuThrottle": 1,
+  "browserVersion": "153.0.8010.12",
+  "freshContexts": 5,
+  "sharedBrowserProcess": true,
+  "lcpSamplesMs": [
+    5100,
+    2220,
+    2216,
+    3840,
+    2212
+  ],
+  "lcpP95Ms": 5100,
+  "quotePaintSamples": 26,
+  "receiptToPaintP95Ms": 27.299999982118607,
+  "exchangeReceiptToPaintP95Ms": 1164,
+  "clockErrorBoundMs": 221,
+  "conservativeEndToEndP95UpperMs": 1385
+}

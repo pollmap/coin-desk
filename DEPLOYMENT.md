@@ -1,12 +1,14 @@
 # Coin Desk VPS 이전과 배포
 
-2026-10-03 KST 기준 **VPS 운영 전환 완료**, 하루·엄격한 48시간 검증은 진행 전입니다. [실제 전환 기록](docs/audit-21/live/README.md)을 우선합니다. 과거 네트워크 차단은 해소됐으며 운영 D1 19개 테이블·149,190행을 검증해 이관했습니다. `/srv/services/coin-desk/current`는 `vps-f1546991c2aab31a`, 루프백 포트는 `18420`, HTTPS는 `https://coin-desk.62.171.141.206.sslip.io`입니다. 기존 Pages도 동일 VPS의 읽기 API에 연결합니다.
+2026-10-03 KST 기준 **VPS 운영 전환 완료**, 하루·엄격한 48시간 검증은 진행 중입니다. [실제 전환 기록](docs/audit-21/live/README.md)과 [후속 API 배포](docs/audit-21/followup/README.md)를 우선합니다. 과거 네트워크 차단은 해소됐으며 운영 D1 19개 테이블·149,190행을 검증해 이관했습니다. `/srv/services/coin-desk/current`와 API는 `vps-d1307aabbe7ab4ec`, 수집기·hub·백업은 `vps-f1546991c2aab31a`입니다. 루프백 포트는 `18420`, HTTPS는 `https://coin-desk.62.171.141.206.sslip.io`입니다. 기존 Pages도 동일 VPS의 읽기 API에 연결합니다.
 
 **이관 후 `npm run deploy`와 `npm run deploy:collectors`를 실행하지 마세요.** 이 명령은 과거 Cloudflare 수집기를 다시 배포합니다. 예전 프로젝트 Cron은 중지했고 VPS 네 수집기가 운영 쓰기를 담당합니다. D1은 최소 30일 보존합니다. 후속 웹 배포는 기존 해시 자산 보존 후 `npm run deploy:pages`, 서버 변경은 검증된 새 VPS 릴리스만 배포합니다. 아래 단계는 재배포 명령 묶음이 아니라 최초 이관 절차와 복구 안내입니다.
 
 ## 유지하는 제품
 
-웹 0.20의 BTC MVRV 첫 화면, 여덟 코인, 지표 선택, 가격 위치 밴드와 자체 BTC 로그회귀 레인보우를 유지합니다. React·Lightweight Charts·계산 코드·읽기 API를 그대로 사용합니다. DB에는 기존 데이터와 예약 이력을 이관합니다. 원천·단위·결측·확정 봉·730일 조건·48시간 안정성 기준을 변경하지 않습니다. X 추가 수집이나 새 제품 기능은 이번 이전에 추가하지 않습니다.
+웹 0.21은 여덟 코인 시장을 첫 화면으로 제공하고 코인 상세에서 지표를 선택합니다. BTC 상세의 기본 MVRV, 가격 위치 밴드와 자체 BTC 로그회귀 레인보우를 유지합니다. React·Lightweight Charts·계산 코드·읽기 API를 그대로 사용합니다. DB에는 기존 데이터와 예약 이력을 이관합니다. 원천·단위·결측·확정 봉·730일 조건·48시간 안정성 기준을 변경하지 않습니다. X 추가 수집이나 새 자료함 기능은 이번 이전에 추가하지 않습니다.
+
+API만 수정할 때는 기존 전역 `COIN_DESK_IMAGE`·`COIN_DESK_RELEASE`를 보존하고 `COIN_DESK_API_IMAGE`·`COIN_DESK_API_RELEASE`만 새 값으로 지정합니다. 새 릴리스에서 다른 서비스의 Compose 설정이 기존과 동일한지 비교한 뒤 `up -d --no-deps --wait api`로 해당 서비스만 교체합니다. 이후 실제 읽기 API·HTTPS와 다른 컨테이너의 ID·시작 시각을 확인하고 `current`를 승격합니다. 실패하면 이전 릴리스의 env와 Compose로 API만 복구하며 DB와 수집기를 재시작하지 않습니다. 전체 코드 복구용 `rollback.sh`는 API만 복구하는 명령과 구분합니다. 이미지와 env는 프로젝트의 비공개 릴리스별 파일을 사용합니다.
 
 ## 새 구조
 

@@ -1,0 +1,121 @@
+{
+  "checkedAt": 1790998233,
+  "release": "vps-d1307aabbe7ab4ec",
+  "readApis": 29,
+  "httpStatuses": {
+    "/healthz": 200,
+    "/api/v1/runtime": 200,
+    "/api/v1/status": 200,
+    "/api/v1/health": 200,
+    "/api/v1/signals": 200,
+    "/api/v1/briefings": 200,
+    "/api/v1/market-derivatives": 200,
+    "/api/v1/chain-context?asset=ETH&metric=tvl": 200,
+    "/api/v1/candles?asset=BTC&market=binance&limit=2": 200,
+    "/api/v1/derivatives?asset=BTC&metric=funding&limit=2": 200,
+    "/api/v1/network?asset=BTC&metric=mvrv&limit=2": 200,
+    "/api/v1/candles?asset=DOGE&market=binance&limit=2": 200,
+    "/api/v1/derivatives?asset=DOGE&metric=funding&limit=2": 200,
+    "/api/v1/network?asset=DOGE&metric=mvrv&limit=2": 200,
+    "/api/v1/candles?asset=ETH&market=binance&limit=2": 200,
+    "/api/v1/derivatives?asset=ETH&metric=funding&limit=2": 200,
+    "/api/v1/network?asset=ETH&metric=mvrv&limit=2": 200,
+    "/api/v1/candles?asset=SOL&market=binance&limit=2": 200,
+    "/api/v1/derivatives?asset=SOL&metric=funding&limit=2": 200,
+    "/api/v1/candles?asset=XRP&market=binance&limit=2": 200,
+    "/api/v1/derivatives?asset=XRP&metric=funding&limit=2": 200,
+    "/api/v1/network?asset=XRP&metric=mvrv&limit=2": 200,
+    "/api/v1/candles?asset=LINK&market=binance&limit=2": 200,
+    "/api/v1/derivatives?asset=LINK&metric=funding&limit=2": 200,
+    "/api/v1/network?asset=LINK&metric=mvrv&limit=2": 200,
+    "/api/v1/candles?asset=ONDO&market=binance&limit=2": 200,
+    "/api/v1/derivatives?asset=ONDO&metric=funding&limit=2": 200,
+    "/api/v1/candles?asset=PEPE&market=binance&limit=2": 200,
+    "/api/v1/derivatives?asset=PEPE&metric=funding&limit=2": 200
+  },
+  "health": {
+    "ok": true,
+    "reasons": []
+  },
+  "activeSources": 103,
+  "activeSourceStatuses": {
+    "ok": 103
+  },
+  "observation48h": {
+    "from": 1790825280,
+    "until": 1790998080,
+    "firstRunAt": 1790825312,
+    "lastRunAt": 1790998020,
+    "ticks": 2822,
+    "failures": 15,
+    "expectedRuns": 2880,
+    "missingRuns": 58,
+    "successfulRuns": 2807,
+    "recordingRate": 0.9798611111111111,
+    "successRate": 0.9746527777777778,
+    "longestGapSeconds": 2700,
+    "longestScheduledGapSeconds": 2700,
+    "longestStartGapSeconds": 2654,
+    "unresolvedErrors": [],
+    "windowSatisfied": true,
+    "healthy": false,
+    "ready": false,
+    "thresholds": {
+      "recordingRate": 0.99,
+      "longestGapSeconds": 180,
+      "graceSeconds": 120
+    }
+  },
+  "runtime": {
+    "kind": "vps",
+    "release": "vps-d1307aabbe7ab4ec",
+    "scheduler": [
+      {
+        "lane": "quotes",
+        "scheduled_at": 1790998200,
+        "started_at": 1790998200,
+        "completed_at": 1790998205,
+        "outcome": "ok",
+        "last_success": 1790998205,
+        "reason": null,
+        "healthy": true
+      },
+      {
+        "lane": "background",
+        "scheduled_at": 1790998200,
+        "started_at": 1790998200,
+        "completed_at": 1790998200,
+        "outcome": "ok",
+        "last_success": 1790998200,
+        "reason": null,
+        "healthy": true
+      },
+      {
+        "lane": "recent",
+        "scheduled_at": 1790998200,
+        "started_at": 1790998200,
+        "completed_at": 1790998200,
+        "outcome": "ok",
+        "last_success": 1790998200,
+        "reason": null,
+        "healthy": true
+      },
+      {
+        "lane": "analysis",
+        "scheduled_at": 1790998200,
+        "started_at": 1790998200,
+        "completed_at": 1790998200,
+        "outcome": "ok",
+        "last_success": 1790998200,
+        "reason": null,
+        "healthy": true
+      }
+    ],
+    "backup": {
+      "ok": true,
+      "lastCompletedAt": 1790974183,
+      "verified": true
+    },
+    "_verificationHttpStatus": 200
+  }
+}
