@@ -1,0 +1,20 @@
+{
+  "checkedAt": "2026-10-03T08:53:35.300Z",
+  "results": [
+    {
+      "base": "https://coin-desk.pages.dev",
+      "range": "2010-07-18 — 2011-01-17 · UTC",
+      "selectedDate": "선택한 날짜 · 2010-07-18 00:00 UTC",
+      "resizePreserved": true,
+      "latestReturnPreserved": true
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "range": "2010-07-18 — 2011-01-17 · UTC",
+      "selectedDate": "선택한 날짜 · 2010-07-18 00:00 UTC",
+      "resizePreserved": true,
+      "latestReturnPreserved": true
+    }
+  ],
+  "retries": 0
+}

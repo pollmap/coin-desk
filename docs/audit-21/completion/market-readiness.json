@@ -1,0 +1,76 @@
+{
+  "checkedAt": "2026-10-03T08:24:15.854Z",
+  "viewport": "1280x800",
+  "downloadMbps": 10,
+  "uploadMbps": 5,
+  "addedLatencyMs": 0,
+  "rows": [
+    {
+      "base": "https://coin-desk.pages.dev",
+      "run": 1,
+      "allEightPricesReadyMs": 3738,
+      "navigation": [
+        {
+          "ttfb": 2978.5999999940395,
+          "protocol": "h2"
+        }
+      ]
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "run": 2,
+      "allEightPricesReadyMs": 1391,
+      "navigation": [
+        {
+          "ttfb": 50.80000001192093,
+          "protocol": "h2"
+        }
+      ]
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "run": 3,
+      "allEightPricesReadyMs": 632,
+      "navigation": [
+        {
+          "ttfb": 62.900000005960464,
+          "protocol": "h2"
+        }
+      ]
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "run": 1,
+      "allEightPricesReadyMs": 4823,
+      "navigation": [
+        {
+          "ttfb": 975,
+          "protocol": "h2"
+        }
+      ]
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "run": 2,
+      "allEightPricesReadyMs": 4496,
+      "navigation": [
+        {
+          "ttfb": 954.6000000238419,
+          "protocol": "h2"
+        }
+      ]
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "run": 3,
+      "allEightPricesReadyMs": 4528,
+      "navigation": [
+        {
+          "ttfb": 858.5999999940395,
+          "protocol": "h2"
+        }
+      ]
+    }
+  ],
+  "note": "Eight visible numeric prices; readiness includes bounded browser polling overhead. Three samples per origin, not a long-term percentile."
+}

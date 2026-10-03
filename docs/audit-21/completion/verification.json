@@ -1,0 +1,82 @@
+{
+  "checkedAt": 1791017888,
+  "codeMain": "8dc3a096a5ede526afe1697553ae725c105a5e2a",
+  "prs": [
+    42,
+    43
+  ],
+  "ci": [
+    {
+      "conclusion": "success",
+      "databaseId": 37109061204,
+      "headSha": "4e81fb7509bfd1442416c03fc633cbb1127d4b25",
+      "status": "completed",
+      "url": "https://github.com/pollmap/coin-desk/actions/runs/37109061204"
+    },
+    {
+      "conclusion": "success",
+      "databaseId": 37109741313,
+      "headSha": "1a2f6a792fa3875a89dbf8c6d61c54591463beb4",
+      "status": "completed",
+      "url": "https://github.com/pollmap/coin-desk/actions/runs/37109741313"
+    },
+    {
+      "conclusion": "success",
+      "databaseId": 37110092759,
+      "headSha": "1fe171dbda6f3f252a1416ce7b09eb3fe2c7a986",
+      "status": "completed",
+      "url": "https://github.com/pollmap/coin-desk/actions/runs/37110092759"
+    },
+    {
+      "conclusion": "success",
+      "databaseId": 37110834861,
+      "headSha": "8dc3a096a5ede526afe1697553ae725c105a5e2a",
+      "status": "completed",
+      "url": "https://github.com/pollmap/coin-desk/actions/runs/37110834861"
+    }
+  ],
+  "tests": {
+    "unit": 487,
+    "backupRecovery": 2,
+    "nodeServer": 17,
+    "vpsPython": 15,
+    "browser": 144,
+    "privateOptInSkipped": 2,
+    "browserRetries": 0,
+    "keyboardRegressionBeforeFixFailures": 2,
+    "relatedAfterFix": 8,
+    "criticalRepeatedAfterFix": 20
+  },
+  "deployment": {
+    "apiRelease": "vps-7e72771fa7feac35",
+    "pages": "https://bfd4bcd0.coin-desk.pages.dev",
+    "collectorRelease": "vps-f1546991c2aab31a",
+    "opsCommit": "1a2f6a792fa3875a89dbf8c6d61c54591463beb4",
+    "schema": "0009",
+    "additionalMigration": false
+  },
+  "failuresRetained": [
+    {
+      "run": 37107204819,
+      "scope": "prior docs-only CI",
+      "failure": "WebKit recent-value test read a range before pan completed; original failure did not reproduce in 10 local runs"
+    },
+    {
+      "scope": "candidate health",
+      "failure": "503 once, detailed cause not captured, later normal and candidate recheck passed"
+    },
+    {
+      "scope": "first local production performance batch",
+      "failure": "browserContext.newPage Target crashed for Pages performance; actual keyboard and eight-coin UI checks passed",
+      "automaticRetries": 0
+    },
+    {
+      "scope": "first direct performance batch",
+      "failure": "overlapped asset downloads; retained privately and excluded from final performance comparison"
+    }
+  ],
+  "waiting48hRequired": false,
+  "safariVoiceOverHardwareVerified": false,
+  "privateXCollectionIncluded": false,
+  "completeUtcDayClaimed": false
+}

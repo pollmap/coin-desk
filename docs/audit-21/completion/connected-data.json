@@ -1,0 +1,970 @@
+{
+  "checkedAt": 1791017512,
+  "base": "https://coin-desk.pages.dev",
+  "recentFrom": 1788425506,
+  "requests": [
+    {
+      "path": "/api/v1/health",
+      "status": 200,
+      "pointCount": 0,
+      "latestPoint": null,
+      "meta": null,
+      "error": null,
+      "ok": true,
+      "reasons": []
+    },
+    {
+      "path": "/api/v1/runtime",
+      "status": 200,
+      "pointCount": 0,
+      "latestPoint": null,
+      "meta": null,
+      "error": null,
+      "backup": {
+        "ok": true,
+        "lastCompletedAt": 1790974183,
+        "verified": true
+      },
+      "scheduler": [
+        {
+          "lane": "quotes",
+          "scheduled_at": 1791017460,
+          "started_at": 1791017460,
+          "completed_at": 1791017465,
+          "outcome": "ok",
+          "last_success": 1791017465,
+          "reason": null,
+          "healthy": true
+        },
+        {
+          "lane": "background",
+          "scheduled_at": 1791017460,
+          "started_at": 1791017460,
+          "completed_at": 1791017460,
+          "outcome": "ok",
+          "last_success": 1791017460,
+          "reason": null,
+          "healthy": true
+        },
+        {
+          "lane": "recent",
+          "scheduled_at": 1791017460,
+          "started_at": 1791017460,
+          "completed_at": 1791017460,
+          "outcome": "ok",
+          "last_success": 1791017460,
+          "reason": null,
+          "healthy": true
+        },
+        {
+          "lane": "analysis",
+          "scheduled_at": 1791017460,
+          "started_at": 1791017460,
+          "completed_at": 1791017460,
+          "outcome": "ok",
+          "last_success": 1791017460,
+          "reason": null,
+          "healthy": true
+        }
+      ]
+    },
+    {
+      "path": "/api/v1/briefings",
+      "status": 200,
+      "pointCount": 8,
+      "latestPoint": {
+        "id": "2026-09-26",
+        "date": "2026-09-26",
+        "createdAt": 1790381433,
+        "prices": [
+          {
+            "asset": "BTC",
+            "price": 84386.5778094565,
+            "change": -0.05654224059311597,
+            "asOf": 1790208000,
+            "source": "Coin Metrics PriceUSD",
+            "unit": "USD"
+          },
+          {
+            "asset": "DOGE",
+            "price": 0.0958104248076236,
+            "change": 3.497373841184892,
+            "asOf": 1790208000,
+            "source": "Coin Metrics PriceUSD",
+            "unit": "USD"
+          },
+          {
+            "asset": "ETH",
+            "price": 2689.17336002338,
+            "change": 0.19602007162868862,
+            "asOf": 1790208000,
+            "source": "Coin Metrics PriceUSD",
+            "unit": "USD"
+          }
+        ],
+        "signals": 0,
+        "events": [],
+        "missing": []
+      },
+      "meta": null,
+      "error": null
+    },
+    {
+      "path": "/api/v1/signals",
+      "status": 200,
+      "pointCount": 19,
+      "latestPoint": {
+        "id": "BTC:upbit:rsi70:1789948800:observations-v1",
+        "asset": "BTC",
+        "source": "upbit",
+        "rule": "rsi70",
+        "time": 1789948800,
+        "previous": 64.92298194514981,
+        "previousTime": 1789862400,
+        "current": 73.78851834372591,
+        "threshold": 70,
+        "direction": "up",
+        "condition": "RSI 70 경계 상향 통과",
+        "unit": "RSI",
+        "version": "observations-v1",
+        "bar": "1d",
+        "createdAt": 1790381013,
+        "revision": 1,
+        "status": "active",
+        "notify": false
+      },
+      "meta": null,
+      "error": null
+    },
+    {
+      "path": "/api/v1/chain-context?asset=ETH&metric=tvl",
+      "status": 200,
+      "pointCount": 3293,
+      "latestPoint": {
+        "time": 1790899200,
+        "value": 53366031288
+      },
+      "meta": {
+        "source": "DefiLlama · Ethereum",
+        "unit": "USD",
+        "market": "Ethereum chain",
+        "dataAsOf": 1790899200,
+        "fetchedAt": 1791015360,
+        "stale": false,
+        "calculationVersion": "defillama-ethereum-v1",
+        "historyStart": 1506470400
+      },
+      "error": null
+    },
+    {
+      "path": "/api/v1/market?market=upbit",
+      "status": 200,
+      "pointCount": 0,
+      "latestPoint": null,
+      "meta": null,
+      "error": null,
+      "marketRows": [
+        {
+          "asset": "BTC",
+          "supported": null,
+          "fetchedAt": 1791017465,
+          "stale": null,
+          "quote": {
+            "asset": "BTC",
+            "price": 115116000,
+            "change24h": -1.303199698206381,
+            "volume24h": 118624519421.41318,
+            "high24h": 115200000,
+            "low24h": 114878000,
+            "time": 1791017462,
+            "changeBasis": "rolling24h-minute",
+            "rangeBasis": "utc-day",
+            "referenceAt": 1790931000
+          }
+        },
+        {
+          "asset": "DOGE",
+          "supported": null,
+          "fetchedAt": 1791017465,
+          "stale": null,
+          "quote": {
+            "asset": "DOGE",
+            "price": 126,
+            "change24h": -3.8167938931297662,
+            "volume24h": 31704006682.29456,
+            "high24h": 128,
+            "low24h": 126,
+            "time": 1791017449,
+            "changeBasis": "rolling24h-minute",
+            "rangeBasis": "utc-day",
+            "referenceAt": 1790930940
+          }
+        },
+        {
+          "asset": "ETH",
+          "supported": null,
+          "fetchedAt": 1791017465,
+          "stale": null,
+          "quote": {
+            "asset": "ETH",
+            "price": 3650000,
+            "change24h": -1.9607843137254943,
+            "volume24h": 93739496328.04572,
+            "high24h": 3651000,
+            "low24h": 3630000,
+            "time": 1791017460,
+            "changeBasis": "rolling24h-minute",
+            "rangeBasis": "utc-day",
+            "referenceAt": 1790931000
+          }
+        },
+        {
+          "asset": "SOL",
+          "supported": null,
+          "fetchedAt": 1791017465,
+          "stale": null,
+          "quote": {
+            "asset": "SOL",
+            "price": 162400,
+            "change24h": -1.5757575757575748,
+            "volume24h": 28956404265.03836,
+            "high24h": 162900,
+            "low24h": 161400,
+            "time": 1791017460,
+            "changeBasis": "rolling24h-minute",
+            "rangeBasis": "utc-day",
+            "referenceAt": 1790931000
+          }
+        },
+        {
+          "asset": "XRP",
+          "supported": null,
+          "fetchedAt": 1791017465,
+          "stale": null,
+          "quote": {
+            "asset": "XRP",
+            "price": 2017,
+            "change24h": -2.8887818969667745,
+            "volume24h": 208634313331.68372,
+            "high24h": 2029,
+            "low24h": 2014,
+            "time": 1791017461,
+            "changeBasis": "rolling24h-minute",
+            "rangeBasis": "utc-day",
+            "referenceAt": 1790931000
+          }
+        },
+        {
+          "asset": "LINK",
+          "supported": null,
+          "fetchedAt": 1791017465,
+          "stale": null,
+          "quote": {
+            "asset": "LINK",
+            "price": 18980,
+            "change24h": -2.516692347200822,
+            "volume24h": 12071981184.590775,
+            "high24h": 19230,
+            "low24h": 18770,
+            "time": 1791017454,
+            "changeBasis": "rolling24h-minute",
+            "rangeBasis": "utc-day",
+            "referenceAt": 1790930940
+          }
+        },
+        {
+          "asset": "ONDO",
+          "supported": null,
+          "fetchedAt": 1791017465,
+          "stale": null,
+          "quote": {
+            "asset": "ONDO",
+            "price": 655,
+            "change24h": -4.099560761346998,
+            "volume24h": 48999242918.7355,
+            "high24h": 677,
+            "low24h": 652,
+            "time": 1791017454,
+            "changeBasis": "rolling24h-minute",
+            "rangeBasis": "utc-day",
+            "referenceAt": 1790930940
+          }
+        },
+        {
+          "asset": "PEPE",
+          "supported": null,
+          "fetchedAt": 1791017465,
+          "stale": null,
+          "quote": {
+            "asset": "PEPE",
+            "price": 0.00575,
+            "change24h": -7.556270096463025,
+            "volume24h": 6053021278.021039,
+            "high24h": 0.00583,
+            "low24h": 0.00574,
+            "time": 1791017385,
+            "changeBasis": "rolling24h-minute",
+            "rangeBasis": "utc-day",
+            "referenceAt": 1790930880
+          }
+        }
+      ]
+    },
+    {
+      "path": "/api/v1/market?market=binance",
+      "status": 200,
+      "pointCount": 0,
+      "latestPoint": null,
+      "meta": null,
+      "error": null,
+      "marketRows": [
+        {
+          "asset": "BTC",
+          "supported": null,
+          "fetchedAt": 1791017461,
+          "stale": null,
+          "quote": {
+            "asset": "BTC",
+            "price": 84640.48,
+            "change24h": -1.93,
+            "volume24h": 1688534802.4763875,
+            "high24h": 87220,
+            "low24h": 83888,
+            "time": 1791017461,
+            "changeBasis": "rolling24h",
+            "rangeBasis": "rolling24h"
+          }
+        },
+        {
+          "asset": "DOGE",
+          "supported": null,
+          "fetchedAt": 1791017461,
+          "stale": null,
+          "quote": {
+            "asset": "DOGE",
+            "price": 0.09254,
+            "change24h": -4.931,
+            "volume24h": 83194781.25009,
+            "high24h": 0.09774,
+            "low24h": 0.09031,
+            "time": 1791017460,
+            "changeBasis": "rolling24h",
+            "rangeBasis": "rolling24h"
+          }
+        },
+        {
+          "asset": "ETH",
+          "supported": null,
+          "fetchedAt": 1791017461,
+          "stale": null,
+          "quote": {
+            "asset": "ETH",
+            "price": 2683.48,
+            "change24h": -2.675,
+            "volume24h": 845113337.373451,
+            "high24h": 2769.68,
+            "low24h": 2650.88,
+            "time": 1791017461,
+            "changeBasis": "rolling24h",
+            "rangeBasis": "rolling24h"
+          }
+        },
+        {
+          "asset": "SOL",
+          "supported": null,
+          "fetchedAt": 1791017461,
+          "stale": null,
+          "quote": {
+            "asset": "SOL",
+            "price": 119.29,
+            "change24h": -2.333,
+            "volume24h": 250638851.96562,
+            "high24h": 123.37,
+            "low24h": 117.11,
+            "time": 1791017460,
+            "changeBasis": "rolling24h",
+            "rangeBasis": "rolling24h"
+          }
+        },
+        {
+          "asset": "XRP",
+          "supported": null,
+          "fetchedAt": 1791017461,
+          "stale": null,
+          "quote": {
+            "asset": "XRP",
+            "price": 1.4833,
+            "change24h": -3.619,
+            "volume24h": 244297252.36579,
+            "high24h": 1.555,
+            "low24h": 1.4458,
+            "time": 1791017459,
+            "changeBasis": "rolling24h",
+            "rangeBasis": "rolling24h"
+          }
+        },
+        {
+          "asset": "LINK",
+          "supported": null,
+          "fetchedAt": 1791017461,
+          "stale": null,
+          "quote": {
+            "asset": "LINK",
+            "price": 13.956,
+            "change24h": -3.029,
+            "volume24h": 51114198.8347,
+            "high24h": 14.514,
+            "low24h": 13.152,
+            "time": 1791017460,
+            "changeBasis": "rolling24h",
+            "rangeBasis": "rolling24h"
+          }
+        },
+        {
+          "asset": "ONDO",
+          "supported": null,
+          "fetchedAt": 1791017461,
+          "stale": null,
+          "quote": {
+            "asset": "ONDO",
+            "price": 0.4817,
+            "change24h": -4.859,
+            "volume24h": 29916502.48118,
+            "high24h": 0.5162,
+            "low24h": 0.472,
+            "time": 1791017461,
+            "changeBasis": "rolling24h",
+            "rangeBasis": "rolling24h"
+          }
+        },
+        {
+          "asset": "PEPE",
+          "supported": null,
+          "fetchedAt": 1791017461,
+          "stale": null,
+          "quote": {
+            "asset": "PEPE",
+            "price": 4.24e-06,
+            "change24h": -8.026,
+            "volume24h": 38101099.73138179,
+            "high24h": 4.62e-06,
+            "low24h": 4.07e-06,
+            "time": 1791017458,
+            "changeBasis": "rolling24h",
+            "rangeBasis": "rolling24h"
+          }
+        }
+      ]
+    },
+    {
+      "path": "/api/v1/candles?asset=BTC&market=binance&from=1788425506&limit=1000",
+      "status": 200,
+      "pointCount": 31,
+      "latestPoint": {
+        "time": 1790985600,
+        "open": 84518,
+        "high": 84725.04,
+        "low": 84456.02,
+        "close": 84631.63,
+        "volume": 1970.45813,
+        "closeTime": 1791072000,
+        "closed": false
+      },
+      "meta": {
+        "source": "Binance",
+        "unit": "USDT",
+        "market": "binance",
+        "dataAsOf": 1790985600,
+        "fetchedAt": 1791015001,
+        "stale": false,
+        "calculationVersion": "btc-desk-1.1-cap-ratios-expanding-population",
+        "historyStart": 1502928000,
+        "gapCount": 0
+      },
+      "error": null
+    },
+    {
+      "path": "/api/v1/derivatives?asset=BTC&metric=funding&from=1788425506&limit=1000",
+      "status": 200,
+      "pointCount": 90,
+      "latestPoint": {
+        "time": 1791014400,
+        "value": -0.00342
+      },
+      "meta": {
+        "source": "Bybit V5 public market data",
+        "unit": "%",
+        "observationInterval": "settlement",
+        "sourceStatus": "available",
+        "market": "BTCUSDT linear perpetual · Bybit only",
+        "dataAsOf": 1791014400,
+        "fetchedAt": 1791017400,
+        "historyStart": 1585152000,
+        "stale": false,
+        "calculationVersion": "bybit-usdt-perpetual-v4",
+        "warning": "펀딩비는 Bybit 한 거래소의 실제 정산 비율입니다."
+      },
+      "error": null
+    },
+    {
+      "path": "/api/v1/network?asset=BTC&metric=mvrv&from=1788425506&limit=1000",
+      "status": 200,
+      "pointCount": 29,
+      "latestPoint": {
+        "time": 1790899200,
+        "value": 1.574737386059324
+      },
+      "meta": {
+        "source": "Coin Metrics Community · CC BY-NC 4.0",
+        "unit": "배",
+        "market": "BTC on-chain / Coin Metrics",
+        "dataAsOf": 1790899200,
+        "fetchedAt": 1791015900,
+        "historyStart": 1279411200,
+        "stale": false,
+        "calculationVersion": "coinmetrics-network-monthly-v2",
+        "priceBasis": "동일 원천 Coin Metrics PriceUSD · 일별 USD 기준가격 · 거래소 OHLCV 아님",
+        "gapCount": 0
+      },
+      "error": null
+    },
+    {
+      "path": "/api/v1/candles?asset=DOGE&market=binance&from=1788425506&limit=1000",
+      "status": 200,
+      "pointCount": 31,
+      "latestPoint": {
+        "time": 1790985600,
+        "open": 0.09294,
+        "high": 0.09364,
+        "low": 0.09249,
+        "close": 0.09271,
+        "volume": 108742024,
+        "closeTime": 1791072000,
+        "closed": false
+      },
+      "meta": {
+        "source": "Binance",
+        "unit": "USDT",
+        "market": "binance",
+        "dataAsOf": 1790985600,
+        "fetchedAt": 1791015061,
+        "stale": false,
+        "calculationVersion": "btc-desk-1.1-cap-ratios-expanding-population",
+        "historyStart": 1562284800,
+        "gapCount": 0
+      },
+      "error": null
+    },
+    {
+      "path": "/api/v1/derivatives?asset=DOGE&metric=funding&from=1788425506&limit=1000",
+      "status": 200,
+      "pointCount": 90,
+      "latestPoint": {
+        "time": 1791014400,
+        "value": -0.001159
+      },
+      "meta": {
+        "source": "Bybit V5 public market data",
+        "unit": "%",
+        "observationInterval": "settlement",
+        "sourceStatus": "available",
+        "market": "DOGEUSDT linear perpetual · Bybit only",
+        "dataAsOf": 1791014400,
+        "fetchedAt": 1791017460,
+        "historyStart": 1622649600,
+        "stale": false,
+        "calculationVersion": "bybit-usdt-perpetual-v4",
+        "warning": "펀딩비는 Bybit 한 거래소의 실제 정산 비율입니다."
+      },
+      "error": null
+    },
+    {
+      "path": "/api/v1/network?asset=DOGE&metric=mvrv&from=1788425506&limit=1000",
+      "status": 200,
+      "pointCount": 29,
+      "latestPoint": {
+        "time": 1790899200,
+        "value": 0.7877847992340893
+      },
+      "meta": {
+        "source": "Coin Metrics Community · CC BY-NC 4.0",
+        "unit": "배",
+        "market": "DOGE on-chain / Coin Metrics",
+        "dataAsOf": 1790899200,
+        "fetchedAt": 1791016320,
+        "historyStart": 1390435200,
+        "stale": false,
+        "calculationVersion": "coinmetrics-network-monthly-v2",
+        "priceBasis": "동일 원천 Coin Metrics PriceUSD · 일별 USD 기준가격 · 거래소 OHLCV 아님",
+        "gapCount": 0
+      },
+      "error": null
+    },
+    {
+      "path": "/api/v1/candles?asset=ETH&market=binance&from=1788425506&limit=1000",
+      "status": 200,
+      "pointCount": 31,
+      "latestPoint": {
+        "time": 1790985600,
+        "open": 2668.59,
+        "high": 2684.61,
+        "low": 2665.67,
+        "close": 2683.69,
+        "volume": 30920.0579,
+        "closeTime": 1791072000,
+        "closed": false
+      },
+      "meta": {
+        "source": "Binance",
+        "unit": "USDT",
+        "market": "binance",
+        "dataAsOf": 1790985600,
+        "fetchedAt": 1791015121,
+        "stale": false,
+        "calculationVersion": "btc-desk-1.1-cap-ratios-expanding-population",
+        "historyStart": 1502928000,
+        "gapCount": 0
+      },
+      "error": null
+    },
+    {
+      "path": "/api/v1/derivatives?asset=ETH&metric=funding&from=1788425506&limit=1000",
+      "status": 200,
+      "pointCount": 90,
+      "latestPoint": {
+        "time": 1791014400,
+        "value": 0.002399
+      },
+      "meta": {
+        "source": "Bybit V5 public market data",
+        "unit": "%",
+        "observationInterval": "settlement",
+        "sourceStatus": "available",
+        "market": "ETHUSDT linear perpetual · Bybit only",
+        "dataAsOf": 1791014400,
+        "fetchedAt": 1791017220,
+        "historyStart": 1603267200,
+        "stale": false,
+        "calculationVersion": "bybit-usdt-perpetual-v4",
+        "warning": "펀딩비는 Bybit 한 거래소의 실제 정산 비율입니다."
+      },
+      "error": null
+    },
+    {
+      "path": "/api/v1/network?asset=ETH&metric=mvrv&from=1788425506&limit=1000",
+      "status": 200,
+      "pointCount": 29,
+      "latestPoint": {
+        "time": 1790899200,
+        "value": 1.1354781421746432
+      },
+      "meta": {
+        "source": "Coin Metrics Community · CC BY-NC 4.0",
+        "unit": "배",
+        "market": "ETH on-chain / Coin Metrics",
+        "dataAsOf": 1790899200,
+        "fetchedAt": 1791015960,
+        "historyStart": 1438992000,
+        "stale": false,
+        "calculationVersion": "coinmetrics-network-monthly-v2",
+        "priceBasis": "동일 원천 Coin Metrics PriceUSD · 일별 USD 기준가격 · 거래소 OHLCV 아님",
+        "gapCount": 0
+      },
+      "error": null
+    },
+    {
+      "path": "/api/v1/candles?asset=SOL&market=binance&from=1788425506&limit=1000",
+      "status": 200,
+      "pointCount": 31,
+      "latestPoint": {
+        "time": 1790985600,
+        "open": 118.65,
+        "high": 119.76,
+        "low": 118.52,
+        "close": 119.5,
+        "volume": 236576.538,
+        "closeTime": 1791072000,
+        "closed": false
+      },
+      "meta": {
+        "source": "Binance",
+        "unit": "USDT",
+        "market": "binance",
+        "dataAsOf": 1790985600,
+        "fetchedAt": 1791008221,
+        "stale": false,
+        "calculationVersion": "btc-desk-1.1-cap-ratios-expanding-population",
+        "historyStart": 1597104000,
+        "gapCount": 0
+      },
+      "error": null
+    },
+    {
+      "path": "/api/v1/derivatives?asset=SOL&metric=funding&from=1788425506&limit=1000",
+      "status": 200,
+      "pointCount": 89,
+      "latestPoint": {
+        "time": 1790985600,
+        "value": -0.017707
+      },
+      "meta": {
+        "source": "Bybit V5 public market data",
+        "unit": "%",
+        "observationInterval": "settlement",
+        "sourceStatus": "available",
+        "market": "SOLUSDT linear perpetual · Bybit only",
+        "dataAsOf": 1790985600,
+        "fetchedAt": 1790998440,
+        "historyStart": 1624953600,
+        "stale": false,
+        "calculationVersion": "bybit-usdt-perpetual-v4",
+        "warning": "펀딩비는 Bybit 한 거래소의 실제 정산 비율입니다."
+      },
+      "error": null
+    },
+    {
+      "path": "/api/v1/candles?asset=XRP&market=binance&from=1788425506&limit=1000",
+      "status": 200,
+      "pointCount": 31,
+      "latestPoint": {
+        "time": 1790985600,
+        "open": 1.4848,
+        "high": 1.4935,
+        "low": 1.4821,
+        "close": 1.4858,
+        "volume": 12475137,
+        "closeTime": 1791072000,
+        "closed": false
+      },
+      "meta": {
+        "source": "Binance",
+        "unit": "USDT",
+        "market": "binance",
+        "dataAsOf": 1790985600,
+        "fetchedAt": 1791008821,
+        "stale": false,
+        "calculationVersion": "btc-desk-1.1-cap-ratios-expanding-population",
+        "historyStart": 1525392000,
+        "gapCount": 0
+      },
+      "error": null
+    },
+    {
+      "path": "/api/v1/derivatives?asset=XRP&metric=funding&from=1788425506&limit=1000",
+      "status": 200,
+      "pointCount": 89,
+      "latestPoint": {
+        "time": 1790985600,
+        "value": -0.008766
+      },
+      "meta": {
+        "source": "Bybit V5 public market data",
+        "unit": "%",
+        "observationInterval": "settlement",
+        "sourceStatus": "available",
+        "market": "XRPUSDT linear perpetual · Bybit only",
+        "dataAsOf": 1790985600,
+        "fetchedAt": 1790998380,
+        "historyStart": 1620921600,
+        "stale": false,
+        "calculationVersion": "bybit-usdt-perpetual-v4",
+        "warning": "펀딩비는 Bybit 한 거래소의 실제 정산 비율입니다."
+      },
+      "error": null
+    },
+    {
+      "path": "/api/v1/network?asset=XRP&metric=mvrv&from=1788425506&limit=1000",
+      "status": 200,
+      "pointCount": 29,
+      "latestPoint": {
+        "time": 1790899200,
+        "value": 0.9887209314634663
+      },
+      "meta": {
+        "source": "Coin Metrics Community · CC BY-NC 4.0",
+        "unit": "배",
+        "market": "XRP on-chain / Coin Metrics",
+        "dataAsOf": 1790899200,
+        "fetchedAt": 1790999040,
+        "historyStart": 1408060800,
+        "stale": false,
+        "calculationVersion": "coinmetrics-network-monthly-v2",
+        "priceBasis": "동일 원천 Coin Metrics PriceUSD · 일별 USD 기준가격 · 거래소 OHLCV 아님",
+        "gapCount": 0
+      },
+      "error": null
+    },
+    {
+      "path": "/api/v1/candles?asset=LINK&market=binance&from=1788425506&limit=1000",
+      "status": 200,
+      "pointCount": 31,
+      "latestPoint": {
+        "time": 1790985600,
+        "open": 13.794,
+        "high": 14.084,
+        "low": 13.782,
+        "close": 14.076,
+        "volume": 481501.48,
+        "closeTime": 1791072000,
+        "closed": false
+      },
+      "meta": {
+        "source": "Binance",
+        "unit": "USDT",
+        "market": "binance",
+        "dataAsOf": 1790985600,
+        "fetchedAt": 1791008881,
+        "stale": false,
+        "calculationVersion": "btc-desk-1.1-cap-ratios-expanding-population",
+        "historyStart": 1547596800,
+        "gapCount": 0
+      },
+      "error": null
+    },
+    {
+      "path": "/api/v1/derivatives?asset=LINK&metric=funding&from=1788425506&limit=1000",
+      "status": 200,
+      "pointCount": 89,
+      "latestPoint": {
+        "time": 1790985600,
+        "value": -0.004445
+      },
+      "meta": {
+        "source": "Bybit V5 public market data",
+        "unit": "%",
+        "observationInterval": "settlement",
+        "sourceStatus": "available",
+        "market": "LINKUSDT linear perpetual · Bybit only",
+        "dataAsOf": 1790985600,
+        "fetchedAt": 1790998560,
+        "historyStart": 1603267200,
+        "stale": false,
+        "calculationVersion": "bybit-usdt-perpetual-v4",
+        "warning": "펀딩비는 Bybit 한 거래소의 실제 정산 비율입니다."
+      },
+      "error": null
+    },
+    {
+      "path": "/api/v1/network?asset=LINK&metric=mvrv&from=1788425506&limit=1000",
+      "status": 200,
+      "pointCount": 29,
+      "latestPoint": {
+        "time": 1790899200,
+        "value": 1.1628837670881913
+      },
+      "meta": {
+        "source": "Coin Metrics Community · CC BY-NC 4.0",
+        "unit": "배",
+        "market": "LINK on-chain / Coin Metrics",
+        "dataAsOf": 1790899200,
+        "fetchedAt": 1790999160,
+        "historyStart": 1506643200,
+        "stale": false,
+        "calculationVersion": "coinmetrics-network-monthly-v2",
+        "priceBasis": "동일 원천 Coin Metrics PriceUSD · 일별 USD 기준가격 · 거래소 OHLCV 아님",
+        "gapCount": 0
+      },
+      "error": null
+    },
+    {
+      "path": "/api/v1/candles?asset=ONDO&market=binance&from=1788425506&limit=1000",
+      "status": 200,
+      "pointCount": 31,
+      "latestPoint": {
+        "time": 1790985600,
+        "open": 0.4928,
+        "high": 0.4981,
+        "low": 0.48,
+        "close": 0.4811,
+        "volume": 13266019.8,
+        "closeTime": 1791072000,
+        "closed": false
+      },
+      "meta": {
+        "source": "Binance",
+        "unit": "USDT",
+        "market": "binance",
+        "dataAsOf": 1790985600,
+        "fetchedAt": 1791009181,
+        "stale": false,
+        "calculationVersion": "btc-desk-1.1-cap-ratios-expanding-population",
+        "historyStart": 1744329600,
+        "gapCount": 0
+      },
+      "error": null
+    },
+    {
+      "path": "/api/v1/derivatives?asset=ONDO&metric=funding&from=1788425506&limit=1000",
+      "status": 200,
+      "pointCount": 178,
+      "latestPoint": {
+        "time": 1790985600,
+        "value": 0.004843
+      },
+      "meta": {
+        "source": "Bybit V5 public market data",
+        "unit": "%",
+        "observationInterval": "settlement",
+        "sourceStatus": "available",
+        "market": "ONDOUSDT linear perpetual · Bybit only",
+        "dataAsOf": 1790985600,
+        "fetchedAt": 1790998740,
+        "historyStart": 1705996800,
+        "stale": false,
+        "calculationVersion": "bybit-usdt-perpetual-v4",
+        "warning": "펀딩비는 Bybit 한 거래소의 실제 정산 비율입니다."
+      },
+      "error": null
+    },
+    {
+      "path": "/api/v1/candles?asset=PEPE&market=binance&from=1788425506&limit=1000",
+      "status": 200,
+      "pointCount": 31,
+      "latestPoint": {
+        "time": 1790985600,
+        "open": 4.25e-06,
+        "high": 4.29e-06,
+        "low": 4.23e-06,
+        "close": 4.26e-06,
+        "volume": 716765879985,
+        "closeTime": 1791072000,
+        "closed": false
+      },
+      "meta": {
+        "source": "Binance",
+        "unit": "USDT",
+        "market": "binance",
+        "dataAsOf": 1790985600,
+        "fetchedAt": 1791009241,
+        "stale": false,
+        "calculationVersion": "btc-desk-1.1-cap-ratios-expanding-population",
+        "historyStart": 1683244800,
+        "gapCount": 0
+      },
+      "error": null
+    },
+    {
+      "path": "/api/v1/derivatives?asset=PEPE&metric=funding&from=1788425506&limit=1000",
+      "status": 200,
+      "pointCount": 89,
+      "latestPoint": {
+        "time": 1790985600,
+        "value": -0.019193
+      },
+      "meta": {
+        "source": "Bybit V5 public market data",
+        "unit": "%",
+        "observationInterval": "settlement",
+        "sourceStatus": "available",
+        "market": "1000PEPEUSDT linear perpetual · Bybit only",
+        "dataAsOf": 1790985600,
+        "fetchedAt": 1790998620,
+        "historyStart": 1683100800,
+        "stale": false,
+        "calculationVersion": "bybit-usdt-perpetual-v4",
+        "warning": "펀딩비는 Bybit 한 거래소의 실제 정산 비율입니다."
+      },
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,977 @@
+{
+  "checkedAt": 1791017684,
+  "utcDay": "2026-10-03",
+  "windowStart": 1790985600,
+  "windowEnd": 1791072000,
+  "observedUntil": 1791017520,
+  "completeUtcDay": false,
+  "waiting48hRequired": false,
+  "lanes": {
+    "quotes": {
+      "expected": 532,
+      "recorded": 532,
+      "missing": 0,
+      "outcomes": {
+        "ok": 532
+      },
+      "recordingRate": 1.0,
+      "maxScheduledGapSeconds": 60,
+      "maxObservedStartGapSeconds": 60,
+      "nonSuccess": []
+    },
+    "background": {
+      "expected": 532,
+      "recorded": 532,
+      "missing": 0,
+      "outcomes": {
+        "ok": 532
+      },
+      "recordingRate": 1.0,
+      "maxScheduledGapSeconds": 60,
+      "maxObservedStartGapSeconds": 60,
+      "nonSuccess": []
+    },
+    "recent": {
+      "expected": 532,
+      "recorded": 532,
+      "missing": 0,
+      "outcomes": {
+        "ok": 532
+      },
+      "recordingRate": 1.0,
+      "maxScheduledGapSeconds": 60,
+      "maxObservedStartGapSeconds": 60,
+      "nonSuccess": []
+    },
+    "analysis": {
+      "expected": 532,
+      "recorded": 532,
+      "missing": 0,
+      "outcomes": {
+        "ok": 532
+      },
+      "recordingRate": 1.0,
+      "maxScheduledGapSeconds": 60,
+      "maxObservedStartGapSeconds": 60,
+      "nonSuccess": []
+    }
+  },
+  "readOnly": true,
+  "allDayScheduledRunsPresent": false,
+  "briefings": [
+    [
+      "2026-10-03",
+      1790986200
+    ]
+  ],
+  "sourceStates": [
+    {
+      "key": "BTC:binance:1d",
+      "lastSuccess": 1791015001,
+      "dataAsOf": 1790985600,
+      "error": null,
+      "failures": 0
+    },
+    {
+      "key": "BTC:binance:1h",
+      "lastSuccess": 1791015481,
+      "dataAsOf": 1791014400,
+      "error": null,
+      "failures": 0
+    },
+    {
+      "key": "BTC:upbit:1d",
+      "lastSuccess": 1791015181,
+      "dataAsOf": 1790985600,
+      "error": null,
+      "failures": 0
+    },
+    {
+      "key": "BTC:upbit:1h",
+      "lastSuccess": 1791016382,
+      "dataAsOf": 1791014400,
+      "error": null,
+      "failures": 0
+    },
+    {
+      "key": "DOGE:binance:1d",
+      "lastSuccess": 1791015061,
+      "dataAsOf": 1790985600,
+      "error": null,
+      "failures": 0
+    },
+    {
+      "key": "DOGE:binance:1h",
+      "lastSuccess": 1791015421,
+      "dataAsOf": 1791014400,
+      "error": null,
+      "failures": 0
+    },
+    {
+      "key": "DOGE:upbit:1d",
+      "lastSuccess": 1791015243,
+      "dataAsOf": 1790985600,
+      "error": null,
+      "failures": 0
+    },
+    {
+      "key": "DOGE:upbit:1h",
+      "lastSuccess": 1791015662,
+      "dataAsOf": 1791014400,
+      "error": null,
+      "failures": 0
+    },
+    {
+      "key": "ETH:binance:1d",
+      "lastSuccess": 1791015121,
+      "dataAsOf": 1790985600,
+      "error": null,
+      "failures": 0
+    },
+    {
+      "key": "ETH:binance:1h",
+      "lastSuccess": 1791015361,
+      "dataAsOf": 1791014400,
+      "error": null,
+      "failures": 0
+    },
+    {
+      "key": "ETH:upbit:1d",
+      "lastSuccess": 1791015302,
+      "dataAsOf": 1790985600,
+      "error": null,
+      "failures": 0
+    },
+    {
+      "key": "ETH:upbit:1h",
+      "lastSuccess": 1791016262,
+      "dataAsOf": 1791014400,
+      "error": null,
+      "failures": 0
+    },
+    {
+      "key": "LINK:binance:1d",
+      "lastSuccess": 1791008881,
+      "dataAsOf": 1790985600,
+      "error": null,
+      "failures": 0
+    },
+    {
+      "key": "LINK:binance:1h",
+      "lastSuccess": 1791014281,
+      "dataAsOf": 1791010800,
+      "error": null,
+      "failures": 0
+    },
+    {
+      "key": "LINK:upbit:1d",
+      "lastSuccess": 1791009660,
+      "dataAsOf": 1790985600,
+      "error": null,
+      "failures": 0
+    },
+    {
+      "key": "LINK:upbit:1h",
+      "lastSuccess": 1791017161,
+      "dataAsOf": 1791014400,
+      "error": null,
+      "failures": 0
+    },
+    {
+      "key": "ONDO:binance:1d",
+      "lastSuccess": 1791009181,
+      "dataAsOf": 1790985600,
+      "error": null,
+      "failures": 0
+    },
+    {
+      "key": "ONDO:binance:1h",
+      "lastSuccess": 1791014641,
+      "dataAsOf": 1791014400,
+      "error": null,
+      "failures": 0
+    },
+    {
+      "key": "ONDO:upbit:1d",
+      "lastSuccess": 1791009721,
+      "dataAsOf": 1790985600,
+      "error": null,
+      "failures": 0
+    },
+    {
+      "key": "ONDO:upbit:1h",
+      "lastSuccess": 1791017220,
+      "dataAsOf": 1791014400,
+      "error": null,
+      "failures": 0
+    },
+    {
+      "key": "PEPE:binance:1d",
+      "lastSuccess": 1791009241,
+      "dataAsOf": 1790985600,
+      "error": null,
+      "failures": 0
+    },
+    {
+      "key": "PEPE:binance:1h",
+      "lastSuccess": 1791014881,
+      "dataAsOf": 1791014400,
+      "error": null,
+      "failures": 0
+    },
+    {
+      "key": "PEPE:upbit:1d",
+      "lastSuccess": 1791009782,
+      "dataAsOf": 1790985600,
+      "error": null,
+      "failures": 0
+    },
+    {
+      "key": "PEPE:upbit:1h",
+      "lastSuccess": 1791017342,
+      "dataAsOf": 1791014400,
+      "error": null,
+      "failures": 0
+    },
+    {
+      "key": "SOL:binance:1d",
+      "lastSuccess": 1791008221,
+      "dataAsOf": 1790985600,
+      "error": null,
+      "failures": 0
+    },
+    {
+      "key": "SOL:binance:1h",
+      "lastSuccess": 1791014401,
+      "dataAsOf": 1791010800,
+      "error": null,
+      "failures": 0
+    },
+    {
+      "key": "SOL:upbit:1d",
+      "lastSuccess": 1791009542,
+      "dataAsOf": 1790985600,
+      "error": null,
+      "failures": 0
+    },
+    {
+      "key": "SOL:upbit:1h",
+      "lastSuccess": 1791014761,
+      "dataAsOf": 1791014400,
+      "error": null,
+      "failures": 0
+    },
+    {
+      "key": "XRP:binance:1d",
+      "lastSuccess": 1791008821,
+      "dataAsOf": 1790985600,
+      "error": null,
+      "failures": 0
+    },
+    {
+      "key": "XRP:binance:1h",
+      "lastSuccess": 1791014161,
+      "dataAsOf": 1791010800,
+      "error": null,
+      "failures": 0
+    },
+    {
+      "key": "XRP:upbit:1d",
+      "lastSuccess": 1791009600,
+      "dataAsOf": 1790985600,
+      "error": null,
+      "failures": 0
+    },
+    {
+      "key": "XRP:upbit:1h",
+      "lastSuccess": 1791014822,
+      "dataAsOf": 1791014400,
+      "error": null,
+      "failures": 0
+    },
+    {
+      "key": "bitview",
+      "lastSuccess": 1791016800,
+      "dataAsOf": 1790899200,
+      "error": null,
+      "failures": 0
+    },
+    {
+      "key": "chain:ETH:stablecoins",
+      "lastSuccess": 1791014220,
+      "dataAsOf": 1790899200,
+      "error": null,
+      "failures": 0
+    },
+    {
+      "key": "chain:ETH:tvl",
+      "lastSuccess": 1791015360,
+      "dataAsOf": 1790899200,
+      "error": null,
+      "failures": 0
+    },
+    {
+      "key": "coingecko",
+      "lastSuccess": null,
+      "dataAsOf": null,
+      "error": "Error: CoinGecko HTTP 429",
+      "failures": 3
+    },
+    {
+      "key": "coinlore",
+      "lastSuccess": 1791016741,
+      "dataAsOf": 1791016741,
+      "error": null,
+      "failures": 0
+    },
+    {
+      "key": "defillama",
+      "lastSuccess": 1791009360,
+      "dataAsOf": 1790985600,
+      "error": null,
+      "failures": 0
+    },
+    {
+      "key": "derivatives:BTC:funding",
+      "lastSuccess": 1791017400,
+      "dataAsOf": 1791014400,
+      "error": null,
+      "failures": 0
+    },
+    {
+      "key": "derivatives:BTC:long_account_ratio",
+      "lastSuccess": 1791017400,
+      "dataAsOf": 1791014400,
+      "error": null,
+      "failures": 0
+    },
+    {
+      "key": "derivatives:BTC:long_account_ratio_daily",
+      "lastSuccess": 1791015720,
+      "dataAsOf": 1790985600,
+      "error": null,
+      "failures": 0
+    },
+    {
+      "key": "derivatives:BTC:open_interest",
+      "lastSuccess": 1791017400,
+      "dataAsOf": 1791014400,
+      "error": null,
+      "failures": 0
+    },
+    {
+      "key": "derivatives:BTC:open_interest_daily",
+      "lastSuccess": 1791016020,
+      "dataAsOf": 1790985600,
+      "error": null,
+      "failures": 0
+    },
+    {
+      "key": "derivatives:DOGE:funding",
+      "lastSuccess": 1791017460,
+      "dataAsOf": 1791014400,
+      "error": null,
+      "failures": 0
+    },
+    {
+      "key": "derivatives:DOGE:long_account_ratio",
+      "lastSuccess": 1791017460,
+      "dataAsOf": 1791014400,
+      "error": null,
+      "failures": 0
+    },
+    {
+      "key": "derivatives:DOGE:long_account_ratio_daily",
+      "lastSuccess": 1791017460,
+      "dataAsOf": 1790985600,
+      "error": null,
+      "failures": 0
+    },
+    {
+      "key": "derivatives:DOGE:open_interest",
+      "lastSuccess": 1791017460,
+      "dataAsOf": 1791014400,
+      "error": null,
+      "failures": 0
+    },
+    {
+      "key": "derivatives:DOGE:open_interest_daily",
+      "lastSuccess": 1791017580,
+      "dataAsOf": 1790985600,
+      "error": null,
+      "failures": 0
+    },
+    {
+      "key": "derivatives:ETH:funding",
+      "lastSuccess": 1791017520,
+      "dataAsOf": 1791014400,
+      "error": null,
+      "failures": 0
+    },
+    {
+      "key": "derivatives:ETH:long_account_ratio",
+      "lastSuccess": 1791017520,
+      "dataAsOf": 1791014400,
+      "error": null,
+      "failures": 0
+    },
+    {
+      "key": "derivatives:ETH:long_account_ratio_daily",
+      "lastSuccess": 1791017520,
+      "dataAsOf": 1790985600,
+      "error": null,
+      "failures": 0
+    },
+    {
+      "key": "derivatives:ETH:open_interest",
+      "lastSuccess": 1791017520,
+      "dataAsOf": 1791014400,
+      "error": null,
+      "failures": 0
+    },
+    {
+      "key": "derivatives:ETH:open_interest_daily",
+      "lastSuccess": 1791015780,
+      "dataAsOf": 1790985600,
+      "error": null,
+      "failures": 0
+    },
+    {
+      "key": "derivatives:LINK:funding",
+      "lastSuccess": 1790998560,
+      "dataAsOf": 1790985600,
+      "error": null,
+      "failures": 0
+    },
+    {
+      "key": "derivatives:LINK:long_account_ratio",
+      "lastSuccess": 1790999880,
+      "dataAsOf": 1790996400,
+      "error": null,
+      "failures": 0
+    },
+    {
+      "key": "derivatives:LINK:long_account_ratio_daily",
+      "lastSuccess": 1790998320,
+      "dataAsOf": 1790985600,
+      "error": null,
+      "failures": 0
+    },
+    {
+      "key": "derivatives:LINK:open_interest",
+      "lastSuccess": 1790999700,
+      "dataAsOf": 1790996400,
+      "error": null,
+      "failures": 0
+    },
+    {
+      "key": "derivatives:LINK:open_interest_daily",
+      "lastSuccess": 1790998260,
+      "dataAsOf": 1790985600,
+      "error": null,
+      "failures": 0
+    },
+    {
+      "key": "derivatives:ONDO:funding",
+      "lastSuccess": 1790998740,
+      "dataAsOf": 1790985600,
+      "error": null,
+      "failures": 0
+    },
+    {
+      "key": "derivatives:ONDO:long_account_ratio",
+      "lastSuccess": 1791001440,
+      "dataAsOf": 1791000000,
+      "error": null,
+      "failures": 0
+    },
+    {
+      "key": "derivatives:ONDO:long_account_ratio_daily",
+      "lastSuccess": 1790998680,
+      "dataAsOf": 1790985600,
+      "error": null,
+      "failures": 0
+    },
+    {
+      "key": "derivatives:ONDO:open_interest",
+      "lastSuccess": 1791000900,
+      "dataAsOf": 1791000000,
+      "error": null,
+      "failures": 0
+    },
+    {
+      "key": "derivatives:ONDO:open_interest_daily",
+      "lastSuccess": 1791011880,
+      "dataAsOf": 1790985600,
+      "error": null,
+      "failures": 0
+    },
+    {
+      "key": "derivatives:PEPE:funding",
+      "lastSuccess": 1790998620,
+      "dataAsOf": 1790985600,
+      "error": null,
+      "failures": 0
+    },
+    {
+      "key": "derivatives:PEPE:long_account_ratio",
+      "lastSuccess": 1791000240,
+      "dataAsOf": 1791000000,
+      "error": null,
+      "failures": 0
+    },
+    {
+      "key": "derivatives:PEPE:long_account_ratio_daily",
+      "lastSuccess": 1791013200,
+      "dataAsOf": 1790985600,
+      "error": null,
+      "failures": 0
+    },
+    {
+      "key": "derivatives:PEPE:open_interest",
+      "lastSuccess": 1790999940,
+      "dataAsOf": 1790996400,
+      "error": null,
+      "failures": 0
+    },
+    {
+      "key": "derivatives:PEPE:open_interest_daily",
+      "lastSuccess": 1791012480,
+      "dataAsOf": 1790985600,
+      "error": null,
+      "failures": 0
+    },
+    {
+      "key": "derivatives:SOL:funding",
+      "lastSuccess": 1790998440,
+      "dataAsOf": 1790985600,
+      "error": null,
+      "failures": 0
+    },
+    {
+      "key": "derivatives:SOL:long_account_ratio",
+      "lastSuccess": 1791010080,
+      "dataAsOf": 1791007200,
+      "error": null,
+      "failures": 0
+    },
+    {
+      "key": "derivatives:SOL:long_account_ratio_daily",
+      "lastSuccess": 1791015540,
+      "dataAsOf": 1790985600,
+      "error": null,
+      "failures": 0
+    },
+    {
+      "key": "derivatives:SOL:open_interest",
+      "lastSuccess": 1791001560,
+      "dataAsOf": 1791000000,
+      "error": null,
+      "failures": 0
+    },
+    {
+      "key": "derivatives:SOL:open_interest_daily",
+      "lastSuccess": 1791013740,
+      "dataAsOf": 1790985600,
+      "error": null,
+      "failures": 0
+    },
+    {
+      "key": "derivatives:XRP:funding",
+      "lastSuccess": 1790998380,
+      "dataAsOf": 1790985600,
+      "error": null,
+      "failures": 0
+    },
+    {
+      "key": "derivatives:XRP:long_account_ratio",
+      "lastSuccess": 1790999280,
+      "dataAsOf": 1790996400,
+      "error": null,
+      "failures": 0
+    },
+    {
+      "key": "derivatives:XRP:long_account_ratio_daily",
+      "lastSuccess": 1790998200,
+      "dataAsOf": 1790985600,
+      "error": null,
+      "failures": 0
+    },
+    {
+      "key": "derivatives:XRP:open_interest",
+      "lastSuccess": 1791001500,
+      "dataAsOf": 1791000000,
+      "error": null,
+      "failures": 0
+    },
+    {
+      "key": "derivatives:XRP:open_interest_daily",
+      "lastSuccess": 1791016080,
+      "dataAsOf": 1790985600,
+      "error": null,
+      "failures": 0
+    },
+    {
+      "key": "maintenance",
+      "lastSuccess": 1791014460,
+      "dataAsOf": 1791014460,
+      "error": null,
+      "failures": 0
+    },
+    {
+      "key": "mempool:BTC",
+      "lastSuccess": 1791017400,
+      "dataAsOf": 1791017400,
+      "error": null,
+      "failures": 0
+    },
+    {
+      "key": "network:BTC",
+      "lastSuccess": 1791015900,
+      "dataAsOf": 1790899200,
+      "error": null,
+      "failures": 0
+    },
+    {
+      "key": "network:DOGE",
+      "lastSuccess": 1791016320,
+      "dataAsOf": 1790899200,
+      "error": null,
+      "failures": 0
+    },
+    {
+      "key": "network:ETH",
+      "lastSuccess": 1791015960,
+      "dataAsOf": 1790899200,
+      "error": null,
+      "failures": 0
+    },
+    {
+      "key": "network:LINK",
+      "lastSuccess": 1790999160,
+      "dataAsOf": 1790899200,
+      "error": null,
+      "failures": 0
+    },
+    {
+      "key": "network:XRP",
+      "lastSuccess": 1790999040,
+      "dataAsOf": 1790899200,
+      "error": null,
+      "failures": 0
+    },
+    {
+      "key": "observations",
+      "lastSuccess": 1790505010,
+      "dataAsOf": 1790505004,
+      "error": null,
+      "failures": 0
+    },
+    {
+      "key": "observations:0",
+      "lastSuccess": 1791016800,
+      "dataAsOf": 1791016800,
+      "error": null,
+      "failures": 0
+    },
+    {
+      "key": "observations:1",
+      "lastSuccess": 1791016860,
+      "dataAsOf": 1791016860,
+      "error": null,
+      "failures": 0
+    },
+    {
+      "key": "observations:10",
+      "lastSuccess": 1791017400,
+      "dataAsOf": 1791017400,
+      "error": null,
+      "failures": 0
+    },
+    {
+      "key": "observations:11",
+      "lastSuccess": 1791017460,
+      "dataAsOf": 1791017460,
+      "error": null,
+      "failures": 0
+    },
+    {
+      "key": "observations:12",
+      "lastSuccess": 1791017520,
+      "dataAsOf": 1791017520,
+      "error": null,
+      "failures": 0
+    },
+    {
+      "key": "observations:13",
+      "lastSuccess": 1791017580,
+      "dataAsOf": 1791017580,
+      "error": null,
+      "failures": 0
+    },
+    {
+      "key": "observations:14",
+      "lastSuccess": 1791017640,
+      "dataAsOf": 1791017640,
+      "error": null,
+      "failures": 0
+    },
+    {
+      "key": "observations:2",
+      "lastSuccess": 1791016920,
+      "dataAsOf": 1791016920,
+      "error": null,
+      "failures": 0
+    },
+    {
+      "key": "observations:3",
+      "lastSuccess": 1791016980,
+      "dataAsOf": 1791016980,
+      "error": null,
+      "failures": 0
+    },
+    {
+      "key": "observations:4",
+      "lastSuccess": 1791017040,
+      "dataAsOf": 1791017040,
+      "error": null,
+      "failures": 0
+    },
+    {
+      "key": "observations:5",
+      "lastSuccess": 1791017100,
+      "dataAsOf": 1791017100,
+      "error": null,
+      "failures": 0
+    },
+    {
+      "key": "observations:6",
+      "lastSuccess": 1791017160,
+      "dataAsOf": 1791017160,
+      "error": null,
+      "failures": 0
+    },
+    {
+      "key": "observations:7",
+      "lastSuccess": 1791017220,
+      "dataAsOf": 1791017220,
+      "error": null,
+      "failures": 0
+    },
+    {
+      "key": "observations:8",
+      "lastSuccess": 1791017280,
+      "dataAsOf": 1791017280,
+      "error": null,
+      "failures": 0
+    },
+    {
+      "key": "observations:9",
+      "lastSuccess": 1791017340,
+      "dataAsOf": 1791017340,
+      "error": null,
+      "failures": 0
+    },
+    {
+      "key": "quote:BTC:binance",
+      "lastSuccess": 1791017641,
+      "dataAsOf": 1791017641,
+      "error": null,
+      "failures": 0
+    },
+    {
+      "key": "quote:BTC:upbit",
+      "lastSuccess": 1791017645,
+      "dataAsOf": 1791017641,
+      "error": null,
+      "failures": 0
+    },
+    {
+      "key": "quote:DOGE:binance",
+      "lastSuccess": 1791017641,
+      "dataAsOf": 1791017640,
+      "error": null,
+      "failures": 0
+    },
+    {
+      "key": "quote:DOGE:upbit",
+      "lastSuccess": 1791017645,
+      "dataAsOf": 1791017600,
+      "error": null,
+      "failures": 0
+    },
+    {
+      "key": "quote:ETH:binance",
+      "lastSuccess": 1791017641,
+      "dataAsOf": 1791017641,
+      "error": null,
+      "failures": 0
+    },
+    {
+      "key": "quote:ETH:upbit",
+      "lastSuccess": 1791017645,
+      "dataAsOf": 1791017641,
+      "error": null,
+      "failures": 0
+    },
+    {
+      "key": "quote:LINK:binance",
+      "lastSuccess": 1791017641,
+      "dataAsOf": 1791017640,
+      "error": null,
+      "failures": 0
+    },
+    {
+      "key": "quote:LINK:upbit",
+      "lastSuccess": 1791017645,
+      "dataAsOf": 1791017568,
+      "error": null,
+      "failures": 0
+    },
+    {
+      "key": "quote:ONDO:binance",
+      "lastSuccess": 1791017641,
+      "dataAsOf": 1791017641,
+      "error": null,
+      "failures": 0
+    },
+    {
+      "key": "quote:ONDO:upbit",
+      "lastSuccess": 1791017645,
+      "dataAsOf": 1791017642,
+      "error": null,
+      "failures": 0
+    },
+    {
+      "key": "quote:PEPE:binance",
+      "lastSuccess": 1791017641,
+      "dataAsOf": 1791017640,
+      "error": null,
+      "failures": 0
+    },
+    {
+      "key": "quote:PEPE:upbit",
+      "lastSuccess": 1791017645,
+      "dataAsOf": 1791017590,
+      "error": null,
+      "failures": 0
+    },
+    {
+      "key": "quote:SOL:binance",
+      "lastSuccess": 1791017641,
+      "dataAsOf": 1791017640,
+      "error": null,
+      "failures": 0
+    },
+    {
+      "key": "quote:SOL:upbit",
+      "lastSuccess": 1791017645,
+      "dataAsOf": 1791017640,
+      "error": null,
+      "failures": 0
+    },
+    {
+      "key": "quote:XRP:binance",
+      "lastSuccess": 1791017641,
+      "dataAsOf": 1791017640,
+      "error": null,
+      "failures": 0
+    },
+    {
+      "key": "quote:XRP:upbit",
+      "lastSuccess": 1791017645,
+      "dataAsOf": 1791017641,
+      "error": null,
+      "failures": 0
+    },
+    {
+      "key": "quotes:binance:0",
+      "lastSuccess": 1791017641,
+      "dataAsOf": 1791017641,
+      "error": null,
+      "failures": 0
+    },
+    {
+      "key": "quotes:binance:1",
+      "lastSuccess": 1790223258,
+      "dataAsOf": 1790223258,
+      "error": null,
+      "failures": 0
+    },
+    {
+      "key": "quotes:upbit:0",
+      "lastSuccess": 1791017645,
+      "dataAsOf": 1791017645,
+      "error": null,
+      "failures": 0
+    },
+    {
+      "key": "quotes:upbit:1",
+      "lastSuccess": 1790223198,
+      "dataAsOf": 1790223198,
+      "error": null,
+      "failures": 0
+    },
+    {
+      "key": "reference:BTC",
+      "lastSuccess": 1791016440,
+      "dataAsOf": 1790899200,
+      "error": null,
+      "failures": 0
+    },
+    {
+      "key": "reference:DOGE",
+      "lastSuccess": 1791015840,
+      "dataAsOf": 1790899200,
+      "error": null,
+      "failures": 0
+    },
+    {
+      "key": "reference:ETH",
+      "lastSuccess": 1791017640,
+      "dataAsOf": 1790899200,
+      "error": null,
+      "failures": 0
+    },
+    {
+      "key": "reference:LINK",
+      "lastSuccess": 1790998980,
+      "dataAsOf": 1790899200,
+      "error": null,
+      "failures": 0
+    },
+    {
+      "key": "reference:XRP",
+      "lastSuccess": 1790998860,
+      "dataAsOf": 1790899200,
+      "error": null,
+      "failures": 0
+    }
+  ],
+  "budgetAndCursor": [],
+  "storage": {
+    "databaseBytes": 42852192,
+    "backupBytes": 191950609
+  },
+  "storageGrowth": {
+    "since": 1791015026,
+    "seconds": 2658,
+    "deltas": {
+      "databaseBytes": 4096,
+      "backupBytes": 0
+    },
+    "fullUtcDay": false
+  },
+  "backup": {
+    "ok": true,
+    "verified": true,
+    "completedAt": 1790974183,
+    "reason": null,
+    "fresh": true
+  },
+  "limits": [
+    "Source states and storage are point-in-time, not day-long history.",
+    "Observed start gaps exclude unobserved boundaries; scheduled missing counts retain boundaries.",
+    "Same-host verified backups do not prove offsite disaster recovery."
+  ]
+}

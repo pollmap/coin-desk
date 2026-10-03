@@ -1,0 +1,18 @@
+{
+  "firstAttempt": {
+    "outcome": "failed",
+    "httpStatus": 503,
+    "endpoint": "/api/v1/health",
+    "detailedResponseNotCaptured": true,
+    "causeEstablished": false
+  },
+  "followup": {
+    "checkedAt": 1791017297,
+    "healthHttpStatus": 200,
+    "ok": true,
+    "reasons": []
+  },
+  "candidateRecheckReadApisPassed": 29,
+  "collectorRestarted": false,
+  "freshnessThresholdChanged": false
+}

@@ -1,0 +1,70 @@
+{
+  "checkedAt": 1791017888,
+  "endpoints": {
+    "/api/v1/status": {
+      "httpStatus": 200,
+      "now": 1791017886,
+      "activeSources": 103,
+      "healthySources": 103,
+      "nonHealthy": []
+    },
+    "/api/v1/health": {
+      "httpStatus": 200,
+      "ok": true,
+      "reasons": [],
+      "checkedAt": 1791017887
+    },
+    "/api/v1/runtime": {
+      "httpStatus": 200,
+      "kind": "vps",
+      "release": "vps-7e72771fa7feac35",
+      "scheduler": [
+        {
+          "lane": "quotes",
+          "scheduled_at": 1791017880,
+          "started_at": 1791017880,
+          "completed_at": 1791017885,
+          "outcome": "ok",
+          "last_success": 1791017885,
+          "reason": null,
+          "healthy": true
+        },
+        {
+          "lane": "background",
+          "scheduled_at": 1791017880,
+          "started_at": 1791017880,
+          "completed_at": 1791017880,
+          "outcome": "ok",
+          "last_success": 1791017880,
+          "reason": null,
+          "healthy": true
+        },
+        {
+          "lane": "recent",
+          "scheduled_at": 1791017880,
+          "started_at": 1791017880,
+          "completed_at": 1791017880,
+          "outcome": "ok",
+          "last_success": 1791017880,
+          "reason": null,
+          "healthy": true
+        },
+        {
+          "lane": "analysis",
+          "scheduled_at": 1791017880,
+          "started_at": 1791017880,
+          "completed_at": 1791017880,
+          "outcome": "ok",
+          "last_success": 1791017880,
+          "reason": null,
+          "healthy": true
+        }
+      ],
+      "backup": {
+        "ok": true,
+        "lastCompletedAt": 1790974183,
+        "verified": true
+      }
+    }
+  }
+}

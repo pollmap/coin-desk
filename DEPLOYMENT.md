@@ -1,6 +1,6 @@
 # Coin Desk VPS 이전과 배포
 
-2026-10-03 KST 기준 **VPS 운영 전환 완료**, 후속 UX 패치도 PR #41과 main CI를 통과하고 배포했습니다. [최신 검증](docs/audit-21/closeout/deployment/README.md). 사용자 요청으로 48시간 점검·대기 조건은 폐지했습니다. [실제 전환 기록](docs/audit-21/live/README.md)과 [후속 API 배포](docs/audit-21/followup/README.md)를 우선합니다. 앞선 운영 전환 당시 네트워크 차단을 해소해 운영 D1 19개 테이블·149,190행을 검증해 이관했습니다. `/srv/services/coin-desk/current`와 API는 `vps-710041fe2a2d533d`, 수집기·hub·백업은 `vps-f1546991c2aab31a`입니다. 루프백 포트는 `18420`, HTTPS는 `https://coin-desk.62.171.141.206.sslip.io`입니다. 기존 Pages도 동일 VPS의 읽기 API에 연결합니다.
+2026-10-03 KST 기준 **VPS 운영 전환과 PR #43 차트 수정 배포 완료**입니다. [최신 검증](docs/audit-21/completion/README.md). 사용자 요청으로 48시간 점검·대기 조건은 폐지했습니다. [실제 전환 기록](docs/audit-21/live/README.md)과 [앞선 UX 배포](docs/audit-21/closeout/deployment/README.md)는 당시 이력입니다. 운영 D1 19개 테이블·149,190행을 검증해 이관했습니다. `/srv/services/coin-desk/current`와 API는 `vps-7e72771fa7feac35`, 수집기·hub·백업은 `vps-f1546991c2aab31a`입니다. 루프백 포트는 `18420`, HTTPS는 `https://coin-desk.62.171.141.206.sslip.io`입니다. 기존 Pages도 동일 VPS의 읽기 API에 연결합니다.
 
 **이관 후 `npm run deploy`와 `npm run deploy:collectors`를 실행하지 마세요.** 이 명령은 과거 Cloudflare 수집기를 다시 배포합니다. 예전 프로젝트 Cron은 중지했고 VPS 네 수집기가 운영 쓰기를 담당합니다. D1은 최소 30일 보존합니다. 후속 웹 배포는 기존 해시 자산 보존 후 `npm run deploy:pages`, 서버 변경은 검증된 새 VPS 릴리스만 배포합니다. 아래 단계는 재배포 명령 묶음이 아니라 최초 이관 절차와 복구 안내입니다.
 
@@ -8,7 +8,9 @@
 
 ### 전송·운영 확인 도구
 
-Nginx 1.24의 HTTPS 설정은 `listen 443 ssl http2;`를 사용합니다. [공식 HTTP/2 문서](https://nginx.org/en/docs/http/ngx_http_v2_module.html)의 `http2 on`은 1.25.1 이상 문법이므로 현재 서버와 구분합니다. 기존 프로젝트 경로는 `python3 deploy/vps/enable_http2.py`로 전환합니다. Coin Desk 설정만 백업·수정하며 플랫폼 잠금, `nginx -t`, 무중단 reload와 실제 ALPN `h2` 확인을 수행하고 실패하면 복구합니다. 수집기·DB·상위 프록시와 SSE 버퍼링은 바꾸지 않습니다.
+Nginx 1.24에서 새 HTTPS를 구성하는 스크립트는 `listen 443 ssl http2;`를 사용합니다. [공식 HTTP/2 문서](https://nginx.org/en/docs/http/ngx_http_v2_module.html)의 `http2 on`은 1.25.1 이상 문법입니다. **현재 VPS는 기존 설정으로 이미 실제 ALPN `h2`를 제공합니다.** 명시 설정 실험은 공유 listener 경고와 성능 이득 미확인 때문에 원래 파일로 복원했습니다. 현재 서버에 이 설정을 다시 적용할 필요가 없습니다. 향후 독립 환경에서 HTTP/2를 활성화할 경우 `enable_http2.py`는 소유 파일만 백업·수정하며 플랫폼 잠금, `nginx -t`, 무중단 reload와 실제 ALPN 확인을 수행하고 실패하면 복구합니다.
+
+검증된 운영 도구는 `/srv/services/coin-desk/ops/current`에 설치했습니다(PR #42, `1a2f6a792fa3`). 과거 릴리스의 `route_port.py`는 API·SSE 두 경로를 처리하지 못하므로 직접 사용하지 않습니다. 설치한 도구는 수집기나 DB를 변경하지 않습니다.
 
 `route_port.py`는 API와 `/api/v1/quotes/stream`의 두 upstream을 함께 변경합니다. 서로 다른 포트나 외부 upstream이 섞인 설정은 수정하지 않습니다. 이 도구로 수동 포트 변경 시에도 `/srv/platform/nginx-edit.lock`을 잡고 실행합니다.
 

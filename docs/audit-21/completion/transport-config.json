@@ -1,0 +1,15 @@
+{
+  "opsCommit": "1a2f6a792fa3875a89dbf8c6d61c54591463beb4",
+  "toolDirectory": "/srv/services/coin-desk/ops/1a2f6a792fa3",
+  "http2AlreadyNegotiatedBefore": true,
+  "temporaryExplicitSettingReverted": true,
+  "nginxRestoredByteForByte": true,
+  "nginxTestPassedAfterRestore": true,
+  "finalAlpn": "h2",
+  "otherProjectConfigurationsChanged": false,
+  "collectorContainersPreserved": true,
+  "databaseChanged": false,
+  "performanceImprovementAttributedToHttp2": false,
+  "routeRoundTripVerified": true,
+  "warning": "Explicit setting caused shared listener protocol options warning; absent after restoring owned original config."
+}
