@@ -94,6 +94,11 @@ test('brand, market timestamps and core layouts meet the compact white design', 
     await page.goto('/coins/BTC?metric=net:mvrv&price_source=upbit');
     const chart = page.locator('[data-chart-kind="analysis"]');
     await expect(chart).toHaveAttribute('data-range-ready', '1');
+    expect(
+      await page
+        .locator('.analysis-reading-date')
+        .evaluate((el) => el.scrollWidth <= el.clientWidth + 1),
+    ).toBe(true);
     console.log(
       'geometry',
       width,
@@ -198,6 +203,15 @@ test('relative settings preserve chart position, focus, and guide context', asyn
   await expect(page).toHaveURL(/normalization=ratio/);
   await expect(page).toHaveURL(/correlation=365/);
   await page.keyboard.press('Escape');
+  for (const width of [320, 390]) {
+    await page.setViewportSize({ width, height: 900 });
+    expect((await chart.boundingBox())!.y).toBeLessThanOrEqual(300);
+    expect(
+      await page
+        .locator('.analysis-reading-date')
+        .evaluate((el) => el.scrollWidth <= el.clientWidth + 1),
+    ).toBe(true);
+  }
   await page.getByRole('link', { name: '현재 분석 설명', exact: true }).click();
   await expect(page).toHaveURL(/benchmark_asset=LINK/);
   await expect(page).toHaveURL(/normalization=ratio/);

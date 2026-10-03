@@ -21,7 +21,7 @@ export function SpotQuote({ asset, market }: { asset: Asset; market: Market }) {
             ? ' · 갱신 지연'
             : quote.live
               ? ' · 실시간 가격'
-              : ' · 분 단위 저장값'}
+              : ' · 1분 조회'}
       </span>
     </div>
   );
