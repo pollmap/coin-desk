@@ -15,8 +15,6 @@ import { ASSETS } from '../shared/catalog';
 import { resolveIndicator } from '../shared/indicator-catalog';
 import { MarketHome as WatchlistPage } from './MarketHome';
 import './analysis-ux.css';
-import './data-status.css';
-import './network.css';
 const AnalysisWorkspace = lazy(() =>
   import('./IndicatorWorkspace').then((m) => ({ default: m.IndicatorWorkspace })),
 );

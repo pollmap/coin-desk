@@ -125,12 +125,11 @@ export function AutomationSummary({ compact = false }: { compact?: boolean }) {
         </div>
         {!compact && (
           <div>
-            <dt>48시간 자동 수집 관찰</dt>
+            <dt>최근 수집 이력 · 참고</dt>
             <dd>
               {a?.observation48h ? (
                 <>
-                  {a.observation48h.windowSatisfied ? '기간 충족' : '기간 누적 중'} ·{' '}
-                  {a.observation48h.healthy ? '운영 기준 충족' : '운영 확인 필요'}
+                  최근 48시간 기록 · 출시 완료 판정에 사용하지 않습니다.
                   <br />
                   기록률 {(a.observation48h.recordingRate * 100).toFixed(2)}% · 누락{' '}
                   {a.observation48h.missingRuns}회 · 최장 공백 {a.observation48h.longestGapSeconds}
@@ -275,9 +274,9 @@ export function DataStatusPage() {
           </div>
           <p className="watch-note">
             목표 주기는 성공 보장이 아닙니다. 실제 자료 시각과 마지막 수집 시각은 위 상태표에서
-            확인하세요. 48시간 관찰은 최근 2분의 실행 유예를 제외합니다. 최장 공백은 예약 기록과
-            실제 실행 사이 간격 중 큰 값입니다. 기록률 99% 이상, 최장 공백 180초 이하, 미해결 오류가
-            없을 때 운영 기준 충족으로 표시합니다.
+            확인하세요. 최근 수집 이력은 최근 2분의 실행 유예를 제외한 참고 기록입니다. 최장 공백은
+            예약 기록과 실제 실행 사이 간격 중 큰 값입니다. 과거 오류와 공백은 보존하며, 별도의
+            48시간 대기·합격 판정은 운영 마감 조건에서 제외했습니다.
           </p>
         </details>
       </section>

@@ -810,3 +810,18 @@ body {
     margin-bottom: 0;
   }
 }
+
+/* Keep all header actions on the first row even at 320px. */
+@media (max-width: 380px) {
+  .product-desk .topbar {
+    gap: 4px;
+  }
+  .product-desk .product-nav {
+    gap: 10px;
+  }
+  .product-desk .topbar .icon-button,
+  .product-desk .product-help summary {
+    padding: 6px;
+    min-width: 32px;
+  }
+}
