@@ -158,6 +158,31 @@ test('a guide activates a real drawing tool and Help follows the selected analys
   await expect(page.locator('.guide-title')).toContainText('가격 위치 밴드');
 });
 
+test('guide text follows the theme background without a low-contrast transition', async ({
+  page,
+}) => {
+  await page.goto('/learn/pattern-bullish-engulfing?asset=DOGE');
+  await expect(page.locator('.guide-use > summary')).toBeVisible();
+  const samples = await page.evaluate(async () => {
+    const summary = document.querySelector('.guide-use > summary')!;
+    const colors: { actual: string; expected: string }[] = [];
+    for (const theme of ['dark', 'light']) {
+      // Read the old style before changing the same attribute used by the theme control.
+      getComputedStyle(summary).color;
+      document.documentElement.dataset.theme = theme;
+      for (let frame = 0; frame < 3; frame++) {
+        await new Promise(requestAnimationFrame);
+        colors.push({
+          actual: getComputedStyle(summary).color,
+          expected: getComputedStyle(document.querySelector('.guide-article')!).color,
+        });
+      }
+    }
+    return colors;
+  });
+  for (const sample of samples) expect(sample.actual).toBe(sample.expected);
+});
+
 for (const width of [320, 390, 768, 1000, 1280, 1440]) {
   test(`guides and pattern controls are accessible at ${width}px in both themes`, async ({
     page,
