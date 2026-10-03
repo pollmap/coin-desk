@@ -727,7 +727,7 @@ body {
 @media (max-width: 760px) {
   .product-desk .topbar {
     display: flex;
-    gap: 10px;
+    gap: 4px 10px;
     padding: 0 12px;
   }
   .product-brand b {
@@ -860,7 +860,7 @@ body {
 /* Keep all header actions on the first row even at 320px. */
 @media (max-width: 380px) {
   .product-desk .topbar {
-    gap: 4px;
+    gap: 0 4px;
   }
   .product-desk .product-nav {
     gap: 10px;

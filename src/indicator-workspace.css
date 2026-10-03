@@ -373,11 +373,22 @@
     padding: 5px 8px;
   }
   .indicator-workspace .analysis-legend > span:nth-child(2) {
+    display: grid;
+    grid-template-columns: max-content minmax(0, 1fr);
+    align-items: center;
+    width: 100%;
     gap: 8px;
-    flex-wrap: wrap;
+  }
+  .indicator-workspace .analysis-reading-date {
+    grid-column: 2;
+    grid-row: 1;
+    line-height: 16px;
   }
   .indicator-workspace .analysis-legend > span:nth-child(2) > b {
+    grid-column: 1;
+    grid-row: 1;
     font-size: 23px;
+    white-space: nowrap;
   }
   .indicator-workspace .analysis-surface {
     display: block;
