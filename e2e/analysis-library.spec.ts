@@ -124,14 +124,13 @@ test('unknown extension nonce and malformed rows never enter the library', async
   );
   await page.getByRole('button', { name: 'Chrome 연결', exact: true }).click();
   await expect(page.locator('.library-row')).toHaveCount(0);
-  await page
-    .locator('input[type=file]')
-    .first()
-    .setInputFiles({
-      name: 'bad.jsonl',
-      mimeType: 'application/x-ndjson',
-      buffer: Buffer.from('{corrupt}\n'),
-    });
+  const chooser = page.waitForEvent('filechooser');
+  await page.getByRole('button', { name: '파일 가져오기', exact: true }).click();
+  await (await chooser).setFiles({
+    name: 'bad.jsonl',
+    mimeType: 'application/x-ndjson',
+    buffer: Buffer.from('{corrupt}\n'),
+  });
   await expect(page.locator('.library-status')).toContainText('오류 1');
   await expect(page.locator('.library-row')).toHaveCount(0);
 });
