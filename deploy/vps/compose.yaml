@@ -31,11 +31,13 @@ services:
     mem_limit: 256m
   api:
     <<: *service
+    image: ${COIN_DESK_API_IMAGE:-${COIN_DESK_IMAGE}}
     ports: ['127.0.0.1:${COIN_DESK_PORT:?Verify a free loopback port}:8080']
     command: [node, server/index.mjs]
     environment:
       {
         <<: *environment,
+        COIN_DESK_RELEASE: '${COIN_DESK_API_RELEASE:-${COIN_DESK_RELEASE}}',
         HOST: 0.0.0.0,
         PORT: '8080',
         COIN_DESK_PUBLIC_ORIGIN: '${COIN_DESK_PUBLIC_ORIGIN:-https://coin-desk.62.171.141.206.sslip.io}',
