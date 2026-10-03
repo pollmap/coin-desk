@@ -3,6 +3,7 @@ import { readFile, stat, realpath } from 'node:fs/promises';
 import { resolve, extname, sep } from 'node:path';
 import { Readable } from 'node:stream';
 import { schedulerState } from './runtime.mjs';
+import { staticResponder } from './static-response.mjs';
 const mime = {
   '.html': 'text/html; charset=utf-8',
   '.js': 'text/javascript; charset=utf-8',
@@ -53,6 +54,7 @@ export function createHttpServer({
     },
   };
   const root = resolve(staticRoot);
+  const serveStatic = staticResponder();
   const server = createServer(async (req, res) => {
     let out;
     try {
@@ -168,20 +170,14 @@ export function createHttpServer({
             if (!exists && extname(path)) out = json({ error: 'Not found' }, 404);
             else {
               if (!exists) file = resolve(root, 'index.html');
-              const data = await readFile(file);
-              out = new Response(
-                publicOrigin && extname(file) === '.html'
-                  ? data.toString('utf8').replaceAll('https://coin-desk.pages.dev', publicOrigin)
-                  : data,
-                {
-                  headers: {
-                    'content-type': mime[extname(file)] || 'application/octet-stream',
-                    'cache-control': path.startsWith('/assets/')
-                      ? 'public, max-age=31536000, immutable'
-                      : 'no-cache',
-                  },
-                },
-              );
+              out = await serveStatic(file, {
+                mime: mime[extname(file)] || 'application/octet-stream',
+                cacheControl: path.startsWith('/assets/')
+                  ? 'public, max-age=31536000, immutable'
+                  : 'no-cache',
+                publicOrigin,
+                headers: req.headers,
+              });
             }
           }
         }
