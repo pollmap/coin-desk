@@ -197,10 +197,6 @@ function ComparisonChart({
           />
         </>
       ) : null}
-      <p className="comparison-caption">
-        확대·이동해도 기준일과 아래 표의 분석 기간은 고정됩니다. 차트의 십자선으로 같은 날짜를
-        비교하세요.
-      </p>
     </>
   );
 }

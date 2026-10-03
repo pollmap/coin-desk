@@ -32,14 +32,8 @@
   width: 18px;
   height: 14px;
   border-radius: 4px;
-  background: linear-gradient(
-    0deg,
-    #4f86cc 0% 20%,
-    #4bb8bf 20% 40%,
-    #83c59a 40% 60%,
-    #e6ba65 60% 80%,
-    #e37c67 80%
-  );
+  background: var(--accent-bg);
+  border: 1px solid var(--accent);
 }
 .app input:focus-visible,
 .app select:focus-visible {

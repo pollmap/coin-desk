@@ -1,7 +1,9 @@
 import { test, expect } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
 
-test('stale cache never claims live or minute collection when no collector has run', async ({ page }) => {
+test('stale cache never claims live or minute collection when no collector has run', async ({
+  page,
+}) => {
   await page.route('**/api/v1/market?*', async (route) => {
     const response = await route.fetch();
     const data = await response.json();
@@ -14,6 +16,8 @@ test('stale cache never claims live or minute collection when no collector has r
   });
   await page.goto('/');
   await expect(page.locator('.market-table tbody tr')).toHaveCount(8);
+  await expect(page.locator('html')).toHaveAttribute('data-theme', 'light');
+  await expect(page.locator('body')).toHaveCSS('background-color', 'rgb(255, 255, 255)');
   await expect(page.locator('.market-feed-state')).toContainText('시세 갱신 지연');
   await expect(page.locator('.market-runtime-notice')).toContainText('수집기 실행 기록이 없습니다');
   await expect(page.locator('.market-feed-state')).not.toContainText('초 단위');
@@ -76,7 +80,10 @@ test('legacy date links and unsupported coins remain explicit; keyboard search w
 for (const width of [1280, 1440, 1920])
   test(`PC layout and accessibility ${width}`, async ({ page }) => {
     test.setTimeout(90000);
-    await page.setViewportSize({ width, height: width === 1280 ? 800 : width === 1920 ? 1080 : 900 });
+    await page.setViewportSize({
+      width,
+      height: width === 1280 ? 800 : width === 1920 ? 1080 : 900,
+    });
     await page.goto('/');
     await expect(page.locator('.market-table tbody tr')).toHaveCount(8);
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(
@@ -97,7 +104,7 @@ for (const width of [1280, 1440, 1920])
     expect(
       (await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa']).analyze()).violations,
     ).toEqual([]);
-    await page.getByRole('button', { name: '밝은 테마로 변경' }).click();
+    await page.getByRole('button', { name: '어두운 테마로 변경' }).click();
     expect(
       (await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa']).analyze()).violations,
     ).toEqual([]);

@@ -6,8 +6,8 @@
   "lang": "ko",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#101216",
-  "theme_color": "#101216",
+  "background_color": "#ffffff",
+  "theme_color": "#ffffff",
   "icons": [
     {
       "src": "/brand/coin-desk-shiba-smile.png",

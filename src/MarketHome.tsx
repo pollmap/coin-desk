@@ -89,11 +89,10 @@ export function MarketHome() {
           <h1>코인 시장</h1>
           <span className="market-feed-state">
             {feed.rows.some((row) => row.live)
-              ? '가격 초 단위 갱신'
+              ? '실시간 가격'
               : feed.rows.length && feed.rows.every((row) => row.stale)
                 ? '시세 갱신 지연'
-                : '화면 1분마다 확인'}{' '}
-            · {market === 'upbit' ? 'Upbit' : 'Binance'} {unit}
+                : '1분마다 갱신'}
           </span>
         </div>
         {feed.data?.collection && !feed.data.collection.healthy && (
@@ -231,24 +230,19 @@ export function MarketHome() {
             </tbody>
           </table>
         </div>
-        <p className="market-footnote">
-          변동률·거래대금은 1분 단위 확인값입니다. 최근 흐름은 확정 일봉이며, 거래소별 가격과
-          거래대금은 합산하지 않습니다.
-        </p>
+        <details className="market-data-note">
+          <summary>시세 기준</summary>
+          <p>
+            변동률·거래대금은 1분마다 확인합니다. 최근 30일은 확정 일봉입니다. 선택한 거래소의
+            시세만 표시합니다.
+          </p>
+        </details>
       </div>
       <aside className="market-rail" aria-label="내 관심 코인">
         <h2>관심 코인</h2>
         {!starred.length && (
           <div className="market-empty">
-            <img
-              fetchPriority="low"
-              decoding="async"
-              src="/brand/coin-desk-shiba-smile.png"
-              alt=""
-              width="64"
-              height="64"
-            />
-            <p>별을 눌러 자주 보는 코인을 모아보세요.</p>
+            <p>별을 눌러 추가하세요.</p>
           </div>
         )}
         {ASSETS.filter((a) => starred.includes(a.id)).map((a) => (
@@ -261,24 +255,21 @@ export function MarketHome() {
             <b>{money(feed.rows.find((r) => r.asset === a.id)?.displayPrice, unit)}</b>
           </Link>
         ))}
-        <h2>최근 본 코인</h2>
-        {recent.length ? (
-          recent
-            .map((id) => ASSETS.find((a) => a.id === id))
-            .filter((a) => !!a)
-            .map((a) => (
-              <Link key={a.id} to={href(a.id)}>
-                <AssetLogo asset={a.id} size={24} />
-                {a.name}
-                <small>{a.id}</small>
-              </Link>
-            ))
-        ) : (
-          <p className="muted">코인을 열면 여기에 남습니다.</p>
+        {recent.length > 0 && (
+          <>
+            <h2>최근 본 코인</h2>
+            {recent
+              .map((id) => ASSETS.find((a) => a.id === id))
+              .filter((a) => !!a)
+              .map((a) => (
+                <Link key={a.id} to={href(a.id)}>
+                  <AssetLogo asset={a.id} size={24} />
+                  {a.name}
+                  <small>{a.id}</small>
+                </Link>
+              ))}
+          </>
         )}
-        <Link className="market-learn" to="/learn">
-          지표가 궁금하다면 · 지표 사전
-        </Link>
       </aside>
     </div>
   );

@@ -13,7 +13,9 @@ export function ProductTopbar() {
   const asset =
     ASSETS.find((a) => a.id === (location.pathname.split('/')[2] || p.get('asset')))?.id ?? 'BTC';
   const [query, setQuery] = useState(''),
-    [theme, setTheme] = useState(saved('theme', 'dark'));
+    [theme, setTheme] = useState(
+      document.documentElement.dataset.theme === 'dark' ? 'dark' : 'light',
+    );
   const input = useRef<HTMLInputElement>(null),
     box = useRef<HTMLDivElement>(null),
     help = useRef<HTMLDetailsElement>(null);

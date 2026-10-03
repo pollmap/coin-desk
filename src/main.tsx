@@ -15,7 +15,7 @@ import './market-navigation.css';
 import './product-desk.css';
 import { saved } from './lib';
 document.documentElement.dataset.theme =
-  saved<string>('theme', 'dark') === 'light' ? 'light' : 'dark';
+  saved<string>('theme', 'light') === 'dark' ? 'dark' : 'light';
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <BrowserRouter>

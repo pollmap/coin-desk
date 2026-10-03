@@ -204,17 +204,12 @@ export default function App() {
         </main>
         <footer>
           <span>
-            Coin Desk <i />
-            공개 데이터로 살펴보는 코인 시장
-          </span>
-          <span>
             <Clock3 size={12} />
             시각 표시 KST · 일별 기준 UTC
           </span>
           <a href="https://www.tradingview.com/" target="_blank" rel="noreferrer">
             TradingView Lightweight Charts™ · Copyright (с) 2025 TradingView, Inc.
           </a>
-          <Link to="/brand">Coin Desk 브랜드</Link>
         </footer>
       </div>
       {sources ? (

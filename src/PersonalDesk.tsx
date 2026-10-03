@@ -250,7 +250,7 @@ export function WorkspaceBar({
                 </div>
               ))
             ) : (
-              <p>저장한 작업공간이 없습니다. 지금 보고 있는 구성을 이름과 함께 저장해 보세요.</p>
+              <p>저장한 작업공간이 없습니다.</p>
             )}
           </div>
           {removed ? (

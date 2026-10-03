@@ -40,8 +40,8 @@ test('VPS status shows minute cadence and missing execution and backup honestly'
       await runtime.evaluate((element) => element.scrollWidth <= element.clientWidth + 1),
     ).toBe(true);
   }
-  for (const theme of ['dark', 'light']) {
-    if (theme === 'light') await page.getByRole('button', { name: '밝은 테마로 변경' }).click();
+  for (const theme of ['light', 'dark']) {
+    if (theme === 'dark') await page.getByRole('button', { name: '어두운 테마로 변경' }).click();
     expect(
       (
         await new AxeBuilder({ page })
