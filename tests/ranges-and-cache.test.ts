@@ -55,6 +55,7 @@ describe('shared query lifetimes', () => {
     });
     old.release();
     old.release();
+    await Promise.resolve();
     expect(signal.aborted).toBe(true);
     const fresh = cache.acquire('x', async () => 'new');
     await fresh.task;
@@ -62,6 +63,26 @@ describe('shared query lifetimes', () => {
     await old.task;
     expect(cache.peek('x')?.data).toBe('new');
     fresh.release();
+  });
+  it('reuses an in-flight request across a synchronous subscriber remount', async () => {
+    const cache = new QueryCache();
+    let resolve!: (v: string) => void;
+    let signal!: AbortSignal;
+    let calls = 0;
+    const loader = (s: AbortSignal) => {
+      calls++;
+      signal = s;
+      return new Promise<string>((r) => (resolve = r));
+    };
+    const first = cache.acquire('remount', loader);
+    first.release();
+    const second = cache.acquire('remount', loader);
+    await Promise.resolve();
+    expect(calls).toBe(1);
+    expect(signal.aborted).toBe(false);
+    resolve('retained');
+    expect(await second.task).toBe('retained');
+    second.release();
   });
   it('bounds memory and retries failed requests', async () => {
     const cache = new QueryCache(2);

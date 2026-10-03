@@ -142,22 +142,34 @@ const env = {
   BITVIEW_BASE_URL: '',
   ASSETS: { fetch: async () => new Response('', { status: 404 }) },
 };
+let requestId = 0;
 server.on('request', async (req, res) => {
   if (!req.url.startsWith('/api/')) return vite.middlewares(req, res);
+  const id = ++requestId,
+    started = Date.now();
+  const trace = (phase) => {
+    if (process.env.COIN_DESK_FIXTURE_TRACE === '1' && id <= 5000)
+      console.log(
+        JSON.stringify({
+          event: 'fixture_api',
+          id,
+          phase,
+          url: req.url,
+          elapsedMs: Date.now() - started,
+        }),
+      );
+  };
+  trace('received');
+  res.once('finish', () => trace('finished'));
+  res.once('close', () => {
+    if (!res.writableFinished) trace('closed-before-finish');
+  });
   try {
     const response = await worker.fetch(new Request(`http://127.0.0.1:${port}` + req.url), env, {
       waitUntil: (p) => p.catch(() => {}),
     });
-    const body = Buffer.from(await response.text());
-    // This in-memory fixture serves finite JSON, not the production SSE proxy.
-    // Delimit it explicitly and avoid reusing HTTP/1 sockets cancelled by dev
-    // StrictMode mounts. Production keep-alive/SSE has separate server tests.
-    res.writeHead(response.status, {
-      ...Object.fromEntries(response.headers),
-      'Content-Length': body.length,
-      Connection: 'close',
-    });
-    res.end(body);
+    res.writeHead(response.status, Object.fromEntries(response.headers));
+    res.end(await response.text());
   } catch (e) {
     res.writeHead(500);
     res.end(JSON.stringify({ error: String(e) }));

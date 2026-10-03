@@ -185,6 +185,9 @@
 .indicator-workspace .analysis-lab[data-relative-asset] {
   padding: 0;
 }
+.indicator-workspace .analysis-lab[data-relative-asset] .analysis-legend {
+  gap: 2px 10px;
+}
 .indicator-toolbar button,
 .indicator-toolbar label {
   font-size: 12px;
