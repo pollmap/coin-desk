@@ -542,6 +542,15 @@ function RelativeView({
           )}
           <AnalysisChart
             asset={pair.asset}
+            exportName={`${pair.asset}-${pair.benchmark}-${mode}`}
+            primary={{
+              id: `relative:${pair.asset}:${pair.benchmark}:${mode}`,
+              title: `${pair.asset}/${pair.benchmark} ${mode === 'ratio' ? '가격 비율' : mode === 'percent' ? '수익률' : '시작값 100'}`,
+              unit,
+              source: basisName(basis),
+              color: COLORS[0],
+              data: aligned[1].data,
+            }}
             unit={unit}
             source={basisName(basis)}
             points={aligned[1].data}

@@ -29,6 +29,17 @@ test('all eight relative views use the selected pair, unit, and export name', as
   await expect(page.locator('.analysis-legend')).toContainText('LINK/PEPE');
   await page.reload();
   await expect(page.getByRole('combobox', { name: '비교 코인', exact: true })).toHaveValue('LINK');
+  await page.locator('.analysis-tools > summary').click();
+  const downloaded = page.waitForEvent('download');
+  await page.getByRole('button', { name: '지표 CSV', exact: true }).click();
+  const file = await downloaded;
+  expect(file.suggestedFilename()).toBe('borichart-PEPE-LINK-ratio-indicators.csv');
+  const stream = await file.createReadStream();
+  let csv = '';
+  for await (const chunk of stream!) csv += chunk.toString();
+  expect(csv).toContain('PEPE/LINK');
+  expect(csv).toContain('LINK/PEPE');
+  expect(csv).toContain('Binance');
 });
 
 test('legacy target migrates explicitly; saved pair, overwrite cancel, delete undo remain intact', async ({

@@ -83,6 +83,7 @@ export const AnalysisChart = memo(function AnalysisChart({
   initialTool,
   bands,
   onReadingDate,
+  exportName,
 }: {
   asset: string;
   unit: string;
@@ -108,6 +109,7 @@ export const AnalysisChart = memo(function AnalysisChart({
   initialTool?: DrawingKind;
   bands?: BandRow[];
   onReadingDate?: (time: number | null) => void;
+  exportName?: string;
 }) {
   const host = useRef<HTMLDivElement>(null),
     chartRef = useRef<IChartApi | null>(null);
@@ -162,6 +164,7 @@ export const AnalysisChart = memo(function AnalysisChart({
       ? '—'
       : new Date(t * 1000).toISOString().slice(0, 16).replace('T', ' ') + ' UTC';
   const metricNumber = (value: number | undefined) => numeric(value, readingDigits(value));
+  const fileName = (exportName ?? `${asset}-${unit}`).replace(/[\\/:*?"<>|]/g, '-');
   function explore(t: number | null) {
     manualCursor.current = t !== null;
     setSelectionKey(key);
@@ -177,7 +180,7 @@ export const AnalysisChart = memo(function AnalysisChart({
     const url = URL.createObjectURL(new Blob([content], { type: 'text/csv;charset=utf-8' }));
     const a = document.createElement('a');
     a.href = url;
-    a.download = `borichart-${asset}-${unit}-indicators.csv`;
+    a.download = `borichart-${fileName}-indicators.csv`;
     a.click();
     setTimeout(() => URL.revokeObjectURL(url), 1000);
   }
@@ -668,7 +671,7 @@ export const AnalysisChart = memo(function AnalysisChart({
             if (!canvas) return;
             const a = document.createElement('a');
             a.href = canvas.toDataURL('image/png');
-            a.download = `borichart-${asset}-${unit}.png`;
+            a.download = `borichart-${fileName}.png`;
             a.click();
           }}
         >
