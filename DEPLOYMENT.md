@@ -6,6 +6,14 @@
 
 ## 유지하는 제품
 
+### 전송·운영 확인 도구
+
+Nginx 1.24의 HTTPS 설정은 `listen 443 ssl http2;`를 사용합니다. [공식 HTTP/2 문서](https://nginx.org/en/docs/http/ngx_http_v2_module.html)의 `http2 on`은 1.25.1 이상 문법이므로 현재 서버와 구분합니다. 기존 프로젝트 경로는 `python3 deploy/vps/enable_http2.py`로 전환합니다. Coin Desk 설정만 백업·수정하며 플랫폼 잠금, `nginx -t`, 무중단 reload와 실제 ALPN `h2` 확인을 수행하고 실패하면 복구합니다. 수집기·DB·상위 프록시와 SSE 버퍼링은 바꾸지 않습니다.
+
+`route_port.py`는 API와 `/api/v1/quotes/stream`의 두 upstream을 함께 변경합니다. 서로 다른 포트나 외부 upstream이 섞인 설정은 수정하지 않습니다. 이 도구로 수동 포트 변경 시에도 `/srv/platform/nginx-edit.lock`을 잡고 실행합니다.
+
+운영 집계는 `python3 deploy/vps/operations_report.py --database /srv/services/coin-desk/shared/data/coin-desk.sqlite --day YYYY-MM-DD --backup-status /srv/services/coin-desk/shared/data/backup-status.json --backup-dir /srv/services/coin-desk/backups --output /srv/services/coin-desk/audit/operations-YYYY-MM-DD.json`으로 만듭니다. SQLite는 읽기 전용으로 열고 UTC 하루·부분 구간, 예약 누락·오류, 브리핑·원천 상태·백업·파일 용량을 구분합니다. `--baseline`으로 이전 보고서를 지정하면 실제 경과 구간의 용량 차이를 계산하며 부분 구간을 하루 증가량으로 환산하지 않습니다. 48시간 대기나 새 수집을 시작하는 명령이 아닙니다.
+
 웹 0.21은 여덟 코인 시장을 첫 화면으로 제공하고 코인 상세에서 지표를 선택합니다. BTC 상세의 기본 MVRV, 가격 위치 밴드와 자체 BTC 로그회귀 레인보우를 유지합니다. React·Lightweight Charts·계산 코드·읽기 API를 그대로 사용합니다. DB에는 기존 데이터와 예약 이력을 이관합니다. 원천·단위·결측·확정 봉·730일 계산 조건을 유지합니다. 48시간 통계는 과거 실행 이력을 설명하는 참고값이며 출시 조건이 아닙니다. X 추가 수집이나 새 자료함 기능은 이번 이전에 추가하지 않습니다.
 
 API만 수정할 때는 기존 전역 `COIN_DESK_IMAGE`·`COIN_DESK_RELEASE`를 보존하고 `COIN_DESK_API_IMAGE`·`COIN_DESK_API_RELEASE`만 새 값으로 지정합니다. 새 릴리스에서 다른 서비스의 Compose 설정이 기존과 동일한지 비교한 뒤 `up -d --no-deps --wait api`로 해당 서비스만 교체합니다. 이후 실제 읽기 API·HTTPS와 다른 컨테이너의 ID·시작 시각을 확인하고 `current`를 승격합니다. 실패하면 이전 릴리스의 env와 Compose로 API만 복구하며 DB와 수집기를 재시작하지 않습니다. 전체 코드 복구용 `rollback.sh`는 API만 복구하는 명령과 구분합니다. 이미지와 env는 프로젝트의 비공개 릴리스별 파일을 사용합니다.
