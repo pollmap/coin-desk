@@ -190,7 +190,7 @@ export async function backupLibrary() {
     close: () => Promise<void>;
     abort?: () => Promise<void>;
   } | null = picker
-    ? await (await picker({ suggestedName: 'coin-desk-private-backup.jsonl' })).createWritable()
+    ? await (await picker({ suggestedName: 'borichart-private-backup.jsonl' })).createWritable()
     : null;
   const items = await libraryItems(),
     batches = await libraryBatches();
@@ -257,14 +257,14 @@ export async function backupLibrary() {
     if (writer) {
       await writer.close();
       if (temp) {
-        downloadBlob(await temp.file.getFile(), 'coin-desk-private-backup.jsonl');
+        downloadBlob(await temp.file.getFile(), 'borichart-private-backup.jsonl');
         const saved = temp;
         setTimeout(() => void saved.root.removeEntry(saved.name).catch(() => {}), 60000);
       }
     } else
       downloadBlob(
         new Blob(chunks, { type: 'application/x-ndjson' }),
-        'coin-desk-private-backup.jsonl',
+        'borichart-private-backup.jsonl',
       );
   } catch (e) {
     await writer?.abort?.().catch(() => {});

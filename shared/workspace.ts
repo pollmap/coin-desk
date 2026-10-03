@@ -138,7 +138,7 @@ export function importDesk(text: string): PersonalDesk {
     !Array.isArray(v.favorites) ||
     !Array.isArray(v.cards)
   ) {
-    throw new Error('Coin Desk 버전 1·2 설정 형식이 아닙니다.');
+    throw new Error('보리차트 버전 1·2 설정 형식이 아닙니다.');
   }
   for (const item of v.workspaces) {
     const w = record(item);
@@ -254,6 +254,7 @@ export function validAnalysisOption(key: string, value: unknown) {
       {
         correlation: ['30', '90', '365'],
         correlation_asset: ['DOGE', 'ETH'],
+        benchmark_asset: ASSETS.map((a) => a.id),
         seasonality_method: ['log'],
         seasonality_years: ['1'],
         comparison_layout: ['side'],

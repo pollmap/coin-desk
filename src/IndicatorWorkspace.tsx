@@ -1,5 +1,7 @@
+import { ASSET_REFERENCES } from '../shared/asset-references';
+import { relativePair } from '../shared/relative-pair';
 import { lazy, Suspense, useEffect, useMemo, useRef, useState } from 'react';
-import { Link, useLocation, useParams, useSearchParams } from 'react-router-dom';
+import { Link, useLocation, useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { ASSETS } from '../shared/catalog';
 import {
   defaultIndicator,
@@ -67,8 +69,24 @@ export function IndicatorWorkspace() {
   const [params, setParams] = useSearchParams(),
     route = useParams(),
     location = useLocation();
-  const asset =
+  const routeAsset =
     ASSETS.find((a) => a.id === (route.asset || params.get('asset') || 'BTC'))?.id ?? 'BTC';
+  const navigate = useNavigate();
+  const isRelative =
+    params.get('metric') === 'view:relative' ||
+    (!params.has('metric') && params.get('visual') === 'relative');
+  const pair = relativePair(routeAsset, params);
+  const asset = isRelative ? pair.asset : routeAsset;
+  const [legacyNotice, setLegacyNotice] = useState(false);
+  useEffect(() => {
+    if (!isRelative || !pair.migrated) return;
+    const next = new URLSearchParams(params);
+    next.set('asset', pair.asset);
+    next.set('benchmark_asset', pair.benchmark);
+    next.delete('correlation_asset');
+    setLegacyNotice(true);
+    navigate(`/coins/${pair.asset}?${next}`, { replace: true });
+  }, [isRelative, pair.migrated, pair.asset, pair.benchmark, navigate, params]);
   const quoteMarket =
     params.get('market') === 'binance' || params.get('price_source') === 'binance'
       ? 'binance'
@@ -79,6 +97,9 @@ export function IndicatorWorkspace() {
       [asset, ...saved<Asset[]>('recent-coins', []).filter((a) => a !== asset)].slice(0, 8),
     );
   }, [asset]);
+  useEffect(() => {
+    save('recent-analysis', { href: location.pathname + location.search, asset });
+  }, [location.pathname, location.search, asset]);
   const active = resolveIndicator(asset, location.pathname, params),
     d = active.definition,
     id = active.id;
@@ -535,15 +556,28 @@ export function IndicatorWorkspace() {
         href={(next) => indicatorUrl(next, id, context, true)}
       />
 
+      {legacyNotice && (
+        <p role="status" className="indicator-notice">
+          이전 링크의 비교 대상에 맞춰 {asset}·{pair.benchmark}를 열었습니다.{' '}
+          <button onClick={() => setLegacyNotice(false)}>닫기</button>
+        </p>
+      )}
       <IndicatorShortcuts asset={asset} selected={id} params={context} />
       <div className="indicator-body">
         <section className="panel indicator-panel" ref={area}>
           <div className="indicator-heading">
             <div>
               <h1>{d?.title ?? '지원하지 않는 지표'}</h1>
+              {d?.id.endsWith(':mvrv') && (
+                <span className="indicator-meaning">{d.shortMeaning}</span>
+              )}
               <span>
                 {asset} · {local || d?.renderer !== 'series' ? basisName(basis) : d.source} ·{' '}
-                {d?.renderer === 'series' ? primary?.unit : unit}
+                {isRelative
+                  ? `${asset} · ${pair.benchmark}`
+                  : d?.renderer === 'series'
+                    ? primary?.unit
+                    : unit}
                 {availability === 'delayed' && ' · 갱신 지연'}
               </span>
             </div>
@@ -889,10 +923,11 @@ export function IndicatorWorkspace() {
             <summary>읽는 법 · 계산식 · 데이터 범위</summary>
             <div>
               <h2>무엇을 보는가</h2>
-              <p>{article?.summary ?? d?.title}</p>
+              <p>{d?.shortMeaning ?? article?.summary ?? d?.title}</p>
               <h2>기준선을 읽는 법</h2>
               <p>
-                {article?.read ??
+                {d?.baselineMeaning ??
+                  article?.read ??
                   (id === 'view:btc_rainbow'
                     ? '아래·중앙·위 구간은 과거 회귀 대비 위치입니다. 매수·매도 구간을 뜻하지 않습니다.'
                     : '확정된 관측의 추세와 단위를 함께 확인하세요.')}
@@ -907,10 +942,26 @@ export function IndicatorWorkspace() {
               )}
               <h2>원천과 한계</h2>
               <p>
+                {d?.observationCadence} · {d?.measurementScope}
+              </p>
+              <p>
                 {article?.caution ??
                   '결측은 보간하지 않고 미래 데이터를 사용하지 않습니다. 관측 이력이 짧으면 계산 결과가 없습니다.'}
               </p>
               {article && <Link to={guideHref(article.id, context)}>상세 설명 읽기</Link>}
+              <h2>프로젝트·공급 참고</h2>
+              <ul>
+                {ASSET_REFERENCES[asset].map((link) => (
+                  <li key={link.url}>
+                    <a href={link.url} target="_blank" rel="noreferrer">
+                      {link.provider} · {link.purpose} ↗
+                    </a>
+                  </li>
+                ))}
+              </ul>
+              <p>
+                프로젝트 측 원문입니다. 독립적인 위험 평가나 언락 일정의 실시간 확인은 아닙니다.
+              </p>
             </div>
           </details>
           {article && (
@@ -954,6 +1005,7 @@ export function IndicatorWorkspace() {
                     'seasonality_years',
                     'correlation',
                     'correlation_asset',
+                    'benchmark_asset',
                     'comparison_layout',
                   ].includes(k),
                 ),
@@ -979,9 +1031,9 @@ export function IndicatorWorkspace() {
         </section>
         <aside className="indicator-context">
           <h2>{d?.title} 읽는 법</h2>
-          <p>{article?.summary ?? d?.title}</p>
+          <p>{d?.shortMeaning ?? article?.summary ?? d?.title}</p>
           <h3>기준값</h3>
-          <p>{article?.read ?? '단위와 확정 관측일을 함께 확인하세요.'}</p>
+          <p>{d?.baselineMeaning ?? article?.read ?? '단위와 확정 관측일을 함께 확인하세요.'}</p>
           <h3>계산 기준</h3>
           <p>{d?.formula}</p>
           {article && <Link to={guideHref(article.id, context)}>공식과 예시 자세히 보기</Link>}

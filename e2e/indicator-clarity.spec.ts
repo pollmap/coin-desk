@@ -23,7 +23,7 @@ test('historical readings can return to latest without changing the chart window
   const chart = page.locator('[data-chart-kind="analysis"]');
   await expect(chart).toBeVisible();
   await expect(chart).toHaveAttribute('data-range-ready', '1');
-  await expect(page.locator('.analysis-reading-date')).toContainText('최근 관측');
+  await expect(page.locator('.analysis-reading-date')).toContainText('최근 확정값');
   const initial = await page.getByLabel('표시 기간', { exact: true }).innerText();
   await page.getByRole('button', { name: '차트 확대', exact: true }).click();
   await expect(page.getByLabel('표시 기간', { exact: true })).not.toHaveText(initial);
@@ -38,7 +38,7 @@ test('historical readings can return to latest without changing the chart window
   const window = await page.getByLabel('표시 기간', { exact: true }).innerText();
   await page.getByRole('button', { name: '최근값 보기', exact: true }).click();
   await expect(chart).toBeFocused();
-  await expect(page.locator('.analysis-reading-date')).toContainText('최근 관측');
+  await expect(page.locator('.analysis-reading-date')).toContainText('최근 확정값');
   await expect(page.getByLabel('표시 기간', { exact: true })).toHaveText(window);
   await expect(page.locator('.indicator-method')).toHaveCount(0);
   await page.getByText('읽는 법 · 계산식 · 데이터 범위', { exact: true }).click();

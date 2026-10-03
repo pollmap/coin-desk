@@ -172,7 +172,7 @@
 .app .indicator-workspace .analysis-legend {
   padding: 0;
   min-height: 34px;
-  margin: 2px 0 4px;
+  margin: 0;
   border: 0;
   background: transparent;
   gap: 6px 14px;

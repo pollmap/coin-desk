@@ -177,7 +177,7 @@ export const AnalysisChart = memo(function AnalysisChart({
     const url = URL.createObjectURL(new Blob([content], { type: 'text/csv;charset=utf-8' }));
     const a = document.createElement('a');
     a.href = url;
-    a.download = `Coin-Desk-${asset}-${unit}-indicators.csv`;
+    a.download = `borichart-${asset}-${unit}-indicators.csv`;
     a.click();
     setTimeout(() => URL.revokeObjectURL(url), 1000);
   }
@@ -537,7 +537,8 @@ export const AnalysisChart = memo(function AnalysisChart({
         </span>
         <span>
           <span className="analysis-reading-date">
-            {selectedTime === null ? '최근 관측' : '선택한 날짜'} · {timestamp(time)}
+            {selectedTime === null ? (primary ? '최근 확정값' : '최근 관측') : '선택한 날짜'} ·{' '}
+            {timestamp(time)}
           </span>{' '}
           <b>{display(priceValue)}</b>
         </span>
@@ -667,7 +668,7 @@ export const AnalysisChart = memo(function AnalysisChart({
             if (!canvas) return;
             const a = document.createElement('a');
             a.href = canvas.toDataURL('image/png');
-            a.download = `Coin-Desk-${asset}-${unit}.png`;
+            a.download = `borichart-${asset}-${unit}.png`;
             a.click();
           }}
         >

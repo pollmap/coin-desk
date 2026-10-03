@@ -126,7 +126,9 @@ test('unknown extension nonce and malformed rows never enter the library', async
   await expect(page.locator('.library-row')).toHaveCount(0);
   const chooser = page.waitForEvent('filechooser');
   await page.getByRole('button', { name: '파일 가져오기', exact: true }).click();
-  await (await chooser).setFiles({
+  await (
+    await chooser
+  ).setFiles({
     name: 'bad.jsonl',
     mimeType: 'application/x-ndjson',
     buffer: Buffer.from('{corrupt}\n'),
@@ -168,7 +170,7 @@ test('analysis recipes replace the main chart with calculated views', async ({ p
   await expect(page.getByLabel('비교 기준', { exact: true })).toBeVisible();
   await expect(chart(page)).toBeVisible();
   await page.getByLabel('비교 기준', { exact: true }).selectOption('ratio');
-  await expect(page.locator('.analysis-legend')).toContainText('BTC/coin');
+  await expect(page.locator('.analysis-legend')).toContainText('ETH/BTC');
 });
 
 test('seasonality waits for the price history before reporting sample availability', async ({

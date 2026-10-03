@@ -472,7 +472,7 @@ export const PriceChart = memo(function PriceChart({
     const url = URL.createObjectURL(new Blob([csv], { type: 'text/csv;charset=utf-8' }));
     const link = document.createElement('a');
     link.href = url;
-    link.download = 'Coin-Desk-' + scope.replace(/[^A-Za-z0-9_-]/g, '-') + '.csv';
+    link.download = 'borichart-' + scope.replace(/[^A-Za-z0-9_-]/g, '-') + '.csv';
     link.click();
     setTimeout(() => URL.revokeObjectURL(url), 1000);
     setHint('현재 보이는 구간의 실제 OHLCV를 UTC 시각·확정 여부와 함께 내보냈습니다.');

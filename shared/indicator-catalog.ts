@@ -1,6 +1,7 @@
 import { ASSETS, METRICS } from './catalog';
 import { NETWORK_METRICS, NETWORK_ASSETS } from './network-catalog';
 import { ANALYSIS_LABELS, type AnalysisView } from './advanced-analysis';
+import { guideArticle, guideForMetric } from './learning-catalog';
 import { isRangePeriod } from './ranges';
 import type { Asset, Period } from './types';
 
@@ -16,6 +17,10 @@ export interface IndicatorDefinition {
   unit: string;
   source: string;
   formula: string;
+  shortMeaning: string;
+  baselineMeaning: string;
+  observationCadence: string;
+  measurementScope: string;
   defaultPeriod: Period;
   renderer: 'series' | 'price' | 'bands' | 'lab';
   guide: string;
@@ -33,7 +38,11 @@ export const validPriceBasis = (asset: Asset, basis: string | null) =>
       ? 'reference'
       : 'binance';
 const valueMetrics = new Set(['mvrv', 'realized_price', 'realized_cap']);
-export const INDICATORS_CATALOG: IndicatorDefinition[] = [
+type IndicatorBase = Omit<
+  IndicatorDefinition,
+  'shortMeaning' | 'baselineMeaning' | 'observationCadence' | 'measurementScope'
+>;
+const definitions: IndicatorBase[] = [
   ...NETWORK_METRICS.map(
     (m) =>
       ({
@@ -48,7 +57,7 @@ export const INDICATORS_CATALOG: IndicatorDefinition[] = [
         renderer: 'series',
         guide: 'net-' + m.id,
         thresholds: m.id === 'mvrv' ? [1] : m.id === 'nupl' ? [0] : undefined,
-      }) as IndicatorDefinition,
+      }) as IndicatorBase,
   ),
   ...METRICS.map(
     (m) =>
@@ -64,7 +73,7 @@ export const INDICATORS_CATALOG: IndicatorDefinition[] = [
         renderer: 'series',
         guide: m.id,
         thresholds: m.reference === undefined ? undefined : [m.reference],
-      }) as IndicatorDefinition,
+      }) as IndicatorBase,
   ),
   ...[
     ['funding', '확정 펀딩률', '%', '실제 정산 펀딩 비율 × 100', 'funding'],
@@ -106,11 +115,11 @@ export const INDICATORS_CATALOG: IndicatorDefinition[] = [
         guide,
         group: '선물',
         assets: all,
-        source: 'Bybit',
+        source: 'Bybit USDT 무기한',
         defaultPeriod: '3m',
         renderer: 'series',
         thresholds: id === 'funding' ? [0] : undefined,
-      }) as IndicatorDefinition,
+      }) as IndicatorBase,
   ),
   ...[
     [
@@ -143,7 +152,7 @@ export const INDICATORS_CATALOG: IndicatorDefinition[] = [
         defaultPeriod: '1y',
         renderer: 'series',
         thresholds: id === 'rsi' ? [30, 70] : id === 'drawdown' ? [0] : undefined,
-      }) as IndicatorDefinition,
+      }) as IndicatorBase,
   ),
   ...(
     [
@@ -188,7 +197,7 @@ export const INDICATORS_CATALOG: IndicatorDefinition[] = [
             : 'price',
         guide: v === 'btc_rainbow' ? 'btc-rainbow' : v === 'bb' ? 'bb' : v,
         view: v === 'bb' ? 'price' : v,
-      }) as IndicatorDefinition,
+      }) as IndicatorBase,
   ),
   ...['tvl', 'stablecoins'].map(
     (id) =>
@@ -206,9 +215,42 @@ export const INDICATORS_CATALOG: IndicatorDefinition[] = [
         defaultPeriod: '5y',
         renderer: 'series',
         guide: id,
-      }) as IndicatorDefinition,
+      }) as IndicatorBase,
   ),
 ];
+export const INDICATORS_CATALOG: IndicatorDefinition[] = definitions.map((d) => {
+  const guide =
+    guideForMetric(d.id === 'view:price' ? 'candles' : d.id.replace(/^view:/, '')) ??
+    guideArticle(d.guide);
+  const cadence =
+    d.id === 'futures:funding'
+      ? '거래소 정산 주기'
+      : d.id.startsWith('futures:') && !d.id.endsWith('_daily')
+        ? '시간별'
+        : d.id === 'view:ribbon'
+          ? '선택한 확정 봉'
+          : '일별 확정 관측';
+  return {
+    ...d,
+    guide: guide?.id ?? d.guide,
+    formula: d.formula === '확정 가격 이력으로 계산' ? (guide?.formula ?? d.formula) : d.formula,
+    shortMeaning: d.id.endsWith(':mvrv')
+      ? '시가총액 ÷ 실현시가총액'
+      : (guide?.summary ?? d.formula),
+    baselineMeaning: guide?.read ?? '같은 원천과 단위의 확정 관측을 비교합니다.',
+    observationCadence: cadence,
+    measurementScope:
+      d.group === '선물'
+        ? 'Bybit USDT 무기한 계약 · 거래소 전체 시장과 구분'
+        : d.id.startsWith('chain:')
+          ? 'Ethereum 체인 · ETH 토큰 자체의 가치와 구분'
+          : d.id === 'view:relative'
+            ? '선택 코인과 비교 코인 · 동일 원천·통화·공통 날짜'
+            : d.source === '선택 가격 원천'
+              ? '선택 원천의 가격 이력 · 원천을 이어 붙이지 않음'
+              : d.source + '의 지원 코인별 정의 · 코인 간 저평가 순위가 아님',
+  };
+});
 export const indicatorDefinition = (id: string) => INDICATORS_CATALOG.find((d) => d.id === id);
 // Identical concepts from different sources stay separate series, but share one navigation entry.
 export const indicatorFamily = (id: string) => id.replace(/^(net|btc):/, 'onchain:');

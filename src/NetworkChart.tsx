@@ -255,7 +255,7 @@ export function NetworkChart({
     const href = URL.createObjectURL(new Blob([csv], { type: 'text/csv;charset=utf-8' }));
     const anchor = document.createElement('a');
     anchor.href = href;
-    anchor.download = `Coin-Desk-${asset}-${metric}.csv`;
+    anchor.download = `borichart-${asset}-${metric}.csv`;
     anchor.click();
     setTimeout(() => URL.revokeObjectURL(href), 1000);
     setNotice(`${points.length.toLocaleString()}개 실제 관측과 출처를 내보냈습니다.`);
