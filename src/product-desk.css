@@ -198,10 +198,8 @@ body {
 .product-desk :is(button, [role='button'], summary) {
   animation: none;
   transform: none;
-  transition:
-    background-color 120ms,
-    color 120ms,
-    border-color 120ms;
+  /* Theme text and surfaces must change together, including off-screen controls. */
+  transition: none;
 }
 .product-desk :is(button, [role='button'], summary):hover {
   background-color: var(--hover);
