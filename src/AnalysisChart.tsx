@@ -349,6 +349,9 @@ export const AnalysisChart = memo(function AnalysisChart({
       }
       const range = chart.timeScale().getVisibleRange();
       if (range && (time < Number(range.from) || time > Number(range.to))) {
+        // Keyboard/date navigation is a user pan too. Preserve it through
+        // ResizeObserver and data refresh, even without a prior drag/zoom.
+        userRange.current = true;
         const width = Number(range.to) - Number(range.from);
         chart.timeScale().setVisibleRange({ from: ts(time - width / 2), to: ts(time + width / 2) });
       }

@@ -1,4 +1,20 @@
 import { test, expect } from '@playwright/test';
+import type { Page } from '@playwright/test';
+
+async function waitForSelectedDateInView(page: Page) {
+  const chart = page.locator('[data-chart-kind="analysis"]');
+  await expect
+    .poll(async () => {
+      const label = await page.locator('.analysis-reading-date').innerText();
+      const date = label.match(/(\d{4}-\d{2}-\d{2}) (\d{2}:\d{2}) UTC/);
+      if (!date) return false;
+      const selected = Date.parse(date[1] + 'T' + date[2] + ':00Z') / 1000;
+      const from = Number(await chart.getAttribute('data-visible-from'));
+      const to = Number(await chart.getAttribute('data-visible-to'));
+      return selected >= from && selected <= to;
+    })
+    .toBe(true);
+}
 
 test('historical readings can return to latest without changing the chart window; help has a worked example', async ({
   page,
@@ -16,6 +32,9 @@ test('historical readings can return to latest without changing the chart window
   await expect(page.locator('.analysis-reading-date')).toContainText('선택한 날짜');
   // Keyboard selection may pan to bring the chosen observation into view.
   // Resetting the reading must preserve that actual user-visible window.
+  // The reading label updates before Lightweight Charts publishes its new range.
+  // Wait for that actual pan, rather than comparing against the preceding frame.
+  await waitForSelectedDateInView(page);
   const window = await page.getByLabel('표시 기간', { exact: true }).innerText();
   await page.getByRole('button', { name: '최근값 보기', exact: true }).click();
   await expect(chart).toBeFocused();
@@ -33,6 +52,23 @@ test('historical readings can return to latest without changing the chart window
   await expect(page.getByRole('heading', { name: 'MVRV', exact: true })).toBeVisible();
   await expect(page.getByText('실현시가총액', { exact: true })).toBeVisible();
   expect(new URL(page.url()).searchParams.get('price_source')).toBe('upbit');
+});
+
+test('keyboard panning before a manual zoom survives a chart resize', async ({ page }) => {
+  await page.goto('/coins/BTC?metric=net%3Amvrv&period=1y&price_source=upbit');
+  const chart = page.locator('[data-chart-kind="analysis"]');
+  await expect(chart).toHaveAttribute('data-range-ready', '1');
+  await chart.focus();
+  await page.keyboard.press('Home');
+  await expect(page.locator('.analysis-reading-date')).toContainText('선택한 날짜');
+  await waitForSelectedDateInView(page);
+  const window = await page.getByLabel('표시 기간', { exact: true }).innerText();
+  const canvas = chart.locator('canvas').first();
+  const width = await canvas.getAttribute('width');
+  await page.setViewportSize({ width: 1000, height: 900 });
+  await expect(canvas).not.toHaveAttribute('width', width!);
+  await waitForSelectedDateInView(page);
+  await expect(page.getByLabel('표시 기간', { exact: true })).toHaveText(window);
 });
 
 test('coin changes open the active indicator group and empty categories offer an alternative', async ({

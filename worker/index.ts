@@ -472,7 +472,7 @@ async function api(request: Request, env: Env): Promise<Response> {
   if (endpoint === 'derivatives') {
     const metric = q.get('metric') || 'funding';
     if (!derivativeAsset(asset) || !derivativeMetric(metric))
-      return response({ error: 'BTC·DOGE·ETH의 Bybit 선물 지표만 지원합니다.' }, 400);
+      return response({ error: '지원하지 않는 코인 또는 선물 지표입니다.' }, 400);
     return response(await readDerivativeSeries(env.DB, asset, metric, from, to, limit));
   }
   if (endpoint === 'reference') {
