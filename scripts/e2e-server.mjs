@@ -148,8 +148,16 @@ server.on('request', async (req, res) => {
     const response = await worker.fetch(new Request(`http://127.0.0.1:${port}` + req.url), env, {
       waitUntil: (p) => p.catch(() => {}),
     });
-    res.writeHead(response.status, Object.fromEntries(response.headers));
-    res.end(await response.text());
+    const body = Buffer.from(await response.text());
+    // This in-memory fixture serves finite JSON, not the production SSE proxy.
+    // Delimit it explicitly and avoid reusing HTTP/1 sockets cancelled by dev
+    // StrictMode mounts. Production keep-alive/SSE has separate server tests.
+    res.writeHead(response.status, {
+      ...Object.fromEntries(response.headers),
+      'Content-Length': body.length,
+      Connection: 'close',
+    });
+    res.end(body);
   } catch (e) {
     res.writeHead(500);
     res.end(JSON.stringify({ error: String(e) }));
