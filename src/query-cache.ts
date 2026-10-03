@@ -38,10 +38,15 @@ export class QueryCache {
         if (released) return;
         released = true;
         entry.users--;
-        if (entry.users === 0 && this.pending.get(key) === entry) {
-          this.pending.delete(key);
-          entry.controller.abort();
-        }
+        // React can detach and reattach subscribers in the same turn. Give the
+        // replacement subscriber that turn to reuse the request, then cancel
+        // only if nobody still needs it. Other keys remain isolated.
+        queueMicrotask(() => {
+          if (entry.users === 0 && this.pending.get(key) === entry) {
+            this.pending.delete(key);
+            entry.controller.abort();
+          }
+        });
       },
     };
   }

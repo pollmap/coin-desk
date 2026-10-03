@@ -672,6 +672,12 @@ export function guideContext(params: URLSearchParams) {
       : 'all',
   );
   next.set('log', params.get('log') === '0' ? '0' : '1');
+  if (core.includes(params.get('benchmark_asset') as Asset))
+    next.set('benchmark_asset', params.get('benchmark_asset')!);
+  if (['index', 'percent', 'ratio'].includes(params.get('normalization') ?? ''))
+    next.set('normalization', params.get('normalization')!);
+  if (['30', '90', '365'].includes(params.get('correlation') ?? ''))
+    next.set('correlation', params.get('correlation')!);
   if (/^[a-z_0-9:]{1,80}$/.test(params.get('metric') ?? ''))
     next.set('metric', params.get('metric')!);
   if (['1h', '4h', '1d', '1w', '1M'].includes(params.get('interval') ?? ''))

@@ -144,6 +144,50 @@
 .indicator-toolbar .period-picker {
   margin-right: auto;
 }
+.relative-controls {
+  position: relative;
+  font-size: 12px;
+}
+.relative-controls > summary {
+  cursor: pointer;
+  padding: 6px 8px;
+  min-height: 32px;
+}
+.relative-controls > summary:hover,
+.relative-controls > summary:focus-visible {
+  background: var(--hover);
+}
+.relative-control-fields {
+  position: absolute;
+  z-index: 12;
+  top: 100%;
+  right: 0;
+  width: 240px;
+  max-width: calc(100vw - 32px);
+  padding: 12px;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  display: grid;
+  gap: 8px;
+}
+.relative-control-fields label {
+  display: grid;
+  grid-template-columns: 64px minmax(0, 1fr);
+  align-items: center;
+  gap: 6px;
+}
+.relative-control-fields select {
+  min-width: 0;
+  min-height: 34px;
+  font-size: 12px;
+}
+.indicator-workspace .analysis-lab[data-relative-asset] {
+  padding: 0;
+}
+.indicator-workspace .analysis-lab[data-relative-asset] .analysis-legend {
+  gap: 2px 10px;
+}
 .indicator-toolbar button,
 .indicator-toolbar label {
   font-size: 12px;
@@ -372,9 +416,15 @@
   .indicator-toolbar button {
     padding: 5px 8px;
   }
+  .indicator-toolbar:has(.relative-controls) {
+    position: relative;
+  }
+  .indicator-toolbar .relative-controls {
+    position: static;
+  }
   .indicator-workspace .analysis-legend > span:nth-child(2) {
     display: grid;
-    grid-template-columns: max-content minmax(0, 1fr);
+    grid-template-columns: minmax(0, 1fr) 124px;
     align-items: center;
     width: 100%;
     gap: 8px;
@@ -383,12 +433,15 @@
     grid-column: 2;
     grid-row: 1;
     line-height: 16px;
+    white-space: normal;
   }
   .indicator-workspace .analysis-legend > span:nth-child(2) > b {
     grid-column: 1;
     grid-row: 1;
-    font-size: 23px;
-    white-space: nowrap;
+    font-size: 20px;
+    line-height: 22px;
+    white-space: normal;
+    overflow-wrap: anywhere;
   }
   .indicator-workspace .analysis-surface {
     display: block;
