@@ -1,0 +1,28 @@
+{
+  "checkedAt": "2026-10-03T10:37:05.550Z",
+  "base": "https://coin-desk.62.171.141.206.sslip.io",
+  "asset": "/assets/index-BEOKVnL3.js",
+  "encodings": [
+    {
+      "encoding": "identity",
+      "bytes": 345524,
+      "sha256": "acd6922d6a75432dcc77c62dd1c91ae75f2345e6aabdc9f3fb69c57da5d56061"
+    },
+    {
+      "encoding": "gzip",
+      "bytes": 113143,
+      "sha256": "acd6922d6a75432dcc77c62dd1c91ae75f2345e6aabdc9f3fb69c57da5d56061"
+    },
+    {
+      "encoding": "br",
+      "bytes": 107276,
+      "sha256": "acd6922d6a75432dcc77c62dd1c91ae75f2345e6aabdc9f3fb69c57da5d56061"
+    }
+  ],
+  "dogRevalidation": {
+    "firstBytes": 789844,
+    "status": 304,
+    "bytes": 0
+  },
+  "apiCacheControl": "no-store"
+}

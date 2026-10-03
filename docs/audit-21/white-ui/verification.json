@@ -1,0 +1,97 @@
+{
+  "checkedAt": "2026-10-03T10:49:14.283033+00:00",
+  "codeMain": "c55a0c02b51d6a0dbed2b2a46c3db8d7260bdbd7",
+  "pullRequests": [
+    "https://github.com/pollmap/coin-desk/pull/44",
+    "https://github.com/pollmap/coin-desk/pull/45"
+  ],
+  "ci": [
+    {
+      "conclusion": "success",
+      "databaseId": 37113816837,
+      "headSha": "29773ecf845458e20dce2846ab6bd16135d19247",
+      "status": "completed",
+      "url": "https://github.com/pollmap/coin-desk/actions/runs/37113816837"
+    },
+    {
+      "conclusion": "failure",
+      "databaseId": 37114563023,
+      "headSha": "1facb131df458ab311fa3032d536dbb38478832f",
+      "status": "completed",
+      "url": "https://github.com/pollmap/coin-desk/actions/runs/37114563023"
+    },
+    {
+      "conclusion": "failure",
+      "databaseId": 37115704457,
+      "headSha": "7e75eaf1780ccabf72dd72926f5377ce35a5344f",
+      "status": "completed",
+      "url": "https://github.com/pollmap/coin-desk/actions/runs/37115704457"
+    },
+    {
+      "conclusion": "success",
+      "databaseId": 37116289226,
+      "headSha": "e05f68d34d463a4f8a684ee5704e6c56a878c3e2",
+      "status": "completed",
+      "url": "https://github.com/pollmap/coin-desk/actions/runs/37116289226"
+    },
+    {
+      "conclusion": "success",
+      "databaseId": 37116966001,
+      "headSha": "c55a0c02b51d6a0dbed2b2a46c3db8d7260bdbd7",
+      "status": "completed",
+      "url": "https://github.com/pollmap/coin-desk/actions/runs/37116966001"
+    }
+  ],
+  "tests": {
+    "unit": 487,
+    "backupRecovery": 2,
+    "nodeServer": 17,
+    "vpsPython": 15,
+    "browser": 146,
+    "themeRegressionBeforeFailures": 2,
+    "themeAndResponsiveAfterPassed": 14,
+    "fileChooserRepeatedPassed": 10,
+    "privateOptInSkipped": 2,
+    "browserRetries": 0,
+    "localTargetedBrowser": 28,
+    "productionEightCoinAndAxe": true
+  },
+  "deployment": {
+    "apiRelease": "vps-625215e51e298359",
+    "pages": "https://e13e0d55.coin-desk.pages.dev",
+    "preservedCollectorRelease": "vps-f1546991c2aab31a",
+    "schema": "0009",
+    "apiReadChecks": 29,
+    "preservedServices": 6,
+    "databaseMigration": false
+  },
+  "ui": {
+    "defaultTheme": "light",
+    "existingExplicitDarkPreferencePreserved": true,
+    "userOpenTabsSwitchedToLight": true,
+    "observedBackground": "rgb(255, 255, 255)",
+    "computedGradients": 0,
+    "hoverBoundsUnchanged": true,
+    "hoverTransform": "none",
+    "hoverTransition": "0s",
+    "headerDogPreserved": true
+  },
+  "assetVerification": {
+    "filesPerOrigin": 264,
+    "allExpectedResponsesMatched": true,
+    "vpsIndexTransform": "LF and configured publicOrigin replacement; raw mismatch retained in deployment-assets.json"
+  },
+  "limitations": [
+    "Apple Safari/VoiceOver not tested; no Apple device",
+    "48-hour acceptance gate abolished by user",
+    "No new external private-data collection"
+  ],
+  "verificationIncidents": [
+    "Initial main CI: three contrast failures; fixed by synchronous theme colors",
+    "First follow-up PR CI: malformed import test race; switched to the real enabled file chooser",
+    "Separate local existing test attempt: Chromium target crashed; not a color-contrast failure",
+    "Local preview initially timed out during startup, then opened successfully",
+    "An attempted duplicate check could not open the running check log; the original check passed",
+    "Development Vite watcher exited with Windows EBUSY on audit-file transfer after local verification; production and separate browser tests passed"
+  ]
+}

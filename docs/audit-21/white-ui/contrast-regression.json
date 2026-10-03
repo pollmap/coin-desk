@@ -1,0 +1,20 @@
+{
+  "initialPrCi": {"run": 37113816837, "browserPassed": 144, "skipped": 2},
+  "initialMainCi": {"run": 37114563023, "browserPassed": 141, "failed": 3, "skipped": 2},
+  "failedTarget": ".guide-use > summary",
+  "failedViewports": [1000, 1280, 1440],
+  "browser": "WebKit",
+  "traceEvidence": {
+    "foreground": "#202633",
+    "background": "#191c22",
+    "contrastRatio": 1.12,
+    "expectedContrastRatio": 4.5,
+    "page": "/learn/pattern-bullish-engulfing?asset=DOGE"
+  },
+  "cause": "The 120ms inherited color transition retained the light-theme text color after the containing surface had changed to dark.",
+  "fix": "Stationary hover colors apply immediately; theme foreground and background no longer interpolate separately.",
+  "beforeFocusedRegression": {"failed": 2, "browsers": ["Chromium", "WebKit"]},
+  "afterFocusedAndResponsiveRegression": {"passed": 14, "failed": 0, "retries": 0, "viewports": [320, 390, 768, 1000, 1280, 1440]},
+  "separateLocalRun": {"passed": 5, "failed": 1, "failure": "Chromium browserContext.newPage: Target crashed; not the CI color-contrast failure"},
+  "accessibilityThresholdRelaxed": false
+}

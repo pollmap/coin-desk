@@ -1,0 +1,183 @@
+{
+  "collectedAt": 1791023823,
+  "observationSeconds": 0,
+  "shadowOnly": false,
+  "rawResponseSha256": "04b6d079c50d874f164fe74433de7e12f9fe6ce9a68fda707706b5922ede79ce",
+  "api": {
+    "/healthz": {
+      "httpStatus": 200,
+      "ok": true
+    },
+    "/api/v1/runtime": {
+      "httpStatus": 200
+    },
+    "/api/v1/status": {
+      "httpStatus": 200
+    },
+    "/api/v1/health": {
+      "httpStatus": 200,
+      "ok": true
+    },
+    "/api/v1/signals": {
+      "httpStatus": 200,
+      "rows": 19
+    },
+    "/api/v1/briefings": {
+      "httpStatus": 200,
+      "rows": 8
+    },
+    "/api/v1/market-derivatives": {
+      "httpStatus": 200,
+      "rows": 8
+    },
+    "/api/v1/chain-context?asset=ETH&metric=tvl": {
+      "httpStatus": 200,
+      "rows": 3293
+    },
+    "/api/v1/candles?asset=BTC&market=binance&limit=2": {
+      "httpStatus": 200,
+      "rows": 2
+    },
+    "/api/v1/derivatives?asset=BTC&metric=funding&limit=2": {
+      "httpStatus": 200,
+      "rows": 2
+    },
+    "/api/v1/network?asset=BTC&metric=mvrv&limit=2": {
+      "httpStatus": 200,
+      "rows": 2
+    },
+    "/api/v1/candles?asset=DOGE&market=binance&limit=2": {
+      "httpStatus": 200,
+      "rows": 2
+    },
+    "/api/v1/derivatives?asset=DOGE&metric=funding&limit=2": {
+      "httpStatus": 200,
+      "rows": 2
+    },
+    "/api/v1/network?asset=DOGE&metric=mvrv&limit=2": {
+      "httpStatus": 200,
+      "rows": 2
+    },
+    "/api/v1/candles?asset=ETH&market=binance&limit=2": {
+      "httpStatus": 200,
+      "rows": 2
+    },
+    "/api/v1/derivatives?asset=ETH&metric=funding&limit=2": {
+      "httpStatus": 200,
+      "rows": 2
+    },
+    "/api/v1/network?asset=ETH&metric=mvrv&limit=2": {
+      "httpStatus": 200,
+      "rows": 2
+    },
+    "/api/v1/candles?asset=SOL&market=binance&limit=2": {
+      "httpStatus": 200,
+      "rows": 2
+    },
+    "/api/v1/derivatives?asset=SOL&metric=funding&limit=2": {
+      "httpStatus": 200,
+      "rows": 2
+    },
+    "/api/v1/candles?asset=XRP&market=binance&limit=2": {
+      "httpStatus": 200,
+      "rows": 2
+    },
+    "/api/v1/derivatives?asset=XRP&metric=funding&limit=2": {
+      "httpStatus": 200,
+      "rows": 2
+    },
+    "/api/v1/network?asset=XRP&metric=mvrv&limit=2": {
+      "httpStatus": 200,
+      "rows": 2
+    },
+    "/api/v1/candles?asset=LINK&market=binance&limit=2": {
+      "httpStatus": 200,
+      "rows": 2
+    },
+    "/api/v1/derivatives?asset=LINK&metric=funding&limit=2": {
+      "httpStatus": 200,
+      "rows": 2
+    },
+    "/api/v1/network?asset=LINK&metric=mvrv&limit=2": {
+      "httpStatus": 200,
+      "rows": 2
+    },
+    "/api/v1/candles?asset=ONDO&market=binance&limit=2": {
+      "httpStatus": 200,
+      "rows": 2
+    },
+    "/api/v1/derivatives?asset=ONDO&metric=funding&limit=2": {
+      "httpStatus": 200,
+      "rows": 2
+    },
+    "/api/v1/candles?asset=PEPE&market=binance&limit=2": {
+      "httpStatus": 200,
+      "rows": 2
+    },
+    "/api/v1/derivatives?asset=PEPE&metric=funding&limit=2": {
+      "httpStatus": 200,
+      "rows": 2
+    }
+  },
+  "health": {
+    "ok": true,
+    "reasons": [],
+    "checkedAt": 1791023824
+  },
+  "sourceStatusCounts": {
+    "ok": 103,
+    "inactive": 23
+  },
+  "runtime": {
+    "kind": "vps",
+    "release": "vps-625215e51e298359",
+    "scheduler": [
+      {
+        "lane": "quotes",
+        "scheduled_at": 1791023820,
+        "started_at": 1791023820,
+        "completed_at": null,
+        "outcome": "running",
+        "last_success": 1791023763,
+        "reason": "running",
+        "healthy": true
+      },
+      {
+        "lane": "background",
+        "scheduled_at": 1791023820,
+        "started_at": 1791023820,
+        "completed_at": 1791023820,
+        "outcome": "ok",
+        "last_success": 1791023820,
+        "reason": null,
+        "healthy": true
+      },
+      {
+        "lane": "recent",
+        "scheduled_at": 1791023820,
+        "started_at": 1791023820,
+        "completed_at": 1791023820,
+        "outcome": "ok",
+        "last_success": 1791023820,
+        "reason": null,
+        "healthy": true
+      },
+      {
+        "lane": "analysis",
+        "scheduled_at": 1791023820,
+        "started_at": 1791023820,
+        "completed_at": 1791023820,
+        "outcome": "ok",
+        "last_success": 1791023820,
+        "reason": null,
+        "healthy": true
+      }
+    ],
+    "backup": {
+      "ok": true,
+      "lastCompletedAt": 1790974183,
+      "verified": true
+    },
+    "_verificationHttpStatus": 200
+  }
+}
