@@ -55,7 +55,7 @@ server {
  location / { return 301 https://\$host\$request_uri; }
 }
 server {
- listen 443 ssl;
+ listen 443 ssl http2;
  server_name $host;
  ssl_certificate /etc/letsencrypt/live/coin-desk/fullchain.pem;
  ssl_certificate_key /etc/letsencrypt/live/coin-desk/privkey.pem;

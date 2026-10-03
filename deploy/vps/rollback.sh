@@ -2,6 +2,7 @@
 # Code-only rollback. Data restoration is a separate verified procedure.
 set -euo pipefail
 root=/srv/services/coin-desk
+tools_dir=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)
 previous=${1:?Pass the previously verified release ID}
 [[ "$previous" =~ ^vps-[a-f0-9]{16}$ ]] || exit 2
 test -f "$root/releases/$previous/release-manifest.json"
@@ -22,7 +23,9 @@ text=open(sys.argv[1]).read();match=re.search(r'^COIN_DESK_PORT=(\d+)$',text,re.
 assert match and 1024<=int(match[1])<=65535;print(match[1])
 PY
 )
-python3 deploy/vps/route_port.py --port "$port"
+# Use the audited tool which launched this rollback, not the older release's
+# single-upstream implementation after cd into that release.
+flock -w 30 /srv/platform/nginx-edit.lock python3 "$tools_dir/route_port.py" --port "$port"
 # Do not restore/delete SQLite here. Existing schema must pass that release's migration checksum check.
 temporary="$root/.current-rollback"
 test ! -e "$temporary" && test ! -L "$temporary"
