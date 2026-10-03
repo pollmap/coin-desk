@@ -1,6 +1,6 @@
 # Coin Desk
 
-**0.21 VPS 운영 전환 완료, 후속 UX 수정은 원격 CI·배포 대기입니다.** 시장 홈 → 지표 상세, 기존 강아지, 일괄 시세 API와 중앙 SSE를 제공합니다. 2026-10-03 사용자 요청으로 48시간 점검·대기 조건은 폐지했습니다. [현재 릴리스](docs/RELEASE21.md) · [운영 전환 증거](docs/audit-21/live/README.md) · [후속 수정과 남은 항목](docs/audit-21/closeout/README.md).
+**0.21 VPS 운영과 후속 UX 수정의 원격 CI·배포를 완료했습니다.** 시장 홈 → 지표 상세, 기존 강아지, 일괄 시세 API와 중앙 SSE를 제공합니다. 2026-10-03 사용자 요청으로 48시간 점검·대기 조건은 폐지했습니다. [현재 릴리스](docs/RELEASE21.md) · [운영 전환 증거](docs/audit-21/live/README.md) · [후속 수정과 남은 항목](docs/audit-21/closeout/README.md).
 
 `node server/index.mjs`는 읽기 전용 API만 실행합니다. 자동 수집까지 검사할 때는 [실시간 실행 안내](DEPLOYMENT.md#로컬에서-수집까지-연결하기)의 `npm run start:live`를 사용합니다. 원천 네트워크와 이관 검증 DB를 먼저 확인하며 원본 캐시를 자동 수정하지 않습니다.
 
@@ -11,7 +11,7 @@
 
 [운영 사이트](https://coin-desk.pages.dev) · [경쟁 기능 비교표](docs/RELEASE15.md#기능-비교) · [데이터 정의](docs/DATA.md)
 
-**백엔드 VPS 운영:** Node·SQLite·독립 수집·백업으로 이전했으며 기존 Pages는 VPS의 읽기 API를 사용합니다. 운영 D1은 보존하고 Cloudflare의 중복 수집은 중지했습니다. 이번 세션의 네트워크 권한 차단으로 후속 UX 배포는 대기 상태입니다. [구조·배포·복구](DEPLOYMENT.md) · [이전 검증](docs/audit-vps/README.md)
+**백엔드 VPS 운영:** Node·SQLite·독립 수집·백업으로 이전했으며 기존 Pages는 VPS의 읽기 API를 사용합니다. 운영 D1은 보존하고 Cloudflare의 중복 수집은 중지했습니다. 현재 네트워크·SSH 권한으로 PR #41을 병합하고 후속 UX를 배포했습니다. [최신 배포 증거](docs/audit-21/closeout/deployment/README.md). [구조·배포·복구](DEPLOYMENT.md) · [이전 검증](docs/audit-vps/README.md)
 
 ## 새 사용 흐름
 

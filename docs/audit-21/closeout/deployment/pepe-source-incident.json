@@ -1,0 +1,43 @@
+{
+  "checkedAt": 1791012573.011801,
+  "upbit": [
+    {
+      "market": "KRW-PEPE",
+      "trade_price": 0.00576,
+      "trade_timestamp": 1791012311687,
+      "timestamp": 1791012572419
+    }
+  ],
+  "statusKeys": [
+    "now",
+    "assets",
+    "sources",
+    "history",
+    "rebuilding",
+    "health",
+    "automation",
+    "coverage",
+    "providerWatch"
+  ],
+  "pepe": [
+    {
+      "key": "quote:PEPE:upbit",
+      "last_attempt": 1791012545,
+      "last_success": 1791012545,
+      "data_as_of": 1791012311,
+      "error": null,
+      "failures": 0,
+      "next_attempt": 0,
+      "active": true,
+      "status": "delayed",
+      "collectorAgeSeconds": 28,
+      "dataAgeSeconds": 262,
+      "liveStale": false,
+      "expectedCadenceSeconds": 60,
+      "dataFreshnessLimitSeconds": 180,
+      "nextDueAt": 1791012605,
+      "retryAt": null,
+      "coverage": null
+    }
+  ]
+}

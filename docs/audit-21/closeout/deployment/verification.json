@@ -1,0 +1,79 @@
+{
+  "checkedAt": "2026-10-03T07:41:40.186534+00:00",
+  "codeCommit": "7a57d82e7e70eea0aac2961773c540078a5cd47d",
+  "pr": "https://github.com/pollmap/coin-desk/pull/41",
+  "prCI": {
+    "run": 37105595441,
+    "conclusion": "success"
+  },
+  "mainCI": {
+    "run": 37106277879,
+    "conclusion": "success"
+  },
+  "tests": {
+    "unit": 487,
+    "recovery": 2,
+    "nodeServer": 17,
+    "vpsPython": 7,
+    "browserPassed": 142,
+    "privateOptInSkipped": 2,
+    "browserRetries": 0,
+    "liveProductionTests": 2
+  },
+  "apiRelease": "vps-710041fe2a2d533d",
+  "archiveSha256": "d92bf7bda64eab33590bcae5152778e3bfd1868c10b5c171fdb79a3d9b19861d",
+  "pages": "https://4e883a0b.coin-desk.pages.dev",
+  "public": "https://coin-desk.pages.dev",
+  "publicAssetBytesMatchedPerOrigin": 154,
+  "deploymentsComplete": true,
+  "collectorsRestarted": false,
+  "migrationNeeded": false,
+  "waiting48hRequired": false,
+  "historicalErrorsPreserved": true,
+  "permissions": {
+    "networkVerified": true,
+    "sshVerified": true,
+    "githubVerified": true
+  },
+  "healthAtEnd": {
+    "ok": true,
+    "reasons": [],
+    "checkedAt": 1791012941,
+    "httpStatus": 200,
+    "sources": {
+      "active": 103,
+      "healthyActive": 103,
+      "pepe": [
+        {
+          "key": "quote:PEPE:upbit",
+          "last_attempt": 1791012904,
+          "last_success": 1791012904,
+          "data_as_of": 1791012849,
+          "error": null,
+          "failures": 0,
+          "next_attempt": 0,
+          "active": true,
+          "status": "ok",
+          "collectorAgeSeconds": 37,
+          "dataAgeSeconds": 92,
+          "liveStale": false,
+          "expectedCadenceSeconds": 60,
+          "dataFreshnessLimitSeconds": 180,
+          "nextDueAt": 1791012964,
+          "retryAt": null,
+          "coverage": null
+        }
+      ]
+    }
+  },
+  "naturalProgressVerified": true,
+  "lcpTargetMet": false,
+  "directVpsLcpP95Ms": 4920,
+  "remaining": [
+    "Direct VPS first-load LCP 2.5-second target not met",
+    "Full UTC-day VPS operations aggregate is separate and pending",
+    "Apple Safari/VoiceOver unavailable"
+  ],
+  "automationConfigurationChanged": false,
+  "automationNote": "View tool rendered an app card; no status metadata returned. No local coin-desk automation.toml exists. No pause or schedule claimed."
+}

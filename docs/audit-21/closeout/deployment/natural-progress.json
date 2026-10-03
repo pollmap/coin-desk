@@ -1,0 +1,168 @@
+{
+  "startedAt": 1791012640,
+  "durationSeconds": 300,
+  "directCollectionOrOverviewCalled": false,
+  "otherVisitorsAbsentGuaranteed": false,
+  "completedAt": 1791012941,
+  "quoteProgress": {
+    "quote:BTC:upbit": {
+      "before": [
+        1791012605,
+        1791012593
+      ],
+      "after": [
+        1791012904,
+        1791012899
+      ],
+      "advanced": true
+    },
+    "quote:BTC:binance": {
+      "before": [
+        1791012601,
+        1791012601
+      ],
+      "after": [
+        1791012901,
+        1791012901
+      ],
+      "advanced": true
+    },
+    "quote:DOGE:upbit": {
+      "before": [
+        1791012605,
+        1791012575
+      ],
+      "after": [
+        1791012904,
+        1791012900
+      ],
+      "advanced": true
+    },
+    "quote:DOGE:binance": {
+      "before": [
+        1791012601,
+        1791012600
+      ],
+      "after": [
+        1791012901,
+        1791012900
+      ],
+      "advanced": true
+    },
+    "quote:ETH:upbit": {
+      "before": [
+        1791012605,
+        1791012600
+      ],
+      "after": [
+        1791012904,
+        1791012894
+      ],
+      "advanced": true
+    },
+    "quote:ETH:binance": {
+      "before": [
+        1791012601,
+        1791012601
+      ],
+      "after": [
+        1791012901,
+        1791012901
+      ],
+      "advanced": true
+    }
+  },
+  "derivativeConfirmationsAdvanced": [
+    "derivatives:BTC:funding",
+    "derivatives:BTC:long_account_ratio",
+    "derivatives:BTC:open_interest",
+    "derivatives:DOGE:funding",
+    "derivatives:DOGE:long_account_ratio",
+    "derivatives:DOGE:open_interest",
+    "derivatives:ETH:funding",
+    "derivatives:ETH:long_account_ratio",
+    "derivatives:ETH:open_interest"
+  ],
+  "successfulLaneRuns": {
+    "analysis": 5,
+    "background": 5,
+    "quotes": 5,
+    "recent": 5
+  },
+  "coreNaturalProgressVerified": true,
+  "beforeHealth": {
+    "ok": false,
+    "reasons": [
+      {
+        "code": "SOURCE_DELAYED",
+        "key": "quote:PEPE:upbit",
+        "message": "수집 시각 또는 실제 데이터 시각이 허용 지연을 넘었습니다."
+      }
+    ],
+    "checkedAt": 1791012640,
+    "httpStatus": 503,
+    "sources": {
+      "active": 103,
+      "healthyActive": 102,
+      "pepe": [
+        {
+          "key": "quote:PEPE:upbit",
+          "last_attempt": 1791012605,
+          "last_success": 1791012605,
+          "data_as_of": 1791012311,
+          "error": null,
+          "failures": 0,
+          "next_attempt": 0,
+          "active": true,
+          "status": "delayed",
+          "collectorAgeSeconds": 35,
+          "dataAgeSeconds": 329,
+          "liveStale": true,
+          "expectedCadenceSeconds": 60,
+          "dataFreshnessLimitSeconds": 180,
+          "nextDueAt": 1791012665,
+          "retryAt": null,
+          "coverage": null
+        }
+      ]
+    }
+  },
+  "beforeBudgetAndCursor": [],
+  "afterHealth": {
+    "ok": true,
+    "reasons": [],
+    "checkedAt": 1791012941,
+    "httpStatus": 200,
+    "sources": {
+      "active": 103,
+      "healthyActive": 103,
+      "pepe": [
+        {
+          "key": "quote:PEPE:upbit",
+          "last_attempt": 1791012904,
+          "last_success": 1791012904,
+          "data_as_of": 1791012849,
+          "error": null,
+          "failures": 0,
+          "next_attempt": 0,
+          "active": true,
+          "status": "ok",
+          "collectorAgeSeconds": 37,
+          "dataAgeSeconds": 92,
+          "liveStale": false,
+          "expectedCadenceSeconds": 60,
+          "dataFreshnessLimitSeconds": 180,
+          "nextDueAt": 1791012964,
+          "retryAt": null,
+          "coverage": null
+        }
+      ]
+    }
+  },
+  "afterBudgetAndCursor": [],
+  "missingBudgetOrCursorMeansLoss": false,
+  "quoteTimestampArrayColumns": [
+    "last_success",
+    "data_as_of"
+  ]
+}
