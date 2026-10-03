@@ -533,8 +533,22 @@ export const AnalysisChart = memo(function AnalysisChart({
           {asset} · {primary?.title ?? unit}
         </span>
         <span>
-          {timestamp(time)} <b>{display(priceValue)}</b>
+          <span className="analysis-reading-date">
+            {selectedTime === null ? '최근 관측' : '선택한 날짜'} · {timestamp(time)}
+          </span>{' '}
+          <b>{display(priceValue)}</b>
         </span>
+        {selectedTime !== null && (
+          <button
+            className="analysis-reading-reset"
+            onClick={() => {
+              explore(null);
+              host.current?.focus({ preventScroll: true });
+            }}
+          >
+            최근값 보기
+          </button>
+        )}
         {lines.map((l, i) =>
           l.id.startsWith('band:') ? null : (
             <span key={l.id} title={l.source}>

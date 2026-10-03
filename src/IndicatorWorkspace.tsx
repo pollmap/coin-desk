@@ -46,6 +46,7 @@ import './analysis-workspace.css';
 import './analysis-library.css';
 import './indicator-workspace.css';
 const AnalysisLab = lazy(() => import('./AnalysisLab').then((m) => ({ default: m.AnalysisLab })));
+const IndicatorMethod = lazy(() => import('./IndicatorMethod'));
 const RelatedLibrary = lazy(() =>
   import('./ResearchLibrary').then((m) => ({ default: m.RelatedLibrary })),
 );
@@ -120,6 +121,7 @@ export function IndicatorWorkspace() {
     [picker, setPicker] = useState(false),
     [related, setRelated] = useState(params.get('related') === '1');
   const [readingDate, setReadingDate] = useState<number | null>(null);
+  const [explanationOpen, setExplanationOpen] = useState(false);
   const sources = indicatorSources(asset, id);
   const [revision, setRevision] = useState(0),
     [annotations, setAnnotations] = useState<Annotation[]>([]);
@@ -764,7 +766,10 @@ export function IndicatorWorkspace() {
                   : '일별'}
             </span>
             {response.data?.meta.dataAsOf && (
-              <span>자료 기준 {dateLabel(response.data.meta.dataAsOf)}</span>
+              <span>원천 기준 {dateLabel(response.data.meta.dataAsOf)}</span>
+            )}
+            {chartPoints.at(-1) && chartPoints.at(-1)!.time !== response.data?.meta.dataAsOf && (
+              <span>차트 최근 관측 {dateLabel(chartPoints.at(-1)!.time)}</span>
             )}
           </div>
           {more && (
@@ -877,7 +882,10 @@ export function IndicatorWorkspace() {
               loading={loading}
             />
           )}
-          <details className="indicator-explanation">
+          <details
+            className="indicator-explanation"
+            onToggle={(e) => setExplanationOpen(e.currentTarget.open)}
+          >
             <summary>읽는 법 · 계산식 · 데이터 범위</summary>
             <div>
               <h2>무엇을 보는가</h2>
@@ -890,8 +898,13 @@ export function IndicatorWorkspace() {
                     : '확정된 관측의 추세와 단위를 함께 확인하세요.')}
               </p>
               <h2>공식과 예시</h2>
-              <p>{d?.formula}</p>
-              {article && <p>{article.formula}</p>}
+              {explanationOpen && article ? (
+                <Suspense fallback={<p role="status">계산 예시를 불러오는 중…</p>}>
+                  <IndicatorMethod article={article} />
+                </Suspense>
+              ) : (
+                <p>{d?.formula}</p>
+              )}
               <h2>원천과 한계</h2>
               <p>
                 {article?.caution ??
@@ -982,7 +995,7 @@ export function IndicatorWorkspace() {
         aria-label="지표 선택"
       >
         <button onClick={() => setPicker(false)}>닫기</button>
-        <IndicatorNavigation onNavigate={() => setPicker(false)} />
+        {picker && <IndicatorNavigation key={asset + id} onNavigate={() => setPicker(false)} />}
       </dialog>
     </div>
   );

@@ -3,7 +3,6 @@ import { Link, useLocation } from 'react-router-dom';
 import { ASSETS } from '../shared/catalog';
 import {
   INDICATOR_GROUPS,
-  indicatorFamily,
   navigationIndicators,
   indicatorUrl,
   resolveIndicator,
@@ -26,6 +25,7 @@ export function IndicatorNavigation({ onNavigate }: { onNavigate: () => void }) 
       d.assets.includes(asset) &&
       (d.title + ' ' + d.id).toLowerCase().includes(query.trim().toLowerCase()),
   );
+  const visibleMatches = matches.filter((d) => query.trim() || d.group === group);
   return (
     <div className="indicator-navigation">
       <label className="nav-search">
@@ -53,8 +53,8 @@ export function IndicatorNavigation({ onNavigate }: { onNavigate: () => void }) 
           </button>
         ))}
       </div>
-      <nav aria-label="지표 목록" onClick={onNavigate}>
-        {INDICATOR_GROUPS.filter((g) => query || g === group).map((group) => (
+      <nav aria-label="지표 목록">
+        {INDICATOR_GROUPS.filter((g) => visibleMatches.some((d) => d.group === g)).map((group) => (
           <div key={group} className="indicator-group">
             <span className="sidebar-label">{group}</span>
             {matches
@@ -63,6 +63,7 @@ export function IndicatorNavigation({ onNavigate }: { onNavigate: () => void }) 
                 <Link
                   key={d.id}
                   to={indicatorUrl(asset, d.id, p)}
+                  onClick={onNavigate}
                   className={active.id === d.id ? 'active' : ''}
                   aria-current={active.id === d.id ? 'page' : undefined}
                 >
@@ -72,7 +73,23 @@ export function IndicatorNavigation({ onNavigate }: { onNavigate: () => void }) 
               ))}
           </div>
         ))}
-        {!matches.length && <p role="status">이 코인에 지원되는 검색 결과가 없습니다.</p>}
+        {!visibleMatches.length && (
+          <div className="indicator-no-results" role="status">
+            <p>
+              {query.trim()
+                ? `${asset}에서 “${query.trim()}”에 맞는 지표가 없습니다.`
+                : `${asset}의 ${group} 지표는 현재 확보한 원천이 없습니다.`}
+            </p>
+            <button
+              onClick={() => {
+                setQuery('');
+                setGroup('기술·성과');
+              }}
+            >
+              가격으로 계산하는 지표 보기
+            </button>
+          </div>
+        )}
       </nav>
       <nav className="nav-utilities" onClick={onNavigate}>
         <Link to={'/learn?' + p}>분석 사전</Link>
