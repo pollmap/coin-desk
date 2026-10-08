@@ -1,0 +1,18 @@
+{
+  "collectedAt": 1791489459,
+  "observationSeconds": 180,
+  "shadowOnly": false,
+  "progress": {
+    "successfulLaneRuns": {
+      "quotes": 3,
+      "background": 3,
+      "recent": 3,
+      "analysis": 3
+    },
+    "sixCoreQuotesAdvanced": true,
+    "derivativeConfirmationsAdvanced": 4,
+    "directCollectionOrOverviewCalled": false,
+    "otherVisitorsAbsentGuaranteed": false
+  },
+  "naturalProgressVerified": false
+}

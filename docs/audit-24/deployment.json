@@ -1,0 +1,43 @@
+{
+  "checkedAt": "2026-10-08T20:37:56.645040+00:00",
+  "version": "0.24.0",
+  "pullRequests": [
+    49,
+    50
+  ],
+  "codeMain": "879382d1fba6b01b4454d2751fe5a9890ca25867",
+  "sourceFilesMatchMergedHead": 312,
+  "archiveSha256": "b0c005060fa516cdd5c8f0f838826ceb3f684fcd6b10d54088c4e2dc22412d01",
+  "initialRelease": "vps-bf09223d03fa1c0e",
+  "finalRelease": "vps-f76588783920dcb4",
+  "pages": "https://01357c55.coin-desk.pages.dev",
+  "initialPages": "https://e08e807f.coin-desk.pages.dev",
+  "publicUrls": [
+    "https://coin-desk.pages.dev",
+    "https://coin-desk.62.171.141.206.sslip.io"
+  ],
+  "changedServices": [
+    "VPS api/static",
+    "Cloudflare Pages web"
+  ],
+  "unchanged": [
+    "collector images and container identities",
+    "quote hub",
+    "backup",
+    "SQLite data and schema",
+    "Nginx config",
+    "Chrome extension source"
+  ],
+  "rollback": {
+    "apiPrevious": "vps-bf09223d03fa1c0e",
+    "preMobileApi": "vps-6270048e66efc7fa",
+    "pagesPrevious": "https://e08e807f.coin-desk.pages.dev",
+    "oldHashedAssetsRetained": true,
+    "databaseRestorePerformed": false
+  },
+  "deploymentOrder": "Each source change passed full PR CI, merged main, archive source matched merged HEAD, then deployment. Additional automatic main CI ran after merge.",
+  "deploymentWarnings": [
+    "Wrangler dirty-worktree warning concerns audit documents and preserved untracked user document; allowlisted source archive was independently matched to main",
+    "One retained-assets shell upload had Windows CRLF and stopped before retention; line endings normalized, rerun succeeded. No product configuration changed."
+  ]
+}

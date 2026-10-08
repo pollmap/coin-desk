@@ -1,0 +1,196 @@
+{
+  "collectedAt": 1791489782,
+  "observationSeconds": 600,
+  "shadowOnly": false,
+  "progress": {
+    "successfulLaneRuns": {
+      "quotes": 9,
+      "background": 10,
+      "recent": 10,
+      "analysis": 10
+    },
+    "sixCoreQuotesAdvanced": true,
+    "derivativeConfirmationsAdvanced": 9,
+    "directCollectionOrOverviewCalled": false,
+    "otherVisitorsAbsentGuaranteed": false
+  },
+  "naturalProgressVerified": true,
+  "apiInspectionBeganAtUTC": "2026-10-08T20:03:02+00:00",
+  "quoteEvidence": [
+    {
+      "key": "quote:BTC:binance",
+      "before": {
+        "lastSuccess": 1791489781,
+        "dataAsOf": 1791489781
+      },
+      "after": {
+        "lastSuccess": 1791490381,
+        "dataAsOf": 1791490381
+      }
+    },
+    {
+      "key": "quote:BTC:upbit",
+      "before": {
+        "lastSuccess": 1791489725,
+        "dataAsOf": 1791489721
+      },
+      "after": {
+        "lastSuccess": 1791490325,
+        "dataAsOf": 1791490320
+      }
+    },
+    {
+      "key": "quote:DOGE:binance",
+      "before": {
+        "lastSuccess": 1791489781,
+        "dataAsOf": 1791489780
+      },
+      "after": {
+        "lastSuccess": 1791490381,
+        "dataAsOf": 1791490380
+      }
+    },
+    {
+      "key": "quote:DOGE:upbit",
+      "before": {
+        "lastSuccess": 1791489725,
+        "dataAsOf": 1791489721
+      },
+      "after": {
+        "lastSuccess": 1791490325,
+        "dataAsOf": 1791490320
+      }
+    },
+    {
+      "key": "quote:ETH:binance",
+      "before": {
+        "lastSuccess": 1791489781,
+        "dataAsOf": 1791489781
+      },
+      "after": {
+        "lastSuccess": 1791490381,
+        "dataAsOf": 1791490381
+      }
+    },
+    {
+      "key": "quote:ETH:upbit",
+      "before": {
+        "lastSuccess": 1791489725,
+        "dataAsOf": 1791489721
+      },
+      "after": {
+        "lastSuccess": 1791490325,
+        "dataAsOf": 1791490320
+      }
+    }
+  ],
+  "derivativeEvidence": [
+    {
+      "key": "derivatives:BTC:funding",
+      "before": [
+        1791489600,
+        1791475200
+      ],
+      "after": [
+        1791490200,
+        1791475200
+      ]
+    },
+    {
+      "key": "derivatives:BTC:long_account_ratio",
+      "before": [
+        1791489600,
+        1791486000
+      ],
+      "after": [
+        1791490200,
+        1791489600
+      ]
+    },
+    {
+      "key": "derivatives:BTC:open_interest",
+      "before": [
+        1791489600,
+        1791486000
+      ],
+      "after": [
+        1791490200,
+        1791489600
+      ]
+    },
+    {
+      "key": "derivatives:DOGE:funding",
+      "before": [
+        1791489660,
+        1791475200
+      ],
+      "after": [
+        1791490260,
+        1791475200
+      ]
+    },
+    {
+      "key": "derivatives:DOGE:long_account_ratio",
+      "before": [
+        1791489660,
+        1791489600
+      ],
+      "after": [
+        1791490260,
+        1791489600
+      ]
+    },
+    {
+      "key": "derivatives:DOGE:open_interest",
+      "before": [
+        1791489660,
+        1791489600
+      ],
+      "after": [
+        1791490260,
+        1791489600
+      ]
+    },
+    {
+      "key": "derivatives:ETH:funding",
+      "before": [
+        1791489720,
+        1791475200
+      ],
+      "after": [
+        1791490320,
+        1791475200
+      ]
+    },
+    {
+      "key": "derivatives:ETH:long_account_ratio",
+      "before": [
+        1791489720,
+        1791489600
+      ],
+      "after": [
+        1791490320,
+        1791489600
+      ]
+    },
+    {
+      "key": "derivatives:ETH:open_interest",
+      "before": [
+        1791489720,
+        1791489600
+      ],
+      "after": [
+        1791490320,
+        1791489600
+      ]
+    }
+  ],
+  "budgetAndCursorBefore": [],
+  "budgetAndCursorAfter": [],
+  "readApiCount": 29,
+  "limitations": [
+    "Ten-minute sample only, not uninterrupted day proof",
+    "Other visitor activity cannot be excluded",
+    "Collectors unchanged by this UI release"
+  ]
+}

@@ -1,6 +1,6 @@
 {
   "version": "0.24.0",
-  "phase": "local_verified_remote_pending",
+  "phase": "deployed_verified",
   "local": {
     "types": "passed",
     "unitTests": 513,
@@ -25,16 +25,91 @@
     },
     "build": "passed",
     "docs": "passed",
-    "brand": "passed"
+    "brand": "passed",
+    "finalMobileDensity": {
+      "passed": 6,
+      "retries": 0,
+      "widths": [
+        320,
+        390,
+        430
+      ],
+      "browsers": [
+        "Chromium",
+        "WebKit"
+      ]
+    }
   },
-  "remaining": [
-    "remote CI and main merge",
-    "Pages and VPS API/static deployment",
-    "public actual-data UX verification"
-  ],
+  "remaining": [],
   "externalUnverified": [
     "Apple Safari and VoiceOver hardware",
     "five-human usability study"
   ],
-  "waiting48HoursRequired": false
+  "waiting48HoursRequired": false,
+  "checkedAt": "2026-10-08T20:37:56.645040+00:00",
+  "remote": {
+    "pr49": {
+      "run": 37833411525,
+      "conclusion": "success"
+    },
+    "pr50": {
+      "run": 37836953717,
+      "conclusion": "success"
+    },
+    "finalPrTests": {
+      "unit": 513,
+      "unitFiles": 59,
+      "recovery": 2,
+      "nodeServer": 18,
+      "pythonVps": 17,
+      "browserPassed": 180,
+      "privateOptInSkipped": 2,
+      "browserRetries": 0,
+      "storybookBuild": true,
+      "dockerSmoke": true
+    },
+    "initialMain": {
+      "run": 37835211122,
+      "conclusion": "cancelled",
+      "reason": "20-minute job timeout after 1050-second dependency installation",
+      "evidence": "ci-initial-main-timeout.json"
+    },
+    "finalMain": {
+      "run": 37838889113,
+      "conclusion": "success",
+      "headSha": "879382d1fba6b01b4454d2751fe5a9890ca25867",
+      "status": "completed"
+    }
+  },
+  "deployment": {
+    "pages": "https://01357c55.coin-desk.pages.dev",
+    "public": "https://coin-desk.pages.dev",
+    "vps": "https://coin-desk.62.171.141.206.sslip.io",
+    "release": "vps-f76588783920dcb4",
+    "codeMain": "879382d1fba6b01b4454d2751fe5a9890ca25867",
+    "publicFileCountPerOrigin": 83,
+    "publicFilesMatchBuild": true,
+    "collectorsChanged": false,
+    "databaseChanged": false
+  },
+  "actualData": {
+    "healthHttp": 200,
+    "activeSourcesOk": 103,
+    "activeSourcesTotal": 103,
+    "checkedAt": "2026-10-08T20:25:41.430626+00:00",
+    "mvrvSourceMatches": 5,
+    "naturalObservationSeconds": 600,
+    "naturalVerified": true
+  },
+  "ux": {
+    "agentControlledProductionFlowVerified": true,
+    "physicalPhoneTest": false,
+    "humanStudy": false,
+    "appleHardware": false,
+    "screenshots": [
+      "screenshots/mobile-mvrv.png",
+      "screenshots/mobile-market.png",
+      "screenshots/desktop-mvrv.png"
+    ]
+  }
 }

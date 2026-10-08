@@ -1,0 +1,61 @@
+{
+  "method": "Agent-controlled UI in IAB and actual Windows Chrome; not a human usability study",
+  "origins": [
+    "https://coin-desk.pages.dev",
+    "https://coin-desk.62.171.141.206.sslip.io"
+  ],
+  "mobile": {
+    "viewport": [
+      390,
+      844
+    ],
+    "bareHome": "BTC MVRV, 5y, USD reference",
+    "chartTop": 280,
+    "chartHeight": 330,
+    "fiveYearRange": [
+      "2021-10-07",
+      "2026-10-07"
+    ],
+    "savedAndReopenedOnBothOrigins": {
+      "asset": "BTC",
+      "metric": "net:mvrv",
+      "quoteMarket": "upbit",
+      "quoteCurrency": "KRW",
+      "indicatorSource": "reference",
+      "pinnedObservation": "2026-09-01",
+      "value": "1.46 배",
+      "visibleRange": [
+        "2026-07-10",
+        "2026-10-07"
+      ]
+    },
+    "quickRainbowSwitch": true,
+    "marketToOndoRsi": true,
+    "marketWidth": 343,
+    "marketRowHeightBeforeFinalPatch": 165,
+    "marketRowHeightFinalCandidate": 117,
+    "marketRowHeightFinalProduction": 117,
+    "ownTemporarySavedItemsRemoved": 2
+  },
+  "desktop": {
+    "viewport": [
+      1280,
+      800
+    ],
+    "chartTop": 220,
+    "chartHeight": 440,
+    "chartWidth": 1209
+  },
+  "actualWindowsChrome": {
+    "MVRV": true,
+    "rainbow": true,
+    "existingDarkThemePreserved": true
+  },
+  "limits": [
+    "No Apple Safari/VoiceOver hardware",
+    "No five-human usability study",
+    "Mobile viewport emulation is not a physical phone test",
+    "Pinned-date reset controls add one row; 280px refers to first entry"
+  ],
+  "productionBuildCheckedAt": "2026-10-08T20:37:56.645040+00:00"
+}

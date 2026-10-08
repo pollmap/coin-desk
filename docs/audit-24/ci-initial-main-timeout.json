@@ -1,0 +1,22 @@
+{
+  "run": 37835211122,
+  "conclusion": "cancelled",
+  "jobStartedAt": "2026-10-08T19:52:37Z",
+  "jobCompletedAt": "2026-10-08T20:12:53Z",
+  "annotation": "The job has exceeded the maximum execution time of 20m0s",
+  "browserDependencyInstall": {
+    "startedAt": "2026-10-08T19:53:14Z",
+    "completedAt": "2026-10-08T20:10:44Z",
+    "durationSeconds": 1050,
+    "result": "completed"
+  },
+  "browserTests": "started but interrupted by job timeout; not claimed passed",
+  "rootCauseLimit": "Slow package dependency installation is visible in logs; the underlying infrastructure cause is not established",
+  "pr49FinalFullCI": {
+    "run": 37833411525,
+    "conclusion": "success",
+    "passedBrowserTests": 180,
+    "skippedPrivateTests": 2,
+    "retries": 0
+  }
+}
