@@ -914,6 +914,7 @@ body {
   }
   .market-table tbody :is(td, th) {
     padding: 0;
+    height: auto;
     border: 0;
     min-width: 0;
   }

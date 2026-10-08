@@ -63,6 +63,9 @@ for (const width of [320, 390, 430])
     }
     await page.getByRole('link', { name: '시장', exact: true }).click();
     await expect(page.locator('.market-table tbody tr')).toHaveCount(8);
+    // Desktop cell heights must not double the mobile two-line row height.
+    for (const row of await page.locator('.market-table tbody tr').all())
+      expect((await row.boundingBox())!.height).toBeLessThanOrEqual(130);
     const analysis = page.getByRole('link', { name: '비트코인 MVRV 분석', exact: true });
     const entry = (await analysis.boundingBox())!;
     expect(entry.x).toBeGreaterThanOrEqual(0);
