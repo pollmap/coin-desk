@@ -55,6 +55,7 @@ const facts: Record<
     network?: string;
     networkUrl?: string;
     project?: string;
+    projectDescription?: string;
   }
 > = {
   BTC: {
@@ -92,6 +93,7 @@ const facts: Record<
     provider: 'Chainlink',
     note: '오라클 서비스와 네트워크 보안에 사용하는 Chainlink 토큰입니다.',
     project: 'Chainlink',
+    projectDescription: '블록체인과 외부 데이터를 연결하는 오라클 프로젝트입니다.',
     network: 'Ethereum',
     networkUrl: 'https://docs.chain.link/resources/link-token-contracts',
   },
@@ -100,12 +102,14 @@ const facts: Record<
     provider: 'Ondo Foundation',
     note: 'Ondo DAO의 거버넌스 토큰입니다. 국채나 이자 수익청구권이 아닙니다.',
     project: 'Ondo DAO',
+    projectDescription: 'ONDO 보유자가 거버넌스에 참여하는 DAO입니다.',
   },
   PEPE: {
     url: 'https://www.pepe.vip/',
     provider: 'Pepe',
     note: '프로젝트가 밈 토큰으로 설명하는 Ethereum 토큰입니다.',
     project: 'Pepe',
+    projectDescription: 'PEPE 밈 토큰의 프로젝트입니다.',
     network: 'Ethereum',
   },
 };
@@ -181,7 +185,7 @@ export function assetKnowledge(asset: Asset): KnowledgeResponse {
         id: 'project:' + asset,
         kind: 'project',
         label: fact.project,
-        description: fact.note,
+        description: fact.projectDescription!,
         evidence: proof,
       },
       '프로젝트의 토큰',
@@ -194,7 +198,7 @@ export function assetKnowledge(asset: Asset): KnowledgeResponse {
         label: fact.network,
         description: ['LINK', 'PEPE'].includes(asset)
           ? '확인한 발행 네트워크입니다. 다른 체인의 배포 전체 목록은 아닙니다.'
-          : fact.note,
+          : `${asset}를 네이티브 자산으로 사용하는 네트워크입니다.`,
         evidence: evidence(fact.networkUrl ?? fact.url, fact.provider, fact.note),
       },
       ['LINK', 'PEPE'].includes(asset) ? '발행 네트워크' : '네트워크의 자산',
