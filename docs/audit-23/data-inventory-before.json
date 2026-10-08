@@ -508,24 +508,24 @@
       "source": "Bybit USDT perpetual",
       "metric": "open_interest",
       "unit": "BTC",
-      "cadence": "5m",
+      "cadence": "1h",
       "first": 1787576400,
       "last": 1791471600,
       "observations": 1083,
-      "expectedStepSeconds": 300,
-      "missingInternalSlots": 11902
+      "expectedStepSeconds": 3600,
+      "missingInternalSlots": 0
     },
     {
       "asset": "BTC",
       "source": "Bybit USDT perpetual",
       "metric": "long_account_ratio",
       "unit": "%",
-      "cadence": "5m",
+      "cadence": "1h",
       "first": 1787637600,
       "last": 1791471600,
       "observations": 1066,
-      "expectedStepSeconds": 300,
-      "missingInternalSlots": 11715
+      "expectedStepSeconds": 3600,
+      "missingInternalSlots": 0
     },
     {
       "asset": "BTC",
@@ -839,24 +839,24 @@
       "source": "Bybit USDT perpetual",
       "metric": "open_interest",
       "unit": "DOGE",
-      "cadence": "5m",
+      "cadence": "1h",
       "first": 1787580000,
       "last": 1791471600,
       "observations": 1082,
-      "expectedStepSeconds": 300,
-      "missingInternalSlots": 11891
+      "expectedStepSeconds": 3600,
+      "missingInternalSlots": 0
     },
     {
       "asset": "DOGE",
       "source": "Bybit USDT perpetual",
       "metric": "long_account_ratio",
       "unit": "%",
-      "cadence": "5m",
+      "cadence": "1h",
       "first": 1787637600,
       "last": 1791471600,
       "observations": 1066,
-      "expectedStepSeconds": 300,
-      "missingInternalSlots": 11715
+      "expectedStepSeconds": 3600,
+      "missingInternalSlots": 0
     },
     {
       "asset": "DOGE",
@@ -1215,24 +1215,24 @@
       "source": "Bybit USDT perpetual",
       "metric": "open_interest",
       "unit": "ETH",
-      "cadence": "5m",
+      "cadence": "1h",
       "first": 1787576400,
       "last": 1791471600,
       "observations": 1083,
-      "expectedStepSeconds": 300,
-      "missingInternalSlots": 11902
+      "expectedStepSeconds": 3600,
+      "missingInternalSlots": 0
     },
     {
       "asset": "ETH",
       "source": "Bybit USDT perpetual",
       "metric": "long_account_ratio",
       "unit": "%",
-      "cadence": "5m",
+      "cadence": "1h",
       "first": 1787637600,
       "last": 1791471600,
       "observations": 1066,
-      "expectedStepSeconds": 300,
-      "missingInternalSlots": 11715
+      "expectedStepSeconds": 3600,
+      "missingInternalSlots": 0
     },
     {
       "asset": "ETH",
@@ -1343,24 +1343,24 @@
       "source": "Bybit USDT perpetual",
       "metric": "open_interest",
       "unit": "SOL",
-      "cadence": "5m",
+      "cadence": "1h",
       "first": 1787652000,
       "last": 1791471600,
       "observations": 1055,
-      "expectedStepSeconds": 300,
-      "missingInternalSlots": 11678
+      "expectedStepSeconds": 3600,
+      "missingInternalSlots": 7
     },
     {
       "asset": "SOL",
       "source": "Bybit USDT perpetual",
       "metric": "long_account_ratio",
       "unit": "%",
-      "cadence": "5m",
+      "cadence": "1h",
       "first": 1787652000,
       "last": 1791471600,
       "observations": 1055,
-      "expectedStepSeconds": 300,
-      "missingInternalSlots": 11678
+      "expectedStepSeconds": 3600,
+      "missingInternalSlots": 7
     },
     {
       "asset": "SOL",
@@ -1629,24 +1629,24 @@
       "source": "Bybit USDT perpetual",
       "metric": "open_interest",
       "unit": "XRP",
-      "cadence": "5m",
+      "cadence": "1h",
       "first": 1787716800,
       "last": 1791471600,
       "observations": 1037,
-      "expectedStepSeconds": 300,
-      "missingInternalSlots": 11480
+      "expectedStepSeconds": 3600,
+      "missingInternalSlots": 7
     },
     {
       "asset": "XRP",
       "source": "Bybit USDT perpetual",
       "metric": "long_account_ratio",
       "unit": "%",
-      "cadence": "5m",
+      "cadence": "1h",
       "first": 1787709600,
       "last": 1791468000,
       "observations": 1039,
-      "expectedStepSeconds": 300,
-      "missingInternalSlots": 11490
+      "expectedStepSeconds": 3600,
+      "missingInternalSlots": 6
     },
     {
       "asset": "XRP",
@@ -1900,24 +1900,24 @@
       "source": "Bybit USDT perpetual",
       "metric": "open_interest",
       "unit": "LINK",
-      "cadence": "5m",
+      "cadence": "1h",
       "first": 1787709600,
       "last": 1791468000,
       "observations": 1039,
-      "expectedStepSeconds": 300,
-      "missingInternalSlots": 11490
+      "expectedStepSeconds": 3600,
+      "missingInternalSlots": 6
     },
     {
       "asset": "LINK",
       "source": "Bybit USDT perpetual",
       "metric": "long_account_ratio",
       "unit": "%",
-      "cadence": "5m",
+      "cadence": "1h",
       "first": 1787709600,
       "last": 1791468000,
       "observations": 1039,
-      "expectedStepSeconds": 300,
-      "missingInternalSlots": 11490
+      "expectedStepSeconds": 3600,
+      "missingInternalSlots": 6
     },
     {
       "asset": "LINK",
@@ -2028,24 +2028,24 @@
       "source": "Bybit USDT perpetual",
       "metric": "open_interest",
       "unit": "ONDO",
-      "cadence": "5m",
+      "cadence": "1h",
       "first": 1787713200,
       "last": 1791471600,
       "observations": 1038,
-      "expectedStepSeconds": 300,
-      "missingInternalSlots": 11491
+      "expectedStepSeconds": 3600,
+      "missingInternalSlots": 7
     },
     {
       "asset": "ONDO",
       "source": "Bybit USDT perpetual",
       "metric": "long_account_ratio",
       "unit": "%",
-      "cadence": "5m",
+      "cadence": "1h",
       "first": 1787713200,
       "last": 1791471600,
       "observations": 1038,
-      "expectedStepSeconds": 300,
-      "missingInternalSlots": 11491
+      "expectedStepSeconds": 3600,
+      "missingInternalSlots": 7
     },
     {
       "asset": "ONDO",
@@ -2156,24 +2156,24 @@
       "source": "Bybit USDT perpetual",
       "metric": "open_interest",
       "unit": "PEPE (PEPE normalized from 1000PEPE)",
-      "cadence": "5m",
+      "cadence": "1h",
       "first": 1787713200,
       "last": 1791471600,
       "observations": 1038,
-      "expectedStepSeconds": 300,
-      "missingInternalSlots": 11491
+      "expectedStepSeconds": 3600,
+      "missingInternalSlots": 7
     },
     {
       "asset": "PEPE",
       "source": "Bybit USDT perpetual",
       "metric": "long_account_ratio",
       "unit": "%",
-      "cadence": "5m",
+      "cadence": "1h",
       "first": 1787713200,
       "last": 1791471600,
       "observations": 1038,
-      "expectedStepSeconds": 300,
-      "missingInternalSlots": 11491
+      "expectedStepSeconds": 3600,
+      "missingInternalSlots": 7
     },
     {
       "asset": "PEPE",

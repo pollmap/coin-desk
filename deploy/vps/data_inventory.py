@@ -54,8 +54,8 @@ def inventory(database, base):
             times=[r['time'] for r in query('SELECT time FROM derivative_series WHERE asset=? AND metric=?',(asset,metric))]
             unit='%' if metric=='funding' else '%' if metric.startswith('long_account_ratio') else asset+' (PEPE normalized from 1000PEPE)' if asset=='PEPE' else asset
             rows.append(dict(asset=asset,source='Bybit USDT perpetual',metric=metric,unit=unit,
-                             cadence='provider funding interval' if metric=='funding' else 'daily' if metric.endswith('_daily') else '5m',
-                             **extent(times,None if metric=='funding' else 86400 if metric.endswith('_daily') else 300)))
+                             cadence='provider funding interval' if metric=='funding' else 'daily' if metric.endswith('_daily') else '1h',
+                             **extent(times,None if metric=='funding' else 86400 if metric.endswith('_daily') else 3600)))
     ingestion=[]
     for r in query('SELECT key,last_attempt,last_success,data_as_of,failures,next_attempt,error FROM ingestion ORDER BY key'):
         # The error text can contain an upstream URL. Publish only absence/presence.
