@@ -605,7 +605,16 @@ export const AnalysisChart = memo(function AnalysisChart({
                 : '미리 보기'}{' '}
             · {timestamp(time)}
           </span>{' '}
-          <b>{display(priceValue)}</b>
+          <b className="analysis-reading-value">
+            {primary || !['USD', 'USDT', 'KRW'].includes(unit) ? (
+              <>
+                <span>{metricNumber(priceValue)}</span>{' '}
+                <small className="analysis-primary-unit">{unit}</small>
+              </>
+            ) : (
+              display(priceValue)
+            )}
+          </b>
         </span>
         {pinned && selectedTime !== null && (
           <button
