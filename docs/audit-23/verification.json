@@ -1,0 +1,51 @@
+{
+  "release": "0.23.0",
+  "at": "2026-10-08T16:02:01.513348+00:00",
+  "state": "local-fixes-verified-remote-ci-pending",
+  "unit": {
+    "files": 59,
+    "passed": 511
+  },
+  "server": {
+    "nodePassed": 18,
+    "pythonPassed": 17
+  },
+  "recoveryPassed": 2,
+  "build": true,
+  "storybookBuild": true,
+  "browser": {
+    "fullRun": {
+      "passed": 161,
+      "failed": 3,
+      "skipped": 2,
+      "retries": 0
+    },
+    "remainingFixChecks": {
+      "relationshipBothThemesAndReducedMotion": 12,
+      "reflowBothThemes": 12,
+      "guideSwitchRepeated": 10,
+      "failed": 0
+    },
+    "fullFinalGate": "remote CI pending"
+  },
+  "dependencies": {
+    "auditVulnerabilities": 0,
+    "patches": [
+      "source-map-js 1.2.2",
+      "miniflare sharp 0.35.5",
+      "miniflare undici 7.29.1"
+    ],
+    "runtimeDependencyVulnerabilities": 0
+  },
+  "data": {
+    "sourceInventoryRows": 166,
+    "networkCoverageIndexesMatched": 70,
+    "mvrvSameDateAssets": 5
+  },
+  "deployment": "pending",
+  "externalUnverified": [
+    "Apple Safari and VoiceOver hardware unavailable",
+    "five human usability participants not recruited"
+  ],
+  "observation48hRequired": false
+}

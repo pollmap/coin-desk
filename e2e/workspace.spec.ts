@@ -282,7 +282,7 @@ for (const metric of ['view:price', 'view:rainbow', 'view:btc_rainbow', 'net:mvr
       last = Number(await surface.getAttribute('data-visible-to')),
       target = first + 30 * 86400,
       date = (t: number) => new Date(t * 1000).toISOString().slice(0, 10);
-    const nav = page.getByRole('group', { name: '차트 날짜 탐색' });
+    const nav = page;
     await nav.getByRole('button', { name: '날짜로 이동', exact: true }).click();
     const dialog = page.getByRole('dialog', { name: '차트 날짜 탐색', exact: true });
     await dialog.getByRole('button', { name: '기간 선택', exact: true }).click();
@@ -303,19 +303,22 @@ for (const metric of ['view:price', 'view:rainbow', 'view:btc_rainbow', 'net:mvr
     await page.goto(shared);
     await expect(surface).toHaveAttribute('data-visible-from', String(target));
     await expect(surface).toHaveAttribute('data-visible-to', String(target + 30 * 86400));
-    await page.getByRole('button', { name: '작업공간 저장·불러오기' }).click();
+    await page.getByRole('button', { name: '분석 저장' }).click();
     await page.getByLabel('작업공간 이름', { exact: true }).fill('구간 보존');
     await page.getByRole('button', { name: '현재 구성 저장', exact: true }).click();
     await page.getByRole('link', { name: /구간 보존/ }).click();
     await expect(surface).toHaveAttribute('data-visible-from', String(target));
+    await page.getByRole('button', { name: '구간·확대', exact: true }).click();
     await nav.getByRole('button', { name: '전체 보기', exact: true }).click();
+    await page.keyboard.press('Escape');
     await expect(surface).toHaveAttribute('data-visible-to', String(last));
     await surface.focus();
     await page.keyboard.press('Home');
     await page.keyboard.press('Escape');
     await nav.getByRole('button', { name: '날짜로 이동', exact: true }).click();
     await page.keyboard.press('Escape');
-    await expect(nav.getByRole('button', { name: '날짜로 이동', exact: true })).toBeFocused();
+    await expect(dialog).not.toBeVisible();
+    await expect(nav.locator('.date-jump')).toBeFocused();
   });
 
 test('source selection stays separate and automatic refresh preserves the canvas and chosen range', async ({
@@ -341,7 +344,7 @@ test('source selection stays separate and automatic refresh preserves the canvas
   const canvas = await surface.locator('canvas').first().elementHandle();
   const first = Number(await surface.getAttribute('data-visible-from')),
     target = first + 30 * 86400;
-  const nav = page.getByRole('group', { name: '차트 날짜 탐색' });
+  const nav = page;
   await nav.getByRole('button', { name: '날짜로 이동', exact: true }).click();
   const dialog = page.getByRole('dialog', { name: '차트 날짜 탐색', exact: true });
   await dialog.getByRole('button', { name: '기간 선택', exact: true }).click();

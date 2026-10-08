@@ -1,5 +1,6 @@
 import { dailyTechnical } from '../shared/market-watch';
 import { marketSnapshot } from './market-snapshot';
+import { assetKnowledge, themesResponse } from '../shared/knowledge';
 import { marketDerivatives } from './market-derivatives';
 import { refreshProviderWatch } from './provider-watch';
 import { ASSETS, CALC_VERSION, METRICS } from '../shared/catalog';
@@ -57,6 +58,8 @@ function canonicalRequest(request: Request) {
   const endpoint = url.pathname.slice('/api/v1/'.length);
   const fields: Record<string, string[]> = {
     market: ['market'],
+    themes: [],
+    knowledge: ['asset'],
     overview: ['asset', 'market'],
     candles: ['asset', 'market', 'interval', 'from', 'to', 'limit'],
     series: ['asset', 'metric', 'from', 'to', 'limit'],
@@ -454,6 +457,8 @@ async function api(request: Request, env: Env): Promise<Response> {
   }
   if (!env.ENABLED_ASSETS.split(',').includes(asset))
     return response({ error: '아직 수집하지 않은 자산입니다.', code: 'NOT_ENABLED' }, 404);
+  if (endpoint === 'themes') return response(themesResponse());
+  if (endpoint === 'knowledge') return response(assetKnowledge(asset));
   if (endpoint === 'market') return response(await marketSnapshot(env, market));
   if (endpoint === 'overview') return response(await overview(env, asset, market));
   const from = number(q, 'from', 0),

@@ -1,3 +1,5 @@
+import { DeskDialog } from './DeskDialog';
+import { IndicatorState } from './IndicatorState';
 import { ASSET_REFERENCES } from '../shared/asset-references';
 import { relativePair } from '../shared/relative-pair';
 import { lazy, Suspense, useEffect, useMemo, useRef, useState } from 'react';
@@ -49,6 +51,7 @@ import './analysis-workspace.css';
 import './analysis-library.css';
 import './indicator-workspace.css';
 const AnalysisLab = lazy(() => import('./AnalysisLab').then((m) => ({ default: m.AnalysisLab })));
+const KnowledgePanel = lazy(() => import('./KnowledgePanel'));
 const IndicatorMethod = lazy(() => import('./IndicatorMethod'));
 const RelatedLibrary = lazy(() =>
   import('./ResearchLibrary').then((m) => ({ default: m.RelatedLibrary })),
@@ -142,13 +145,17 @@ export function IndicatorWorkspace() {
   const [more, setMore] = useState(params.has('draw_tool')),
     [picker, setPicker] = useState(false),
     [related, setRelated] = useState(params.get('related') === '1');
+  const [saving, setSaving] = useState(false);
+  const [knowledge, setKnowledge] = useState(false);
+  const [chartTools, setChartTools] = useState<HTMLDivElement | null>(null);
+  const saveButton = useRef<HTMLButtonElement>(null);
+  const knowledgeButton = useRef<HTMLButtonElement>(null);
   const [readingDate, setReadingDate] = useState<number | null>(null);
   const [explanationOpen, setExplanationOpen] = useState(false);
   const sources = indicatorSources(asset, id);
   const [revision, setRevision] = useState(0),
     [annotations, setAnnotations] = useState<Annotation[]>([]);
   const area = useRef<HTMLDivElement>(null),
-    dialog = useRef<HTMLDialogElement>(null),
     pickButton = useRef<HTMLButtonElement>(null),
     visible = useRef<DateWindow | null>(window);
   const drawingKey = annotationKey(
@@ -161,15 +168,6 @@ export function IndicatorWorkspace() {
     save('lastAsset', asset);
     setAnnotations(readAnnotations(drawingKey));
   }, [asset, drawingKey]);
-  useEffect(() => {
-    if (picker) {
-      dialog.current?.showModal();
-      dialog.current?.querySelector('input')?.focus();
-    } else if (dialog.current?.open) {
-      dialog.current.close();
-      pickButton.current?.focus();
-    }
-  }, [picker]);
   function change(patch: Record<string, string | null>) {
     setParams((prev) => {
       const p = new URLSearchParams(prev);
@@ -569,9 +567,7 @@ export function IndicatorWorkspace() {
           <div className="indicator-heading">
             <div>
               <h1>{d?.title ?? '지원하지 않는 지표'}</h1>
-              {d?.id.endsWith(':mvrv') && (
-                <span className="indicator-meaning">{d.shortMeaning}</span>
-              )}
+              {d?.shortMeaning && <span className="indicator-meaning">{d.shortMeaning}</span>}
               <span>
                 {asset} · {local || d?.renderer !== 'series' ? basisName(basis) : d.source} ·{' '}
                 {isRelative
@@ -598,13 +594,18 @@ export function IndicatorWorkspace() {
                 </select>
               </label>
             )}
-            <button
-              className="indicator-mobile-picker"
-              ref={pickButton}
-              onClick={() => setPicker(true)}
-            >
-              지표 변경
-            </button>
+            <div className="indicator-heading-actions">
+              <button ref={saveButton} onClick={() => setSaving(true)}>
+                분석 저장
+              </button>
+              <button
+                className="indicator-mobile-picker"
+                ref={pickButton}
+                onClick={() => setPicker(true)}
+              >
+                지표 변경
+              </button>
+            </div>
           </div>
           <div className="indicator-toolbar">
             <PeriodPicker
@@ -614,6 +615,7 @@ export function IndicatorWorkspace() {
                 setRevision((r) => r + 1);
               }}
             />
+            {!lab && <div ref={setChartTools} className="indicator-date-tools" />}
             {isRelative && <RelativeControls asset={asset} params={context} change={change} />}
             <label className="price-toggle">
               <input
@@ -670,6 +672,7 @@ export function IndicatorWorkspace() {
               ) : chartPoints.length ? (
                 <>
                   <AnalysisChart
+                    toolbarTarget={chartTools}
                     asset={asset}
                     unit={primary?.unit ?? unit}
                     source={primary?.source ?? daily?.meta.source ?? basisName(basis)}
@@ -709,7 +712,7 @@ export function IndicatorWorkspace() {
                     onVisibleRange={(range) => {
                       visible.current = range;
                     }}
-                    onReadingDate={bands ? setReadingDate : undefined}
+                    onReadingDate={setReadingDate}
                     drawingKey={
                       more || annotations.length || params.has('draw_tool') ? drawingKey : undefined
                     }
@@ -751,17 +754,20 @@ export function IndicatorWorkspace() {
                 </>
               ) : (
                 <div className="indicator-empty" role="status">
-                  <strong>
-                    {loading
-                      ? '지표 이력을 불러오고 있습니다…'
-                      : availability === 'pending'
-                        ? '아직 수집된 관측이 없습니다.'
-                        : error
-                          ? '이력을 불러오지 못했습니다.'
-                          : bands
-                            ? '밴드 계산에 필요한 이력이 부족합니다.'
-                            : '확보된 관측이 없습니다.'}
-                  </strong>
+                  <IndicatorState
+                    state={availability}
+                    detail={
+                      loading
+                        ? '지표 이력을 불러오고 있습니다…'
+                        : availability === 'pending'
+                          ? '아직 수집된 관측이 없습니다.'
+                          : error
+                            ? '이력을 불러오지 못했습니다.'
+                            : bands
+                              ? '밴드 계산에 필요한 이력이 부족합니다.'
+                              : '확보된 관측이 없습니다.'
+                    }
+                  />
                   {!loading && (
                     <p>
                       {error ||
@@ -928,6 +934,15 @@ export function IndicatorWorkspace() {
               <h2>무엇을 보는가</h2>
               <p>{d?.shortMeaning ?? article?.summary ?? d?.title}</p>
               <h2>기준선을 읽는 법</h2>
+              {readingDate !== null && chartPoints.some((p) => p.time === readingDate) && (
+                <p className="indicator-selected-context">
+                  현재 확인 중: {dateLabel(readingDate)} ·{' '}
+                  {chartPoints
+                    .find((p) => p.time === readingDate)
+                    ?.value.toLocaleString('ko-KR', { maximumFractionDigits: 4 })}{' '}
+                  {primary?.unit ?? unit}
+                </p>
+              )}
               <p>
                 {d?.baselineMeaning ??
                   article?.read ??
@@ -976,54 +991,88 @@ export function IndicatorWorkspace() {
               {d?.title} 상세 설명 ↗
             </Link>
           )}
-          <WorkspaceBar
-            current={{
-              asset,
-              market: basis === 'upbit' ? 'upbit' : 'binance',
-              interval,
-              period,
-              indicators,
-              log: params.get('log') !== '0',
-              view: 'dashboard',
-              cards: [],
-              metric: id,
-              panels: auxiliary,
-              normalization: ['index', 'percent', 'ratio'].includes(
-                params.get('normalization') ?? '',
-              )
-                ? (params.get('normalization') as 'index' | 'percent' | 'ratio')
-                : undefined,
-              comparisonWindows: Object.fromEntries(
-                ['a_from', 'a_to', 'b_from', 'b_to'].map((k) => [
-                  k,
-                  params.get('window_' + k) ?? '',
-                ]),
-              ),
-              analysisOptions: Object.fromEntries(
-                [...params].filter(([k]) =>
-                  [
-                    'patterns',
-                    'pattern_trend',
-                    'seasonality_method',
-                    'seasonality_years',
-                    'correlation',
-                    'correlation_asset',
-                    'benchmark_asset',
-                    'comparison_layout',
-                  ].includes(k),
+          <DeskDialog
+            open={saving}
+            onOpenChange={setSaving}
+            title="분석 저장"
+            returnFocus={saveButton}
+          >
+            <WorkspaceBar
+              embedded
+              onOpenWorkspace={() => setSaving(false)}
+              current={{
+                asset,
+                market: basis === 'upbit' ? 'upbit' : 'binance',
+                interval,
+                period,
+                indicators,
+                log: params.get('log') !== '0',
+                view: 'dashboard',
+                cards: [],
+                metric: id,
+                panels: auxiliary,
+                normalization: ['index', 'percent', 'ratio'].includes(
+                  params.get('normalization') ?? '',
+                )
+                  ? (params.get('normalization') as 'index' | 'percent' | 'ratio')
+                  : undefined,
+                comparisonWindows: Object.fromEntries(
+                  ['a_from', 'a_to', 'b_from', 'b_to'].map((k) => [
+                    k,
+                    params.get('window_' + k) ?? '',
+                  ]),
                 ),
-              ),
-              priceSource: basis,
-              comparePrice: compare,
-              ...(window ? { dateWindow: window } : {}),
-              annotations,
-            }}
-            resolveCurrent={(c) => ({
-              ...c,
-              ...(visible.current ? { dateWindow: visible.current } : {}),
-              annotations: readAnnotations(drawingKey),
-            })}
-          />
+                analysisOptions: Object.fromEntries(
+                  [...params].filter(([k]) =>
+                    [
+                      'patterns',
+                      'pattern_trend',
+                      'seasonality_method',
+                      'seasonality_years',
+                      'correlation',
+                      'correlation_asset',
+                      'benchmark_asset',
+                      'comparison_layout',
+                    ].includes(k),
+                  ),
+                ),
+                priceSource: basis,
+                comparePrice: compare,
+                ...(window ? { dateWindow: window } : {}),
+                annotations,
+              }}
+              resolveCurrent={(c) => ({
+                ...c,
+                ...(visible.current ? { dateWindow: visible.current } : {}),
+                annotations: readAnnotations(drawingKey),
+              })}
+            />
+          </DeskDialog>
+          <button
+            className="knowledge-open"
+            ref={knowledgeButton}
+            onClick={() => setKnowledge(true)}
+          >
+            코인·프로젝트 관계 보기
+          </button>
+          <DeskDialog
+            open={knowledge}
+            onOpenChange={setKnowledge}
+            title={asset + ' 관계와 근거'}
+            returnFocus={knowledgeButton}
+            wide
+          >
+            {knowledge && (
+              <Suspense fallback={<p role="status">관계를 여는 중…</p>}>
+                <KnowledgePanel
+                  key={asset}
+                  asset={asset}
+                  params={context}
+                  onNavigate={() => setKnowledge(false)}
+                />
+              </Suspense>
+            )}
+          </DeskDialog>
           {related && (
             <div className="analysis-evidence">
               <Suspense fallback={<p role="status">관련 자료를 여는 중…</p>}>
@@ -1043,15 +1092,9 @@ export function IndicatorWorkspace() {
           <small>{d?.source}</small>
         </aside>
       </div>
-      <dialog
-        ref={dialog}
-        className="indicator-picker"
-        onCancel={() => setPicker(false)}
-        aria-label="지표 선택"
-      >
-        <button onClick={() => setPicker(false)}>닫기</button>
-        {picker && <IndicatorNavigation key={asset + id} onNavigate={() => setPicker(false)} />}
-      </dialog>
+      <DeskDialog open={picker} onOpenChange={setPicker} title="지표 선택" returnFocus={pickButton}>
+        {picker && <IndicatorNavigation onNavigate={() => setPicker(false)} />}
+      </DeskDialog>
     </div>
   );
 }

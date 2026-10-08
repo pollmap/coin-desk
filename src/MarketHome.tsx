@@ -1,4 +1,4 @@
-import { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { lazy, Suspense, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { Link, useSearchParams, useNavigate } from 'react-router-dom';
 import { Star } from 'lucide-react';
 import { ASSETS } from '../shared/catalog';
@@ -9,6 +9,7 @@ import { useQuoteFeed } from './useQuoteFeed';
 import { useMarket } from './useMarket';
 import { usePersonalDesk } from './PersonalDesk';
 import { dateLabel, money, numeric, saved, save, turnover } from './lib';
+const ThemeExplorer = lazy(() => import('./ThemeExplorer'));
 
 function Spark({ points }: { points: Point[] }) {
   if (points.length < 2) return <span className="muted">이력 대기</span>;
@@ -40,6 +41,10 @@ export function MarketHome() {
   const { desk, update } = usePersonalDesk();
   const [params, setParams] = useSearchParams();
   const sort = params.get('sort') || saved('market-sort', 'default');
+  const view = ['favorites', 'themes'].includes(params.get('view') ?? '')
+    ? params.get('view')
+    : 'all';
+  const [sortRevision, setSortRevision] = useState(0);
   const recent = saved<Asset[]>('recent-coins', []);
   const resume = saved<{ href?: string; asset?: string }>('recent-analysis', {});
   const resumeHref =
@@ -51,7 +56,7 @@ export function MarketHome() {
   const scroll = useRef(saved('market-scroll', 0));
   useLayoutEffect(() => {
     window.scrollTo(0, scroll.current);
-  }, [feed.data]);
+  }, [!!feed.data]);
   useEffect(() => {
     const track = () => {
       scroll.current = window.scrollY;
@@ -66,14 +71,27 @@ export function MarketHome() {
       defaultIndicator(asset),
       new URLSearchParams({ price_source: market, market }),
     );
-  const rows = ASSETS.map((a) => ({ ...a, data: feed.rows.find((r) => r.asset === a.id) })).sort(
-    (a, b) =>
-      sort === 'change'
-        ? (b.data?.quote?.change24h ?? -Infinity) - (a.data?.quote?.change24h ?? -Infinity)
-        : sort === 'volume'
-          ? (b.data?.quote?.volume24h ?? -Infinity) - (a.data?.quote?.volume24h ?? -Infinity)
-          : 0,
+  // Capture ordering on entry or explicit sorting only. Live ticks update values,
+  // never move a row underneath a pointer or keyboard focus.
+  const order = useMemo(
+    () =>
+      ASSETS.map((a) => ({ ...a, data: feed.rows.find((r) => r.asset === a.id) }))
+        .sort((a, b) =>
+          sort === 'change'
+            ? (b.data?.quote?.change24h ?? -Infinity) - (a.data?.quote?.change24h ?? -Infinity)
+            : sort === 'volume'
+              ? (b.data?.quote?.volume24h ?? -Infinity) - (a.data?.quote?.volume24h ?? -Infinity)
+              : 0,
+        )
+        .map((a) => a.id),
+    [market, sort, !!feed.data, sortRevision],
   );
+  const rows = order
+    .filter((id) => view !== 'favorites' || desk.favorites.includes(id))
+    .map((id) => ({
+      ...ASSETS.find((a) => a.id === id)!,
+      data: feed.rows.find((r) => r.asset === id),
+    }));
   const starred = desk.favorites;
   const favorite = (asset: Asset) => {
     try {
@@ -100,6 +118,29 @@ export function MarketHome() {
                 ? '시세 갱신 지연'
                 : '1분마다 갱신'}
           </span>
+        </div>
+        <div className="market-view-tabs" role="group" aria-label="시장 보기">
+          {(
+            [
+              ['all', '전체'],
+              ['favorites', '관심'],
+              ['themes', '테마'],
+            ] as const
+          ).map(([key, label]) => (
+            <button
+              key={key}
+              aria-pressed={view === key}
+              onClick={() =>
+                setParams((p) => {
+                  p.set('view', key);
+                  if (key !== 'themes') p.delete('theme');
+                  return p;
+                })
+              }
+            >
+              {label}
+            </button>
+          ))}
         </div>
         {feed.data?.collection && !feed.data.collection.healthy && (
           <p className="market-runtime-notice" role="status">
@@ -140,6 +181,9 @@ export function MarketHome() {
               <option value="volume">거래대금</option>
             </select>
           </label>
+          {sort !== 'default' && (
+            <button onClick={() => setSortRevision((v) => v + 1)}>지금 값으로 정렬</button>
+          )}
         </div>
         {saveError && <p role="alert">{saveError}</p>}
         {feed.error && (
@@ -148,96 +192,116 @@ export function MarketHome() {
           </div>
         )}
         {!feed.error && feed.loading && !feed.data && <p role="status">시세를 불러오는 중…</p>}
-        <div className="market-table-wrap">
-          <table className="market-table">
-            <thead>
-              <tr>
-                <th>
-                  <span className="sr-only">관심</span>
-                </th>
-                <th>코인</th>
-                <th>
-                  현재 가격 <small>{unit}</small>
-                </th>
-                <th>24시간 변동</th>
-                <th>24시간 거래대금</th>
-                <th>최근 30일</th>
-                <th>분석</th>
-              </tr>
-            </thead>
-            <tbody>
-              {rows.map(({ id, name, data: r }) => (
-                <tr
-                  key={id}
-                  onClick={(e) => {
-                    if (!(e.target as HTMLElement).closest('a,button,details')) navigate(href(id));
-                  }}
-                >
-                  <td>
-                    <button
-                      className="favorite-button"
-                      aria-label={`${name} 관심 코인`}
-                      aria-pressed={starred.includes(id)}
-                      onClick={() => favorite(id)}
-                    >
-                      <Star size={17} fill={starred.includes(id) ? 'currentColor' : 'none'} />
-                    </button>
-                  </td>
-                  <th scope="row">
-                    <Link to={href(id)}>
-                      <AssetLogo asset={id} size={32} />
-                      <span>
-                        {name}
-                        <small>{id}</small>
-                      </span>
-                    </Link>
+        {view === 'themes' ? (
+          <Suspense fallback={<p role="status">테마를 여는 중…</p>}>
+            <ThemeExplorer
+              selected={params.get('theme')}
+              onSelect={(id) =>
+                setParams((p) => {
+                  if (id) p.set('theme', id);
+                  else p.delete('theme');
+                  return p;
+                })
+              }
+              href={href}
+            />
+          </Suspense>
+        ) : (
+          <div className="market-table-wrap">
+            <table className="market-table">
+              <thead>
+                <tr>
+                  <th>
+                    <span className="sr-only">관심</span>
                   </th>
-                  <td>
-                    <Link to={href(id)}>{money(r?.displayPrice, unit)}</Link>
-                    {r?.displayTime ? (
-                      <details className={'market-time' + (r.stale ? ' stale-label' : '')}>
-                        <summary>
-                          {r.status === 'error' ? '확인 실패 · ' : r.stale ? '갱신 지연 · ' : ''}
-                          {Math.max(0, Math.floor((Date.now() / 1000 - r.displayTime) / 60)) < 1
-                            ? '방금'
-                            : `${Math.max(0, Math.floor((Date.now() / 1000 - r.displayTime) / 60))}분 전`}
-                        </summary>
-                        <span>실제 체결 {dateLabel(r.displayTime, true)}</span>
-                      </details>
-                    ) : (
-                      <small>
-                        {feed.error
-                          ? '시세 확인 필요'
-                          : feed.loading
-                            ? '불러오는 중'
-                            : r?.status === 'unsupported'
-                              ? '거래 미지원'
-                              : r?.status === 'error'
-                                ? '시세 확인 필요'
-                                : '수집 대기'}
-                      </small>
-                    )}
-                  </td>
-                  <td className={(r?.quote?.change24h ?? 0) >= 0 ? 'up' : 'down'}>
-                    {changeText(r?.quote?.change24h)}
-                  </td>
-                  <td>{turnover(r?.quote?.volume24h, unit)}</td>
-                  <td className="market-spark">
-                    <Spark points={r?.spark ?? []} />
-                  </td>
-                  <td>
-                    <Link
-                      to={href(id)}
-                      aria-label={`${name} ${indicatorDefinition(defaultIndicator(id))?.title} 분석`}
-                    >
-                      {defaultIndicator(id) === 'rsi' ? 'RSI 14' : 'MVRV'} ↗
-                    </Link>
-                  </td>
+                  <th>코인</th>
+                  <th>
+                    현재 가격 <small>{unit}</small>
+                  </th>
+                  <th>24시간 변동</th>
+                  <th>24시간 거래대금</th>
+                  <th>최근 30일</th>
+                  <th>분석</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+              </thead>
+              <tbody>
+                {rows.map(({ id, name, data: r }) => (
+                  <tr
+                    key={id}
+                    onClick={(e) => {
+                      if (!(e.target as HTMLElement).closest('a,button,details'))
+                        navigate(href(id));
+                    }}
+                  >
+                    <td>
+                      <button
+                        className="favorite-button"
+                        aria-label={`${name} 관심 코인`}
+                        aria-pressed={starred.includes(id)}
+                        onClick={() => favorite(id)}
+                      >
+                        <Star size={17} fill={starred.includes(id) ? 'currentColor' : 'none'} />
+                      </button>
+                    </td>
+                    <th scope="row">
+                      <Link to={href(id)}>
+                        <AssetLogo asset={id} size={32} />
+                        <span>
+                          {name}
+                          <small>{id}</small>
+                        </span>
+                      </Link>
+                    </th>
+                    <td>
+                      <Link to={href(id)}>{money(r?.displayPrice, unit)}</Link>
+                      {r?.displayTime ? (
+                        <details className={'market-time' + (r.stale ? ' stale-label' : '')}>
+                          <summary>
+                            {r.status === 'error' ? '확인 실패 · ' : r.stale ? '갱신 지연 · ' : ''}
+                            {Math.max(0, Math.floor((Date.now() / 1000 - r.displayTime) / 60)) < 1
+                              ? '방금'
+                              : `${Math.max(0, Math.floor((Date.now() / 1000 - r.displayTime) / 60))}분 전`}
+                          </summary>
+                          <span>실제 체결 {dateLabel(r.displayTime, true)}</span>
+                        </details>
+                      ) : (
+                        <small>
+                          {feed.error
+                            ? '시세 확인 필요'
+                            : feed.loading
+                              ? '불러오는 중'
+                              : r?.status === 'unsupported'
+                                ? '거래 미지원'
+                                : r?.status === 'error'
+                                  ? '시세 확인 필요'
+                                  : '수집 대기'}
+                        </small>
+                      )}
+                    </td>
+                    <td className={(r?.quote?.change24h ?? 0) >= 0 ? 'up' : 'down'}>
+                      {changeText(r?.quote?.change24h)}
+                    </td>
+                    <td>{turnover(r?.quote?.volume24h, unit)}</td>
+                    <td className="market-spark">
+                      <Spark points={r?.spark ?? []} />
+                    </td>
+                    <td>
+                      <Link
+                        to={href(id)}
+                        aria-label={`${name} ${indicatorDefinition(defaultIndicator(id))?.title} 분석`}
+                      >
+                        {defaultIndicator(id) === 'rsi' ? '추세 · RSI 14' : '가치평가 · MVRV'} ↗
+                      </Link>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+            {!rows.length && (
+              <p className="market-empty">관심 코인이 없습니다. 전체에서 별을 눌러 추가하세요.</p>
+            )}
+          </div>
+        )}
         <details className="market-data-note">
           <summary>시세 기준</summary>
           <p>

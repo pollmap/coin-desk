@@ -681,3 +681,30 @@ it('bounds regular background load below one job a minute without slowing primar
   }
   expect(seen.size).toBe(queued.length);
 });
+
+it('price history recovery is separate from current freshness and does not expose raw errors', async () => {
+  ready();
+  await scheduled(env);
+  DB.sqlite
+    .prepare('INSERT INTO state(key,value) VALUES (?,?)')
+    .run(
+      'cursor:price-backfill:ETH:upbit:1h',
+      JSON.stringify({
+        cursor: now - 86400,
+        checkedAt: now,
+        error: 'fetch https://private/?token=secret failed',
+      }),
+    );
+  const before = DB.sqlite.prepare('SELECT total_changes() n').get().n;
+  const report = await operationStatus(env);
+  expect(report.health.ok).toBe(true);
+  expect(report.historyRecovery).toEqual([
+    {
+      key: 'ETH:upbit:1h',
+      cursor: now - 86400,
+      checkedAt: now,
+      error: '원천 연결 또는 데이터 검증 오류',
+    },
+  ]);
+  expect(DB.sqlite.prepare('SELECT total_changes() n').get().n).toBe(before);
+});

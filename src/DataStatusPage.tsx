@@ -380,6 +380,21 @@ export function DataStatusPage() {
           <div className="empty-state">해당 조건의 원천이 없습니다.</div>
         ) : null}
       </section>
+      {!!data?.historyRecovery?.length && (
+        <section className="panel server-runs">
+          <h2>과거 가격 이력 복구</h2>
+          <p>최신 봉 갱신과 별도로 빈 과거 구간을 채우고 있습니다.</p>
+          <ol>
+            {data.historyRecovery.map((item) => (
+              <li key={item.key}>
+                <b>{sourceLabel(item.key)}</b>
+                <span>{dateLabel(item.cursor, true)}부터 이어서 확인</span>
+                {item.error && <small className="amber">{item.error} · 다음 예약에서 재시도</small>}
+              </li>
+            ))}
+          </ol>
+        </section>
+      )}
       <section className="panel server-runs">
         <h2>최근 서버 실행 기록</h2>
         <p>자동 실행의 DB 기록입니다. PC에서 조회한 시각을 서버 실행 시각으로 대신하지 않습니다.</p>

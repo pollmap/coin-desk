@@ -20,8 +20,33 @@ function execute() {
       '--budget-bytes',
       process.env.BACKUP_BUDGET_BYTES || '2147483648',
     ],
-    { stdio: ['ignore', 'ignore', 'ignore'] },
+    { stdio: ['ignore', 'ignore', 'pipe'] },
   );
+  let diagnosticBuffer = '';
+  running.stderr.on('data', (chunk) => {
+    // Only sanitized codes from our helper are allowed into operational logs.
+    diagnosticBuffer += String(chunk);
+    const lines = diagnosticBuffer.split('\n');
+    diagnosticBuffer = (lines.pop() || '').slice(-4096);
+    for (const line of lines) {
+      try {
+        const row = JSON.parse(line);
+        if (
+          [
+            'storage_full',
+            'storage_permission',
+            'storage_read_only',
+            'storage_io',
+            'sqlite_backup',
+            'backup_verification',
+          ].includes(row.code)
+        )
+          console.error(JSON.stringify({ event: 'backup_diagnostic', code: row.code }));
+      } catch {
+        /* Discard tracebacks or unstructured child output. */
+      }
+    }
+  });
   running.on('error', () => console.error(JSON.stringify({ event: 'backup_start_failed' })));
   running.on('close', (code) => {
     running = null;

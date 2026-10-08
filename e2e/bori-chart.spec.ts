@@ -58,13 +58,17 @@ test('legacy target migrates explicitly; saved pair, overwrite cancel, delete un
   );
   await page.getByLabel('비교 설정', { exact: true }).click();
   await page.getByRole('combobox', { name: '비교 코인', exact: true }).selectOption('LINK');
-  await page.getByRole('button', { name: '작업공간 저장·불러오기' }).click();
+  await page.getByRole('button', { name: '분석 저장' }).click();
   await page.getByLabel('작업공간 이름', { exact: true }).fill('두 코인 검토');
   await page.getByRole('button', { name: '현재 구성 저장', exact: true }).click();
+  await page.getByRole('button', { name: '분석 저장 닫기', exact: true }).click();
   page.once('dialog', (dialog) => dialog.dismiss());
   await page.getByLabel('비교 설정', { exact: true }).click();
   await page.getByRole('combobox', { name: '비교 코인', exact: true }).selectOption('ETH');
+  await page.getByRole('button', { name: '분석 저장', exact: true }).click();
+  await page.getByLabel('작업공간 이름', { exact: true }).fill('두 코인 검토');
   await page.getByRole('button', { name: '같은 이름 덮어쓰기', exact: true }).click();
+  await page.getByRole('button', { name: '분석 저장 닫기', exact: true }).click();
   await page.getByRole('link', { name: '내 저장', exact: true }).click();
   await expect(page.getByRole('heading', { name: '내 저장', exact: true })).toBeVisible();
   await expect(page.locator('.saved-workspaces')).toContainText('두 코인 검토');

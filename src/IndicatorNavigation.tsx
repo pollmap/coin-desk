@@ -1,6 +1,7 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { ASSETS } from '../shared/catalog';
+import { INDICATOR_QUESTIONS, matchesIndicator } from '../shared/indicator-search';
 import {
   INDICATOR_GROUPS,
   navigationIndicators,
@@ -13,6 +14,13 @@ export const isIndicatorRoute = (path: string) =>
 export function IndicatorNavigation({ onNavigate }: { onNavigate: () => void }) {
   const location = useLocation(),
     p = new URLSearchParams(location.search);
+  const previousLocation = useRef(location.key);
+  useEffect(() => {
+    if (previousLocation.current !== location.key) {
+      previousLocation.current = location.key;
+      onNavigate();
+    }
+  }, [location.key, onNavigate]);
   const asset =
     ASSETS.find((a) => a.id === location.pathname.split('/')[2])?.id ??
     ASSETS.find((a) => a.id === p.get('asset'))?.id ??
@@ -21,9 +29,7 @@ export function IndicatorNavigation({ onNavigate }: { onNavigate: () => void }) 
   const [query, setQuery] = useState('');
   const [group, setGroup] = useState<string>(active.definition?.group ?? INDICATOR_GROUPS[0]);
   const matches = navigationIndicators(asset, active.id).filter(
-    (d) =>
-      d.assets.includes(asset) &&
-      (d.title + ' ' + d.id).toLowerCase().includes(query.trim().toLowerCase()),
+    (d) => d.assets.includes(asset) && matchesIndicator(d, query),
   );
   const visibleMatches = matches.filter((d) => query.trim() || d.group === group);
   return (
@@ -31,7 +37,7 @@ export function IndicatorNavigation({ onNavigate }: { onNavigate: () => void }) 
       <label className="nav-search">
         <input
           aria-label="지표 검색"
-          placeholder="MVRV, RSI, 밴드…"
+          placeholder="지표명 또는 확인하고 싶은 내용"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           onKeyDown={(e) => {
@@ -39,6 +45,17 @@ export function IndicatorNavigation({ onNavigate }: { onNavigate: () => void }) 
           }}
         />
       </label>
+      <div className="indicator-questions" role="group" aria-label="확인하고 싶은 내용">
+        {INDICATOR_QUESTIONS.map((q) => (
+          <button
+            key={q.query}
+            aria-pressed={query === q.query}
+            onClick={() => setQuery(query === q.query ? '' : q.query)}
+          >
+            {q.label}
+          </button>
+        ))}
+      </div>
       <div className="indicator-group-tabs" role="group" aria-label="지표 분류">
         {INDICATOR_GROUPS.map((g) => (
           <button
@@ -63,12 +80,22 @@ export function IndicatorNavigation({ onNavigate }: { onNavigate: () => void }) 
                 <Link
                   key={d.id}
                   to={indicatorUrl(asset, d.id, p)}
-                  onClick={onNavigate}
+                  onClick={() => {
+                    if (active.id === d.id) onNavigate();
+                  }}
                   className={active.id === d.id ? 'active' : ''}
                   aria-current={active.id === d.id ? 'page' : undefined}
+                  aria-label={
+                    d.title + ' ' + d.unit.replace('자산 단위', asset).replace('자산', asset)
+                  }
                 >
-                  {d.title}
-                  <small>{d.unit.replace('자산 단위', asset).replace('자산', asset)}</small>
+                  <span>
+                    <strong>{d.title}</strong>
+                    <small>{d.shortMeaning}</small>
+                  </span>
+                  <small className="indicator-support">
+                    지원 · {d.unit.replace('자산 단위', asset).replace('자산', asset)}
+                  </small>
                 </Link>
               ))}
           </div>
@@ -91,7 +118,7 @@ export function IndicatorNavigation({ onNavigate }: { onNavigate: () => void }) 
           </div>
         )}
       </nav>
-      <nav className="nav-utilities" onClick={onNavigate}>
+      <nav className="nav-utilities">
         <Link to={'/learn?' + p}>분석 사전</Link>
         <Link to="/status">데이터 · 자동 갱신</Link>
         <Link to="/workspace/library">개인 자료함</Link>

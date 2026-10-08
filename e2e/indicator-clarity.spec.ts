@@ -24,22 +24,24 @@ test('historical readings can return to latest without changing the chart window
   await expect(chart).toBeVisible();
   await expect(chart).toHaveAttribute('data-range-ready', '1');
   await expect(page.locator('.analysis-reading-date')).toContainText('최근 확정값');
-  const initial = await page.getByLabel('표시 기간', { exact: true }).innerText();
+  const initial = await chart.getAttribute('data-visible-from');
+  await page.getByRole('button', { name: '구간·확대', exact: true }).click();
   await page.getByRole('button', { name: '차트 확대', exact: true }).click();
-  await expect(page.getByLabel('표시 기간', { exact: true })).not.toHaveText(initial);
+  await page.keyboard.press('Escape');
+  await expect(chart).not.toHaveAttribute('data-visible-from', initial!);
   await chart.focus();
   await page.keyboard.press('ArrowLeft');
-  await expect(page.locator('.analysis-reading-date')).toContainText('선택한 날짜');
+  await expect(page.locator('.analysis-reading-date')).toContainText('날짜 고정');
   // Keyboard selection may pan to bring the chosen observation into view.
   // Resetting the reading must preserve that actual user-visible window.
   // The reading label updates before Lightweight Charts publishes its new range.
   // Wait for that actual pan, rather than comparing against the preceding frame.
   await waitForSelectedDateInView(page);
-  const window = await page.getByLabel('표시 기간', { exact: true }).innerText();
+  const window = await chart.getAttribute('data-visible-from');
   await page.getByRole('button', { name: '최근값 보기', exact: true }).click();
   await expect(chart).toBeFocused();
   await expect(page.locator('.analysis-reading-date')).toContainText('최근 확정값');
-  await expect(page.getByLabel('표시 기간', { exact: true })).toHaveText(window);
+  await expect(chart).toHaveAttribute('data-visible-from', window!);
   await expect(page.locator('.indicator-method')).toHaveCount(0);
   await page.getByText('읽는 법 · 계산식 · 데이터 범위', { exact: true }).click();
   await expect(page.locator('.indicator-method')).toContainText('실현시가총액');
@@ -60,15 +62,15 @@ test('keyboard panning before a manual zoom survives a chart resize', async ({ p
   await expect(chart).toHaveAttribute('data-range-ready', '1');
   await chart.focus();
   await page.keyboard.press('Home');
-  await expect(page.locator('.analysis-reading-date')).toContainText('선택한 날짜');
+  await expect(page.locator('.analysis-reading-date')).toContainText('날짜 고정');
   await waitForSelectedDateInView(page);
-  const window = await page.getByLabel('표시 기간', { exact: true }).innerText();
+  const window = await chart.getAttribute('data-visible-from');
   const canvas = chart.locator('canvas').first();
   const width = await canvas.getAttribute('width');
   await page.setViewportSize({ width: 1000, height: 900 });
   await expect(canvas).not.toHaveAttribute('width', width!);
   await waitForSelectedDateInView(page);
-  await expect(page.getByLabel('표시 기간', { exact: true })).toHaveText(window);
+  await expect(chart).toHaveAttribute('data-visible-from', window!);
 });
 
 test('coin changes open the active indicator group and empty categories offer an alternative', async ({

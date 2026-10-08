@@ -1,4 +1,5 @@
 import { memo, useEffect, useMemo, useRef, useState } from 'react';
+import { createPortal } from 'react-dom';
 import {
   CandlestickSeries,
   LineSeries,
@@ -84,6 +85,7 @@ export const AnalysisChart = memo(function AnalysisChart({
   bands,
   onReadingDate,
   exportName,
+  toolbarTarget,
 }: {
   asset: string;
   unit: string;
@@ -110,11 +112,13 @@ export const AnalysisChart = memo(function AnalysisChart({
   bands?: BandRow[];
   onReadingDate?: (time: number | null) => void;
   exportName?: string;
+  toolbarTarget?: HTMLElement | null;
 }) {
   const host = useRef<HTMLDivElement>(null),
     chartRef = useRef<IChartApi | null>(null);
   const moveCursor = useRef<(time: number | null) => void>(() => {});
   const manualCursor = useRef(false);
+  const [pinned, setPinned] = useState(false);
   const click = useRef(onSignal);
   click.current = onSignal;
   const observationClick = useRef(onObservation);
@@ -123,6 +127,9 @@ export const AnalysisChart = memo(function AnalysisChart({
   settings.current = { period, log };
   const previous = useRef<{ key: string; from: number; to: number } | null>(null);
   const userRange = useRef(false);
+  // LWC applies a range on its next frame. A React data update before that frame
+  // must retain the requested window rather than read back the previous one.
+  const pendingRange = useRef<DateWindow | null>(null);
   const appliedFocus = useRef<string | null>(null);
   const rangeCallback = useRef(onVisibleRange);
   rangeCallback.current = onVisibleRange;
@@ -167,6 +174,7 @@ export const AnalysisChart = memo(function AnalysisChart({
   const fileName = (exportName ?? `${asset}-${unit}`).replace(/[\\/:*?"<>|]/g, '-');
   function explore(t: number | null) {
     manualCursor.current = t !== null;
+    setPinned(t !== null);
     setSelectionKey(key);
     setSelected(t);
     moveCursor.current(t);
@@ -230,7 +238,13 @@ export const AnalysisChart = memo(function AnalysisChart({
           lineWidth: 1,
           lineStyle: 2,
           axisLabelVisible: true,
-          title: String(level),
+          title: primary.id.includes('mvrv')
+            ? '1배 · 시가총액 = 실현시가총액'
+            : primary.id.includes('funding')
+              ? '0% · 지급 방향 전환'
+              : primary.id === 'rsi'
+                ? level + ' · RSI 기준'
+                : String(level),
         });
       }
     const cursorSeries = [
@@ -334,6 +348,12 @@ export const AnalysisChart = memo(function AnalysisChart({
         latest.current.signals.find((s) => s.id === e.hoveredObjectId) ??
         latest.current.signals.find((s) => s.time === Number(e.time));
       if (s) click.current(s);
+      if (typeof e.time === 'number') {
+        manualCursor.current = true;
+        setPinned(true);
+        setSelectionKey(key);
+        setSelected(e.time);
+      }
     });
     chart.subscribeCrosshairMove((e) => {
       if (manualCursor.current) return;
@@ -362,7 +382,10 @@ export const AnalysisChart = memo(function AnalysisChart({
     };
     updateSeries.current = () => {
       const data = latest.current;
-      const range = chart.timeScale().getVisibleRange();
+      const requested = pendingRange.current;
+      const range = requested
+        ? { from: ts(requested.from), to: ts(requested.to) }
+        : chart.timeScale().getVisibleRange();
       if (candleMode) price.setData((data.candles ?? []).map((p) => ({ ...p, time: ts(p.time) })));
       else price.setData(gapData(data.points, step));
       cursorSeries[0].values = new Map(data.points.map((p) => [p.time, p.value]));
@@ -445,6 +468,11 @@ export const AnalysisChart = memo(function AnalysisChart({
       range: ReturnType<ReturnType<IChartApi['timeScale']>['getVisibleRange']>,
     ) => {
       if (range) {
+        if (
+          pendingRange.current?.from === Number(range.from) &&
+          pendingRange.current?.to === Number(range.to)
+        )
+          pendingRange.current = null;
         surface.dataset.visibleFrom = String(range.from);
         surface.dataset.visibleTo = String(range.to);
         setVisibleWindow({ from: Number(range.from), to: Number(range.to) });
@@ -455,7 +483,10 @@ export const AnalysisChart = memo(function AnalysisChart({
     updateWindow(chart.timeScale().getVisibleRange());
     surface.dataset.observations = String(points.length);
     const resize = new ResizeObserver(() => {
-      const range = chart.timeScale().getVisibleRange();
+      const requested = pendingRange.current;
+      const range = requested
+        ? { from: ts(requested.from), to: ts(requested.to) }
+        : chart.timeScale().getVisibleRange();
       const height = chartHeight();
       surface.style.height = height + 'px';
       chart.resize(Math.max(1, surface.clientWidth), height);
@@ -497,9 +528,11 @@ export const AnalysisChart = memo(function AnalysisChart({
   }, [log]);
   useEffect(() => {
     userRange.current = false;
+    pendingRange.current = null;
     appliedFocus.current = null;
     const visible = points.filter((p) => p.time >= periodStart(period, points.at(-1)?.time ?? 0));
     manualCursor.current = false;
+    setPinned(false);
     setSelected(null);
     chartRef.current?.clearCrosshairPosition();
     if (visible.length)
@@ -532,6 +565,28 @@ export const AnalysisChart = memo(function AnalysisChart({
       appliedFocus.current = token;
     }
   }, [focus, points, key, period, rangeRevision, initialWindow?.from, initialWindow?.to]);
+  const navigator = (
+    <DateNavigator
+      key={key}
+      compact={!!toolbarTarget}
+      times={readings.times}
+      visible={visibleWindow}
+      selected={time}
+      onRange={(range) => {
+        pendingRange.current = range;
+        userRange.current = true;
+        chartRef.current?.timeScale().setVisibleRange({ from: ts(range.from), to: ts(range.to) });
+      }}
+      onSelect={explore}
+      onReset={() => {
+        explore(null);
+        userRange.current = false;
+        pendingRange.current = null;
+        chartRef.current?.timeScale().fitContent();
+        onAll();
+      }}
+    />
+  );
   return (
     <>
       <div className="analysis-legend">
@@ -540,8 +595,14 @@ export const AnalysisChart = memo(function AnalysisChart({
         </span>
         <span>
           <span className="analysis-reading-date">
-            {selectedTime === null ? (primary ? '최근 확정값' : '최근 관측') : '선택한 날짜'} ·{' '}
-            {timestamp(time)}
+            {selectedTime === null
+              ? primary
+                ? '최근 확정값'
+                : '최근 관측'
+              : pinned
+                ? '날짜 고정'
+                : '미리 보기'}{' '}
+            · {timestamp(time)}
           </span>{' '}
           <b>{display(priceValue)}</b>
         </span>
@@ -588,10 +649,11 @@ export const AnalysisChart = memo(function AnalysisChart({
           data-asset={asset}
           data-primary-metric={primary?.id ?? 'price'}
           onPointerDown={() => {
-            manualCursor.current = false;
+            pendingRange.current = null;
             userRange.current = true;
           }}
           onWheel={() => {
+            pendingRange.current = null;
             userRange.current = true;
           }}
           tabIndex={0}
@@ -630,23 +692,7 @@ export const AnalysisChart = memo(function AnalysisChart({
           />
         )}
       </div>
-      <DateNavigator
-        key={key}
-        times={readings.times}
-        visible={visibleWindow}
-        selected={time}
-        onRange={(range) => {
-          userRange.current = true;
-          chartRef.current?.timeScale().setVisibleRange({ from: ts(range.from), to: ts(range.to) });
-        }}
-        onSelect={explore}
-        onReset={() => {
-          explore(null);
-          userRange.current = false;
-          chartRef.current?.timeScale().fitContent();
-          onAll();
-        }}
-      />
+      {toolbarTarget ? createPortal(navigator, toolbarTarget) : navigator}
       <span className="sr-only" role="status">
         {selectedTime !== null
           ? `${timestamp(time)} ${asset} ${display(priceValue)}. ${lines.map((l, i) => `${l.title} ${metricNumber(time === undefined ? undefined : readings.maps[i + 1].get(time))} ${l.unit}`).join('. ')}`
