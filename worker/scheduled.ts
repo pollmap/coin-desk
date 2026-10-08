@@ -242,7 +242,7 @@ export async function updatePrice(env: Env, asset: Asset, market: Market, interv
           ? Math.max(priorHistory.first, Math.ceil((now - 90 * DAY) / 3600) * 3600)
           : priorHistory.first,
         // Rolling archives expire in chunks; do not publish an uncounted total.
-        interval === '1h' || priorHistory.rows === null
+        interval === '1h' || priorHistory.rows === null || savedCursor || recovery
           ? null
           : priorHistory.rows + rows.filter((c) => c.time > priorHistory.last).length,
         asset,

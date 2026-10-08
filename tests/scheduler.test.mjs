@@ -306,58 +306,77 @@ it.each(['raw_samples', 'candles', 'state', 'ingestion'])(
   },
 );
 
-it('VPS current candles advance while historical gaps retain a bounded cursor and survive a history failure', async () => {
-  env.RUNTIME_KIND = 'vps';
-  const hour = Math.floor(now / 3600) * 3600,
-    old = hour - 90 * 3600;
-  const candle = (time) => ({
-    time,
-    open: 100,
-    high: 110,
-    low: 90,
-    close: 105,
-    volume: 1,
-    closeTime: time + 3600,
-    closed: true,
-  });
-  DB.sqlite
-    .prepare('INSERT INTO candles VALUES(?,?,?,?,?,?,?,?,?,?,?)')
-    .run('BTC', 'binance', '1h', old, 100, 110, 90, 105, 1, old + 3600, old);
-  getRecentCandles.mockImplementation(async (_a, _m, _i, since) =>
-    since === undefined ? [candle(hour - 3600)] : [candle(since + 30 * 3600)],
-  );
-  await updatePrice(env, 'BTC', 'binance', '1h');
-  let state = JSON.parse(
+it.each(['1h', '1d'])(
+  'VPS %s candles advance while historical gaps retain a cursor and survive a history failure',
+  async (interval) => {
+    env.RUNTIME_KIND = 'vps';
+    const step = interval === '1h' ? 3600 : 86400;
+    const hour = Math.floor(now / step) * step,
+      old = hour - 90 * step;
+    const candle = (time) => ({
+      time,
+      open: 100,
+      high: 110,
+      low: 90,
+      close: 105,
+      volume: 1,
+      closeTime: time + step,
+      closed: true,
+    });
     DB.sqlite
-      .prepare("SELECT value FROM state WHERE key='cursor:price-backfill:BTC:binance:1h'")
-      .get().value,
-  );
-  expect(state.cursor).toBe(old + 28 * 3600);
-  expect(
-    DB.sqlite.prepare("SELECT data_as_of FROM ingestion WHERE key='BTC:binance:1h'").get()
-      .data_as_of,
-  ).toBe(hour - 3600);
-  const cursor = state.cursor;
-  getRecentCandles.mockImplementation(async (_a, _m, _i, since) => {
-    if (since !== undefined) throw new Error('HTTP 429 private upstream detail');
-    return [candle(hour - 3600)];
-  });
-  await updatePrice(env, 'BTC', 'binance', '1h');
-  state = JSON.parse(
+      .prepare('INSERT INTO candles VALUES(?,?,?,?,?,?,?,?,?,?,?)')
+      .run('BTC', 'binance', interval, old, 100, 110, 90, 105, 1, old + step, old);
     DB.sqlite
-      .prepare("SELECT value FROM state WHERE key='cursor:price-backfill:BTC:binance:1h'")
-      .get().value,
-  );
-  expect(state.cursor).toBe(cursor);
-  expect(state.error).toBe('HTTP 429');
-  expect(
-    DB.sqlite.prepare("SELECT error FROM ingestion WHERE key='BTC:binance:1h'").get().error,
-  ).toBeNull();
-  getRecentCandles.mockImplementation(async (_a, _m, _i, since) => [candle(hour - 3600)]);
-  await updatePrice(env, 'BTC', 'binance', '1h');
-  expect(
-    DB.sqlite
-      .prepare("SELECT value FROM state WHERE key='cursor:price-backfill:BTC:binance:1h'")
-      .get(),
-  ).toBeUndefined();
-});
+      .prepare('INSERT INTO state(key,value) VALUES (?,?)')
+      .run(
+        'history:BTC:binance:' + interval,
+        JSON.stringify({ first: old - 100 * step, last: old, rows: 101, archived: true }),
+      );
+    getRecentCandles.mockImplementation(async (_a, _m, _i, since) =>
+      since === undefined ? [candle(hour - step)] : [candle(since + 30 * step)],
+    );
+    await updatePrice(env, 'BTC', 'binance', interval);
+    expect(storedHistory('BTC:binance:' + interval).rows).toBeNull();
+    let state = JSON.parse(
+      DB.sqlite
+        .prepare(
+          `SELECT value FROM state WHERE key='cursor:price-backfill:BTC:binance:${interval}'`,
+        )
+        .get().value,
+    );
+    expect(state.cursor).toBe(old + 28 * step);
+    expect(
+      DB.sqlite
+        .prepare(`SELECT data_as_of FROM ingestion WHERE key='BTC:binance:${interval}'`)
+        .get().data_as_of,
+    ).toBe(hour - step);
+    const cursor = state.cursor;
+    getRecentCandles.mockImplementation(async (_a, _m, _i, since) => {
+      if (since !== undefined) throw new Error('HTTP 429 private upstream detail');
+      return [candle(hour - step)];
+    });
+    await updatePrice(env, 'BTC', 'binance', interval);
+    state = JSON.parse(
+      DB.sqlite
+        .prepare(
+          `SELECT value FROM state WHERE key='cursor:price-backfill:BTC:binance:${interval}'`,
+        )
+        .get().value,
+    );
+    expect(state.cursor).toBe(cursor);
+    expect(state.error).toBe('HTTP 429');
+    expect(
+      DB.sqlite.prepare(`SELECT error FROM ingestion WHERE key='BTC:binance:${interval}'`).get()
+        .error,
+    ).toBeNull();
+    getRecentCandles.mockImplementation(async (_a, _m, _i, since) => [candle(hour - step)]);
+    await updatePrice(env, 'BTC', 'binance', interval);
+    expect(
+      DB.sqlite
+        .prepare(
+          `SELECT value FROM state WHERE key='cursor:price-backfill:BTC:binance:${interval}'`,
+        )
+        .get(),
+    ).toBeUndefined();
+  },
+);
