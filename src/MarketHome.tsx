@@ -164,24 +164,26 @@ export function MarketHome() {
               Binance · USDT
             </button>
           </div>
-          <label>
-            정렬{' '}
-            <select
-              value={sort}
-              onChange={(e) => {
-                save('market-sort', e.target.value);
-                setParams((p) => {
-                  p.set('sort', e.target.value);
-                  return p;
-                });
-              }}
-            >
-              <option value="default">기본 순서</option>
-              <option value="change">상승률</option>
-              <option value="volume">거래대금</option>
-            </select>
-          </label>
-          {sort !== 'default' && (
+          {view !== 'themes' && (
+            <label>
+              정렬{' '}
+              <select
+                value={sort}
+                onChange={(e) => {
+                  save('market-sort', e.target.value);
+                  setParams((p) => {
+                    p.set('sort', e.target.value);
+                    return p;
+                  });
+                }}
+              >
+                <option value="default">기본 순서</option>
+                <option value="change">상승률</option>
+                <option value="volume">거래대금</option>
+              </select>
+            </label>
+          )}
+          {view !== 'themes' && sort !== 'default' && (
             <button onClick={() => setSortRevision((v) => v + 1)}>지금 값으로 정렬</button>
           )}
         </div>

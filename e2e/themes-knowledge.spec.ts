@@ -12,6 +12,7 @@ test('market only loads themes on demand and restores theme/exchange after analy
   await expect(page.locator('.market-table tbody tr')).toHaveCount(8);
   expect(calls.filter((u) => /\/themes|\/knowledge|\/overview|\/network/.test(u))).toEqual([]);
   await page.getByRole('button', { name: '테마', exact: true }).click();
+  await expect(page.getByLabel('정렬', { exact: true })).toHaveCount(0);
   await page.getByRole('button', { name: 'RWA 관련 1', exact: true }).click();
   await expect(page.locator('.theme-row')).toHaveCount(1);
   await page.getByText('ONDO 분류 근거').click();
