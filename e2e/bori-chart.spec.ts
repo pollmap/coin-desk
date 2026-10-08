@@ -172,6 +172,9 @@ test('relative settings preserve chart position, focus, and guide context', asyn
   for (const width of [320, 390, 768, 1000, 1280, 1440]) {
     await page.setViewportSize({ width, height: 900 });
     const before = (await chart.boundingBox())!;
+    const picker = (await page.locator('.asset-header .coin-picker summary').boundingBox())!;
+    const ticker = (await page.locator('.asset-header .coin-picker h1 b').boundingBox())!;
+    expect(ticker.x + ticker.width).toBeLessThanOrEqual(picker.x + picker.width);
     console.log(
       'relative geometry',
       width,

@@ -874,7 +874,12 @@ body {
   }
   .product-desk .indicator-workspace .coin-picker h1 {
     white-space: nowrap;
+    font-size: 0;
+  }
+  .product-desk .indicator-workspace .coin-picker h1 b {
     font-size: 14px;
+    margin: 0;
+    color: var(--text);
   }
   .product-desk.app .indicator-workspace .coin-context {
     flex-wrap: nowrap;
