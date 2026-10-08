@@ -1,0 +1,7 @@
+{
+  "checkedAt": "2026-10-08T17:31:51.900779+00:00",
+  "otherRunningContainers": 12,
+  "sameNamesIdsAndImages": true,
+  "sharedServiceConfigurationChanged": false,
+  "scope": "Running non-Coin-Desk containers before/after this deployment; not a global host availability claim"
+}

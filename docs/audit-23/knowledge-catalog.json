@@ -1,0 +1,1172 @@
+{
+  "at": "2026-10-08T17:31:36.112299+00:00",
+  "base": "https://coin-desk.pages.dev",
+  "graphs": [
+    {
+      "version": "1.0.0",
+      "asset": "BTC",
+      "nodes": [
+        {
+          "id": "asset:BTC",
+          "kind": "asset",
+          "label": "비트코인 · BTC",
+          "description": "Bitcoin 네트워크에서 직접 전송하는 자산입니다.",
+          "evidence": {
+            "url": "https://bitcoin.org/en/bitcoin-for-individuals",
+            "provider": "Bitcoin.org",
+            "note": "Bitcoin 네트워크에서 직접 전송하는 자산입니다.",
+            "basis": "official",
+            "checkedAt": "2026-10-09",
+            "review": "reviewed"
+          }
+        },
+        {
+          "id": "network:Bitcoin",
+          "kind": "network",
+          "label": "Bitcoin",
+          "description": "BTC를 네이티브 자산으로 사용하는 네트워크입니다.",
+          "evidence": {
+            "url": "https://bitcoin.org/en/bitcoin-for-individuals",
+            "provider": "Bitcoin.org",
+            "note": "Bitcoin 네트워크에서 직접 전송하는 자산입니다.",
+            "basis": "official",
+            "checkedAt": "2026-10-09",
+            "review": "reviewed"
+          }
+        },
+        {
+          "id": "theme:payments",
+          "kind": "theme",
+          "label": "통화·결제",
+          "description": "네트워크에서 가치를 전송하는 자산",
+          "evidence": {
+            "url": "https://bitcoin.org/en/bitcoin-for-individuals",
+            "provider": "Bitcoin.org",
+            "note": "Bitcoin 네트워크에서 직접 전송하는 자산입니다. 이 테마 연결은 보리차트의 편집 분류입니다.",
+            "basis": "editorial",
+            "checkedAt": "2026-10-09",
+            "review": "reviewed"
+          }
+        },
+        {
+          "id": "indicator:net:mvrv",
+          "kind": "indicator",
+          "label": "MVRV",
+          "metric": "net:mvrv",
+          "description": "시가총액 ÷ 실현시가총액",
+          "evidence": {
+            "url": "https://github.com/pollmap/coin-desk/blob/main/shared/indicator-catalog.ts",
+            "provider": "보리차트 계산·지원 카탈로그",
+            "note": "시가총액 ÷ 실현시가총액 지원 정의이며 현재 수집 성공 여부와는 별개입니다.",
+            "basis": "implementation",
+            "checkedAt": "2026-10-09",
+            "review": "reviewed"
+          }
+        },
+        {
+          "id": "provider:Coin Metrics",
+          "kind": "provider",
+          "label": "Coin Metrics",
+          "description": "선택 지표의 원천입니다. 현재 관측일과 지연은 차트에서 확인합니다.",
+          "evidence": {
+            "url": "https://github.com/pollmap/coin-desk/blob/main/shared/indicator-catalog.ts",
+            "provider": "보리차트 계산·지원 카탈로그",
+            "note": "시가총액 ÷ 실현시가총액 지원 정의이며 현재 수집 성공 여부와는 별개입니다.",
+            "basis": "implementation",
+            "checkedAt": "2026-10-09",
+            "review": "reviewed"
+          }
+        }
+      ],
+      "edges": [
+        {
+          "id": "asset:BTC->network:Bitcoin",
+          "source": "asset:BTC",
+          "target": "network:Bitcoin",
+          "label": "네트워크의 자산",
+          "evidence": {
+            "url": "https://bitcoin.org/en/bitcoin-for-individuals",
+            "provider": "Bitcoin.org",
+            "note": "Bitcoin 네트워크에서 직접 전송하는 자산입니다.",
+            "basis": "official",
+            "checkedAt": "2026-10-09",
+            "review": "reviewed"
+          }
+        },
+        {
+          "id": "asset:BTC->theme:payments",
+          "source": "asset:BTC",
+          "target": "theme:payments",
+          "label": "관련 테마",
+          "evidence": {
+            "url": "https://bitcoin.org/en/bitcoin-for-individuals",
+            "provider": "Bitcoin.org",
+            "note": "Bitcoin 네트워크에서 직접 전송하는 자산입니다. 이 테마 연결은 보리차트의 편집 분류입니다.",
+            "basis": "editorial",
+            "checkedAt": "2026-10-09",
+            "review": "reviewed"
+          }
+        },
+        {
+          "id": "asset:BTC->indicator:net:mvrv",
+          "source": "asset:BTC",
+          "target": "indicator:net:mvrv",
+          "label": "확인할 지표",
+          "evidence": {
+            "url": "https://github.com/pollmap/coin-desk/blob/main/shared/indicator-catalog.ts",
+            "provider": "보리차트 계산·지원 카탈로그",
+            "note": "시가총액 ÷ 실현시가총액 지원 정의이며 현재 수집 성공 여부와는 별개입니다.",
+            "basis": "implementation",
+            "checkedAt": "2026-10-09",
+            "review": "reviewed"
+          }
+        },
+        {
+          "id": "indicator:net:mvrv->provider:Coin Metrics",
+          "source": "indicator:net:mvrv",
+          "target": "provider:Coin Metrics",
+          "label": "사용하는 원천",
+          "evidence": {
+            "url": "https://github.com/pollmap/coin-desk/blob/main/shared/indicator-catalog.ts",
+            "provider": "보리차트 계산·지원 카탈로그",
+            "note": "시가총액 ÷ 실현시가총액 지원 정의이며 현재 수집 성공 여부와는 별개입니다.",
+            "basis": "implementation",
+            "checkedAt": "2026-10-09",
+            "review": "reviewed"
+          }
+        }
+      ]
+    },
+    {
+      "version": "1.0.0",
+      "asset": "DOGE",
+      "nodes": [
+        {
+          "id": "asset:DOGE",
+          "kind": "asset",
+          "label": "도지코인 · DOGE",
+          "description": "밈에서 출발한 Dogecoin 네트워크의 결제 자산입니다.",
+          "evidence": {
+            "url": "https://dogecoin.com/dogepedia/articles/what-is-dogecoin/",
+            "provider": "Dogecoin",
+            "note": "밈에서 출발한 Dogecoin 네트워크의 결제 자산입니다.",
+            "basis": "official",
+            "checkedAt": "2026-10-09",
+            "review": "reviewed"
+          }
+        },
+        {
+          "id": "network:Dogecoin",
+          "kind": "network",
+          "label": "Dogecoin",
+          "description": "DOGE를 네이티브 자산으로 사용하는 네트워크입니다.",
+          "evidence": {
+            "url": "https://dogecoin.com/dogepedia/articles/what-is-dogecoin/",
+            "provider": "Dogecoin",
+            "note": "밈에서 출발한 Dogecoin 네트워크의 결제 자산입니다.",
+            "basis": "official",
+            "checkedAt": "2026-10-09",
+            "review": "reviewed"
+          }
+        },
+        {
+          "id": "theme:payments",
+          "kind": "theme",
+          "label": "통화·결제",
+          "description": "네트워크에서 가치를 전송하는 자산",
+          "evidence": {
+            "url": "https://dogecoin.com/dogepedia/articles/what-is-dogecoin/",
+            "provider": "Dogecoin",
+            "note": "밈에서 출발한 Dogecoin 네트워크의 결제 자산입니다. 이 테마 연결은 보리차트의 편집 분류입니다.",
+            "basis": "editorial",
+            "checkedAt": "2026-10-09",
+            "review": "reviewed"
+          }
+        },
+        {
+          "id": "theme:memes",
+          "kind": "theme",
+          "label": "밈",
+          "description": "밈과 커뮤니티를 중심으로 알려진 코인·토큰",
+          "evidence": {
+            "url": "https://dogecoin.com/dogepedia/articles/what-is-dogecoin/",
+            "provider": "Dogecoin",
+            "note": "밈에서 출발한 Dogecoin 네트워크의 결제 자산입니다. 이 테마 연결은 보리차트의 편집 분류입니다.",
+            "basis": "editorial",
+            "checkedAt": "2026-10-09",
+            "review": "reviewed"
+          }
+        },
+        {
+          "id": "indicator:net:mvrv",
+          "kind": "indicator",
+          "label": "MVRV",
+          "metric": "net:mvrv",
+          "description": "시가총액 ÷ 실현시가총액",
+          "evidence": {
+            "url": "https://github.com/pollmap/coin-desk/blob/main/shared/indicator-catalog.ts",
+            "provider": "보리차트 계산·지원 카탈로그",
+            "note": "시가총액 ÷ 실현시가총액 지원 정의이며 현재 수집 성공 여부와는 별개입니다.",
+            "basis": "implementation",
+            "checkedAt": "2026-10-09",
+            "review": "reviewed"
+          }
+        },
+        {
+          "id": "provider:Coin Metrics",
+          "kind": "provider",
+          "label": "Coin Metrics",
+          "description": "선택 지표의 원천입니다. 현재 관측일과 지연은 차트에서 확인합니다.",
+          "evidence": {
+            "url": "https://github.com/pollmap/coin-desk/blob/main/shared/indicator-catalog.ts",
+            "provider": "보리차트 계산·지원 카탈로그",
+            "note": "시가총액 ÷ 실현시가총액 지원 정의이며 현재 수집 성공 여부와는 별개입니다.",
+            "basis": "implementation",
+            "checkedAt": "2026-10-09",
+            "review": "reviewed"
+          }
+        }
+      ],
+      "edges": [
+        {
+          "id": "asset:DOGE->network:Dogecoin",
+          "source": "asset:DOGE",
+          "target": "network:Dogecoin",
+          "label": "네트워크의 자산",
+          "evidence": {
+            "url": "https://dogecoin.com/dogepedia/articles/what-is-dogecoin/",
+            "provider": "Dogecoin",
+            "note": "밈에서 출발한 Dogecoin 네트워크의 결제 자산입니다.",
+            "basis": "official",
+            "checkedAt": "2026-10-09",
+            "review": "reviewed"
+          }
+        },
+        {
+          "id": "asset:DOGE->theme:payments",
+          "source": "asset:DOGE",
+          "target": "theme:payments",
+          "label": "관련 테마",
+          "evidence": {
+            "url": "https://dogecoin.com/dogepedia/articles/what-is-dogecoin/",
+            "provider": "Dogecoin",
+            "note": "밈에서 출발한 Dogecoin 네트워크의 결제 자산입니다. 이 테마 연결은 보리차트의 편집 분류입니다.",
+            "basis": "editorial",
+            "checkedAt": "2026-10-09",
+            "review": "reviewed"
+          }
+        },
+        {
+          "id": "asset:DOGE->theme:memes",
+          "source": "asset:DOGE",
+          "target": "theme:memes",
+          "label": "관련 테마",
+          "evidence": {
+            "url": "https://dogecoin.com/dogepedia/articles/what-is-dogecoin/",
+            "provider": "Dogecoin",
+            "note": "밈에서 출발한 Dogecoin 네트워크의 결제 자산입니다. 이 테마 연결은 보리차트의 편집 분류입니다.",
+            "basis": "editorial",
+            "checkedAt": "2026-10-09",
+            "review": "reviewed"
+          }
+        },
+        {
+          "id": "asset:DOGE->indicator:net:mvrv",
+          "source": "asset:DOGE",
+          "target": "indicator:net:mvrv",
+          "label": "확인할 지표",
+          "evidence": {
+            "url": "https://github.com/pollmap/coin-desk/blob/main/shared/indicator-catalog.ts",
+            "provider": "보리차트 계산·지원 카탈로그",
+            "note": "시가총액 ÷ 실현시가총액 지원 정의이며 현재 수집 성공 여부와는 별개입니다.",
+            "basis": "implementation",
+            "checkedAt": "2026-10-09",
+            "review": "reviewed"
+          }
+        },
+        {
+          "id": "indicator:net:mvrv->provider:Coin Metrics",
+          "source": "indicator:net:mvrv",
+          "target": "provider:Coin Metrics",
+          "label": "사용하는 원천",
+          "evidence": {
+            "url": "https://github.com/pollmap/coin-desk/blob/main/shared/indicator-catalog.ts",
+            "provider": "보리차트 계산·지원 카탈로그",
+            "note": "시가총액 ÷ 실현시가총액 지원 정의이며 현재 수집 성공 여부와는 별개입니다.",
+            "basis": "implementation",
+            "checkedAt": "2026-10-09",
+            "review": "reviewed"
+          }
+        }
+      ]
+    },
+    {
+      "version": "1.0.0",
+      "asset": "ETH",
+      "nodes": [
+        {
+          "id": "asset:ETH",
+          "kind": "asset",
+          "label": "이더리움 · ETH",
+          "description": "Ethereum 수수료와 스테이킹에 사용하는 네이티브 자산입니다.",
+          "evidence": {
+            "url": "https://ethereum.org/what-is-ether/",
+            "provider": "Ethereum.org",
+            "note": "Ethereum 수수료와 스테이킹에 사용하는 네이티브 자산입니다.",
+            "basis": "official",
+            "checkedAt": "2026-10-09",
+            "review": "reviewed"
+          }
+        },
+        {
+          "id": "network:Ethereum",
+          "kind": "network",
+          "label": "Ethereum",
+          "description": "ETH를 네이티브 자산으로 사용하는 네트워크입니다.",
+          "evidence": {
+            "url": "https://ethereum.org/what-is-ether/",
+            "provider": "Ethereum.org",
+            "note": "Ethereum 수수료와 스테이킹에 사용하는 네이티브 자산입니다.",
+            "basis": "official",
+            "checkedAt": "2026-10-09",
+            "review": "reviewed"
+          }
+        },
+        {
+          "id": "theme:platforms",
+          "kind": "theme",
+          "label": "스마트계약 플랫폼",
+          "description": "앱 실행과 네트워크 수수료에 사용하는 자산",
+          "evidence": {
+            "url": "https://ethereum.org/what-is-ether/",
+            "provider": "Ethereum.org",
+            "note": "Ethereum 수수료와 스테이킹에 사용하는 네이티브 자산입니다. 이 테마 연결은 보리차트의 편집 분류입니다.",
+            "basis": "editorial",
+            "checkedAt": "2026-10-09",
+            "review": "reviewed"
+          }
+        },
+        {
+          "id": "indicator:net:mvrv",
+          "kind": "indicator",
+          "label": "MVRV",
+          "metric": "net:mvrv",
+          "description": "시가총액 ÷ 실현시가총액",
+          "evidence": {
+            "url": "https://github.com/pollmap/coin-desk/blob/main/shared/indicator-catalog.ts",
+            "provider": "보리차트 계산·지원 카탈로그",
+            "note": "시가총액 ÷ 실현시가총액 지원 정의이며 현재 수집 성공 여부와는 별개입니다.",
+            "basis": "implementation",
+            "checkedAt": "2026-10-09",
+            "review": "reviewed"
+          }
+        },
+        {
+          "id": "provider:Coin Metrics",
+          "kind": "provider",
+          "label": "Coin Metrics",
+          "description": "선택 지표의 원천입니다. 현재 관측일과 지연은 차트에서 확인합니다.",
+          "evidence": {
+            "url": "https://github.com/pollmap/coin-desk/blob/main/shared/indicator-catalog.ts",
+            "provider": "보리차트 계산·지원 카탈로그",
+            "note": "시가총액 ÷ 실현시가총액 지원 정의이며 현재 수집 성공 여부와는 별개입니다.",
+            "basis": "implementation",
+            "checkedAt": "2026-10-09",
+            "review": "reviewed"
+          }
+        }
+      ],
+      "edges": [
+        {
+          "id": "asset:ETH->network:Ethereum",
+          "source": "asset:ETH",
+          "target": "network:Ethereum",
+          "label": "네트워크의 자산",
+          "evidence": {
+            "url": "https://ethereum.org/what-is-ether/",
+            "provider": "Ethereum.org",
+            "note": "Ethereum 수수료와 스테이킹에 사용하는 네이티브 자산입니다.",
+            "basis": "official",
+            "checkedAt": "2026-10-09",
+            "review": "reviewed"
+          }
+        },
+        {
+          "id": "asset:ETH->theme:platforms",
+          "source": "asset:ETH",
+          "target": "theme:platforms",
+          "label": "관련 테마",
+          "evidence": {
+            "url": "https://ethereum.org/what-is-ether/",
+            "provider": "Ethereum.org",
+            "note": "Ethereum 수수료와 스테이킹에 사용하는 네이티브 자산입니다. 이 테마 연결은 보리차트의 편집 분류입니다.",
+            "basis": "editorial",
+            "checkedAt": "2026-10-09",
+            "review": "reviewed"
+          }
+        },
+        {
+          "id": "asset:ETH->indicator:net:mvrv",
+          "source": "asset:ETH",
+          "target": "indicator:net:mvrv",
+          "label": "확인할 지표",
+          "evidence": {
+            "url": "https://github.com/pollmap/coin-desk/blob/main/shared/indicator-catalog.ts",
+            "provider": "보리차트 계산·지원 카탈로그",
+            "note": "시가총액 ÷ 실현시가총액 지원 정의이며 현재 수집 성공 여부와는 별개입니다.",
+            "basis": "implementation",
+            "checkedAt": "2026-10-09",
+            "review": "reviewed"
+          }
+        },
+        {
+          "id": "indicator:net:mvrv->provider:Coin Metrics",
+          "source": "indicator:net:mvrv",
+          "target": "provider:Coin Metrics",
+          "label": "사용하는 원천",
+          "evidence": {
+            "url": "https://github.com/pollmap/coin-desk/blob/main/shared/indicator-catalog.ts",
+            "provider": "보리차트 계산·지원 카탈로그",
+            "note": "시가총액 ÷ 실현시가총액 지원 정의이며 현재 수집 성공 여부와는 별개입니다.",
+            "basis": "implementation",
+            "checkedAt": "2026-10-09",
+            "review": "reviewed"
+          }
+        }
+      ]
+    },
+    {
+      "version": "1.0.0",
+      "asset": "SOL",
+      "nodes": [
+        {
+          "id": "asset:SOL",
+          "kind": "asset",
+          "label": "솔라나 · SOL",
+          "description": "Solana 네트워크의 거래 수수료는 SOL로 지불합니다.",
+          "evidence": {
+            "url": "https://solana.com/docs/core/fees",
+            "provider": "Solana",
+            "note": "Solana 네트워크의 거래 수수료는 SOL로 지불합니다.",
+            "basis": "official",
+            "checkedAt": "2026-10-09",
+            "review": "reviewed"
+          }
+        },
+        {
+          "id": "network:Solana",
+          "kind": "network",
+          "label": "Solana",
+          "description": "SOL를 네이티브 자산으로 사용하는 네트워크입니다.",
+          "evidence": {
+            "url": "https://solana.com/docs/core/fees",
+            "provider": "Solana",
+            "note": "Solana 네트워크의 거래 수수료는 SOL로 지불합니다.",
+            "basis": "official",
+            "checkedAt": "2026-10-09",
+            "review": "reviewed"
+          }
+        },
+        {
+          "id": "theme:platforms",
+          "kind": "theme",
+          "label": "스마트계약 플랫폼",
+          "description": "앱 실행과 네트워크 수수료에 사용하는 자산",
+          "evidence": {
+            "url": "https://solana.com/docs/core/fees",
+            "provider": "Solana",
+            "note": "Solana 네트워크의 거래 수수료는 SOL로 지불합니다. 이 테마 연결은 보리차트의 편집 분류입니다.",
+            "basis": "editorial",
+            "checkedAt": "2026-10-09",
+            "review": "reviewed"
+          }
+        },
+        {
+          "id": "indicator:rsi",
+          "kind": "indicator",
+          "label": "RSI 14",
+          "metric": "rsi",
+          "description": "상승폭과 하락폭의 균형을 0~100으로 봅니다.",
+          "evidence": {
+            "url": "https://github.com/pollmap/coin-desk/blob/main/shared/indicator-catalog.ts",
+            "provider": "보리차트 계산·지원 카탈로그",
+            "note": "상승폭과 하락폭의 균형을 0~100으로 봅니다. 지원 정의이며 현재 수집 성공 여부와는 별개입니다.",
+            "basis": "implementation",
+            "checkedAt": "2026-10-09",
+            "review": "reviewed"
+          }
+        },
+        {
+          "id": "provider:선택 가격 원천",
+          "kind": "provider",
+          "label": "선택 가격 원천",
+          "description": "선택 지표의 원천입니다. 현재 관측일과 지연은 차트에서 확인합니다.",
+          "evidence": {
+            "url": "https://github.com/pollmap/coin-desk/blob/main/shared/indicator-catalog.ts",
+            "provider": "보리차트 계산·지원 카탈로그",
+            "note": "상승폭과 하락폭의 균형을 0~100으로 봅니다. 지원 정의이며 현재 수집 성공 여부와는 별개입니다.",
+            "basis": "implementation",
+            "checkedAt": "2026-10-09",
+            "review": "reviewed"
+          }
+        }
+      ],
+      "edges": [
+        {
+          "id": "asset:SOL->network:Solana",
+          "source": "asset:SOL",
+          "target": "network:Solana",
+          "label": "네트워크의 자산",
+          "evidence": {
+            "url": "https://solana.com/docs/core/fees",
+            "provider": "Solana",
+            "note": "Solana 네트워크의 거래 수수료는 SOL로 지불합니다.",
+            "basis": "official",
+            "checkedAt": "2026-10-09",
+            "review": "reviewed"
+          }
+        },
+        {
+          "id": "asset:SOL->theme:platforms",
+          "source": "asset:SOL",
+          "target": "theme:platforms",
+          "label": "관련 테마",
+          "evidence": {
+            "url": "https://solana.com/docs/core/fees",
+            "provider": "Solana",
+            "note": "Solana 네트워크의 거래 수수료는 SOL로 지불합니다. 이 테마 연결은 보리차트의 편집 분류입니다.",
+            "basis": "editorial",
+            "checkedAt": "2026-10-09",
+            "review": "reviewed"
+          }
+        },
+        {
+          "id": "asset:SOL->indicator:rsi",
+          "source": "asset:SOL",
+          "target": "indicator:rsi",
+          "label": "확인할 지표",
+          "evidence": {
+            "url": "https://github.com/pollmap/coin-desk/blob/main/shared/indicator-catalog.ts",
+            "provider": "보리차트 계산·지원 카탈로그",
+            "note": "상승폭과 하락폭의 균형을 0~100으로 봅니다. 지원 정의이며 현재 수집 성공 여부와는 별개입니다.",
+            "basis": "implementation",
+            "checkedAt": "2026-10-09",
+            "review": "reviewed"
+          }
+        },
+        {
+          "id": "indicator:rsi->provider:선택 가격 원천",
+          "source": "indicator:rsi",
+          "target": "provider:선택 가격 원천",
+          "label": "사용하는 원천",
+          "evidence": {
+            "url": "https://github.com/pollmap/coin-desk/blob/main/shared/indicator-catalog.ts",
+            "provider": "보리차트 계산·지원 카탈로그",
+            "note": "상승폭과 하락폭의 균형을 0~100으로 봅니다. 지원 정의이며 현재 수집 성공 여부와는 별개입니다.",
+            "basis": "implementation",
+            "checkedAt": "2026-10-09",
+            "review": "reviewed"
+          }
+        }
+      ]
+    },
+    {
+      "version": "1.0.0",
+      "asset": "XRP",
+      "nodes": [
+        {
+          "id": "asset:XRP",
+          "kind": "asset",
+          "label": "리플 · XRP",
+          "description": "XRP Ledger의 네이티브 자산이며 Ripple 회사의 주식이 아닙니다.",
+          "evidence": {
+            "url": "https://xrpl.org/about/xrp",
+            "provider": "XRP Ledger",
+            "note": "XRP Ledger의 네이티브 자산이며 Ripple 회사의 주식이 아닙니다.",
+            "basis": "official",
+            "checkedAt": "2026-10-09",
+            "review": "reviewed"
+          }
+        },
+        {
+          "id": "network:XRP Ledger",
+          "kind": "network",
+          "label": "XRP Ledger",
+          "description": "XRP를 네이티브 자산으로 사용하는 네트워크입니다.",
+          "evidence": {
+            "url": "https://xrpl.org/about/xrp",
+            "provider": "XRP Ledger",
+            "note": "XRP Ledger의 네이티브 자산이며 Ripple 회사의 주식이 아닙니다.",
+            "basis": "official",
+            "checkedAt": "2026-10-09",
+            "review": "reviewed"
+          }
+        },
+        {
+          "id": "theme:payments",
+          "kind": "theme",
+          "label": "통화·결제",
+          "description": "네트워크에서 가치를 전송하는 자산",
+          "evidence": {
+            "url": "https://xrpl.org/about/xrp",
+            "provider": "XRP Ledger",
+            "note": "XRP Ledger의 네이티브 자산이며 Ripple 회사의 주식이 아닙니다. 이 테마 연결은 보리차트의 편집 분류입니다.",
+            "basis": "editorial",
+            "checkedAt": "2026-10-09",
+            "review": "reviewed"
+          }
+        },
+        {
+          "id": "indicator:net:mvrv",
+          "kind": "indicator",
+          "label": "MVRV",
+          "metric": "net:mvrv",
+          "description": "시가총액 ÷ 실현시가총액",
+          "evidence": {
+            "url": "https://github.com/pollmap/coin-desk/blob/main/shared/indicator-catalog.ts",
+            "provider": "보리차트 계산·지원 카탈로그",
+            "note": "시가총액 ÷ 실현시가총액 지원 정의이며 현재 수집 성공 여부와는 별개입니다.",
+            "basis": "implementation",
+            "checkedAt": "2026-10-09",
+            "review": "reviewed"
+          }
+        },
+        {
+          "id": "provider:Coin Metrics",
+          "kind": "provider",
+          "label": "Coin Metrics",
+          "description": "선택 지표의 원천입니다. 현재 관측일과 지연은 차트에서 확인합니다.",
+          "evidence": {
+            "url": "https://github.com/pollmap/coin-desk/blob/main/shared/indicator-catalog.ts",
+            "provider": "보리차트 계산·지원 카탈로그",
+            "note": "시가총액 ÷ 실현시가총액 지원 정의이며 현재 수집 성공 여부와는 별개입니다.",
+            "basis": "implementation",
+            "checkedAt": "2026-10-09",
+            "review": "reviewed"
+          }
+        }
+      ],
+      "edges": [
+        {
+          "id": "asset:XRP->network:XRP Ledger",
+          "source": "asset:XRP",
+          "target": "network:XRP Ledger",
+          "label": "네트워크의 자산",
+          "evidence": {
+            "url": "https://xrpl.org/about/xrp",
+            "provider": "XRP Ledger",
+            "note": "XRP Ledger의 네이티브 자산이며 Ripple 회사의 주식이 아닙니다.",
+            "basis": "official",
+            "checkedAt": "2026-10-09",
+            "review": "reviewed"
+          }
+        },
+        {
+          "id": "asset:XRP->theme:payments",
+          "source": "asset:XRP",
+          "target": "theme:payments",
+          "label": "관련 테마",
+          "evidence": {
+            "url": "https://xrpl.org/about/xrp",
+            "provider": "XRP Ledger",
+            "note": "XRP Ledger의 네이티브 자산이며 Ripple 회사의 주식이 아닙니다. 이 테마 연결은 보리차트의 편집 분류입니다.",
+            "basis": "editorial",
+            "checkedAt": "2026-10-09",
+            "review": "reviewed"
+          }
+        },
+        {
+          "id": "asset:XRP->indicator:net:mvrv",
+          "source": "asset:XRP",
+          "target": "indicator:net:mvrv",
+          "label": "확인할 지표",
+          "evidence": {
+            "url": "https://github.com/pollmap/coin-desk/blob/main/shared/indicator-catalog.ts",
+            "provider": "보리차트 계산·지원 카탈로그",
+            "note": "시가총액 ÷ 실현시가총액 지원 정의이며 현재 수집 성공 여부와는 별개입니다.",
+            "basis": "implementation",
+            "checkedAt": "2026-10-09",
+            "review": "reviewed"
+          }
+        },
+        {
+          "id": "indicator:net:mvrv->provider:Coin Metrics",
+          "source": "indicator:net:mvrv",
+          "target": "provider:Coin Metrics",
+          "label": "사용하는 원천",
+          "evidence": {
+            "url": "https://github.com/pollmap/coin-desk/blob/main/shared/indicator-catalog.ts",
+            "provider": "보리차트 계산·지원 카탈로그",
+            "note": "시가총액 ÷ 실현시가총액 지원 정의이며 현재 수집 성공 여부와는 별개입니다.",
+            "basis": "implementation",
+            "checkedAt": "2026-10-09",
+            "review": "reviewed"
+          }
+        }
+      ]
+    },
+    {
+      "version": "1.0.0",
+      "asset": "LINK",
+      "nodes": [
+        {
+          "id": "asset:LINK",
+          "kind": "asset",
+          "label": "체인링크 · LINK",
+          "description": "오라클 서비스와 네트워크 보안에 사용하는 Chainlink 토큰입니다.",
+          "evidence": {
+            "url": "https://docs.chain.link/resources/link-token-contracts",
+            "provider": "Chainlink",
+            "note": "오라클 서비스와 네트워크 보안에 사용하는 Chainlink 토큰입니다.",
+            "basis": "official",
+            "checkedAt": "2026-10-09",
+            "review": "reviewed"
+          }
+        },
+        {
+          "id": "project:LINK",
+          "kind": "project",
+          "label": "Chainlink",
+          "description": "블록체인과 외부 데이터를 연결하는 오라클 프로젝트입니다.",
+          "evidence": {
+            "url": "https://docs.chain.link/resources/link-token-contracts",
+            "provider": "Chainlink",
+            "note": "오라클 서비스와 네트워크 보안에 사용하는 Chainlink 토큰입니다.",
+            "basis": "official",
+            "checkedAt": "2026-10-09",
+            "review": "reviewed"
+          }
+        },
+        {
+          "id": "network:Ethereum",
+          "kind": "network",
+          "label": "Ethereum",
+          "description": "확인한 발행 네트워크입니다. 다른 체인의 배포 전체 목록은 아닙니다.",
+          "evidence": {
+            "url": "https://docs.chain.link/resources/link-token-contracts",
+            "provider": "Chainlink",
+            "note": "오라클 서비스와 네트워크 보안에 사용하는 Chainlink 토큰입니다.",
+            "basis": "official",
+            "checkedAt": "2026-10-09",
+            "review": "reviewed"
+          }
+        },
+        {
+          "id": "theme:oracles",
+          "kind": "theme",
+          "label": "오라클",
+          "description": "블록체인과 외부 데이터의 연결",
+          "evidence": {
+            "url": "https://docs.chain.link/resources/link-token-contracts",
+            "provider": "Chainlink",
+            "note": "오라클 서비스와 네트워크 보안에 사용하는 Chainlink 토큰입니다. 이 테마 연결은 보리차트의 편집 분류입니다.",
+            "basis": "editorial",
+            "checkedAt": "2026-10-09",
+            "review": "reviewed"
+          }
+        },
+        {
+          "id": "indicator:net:mvrv",
+          "kind": "indicator",
+          "label": "MVRV",
+          "metric": "net:mvrv",
+          "description": "시가총액 ÷ 실현시가총액",
+          "evidence": {
+            "url": "https://github.com/pollmap/coin-desk/blob/main/shared/indicator-catalog.ts",
+            "provider": "보리차트 계산·지원 카탈로그",
+            "note": "시가총액 ÷ 실현시가총액 지원 정의이며 현재 수집 성공 여부와는 별개입니다.",
+            "basis": "implementation",
+            "checkedAt": "2026-10-09",
+            "review": "reviewed"
+          }
+        },
+        {
+          "id": "provider:Coin Metrics",
+          "kind": "provider",
+          "label": "Coin Metrics",
+          "description": "선택 지표의 원천입니다. 현재 관측일과 지연은 차트에서 확인합니다.",
+          "evidence": {
+            "url": "https://github.com/pollmap/coin-desk/blob/main/shared/indicator-catalog.ts",
+            "provider": "보리차트 계산·지원 카탈로그",
+            "note": "시가총액 ÷ 실현시가총액 지원 정의이며 현재 수집 성공 여부와는 별개입니다.",
+            "basis": "implementation",
+            "checkedAt": "2026-10-09",
+            "review": "reviewed"
+          }
+        }
+      ],
+      "edges": [
+        {
+          "id": "asset:LINK->project:LINK",
+          "source": "asset:LINK",
+          "target": "project:LINK",
+          "label": "프로젝트의 토큰",
+          "evidence": {
+            "url": "https://docs.chain.link/resources/link-token-contracts",
+            "provider": "Chainlink",
+            "note": "오라클 서비스와 네트워크 보안에 사용하는 Chainlink 토큰입니다.",
+            "basis": "official",
+            "checkedAt": "2026-10-09",
+            "review": "reviewed"
+          }
+        },
+        {
+          "id": "asset:LINK->network:Ethereum",
+          "source": "asset:LINK",
+          "target": "network:Ethereum",
+          "label": "발행 네트워크",
+          "evidence": {
+            "url": "https://docs.chain.link/resources/link-token-contracts",
+            "provider": "Chainlink",
+            "note": "오라클 서비스와 네트워크 보안에 사용하는 Chainlink 토큰입니다.",
+            "basis": "official",
+            "checkedAt": "2026-10-09",
+            "review": "reviewed"
+          }
+        },
+        {
+          "id": "asset:LINK->theme:oracles",
+          "source": "asset:LINK",
+          "target": "theme:oracles",
+          "label": "관련 테마",
+          "evidence": {
+            "url": "https://docs.chain.link/resources/link-token-contracts",
+            "provider": "Chainlink",
+            "note": "오라클 서비스와 네트워크 보안에 사용하는 Chainlink 토큰입니다. 이 테마 연결은 보리차트의 편집 분류입니다.",
+            "basis": "editorial",
+            "checkedAt": "2026-10-09",
+            "review": "reviewed"
+          }
+        },
+        {
+          "id": "asset:LINK->indicator:net:mvrv",
+          "source": "asset:LINK",
+          "target": "indicator:net:mvrv",
+          "label": "확인할 지표",
+          "evidence": {
+            "url": "https://github.com/pollmap/coin-desk/blob/main/shared/indicator-catalog.ts",
+            "provider": "보리차트 계산·지원 카탈로그",
+            "note": "시가총액 ÷ 실현시가총액 지원 정의이며 현재 수집 성공 여부와는 별개입니다.",
+            "basis": "implementation",
+            "checkedAt": "2026-10-09",
+            "review": "reviewed"
+          }
+        },
+        {
+          "id": "indicator:net:mvrv->provider:Coin Metrics",
+          "source": "indicator:net:mvrv",
+          "target": "provider:Coin Metrics",
+          "label": "사용하는 원천",
+          "evidence": {
+            "url": "https://github.com/pollmap/coin-desk/blob/main/shared/indicator-catalog.ts",
+            "provider": "보리차트 계산·지원 카탈로그",
+            "note": "시가총액 ÷ 실현시가총액 지원 정의이며 현재 수집 성공 여부와는 별개입니다.",
+            "basis": "implementation",
+            "checkedAt": "2026-10-09",
+            "review": "reviewed"
+          }
+        }
+      ]
+    },
+    {
+      "version": "1.0.0",
+      "asset": "ONDO",
+      "nodes": [
+        {
+          "id": "asset:ONDO",
+          "kind": "asset",
+          "label": "온도파이낸스 · ONDO",
+          "description": "Ondo DAO의 거버넌스 토큰입니다. 국채나 이자 수익청구권이 아닙니다.",
+          "evidence": {
+            "url": "https://docs.ondo.foundation/ondo-token",
+            "provider": "Ondo Foundation",
+            "note": "Ondo DAO의 거버넌스 토큰입니다. 국채나 이자 수익청구권이 아닙니다.",
+            "basis": "official",
+            "checkedAt": "2026-10-09",
+            "review": "reviewed"
+          }
+        },
+        {
+          "id": "project:ONDO",
+          "kind": "project",
+          "label": "Ondo DAO",
+          "description": "ONDO 보유자가 거버넌스에 참여하는 DAO입니다.",
+          "evidence": {
+            "url": "https://docs.ondo.foundation/ondo-token",
+            "provider": "Ondo Foundation",
+            "note": "Ondo DAO의 거버넌스 토큰입니다. 국채나 이자 수익청구권이 아닙니다.",
+            "basis": "official",
+            "checkedAt": "2026-10-09",
+            "review": "reviewed"
+          }
+        },
+        {
+          "id": "theme:rwa",
+          "kind": "theme",
+          "label": "RWA 관련",
+          "description": "실물자산 토큰화 프로젝트와 관련된 거버넌스 토큰",
+          "evidence": {
+            "url": "https://docs.ondo.foundation/ondo-token",
+            "provider": "Ondo Foundation",
+            "note": "Ondo DAO의 거버넌스 토큰입니다. 국채나 이자 수익청구권이 아닙니다. 이 테마 연결은 보리차트의 편집 분류입니다.",
+            "basis": "editorial",
+            "checkedAt": "2026-10-09",
+            "review": "reviewed"
+          }
+        },
+        {
+          "id": "indicator:rsi",
+          "kind": "indicator",
+          "label": "RSI 14",
+          "metric": "rsi",
+          "description": "상승폭과 하락폭의 균형을 0~100으로 봅니다.",
+          "evidence": {
+            "url": "https://github.com/pollmap/coin-desk/blob/main/shared/indicator-catalog.ts",
+            "provider": "보리차트 계산·지원 카탈로그",
+            "note": "상승폭과 하락폭의 균형을 0~100으로 봅니다. 지원 정의이며 현재 수집 성공 여부와는 별개입니다.",
+            "basis": "implementation",
+            "checkedAt": "2026-10-09",
+            "review": "reviewed"
+          }
+        },
+        {
+          "id": "provider:선택 가격 원천",
+          "kind": "provider",
+          "label": "선택 가격 원천",
+          "description": "선택 지표의 원천입니다. 현재 관측일과 지연은 차트에서 확인합니다.",
+          "evidence": {
+            "url": "https://github.com/pollmap/coin-desk/blob/main/shared/indicator-catalog.ts",
+            "provider": "보리차트 계산·지원 카탈로그",
+            "note": "상승폭과 하락폭의 균형을 0~100으로 봅니다. 지원 정의이며 현재 수집 성공 여부와는 별개입니다.",
+            "basis": "implementation",
+            "checkedAt": "2026-10-09",
+            "review": "reviewed"
+          }
+        }
+      ],
+      "edges": [
+        {
+          "id": "asset:ONDO->project:ONDO",
+          "source": "asset:ONDO",
+          "target": "project:ONDO",
+          "label": "프로젝트의 토큰",
+          "evidence": {
+            "url": "https://docs.ondo.foundation/ondo-token",
+            "provider": "Ondo Foundation",
+            "note": "Ondo DAO의 거버넌스 토큰입니다. 국채나 이자 수익청구권이 아닙니다.",
+            "basis": "official",
+            "checkedAt": "2026-10-09",
+            "review": "reviewed"
+          }
+        },
+        {
+          "id": "asset:ONDO->theme:rwa",
+          "source": "asset:ONDO",
+          "target": "theme:rwa",
+          "label": "관련 테마",
+          "evidence": {
+            "url": "https://docs.ondo.foundation/ondo-token",
+            "provider": "Ondo Foundation",
+            "note": "Ondo DAO의 거버넌스 토큰입니다. 국채나 이자 수익청구권이 아닙니다. 이 테마 연결은 보리차트의 편집 분류입니다.",
+            "basis": "editorial",
+            "checkedAt": "2026-10-09",
+            "review": "reviewed"
+          }
+        },
+        {
+          "id": "asset:ONDO->indicator:rsi",
+          "source": "asset:ONDO",
+          "target": "indicator:rsi",
+          "label": "확인할 지표",
+          "evidence": {
+            "url": "https://github.com/pollmap/coin-desk/blob/main/shared/indicator-catalog.ts",
+            "provider": "보리차트 계산·지원 카탈로그",
+            "note": "상승폭과 하락폭의 균형을 0~100으로 봅니다. 지원 정의이며 현재 수집 성공 여부와는 별개입니다.",
+            "basis": "implementation",
+            "checkedAt": "2026-10-09",
+            "review": "reviewed"
+          }
+        },
+        {
+          "id": "indicator:rsi->provider:선택 가격 원천",
+          "source": "indicator:rsi",
+          "target": "provider:선택 가격 원천",
+          "label": "사용하는 원천",
+          "evidence": {
+            "url": "https://github.com/pollmap/coin-desk/blob/main/shared/indicator-catalog.ts",
+            "provider": "보리차트 계산·지원 카탈로그",
+            "note": "상승폭과 하락폭의 균형을 0~100으로 봅니다. 지원 정의이며 현재 수집 성공 여부와는 별개입니다.",
+            "basis": "implementation",
+            "checkedAt": "2026-10-09",
+            "review": "reviewed"
+          }
+        }
+      ]
+    },
+    {
+      "version": "1.0.0",
+      "asset": "PEPE",
+      "nodes": [
+        {
+          "id": "asset:PEPE",
+          "kind": "asset",
+          "label": "페페 · PEPE",
+          "description": "프로젝트가 밈 토큰으로 설명하는 Ethereum 토큰입니다.",
+          "evidence": {
+            "url": "https://www.pepe.vip/",
+            "provider": "Pepe",
+            "note": "프로젝트가 밈 토큰으로 설명하는 Ethereum 토큰입니다.",
+            "basis": "official",
+            "checkedAt": "2026-10-09",
+            "review": "reviewed"
+          }
+        },
+        {
+          "id": "project:PEPE",
+          "kind": "project",
+          "label": "Pepe",
+          "description": "PEPE 밈 토큰의 프로젝트입니다.",
+          "evidence": {
+            "url": "https://www.pepe.vip/",
+            "provider": "Pepe",
+            "note": "프로젝트가 밈 토큰으로 설명하는 Ethereum 토큰입니다.",
+            "basis": "official",
+            "checkedAt": "2026-10-09",
+            "review": "reviewed"
+          }
+        },
+        {
+          "id": "network:Ethereum",
+          "kind": "network",
+          "label": "Ethereum",
+          "description": "확인한 발행 네트워크입니다. 다른 체인의 배포 전체 목록은 아닙니다.",
+          "evidence": {
+            "url": "https://www.pepe.vip/",
+            "provider": "Pepe",
+            "note": "프로젝트가 밈 토큰으로 설명하는 Ethereum 토큰입니다.",
+            "basis": "official",
+            "checkedAt": "2026-10-09",
+            "review": "reviewed"
+          }
+        },
+        {
+          "id": "theme:memes",
+          "kind": "theme",
+          "label": "밈",
+          "description": "밈과 커뮤니티를 중심으로 알려진 코인·토큰",
+          "evidence": {
+            "url": "https://www.pepe.vip/",
+            "provider": "Pepe",
+            "note": "프로젝트가 밈 토큰으로 설명하는 Ethereum 토큰입니다. 이 테마 연결은 보리차트의 편집 분류입니다.",
+            "basis": "editorial",
+            "checkedAt": "2026-10-09",
+            "review": "reviewed"
+          }
+        },
+        {
+          "id": "indicator:rsi",
+          "kind": "indicator",
+          "label": "RSI 14",
+          "metric": "rsi",
+          "description": "상승폭과 하락폭의 균형을 0~100으로 봅니다.",
+          "evidence": {
+            "url": "https://github.com/pollmap/coin-desk/blob/main/shared/indicator-catalog.ts",
+            "provider": "보리차트 계산·지원 카탈로그",
+            "note": "상승폭과 하락폭의 균형을 0~100으로 봅니다. 지원 정의이며 현재 수집 성공 여부와는 별개입니다.",
+            "basis": "implementation",
+            "checkedAt": "2026-10-09",
+            "review": "reviewed"
+          }
+        },
+        {
+          "id": "provider:선택 가격 원천",
+          "kind": "provider",
+          "label": "선택 가격 원천",
+          "description": "선택 지표의 원천입니다. 현재 관측일과 지연은 차트에서 확인합니다.",
+          "evidence": {
+            "url": "https://github.com/pollmap/coin-desk/blob/main/shared/indicator-catalog.ts",
+            "provider": "보리차트 계산·지원 카탈로그",
+            "note": "상승폭과 하락폭의 균형을 0~100으로 봅니다. 지원 정의이며 현재 수집 성공 여부와는 별개입니다.",
+            "basis": "implementation",
+            "checkedAt": "2026-10-09",
+            "review": "reviewed"
+          }
+        }
+      ],
+      "edges": [
+        {
+          "id": "asset:PEPE->project:PEPE",
+          "source": "asset:PEPE",
+          "target": "project:PEPE",
+          "label": "프로젝트의 토큰",
+          "evidence": {
+            "url": "https://www.pepe.vip/",
+            "provider": "Pepe",
+            "note": "프로젝트가 밈 토큰으로 설명하는 Ethereum 토큰입니다.",
+            "basis": "official",
+            "checkedAt": "2026-10-09",
+            "review": "reviewed"
+          }
+        },
+        {
+          "id": "asset:PEPE->network:Ethereum",
+          "source": "asset:PEPE",
+          "target": "network:Ethereum",
+          "label": "발행 네트워크",
+          "evidence": {
+            "url": "https://www.pepe.vip/",
+            "provider": "Pepe",
+            "note": "프로젝트가 밈 토큰으로 설명하는 Ethereum 토큰입니다.",
+            "basis": "official",
+            "checkedAt": "2026-10-09",
+            "review": "reviewed"
+          }
+        },
+        {
+          "id": "asset:PEPE->theme:memes",
+          "source": "asset:PEPE",
+          "target": "theme:memes",
+          "label": "관련 테마",
+          "evidence": {
+            "url": "https://www.pepe.vip/",
+            "provider": "Pepe",
+            "note": "프로젝트가 밈 토큰으로 설명하는 Ethereum 토큰입니다. 이 테마 연결은 보리차트의 편집 분류입니다.",
+            "basis": "editorial",
+            "checkedAt": "2026-10-09",
+            "review": "reviewed"
+          }
+        },
+        {
+          "id": "asset:PEPE->indicator:rsi",
+          "source": "asset:PEPE",
+          "target": "indicator:rsi",
+          "label": "확인할 지표",
+          "evidence": {
+            "url": "https://github.com/pollmap/coin-desk/blob/main/shared/indicator-catalog.ts",
+            "provider": "보리차트 계산·지원 카탈로그",
+            "note": "상승폭과 하락폭의 균형을 0~100으로 봅니다. 지원 정의이며 현재 수집 성공 여부와는 별개입니다.",
+            "basis": "implementation",
+            "checkedAt": "2026-10-09",
+            "review": "reviewed"
+          }
+        },
+        {
+          "id": "indicator:rsi->provider:선택 가격 원천",
+          "source": "indicator:rsi",
+          "target": "provider:선택 가격 원천",
+          "label": "사용하는 원천",
+          "evidence": {
+            "url": "https://github.com/pollmap/coin-desk/blob/main/shared/indicator-catalog.ts",
+            "provider": "보리차트 계산·지원 카탈로그",
+            "note": "상승폭과 하락폭의 균형을 0~100으로 봅니다. 지원 정의이며 현재 수집 성공 여부와는 별개입니다.",
+            "basis": "implementation",
+            "checkedAt": "2026-10-09",
+            "review": "reviewed"
+          }
+        }
+      ]
+    }
+  ],
+  "assets": 8,
+  "edges": 35
+}

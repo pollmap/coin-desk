@@ -1,0 +1,27 @@
+{
+  "checkedAt": "2026-10-08T17:18:59.020914+00:00",
+  "browser": "Windows Chrome controlled through browser extension",
+  "base": "http://127.0.0.1:18523",
+  "backend": "read-only VPS candidate over SSH loopback tunnel",
+  "fixtureData": false,
+  "actions": [
+    "market to themes",
+    "RWA to ONDO",
+    "Upbit KRW RSI",
+    "keyboard Home date pin",
+    "top save",
+    "restore ONDO/Upbit/date range",
+    "relationship list and map"
+  ],
+  "result": "passed",
+  "humanUsabilityParticipant": false,
+  "actualSafariVoiceOver": false,
+  "productionCheck": {
+    "at": "2026-10-08T17:35:41.532797+00:00",
+    "base": "https://coin-desk.pages.dev",
+    "flow": "RWA theme → ONDO → Upbit KRW RSI",
+    "result": "passed",
+    "existingDarkThemePreserved": true,
+    "personalSavedEntriesRead": false
+  }
+}

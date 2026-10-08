@@ -1,0 +1,1391 @@
+{
+  "checkedAt": "2026-10-08T17:37:18.203Z",
+  "browser": "153.0.8010.12",
+  "conditions": {
+    "viewport": "1280x800",
+    "downMbps": 10,
+    "upMbps": 5,
+    "latencyMs": 0,
+    "cpuThrottle": 1,
+    "freshContexts": true,
+    "order": "alternating counterbalanced",
+    "samplesPerRelease": 5
+  },
+  "results": [
+    {
+      "label": "old",
+      "base": "https://56f9da0c.coin-desk.pages.dev",
+      "round": 0,
+      "lcp": 1108,
+      "tasks": [],
+      "navigation": [
+        {
+          "name": "https://56f9da0c.coin-desk.pages.dev/",
+          "entryType": "navigation",
+          "startTime": 0,
+          "duration": 979.4000000357628,
+          "navigationId": 2232,
+          "initiatorType": "navigation",
+          "deliveryType": "",
+          "nextHopProtocol": "h2",
+          "renderBlockingStatus": "non-blocking",
+          "contentType": "text/html",
+          "contentEncoding": "br",
+          "workerStart": 0,
+          "workerRouterEvaluationStart": 0,
+          "workerCacheLookupStart": 0,
+          "workerMatchedSourceType": "",
+          "workerFinalSourceType": "",
+          "redirectStart": 0,
+          "redirectEnd": 0,
+          "fetchStart": 0.19999998807907104,
+          "domainLookupStart": 10.800000011920929,
+          "domainLookupEnd": 38.19999998807907,
+          "connectStart": 38.19999998807907,
+          "secureConnectionStart": 49.5,
+          "connectEnd": 84.5,
+          "requestStart": 84.90000003576279,
+          "responseStart": 380.19999998807907,
+          "firstInterimResponseStart": 0,
+          "finalResponseHeadersStart": 380.19999998807907,
+          "responseEnd": 387,
+          "transferSize": 995,
+          "encodedBodySize": 695,
+          "decodedBodySize": 1993,
+          "responseStatus": 200,
+          "serverTiming": [],
+          "unloadEventStart": 0,
+          "unloadEventEnd": 0,
+          "domInteractive": 399.4000000357628,
+          "domContentLoadedEventStart": 979.3000000119209,
+          "domContentLoadedEventEnd": 979.4000000357628,
+          "domComplete": 979.4000000357628,
+          "loadEventStart": 979.4000000357628,
+          "loadEventEnd": 979.4000000357628,
+          "type": "navigate",
+          "redirectCount": 0,
+          "activationStart": 0,
+          "criticalCHRestart": 0,
+          "notRestoredReasons": null,
+          "confidence": {
+            "randomizedTriggerRate": 0.4994798,
+            "value": "low"
+          }
+        }
+      ],
+      "resources": [
+        {
+          "url": "https://56f9da0c.coin-desk.pages.dev/assets/index-BAXHNn6E.js",
+          "start": 392.69999998807907,
+          "duration": 559.4000000357628,
+          "size": 126756
+        },
+        {
+          "url": "https://56f9da0c.coin-desk.pages.dev/assets/index-CVl-_1yN.css",
+          "start": 393,
+          "duration": 339.60000002384186,
+          "size": 23513
+        },
+        {
+          "url": "https://56f9da0c.coin-desk.pages.dev/brand/coin-desk-shiba-smile.png",
+          "start": 1005.6999999880791,
+          "duration": 864.5,
+          "size": 790144
+        },
+        {
+          "url": "https://56f9da0c.coin-desk.pages.dev/coin-logos/btc.png",
+          "start": 1093.6000000238419,
+          "duration": 75.30000001192093,
+          "size": 5218
+        },
+        {
+          "url": "https://56f9da0c.coin-desk.pages.dev/coin-logos/eth.png",
+          "start": 1093.800000011921,
+          "duration": 78.60000002384186,
+          "size": 3284
+        },
+        {
+          "url": "https://56f9da0c.coin-desk.pages.dev/coin-logos/doge-official.png",
+          "start": 1093.800000011921,
+          "duration": 139.60000002384186,
+          "size": 18685
+        },
+        {
+          "url": "https://56f9da0c.coin-desk.pages.dev/coin-logos/xrp.png",
+          "start": 1094,
+          "duration": 111.10000002384186,
+          "size": 7304
+        },
+        {
+          "url": "https://56f9da0c.coin-desk.pages.dev/coin-logos/link.png",
+          "start": 1094,
+          "duration": 171.9000000357628,
+          "size": 21677
+        },
+        {
+          "url": "https://56f9da0c.coin-desk.pages.dev/coin-logos/sol.png",
+          "start": 1094,
+          "duration": 267.4000000357628,
+          "size": 54609
+        },
+        {
+          "url": "https://56f9da0c.coin-desk.pages.dev/coin-logos/ondo.png",
+          "start": 1094.1000000238419,
+          "duration": 219.5999999642372,
+          "size": 34647
+        },
+        {
+          "url": "https://56f9da0c.coin-desk.pages.dev/coin-logos/pepe.png",
+          "start": 1094.199999988079,
+          "duration": 283.2000000476837,
+          "size": 59397
+        },
+        {
+          "url": "https://56f9da0c.coin-desk.pages.dev/api/v1/market?market=upbit",
+          "start": 1100.5,
+          "duration": 964.9000000357628,
+          "size": 2359
+        }
+      ]
+    },
+    {
+      "label": "new",
+      "base": "https://coin-desk.pages.dev",
+      "round": 0,
+      "lcp": 384,
+      "tasks": [],
+      "navigation": [
+        {
+          "name": "https://coin-desk.pages.dev/",
+          "entryType": "navigation",
+          "startTime": 0,
+          "duration": 252.20000004768372,
+          "navigationId": 1431,
+          "initiatorType": "navigation",
+          "deliveryType": "",
+          "nextHopProtocol": "h2",
+          "renderBlockingStatus": "non-blocking",
+          "contentType": "text/html",
+          "contentEncoding": "br",
+          "workerStart": 0,
+          "workerRouterEvaluationStart": 0,
+          "workerCacheLookupStart": 0,
+          "workerMatchedSourceType": "",
+          "workerFinalSourceType": "",
+          "redirectStart": 0,
+          "redirectEnd": 0,
+          "fetchStart": 0.10000002384185791,
+          "domainLookupStart": 3.100000023841858,
+          "domainLookupEnd": 4.400000035762787,
+          "connectStart": 4.400000035762787,
+          "secureConnectionStart": 14.300000011920929,
+          "connectEnd": 33.60000002384186,
+          "requestStart": 33.80000001192093,
+          "responseStart": 57.90000003576279,
+          "firstInterimResponseStart": 0,
+          "finalResponseHeadersStart": 57.90000003576279,
+          "responseEnd": 59.700000047683716,
+          "transferSize": 992,
+          "encodedBodySize": 692,
+          "decodedBodySize": 1993,
+          "responseStatus": 200,
+          "serverTiming": [],
+          "unloadEventStart": 0,
+          "unloadEventEnd": 0,
+          "domInteractive": 68.40000003576279,
+          "domContentLoadedEventStart": 252.10000002384186,
+          "domContentLoadedEventEnd": 252.10000002384186,
+          "domComplete": 252.20000004768372,
+          "loadEventStart": 252.20000004768372,
+          "loadEventEnd": 252.20000004768372,
+          "type": "navigate",
+          "redirectCount": 0,
+          "activationStart": 0,
+          "criticalCHRestart": 0,
+          "notRestoredReasons": null,
+          "confidence": {
+            "randomizedTriggerRate": 0.4994798,
+            "value": "high"
+          }
+        }
+      ],
+      "resources": [
+        {
+          "url": "https://coin-desk.pages.dev/assets/index-snkgb3f4.js",
+          "start": 64.30000001192093,
+          "duration": 163.10000002384186,
+          "size": 127652
+        },
+        {
+          "url": "https://coin-desk.pages.dev/assets/index-Cw2rVjBY.css",
+          "start": 64.60000002384186,
+          "duration": 70.39999997615814,
+          "size": 23853
+        },
+        {
+          "url": "https://coin-desk.pages.dev/brand/coin-desk-shiba-smile.png",
+          "start": 275.30000001192093,
+          "duration": 875.4000000357628,
+          "size": 790144
+        },
+        {
+          "url": "https://coin-desk.pages.dev/coin-logos/btc.png",
+          "start": 365.4000000357628,
+          "duration": 122.69999998807907,
+          "size": 5218
+        },
+        {
+          "url": "https://coin-desk.pages.dev/coin-logos/eth.png",
+          "start": 365.60000002384186,
+          "duration": 134.19999998807907,
+          "size": 3284
+        },
+        {
+          "url": "https://coin-desk.pages.dev/coin-logos/xrp.png",
+          "start": 365.60000002384186,
+          "duration": 134.89999997615814,
+          "size": 7304
+        },
+        {
+          "url": "https://coin-desk.pages.dev/coin-logos/doge-official.png",
+          "start": 365.60000002384186,
+          "duration": 189.30000001192093,
+          "size": 18685
+        },
+        {
+          "url": "https://coin-desk.pages.dev/coin-logos/sol.png",
+          "start": 365.60000002384186,
+          "duration": 306.30000001192093,
+          "size": 54609
+        },
+        {
+          "url": "https://coin-desk.pages.dev/coin-logos/link.png",
+          "start": 365.80000001192093,
+          "duration": 204.80000001192093,
+          "size": 21677
+        },
+        {
+          "url": "https://coin-desk.pages.dev/coin-logos/ondo.png",
+          "start": 365.80000001192093,
+          "duration": 258.4000000357628,
+          "size": 34647
+        },
+        {
+          "url": "https://coin-desk.pages.dev/coin-logos/pepe.png",
+          "start": 365.80000001192093,
+          "duration": 321.19999998807907,
+          "size": 59397
+        },
+        {
+          "url": "https://coin-desk.pages.dev/api/v1/market?market=upbit",
+          "start": 370,
+          "duration": 415.7000000476837,
+          "size": 2390
+        }
+      ]
+    },
+    {
+      "label": "new",
+      "base": "https://coin-desk.pages.dev",
+      "round": 1,
+      "lcp": 552,
+      "tasks": [
+        {
+          "start": 437.39999997615814,
+          "duration": 102
+        }
+      ],
+      "navigation": [
+        {
+          "name": "https://coin-desk.pages.dev/",
+          "entryType": "navigation",
+          "startTime": 0,
+          "duration": 391.39999997615814,
+          "navigationId": 8348,
+          "initiatorType": "navigation",
+          "deliveryType": "",
+          "nextHopProtocol": "h2",
+          "renderBlockingStatus": "non-blocking",
+          "contentType": "text/html",
+          "contentEncoding": "br",
+          "workerStart": 0,
+          "workerRouterEvaluationStart": 0,
+          "workerCacheLookupStart": 0,
+          "workerMatchedSourceType": "",
+          "workerFinalSourceType": "",
+          "redirectStart": 0,
+          "redirectEnd": 0,
+          "fetchStart": 0.19999998807907104,
+          "domainLookupStart": 3.5,
+          "domainLookupEnd": 5,
+          "connectStart": 5,
+          "secureConnectionStart": 27.399999976158142,
+          "connectEnd": 52.39999997615814,
+          "requestStart": 52.60000002384186,
+          "responseStart": 96.19999998807907,
+          "firstInterimResponseStart": 0,
+          "finalResponseHeadersStart": 96.19999998807907,
+          "responseEnd": 108.39999997615814,
+          "transferSize": 992,
+          "encodedBodySize": 692,
+          "decodedBodySize": 1993,
+          "responseStatus": 200,
+          "serverTiming": [],
+          "unloadEventStart": 0,
+          "unloadEventEnd": 0,
+          "domInteractive": 118,
+          "domContentLoadedEventStart": 391.30000001192093,
+          "domContentLoadedEventEnd": 391.30000001192093,
+          "domComplete": 391.39999997615814,
+          "loadEventStart": 391.39999997615814,
+          "loadEventEnd": 391.39999997615814,
+          "type": "navigate",
+          "redirectCount": 0,
+          "activationStart": 0,
+          "criticalCHRestart": 0,
+          "notRestoredReasons": null,
+          "confidence": {
+            "randomizedTriggerRate": 0.4994798,
+            "value": "low"
+          }
+        }
+      ],
+      "resources": [
+        {
+          "url": "https://coin-desk.pages.dev/assets/index-snkgb3f4.js",
+          "start": 113.5,
+          "duration": 245.19999998807907,
+          "size": 127652
+        },
+        {
+          "url": "https://coin-desk.pages.dev/assets/index-Cw2rVjBY.css",
+          "start": 113.80000001192093,
+          "duration": 127.59999996423721,
+          "size": 23853
+        },
+        {
+          "url": "https://coin-desk.pages.dev/brand/coin-desk-shiba-smile.png",
+          "start": 421.39999997615814,
+          "duration": 861,
+          "size": 790144
+        },
+        {
+          "url": "https://coin-desk.pages.dev/api/v1/market?market=upbit",
+          "start": 436.39999997615814,
+          "duration": 440.60000002384186,
+          "size": 2352
+        },
+        {
+          "url": "https://coin-desk.pages.dev/coin-logos/btc.png",
+          "start": 538.5,
+          "duration": 46.5,
+          "size": 5218
+        },
+        {
+          "url": "https://coin-desk.pages.dev/coin-logos/doge-official.png",
+          "start": 538.6000000238419,
+          "duration": 153.0999999642372,
+          "size": 18685
+        },
+        {
+          "url": "https://coin-desk.pages.dev/coin-logos/eth.png",
+          "start": 538.8000000119209,
+          "duration": 94.5,
+          "size": 3284
+        },
+        {
+          "url": "https://coin-desk.pages.dev/coin-logos/xrp.png",
+          "start": 539,
+          "duration": 125.10000002384186,
+          "size": 7304
+        },
+        {
+          "url": "https://coin-desk.pages.dev/coin-logos/sol.png",
+          "start": 539,
+          "duration": 284.5,
+          "size": 54609
+        },
+        {
+          "url": "https://coin-desk.pages.dev/coin-logos/link.png",
+          "start": 539.1000000238419,
+          "duration": 195.39999997615814,
+          "size": 21677
+        },
+        {
+          "url": "https://coin-desk.pages.dev/coin-logos/ondo.png",
+          "start": 539.3999999761581,
+          "duration": 242.10000002384186,
+          "size": 34647
+        },
+        {
+          "url": "https://coin-desk.pages.dev/coin-logos/pepe.png",
+          "start": 539.6000000238419,
+          "duration": 295.5999999642372,
+          "size": 59397
+        }
+      ]
+    },
+    {
+      "label": "old",
+      "base": "https://56f9da0c.coin-desk.pages.dev",
+      "round": 1,
+      "lcp": 688,
+      "tasks": [],
+      "navigation": [
+        {
+          "name": "https://56f9da0c.coin-desk.pages.dev/",
+          "entryType": "navigation",
+          "startTime": 0,
+          "duration": 568.3000000119209,
+          "navigationId": 487,
+          "initiatorType": "navigation",
+          "deliveryType": "",
+          "nextHopProtocol": "h2",
+          "renderBlockingStatus": "non-blocking",
+          "contentType": "text/html",
+          "contentEncoding": "br",
+          "workerStart": 0,
+          "workerRouterEvaluationStart": 0,
+          "workerCacheLookupStart": 0,
+          "workerMatchedSourceType": "",
+          "workerFinalSourceType": "",
+          "redirectStart": 0,
+          "redirectEnd": 0,
+          "fetchStart": 0.30000001192092896,
+          "domainLookupStart": 3.399999976158142,
+          "domainLookupEnd": 5.300000011920929,
+          "connectStart": 5.300000011920929,
+          "secureConnectionStart": 17.30000001192093,
+          "connectEnd": 52.09999996423721,
+          "requestStart": 52.39999997615814,
+          "responseStart": 343.19999998807907,
+          "firstInterimResponseStart": 0,
+          "finalResponseHeadersStart": 343.19999998807907,
+          "responseEnd": 358.89999997615814,
+          "transferSize": 995,
+          "encodedBodySize": 695,
+          "decodedBodySize": 1993,
+          "responseStatus": 200,
+          "serverTiming": [],
+          "unloadEventStart": 0,
+          "unloadEventEnd": 0,
+          "domInteractive": 368.0999999642372,
+          "domContentLoadedEventStart": 568.3000000119209,
+          "domContentLoadedEventEnd": 568.3000000119209,
+          "domComplete": 568.3000000119209,
+          "loadEventStart": 568.3000000119209,
+          "loadEventEnd": 568.3000000119209,
+          "type": "navigate",
+          "redirectCount": 0,
+          "activationStart": 0,
+          "criticalCHRestart": 0,
+          "notRestoredReasons": null,
+          "confidence": {
+            "randomizedTriggerRate": 0.4994798,
+            "value": "high"
+          }
+        }
+      ],
+      "resources": [
+        {
+          "url": "https://56f9da0c.coin-desk.pages.dev/assets/index-BAXHNn6E.js",
+          "start": 363.5999999642372,
+          "duration": 177,
+          "size": 126912
+        },
+        {
+          "url": "https://56f9da0c.coin-desk.pages.dev/assets/index-CVl-_1yN.css",
+          "start": 363.80000001192093,
+          "duration": 72,
+          "size": 23513
+        },
+        {
+          "url": "https://56f9da0c.coin-desk.pages.dev/brand/coin-desk-shiba-smile.png",
+          "start": 592,
+          "duration": 1039.3999999761581,
+          "size": 790144
+        },
+        {
+          "url": "https://56f9da0c.coin-desk.pages.dev/coin-logos/btc.png",
+          "start": 675.5,
+          "duration": 84.39999997615814,
+          "size": 5218
+        },
+        {
+          "url": "https://56f9da0c.coin-desk.pages.dev/coin-logos/eth.png",
+          "start": 675.5999999642372,
+          "duration": 91.70000004768372,
+          "size": 3284
+        },
+        {
+          "url": "https://56f9da0c.coin-desk.pages.dev/coin-logos/doge-official.png",
+          "start": 675.5999999642372,
+          "duration": 218.70000004768372,
+          "size": 18685
+        },
+        {
+          "url": "https://56f9da0c.coin-desk.pages.dev/coin-logos/xrp.png",
+          "start": 675.6999999880791,
+          "duration": 232.30000001192093,
+          "size": 7304
+        },
+        {
+          "url": "https://56f9da0c.coin-desk.pages.dev/coin-logos/sol.png",
+          "start": 675.6999999880791,
+          "duration": 352.19999998807907,
+          "size": 54609
+        },
+        {
+          "url": "https://56f9da0c.coin-desk.pages.dev/coin-logos/link.png",
+          "start": 675.8999999761581,
+          "duration": 177.4000000357628,
+          "size": 21677
+        },
+        {
+          "url": "https://56f9da0c.coin-desk.pages.dev/coin-logos/ondo.png",
+          "start": 676,
+          "duration": 146.30000001192093,
+          "size": 34647
+        },
+        {
+          "url": "https://56f9da0c.coin-desk.pages.dev/coin-logos/pepe.png",
+          "start": 676.0999999642372,
+          "duration": 308.60000002384186,
+          "size": 59397
+        },
+        {
+          "url": "https://56f9da0c.coin-desk.pages.dev/api/v1/market?market=upbit",
+          "start": 682.1999999880791,
+          "duration": 411.5,
+          "size": 2359
+        }
+      ]
+    },
+    {
+      "label": "old",
+      "base": "https://56f9da0c.coin-desk.pages.dev",
+      "round": 2,
+      "lcp": 724,
+      "tasks": [],
+      "navigation": [
+        {
+          "name": "https://56f9da0c.coin-desk.pages.dev/",
+          "entryType": "navigation",
+          "startTime": 0,
+          "duration": 580.7999999523163,
+          "navigationId": 3141,
+          "initiatorType": "navigation",
+          "deliveryType": "",
+          "nextHopProtocol": "h2",
+          "renderBlockingStatus": "non-blocking",
+          "contentType": "text/html",
+          "contentEncoding": "br",
+          "workerStart": 0,
+          "workerRouterEvaluationStart": 0,
+          "workerCacheLookupStart": 0,
+          "workerMatchedSourceType": "",
+          "workerFinalSourceType": "",
+          "redirectStart": 0,
+          "redirectEnd": 0,
+          "fetchStart": 0.09999996423721313,
+          "domainLookupStart": 2.699999988079071,
+          "domainLookupEnd": 4.299999952316284,
+          "connectStart": 4.299999952316284,
+          "secureConnectionStart": 20.899999976158142,
+          "connectEnd": 124.09999996423721,
+          "requestStart": 124.29999995231628,
+          "responseStart": 245.5,
+          "firstInterimResponseStart": 0,
+          "finalResponseHeadersStart": 245.5,
+          "responseEnd": 253.29999995231628,
+          "transferSize": 995,
+          "encodedBodySize": 695,
+          "decodedBodySize": 1993,
+          "responseStatus": 200,
+          "serverTiming": [],
+          "unloadEventStart": 0,
+          "unloadEventEnd": 0,
+          "domInteractive": 262.7999999523163,
+          "domContentLoadedEventStart": 580.6999999880791,
+          "domContentLoadedEventEnd": 580.7999999523163,
+          "domComplete": 580.7999999523163,
+          "loadEventStart": 580.7999999523163,
+          "loadEventEnd": 580.7999999523163,
+          "type": "navigate",
+          "redirectCount": 0,
+          "activationStart": 0,
+          "criticalCHRestart": 0,
+          "notRestoredReasons": null,
+          "confidence": {
+            "randomizedTriggerRate": 0.4994798,
+            "value": "low"
+          }
+        }
+      ],
+      "resources": [
+        {
+          "url": "https://56f9da0c.coin-desk.pages.dev/assets/index-BAXHNn6E.js",
+          "start": 258.7999999523163,
+          "duration": 293.60000002384186,
+          "size": 126756
+        },
+        {
+          "url": "https://56f9da0c.coin-desk.pages.dev/assets/index-CVl-_1yN.css",
+          "start": 259,
+          "duration": 106,
+          "size": 23513
+        },
+        {
+          "url": "https://56f9da0c.coin-desk.pages.dev/brand/coin-desk-shiba-smile.png",
+          "start": 603.3999999761581,
+          "duration": 924.8999999761581,
+          "size": 790144
+        },
+        {
+          "url": "https://56f9da0c.coin-desk.pages.dev/coin-logos/btc.png",
+          "start": 710.8999999761581,
+          "duration": 119,
+          "size": 5218
+        },
+        {
+          "url": "https://56f9da0c.coin-desk.pages.dev/coin-logos/doge-official.png",
+          "start": 710.8999999761581,
+          "duration": 196,
+          "size": 18685
+        },
+        {
+          "url": "https://56f9da0c.coin-desk.pages.dev/coin-logos/eth.png",
+          "start": 711,
+          "duration": 132,
+          "size": 3284
+        },
+        {
+          "url": "https://56f9da0c.coin-desk.pages.dev/coin-logos/sol.png",
+          "start": 711.0999999642372,
+          "duration": 308.69999998807907,
+          "size": 54609
+        },
+        {
+          "url": "https://56f9da0c.coin-desk.pages.dev/coin-logos/xrp.png",
+          "start": 711.1999999880791,
+          "duration": 161.80000001192093,
+          "size": 7304
+        },
+        {
+          "url": "https://56f9da0c.coin-desk.pages.dev/coin-logos/link.png",
+          "start": 711.2999999523163,
+          "duration": 254.80000001192093,
+          "size": 21677
+        },
+        {
+          "url": "https://56f9da0c.coin-desk.pages.dev/coin-logos/ondo.png",
+          "start": 711.2999999523163,
+          "duration": 274.60000002384186,
+          "size": 34647
+        },
+        {
+          "url": "https://56f9da0c.coin-desk.pages.dev/coin-logos/pepe.png",
+          "start": 711.2999999523163,
+          "duration": 340.2000000476837,
+          "size": 59397
+        },
+        {
+          "url": "https://56f9da0c.coin-desk.pages.dev/api/v1/market?market=upbit",
+          "start": 718.3999999761581,
+          "duration": 422.10000002384186,
+          "size": 2342
+        }
+      ]
+    },
+    {
+      "label": "new",
+      "base": "https://coin-desk.pages.dev",
+      "round": 2,
+      "lcp": 544,
+      "tasks": [],
+      "navigation": [
+        {
+          "name": "https://coin-desk.pages.dev/",
+          "entryType": "navigation",
+          "startTime": 0,
+          "duration": 415.19999998807907,
+          "navigationId": 1395,
+          "initiatorType": "navigation",
+          "deliveryType": "",
+          "nextHopProtocol": "h2",
+          "renderBlockingStatus": "non-blocking",
+          "contentType": "text/html",
+          "contentEncoding": "br",
+          "workerStart": 0,
+          "workerRouterEvaluationStart": 0,
+          "workerCacheLookupStart": 0,
+          "workerMatchedSourceType": "",
+          "workerFinalSourceType": "",
+          "redirectStart": 0,
+          "redirectEnd": 0,
+          "fetchStart": 0.30000001192092896,
+          "domainLookupStart": 2.699999988079071,
+          "domainLookupEnd": 4.100000023841858,
+          "connectStart": 4.100000023841858,
+          "secureConnectionStart": 33.60000002384186,
+          "connectEnd": 51.39999997615814,
+          "requestStart": 51.5,
+          "responseStart": 121.80000001192093,
+          "firstInterimResponseStart": 0,
+          "finalResponseHeadersStart": 121.80000001192093,
+          "responseEnd": 131.60000002384186,
+          "transferSize": 992,
+          "encodedBodySize": 692,
+          "decodedBodySize": 1993,
+          "responseStatus": 200,
+          "serverTiming": [],
+          "unloadEventStart": 0,
+          "unloadEventEnd": 0,
+          "domInteractive": 139.89999997615814,
+          "domContentLoadedEventStart": 415.10000002384186,
+          "domContentLoadedEventEnd": 415.10000002384186,
+          "domComplete": 415.19999998807907,
+          "loadEventStart": 415.19999998807907,
+          "loadEventEnd": 415.19999998807907,
+          "type": "navigate",
+          "redirectCount": 0,
+          "activationStart": 0,
+          "criticalCHRestart": 0,
+          "notRestoredReasons": null,
+          "confidence": {
+            "randomizedTriggerRate": 0.4994798,
+            "value": "low"
+          }
+        }
+      ],
+      "resources": [
+        {
+          "url": "https://coin-desk.pages.dev/assets/index-snkgb3f4.js",
+          "start": 135.89999997615814,
+          "duration": 255.60000002384186,
+          "size": 127347
+        },
+        {
+          "url": "https://coin-desk.pages.dev/assets/index-Cw2rVjBY.css",
+          "start": 136.10000002384186,
+          "duration": 89.39999997615814,
+          "size": 23860
+        },
+        {
+          "url": "https://coin-desk.pages.dev/brand/coin-desk-shiba-smile.png",
+          "start": 440.30000001192093,
+          "duration": 875.6999999880791,
+          "size": 790144
+        },
+        {
+          "url": "https://coin-desk.pages.dev/coin-logos/btc.png",
+          "start": 531.1999999880791,
+          "duration": 78,
+          "size": 5218
+        },
+        {
+          "url": "https://coin-desk.pages.dev/coin-logos/doge-official.png",
+          "start": 531.5,
+          "duration": 147.30000001192093,
+          "size": 18685
+        },
+        {
+          "url": "https://coin-desk.pages.dev/coin-logos/eth.png",
+          "start": 531.8000000119209,
+          "duration": 64,
+          "size": 3284
+        },
+        {
+          "url": "https://coin-desk.pages.dev/coin-logos/sol.png",
+          "start": 531.8999999761581,
+          "duration": 251.20000004768372,
+          "size": 54609
+        },
+        {
+          "url": "https://coin-desk.pages.dev/coin-logos/xrp.png",
+          "start": 532,
+          "duration": 76.80000001192093,
+          "size": 7304
+        },
+        {
+          "url": "https://coin-desk.pages.dev/coin-logos/link.png",
+          "start": 532.1999999880791,
+          "duration": 169.30000001192093,
+          "size": 21677
+        },
+        {
+          "url": "https://coin-desk.pages.dev/coin-logos/ondo.png",
+          "start": 532.3999999761581,
+          "duration": 195.5,
+          "size": 34647
+        },
+        {
+          "url": "https://coin-desk.pages.dev/coin-logos/pepe.png",
+          "start": 532.6999999880791,
+          "duration": 265.9000000357628,
+          "size": 59397
+        },
+        {
+          "url": "https://coin-desk.pages.dev/api/v1/market?market=upbit",
+          "start": 540.3999999761581,
+          "duration": 316.5,
+          "size": 2412
+        }
+      ]
+    },
+    {
+      "label": "new",
+      "base": "https://coin-desk.pages.dev",
+      "round": 3,
+      "lcp": 560,
+      "tasks": [
+        {
+          "start": 454.30000001192093,
+          "duration": 92
+        }
+      ],
+      "navigation": [
+        {
+          "name": "https://coin-desk.pages.dev/",
+          "entryType": "navigation",
+          "startTime": 0,
+          "duration": 420.10000002384186,
+          "navigationId": 7238,
+          "initiatorType": "navigation",
+          "deliveryType": "",
+          "nextHopProtocol": "h2",
+          "renderBlockingStatus": "non-blocking",
+          "contentType": "text/html",
+          "contentEncoding": "br",
+          "workerStart": 0,
+          "workerRouterEvaluationStart": 0,
+          "workerCacheLookupStart": 0,
+          "workerMatchedSourceType": "",
+          "workerFinalSourceType": "",
+          "redirectStart": 0,
+          "redirectEnd": 0,
+          "fetchStart": 0.10000002384185791,
+          "domainLookupStart": 2.399999976158142,
+          "domainLookupEnd": 3.600000023841858,
+          "connectStart": 3.600000023841858,
+          "secureConnectionStart": 66,
+          "connectEnd": 82,
+          "requestStart": 82.10000002384186,
+          "responseStart": 192.39999997615814,
+          "firstInterimResponseStart": 0,
+          "finalResponseHeadersStart": 192.39999997615814,
+          "responseEnd": 197.69999998807907,
+          "transferSize": 992,
+          "encodedBodySize": 692,
+          "decodedBodySize": 1993,
+          "responseStatus": 200,
+          "serverTiming": [],
+          "unloadEventStart": 0,
+          "unloadEventEnd": 0,
+          "domInteractive": 205.39999997615814,
+          "domContentLoadedEventStart": 420,
+          "domContentLoadedEventEnd": 420.10000002384186,
+          "domComplete": 420.10000002384186,
+          "loadEventStart": 420.10000002384186,
+          "loadEventEnd": 420.10000002384186,
+          "type": "navigate",
+          "redirectCount": 0,
+          "activationStart": 0,
+          "criticalCHRestart": 0,
+          "notRestoredReasons": null,
+          "confidence": {
+            "randomizedTriggerRate": 0.4994798,
+            "value": "high"
+          }
+        }
+      ],
+      "resources": [
+        {
+          "url": "https://coin-desk.pages.dev/assets/index-snkgb3f4.js",
+          "start": 201.60000002384186,
+          "duration": 191.39999997615814,
+          "size": 127652
+        },
+        {
+          "url": "https://coin-desk.pages.dev/assets/index-Cw2rVjBY.css",
+          "start": 201.89999997615814,
+          "duration": 71.70000004768372,
+          "size": 23853
+        },
+        {
+          "url": "https://coin-desk.pages.dev/brand/coin-desk-shiba-smile.png",
+          "start": 440.69999998807907,
+          "duration": 859,
+          "size": 790144
+        },
+        {
+          "url": "https://coin-desk.pages.dev/api/v1/market?market=upbit",
+          "start": 453.39999997615814,
+          "duration": 326.4000000357628,
+          "size": 2377
+        },
+        {
+          "url": "https://coin-desk.pages.dev/coin-logos/btc.png",
+          "start": 546.1000000238419,
+          "duration": 143.19999998807907,
+          "size": 5218
+        },
+        {
+          "url": "https://coin-desk.pages.dev/coin-logos/doge-official.png",
+          "start": 546.3999999761581,
+          "duration": 215.80000001192093,
+          "size": 18685
+        },
+        {
+          "url": "https://coin-desk.pages.dev/coin-logos/eth.png",
+          "start": 546.6000000238419,
+          "duration": 139.39999997615814,
+          "size": 3284
+        },
+        {
+          "url": "https://coin-desk.pages.dev/coin-logos/xrp.png",
+          "start": 546.6999999880791,
+          "duration": 160.30000001192093,
+          "size": 7304
+        },
+        {
+          "url": "https://coin-desk.pages.dev/coin-logos/sol.png",
+          "start": 546.6999999880791,
+          "duration": 328.9000000357628,
+          "size": 54609
+        },
+        {
+          "url": "https://coin-desk.pages.dev/coin-logos/link.png",
+          "start": 546.8000000119209,
+          "duration": 232.69999998807907,
+          "size": 21677
+        },
+        {
+          "url": "https://coin-desk.pages.dev/coin-logos/ondo.png",
+          "start": 547,
+          "duration": 276.80000001192093,
+          "size": 34647
+        },
+        {
+          "url": "https://coin-desk.pages.dev/coin-logos/pepe.png",
+          "start": 547,
+          "duration": 343.89999997615814,
+          "size": 59397
+        }
+      ]
+    },
+    {
+      "label": "old",
+      "base": "https://56f9da0c.coin-desk.pages.dev",
+      "round": 3,
+      "lcp": 440,
+      "tasks": [
+        {
+          "start": 327,
+          "duration": 102
+        }
+      ],
+      "navigation": [
+        {
+          "name": "https://56f9da0c.coin-desk.pages.dev/",
+          "entryType": "navigation",
+          "startTime": 0,
+          "duration": 277.7000000476837,
+          "navigationId": 5436,
+          "initiatorType": "navigation",
+          "deliveryType": "",
+          "nextHopProtocol": "h2",
+          "renderBlockingStatus": "non-blocking",
+          "contentType": "text/html",
+          "contentEncoding": "br",
+          "workerStart": 0,
+          "workerRouterEvaluationStart": 0,
+          "workerCacheLookupStart": 0,
+          "workerMatchedSourceType": "",
+          "workerFinalSourceType": "",
+          "redirectStart": 0,
+          "redirectEnd": 0,
+          "fetchStart": 0.20000004768371582,
+          "domainLookupStart": 2.600000023841858,
+          "domainLookupEnd": 4,
+          "connectStart": 4,
+          "secureConnectionStart": 15.800000011920929,
+          "connectEnd": 31.5,
+          "requestStart": 31.700000047683716,
+          "responseStart": 66.40000003576279,
+          "firstInterimResponseStart": 0,
+          "finalResponseHeadersStart": 66.40000003576279,
+          "responseEnd": 70.80000001192093,
+          "transferSize": 995,
+          "encodedBodySize": 695,
+          "decodedBodySize": 1993,
+          "responseStatus": 200,
+          "serverTiming": [],
+          "unloadEventStart": 0,
+          "unloadEventEnd": 0,
+          "domInteractive": 80,
+          "domContentLoadedEventStart": 277.60000002384186,
+          "domContentLoadedEventEnd": 277.7000000476837,
+          "domComplete": 277.7000000476837,
+          "loadEventStart": 277.7000000476837,
+          "loadEventEnd": 277.7000000476837,
+          "type": "navigate",
+          "redirectCount": 0,
+          "activationStart": 0,
+          "criticalCHRestart": 0,
+          "notRestoredReasons": null,
+          "confidence": {
+            "randomizedTriggerRate": 0.4994798,
+            "value": "high"
+          }
+        }
+      ],
+      "resources": [
+        {
+          "url": "https://56f9da0c.coin-desk.pages.dev/assets/index-BAXHNn6E.js",
+          "start": 75.30000001192093,
+          "duration": 166.19999998807907,
+          "size": 126650
+        },
+        {
+          "url": "https://56f9da0c.coin-desk.pages.dev/assets/index-CVl-_1yN.css",
+          "start": 76,
+          "duration": 64.90000003576279,
+          "size": 23460
+        },
+        {
+          "url": "https://56f9da0c.coin-desk.pages.dev/brand/coin-desk-shiba-smile.png",
+          "start": 309.10000002384186,
+          "duration": 879,
+          "size": 790144
+        },
+        {
+          "url": "https://56f9da0c.coin-desk.pages.dev/api/v1/market?market=upbit",
+          "start": 324.30000001192093,
+          "duration": 364.30000001192093,
+          "size": 2365
+        },
+        {
+          "url": "https://56f9da0c.coin-desk.pages.dev/coin-logos/btc.png",
+          "start": 429,
+          "duration": 91.90000003576279,
+          "size": 5218
+        },
+        {
+          "url": "https://56f9da0c.coin-desk.pages.dev/coin-logos/doge-official.png",
+          "start": 429.10000002384186,
+          "duration": 169.89999997615814,
+          "size": 18685
+        },
+        {
+          "url": "https://56f9da0c.coin-desk.pages.dev/coin-logos/eth.png",
+          "start": 429.2000000476837,
+          "duration": 99.69999998807907,
+          "size": 3284
+        },
+        {
+          "url": "https://56f9da0c.coin-desk.pages.dev/coin-logos/xrp.png",
+          "start": 429.2000000476837,
+          "duration": 120.89999997615814,
+          "size": 7304
+        },
+        {
+          "url": "https://56f9da0c.coin-desk.pages.dev/coin-logos/sol.png",
+          "start": 429.2000000476837,
+          "duration": 280.19999998807907,
+          "size": 54609
+        },
+        {
+          "url": "https://56f9da0c.coin-desk.pages.dev/coin-logos/link.png",
+          "start": 429.30000001192093,
+          "duration": 186.60000002384186,
+          "size": 21677
+        },
+        {
+          "url": "https://56f9da0c.coin-desk.pages.dev/coin-logos/ondo.png",
+          "start": 429.30000001192093,
+          "duration": 231.5,
+          "size": 34647
+        },
+        {
+          "url": "https://56f9da0c.coin-desk.pages.dev/coin-logos/pepe.png",
+          "start": 429.4000000357628,
+          "duration": 294.5,
+          "size": 59397
+        }
+      ]
+    },
+    {
+      "label": "old",
+      "base": "https://56f9da0c.coin-desk.pages.dev",
+      "round": 4,
+      "lcp": 376,
+      "tasks": [],
+      "navigation": [
+        {
+          "name": "https://56f9da0c.coin-desk.pages.dev/",
+          "entryType": "navigation",
+          "startTime": 0,
+          "duration": 261.2999999523163,
+          "navigationId": 2537,
+          "initiatorType": "navigation",
+          "deliveryType": "",
+          "nextHopProtocol": "h2",
+          "renderBlockingStatus": "non-blocking",
+          "contentType": "text/html",
+          "contentEncoding": "br",
+          "workerStart": 0,
+          "workerRouterEvaluationStart": 0,
+          "workerCacheLookupStart": 0,
+          "workerMatchedSourceType": "",
+          "workerFinalSourceType": "",
+          "redirectStart": 0,
+          "redirectEnd": 0,
+          "fetchStart": 0.19999998807907104,
+          "domainLookupStart": 2.399999976158142,
+          "domainLookupEnd": 3.5,
+          "connectStart": 3.5,
+          "secureConnectionStart": 11.5,
+          "connectEnd": 26.399999976158142,
+          "requestStart": 26.599999964237213,
+          "responseStart": 54.59999996423721,
+          "firstInterimResponseStart": 0,
+          "finalResponseHeadersStart": 54.59999996423721,
+          "responseEnd": 55.59999996423721,
+          "transferSize": 995,
+          "encodedBodySize": 695,
+          "decodedBodySize": 1993,
+          "responseStatus": 200,
+          "serverTiming": [],
+          "unloadEventStart": 0,
+          "unloadEventEnd": 0,
+          "domInteractive": 81.19999998807907,
+          "domContentLoadedEventStart": 261.0999999642372,
+          "domContentLoadedEventEnd": 261.19999998807907,
+          "domComplete": 261.2999999523163,
+          "loadEventStart": 261.2999999523163,
+          "loadEventEnd": 261.2999999523163,
+          "type": "navigate",
+          "redirectCount": 0,
+          "activationStart": 0,
+          "criticalCHRestart": 0,
+          "notRestoredReasons": null,
+          "confidence": {
+            "randomizedTriggerRate": 0.4994798,
+            "value": "high"
+          }
+        }
+      ],
+      "resources": [
+        {
+          "url": "https://56f9da0c.coin-desk.pages.dev/assets/index-BAXHNn6E.js",
+          "start": 77.09999996423721,
+          "duration": 155.30000001192093,
+          "size": 126595
+        },
+        {
+          "url": "https://56f9da0c.coin-desk.pages.dev/assets/index-CVl-_1yN.css",
+          "start": 77.29999995231628,
+          "duration": 58.60000002384186,
+          "size": 23513
+        },
+        {
+          "url": "https://56f9da0c.coin-desk.pages.dev/brand/coin-desk-shiba-smile.png",
+          "start": 283.39999997615814,
+          "duration": 900.1999999880791,
+          "size": 790144
+        },
+        {
+          "url": "https://56f9da0c.coin-desk.pages.dev/coin-logos/btc.png",
+          "start": 365.19999998807907,
+          "duration": 97.5,
+          "size": 5218
+        },
+        {
+          "url": "https://56f9da0c.coin-desk.pages.dev/coin-logos/eth.png",
+          "start": 365.2999999523163,
+          "duration": 119.70000004768372,
+          "size": 3284
+        },
+        {
+          "url": "https://56f9da0c.coin-desk.pages.dev/coin-logos/doge-official.png",
+          "start": 365.2999999523163,
+          "duration": 166.10000002384186,
+          "size": 18685
+        },
+        {
+          "url": "https://56f9da0c.coin-desk.pages.dev/coin-logos/xrp.png",
+          "start": 365.39999997615814,
+          "duration": 146,
+          "size": 7304
+        },
+        {
+          "url": "https://56f9da0c.coin-desk.pages.dev/coin-logos/link.png",
+          "start": 365.39999997615814,
+          "duration": 213,
+          "size": 21677
+        },
+        {
+          "url": "https://56f9da0c.coin-desk.pages.dev/coin-logos/sol.png",
+          "start": 365.39999997615814,
+          "duration": 289.69999998807907,
+          "size": 54609
+        },
+        {
+          "url": "https://56f9da0c.coin-desk.pages.dev/coin-logos/ondo.png",
+          "start": 365.5,
+          "duration": 228,
+          "size": 34647
+        },
+        {
+          "url": "https://56f9da0c.coin-desk.pages.dev/coin-logos/pepe.png",
+          "start": 365.5,
+          "duration": 305.69999998807907,
+          "size": 59397
+        },
+        {
+          "url": "https://56f9da0c.coin-desk.pages.dev/api/v1/market?market=upbit",
+          "start": 372.5,
+          "duration": 345.19999998807907,
+          "size": 2348
+        }
+      ]
+    },
+    {
+      "label": "new",
+      "base": "https://coin-desk.pages.dev",
+      "round": 4,
+      "lcp": 428,
+      "tasks": [],
+      "navigation": [
+        {
+          "name": "https://coin-desk.pages.dev/",
+          "entryType": "navigation",
+          "startTime": 0,
+          "duration": 309.30000001192093,
+          "navigationId": 1703,
+          "initiatorType": "navigation",
+          "deliveryType": "",
+          "nextHopProtocol": "h2",
+          "renderBlockingStatus": "non-blocking",
+          "contentType": "text/html",
+          "contentEncoding": "br",
+          "workerStart": 0,
+          "workerRouterEvaluationStart": 0,
+          "workerCacheLookupStart": 0,
+          "workerMatchedSourceType": "",
+          "workerFinalSourceType": "",
+          "redirectStart": 0,
+          "redirectEnd": 0,
+          "fetchStart": 0.10000002384185791,
+          "domainLookupStart": 2.5,
+          "domainLookupEnd": 3.900000035762787,
+          "connectStart": 3.900000035762787,
+          "secureConnectionStart": 15.400000035762787,
+          "connectEnd": 36.40000003576279,
+          "requestStart": 36.5,
+          "responseStart": 69.20000004768372,
+          "firstInterimResponseStart": 0,
+          "finalResponseHeadersStart": 69.20000004768372,
+          "responseEnd": 77.10000002384186,
+          "transferSize": 992,
+          "encodedBodySize": 692,
+          "decodedBodySize": 1993,
+          "responseStatus": 200,
+          "serverTiming": [],
+          "unloadEventStart": 0,
+          "unloadEventEnd": 0,
+          "domInteractive": 87.40000003576279,
+          "domContentLoadedEventStart": 309.2000000476837,
+          "domContentLoadedEventEnd": 309.30000001192093,
+          "domComplete": 309.30000001192093,
+          "loadEventStart": 309.30000001192093,
+          "loadEventEnd": 309.30000001192093,
+          "type": "navigate",
+          "redirectCount": 0,
+          "activationStart": 0,
+          "criticalCHRestart": 0,
+          "notRestoredReasons": null,
+          "confidence": {
+            "randomizedTriggerRate": 0.4994798,
+            "value": "low"
+          }
+        }
+      ],
+      "resources": [
+        {
+          "url": "https://coin-desk.pages.dev/assets/index-snkgb3f4.js",
+          "start": 82,
+          "duration": 201.30000001192093,
+          "size": 127501
+        },
+        {
+          "url": "https://coin-desk.pages.dev/assets/index-Cw2rVjBY.css",
+          "start": 83.40000003576279,
+          "duration": 73.89999997615814,
+          "size": 23853
+        },
+        {
+          "url": "https://coin-desk.pages.dev/brand/coin-desk-shiba-smile.png",
+          "start": 331.60000002384186,
+          "duration": 931.3000000119209,
+          "size": 790144
+        },
+        {
+          "url": "https://coin-desk.pages.dev/coin-logos/btc.png",
+          "start": 411.80000001192093,
+          "duration": 128.80000001192093,
+          "size": 5218
+        },
+        {
+          "url": "https://coin-desk.pages.dev/coin-logos/doge-official.png",
+          "start": 412,
+          "duration": 217.60000002384186,
+          "size": 18685
+        },
+        {
+          "url": "https://coin-desk.pages.dev/coin-logos/eth.png",
+          "start": 412.2000000476837,
+          "duration": 116.39999997615814,
+          "size": 3284
+        },
+        {
+          "url": "https://coin-desk.pages.dev/coin-logos/sol.png",
+          "start": 412.2000000476837,
+          "duration": 321.5999999642372,
+          "size": 54609
+        },
+        {
+          "url": "https://coin-desk.pages.dev/coin-logos/xrp.png",
+          "start": 412.30000001192093,
+          "duration": 150.69999998807907,
+          "size": 7304
+        },
+        {
+          "url": "https://coin-desk.pages.dev/coin-logos/link.png",
+          "start": 412.5,
+          "duration": 228.10000002384186,
+          "size": 21677
+        },
+        {
+          "url": "https://coin-desk.pages.dev/coin-logos/ondo.png",
+          "start": 412.7000000476837,
+          "duration": 275.0999999642372,
+          "size": 34647
+        },
+        {
+          "url": "https://coin-desk.pages.dev/coin-logos/pepe.png",
+          "start": 413,
+          "duration": 328.5,
+          "size": 59397
+        },
+        {
+          "url": "https://coin-desk.pages.dev/api/v1/market?market=upbit",
+          "start": 420.30000001192093,
+          "duration": 401.80000001192093,
+          "size": 2348
+        }
+      ]
+    }
+  ]
+}

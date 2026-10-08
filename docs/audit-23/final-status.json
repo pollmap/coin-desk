@@ -1,0 +1,33 @@
+{
+  "checkedAt": "2026-10-08T17:42:05.215802+00:00",
+  "release": "0.23.0",
+  "codeCommit": "56453ed33f7e7d23b39c311ce0df0bc254e47bc0",
+  "pr": 48,
+  "prCI": 37814862992,
+  "mainCI": {
+    "conclusion": "success",
+    "headSha": "56453ed33f7e7d23b39c311ce0df0bc254e47bc0",
+    "status": "completed",
+    "url": "https://github.com/pollmap/coin-desk/actions/runs/37816721361"
+  },
+  "pagesDeployment": "https://25ddf5e9.coin-desk.pages.dev",
+  "vpsRelease": "vps-6270048e66efc7fa",
+  "healthySources": 103,
+  "activeSources": 103,
+  "healthOk": true,
+  "backup": {
+    "ok": true,
+    "lastCompletedAt": 1791480578,
+    "verified": true
+  },
+  "codeAndScreen": "verified",
+  "deployment": "verified",
+  "actualData": "verified within documented support and sampled scope",
+  "naturalObservationSeconds": 300,
+  "userStudy5Participants": "not recruited",
+  "appleSafariVoiceOver": "hardware unavailable",
+  "observation48hRequired": false,
+  "personalDataPublished": false,
+  "dbSchemaChanged": false,
+  "currentSourceFailures": []
+}

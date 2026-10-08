@@ -1,0 +1,20 @@
+{
+  "checkedAt": "2026-10-08T17:17:36.124Z",
+  "base": "http://127.0.0.1:18523",
+  "marketRows": 8,
+  "theme": "rwa",
+  "asset": "ONDO",
+  "metric": "rsi",
+  "market": "binance",
+  "datePin": true,
+  "relationshipNodes": 5,
+  "relationAxeViolations": 0,
+  "savedRestoredReloaded": true,
+  "consoleErrors": [],
+  "initialRequests": [
+    "http://127.0.0.1:18523/api/v1/market?market=binance",
+    "http://127.0.0.1:18523/api/v1/quotes/stream?market=binance"
+  ],
+  "fixtureData": false,
+  "humanParticipant": false
+}

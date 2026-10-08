@@ -1,0 +1,20 @@
+{
+  "checkedAt": "2026-10-08T17:32:44.890Z",
+  "base": "https://coin-desk.62.171.141.206.sslip.io",
+  "marketRows": 8,
+  "theme": "rwa",
+  "asset": "ONDO",
+  "metric": "rsi",
+  "market": "binance",
+  "datePin": true,
+  "relationshipNodes": 5,
+  "relationAxeViolations": 0,
+  "savedRestoredReloaded": true,
+  "consoleErrors": [],
+  "initialRequests": [
+    "https://coin-desk.62.171.141.206.sslip.io/api/v1/market?market=binance",
+    "https://coin-desk.62.171.141.206.sslip.io/api/v1/quotes/stream?market=binance"
+  ],
+  "fixtureData": false,
+  "humanParticipant": false
+}

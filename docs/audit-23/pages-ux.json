@@ -1,0 +1,20 @@
+{
+  "checkedAt": "2026-10-08T17:32:30.553Z",
+  "base": "https://coin-desk.pages.dev",
+  "marketRows": 8,
+  "theme": "rwa",
+  "asset": "ONDO",
+  "metric": "rsi",
+  "market": "binance",
+  "datePin": true,
+  "relationshipNodes": 5,
+  "relationAxeViolations": 0,
+  "savedRestoredReloaded": true,
+  "consoleErrors": [],
+  "initialRequests": [
+    "https://coin-desk.pages.dev/api/v1/market?market=binance",
+    "https://coin-desk.pages.dev/api/v1/quotes/stream?market=binance"
+  ],
+  "fixtureData": false,
+  "humanParticipant": false
+}

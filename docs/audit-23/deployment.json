@@ -1,0 +1,55 @@
+{
+  "at": 1791480529,
+  "previousRelease": "vps-9435cadabaa44937",
+  "release": "vps-6270048e66efc7fa",
+  "changedServices": [
+    "api",
+    "quotes",
+    "background",
+    "recent",
+    "analysis",
+    "backup"
+  ],
+  "schemaChanged": false,
+  "nginxChanged": false,
+  "dataRestored": false,
+  "preservedQuoteHub": "coin-desk:vps-f1546991c2aab31a",
+  "containers": {
+    "api": {
+      "image": "coin-desk:vps-6270048e66efc7fa",
+      "startedAt": "2026-10-08T17:29:22.052301307Z",
+      "health": "healthy"
+    },
+    "quotes": {
+      "image": "coin-desk:vps-6270048e66efc7fa",
+      "startedAt": "2026-10-08T17:29:22.059717448Z",
+      "health": "healthy"
+    },
+    "background": {
+      "image": "coin-desk:vps-6270048e66efc7fa",
+      "startedAt": "2026-10-08T17:29:22.075014199Z",
+      "health": "healthy"
+    },
+    "recent": {
+      "image": "coin-desk:vps-6270048e66efc7fa",
+      "startedAt": "2026-10-08T17:29:22.055663543Z",
+      "health": "healthy"
+    },
+    "analysis": {
+      "image": "coin-desk:vps-6270048e66efc7fa",
+      "startedAt": "2026-10-08T17:29:22.060731631Z",
+      "health": "healthy"
+    },
+    "backup": {
+      "image": "coin-desk:vps-6270048e66efc7fa",
+      "startedAt": "2026-10-08T17:29:22.085959859Z",
+      "health": "healthy"
+    },
+    "quote-hub": {
+      "image": "coin-desk:vps-f1546991c2aab31a",
+      "startedAt": "2026-10-02T20:45:58.470920476Z",
+      "health": "healthy"
+    }
+  },
+  "promoted": true
+}

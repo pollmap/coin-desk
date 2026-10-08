@@ -1,0 +1,97 @@
+{
+  "files": [
+    {
+      "file": "coin-desk-importer/manifest.json",
+      "sameContents": true,
+      "metadataDifferences": {
+        "create_system": [
+          0,
+          3
+        ]
+      }
+    },
+    {
+      "file": "coin-desk-importer/background.js",
+      "sameContents": true,
+      "metadataDifferences": {
+        "create_system": [
+          0,
+          3
+        ]
+      }
+    },
+    {
+      "file": "coin-desk-importer/protocol.js",
+      "sameContents": true,
+      "metadataDifferences": {
+        "create_system": [
+          0,
+          3
+        ]
+      }
+    },
+    {
+      "file": "coin-desk-importer/site-bridge.js",
+      "sameContents": true,
+      "metadataDifferences": {
+        "create_system": [
+          0,
+          3
+        ]
+      }
+    },
+    {
+      "file": "coin-desk-importer/x-reader.js",
+      "sameContents": true,
+      "metadataDifferences": {
+        "create_system": [
+          0,
+          3
+        ]
+      }
+    },
+    {
+      "file": "coin-desk-importer/popup.html",
+      "sameContents": true,
+      "metadataDifferences": {
+        "create_system": [
+          0,
+          3
+        ]
+      }
+    },
+    {
+      "file": "coin-desk-importer/popup.js",
+      "sameContents": true,
+      "metadataDifferences": {
+        "create_system": [
+          0,
+          3
+        ]
+      }
+    },
+    {
+      "file": "coin-desk-importer/popup.css",
+      "sameContents": true,
+      "metadataDifferences": {
+        "create_system": [
+          0,
+          3
+        ]
+      }
+    },
+    {
+      "file": "coin-desk-importer/README.md",
+      "sameContents": true,
+      "metadataDifferences": {
+        "create_system": [
+          0,
+          3
+        ]
+      }
+    }
+  ],
+  "canonical": "verified VPS build ZIP promoted to Pages",
+  "initialZipByteMatch": false,
+  "sameMemberContents": true
+}
