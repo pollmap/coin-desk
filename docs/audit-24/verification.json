@@ -1,0 +1,40 @@
+{
+  "version": "0.24.0",
+  "phase": "local_verified_remote_pending",
+  "local": {
+    "types": "passed",
+    "unitTests": 513,
+    "unitFiles": 59,
+    "recoveryTests": 2,
+    "nodeServerTests": 18,
+    "pythonVpsTests": 17,
+    "browserBaseline": {
+      "passed": 178,
+      "skipped": 2,
+      "retries": 0,
+      "scope": "UI changes before additional saved-date fix"
+    },
+    "finalSavedDateRegression": {
+      "passed": 14,
+      "retries": 0,
+      "browsers": [
+        "Chromium",
+        "WebKit"
+      ],
+      "scope": "date pin, quote market, saved workspace, share, zoom, refresh"
+    },
+    "build": "passed",
+    "docs": "passed",
+    "brand": "passed"
+  },
+  "remaining": [
+    "remote CI and main merge",
+    "Pages and VPS API/static deployment",
+    "public actual-data UX verification"
+  ],
+  "externalUnverified": [
+    "Apple Safari and VoiceOver hardware",
+    "five-human usability study"
+  ],
+  "waiting48HoursRequired": false
+}

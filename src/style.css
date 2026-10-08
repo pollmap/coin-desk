@@ -543,11 +543,6 @@ main {
   color: var(--muted);
   padding: 3px 0;
 }
-.indicator-toolbar button > span {
-  width: 10px;
-  height: 2px;
-  background: var(--surface);
-}
 .indicator-toolbar button.enabled {
   color: var(--text);
 }

@@ -1,6 +1,16 @@
 import { useEffect, useRef, useState } from 'react';
 import { Link, NavLink, useLocation } from 'react-router-dom';
-import { Search, Sun, Moon, HelpCircle, X } from 'lucide-react';
+import {
+  Search,
+  Sun,
+  Moon,
+  HelpCircle,
+  X,
+  ChartNoAxesCombined,
+  List,
+  ArrowLeftRight,
+  Bookmark,
+} from 'lucide-react';
 import { ASSETS } from '../shared/catalog';
 import { matchesCoin } from '../shared/coin-search';
 import { matchesIndicator } from '../shared/indicator-search';
@@ -17,9 +27,21 @@ export function ProductTopbar() {
     [theme, setTheme] = useState(
       document.documentElement.dataset.theme === 'dark' ? 'dark' : 'light',
     );
+  const [searchOpen, setSearchOpen] = useState(false);
+  const searchButton = useRef<HTMLButtonElement>(null);
   const input = useRef<HTMLInputElement>(null),
     box = useRef<HTMLDivElement>(null),
     help = useRef<HTMLDetailsElement>(null);
+  useEffect(() => {
+    if (searchOpen) input.current?.focus();
+  }, [searchOpen]);
+  const recentAnalysis = saved<{ href?: string }>('recent-analysis', {});
+  const analysisHref = location.pathname.startsWith('/coins/')
+    ? location.pathname + location.search
+    : typeof recentAnalysis.href === 'string' &&
+        /^\/coins\/(BTC|DOGE|ETH|SOL|XRP|LINK|ONDO|PEPE)(\?|$)/.test(recentAnalysis.href)
+      ? recentAnalysis.href
+      : indicatorUrl('BTC', 'net:mvrv', new URLSearchParams());
   const results = [
     ...ASSETS.filter((a) => matchesCoin(a.id, query)).map((a) => ({
       id: a.id,
@@ -47,10 +69,11 @@ export function ProductTopbar() {
   ].slice(0, 12);
   useEffect(() => {
     setQuery('');
+    setSearchOpen(false);
     if (help.current) help.current.open = false;
     document.title =
-      (location.pathname === '/'
-        ? '주요 8코인'
+      (location.pathname === '/' || location.pathname === '/coins'
+        ? '코인 시장'
         : location.pathname.startsWith('/coins/')
           ? asset + ' · 지표 분석'
           : location.pathname.startsWith('/learn')
@@ -67,6 +90,7 @@ export function ProductTopbar() {
     const keyboard = (e: KeyboardEvent) => {
       if (e.key === '/' && !/INPUT|TEXTAREA|SELECT/.test((e.target as HTMLElement).tagName)) {
         e.preventDefault();
+        setSearchOpen(true);
         input.current?.focus();
       }
     };
@@ -82,7 +106,7 @@ export function ProductTopbar() {
   }, []);
   return (
     <>
-      <Link to="/" className="product-brand" aria-label="보리차트 시장 홈">
+      <Link to="/" className="product-brand" aria-label="보리차트 홈">
         <img
           fetchPriority="low"
           decoding="async"
@@ -94,19 +118,52 @@ export function ProductTopbar() {
         <b>보리차트</b>
       </Link>
       <nav className="product-nav" aria-label="주요 화면">
-        <NavLink to="/" end>
+        <Link
+          to={analysisHref}
+          className={
+            'mobile-indicator-link' + (location.pathname.startsWith('/coins/') ? ' active' : '')
+          }
+          aria-current={location.pathname.startsWith('/coins/') ? 'page' : undefined}
+        >
+          <ChartNoAxesCombined size={20} aria-hidden="true" />
+          지표
+        </Link>
+        <NavLink
+          to="/coins"
+          end
+          className={({ isActive }) => (isActive || location.pathname === '/' ? 'active' : '')}
+        >
+          <List size={20} aria-hidden="true" />
           시장
         </NavLink>
-        <NavLink to="/compare">비교</NavLink>
-        <NavLink to="/workspace">내 저장</NavLink>
+        <NavLink to="/compare">
+          <ArrowLeftRight size={20} aria-hidden="true" />
+          비교
+        </NavLink>
+        <NavLink to="/workspace">
+          <Bookmark size={20} aria-hidden="true" />내 저장
+        </NavLink>
       </nav>
+      <button
+        ref={searchButton}
+        className="mobile-search-button"
+        aria-label="코인·지표 검색 열기"
+        aria-expanded={searchOpen}
+        aria-controls="product-search"
+        onClick={() => setSearchOpen(!searchOpen)}
+      >
+        <Search size={20} />
+      </button>
       <div
-        className="product-search"
+        id="product-search"
+        className={'product-search' + (searchOpen ? ' is-open' : '')}
         ref={box}
         onKeyDown={(e) => {
           if (e.key === 'Escape') {
             setQuery('');
-            input.current?.focus();
+            setSearchOpen(false);
+            if (window.matchMedia('(max-width: 760px)').matches) searchButton.current?.focus();
+            else input.current?.focus();
           }
           if (['ArrowDown', 'ArrowUp'].includes(e.key)) {
             const nodes = [

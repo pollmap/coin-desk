@@ -68,6 +68,15 @@ body {
 .product-brand img {
   object-fit: contain;
 }
+.market-mobile-change-label,
+.mobile-search-button,
+.mobile-chart-action {
+  display: none;
+}
+.product-nav .mobile-indicator-link,
+.product-nav svg {
+  display: none;
+}
 .product-nav {
   display: flex;
   gap: 28px;
@@ -590,14 +599,26 @@ body {
 .product-desk .indicator-source {
   font-size: 12px;
 }
-.product-desk .indicator-mobile-picker {
-  display: block;
-  padding: 8px 12px;
-  font-size: 13px;
-  border: 1px solid var(--border);
-  background: var(--panel);
+.product-desk .indicator-title-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font: inherit;
+  font-weight: inherit;
+  line-height: inherit;
   color: var(--text);
-  border-radius: 6px;
+  padding: 0;
+  min-height: 32px;
+  text-align: left;
+  border: 0;
+  background: transparent;
+}
+.product-desk .indicator-title-button svg {
+  flex-shrink: 0;
+  color: var(--muted);
+}
+.product-desk .indicator-title-button:hover {
+  color: var(--accent);
 }
 .product-desk .indicator-toolbar {
   border-bottom: 1px solid var(--border);
@@ -753,45 +774,197 @@ body {
 }
 @media (max-width: 760px) {
   .product-desk .topbar {
-    padding: 0 12px;
+    min-height: 52px;
     height: auto;
-    min-height: 60px;
+    padding: 6px 12px;
+    gap: 6px;
     flex-wrap: wrap;
-    gap: 12px;
+  }
+  .product-brand {
+    gap: 6px;
+    font-size: 16px;
+    margin-right: auto;
+  }
+  .product-brand img {
+    width: 28px;
+    height: 28px;
   }
   .product-brand b {
-    font-size: 16px;
+    display: block;
   }
-  .product-nav {
-    gap: 14px;
-  }
-  .product-nav a {
-    font-size: 14px;
-    padding: 16px 0;
-  }
-  .product-search {
-    order: 5;
-    flex: 1 0 90%;
-    margin-bottom: 10px;
+  .product-desk .topbar .icon-button,
+  .product-desk .product-help summary,
+  .mobile-search-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 36px;
+    min-height: 38px;
+    padding: 8px;
+    border: 0;
+    background: transparent;
+    color: var(--muted);
   }
   .product-help {
-    margin-left: auto;
+    margin-left: 0;
   }
-  .product-desk #main-content {
-    padding: 16px 12px;
+  .product-desk .product-nav {
+    position: fixed;
+    inset: auto 0 0;
+    z-index: 60;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    height: auto;
+    gap: 0;
+    padding: 5px 8px calc(5px + env(safe-area-inset-bottom));
+    border-top: 1px solid var(--border);
+    background: var(--bg);
   }
-  .market-heading {
-    align-items: flex-start;
+  .product-desk .product-nav a {
+    display: flex;
     flex-direction: column;
+    justify-content: center;
+    gap: 3px;
+    min-height: 48px;
+    padding: 4px;
+    font-size: 12px;
+    border: 0;
   }
-  .market-controls {
-    flex-wrap: wrap;
+  .product-desk .product-nav svg {
+    display: block;
   }
-  .market-table {
-    min-width: 690px;
+  .product-desk .product-nav a.active {
+    color: var(--accent);
+  }
+  .product-desk .topbar .product-search {
+    display: none;
+    order: 5;
+    flex: 1 0 100%;
+    width: 100%;
+    height: 42px;
+    margin: 0 0 4px;
+  }
+  .product-desk .topbar .product-search.is-open {
+    display: flex;
+  }
+  .product-search kbd {
+    display: none;
   }
   .product-search-results {
     width: 100%;
+    max-height: min(480px, 65dvh);
+  }
+  .product-desk #main-content {
+    padding: 16px;
+  }
+  .product-desk footer {
+    margin: 16px;
+    padding-bottom: calc(70px + env(safe-area-inset-bottom));
+  }
+  .market-heading {
+    margin-bottom: 8px;
+    align-items: center;
+  }
+  .market-heading h1 {
+    font-size: 22px;
+  }
+  .market-controls {
+    flex-wrap: wrap;
+    padding: 8px 0;
+    gap: 4px 8px;
+  }
+  .market-controls button {
+    padding: 8px;
+    font-size: 13px;
+    min-height: 40px;
+  }
+  .market-controls label {
+    margin-left: auto;
+  }
+  .market-resume {
+    margin: 0;
+  }
+  .market-table-wrap {
+    overflow: visible;
+  }
+  .market-table {
+    display: block;
+    min-width: 0;
+    width: 100%;
+  }
+  .market-table thead {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+  .market-table tbody {
+    display: block;
+  }
+  .market-table tbody tr {
+    display: grid;
+    grid-template-columns: 28px minmax(0, 1fr) auto;
+    grid-template-areas: 'star coin price' '. analysis change';
+    gap: 8px 8px;
+    padding: 16px 0;
+    border-bottom: 1px solid var(--border);
+    align-items: center;
+  }
+  .market-table tbody :is(td, th) {
+    padding: 0;
+    border: 0;
+    min-width: 0;
+  }
+  .market-table .market-favorite-cell {
+    grid-area: star;
+  }
+  .market-table .market-coin-cell {
+    grid-area: coin;
+  }
+  .market-table .market-coin-cell a {
+    gap: 8px;
+    font-size: 14px;
+  }
+  .market-table .market-price-cell {
+    grid-area: price;
+    font-weight: 600;
+    font-size: 15px;
+  }
+  .market-mobile-change-label {
+    display: inline;
+    font-size: 12px;
+    color: var(--muted);
+  }
+  .market-table .market-change-cell {
+    grid-area: change;
+    font-size: 13px;
+  }
+  .market-table .market-analysis-cell {
+    grid-area: analysis;
+    text-align: left;
+    font-size: 12px;
+  }
+  .market-table .market-analysis-cell a {
+    min-height: 28px;
+    display: inline-flex;
+    align-items: center;
+    color: var(--accent);
+  }
+  .market-table .market-volume-cell,
+  .market-table .market-spark {
+    display: none;
+  }
+  .market-time summary {
+    min-height: 24px;
+    display: inline-flex;
+    align-items: center;
+    font-weight: 400;
+  }
+  .market-time[open] {
+    max-width: 150px;
+    white-space: normal;
   }
 }
 
@@ -800,7 +973,7 @@ body {
 }
 .product-desk.app .indicator-workspace .indicator-heading {
   min-height: 34px;
-  margin-bottom: 2px;
+  margin-bottom: 0;
 }
 .product-desk .indicator-heading > div:first-child {
   display: flex;
@@ -838,130 +1011,224 @@ body {
 }
 
 @media (max-width: 760px) {
-  .product-desk .topbar {
-    display: flex;
-    gap: 4px 10px;
-    padding: 0 12px;
-  }
-  .product-brand b {
-    display: none;
-  }
-  .product-desk .topbar .product-search {
-    order: 5;
-    flex-basis: 100%;
-  }
   .product-desk #main-content:has(.indicator-workspace) {
-    padding: 2px 12px;
+    padding: 8px 16px;
   }
   .product-desk .indicator-shortcuts {
-    display: none;
+    display: flex;
+    gap: 0;
+    margin: 0;
+    padding: 0;
+    border-bottom: 1px solid var(--border);
+    overflow: auto;
+  }
+  .product-desk .indicator-shortcuts a {
+    flex: 1 0 auto;
+    text-align: center;
+    min-height: 36px;
+    padding: 8px 6px;
+    border-radius: 0;
+    font-size: 12px;
+    white-space: nowrap;
+  }
+  .product-desk .indicator-shortcuts a[aria-current='page'] {
+    background: transparent;
+    color: var(--accent);
+    border-bottom: 2px solid var(--accent);
   }
   .product-desk .indicator-workspace .asset-header {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: nowrap;
-    gap: 10px;
+    display: block;
     min-height: 44px;
-    margin-bottom: 2px;
-  }
-  .product-desk .indicator-workspace .coin-picker {
-    min-width: 132px;
-    width: 132px;
-  }
-  .product-desk .indicator-workspace .coin-picker summary {
-    padding: 4px;
-    gap: 4px;
-  }
-  .product-desk .indicator-workspace .coin-picker h1 {
-    white-space: nowrap;
-    font-size: 0;
-  }
-  .product-desk .indicator-workspace .coin-picker h1 b {
-    font-size: 14px;
     margin: 0;
-    color: var(--text);
   }
   .product-desk.app .indicator-workspace .coin-context {
+    display: flex;
     flex-wrap: nowrap;
     gap: 8px;
+    min-height: 44px;
+  }
+  .product-desk .indicator-workspace .coin-picker {
+    min-width: 0;
+    width: auto;
+    flex: 1;
+  }
+  .product-desk .indicator-workspace .coin-picker summary {
+    padding: 4px 0;
+    gap: 6px;
+    border: 0;
+    background: transparent;
+  }
+  .product-desk .indicator-workspace .coin-picker summary > span {
+    min-width: 0;
+    flex: 1;
+  }
+  .product-desk .indicator-workspace .coin-picker .coin-chevron {
+    width: 14px;
+    flex-shrink: 0;
+  }
+  .product-desk .indicator-workspace .coin-picker h1 {
+    display: flex;
+    align-items: center;
+    min-width: 0;
+    white-space: nowrap;
+    font-size: 15px;
+  }
+  .product-desk .indicator-workspace .coin-picker .coin-name {
+    display: inline-block;
+    max-width: 82px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    vertical-align: bottom;
+  }
+  .product-desk .indicator-workspace .coin-picker h1 b {
+    font-size: 12px;
+    margin-left: 3px;
+    flex-shrink: 0;
+    color: var(--muted);
   }
   .product-desk .indicator-workspace .detail-quote {
-    max-width: 170px;
-    flex: 1;
+    margin-left: auto;
+    max-width: 160px;
     min-width: 0;
+    flex: 0 1 auto;
+    text-align: right;
   }
   .product-desk .indicator-workspace .detail-quote strong {
-    font-size: 16px;
+    font-size: 14px;
   }
   .product-desk.app .indicator-workspace .indicator-heading {
     display: grid;
-    grid-template-columns: 1fr auto;
+    grid-template-columns: minmax(0, 1fr) auto;
     gap: 2px 8px;
-    min-height: 38px;
+    min-height: 0;
+    margin: 0 0 4px;
   }
   .product-desk .indicator-heading > div:first-child {
-    grid-column: 1 / -1;
-    gap: 8px;
-    flex-wrap: nowrap;
-    min-width: 0;
+    display: contents;
   }
-  .product-desk .indicator-heading:not(:has(.indicator-source)) > div:first-child {
+  .product-desk .indicator-heading h1 {
     grid-column: 1;
+    grid-row: 1;
+    font-size: 20px;
+    line-height: 26px;
+    margin: 0;
   }
-  .product-desk .indicator-heading:not(:has(.indicator-source)) .indicator-meaning {
+  .product-desk .indicator-heading .indicator-meaning {
+    grid-column: 1 / -1;
+    grid-row: 2;
+    display: block;
+    white-space: normal;
+    font-size: 13px;
+    line-height: 18px;
+  }
+  .product-desk .indicator-heading > div > span:last-child:not(.indicator-meaning) {
     display: none;
   }
   .product-desk .indicator-heading-actions {
+    grid-column: 2;
+    grid-row: 1;
     gap: 4px;
     justify-self: end;
   }
   .product-desk .indicator-heading-actions button {
-    padding: 4px 6px;
+    padding: 6px 8px;
     font-size: 12px;
+    min-height: 36px;
     white-space: nowrap;
-    min-height: 32px;
   }
-  .product-desk .indicator-heading h1 {
-    font-size: 18px;
-  }
-  .product-desk .indicator-heading > div > span:last-child {
-    display: none;
-  }
-  .product-desk .indicator-heading span {
-    font-size: 12px;
+  .product-desk .indicator-save {
+    color: var(--accent);
+    border-color: var(--accent);
   }
   .product-desk .indicator-source {
-    margin-left: 0;
-    font-size: 0;
-    gap: 0;
+    display: none;
   }
   .product-desk .indicator-source select {
-    max-width: 116px;
-    font-size: 12px;
-    min-height: 34px;
+    max-width: 140px;
+    min-height: 36px;
     padding: 4px;
+    font-size: 12px;
   }
   .product-desk.app .indicator-workspace .indicator-toolbar {
-    flex-wrap: nowrap;
+    display: flex;
+    flex-wrap: wrap;
     gap: 4px;
+    min-height: 36px;
+    margin-bottom: 4px;
   }
   .product-desk .indicator-toolbar .period-picker {
-    max-width: 70px;
+    flex: 0 0 58px;
+    max-width: 58px;
     min-width: 0;
+    margin-right: 0;
   }
   .product-desk .indicator-toolbar .period-picker select {
-    width: 70px;
+    width: 58px;
     min-width: 0;
     padding: 4px;
+    min-height: 36px;
   }
   .product-desk .indicator-toolbar button {
-    padding: 4px;
-    white-space: nowrap;
-  }
-  .product-desk .indicator-mobile-picker {
-    white-space: nowrap;
     padding: 6px;
+    min-height: 36px;
+    white-space: nowrap;
     font-size: 12px;
+  }
+  .product-desk .indicator-toolbar .desktop-chart-action {
+    display: none;
+  }
+  .product-desk .indicator-toolbar .indicator-date-tools {
+    min-width: max-content;
+  }
+  .product-desk .indicator-toolbar > button:last-child {
+    margin-left: auto;
+  }
+  .product-desk .indicator-more .mobile-chart-action {
+    display: inline-flex;
+  }
+  .product-desk .indicator-more {
+    padding: 12px;
+    background: var(--surface);
+    border: 0;
+    border-radius: 8px;
+    max-height: 45dvh;
+    overflow: auto;
+  }
+  .product-desk .indicator-more :is(button, select) {
+    min-height: 40px;
+  }
+  .product-desk .indicator-workspace .analysis-legend > span:nth-child(2) > b {
+    font-size: 28px;
+  }
+  .product-desk .indicator-explanation {
+    margin-top: 16px;
+    border-inline: 0;
+    border-radius: 0;
+  }
+  .product-desk .indicator-navigation nav a {
+    padding: 12px 4px;
+    min-height: 56px;
+    border-radius: 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .product-desk .indicator-navigation nav a.active {
+    box-shadow: none;
+  }
+  .product-desk .indicator-navigation nav a small {
+    line-height: 1.5;
+  }
+  .product-desk .indicator-group-tabs {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 4px;
+  }
+  .product-desk .indicator-group-tabs button {
+    padding: 8px 2px;
+    font-size: 12px;
+    min-height: 40px;
+  }
+  .product-desk .indicator-navigation .sidebar-label {
+    display: none;
   }
 }
 
@@ -982,26 +1249,14 @@ body {
   font-size: 14px;
   line-height: 1.6;
 }
-@media (max-width: 760px) {
-  .product-desk .topbar .product-search {
-    margin-bottom: 4px;
-  }
-  .product-desk .indicator-workspace .asset-header {
-    margin-bottom: 0;
-  }
-}
 
-/* Keep all header actions on the first row even at 320px. */
 @media (max-width: 380px) {
-  .product-desk .topbar {
-    gap: 0 4px;
+  .product-desk .indicator-workspace .coin-picker .coin-name {
+    display: none;
   }
-  .product-desk .product-nav {
-    gap: 10px;
-  }
-  .product-desk .topbar .icon-button,
-  .product-desk .product-help summary {
-    padding: 6px;
-    min-width: 32px;
+  .product-desk .indicator-workspace .coin-picker h1 b {
+    font-size: 15px;
+    color: var(--text);
+    margin: 0;
   }
 }

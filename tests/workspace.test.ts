@@ -73,9 +73,9 @@ describe('personal desk untrusted settings', () => {
   });
   it('rejects oversized, unsupported and duplicate imports before replacing settings', () => {
     expect(() => importDesk(' '.repeat(512001))).toThrow();
-    expect(() => importDesk(JSON.stringify({ ...DEFAULT_DESK, note: '가'.repeat(172000) }))).toThrow(
-      '512KB',
-    );
+    expect(() =>
+      importDesk(JSON.stringify({ ...DEFAULT_DESK, note: '가'.repeat(172000) })),
+    ).toThrow('512KB');
     expect(() => importDesk('{')).toThrow();
     expect(() => importDesk(JSON.stringify({ ...DEFAULT_DESK, version: 99 }))).toThrow();
     expect(() =>
@@ -84,5 +84,28 @@ describe('personal desk untrusted settings', () => {
     expect(() =>
       importDesk(JSON.stringify({ ...DEFAULT_DESK, workspaces: [{ name: 'bad', asset: 'FAKE' }] })),
     ).toThrow();
+  });
+  it('preserves a pinned reading and quote market through backup without accepting malformed dates', () => {
+    const config = {
+      name: 'BTC reading',
+      asset: 'BTC',
+      market: 'upbit',
+      priceSource: 'reference',
+      metric: 'net:mvrv',
+      analysisOptions: { reading_date: '1788220800' },
+    };
+    const desk = normalizeDesk({ ...DEFAULT_DESK, workspaces: [config] });
+    const restored = importDesk(JSON.stringify(desk));
+    const url = new URL(workspaceUrl(restored.workspaces[0]), 'https://example.test');
+    expect(url.searchParams.get('reading_date')).toBe('1788220800');
+    expect(url.searchParams.get('market')).toBe('upbit');
+    expect(url.searchParams.get('price_source')).toBe('reference');
+    for (const reading_date of ['-1', 'NaN', '1788220800000', '1e9', 'https://evil.test']) {
+      const invalid = normalizeDesk({
+        ...DEFAULT_DESK,
+        workspaces: [{ ...config, analysisOptions: { reading_date } }],
+      });
+      expect(workspaceUrl(invalid.workspaces[0])).not.toContain('reading_date');
+    }
   });
 });

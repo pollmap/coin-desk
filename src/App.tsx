@@ -42,6 +42,8 @@ const WorkspacePage = lazy(() =>
 );
 const SourceDialog = lazy(() => import('./LegacyPages').then((m) => ({ default: m.SourceDialog })));
 function EntryRoute() {
+  // Decide only on entry. Resizing an open chart must not change its route or range.
+  const [mobileEntry] = useState(() => window.matchMedia('(max-width: 760px)').matches);
   const location = useLocation(),
     p = new URLSearchParams(location.search);
   if (
@@ -58,6 +60,10 @@ function EntryRoute() {
         to={{ pathname: '/coins/' + asset, search: '?' + p, hash: location.hash }}
       />
     );
+  }
+  // Preserve bookmarked market views; only an unqualified mobile home opens analysis.
+  if (mobileEntry && !['sort', 'view', 'theme', 'market'].some((key) => p.has(key))) {
+    return <Navigate replace to="/coins/BTC?metric=net%3Amvrv&period=5y&price_source=reference" />;
   }
   return <WatchlistPage />;
 }

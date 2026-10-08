@@ -81,7 +81,7 @@ test('coin changes open the active indicator group and empty categories offer an
   await page.getByRole('button', { name: '코인 변경 · 비트코인 BTC' }).click();
   await page.getByRole('button', { name: '온도파이낸스 ONDO', exact: true }).click();
   await expect(page.locator('[data-primary-metric="rsi"]')).toBeVisible();
-  await page.getByRole('button', { name: '지표 변경', exact: true }).click();
+  await page.getByRole('button', { name: /지표 변경$/ }).click();
   const picker = page.getByRole('dialog', { name: '지표 선택' });
   await expect(picker.getByRole('button', { name: '기술·성과', exact: true })).toHaveAttribute(
     'aria-pressed',
@@ -99,7 +99,7 @@ test('coin changes open the active indicator group and empty categories offer an
   await expect(picker.getByRole('status')).toContainText('not-a-metric');
   await page.keyboard.press('Escape');
   await expect(picker).not.toBeVisible();
-  await expect(page.getByRole('button', { name: '지표 변경', exact: true })).toBeFocused();
+  await expect(page.getByRole('button', { name: /지표 변경$/ })).toBeFocused();
 });
 
 test('source date and chart observation date are distinct; the reading toolbar fits narrow screens', async ({

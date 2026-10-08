@@ -2,7 +2,7 @@ import { test, expect, type Page } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
 const chart = (p: Page) => p.locator('[data-chart-kind="analysis"]');
 const pick = async (p: Page, name: string) => {
-  await p.getByRole('button', { name: '지표 변경', exact: true }).click();
+  await p.getByRole('button', { name: /지표 변경$/ }).click();
   await p.getByLabel('지표 검색', { exact: true }).fill(name);
   await p
     .getByRole('navigation', { name: '지표 목록', exact: true })
@@ -117,14 +117,14 @@ test('legacy metric URLs use the same indicator workspace without automatic pric
   await page.goto('/metrics/mvrv?period=all&visual=price');
   await expect(chart(page)).toHaveAttribute('data-primary-metric', 'btc:mvrv');
   await expect(page.getByLabel('가격 비교', { exact: true })).not.toBeChecked();
-  await expect(page.getByRole('button', { name: '지표 변경', exact: true })).toBeVisible();
+  await expect(page.getByRole('button', { name: /지표 변경$/ })).toBeVisible();
   expect(requests).toEqual([]);
   await page.goto('/metrics/mvrv?asset=ONDO');
   await expect(page.locator('[data-availability]')).toHaveAttribute(
     'data-availability',
     'unsupported',
   );
-  await page.getByRole('button', { name: '지표 변경', exact: true }).click();
+  await page.getByRole('button', { name: /지표 변경$/ }).click();
   await expect(page.getByRole('navigation', { name: '지표 목록', exact: true })).not.toContainText(
     'MVRV',
   );
@@ -239,7 +239,7 @@ test('mobile search Escape focus and 200 percent keyboard reflow', async ({ page
   await page.setViewportSize({ width: 390, height: 900 });
   await page.goto('/?asset=BTC');
   await expect(chart(page)).toBeVisible();
-  const opener = page.getByRole('button', { name: '지표 변경' });
+  const opener = page.getByRole('button', { name: /지표 변경$/ });
   await opener.click();
   const dialog = page.getByRole('dialog', { name: '지표 선택' });
   await dialog.getByRole('textbox', { name: '지표 검색' }).fill('RSI');
@@ -362,7 +362,7 @@ test('source selection stays separate and automatic refresh preserves the canvas
   await page.getByLabel('지표 원천', { exact: true }).selectOption('btc:mvrv');
   await expect(surface).toHaveAttribute('data-primary-metric', 'btc:mvrv');
   await expect(page.locator('.indicator-heading')).toContainText('Bitview');
-  await page.getByRole('button', { name: '지표 변경', exact: true }).click();
+  await page.getByRole('button', { name: /지표 변경$/ }).click();
   const navLinks = page.getByRole('navigation', { name: '지표 목록', exact: true });
   await expect(navLinks.locator('a[aria-current=page]')).toHaveCount(1);
   await page.keyboard.press('Escape');

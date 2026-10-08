@@ -179,10 +179,14 @@ export function DateNavigator({
       disabled={!enabled}
       onClick={open}
       title="날짜로 이동 (Alt+G)"
+      aria-label="날짜로 이동"
       aria-keyshortcuts="Alt+G"
     >
       <CalendarDays size={16} />
-      날짜로 이동
+      <span className="date-jump-label">날짜로 이동</span>
+      <span className="date-jump-short" aria-hidden="true">
+        날짜
+      </span>
     </button>
   );
   const actions = (

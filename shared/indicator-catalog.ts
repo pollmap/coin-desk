@@ -218,6 +218,20 @@ const definitions: IndicatorBase[] = [
       }) as IndicatorBase,
   ),
 ];
+// Concise selection copy. The full definition, formula and limits remain in the guide.
+const conciseMeanings: Record<string, string> = {
+  'view:rainbow': '앞선 730일 로그가격 분포에서의 위치',
+  'view:btc_rainbow': '과거 가격의 로그회귀 대비 현재 위치',
+  'view:relative': '두 코인의 수익률·가격 비율·상관 비교',
+  'view:ribbon': '서로 다른 기간의 이동평균 비교',
+  'view:bb': '20개 종가 평균과 변동 범위',
+  'view:price': '선택 원천의 확정 가격 흐름',
+  rsi: '최근 14일 상승폭과 하락폭의 상대적 크기',
+  drawdown: '그날까지의 최고 종가 대비 하락률',
+  'futures:funding': '무기한 선물의 실제 정산 펀딩 비율',
+  'net:realized_cap': '시가총액과 MVRV로 역산한 실현가치',
+  'net:realized_price': '같은 원천의 가격을 MVRV로 나눈 값',
+};
 export const INDICATORS_CATALOG: IndicatorDefinition[] = definitions.map((d) => {
   const guide =
     guideForMetric(d.id === 'view:price' ? 'candles' : d.id.replace(/^view:/, '')) ??
@@ -232,11 +246,12 @@ export const INDICATORS_CATALOG: IndicatorDefinition[] = definitions.map((d) => 
           : '일별 확정 관측';
   return {
     ...d,
+    title: d.id === 'view:btc_rainbow' ? 'BTC 레인보우' : d.title,
     guide: guide?.id ?? d.guide,
     formula: d.formula === '확정 가격 이력으로 계산' ? (guide?.formula ?? d.formula) : d.formula,
     shortMeaning: d.id.endsWith(':mvrv')
       ? '시가총액 ÷ 실현시가총액'
-      : (guide?.summary ?? d.formula),
+      : (conciseMeanings[d.id] ?? guide?.summary ?? d.formula),
     baselineMeaning: guide?.read ?? '같은 원천과 단위의 확정 관측을 비교합니다.',
     observationCadence: cadence,
     measurementScope:
@@ -320,6 +335,7 @@ export function indicatorUrl(
     'panels',
     'signal',
     'focus',
+    'reading_date',
     'pattern_focus',
     'guide',
     'transition',
