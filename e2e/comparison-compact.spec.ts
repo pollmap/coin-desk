@@ -17,11 +17,11 @@ test('compact comparison keeps the chart first and settings preserve its range',
     await expect
       .poll(async () => (await chart.boundingBox())!.y)
       .toBeLessThan(page.viewportSize()!.height - 200);
-    expect((await page.locator('.comparison-controls').boundingBox())!.height).toBeLessThan(200);
+    expect((await page.locator('.comparison-settings').boundingBox())!.height).toBeLessThan(200);
     geometry.push({
       width,
       chartTop: (await chart.boundingBox())!.y,
-      controlsHeight: (await page.locator('.comparison-controls').boundingBox())!.height,
+      controlsHeight: (await page.locator('.comparison-settings').boundingBox())!.height,
     });
     await page.screenshot({
       path: test.info().outputPath('comparison-' + width + '.png'),
@@ -35,6 +35,7 @@ test('compact comparison keeps the chart first and settings preserve its range',
     .info()
     .attach('layout', { body: JSON.stringify(geometry), contentType: 'application/json' });
   const range = await chart.getAttribute('data-visible-from');
+  await page.locator('.comparison-settings > summary').click();
   await page.getByText('비교 코인 · BTC · DOGE · ETH', { exact: false }).click();
   await expect(page.locator('.comparison-selection')).toHaveAttribute('open', '');
   await page.locator('.comparison-selection summary').click();
@@ -64,6 +65,7 @@ test('narrow period selector and custom dates retain exchange and share context'
   await page.setViewportSize({ width: 390, height: 900 });
   await page.goto('/compare?assets=BTC,DOGE,ETH&market=binance&period=all');
   await expect(page.locator('.comparison-chart')).toHaveAttribute('data-points', /[1-9]\d*/);
+  await page.locator('.comparison-settings > summary').click();
   await page.getByRole('combobox', { name: '비교 기간', exact: true }).selectOption('3m');
   await expect(page).toHaveURL(/period=3m/);
   expect(new URL(page.url()).searchParams.get('market')).toBe('binance');
@@ -82,6 +84,7 @@ test('narrow period selector and custom dates retain exchange and share context'
     new RegExp('from=' + start),
   );
   await page.reload();
+  await page.locator('.comparison-settings > summary').click();
   await expect(page.getByLabel('시작일 (UTC)')).toHaveValue(start);
   await expect(page.getByRole('combobox', { name: '비교 기간', exact: true })).toHaveValue(
     'custom',

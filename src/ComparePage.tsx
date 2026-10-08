@@ -456,167 +456,178 @@ export function ComparePage() {
           <h1>코인 성과 비교</h1>
         </div>
       </div>
-      <section className="panel comparison-controls" aria-label="비교 설정">
-        <details className="comparison-selection">
-          <summary>
-            비교 코인 · {assets.join(' · ')} <span>변경</span>
-          </summary>
-          <div className="comparison-control-heading">
-            <h2>
-              비교할 코인 <small>{assets.length}/8</small>
-            </h2>
-            <button onClick={() => change({ assets: DEFAULT_ASSETS })}>BTC · DOGE · ETH</button>
-          </div>
-          <div className="comparison-assets">
-            {ASSETS.map((asset) => (
-              <button
-                key={asset.id}
-                aria-pressed={assets.includes(asset.id)}
-                disabled={assets.length === 2 && assets.includes(asset.id)}
-                title={asset.name}
-                onClick={() =>
-                  change({
-                    assets: assets.includes(asset.id)
-                      ? assets.filter((id) => id !== asset.id)
-                      : [...assets, asset.id],
-                  })
-                }
-              >
-                <AssetLogo asset={asset.id} size={19} />
-                <b>{asset.id}</b>
-                <span>{asset.name}</span>
-              </button>
-            ))}
-          </div>
-        </details>
-        <div className="comparison-options">
-          <label>
-            거래소 · 기준 통화{' '}
-            <select
-              value={market}
-              onChange={(event) => change({ market: event.target.value as Market })}
-            >
-              <option value="binance">Binance · USDT</option>
-              <option value="upbit">Upbit · KRW</option>
-            </select>
-          </label>
-          <label className="comparison-period-compact">
-            비교 기간
-            <select
-              aria-label="비교 기간"
-              value={hasCustom ? 'custom' : period}
-              onChange={(event) => {
-                dateForm.current?.reset();
-                setDraftError('');
-                change({ period: event.target.value as RangePeriod });
-              }}
-            >
-              {hasCustom && (
-                <option value="custom" disabled>
-                  직접 지정
-                </option>
-              )}
-              {PERIOD_OPTIONS.map((entry) => (
-                <option key={entry.id} value={entry.id}>
-                  {entry.label}
-                </option>
+      <details className="comparison-settings" open={!!draftError || !!parsed.error || undefined}>
+        <summary>
+          {assets.join(' · ')} · {market === 'upbit' ? 'Upbit KRW' : 'Binance USDT'} ·{' '}
+          {hasCustom ? '직접 지정' : PERIOD_OPTIONS.find((p) => p.id === period)?.label}{' '}
+          <span>설정 변경</span>
+        </summary>
+        <section className="panel comparison-controls" aria-label="비교 설정">
+          <details className="comparison-selection">
+            <summary>
+              비교 코인 · {assets.join(' · ')} <span>변경</span>
+            </summary>
+            <div className="comparison-control-heading">
+              <h2>
+                비교할 코인 <small>{assets.length}/8</small>
+              </h2>
+              <button onClick={() => change({ assets: DEFAULT_ASSETS })}>BTC · DOGE · ETH</button>
+            </div>
+            <div className="comparison-assets">
+              {ASSETS.map((asset) => (
+                <button
+                  key={asset.id}
+                  aria-pressed={assets.includes(asset.id)}
+                  disabled={assets.length === 2 && assets.includes(asset.id)}
+                  title={asset.name}
+                  onClick={() =>
+                    change({
+                      assets: assets.includes(asset.id)
+                        ? assets.filter((id) => id !== asset.id)
+                        : [...assets, asset.id],
+                    })
+                  }
+                >
+                  <AssetLogo asset={asset.id} size={19} />
+                  <b>{asset.id}</b>
+                  <span>{asset.name}</span>
+                </button>
               ))}
-            </select>
-          </label>
-          <div className="segments comparison-period-wide" aria-label="비교 기간">
-            {PERIOD_OPTIONS.map((entry) => (
-              <button
-                key={entry.id}
-                aria-pressed={!hasCustom && period === entry.id}
-                className={!hasCustom && period === entry.id ? 'selected' : ''}
-                onClick={() => {
+            </div>
+          </details>
+          <div className="comparison-options">
+            <label>
+              거래소 · 기준 통화{' '}
+              <select
+                value={market}
+                onChange={(event) => change({ market: event.target.value as Market })}
+              >
+                <option value="binance">Binance · USDT</option>
+                <option value="upbit">Upbit · KRW</option>
+              </select>
+            </label>
+            <label className="comparison-period-compact">
+              비교 기간
+              <select
+                aria-label="비교 기간"
+                value={hasCustom ? 'custom' : period}
+                onChange={(event) => {
                   dateForm.current?.reset();
                   setDraftError('');
-                  change({ period: entry.id });
+                  change({ period: event.target.value as RangePeriod });
                 }}
               >
-                {entry.label}
-              </button>
-            ))}
+                {hasCustom && (
+                  <option value="custom" disabled>
+                    직접 지정
+                  </option>
+                )}
+                {PERIOD_OPTIONS.map((entry) => (
+                  <option key={entry.id} value={entry.id}>
+                    {entry.label}
+                  </option>
+                ))}
+              </select>
+            </label>
+            <div className="segments comparison-period-wide" aria-label="비교 기간">
+              {PERIOD_OPTIONS.map((entry) => (
+                <button
+                  key={entry.id}
+                  aria-pressed={!hasCustom && period === entry.id}
+                  className={!hasCustom && period === entry.id ? 'selected' : ''}
+                  onClick={() => {
+                    dateForm.current?.reset();
+                    setDraftError('');
+                    change({ period: entry.id });
+                  }}
+                >
+                  {entry.label}
+                </button>
+              ))}
+            </div>
           </div>
-        </div>
-        <details
-          className="comparison-custom-dates"
-          open={hasCustom || !!draftError || !!parsed.error || undefined}
-        >
-          <summary>날짜 직접 선택{hasCustom ? ' · 적용 중' : ''}</summary>
-          <form
-            key={[period, fromValue ?? '', toValue ?? ''].join(':')}
-            ref={dateForm}
-            className="comparison-date-range"
-            onSubmit={(event) => {
-              event.preventDefault();
-              const checked = comparisonDateSubmission(new FormData(event.currentTarget));
-              if (checked.error !== undefined) {
-                setDraftError(checked.error);
-                return;
-              }
-              setDraftError('');
-              change({ from: checked.from, to: checked.to });
-            }}
+          <details
+            className="comparison-custom-dates"
+            open={hasCustom || !!draftError || !!parsed.error || undefined}
           >
-            <label>
-              시작일 (UTC)
-              <input
-                type="date"
-                name="from"
-                defaultValue={fromValue || ''}
-                max={utcDate(Math.floor(Date.now() / 1000 / DAY) * DAY)}
-                onChange={() => setDraftError('')}
-                required
-              />
-            </label>
-            <label>
-              종료일 (UTC)
-              <input
-                type="date"
-                name="to"
-                defaultValue={toValue || ''}
-                max={utcDate(Math.floor(Date.now() / 1000 / DAY) * DAY)}
-                onChange={() => setDraftError('')}
-                required
-              />
-            </label>
-            <button type="submit" className={hasCustom ? 'selected' : ''}>
-              직접 기간 적용
-            </button>
-            {hasCustom ? (
-              <button type="button" onClick={() => change({ period })}>
-                직접 기간 해제
+            <summary>날짜 직접 선택{hasCustom ? ' · 적용 중' : ''}</summary>
+            <form
+              key={[period, fromValue ?? '', toValue ?? ''].join(':')}
+              ref={dateForm}
+              className="comparison-date-range"
+              onSubmit={(event) => {
+                event.preventDefault();
+                const checked = comparisonDateSubmission(new FormData(event.currentTarget));
+                if (checked.error !== undefined) {
+                  setDraftError(checked.error);
+                  return;
+                }
+                setDraftError('');
+                change({ from: checked.from, to: checked.to });
+              }}
+            >
+              <label>
+                시작일 (UTC)
+                <input
+                  type="date"
+                  name="from"
+                  defaultValue={fromValue || ''}
+                  max={utcDate(Math.floor(Date.now() / 1000 / DAY) * DAY)}
+                  onChange={() => setDraftError('')}
+                  required
+                />
+              </label>
+              <label>
+                종료일 (UTC)
+                <input
+                  type="date"
+                  name="to"
+                  defaultValue={toValue || ''}
+                  max={utcDate(Math.floor(Date.now() / 1000 / DAY) * DAY)}
+                  onChange={() => setDraftError('')}
+                  required
+                />
+              </label>
+              <button type="submit" className={hasCustom ? 'selected' : ''}>
+                직접 기간 적용
               </button>
-            ) : (
-              <span>날짜를 지정하면 위 프리셋 대신 적용합니다.</span>
-            )}
-          </form>
-          {draftError || parsed.error ? (
-            <p className="comparison-date-error" role="alert">
-              {draftError || parsed.error}
-              {parsed.error ? (
-                <button onClick={() => change({ period })}>기본 기간으로 복원</button>
-              ) : null}
-            </p>
+              {hasCustom ? (
+                <button type="button" onClick={() => change({ period })}>
+                  직접 기간 해제
+                </button>
+              ) : (
+                <span>날짜를 지정하면 위 프리셋 대신 적용합니다.</span>
+              )}
+            </form>
+            {draftError || parsed.error ? (
+              <p className="comparison-date-error" role="alert">
+                {draftError || parsed.error}
+                {parsed.error ? (
+                  <button onClick={() => change({ period })}>기본 기간으로 복원</button>
+                ) : null}
+              </p>
+            ) : null}
+          </details>
+          <button
+            className="comparison-share"
+            disabled={!!parsed.error}
+            onClick={() => void share()}
+          >
+            비교 링크 복사
+          </button>
+          {shareUrl ? (
+            <div className="comparison-share-result">
+              <span role="status">{shareNote}</span>
+              <input
+                aria-label="비교 화면 공유 주소"
+                value={shareUrl}
+                readOnly
+                onFocus={(event) => event.target.select()}
+              />
+            </div>
           ) : null}
-        </details>
-        <button className="comparison-share" disabled={!!parsed.error} onClick={() => void share()}>
-          비교 링크 복사
-        </button>
-        {shareUrl ? (
-          <div className="comparison-share-result">
-            <span role="status">{shareNote}</span>
-            <input
-              aria-label="비교 화면 공유 주소"
-              value={shareUrl}
-              readOnly
-              onFocus={(event) => event.target.select()}
-            />
-          </div>
-        ) : null}
-      </section>
+        </section>
+      </details>
       {loading ? (
         <div className="comparison-notice" role="status">
           확정 일봉을 불러오고 있습니다… {active ? state.loaded : 0}/{assets.length} 코인

@@ -55,6 +55,12 @@ try {
       },
     },
   );
+  fixture.once('exit', () => {
+    if (testProcess.exitCode === null) {
+      console.error('Fixture stopped during browser checks; stopping invalid downstream checks.');
+      testProcess.kill();
+    }
+  });
   const [code] = await once(testProcess, 'exit');
   process.exitCode = code ?? 1;
 } finally {

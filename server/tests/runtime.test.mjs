@@ -89,6 +89,28 @@ test('Migration ledger preserves historical cron runs and rejects altered applie
   }
 });
 
+test('Automatic SQLite rollback preserves the original failure and leaves the connection usable', async () => {
+  const db = openSqlite(':memory:');
+  try {
+    migrate(db);
+    db.sqlite.exec(
+      "CREATE TRIGGER abort_source BEFORE INSERT ON state WHEN NEW.key='fail' BEGIN SELECT RAISE(ROLLBACK, 'source validation failed'); END",
+    );
+    await assert.rejects(
+      db.batch([
+        db.prepare('INSERT INTO state VALUES(?,?)').bind('first', 'temporary'),
+        db.prepare('INSERT INTO state VALUES(?,?)').bind('fail', 'invalid'),
+      ]),
+      /source validation failed/,
+    );
+    assert.equal(await db.prepare('SELECT COUNT(*) n FROM state').first('n'), 0);
+    await db.batch([db.prepare('INSERT INTO state VALUES(?,?)').bind('recovered', 'ok')]);
+    assert.equal(await db.prepare('SELECT COUNT(*) n FROM state').first('n'), 1);
+  } finally {
+    db.sqlite.close();
+  }
+});
+
 test('Slow background does not block quotes; duplicate tick, overlap and failure remain observable', async () => {
   const db = openSqlite(':memory:');
   migrate(db);

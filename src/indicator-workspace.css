@@ -7,7 +7,7 @@
   min-height: 40px;
   border-radius: 5px;
   color: var(--text);
-  font-size: 13px;
+  font-size: 14px;
   line-height: 1.35;
 }
 .indicator-navigation nav a:hover,
@@ -21,7 +21,38 @@
 }
 .indicator-navigation nav small {
   color: var(--muted);
-  font-size: 10px;
+  font-size: 12px;
+}
+.indicator-navigation nav a > span {
+  display: grid;
+  gap: 4px;
+}
+.indicator-support {
+  flex-shrink: 0;
+  max-width: 95px;
+  text-align: right;
+}
+.indicator-questions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 5px;
+  margin: 12px 0;
+}
+.indicator-questions button {
+  font-size: 12px;
+  padding: 8px;
+  text-align: left;
+}
+.indicator-questions [aria-pressed='true'] {
+  color: var(--accent);
+  background: var(--accent-bg);
+  border-color: var(--accent);
+}
+.indicator-date-tools {
+  min-width: 0;
+}
+.knowledge-open {
+  margin: 8px 0;
 }
 .indicator-group,
 .indicator-favorites {
@@ -121,7 +152,7 @@
   display: flex;
   align-items: center;
   gap: 6px;
-  font-size: 11px;
+  font-size: 12px;
   color: var(--muted);
   margin-left: auto;
 }
@@ -188,6 +219,18 @@
 .indicator-workspace .analysis-lab[data-relative-asset] .analysis-legend {
   gap: 2px 10px;
 }
+.indicator-workspace .analysis-lab[data-relative-asset] .analysis-legend > span:nth-child(2) > b {
+  font-size: 20px;
+  line-height: 22px;
+}
+@media (max-width: 1200px) {
+  .app .indicator-toolbar:has(.relative-controls) .period-picker .segments {
+    display: none;
+  }
+  .app .indicator-toolbar:has(.relative-controls) .period-mobile-select {
+    display: block;
+  }
+}
 .indicator-toolbar button,
 .indicator-toolbar label {
   font-size: 12px;
@@ -204,8 +247,10 @@
   white-space: nowrap;
 }
 .price-toggle input {
-  width: 16px;
-  height: 16px;
+  width: 24px;
+  height: 24px;
+  flex: 0 0 24px;
+  margin: 0;
 }
 .price-toggle:has(input:disabled) {
   display: none;
@@ -232,6 +277,12 @@
   gap: 14px;
   font-size: 12px;
   color: var(--muted);
+}
+.analysis-reading-value .analysis-primary-unit {
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 14px;
+  white-space: nowrap;
 }
 .analysis-reading-reset {
   min-height: 32px;
@@ -335,7 +386,7 @@
   display: flex;
   gap: 14px;
   flex-wrap: wrap;
-  font-size: 11px;
+  font-size: 12px;
   color: var(--muted);
   margin-top: 8px;
 }
@@ -355,21 +406,6 @@
 }
 .indicator-workspace .workspace-bar {
   margin-top: 14px;
-}
-.indicator-picker {
-  max-height: 85dvh;
-  width: min(420px, calc(100vw - 24px));
-  padding: 16px;
-  border: 1px solid var(--border);
-  background: var(--panel);
-  color: var(--text);
-  border-radius: 10px;
-}
-.indicator-picker::backdrop {
-  background: #0008;
-}
-.indicator-picker .nav-utilities {
-  display: none;
 }
 .app .indicator-workspace .indicator-panel:fullscreen {
   background: var(--bg);
@@ -399,7 +435,7 @@
     gap: 10px;
   }
   .desk-main-nav a {
-    font-size: 11px;
+    font-size: 12px;
   }
   .app:has(.indicator-workspace) .source-button {
     display: none;
@@ -408,7 +444,7 @@
     font-size: 18px;
   }
   .indicator-heading span {
-    font-size: 11px;
+    font-size: 12px;
   }
   .indicator-toolbar .period-picker {
     max-width: 110px;
@@ -416,8 +452,30 @@
   .indicator-toolbar button {
     padding: 5px 8px;
   }
-  .indicator-toolbar:has(.relative-controls) {
+  .app .indicator-workspace .indicator-toolbar:has(.relative-controls) {
     position: relative;
+    display: grid;
+    grid-template-columns: 70px 1fr auto;
+    gap: 2px 4px;
+    margin-bottom: 0;
+  }
+  .app .indicator-toolbar:has(.relative-controls) .period-picker select {
+    min-height: 32px;
+    height: 32px;
+  }
+  .indicator-toolbar:has(.relative-controls) .indicator-date-tools {
+    grid-column: 2 / 4;
+  }
+  .indicator-toolbar:has(.relative-controls) button,
+  .indicator-toolbar:has(.relative-controls) summary {
+    min-height: 30px;
+    padding: 4px;
+  }
+  .indicator-toolbar:has(.relative-controls) .relative-controls {
+    grid-column: 1;
+  }
+  .indicator-toolbar:has(.relative-controls) .relative-controls > summary {
+    white-space: nowrap;
   }
   .indicator-toolbar .relative-controls {
     position: static;
@@ -442,6 +500,13 @@
     line-height: 22px;
     white-space: normal;
     overflow-wrap: anywhere;
+  }
+  .indicator-workspace .analysis-lab[data-relative-asset] .analysis-reading-value {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    column-gap: 4px;
+    line-height: 20px;
   }
   .indicator-workspace .analysis-surface {
     display: block;

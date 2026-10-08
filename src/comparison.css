@@ -4,6 +4,17 @@
 .comparison-page .panel {
   margin-bottom: 8px;
 }
+.comparison-settings > summary {
+  cursor: pointer;
+  padding: 10px 0;
+  font-size: 14px;
+  line-height: 1.6;
+}
+.comparison-settings > summary span {
+  color: var(--accent);
+  margin-left: 12px;
+  white-space: nowrap;
+}
 .comparison-controls {
   padding: 4px 12px;
   display: grid;

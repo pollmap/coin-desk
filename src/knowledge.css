@@ -1,0 +1,88 @@
+.knowledge-mode {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+.knowledge-mode [aria-pressed='true'],
+.knowledge-list [aria-pressed='true'] {
+  background: var(--accent-bg);
+  color: var(--accent);
+}
+.knowledge-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 250px;
+  gap: 24px;
+}
+.knowledge-map {
+  height: 410px;
+  border: 1px solid var(--border);
+  margin-bottom: 16px;
+}
+.knowledge-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.knowledge-list li {
+  border-bottom: 1px solid var(--border);
+}
+.knowledge-list button {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 12px;
+  justify-content: space-between;
+  width: 100%;
+  padding: 12px 4px;
+  border: 0;
+  border-radius: 0;
+  text-align: left;
+}
+.knowledge-list button > span {
+  width: 100%;
+  color: var(--muted);
+}
+.knowledge-panel small {
+  font-size: 12px;
+  color: var(--muted);
+}
+.knowledge-evidence {
+  border-left: 1px solid var(--border);
+  padding-left: 20px;
+  line-height: 1.7;
+}
+.knowledge-evidence h3 {
+  margin: 4px 0 12px;
+}
+.knowledge-evidence > small,
+.knowledge-analysis {
+  display: block;
+  margin-top: 12px;
+}
+.knowledge-map .react-flow__attribution {
+  background: var(--panel);
+  font-size: 12px;
+}
+.knowledge-map .react-flow__attribution a {
+  color: var(--muted);
+  display: inline-flex;
+  align-items: center;
+  min-height: 24px;
+}
+.knowledge-map .react-flow__controls-button {
+  color: #202633;
+  background: #fff;
+}
+@media (max-width: 700px) {
+  .knowledge-layout {
+    display: block;
+  }
+  .knowledge-evidence {
+    border-left: 0;
+    border-top: 1px solid var(--border);
+    padding: 16px 0 0;
+    margin-top: 20px;
+  }
+  .knowledge-map {
+    height: 300px;
+  }
+}

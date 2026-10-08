@@ -3,6 +3,7 @@ import { Link, NavLink, useLocation } from 'react-router-dom';
 import { Search, Sun, Moon, HelpCircle, X } from 'lucide-react';
 import { ASSETS } from '../shared/catalog';
 import { matchesCoin } from '../shared/coin-search';
+import { matchesIndicator } from '../shared/indicator-search';
 import { defaultIndicator, indicatorUrl, navigationIndicators } from '../shared/indicator-catalog';
 import { saved, save } from './lib';
 import { AssetLogo } from './AssetLogo';
@@ -35,7 +36,7 @@ export function ProductTopbar() {
       asset: a.id,
     })),
     ...navigationIndicators(asset, '')
-      .filter((d) => (d.title + ' ' + d.id).toLowerCase().includes(query.trim().toLowerCase()))
+      .filter((d) => matchesIndicator(d, query))
       .map((d) => ({
         id: d.id,
         title: d.title,

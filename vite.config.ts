@@ -14,6 +14,8 @@ export default defineConfig({
         '**/.wrangler/**',
         '**/test-results/**',
         '**/playwright-report/**',
+        '**/docs/**',
+        '**/deployment-artifacts/**',
       ],
     },
     fs: { deny: ['.env', '.env.*', '*.{crt,pem}', '**/.git/**', privateWork + '/**'] },

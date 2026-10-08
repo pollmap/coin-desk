@@ -58,7 +58,11 @@ export function openDatabase(path = 'work/local.sqlite') {
         sqlite.exec('COMMIT');
         return results;
       } catch (e) {
-        sqlite.exec('ROLLBACK');
+        try {
+          sqlite.exec('ROLLBACK');
+        } catch {
+          /* Preserve the original failure. */
+        }
         throw e;
       }
     },

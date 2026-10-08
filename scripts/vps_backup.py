@@ -1,13 +1,26 @@
 """Online SQLite snapshot, full restore verification, bounded project-only retention."""
-import argparse, datetime, hashlib, json, os, pathlib, shutil, sqlite3, tempfile, time
+import argparse, datetime, errno, hashlib, json, os, pathlib, shutil, sqlite3, sys, tempfile, time
 from backup_check import fingerprint
 from import_d1_export import check_integrity
 
 def atomic_json(path, data):
-    temporary = path.with_suffix('.tmp')
-    temporary.write_text(json.dumps(data, indent=2), encoding='utf-8')
-    os.chmod(temporary, 0o600)
-    os.replace(temporary, path)
+    # An interrupted/concurrent writer must not leave a shared empty status file.
+    descriptor, name = tempfile.mkstemp(prefix='.' + path.name, suffix='.tmp', dir=path.parent)
+    temporary = pathlib.Path(name)
+    try:
+        with os.fdopen(descriptor, 'w', encoding='utf-8') as stream:
+            json.dump(data, stream, indent=2)
+            stream.flush(); os.fsync(stream.fileno())
+        os.chmod(temporary, 0o600)
+        os.replace(temporary, path)
+    finally:
+        temporary.unlink(missing_ok=True)
+
+def failure_code(error):
+    if isinstance(error, OSError):
+        return {errno.ENOSPC: 'storage_full', errno.EACCES: 'storage_permission', errno.EROFS: 'storage_read_only'}.get(error.errno, 'storage_io')
+    if isinstance(error, sqlite3.Error): return 'sqlite_backup'
+    return 'backup_verification'
 
 def restore(snapshot, destination, manifest):
     snapshot = pathlib.Path(snapshot).resolve(strict=True)
@@ -35,11 +48,12 @@ def backup(source, folder, status, retention_days=14, budget_bytes=2*1024**3):
     if source == status or source.parent == folder: raise ValueError('Backups must have a separate project backup directory')
     if retention_days < 2 or budget_bytes < 1024*1024: raise ValueError('Invalid retention or budget')
     folder.mkdir(parents=True, exist_ok=True); status.parent.mkdir(parents=True, exist_ok=True)
-    atomic_json(status, {'ok': False, 'verified': False, 'startedAt': int(time.time()), 'reason': 'backup_in_progress'})
-    temporary = pathlib.Path(tempfile.mkdtemp(prefix='.pending-', dir=folder))
-    stamp = datetime.datetime.now(datetime.timezone.utc).strftime('%Y%m%dT%H%M%S%fZ')
-    snapshot = temporary / 'snapshot.sqlite'
+    temporary = None
     try:
+        atomic_json(status, {'ok': False, 'verified': False, 'startedAt': int(time.time()), 'reason': 'backup_in_progress'})
+        temporary = pathlib.Path(tempfile.mkdtemp(prefix='.pending-', dir=folder))
+        stamp = datetime.datetime.now(datetime.timezone.utc).strftime('%Y%m%dT%H%M%S%fZ')
+        snapshot = temporary / 'snapshot.sqlite'
         live = sqlite3.connect(source.as_uri() + '?mode=ro', uri=True)
         saved = sqlite3.connect(snapshot)
         try:
@@ -71,11 +85,17 @@ def backup(source, folder, status, retention_days=14, budget_bytes=2*1024**3):
         if total > budget_bytes: raise ValueError('Backup budget exceeded; keeping the latest two verified snapshots')
         atomic_json(status, {'ok': True, 'verified': True, 'completedAt': report['completedAt'], 'retainedBytes': total, 'offsite': False})
         return report
-    except BaseException:
-        atomic_json(status, {'ok': False, 'verified': False, 'failedAt': int(time.time()), 'reason': 'backup_or_budget_verification_failed'})
+    except BaseException as error:
+        code = failure_code(error)
+        # Log only a bounded code even when disk failure prevents status writes.
+        print(json.dumps({'event': 'backup_failed', 'code': code}), file=sys.stderr)
+        try:
+            atomic_json(status, {'ok': False, 'verified': False, 'failedAt': int(time.time()), 'reason': 'backup_or_budget_verification_failed', 'code': code})
+        except OSError:
+            pass
         raise
     finally:
-        if temporary.exists(): shutil.rmtree(temporary)
+        if temporary is not None and temporary.exists(): shutil.rmtree(temporary)
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
@@ -86,4 +106,8 @@ if __name__ == '__main__':
     recover = sub.add_parser('restore')
     recover.add_argument('--snapshot', required=True); recover.add_argument('--destination', required=True); recover.add_argument('--manifest', required=True)
     args = vars(parser.parse_args()); operation = args.pop('operation')
-    print(json.dumps(backup(**args) if operation == 'backup' else restore(**args), indent=2))
+    try:
+        print(json.dumps(backup(**args) if operation == 'backup' else restore(**args), indent=2))
+    except Exception as error:
+        print(json.dumps({'event': 'backup_command_failed', 'code': failure_code(error)}), file=sys.stderr)
+        sys.exit(1)

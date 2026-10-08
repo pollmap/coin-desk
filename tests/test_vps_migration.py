@@ -1,4 +1,5 @@
-import hashlib, json, pathlib, sqlite3, sys, tempfile, unittest
+import hashlib, json, pathlib, sqlite3, sys, tempfile, unittest, errno
+from unittest.mock import patch
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / 'scripts'))
 from import_d1_export import import_export
@@ -84,6 +85,24 @@ class MigrationRecovery(unittest.TestCase):
         with self.assertRaises(sqlite3.OperationalError): backup(self.folder/'missing.sqlite',self.folder/'backups',status)
         self.assertFalse(json.loads(status.read_text())['ok'])
         self.assertFalse((self.folder/'missing.sqlite').exists())
+
+    def test_initial_status_write_failure_preserves_previous_snapshot(self):
+        backups, status = self.folder/'backups', self.folder/'status.json'
+        backup(self.source, backups, status)
+        previous = {p.name: (p/'manifest.json').read_bytes() for p in backups.iterdir()}
+        with patch('vps_backup.atomic_json', side_effect=OSError(errno.ENOSPC, 'private path redacted')):
+            with self.assertRaises(OSError): backup(self.source, backups, status)
+        self.assertEqual({p.name: (p/'manifest.json').read_bytes() for p in backups.iterdir()}, previous)
+        self.assertFalse(list(backups.glob('.pending-*')))
+
+    def test_backup_temp_creation_failure_updates_public_status_code(self):
+        backups, status = self.folder/'backups', self.folder/'status.json'
+        with patch('vps_backup.tempfile.mkdtemp', side_effect=OSError(errno.ENOSPC, 'private detail')):
+            with self.assertRaises(OSError): backup(self.source, backups, status)
+        report = json.loads(status.read_text())
+        self.assertFalse(report['ok'])
+        self.assertEqual(report['code'], 'storage_full')
+        self.assertNotIn('private detail', status.read_text())
 
     def test_shadow_health_preserves_503_but_active_verification_refuses_it(self):
         import http.server,threading,urllib.error

@@ -402,6 +402,9 @@ function RelativeView({
   period,
   initialWindow,
   controlsInToolbar = false,
+  toolbarTarget,
+  onVisibleRange,
+  onReadingDate,
 }: {
   asset: Asset;
   basis: PriceBasis;
@@ -410,6 +413,9 @@ function RelativeView({
   period: Period;
   initialWindow?: DateWindow | null;
   controlsInToolbar?: boolean;
+  toolbarTarget?: HTMLElement | null;
+  onVisibleRange?: (range: DateWindow) => void;
+  onReadingDate?: (time: number | null) => void;
 }) {
   const pair = relativePair(asset, params);
   const supported =
@@ -459,6 +465,7 @@ function RelativeView({
       {
         id: 'correlation',
         title: `${pair.asset}/${pair.benchmark} ${window}일 상관`,
+        legendTitle: `${window}일 상관`,
         unit: 'r',
         source: basisName(basis),
         data: corr,
@@ -497,6 +504,9 @@ function RelativeView({
       ) : aligned[1]?.data.length ? (
         <>
           <AnalysisChart
+            toolbarTarget={toolbarTarget}
+            onVisibleRange={onVisibleRange}
+            onReadingDate={onReadingDate}
             asset={pair.asset}
             exportName={`${pair.asset}-${pair.benchmark}-${mode}`}
             primary={{
@@ -558,6 +568,9 @@ export function AnalysisLab({
   period,
   initialWindow,
   controlsInToolbar = false,
+  toolbarTarget,
+  onVisibleRange,
+  onReadingDate,
 }: {
   view: AnalysisView;
   points: Point[];
@@ -568,6 +581,9 @@ export function AnalysisLab({
   period: Period;
   initialWindow?: DateWindow | null;
   controlsInToolbar?: boolean;
+  toolbarTarget?: HTMLElement | null;
+  onVisibleRange?: (range: DateWindow) => void;
+  onReadingDate?: (time: number | null) => void;
 }) {
   const scoped = useMemo(
     () => (initialWindow ? points.filter((p) => p.time <= initialWindow.to) : points),
@@ -597,6 +613,9 @@ export function AnalysisLab({
   return (
     <RelativeView
       controlsInToolbar={controlsInToolbar}
+      toolbarTarget={toolbarTarget}
+      onVisibleRange={onVisibleRange}
+      onReadingDate={onReadingDate}
       asset={asset}
       basis={basis}
       params={params}

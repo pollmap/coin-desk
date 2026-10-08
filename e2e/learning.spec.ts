@@ -89,10 +89,11 @@ test('confirmed patterns navigate their chart, survive save/share and clear sele
     'data-visible-from',
     new URL(url).searchParams.get('chart_from')!,
   );
-  await page.getByRole('button', { name: '작업공간 저장·불러오기', exact: true }).click();
+  await page.getByRole('button', { name: '분석 저장', exact: true }).click();
   await page.getByLabel('작업공간 이름', { exact: true }).fill('도지 조건 확인');
   await page.getByRole('button', { name: '현재 구성 저장', exact: true }).click();
   await expect(page.getByRole('link', { name: /도지 조건 확인/ })).toBeVisible();
+  await page.getByRole('button', { name: '분석 저장 닫기', exact: true }).click();
   await page.getByRole('button', { name: /코인 변경/ }).click();
   await page.getByRole('searchbox', { name: '코인 검색' }).fill('ETH');
   await page.getByRole('searchbox', { name: '코인 검색' }).press('Enter');

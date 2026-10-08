@@ -48,10 +48,24 @@ export interface CronState {
   outcome: string;
   error: string | null;
 }
-export const cleanError = (error: unknown) =>
-  error
-    ? String(error).match(/(?:HTTP|API)\s+\d{3}/)?.[0] || '원천 연결 또는 데이터 검증 오류'
-    : null;
+export function failureCode(error: unknown): string | null {
+  if (!error) return null;
+  const message = String(error);
+  if (/SQLITE_FULL|database or disk is full|no space left/i.test(message)) return 'STORAGE_FULL';
+  if (/SQLITE_BUSY|database is locked/i.test(message)) return 'STORAGE_BUSY';
+  if (/rollback.*no transaction/i.test(message)) return 'STORAGE_TRANSACTION';
+  if (/HTTP\s+429|API\s+429/.test(message)) return 'PROVIDER_RATE_LIMIT';
+  if (/retract|rebuild|required.*rebuild/i.test(message)) return 'SOURCE_REVISION';
+  if (/timeout|timed out/i.test(message)) return 'PROVIDER_TIMEOUT';
+  return 'SOURCE_OR_VALIDATION';
+}
+export const cleanError = (error: unknown) => {
+  const code = failureCode(error);
+  if (!code) return null;
+  if (code.startsWith('STORAGE_')) return '저장 처리 오류 · 마지막 정상 관측을 표시합니다';
+  if (code === 'SOURCE_REVISION') return '원천 관측 수정 · 이력 재검증 필요';
+  return String(error).match(/(?:HTTP|API)\s+\d{3}/)?.[0] || '원천 연결 또는 데이터 검증 오류';
+};
 export function enabledAssets(env: Pick<Env, 'ENABLED_ASSETS'>): Asset[] {
   return ASSETS.filter((a) => env.ENABLED_ASSETS.split(',').includes(a.id)).map((a) => a.id);
 }
@@ -151,11 +165,23 @@ export function dueAt(job: JobPolicy, states: IngestionState[], now: number) {
   }
   return due;
 }
-export function selectJob(jobs: JobPolicy[], states: IngestionState[], now: number) {
+export function selectJob(jobs: JobPolicy[], states: IngestionState[], now: number, fair = false) {
   const eligible = jobs
-    .map((job) => ({ job, due: dueAt(job, states, now) }))
+    .map((job) => ({
+      job,
+      due: fair
+        ? Math.max(
+            dueAt(job, states, now),
+            (states.find((s) => s.key === job.key)?.last_attempt ?? -60) + 60,
+          )
+        : dueAt(job, states, now),
+    }))
     .filter((item) => item.due <= now)
     .sort((a, b) => a.due - b.due);
+  // VPS quotes have their own lane. Earliest-due service also admits failed
+  // sources whose backoff expired, instead of indefinitely preferring healthy
+  // primary coins. Attempts advance the deadline even during history catch-up.
+  if (fair) return eligible[0]?.job;
   // Production quotes use a separate lane. Prioritize healthy primary-asset jobs
   // without letting a failing source monopolize the recovery queue.
   return (
@@ -198,6 +224,7 @@ export async function operationStatus(env: Env) {
     onchain,
     references,
     networks,
+    recoveryRows,
   ] = await Promise.all([
     env.DB.prepare('SELECT * FROM ingestion ORDER BY key').all<IngestionState>(),
     env.DB.prepare("SELECT value FROM state WHERE key LIKE 'history:%'").all<{ value: string }>(),
@@ -231,6 +258,9 @@ export async function operationStatus(env: Env) {
     env.DB.prepare(
       "SELECT asset,MIN(first) AS first,MAX(last) AS last,MIN(last) AS oldest,COUNT(*) AS metrics FROM network_coverage WHERE metric!='price' GROUP BY asset",
     ).all<{ asset: Asset; first: number; last: number; oldest: number; metrics: number }>(),
+    env.DB.prepare(
+      "SELECT key,value FROM state WHERE key LIKE 'cursor:price-backfill:%' ORDER BY key",
+    ).all<{ key: string; value: string }>(),
   ]);
   const assets = enabledAssets(env),
     rebuilding = !!build;
@@ -291,6 +321,7 @@ export async function operationStatus(env: Env) {
       failures: row?.failures ?? 0,
       active,
       error: cleanError(row?.error),
+      errorCode: failureCode(row?.error),
       status,
       collectorAgeSeconds,
       dataAgeSeconds,
@@ -458,6 +489,25 @@ export async function operationStatus(env: Env) {
     assets,
     sources,
     history,
+    historyRecovery: recoveryRows.results.flatMap((row) => {
+      const key = row.key.slice('cursor:price-backfill:'.length);
+      if (!/^(BTC|DOGE|ETH|SOL|XRP|LINK|ONDO|PEPE):(binance|upbit):(1h|1d)$/.test(key)) return [];
+      try {
+        const value = JSON.parse(row.value);
+        if (!Number.isSafeInteger(value.cursor) || value.cursor < 0 || value.cursor > now)
+          return [];
+        return [
+          {
+            key,
+            cursor: value.cursor as number,
+            checkedAt: Number.isSafeInteger(value.checkedAt) ? (value.checkedAt as number) : null,
+            error: cleanError(value.error),
+          },
+        ];
+      } catch {
+        return [];
+      }
+    }),
     rebuilding,
     health: { ok: !reasons.length, reasons, checkedAt: now },
     automation: {

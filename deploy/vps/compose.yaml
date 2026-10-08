@@ -57,6 +57,7 @@ services:
     mem_limit: 768m
   quote-hub:
     <<: *service
+    image: ${COIN_DESK_HUB_IMAGE:-${COIN_DESK_IMAGE}}
     command: [node, server/quote-hub.mjs]
     environment: { HOST: 0.0.0.0, PORT: '8091' }
     volumes: []

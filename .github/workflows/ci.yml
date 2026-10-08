@@ -28,6 +28,7 @@ jobs:
       - run: npm run test:recovery
       - run: npm run test:server
       - run: npm run build
+      - run: npm run build:storybook -- --disable-telemetry
       - run: npx playwright install --with-deps chromium webkit
       - run: npm run test:e2e
         env:

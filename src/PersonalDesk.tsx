@@ -112,10 +112,12 @@ export function WorkspaceBar({
   embedded = false,
   listOnly = false,
   resolveCurrent,
+  onOpenWorkspace,
 }: {
   current: Omit<Workspace, 'name'>;
   embedded?: boolean;
   listOnly?: boolean;
+  onOpenWorkspace?: () => void;
   resolveCurrent?: (current: Omit<Workspace, 'name'>) => Omit<Workspace, 'name'>;
 }) {
   const { desk, update } = usePersonalDesk();
@@ -226,7 +228,8 @@ export function WorkspaceBar({
                           JSON.stringify(w.annotations),
                         );
                       window.dispatchEvent(new Event('coin-desk-annotations'));
-                      if (!listOnly) setOpen(false);
+                      if (!listOnly && !embedded) setOpen(false);
+                      onOpenWorkspace?.();
                       setMessage('');
                     }}
                   >

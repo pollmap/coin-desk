@@ -1,5 +1,7 @@
-import { useEffect, useId, useRef, useState } from 'react';
-import { CalendarDays, ChevronLeft, ChevronRight, Minus, Plus, X } from 'lucide-react';
+import { Popover } from '@base-ui/react/popover';
+import { DeskDialog } from './DeskDialog';
+import { useEffect, useRef, useState } from 'react';
+import { CalendarDays, ChevronLeft, ChevronRight, Minus, Plus } from 'lucide-react';
 import {
   navigateWindow,
   selectDateWindow,
@@ -15,7 +17,9 @@ export function DateNavigator({
   onRange,
   onSelect,
   onReset,
+  compact = false,
 }: {
+  compact?: boolean;
   times: number[];
   visible: DateWindow | null;
   selected?: number;
@@ -23,10 +27,9 @@ export function DateNavigator({
   onSelect: (time: number) => void;
   onReset: () => void;
 }) {
-  const dialog = useRef<HTMLDialogElement>(null),
-    opener = useRef<HTMLButtonElement>(null);
+  const opener = useRef<HTMLButtonElement>(null);
+  const [opened, setOpened] = useState(false);
   const dateInput = useRef<HTMLInputElement>(null);
-  const id = useId();
   const [mode, setMode] = useState<'date' | 'range'>('date');
   const [start, setStart] = useState(''),
     [end, setEnd] = useState(''),
@@ -41,12 +44,11 @@ export function DateNavigator({
     setEnd(utcDate(current.to));
     setError('');
     setMode('date');
-    dialog.current?.showModal();
+    setOpened(true);
     dateInput.current?.focus();
   }
   function close() {
-    dialog.current?.close();
-    opener.current?.focus();
+    setOpened(false);
   }
   function navigate(action: Parameters<typeof navigateWindow>[2]) {
     if (!current) return;
@@ -62,7 +64,7 @@ export function DateNavigator({
         !event.ctrlKey &&
         !event.metaKey &&
         event.key.toLowerCase() === 'g' &&
-        !document.querySelector('dialog[open]')
+        !document.querySelector('dialog[open], [role=dialog]')
       ) {
         event.preventDefault();
         opener.current?.click();
@@ -71,20 +73,122 @@ export function DateNavigator({
     window.addEventListener('keydown', keydown);
     return () => window.removeEventListener('keydown', keydown);
   }, []);
-  return (
+  const modal = (
+    <DeskDialog open={opened} onOpenChange={setOpened} title="차트 날짜 탐색" returnFocus={opener}>
+      <form
+        className="date-dialog-content"
+        onSubmit={(e) => {
+          e.preventDefault();
+          const form = new FormData(e.currentTarget);
+          const result = selectDateWindow(
+            times,
+            String(form.get('start') ?? ''),
+            mode === 'range' ? String(form.get('end') ?? '') : undefined,
+          );
+          if (result.error) {
+            setError(result.error);
+            return;
+          }
+          if (result.selected !== undefined) onSelect(result.selected);
+          if (result.range) onRange(result.range);
+          setNotice(mode === 'date' ? `${utcDate(result.selected!)} 관측 선택` : '선택 기간 표시');
+          close();
+        }}
+      >
+        <div className="date-dialog-modes" role="group" aria-label="날짜 선택 방식">
+          <button
+            type="button"
+            aria-pressed={mode === 'date'}
+            onClick={() => {
+              setMode('date');
+              setError('');
+            }}
+          >
+            날짜로 이동
+          </button>
+          <button
+            type="button"
+            aria-pressed={mode === 'range'}
+            onClick={() => {
+              setMode('range');
+              setStart(current ? utcDate(current.from) : '');
+              setError('');
+            }}
+          >
+            기간 선택
+          </button>
+        </div>
+        <label>
+          {mode === 'date' ? '이동할 날짜 (UTC)' : '시작일 (UTC)'}
+          <input
+            ref={dateInput}
+            name="start"
+            required
+            type="date"
+            value={start}
+            onChange={(e) => {
+              setStart(e.target.value);
+              setError('');
+            }}
+          />
+        </label>
+        {mode === 'range' && (
+          <label>
+            종료일 (UTC)
+            <input
+              name="end"
+              required
+              type="date"
+              value={end}
+              onChange={(e) => {
+                setEnd(e.target.value);
+                setError('');
+              }}
+            />
+          </label>
+        )}
+        <p>
+          {times.length
+            ? `${utcDate(times[0])} — ${utcDate(times[times.length - 1])}`
+            : '관측 대기'}
+          <br />
+          {mode === 'date'
+            ? '가장 가까운 실제 관측과 주변 구간을 표시합니다.'
+            : '선택한 날짜에 확보된 실제 관측만 표시합니다.'}
+        </p>
+        {error && (
+          <p className="date-error" role="alert">
+            {error}
+          </p>
+        )}
+        <div className="date-dialog-footer">
+          <button type="button" onClick={close}>
+            취소
+          </button>
+          <button type="submit" className="date-apply">
+            {mode === 'date' ? '이동' : '기간 적용'}
+          </button>
+        </div>
+      </form>
+    </DeskDialog>
+  );
+  const dateButton = (
+    <button
+      ref={opener}
+      className="date-jump"
+      disabled={!enabled}
+      onClick={open}
+      title="날짜로 이동 (Alt+G)"
+      aria-keyshortcuts="Alt+G"
+    >
+      <CalendarDays size={16} />
+      날짜로 이동
+    </button>
+  );
+  const actions = (
     <div className="date-navigation">
       <div className="date-navigation-actions" role="group" aria-label="차트 날짜 탐색">
-        <button
-          ref={opener}
-          className="date-jump"
-          disabled={!enabled}
-          onClick={open}
-          title="날짜로 이동 (Alt+G)"
-          aria-keyshortcuts="Alt+G"
-        >
-          <CalendarDays size={16} />
-          날짜로 이동
-        </button>
+        {!compact && dateButton}
         <div className="date-navigation-step">
           <button
             disabled={!enabled || current.from <= times[0]}
@@ -138,119 +242,28 @@ export function DateNavigator({
         </span>
         <span role="status">{notice}</span>
       </div>
-      <dialog
-        ref={dialog}
-        className="date-dialog"
-        aria-labelledby={id}
-        onCancel={(event) => {
-          event.preventDefault();
-          close();
-        }}
-        onClose={() => opener.current?.focus()}
-      >
-        <form
-          onSubmit={(e) => {
-            e.preventDefault();
-            const form = new FormData(e.currentTarget);
-            const result = selectDateWindow(
-              times,
-              String(form.get('start') ?? ''),
-              mode === 'range' ? String(form.get('end') ?? '') : undefined,
-            );
-            if (result.error) {
-              setError(result.error);
-              return;
-            }
-            if (result.selected !== undefined) onSelect(result.selected);
-            if (result.range) onRange(result.range);
-            setNotice(
-              mode === 'date' ? `${utcDate(result.selected!)} 관측 선택` : '선택 기간 표시',
-            );
-            close();
-          }}
-        >
-          <div className="date-dialog-heading">
-            <h2 id={id}>차트 날짜 탐색</h2>
-            <button type="button" onClick={close} aria-label="날짜 탐색 닫기">
-              <X size={20} />
-            </button>
-          </div>
-          <div className="date-dialog-modes" role="group" aria-label="날짜 선택 방식">
-            <button
-              type="button"
-              aria-pressed={mode === 'date'}
-              onClick={() => {
-                setMode('date');
-                setError('');
-              }}
-            >
-              날짜로 이동
-            </button>
-            <button
-              type="button"
-              aria-pressed={mode === 'range'}
-              onClick={() => {
-                setMode('range');
-                setStart(current ? utcDate(current.from) : '');
-                setError('');
-              }}
-            >
-              기간 선택
-            </button>
-          </div>
-          <label>
-            {mode === 'date' ? '이동할 날짜 (UTC)' : '시작일 (UTC)'}
-            <input
-              ref={dateInput}
-              name="start"
-              required
-              type="date"
-              value={start}
-              onChange={(e) => {
-                setStart(e.target.value);
-                setError('');
-              }}
-            />
-          </label>
-          {mode === 'range' && (
-            <label>
-              종료일 (UTC)
-              <input
-                name="end"
-                required
-                type="date"
-                value={end}
-                onChange={(e) => {
-                  setEnd(e.target.value);
-                  setError('');
-                }}
-              />
-            </label>
-          )}
-          <p>
-            {times.length
-              ? `${utcDate(times[0])} — ${utcDate(times[times.length - 1])}`
-              : '관측 대기'}
-            <br />
-            {mode === 'date'
-              ? '가장 가까운 실제 관측과 주변 구간을 표시합니다.'
-              : '선택한 날짜에 확보된 실제 관측만 표시합니다.'}
-          </p>
-          {error && (
-            <p className="date-error" role="alert">
-              {error}
-            </p>
-          )}
-          <div className="date-dialog-footer">
-            <button type="button" onClick={close}>
-              취소
-            </button>
-            <button type="submit" className="date-apply">
-              {mode === 'date' ? '이동' : '기간 적용'}
-            </button>
-          </div>
-        </form>
-      </dialog>
     </div>
+  );
+  return (
+    <>
+      {modal}
+      {compact ? (
+        <div className="date-compact-tools">
+          {dateButton}
+          <Popover.Root>
+            <Popover.Trigger className="date-tools-trigger">구간·확대</Popover.Trigger>
+            <Popover.Portal>
+              <Popover.Positioner sideOffset={6} align="start" className="date-tools-positioner">
+                <Popover.Popup className="date-tools-popup" aria-label="날짜·구간 도구">
+                  {actions}
+                </Popover.Popup>
+              </Popover.Positioner>
+            </Popover.Portal>
+          </Popover.Root>
+        </div>
+      ) : (
+        actions
+      )}
+    </>
   );
 }

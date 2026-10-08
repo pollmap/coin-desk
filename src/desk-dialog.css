@@ -1,0 +1,60 @@
+.desk-dialog-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  background: #0006;
+  opacity: 1;
+  transition: opacity 150ms;
+}
+.desk-dialog {
+  position: fixed;
+  z-index: 91;
+  inset: 0;
+  margin: auto;
+  width: min(560px, calc(100vw - 24px));
+  height: fit-content;
+  max-height: calc(100dvh - 32px);
+  overflow: auto;
+  padding: 20px;
+  background: var(--panel);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  outline: none;
+  opacity: 1;
+  transition: opacity 150ms;
+}
+.desk-dialog-wide {
+  width: min(1100px, calc(100vw - 24px));
+}
+.desk-dialog-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+.desk-dialog-heading h2 {
+  font-size: 20px;
+  margin: 0;
+}
+.desk-dialog .nav-utilities {
+  display: none;
+}
+.desk-dialog .workspace-bar {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+.desk-dialog[data-starting-style],
+.desk-dialog[data-ending-style],
+.desk-dialog-backdrop[data-starting-style],
+.desk-dialog-backdrop[data-ending-style] {
+  opacity: 0;
+}
+@media (prefers-reduced-motion: reduce) {
+  .desk-dialog,
+  .desk-dialog-backdrop {
+    transition: none;
+  }
+}

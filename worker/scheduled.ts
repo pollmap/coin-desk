@@ -181,23 +181,57 @@ export async function updatePrice(env: Env, asset: Asset, market: Market, interv
   )
     .bind(asset, market, interval)
     .first<{ time: number }>();
-  const rows = await getRecentCandles(
+  const now = epoch();
+  const key = asset + ':' + market + ':' + interval;
+  const cursorKey = 'cursor:price-backfill:' + key;
+  const savedCursor =
+    env.RUNTIME_KIND === 'vps'
+      ? await readState<{ cursor: number; error: string | null; checkedAt: number } | null>(
+          env.DB,
+          cursorKey,
+          null,
+        )
+      : null;
+  if (
+    savedCursor &&
+    (!Number.isSafeInteger(savedCursor.cursor) ||
+      savedCursor.cursor < 0 ||
+      savedCursor.cursor > now)
+  )
+    throw new Error('Invalid price backfill cursor');
+  const since =
+    savedCursor?.cursor ??
+    (latest ? Math.max(latest.time - 2 * step, interval === '1h' ? now - 90 * DAY : 0) : undefined);
+  let rows = await getRecentCandles(
     asset,
     market,
     interval,
-    latest
-      ? Math.max(latest.time - 2 * step, interval === '1h' ? epoch() - 90 * DAY : 0)
-      : undefined,
+    env.RUNTIME_KIND === 'vps' ? undefined : since,
     env,
   );
-  const now = epoch();
+  let recovery: { cursor: number; error: string | null; checkedAt: number } | null = null;
+  if (env.RUNTIME_KIND === 'vps' && since !== undefined && now - since > 6 * step) {
+    // Keep current observations independent of a bounded historical page. An
+    // older page failing must not discard a validated current response.
+    try {
+      const older = await getRecentCandles(asset, market, interval, since, env);
+      const cursor = older.at(-1)?.time;
+      if (cursor === undefined || cursor <= since)
+        throw new Error('Price history made no progress');
+      if (cursor < rows[0].time) recovery = { cursor, error: null, checkedAt: now };
+      rows = [...new Map([...older, ...rows].map((row) => [row.time, row])).values()].sort(
+        (a, b) => a.time - b.time,
+      );
+    } catch (error) {
+      recovery = { cursor: since, error: cleanError(error), checkedAt: now };
+    }
+  }
   const priorHistory = await readState<{
     first: number;
     last: number;
     rows: number | null;
     archived?: boolean;
   } | null>(env.DB, 'history:' + asset + ':' + market + ':' + interval, null);
-  const key = asset + ':' + market + ':' + interval;
   const historyKey = 'history:' + key;
   const historyStatement = priorHistory?.archived
     ? env.DB.prepare(
@@ -208,7 +242,7 @@ export async function updatePrice(env: Env, asset: Asset, market: Market, interv
           ? Math.max(priorHistory.first, Math.ceil((now - 90 * DAY) / 3600) * 3600)
           : priorHistory.first,
         // Rolling archives expire in chunks; do not publish an uncounted total.
-        interval === '1h' || priorHistory.rows === null
+        interval === '1h' || priorHistory.rows === null || savedCursor || recovery
           ? null
           : priorHistory.rows + rows.filter((c) => c.time > priorHistory.last).length,
         asset,
@@ -246,6 +280,16 @@ export async function updatePrice(env: Env, asset: Asset, market: Market, interv
       ),
     ),
     historyStatement,
+    ...(env.RUNTIME_KIND === 'vps'
+      ? [
+          recovery
+            ? env.DB.prepare('INSERT OR REPLACE INTO state(key,value) VALUES (?,?)').bind(
+                cursorKey,
+                JSON.stringify(recovery),
+              )
+            : env.DB.prepare('DELETE FROM state WHERE key=?').bind(cursorKey),
+        ]
+      : []),
     env.DB.prepare(
       'INSERT INTO ingestion(key,last_attempt,last_success,data_as_of,failures,error,next_attempt) VALUES (?,?,?,?,0,NULL,0) ON CONFLICT(key) DO UPDATE SET last_attempt=excluded.last_attempt,last_success=excluded.last_success,data_as_of=excluded.data_as_of,failures=0,error=NULL,next_attempt=0',
     ).bind(key, now, now, rows.at(-1)?.time ?? 0),
@@ -370,8 +414,9 @@ export async function scheduled(env: Env, scheduledAt = epoch(), separateQuotes 
       : jobPolicies(enabledAssets(env), !!build),
     rows.results,
     now,
+    env.RUNTIME_KIND === 'vps' && separateQuotes,
   );
-  // Keep 72 hours of minute ticks so a full 48-hour unattended run is auditable.
+  // Preserve the existing 72-hour execution ledger; not a release waiting gate.
   const slot = tick % 4320;
   // The run lease, bounded ledger, and selected-job attempt are one transaction.
   // Conditional SELECTs keep duplicate deliveries from overwriting the winning run.

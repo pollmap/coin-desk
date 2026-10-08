@@ -58,13 +58,17 @@ test('legacy target migrates explicitly; saved pair, overwrite cancel, delete un
   );
   await page.getByLabel('비교 설정', { exact: true }).click();
   await page.getByRole('combobox', { name: '비교 코인', exact: true }).selectOption('LINK');
-  await page.getByRole('button', { name: '작업공간 저장·불러오기' }).click();
+  await page.getByRole('button', { name: '분석 저장' }).click();
   await page.getByLabel('작업공간 이름', { exact: true }).fill('두 코인 검토');
   await page.getByRole('button', { name: '현재 구성 저장', exact: true }).click();
+  await page.getByRole('button', { name: '분석 저장 닫기', exact: true }).click();
   page.once('dialog', (dialog) => dialog.dismiss());
   await page.getByLabel('비교 설정', { exact: true }).click();
   await page.getByRole('combobox', { name: '비교 코인', exact: true }).selectOption('ETH');
+  await page.getByRole('button', { name: '분석 저장', exact: true }).click();
+  await page.getByLabel('작업공간 이름', { exact: true }).fill('두 코인 검토');
   await page.getByRole('button', { name: '같은 이름 덮어쓰기', exact: true }).click();
+  await page.getByRole('button', { name: '분석 저장 닫기', exact: true }).click();
   await page.getByRole('link', { name: '내 저장', exact: true }).click();
   await expect(page.getByRole('heading', { name: '내 저장', exact: true })).toBeVisible();
   await expect(page.locator('.saved-workspaces')).toContainText('두 코인 검토');
@@ -160,11 +164,17 @@ test('comparison refresh keeps the actual canvas and zoom; narrow chart starts b
 test('relative settings preserve chart position, focus, and guide context', async ({ page }) => {
   test.setTimeout(90000);
   await page.goto('/coins/ONDO?metric=view:relative&price_source=binance&benchmark_asset=LINK');
+  await expect(
+    page.locator('.indicator-toolbar').getByRole('button', { name: '날짜로 이동' }),
+  ).toBeVisible();
   const chart = page.locator('[data-chart-kind="analysis"]');
   await expect(chart).toHaveAttribute('data-range-ready', '1');
   for (const width of [320, 390, 768, 1000, 1280, 1440]) {
     await page.setViewportSize({ width, height: 900 });
     const before = (await chart.boundingBox())!;
+    const picker = (await page.locator('.asset-header .coin-picker summary').boundingBox())!;
+    const ticker = (await page.locator('.asset-header .coin-picker h1 b').boundingBox())!;
+    expect(ticker.x + ticker.width).toBeLessThanOrEqual(picker.x + picker.width);
     console.log(
       'relative geometry',
       width,

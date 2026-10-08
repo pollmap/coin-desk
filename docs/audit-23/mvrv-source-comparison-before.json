@@ -1,0 +1,41 @@
+{
+  "at": "2026-10-08T15:40:58.321805+00:00",
+  "method": "Same UTC date, source CapMVRVCur, IEEE 754 number comparison",
+  "results": [
+    {
+      "asset": "BTC",
+      "sameDayObservations": 6,
+      "latestStored": 1791331200,
+      "latestProvider": 1791331200,
+      "maxAbsoluteDifference": 0.0
+    },
+    {
+      "asset": "DOGE",
+      "sameDayObservations": 6,
+      "latestStored": 1791331200,
+      "latestProvider": 1791331200,
+      "maxAbsoluteDifference": 0.0
+    },
+    {
+      "asset": "ETH",
+      "sameDayObservations": 6,
+      "latestStored": 1791331200,
+      "latestProvider": 1791331200,
+      "maxAbsoluteDifference": 0.0
+    },
+    {
+      "asset": "XRP",
+      "sameDayObservations": 6,
+      "latestStored": 1791331200,
+      "latestProvider": 1791331200,
+      "maxAbsoluteDifference": 0.0
+    },
+    {
+      "asset": "LINK",
+      "sameDayObservations": 6,
+      "latestStored": 1791331200,
+      "latestProvider": 1791331200,
+      "maxAbsoluteDifference": 0.0
+    }
+  ]
+}

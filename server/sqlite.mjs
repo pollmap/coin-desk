@@ -51,7 +51,13 @@ export function openSqlite(path, { readOnly = false } = {}) {
         sqlite.exec('COMMIT');
         return results;
       } catch (error) {
-        sqlite.exec('ROLLBACK');
+        // SQLITE_FULL and RAISE(ROLLBACK) can already have ended the transaction.
+        // Never mask the actual storage/validation failure with a second error.
+        try {
+          sqlite.exec('ROLLBACK');
+        } catch {
+          /* Original error is authoritative. */
+        }
         throw error;
       }
     },
@@ -92,7 +98,11 @@ export function migrate(database, folder = 'migrations') {
       );
       db.exec('COMMIT');
     } catch (error) {
-      db.exec('ROLLBACK');
+      try {
+        db.exec('ROLLBACK');
+      } catch {
+        /* Preserve the migration failure. */
+      }
       throw error;
     }
   }
