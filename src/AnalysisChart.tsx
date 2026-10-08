@@ -30,6 +30,7 @@ import {
 export interface AnalysisLine {
   id: string;
   title: string;
+  legendTitle?: string;
   unit: string;
   source: string;
   data: Point[];
@@ -606,7 +607,7 @@ export const AnalysisChart = memo(function AnalysisChart({
           </span>{' '}
           <b>{display(priceValue)}</b>
         </span>
-        {selectedTime !== null && (
+        {pinned && selectedTime !== null && (
           <button
             className="analysis-reading-reset"
             onClick={() => {
@@ -619,9 +620,9 @@ export const AnalysisChart = memo(function AnalysisChart({
         )}
         {lines.map((l, i) =>
           l.id.startsWith('band:') ? null : (
-            <span key={l.id} title={l.source}>
+            <span key={l.id} title={`${l.title} · ${l.source}`}>
               <i style={{ background: l.color }} />
-              {l.title}{' '}
+              {l.legendTitle ?? l.title}{' '}
               <b>
                 {metricNumber(
                   selectedTime === null

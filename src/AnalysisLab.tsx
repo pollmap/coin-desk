@@ -465,6 +465,7 @@ function RelativeView({
       {
         id: 'correlation',
         title: `${pair.asset}/${pair.benchmark} ${window}일 상관`,
+        legendTitle: `${window}일 상관`,
         unit: 'r',
         source: basisName(basis),
         data: corr,
