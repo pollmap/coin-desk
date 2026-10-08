@@ -243,6 +243,7 @@ function validExtras(entry: Record<string, unknown>): Partial<Workspace> {
   return result;
 }
 export function validAnalysisOption(key: string, value: unknown) {
+  if (key === 'reading_date') return typeof value === 'string' && /^\d{9,10}$/.test(value);
   if (key === 'patterns')
     return (
       typeof value === 'string' &&

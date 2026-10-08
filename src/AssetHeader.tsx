@@ -88,7 +88,7 @@ export function AssetHeader({
             <span>
               <small>코인 변경</small>
               <h1>
-                {coin.name} <b>{asset}</b>
+                <span className="coin-name">{coin.name}</span> <b>{asset}</b>
               </h1>
             </span>
             <ChevronDown className="coin-chevron" size={20} aria-hidden="true" />

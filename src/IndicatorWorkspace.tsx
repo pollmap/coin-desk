@@ -1,8 +1,9 @@
+import { ChevronDown } from 'lucide-react';
 import { DeskDialog } from './DeskDialog';
 import { IndicatorState } from './IndicatorState';
 import { ASSET_REFERENCES } from '../shared/asset-references';
 import { relativePair } from '../shared/relative-pair';
-import { lazy, Suspense, useEffect, useMemo, useRef, useState } from 'react';
+import { lazy, Suspense, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Link, useLocation, useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { ASSETS } from '../shared/catalog';
 import {
@@ -151,6 +152,14 @@ export function IndicatorWorkspace() {
   const saveButton = useRef<HTMLButtonElement>(null);
   const knowledgeButton = useRef<HTMLButtonElement>(null);
   const [readingDate, setReadingDate] = useState<number | null>(null);
+  const pinnedDate = useRef<number | null>(null);
+  const readingChange = useCallback((time: number | null, pinned = false) => {
+    setReadingDate(time);
+    pinnedDate.current = pinned ? time : null;
+  }, []);
+  const initialReadingDate = /^\d{9,10}$/.test(params.get('reading_date') ?? '')
+    ? Number(params.get('reading_date'))
+    : undefined;
   const [explanationOpen, setExplanationOpen] = useState(false);
   const sources = indicatorSources(asset, id);
   const [revision, setRevision] = useState(0),
@@ -185,6 +194,7 @@ export function IndicatorWorkspace() {
       if (['period', 'price_source', 'interval'].some((k) => k in patch)) {
         p.delete('chart_from');
         p.delete('chart_to');
+        p.delete('reading_date');
       }
       for (const [k, v] of Object.entries(patch)) v === null ? p.delete(k) : p.set(k, v);
       return p;
@@ -566,7 +576,17 @@ export function IndicatorWorkspace() {
         <section className="panel indicator-panel" ref={area}>
           <div className="indicator-heading">
             <div>
-              <h1>{d?.title ?? '지원하지 않는 지표'}</h1>
+              <h1>
+                <button
+                  className="indicator-title-button"
+                  aria-label={(d?.title ?? '지원하지 않는 지표') + ' 지표 변경'}
+                  ref={pickButton}
+                  onClick={() => setPicker(true)}
+                >
+                  {d?.title ?? '지원하지 않는 지표'}
+                  <ChevronDown size={18} aria-hidden="true" />
+                </button>
+              </h1>
               {d?.shortMeaning && <span className="indicator-meaning">{d.shortMeaning}</span>}
               <span>
                 {asset} · {local || d?.renderer !== 'series' ? basisName(basis) : d.source} ·{' '}
@@ -595,15 +615,8 @@ export function IndicatorWorkspace() {
               </label>
             )}
             <div className="indicator-heading-actions">
-              <button ref={saveButton} onClick={() => setSaving(true)}>
+              <button className="indicator-save" ref={saveButton} onClick={() => setSaving(true)}>
                 분석 저장
-              </button>
-              <button
-                className="indicator-mobile-picker"
-                ref={pickButton}
-                onClick={() => setPicker(true)}
-              >
-                지표 변경
               </button>
             </div>
           </div>
@@ -617,7 +630,7 @@ export function IndicatorWorkspace() {
             />
             {(!lab || isRelative) && <div ref={setChartTools} className="indicator-date-tools" />}
             {isRelative && <RelativeControls asset={asset} params={context} change={change} />}
-            <label className="price-toggle">
+            <label className="price-toggle desktop-chart-action">
               <input
                 type="checkbox"
                 checked={compare}
@@ -626,202 +639,54 @@ export function IndicatorWorkspace() {
               />
               가격 비교
             </label>
-            <button onClick={() => area.current?.requestFullscreen?.().catch(() => {})}>
+            <button
+              className="desktop-chart-action"
+              onClick={() => area.current?.requestFullscreen?.().catch(() => {})}
+            >
               전체화면
             </button>
-            <button aria-expanded={more} onClick={() => setMore(!more)}>
+            <button
+              aria-expanded={more}
+              aria-controls="indicator-more"
+              onClick={() => setMore(!more)}
+            >
               더보기
             </button>
           </div>
-          {params.get('transition') && (
-            <p role="status" className="indicator-notice">
-              {asset}는 {indicatorDefinition(params.get('transition')!)?.title ?? '이 지표'} 원천이
-              없어 {d?.title}로 전환했습니다.
-            </p>
-          )}
-          {!supported ? (
-            <div className="indicator-empty" role="status">
-              <strong>
-                {invalidBasis
-                  ? '이 지표와 가격 원천의 조합을 지원하지 않습니다.'
-                  : `${asset}의 ${d?.title ?? id} 원천을 확보하지 못했습니다.`}
-              </strong>
-              <p>확보되지 않은 데이터를 다른 코인의 값으로 대체하지 않습니다.</p>
-              <Link
-                to={indicatorUrl(asset, active.supported ? id : defaultIndicator(asset), context)}
-              >
-                지원되는 원천·분석으로 열기
-              </Link>
-            </div>
-          ) : (
-            <>
-              {lab && dailyPoints.length ? (
-                <Suspense fallback={<p role="status">분석 도구를 여는 중…</p>}>
-                  <AnalysisLab
-                    controlsInToolbar={isRelative}
-                    toolbarTarget={chartTools}
-                    onVisibleRange={(range) => {
-                      visible.current = range;
-                    }}
-                    onReadingDate={setReadingDate}
-                    view={view}
-                    asset={asset}
-                    basis={basis}
-                    points={dailyPoints}
-                    params={context}
-                    change={change}
-                    period={period}
-                    initialWindow={window}
-                  />
-                </Suspense>
-              ) : chartPoints.length ? (
-                <>
-                  <AnalysisChart
-                    toolbarTarget={chartTools}
-                    asset={asset}
-                    unit={primary?.unit ?? unit}
-                    source={primary?.source ?? daily?.meta.source ?? basisName(basis)}
-                    points={chartPoints}
-                    primary={primary}
-                    lines={chartLines}
-                    bands={bands ? bandRows : undefined}
-                    period={period}
-                    log={d?.renderer === 'series' ? false : params.get('log') !== '0'}
-                    step={
-                      primary?.step ??
-                      (bands
-                        ? 86400
-                        : interval === '1h'
-                          ? 3600
-                          : interval === '4h'
-                            ? 14400
-                            : interval === '1w'
-                              ? 604800
-                              : interval === '1M'
-                                ? 2764800
-                                : 86400)
-                    }
-                    candles={
-                      !primary && !bands && basis !== 'reference'
-                        ? (raw.data as CandleResponse).data.filter((c) => c.closed)
-                        : undefined
-                    }
-                    signals={SIGNALS}
-                    onSignal={() => {}}
-                    onAll={() => {
-                      change({ period: 'all', chart_from: null, chart_to: null });
-                      setRevision((r) => r + 1);
-                    }}
-                    rangeRevision={revision}
-                    initialWindow={window}
-                    onVisibleRange={(range) => {
-                      visible.current = range;
-                    }}
-                    onReadingDate={setReadingDate}
-                    drawingKey={
-                      more || annotations.length || params.has('draw_tool') ? drawingKey : undefined
-                    }
-                    onAnnotations={setAnnotations}
-                    observations={markers}
-                    focus={hits.find((p) => p.id === params.get('pattern_focus'))?.time}
-                    onObservation={(focus) =>
-                      change({ pattern_focus: focus, chart_from: null, chart_to: null })
-                    }
-                    initialTool={
-                      ['horizontal', 'trend', 'channel', 'measure'].includes(
-                        params.get('draw_tool') ?? '',
-                      )
-                        ? (params.get('draw_tool') as DrawingKind)
-                        : undefined
-                    }
-                  />
-                  {bands && lastBand && (
-                    <div className="band-context">
-                      <strong>
-                        {bandPosition(lastBand.z)} · 위치{' '}
-                        {lastBand.z === null ? '계산 불가' : lastBand.z.toFixed(2) + 'σ'}
-                      </strong>
-                      <span>
-                        {id === 'view:btc_rainbow'
-                          ? '이전 관측의 로그회귀'
-                          : '이전 연속 730일의 가격 분포'}{' '}
-                        · 실제 가격은 밴드 밖에서도 표시됩니다.
-                      </span>
-                      {'a' in lastBand && (
-                        <span>
-                          회귀 a={lastBand.a.toFixed(6)}, b={lastBand.b.toFixed(6)} ·{' '}
-                          {lastBand.observations}개 · {dateLabel(lastBand.first)}–
-                          {dateLabel(lastBand.last)} · {RAINBOW_VERSION}
-                        </span>
-                      )}
-                    </div>
-                  )}
-                </>
-              ) : (
-                <div className="indicator-empty" role="status">
-                  <IndicatorState
-                    state={availability}
-                    detail={
-                      loading
-                        ? '지표 이력을 불러오고 있습니다…'
-                        : availability === 'pending'
-                          ? '아직 수집된 관측이 없습니다.'
-                          : error
-                            ? '이력을 불러오지 못했습니다.'
-                            : bands
-                              ? '밴드 계산에 필요한 이력이 부족합니다.'
-                              : '확보된 관측이 없습니다.'
-                    }
-                  />
-                  {!loading && (
-                    <p>
-                      {error ||
-                        (bands
-                          ? `표시일 이전 ${id === 'view:btc_rainbow' ? '유효한' : '연속'} 일별 가격 730개와 표시일 가격이 필요합니다. 현재 ${dailyPoints.length}개${dailyPoints.length ? ` · ${dateLabel(dailyPoints[0].time)}–${dateLabel(dailyPoints.at(-1)!.time)}` : ''}. 결측을 보간하지 않습니다.`
-                          : '수집 대기 상태입니다. 다른 코인의 자료를 표시하지 않습니다.')}
-                    </p>
-                  )}
-                  {error && (
-                    <button
-                      onClick={() => {
-                        remote.reload();
-                        raw.reload();
-                        benchmark.reload();
-                      }}
-                    >
-                      다시 시도
-                    </button>
-                  )}
-                </div>
-              )}
-            </>
-          )}
-          {availability === 'delayed' && (
-            <p className="indicator-notice" role="status">
-              갱신 지연 · 마지막 정상 관측을 표시합니다. {error || response.data?.meta.warning}
-            </p>
-          )}
-          <div className="indicator-provenance">
-            {response.data?.meta.historyStart && (
-              <span>확보 시작 {dateLabel(response.data.meta.historyStart)}</span>
-            )}
-            <span>
-              확정 관측 ·{' '}
-              {primary?.step === 3600
-                ? '시간별'
-                : id === 'futures:funding'
-                  ? '정산 시점별'
-                  : '일별'}
-            </span>
-            {response.data?.meta.dataAsOf && (
-              <span>원천 기준 {dateLabel(response.data.meta.dataAsOf)}</span>
-            )}
-            {chartPoints.at(-1) && chartPoints.at(-1)!.time !== response.data?.meta.dataAsOf && (
-              <span>차트 최근 관측 {dateLabel(chartPoints.at(-1)!.time)}</span>
-            )}
-          </div>
           {more && (
-            <div className="indicator-more">
+            <div className="indicator-more" id="indicator-more">
+              {sources.length > 1 && (
+                <label className="mobile-chart-action">
+                  지표 원천
+                  <select
+                    aria-label="모바일 지표 원천"
+                    value={id}
+                    onChange={(e) => change({ metric: e.target.value })}
+                  >
+                    {sources.map((s) => (
+                      <option key={s.id} value={s.id}>
+                        {s.source} · {s.unit.replace('자산 단위', asset)}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+              )}
+              <label className="price-toggle mobile-chart-action">
+                <input
+                  type="checkbox"
+                  aria-label="가격 비교 추가"
+                  checked={compare}
+                  disabled={d?.renderer !== 'series'}
+                  onChange={(e) => change({ compare_price: e.target.checked ? '1' : null })}
+                />
+                가격 비교
+              </label>
+              <button
+                className="mobile-chart-action"
+                onClick={() => area.current?.requestFullscreen?.().catch(() => {})}
+              >
+                전체화면
+              </button>
               {!lab &&
                 [0, 1].map((i) => (
                   <label key={i}>
@@ -919,6 +784,198 @@ export function IndicatorWorkspace() {
               <Link to={`/technical/${asset}?${context}`}>고급 기술 설정</Link>
             </div>
           )}
+          {params.get('transition') && (
+            <p role="status" className="indicator-notice">
+              {asset}는 {indicatorDefinition(params.get('transition')!)?.title ?? '이 지표'} 원천이
+              없어 {d?.title}로 전환했습니다.
+            </p>
+          )}
+          {!supported ? (
+            <div className="indicator-empty" role="status">
+              <strong>
+                {invalidBasis
+                  ? '이 지표와 가격 원천의 조합을 지원하지 않습니다.'
+                  : `${asset}의 ${d?.title ?? id} 원천을 확보하지 못했습니다.`}
+              </strong>
+              <p>확보되지 않은 데이터를 다른 코인의 값으로 대체하지 않습니다.</p>
+              <Link
+                to={indicatorUrl(asset, active.supported ? id : defaultIndicator(asset), context)}
+              >
+                지원되는 원천·분석으로 열기
+              </Link>
+            </div>
+          ) : (
+            <>
+              {lab && dailyPoints.length ? (
+                <Suspense fallback={<p role="status">분석 도구를 여는 중…</p>}>
+                  <AnalysisLab
+                    controlsInToolbar={isRelative}
+                    toolbarTarget={chartTools}
+                    onVisibleRange={(range) => {
+                      visible.current = range;
+                    }}
+                    onReadingDate={readingChange}
+                    initialReadingDate={initialReadingDate}
+                    view={view}
+                    asset={asset}
+                    basis={basis}
+                    points={dailyPoints}
+                    params={context}
+                    change={change}
+                    period={period}
+                    initialWindow={window}
+                  />
+                </Suspense>
+              ) : chartPoints.length ? (
+                <>
+                  <AnalysisChart
+                    toolbarTarget={chartTools}
+                    asset={asset}
+                    unit={primary?.unit ?? unit}
+                    source={primary?.source ?? daily?.meta.source ?? basisName(basis)}
+                    points={chartPoints}
+                    primary={primary}
+                    lines={chartLines}
+                    bands={bands ? bandRows : undefined}
+                    period={period}
+                    log={d?.renderer === 'series' ? false : params.get('log') !== '0'}
+                    step={
+                      primary?.step ??
+                      (bands
+                        ? 86400
+                        : interval === '1h'
+                          ? 3600
+                          : interval === '4h'
+                            ? 14400
+                            : interval === '1w'
+                              ? 604800
+                              : interval === '1M'
+                                ? 2764800
+                                : 86400)
+                    }
+                    candles={
+                      !primary && !bands && basis !== 'reference'
+                        ? (raw.data as CandleResponse).data.filter((c) => c.closed)
+                        : undefined
+                    }
+                    signals={SIGNALS}
+                    onSignal={() => {}}
+                    onAll={() => {
+                      change({ period: 'all', chart_from: null, chart_to: null });
+                      setRevision((r) => r + 1);
+                    }}
+                    rangeRevision={revision}
+                    initialWindow={window}
+                    onVisibleRange={(range) => {
+                      visible.current = range;
+                    }}
+                    onReadingDate={readingChange}
+                    initialReadingDate={initialReadingDate}
+                    drawingKey={
+                      more || annotations.length || params.has('draw_tool') ? drawingKey : undefined
+                    }
+                    onAnnotations={setAnnotations}
+                    observations={markers}
+                    focus={hits.find((p) => p.id === params.get('pattern_focus'))?.time}
+                    onObservation={(focus) =>
+                      change({ pattern_focus: focus, chart_from: null, chart_to: null })
+                    }
+                    initialTool={
+                      ['horizontal', 'trend', 'channel', 'measure'].includes(
+                        params.get('draw_tool') ?? '',
+                      )
+                        ? (params.get('draw_tool') as DrawingKind)
+                        : undefined
+                    }
+                  />
+                  {bands && lastBand && (
+                    <div className="band-context">
+                      <strong>
+                        {bandPosition(lastBand.z)} · 위치{' '}
+                        {lastBand.z === null ? '계산 불가' : lastBand.z.toFixed(2) + 'σ'}
+                      </strong>
+                      <span>
+                        {id === 'view:btc_rainbow'
+                          ? '이전 관측의 로그회귀'
+                          : '이전 연속 730일의 가격 분포'}{' '}
+                        · 실제 가격은 밴드 밖에서도 표시됩니다.
+                      </span>
+                      {'a' in lastBand && (
+                        <span>
+                          회귀 a={lastBand.a.toFixed(6)}, b={lastBand.b.toFixed(6)} ·{' '}
+                          {lastBand.observations}개 · {dateLabel(lastBand.first)}–
+                          {dateLabel(lastBand.last)} · {RAINBOW_VERSION}
+                        </span>
+                      )}
+                    </div>
+                  )}
+                </>
+              ) : (
+                <div className="indicator-empty" role="status">
+                  <IndicatorState
+                    state={availability}
+                    detail={
+                      loading
+                        ? '지표 이력을 불러오고 있습니다…'
+                        : availability === 'pending'
+                          ? '아직 수집된 관측이 없습니다.'
+                          : error
+                            ? '이력을 불러오지 못했습니다.'
+                            : bands
+                              ? '밴드 계산에 필요한 이력이 부족합니다.'
+                              : '확보된 관측이 없습니다.'
+                    }
+                  />
+                  {!loading && (
+                    <p>
+                      {error ||
+                        (bands
+                          ? `표시일 이전 ${id === 'view:btc_rainbow' ? '유효한' : '연속'} 일별 가격 730개와 표시일 가격이 필요합니다. 현재 ${dailyPoints.length}개${dailyPoints.length ? ` · ${dateLabel(dailyPoints[0].time)}–${dateLabel(dailyPoints.at(-1)!.time)}` : ''}. 결측을 보간하지 않습니다.`
+                          : '수집 대기 상태입니다. 다른 코인의 자료를 표시하지 않습니다.')}
+                    </p>
+                  )}
+                  {error && (
+                    <button
+                      onClick={() => {
+                        remote.reload();
+                        raw.reload();
+                        benchmark.reload();
+                      }}
+                    >
+                      다시 시도
+                    </button>
+                  )}
+                </div>
+              )}
+            </>
+          )}
+          {availability === 'delayed' && (
+            <p className="indicator-notice" role="status">
+              갱신 지연 · 마지막 정상 관측을 표시합니다. {error || response.data?.meta.warning}
+            </p>
+          )}
+          <div className="indicator-provenance">
+            {response.data?.meta.historyStart && (
+              <span>확보 시작 {dateLabel(response.data.meta.historyStart)}</span>
+            )}
+            <span>
+              {primary?.source ??
+                (d?.source === '선택 가격 원천' ? basisName(basis) : d?.source) ??
+                basisName(basis)}{' '}
+              · 확정 관측 ·{' '}
+              {primary?.step === 3600
+                ? '시간별'
+                : id === 'futures:funding'
+                  ? '정산 시점별'
+                  : '일별'}
+            </span>
+            {response.data?.meta.dataAsOf && (
+              <span>원천 기준 {dateLabel(response.data.meta.dataAsOf)}</span>
+            )}
+            {chartPoints.at(-1) && chartPoints.at(-1)!.time !== response.data?.meta.dataAsOf && (
+              <span>차트 최근 관측 {dateLabel(chartPoints.at(-1)!.time)}</span>
+            )}
+          </div>
           {patternIds.length > 0 && (
             <PatternObservations
               hits={hits}
@@ -1007,7 +1064,7 @@ export function IndicatorWorkspace() {
               onOpenWorkspace={() => setSaving(false)}
               current={{
                 asset,
-                market: basis === 'upbit' ? 'upbit' : 'binance',
+                market: quoteMarket,
                 interval,
                 period,
                 indicators,
@@ -1048,6 +1105,12 @@ export function IndicatorWorkspace() {
               }}
               resolveCurrent={(c) => ({
                 ...c,
+                analysisOptions: {
+                  ...c.analysisOptions,
+                  ...(pinnedDate.current !== null
+                    ? { reading_date: String(pinnedDate.current) }
+                    : {}),
+                },
                 ...(visible.current ? { dateWindow: visible.current } : {}),
                 annotations: readAnnotations(drawingKey),
               })}

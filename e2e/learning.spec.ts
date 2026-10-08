@@ -149,7 +149,7 @@ test('a guide activates a real drawing tool and Help follows the selected analys
   await page.mouse.click(channelBox.x + channelBox.width * 0.65, channelBox.y + 120);
   await page.mouse.click(channelBox.x + channelBox.width * 0.45, channelBox.y + 160);
   await expect(page.locator('.drawing-overlay line')).toHaveCount(2);
-  await page.getByRole('button', { name: '지표 변경', exact: true }).click();
+  await page.getByRole('button', { name: /지표 변경$/ }).click();
   await page.getByLabel('지표 검색', { exact: true }).fill('가격 위치');
   await page
     .getByRole('navigation', { name: '지표 목록', exact: true })

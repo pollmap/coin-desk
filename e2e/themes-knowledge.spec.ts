@@ -89,7 +89,7 @@ test('purpose search, pinned date, explanation and save preserve the chosen char
   await page.goto('/coins/BTC');
   const canvas = page.locator('[data-chart-kind=analysis]');
   await expect(canvas).toHaveAttribute('data-range-ready', '1');
-  await page.getByRole('button', { name: '지표 변경', exact: true }).click();
+  await page.getByRole('button', { name: /지표 변경$/ }).click();
   const picker = page.getByRole('dialog', { name: '지표 선택' });
   await picker.getByLabel('지표 검색').fill('시장가격 온체인');
   await expect(picker.getByRole('link', { name: 'MVRV 배', exact: true })).toBeVisible();

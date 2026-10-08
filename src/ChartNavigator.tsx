@@ -139,6 +139,7 @@ export function ChartTools({
   onReset,
   getVisibleRange,
   shareVisibleRange = false,
+  readingDate,
   hideShare = false,
   exportLabel = '보이는 구간 CSV',
 }: {
@@ -152,6 +153,7 @@ export function ChartTools({
   onReset?: () => void;
   getVisibleRange?: () => { from: number; to: number } | null;
   shareVisibleRange?: boolean;
+  readingDate?: number | null;
   hideShare?: boolean;
   exportLabel?: string;
 }) {
@@ -219,6 +221,10 @@ export function ChartTools({
               if (shareVisibleRange && range) {
                 url.searchParams.set('chart_from', String(range.from));
                 url.searchParams.set('chart_to', String(range.to));
+              }
+              if (readingDate !== undefined) {
+                if (readingDate !== null) url.searchParams.set('reading_date', String(readingDate));
+                else url.searchParams.delete('reading_date');
               }
               const address = url.toString();
               setShare(address);

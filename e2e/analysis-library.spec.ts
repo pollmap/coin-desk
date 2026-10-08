@@ -138,21 +138,21 @@ test('unknown extension nonce and malformed rows never enter the library', async
 });
 test('analysis recipes replace the main chart with calculated views', async ({ page }) => {
   await page.goto('/?asset=BTC&price_source=reference&period=all');
-  await page.getByRole('button', { name: '지표 변경', exact: true }).click();
+  await page.getByRole('button', { name: /지표 변경$/ }).click();
   await page.getByLabel('지표 검색', { exact: true }).fill('이동평균 리본');
   await page
     .getByRole('navigation', { name: '지표 목록', exact: true })
     .getByRole('link', { name: '이동평균 리본 가격', exact: true })
     .click();
   await expect(page.locator('.analysis-legend')).toContainText('SMA 7봉');
-  await page.getByRole('button', { name: '지표 변경', exact: true }).click();
+  await page.getByRole('button', { name: /지표 변경$/ }).click();
   await page.getByLabel('지표 검색', { exact: true }).fill('반감기 사이클');
   await page
     .getByRole('navigation', { name: '지표 목록', exact: true })
     .getByRole('link', { name: '반감기 사이클 가격', exact: true })
     .click();
   await expect(page.getByRole('heading', { name: 'BTC 반감기 사이클' })).toBeVisible();
-  await page.getByRole('button', { name: '지표 변경', exact: true }).click();
+  await page.getByRole('button', { name: /지표 변경$/ }).click();
   await page.getByLabel('지표 검색', { exact: true }).fill('계절성');
   await page
     .getByRole('navigation', { name: '지표 목록', exact: true })
@@ -161,7 +161,7 @@ test('analysis recipes replace the main chart with calculated views', async ({ p
   await expect(page.getByRole('heading', { name: 'BTC 계절성' })).toBeVisible();
   await expect(page.getByLabel('봉 간격', { exact: true })).not.toBeVisible();
   await expect(page.getByRole('button', { name: '지표 추가', exact: true })).not.toBeVisible();
-  await page.getByRole('button', { name: '지표 변경', exact: true }).click();
+  await page.getByRole('button', { name: /지표 변경$/ }).click();
   await page.getByLabel('지표 검색', { exact: true }).fill('상대강도·상관');
   await page
     .getByRole('navigation', { name: '지표 목록', exact: true })

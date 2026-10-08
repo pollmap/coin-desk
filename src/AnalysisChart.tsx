@@ -85,6 +85,7 @@ export const AnalysisChart = memo(function AnalysisChart({
   initialTool,
   bands,
   onReadingDate,
+  initialReadingDate,
   exportName,
   toolbarTarget,
 }: {
@@ -111,13 +112,14 @@ export const AnalysisChart = memo(function AnalysisChart({
   onObservation?: (id: string) => void;
   initialTool?: DrawingKind;
   bands?: BandRow[];
-  onReadingDate?: (time: number | null) => void;
+  onReadingDate?: (time: number | null, pinned?: boolean) => void;
+  initialReadingDate?: number;
   exportName?: string;
   toolbarTarget?: HTMLElement | null;
 }) {
   const host = useRef<HTMLDivElement>(null),
     chartRef = useRef<IChartApi | null>(null);
-  const moveCursor = useRef<(time: number | null) => void>(() => {});
+  const moveCursor = useRef<(time: number | null, preserveRange?: boolean) => void>(() => {});
   const manualCursor = useRef(false);
   const [pinned, setPinned] = useState(false);
   const click = useRef(onSignal);
@@ -165,20 +167,22 @@ export const AnalysisChart = memo(function AnalysisChart({
   const time = selectedTime ?? points.at(-1)?.time;
   const priceValue = time === undefined ? undefined : readings.maps[0].get(time);
   useEffect(() => {
-    onReadingDate?.(time ?? null);
-  }, [time, onReadingDate]);
+    onReadingDate?.(time ?? null, pinned && selectedTime !== null);
+  }, [time, pinned, selectedTime, onReadingDate]);
   const timestamp = (t: number | undefined) =>
     t === undefined
       ? '—'
       : new Date(t * 1000).toISOString().slice(0, 16).replace('T', ' ') + ' UTC';
   const metricNumber = (value: number | undefined) => numeric(value, readingDigits(value));
   const fileName = (exportName ?? `${asset}-${unit}`).replace(/[\\/:*?"<>|]/g, '-');
-  function explore(t: number | null) {
-    manualCursor.current = t !== null;
+  function explore(t: number | null, preserveRange = false) {
+    // A layout change under the pointer must not immediately replace “latest”.
+    // Resume hover readings only on the next real pointer movement over the plot.
+    manualCursor.current = true;
     setPinned(t !== null);
     setSelectionKey(key);
     setSelected(t);
-    moveCursor.current(t);
+    moveCursor.current(t, preserveRange);
   }
   function exportReadings() {
     const visible = chartRef.current?.timeScale().getVisibleRange();
@@ -361,7 +365,7 @@ export const AnalysisChart = memo(function AnalysisChart({
       setSelectionKey(key);
       setSelected(e.time === undefined ? null : Number(e.time));
     });
-    moveCursor.current = (time) => {
+    moveCursor.current = (time, preserveRange = false) => {
       if (time === null) {
         chart.clearCrosshairPosition();
         return;
@@ -372,7 +376,7 @@ export const AnalysisChart = memo(function AnalysisChart({
         return;
       }
       const range = chart.timeScale().getVisibleRange();
-      if (range && (time < Number(range.from) || time > Number(range.to))) {
+      if (!preserveRange && range && (time < Number(range.from) || time > Number(range.to))) {
         // Keyboard/date navigation is a user pan too. Preserve it through
         // ResizeObserver and data refresh, even without a prior drag/zoom.
         userRange.current = true;
@@ -545,7 +549,19 @@ export const AnalysisChart = memo(function AnalysisChart({
       chartRef.current
         ?.timeScale()
         .setVisibleRange({ from: ts(restored.from), to: ts(restored.to) });
-  }, [period, key, rangeRevision, initialWindow?.from, initialWindow?.to]);
+    // Restore after the range reset, including React's development remount check.
+    // Only an exact observation can be pinned; unknown dates never fabricate a value.
+    if (initialReadingDate && readings.times.includes(initialReadingDate))
+      explore(initialReadingDate, true);
+  }, [
+    period,
+    key,
+    ready,
+    rangeRevision,
+    initialWindow?.from,
+    initialWindow?.to,
+    initialReadingDate,
+  ]);
   useEffect(() => {
     if (!focus) {
       appliedFocus.current = null;
@@ -658,6 +674,9 @@ export const AnalysisChart = memo(function AnalysisChart({
           data-chart-kind="analysis"
           data-asset={asset}
           data-primary-metric={primary?.id ?? 'price'}
+          onPointerMoveCapture={() => {
+            if (!pinned) manualCursor.current = false;
+          }}
           onPointerDown={() => {
             pendingRange.current = null;
             userRange.current = true;
@@ -713,6 +732,7 @@ export const AnalysisChart = memo(function AnalysisChart({
         <ChartTools
           chart={chartRef}
           shareVisibleRange
+          readingDate={pinned ? selectedTime : null}
           rows={points}
           label={asset}
           unit={unit}

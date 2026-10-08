@@ -54,7 +54,10 @@ export function RelativeControls({
           menu.current.open = false;
       }}
     >
-      <summary aria-label="비교 설정">{pair.benchmark} 비교</summary>
+      <summary aria-label="비교 설정" title={pair.benchmark + ' 비교 설정'}>
+        {pair.benchmark}
+        <span className="relative-compare-label"> 비교</span>
+      </summary>
       <div className="relative-control-fields">
         <label>
           비교 코인

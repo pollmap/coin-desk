@@ -10,6 +10,18 @@
   display: flex;
   gap: 4px;
 }
+.date-jump-short {
+  display: none;
+}
+@media (max-width: 760px) {
+  .date-compact-tools .date-jump svg,
+  .date-compact-tools .date-jump-label {
+    display: none;
+  }
+  .date-compact-tools .date-jump-short {
+    display: inline;
+  }
+}
 .date-compact-tools > button {
   display: inline-flex;
   gap: 4px;

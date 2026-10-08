@@ -110,7 +110,7 @@ export function MarketHome() {
     <div className="market-home">
       <div className="market-body">
         <div className="market-heading">
-          <h1>주요 8코인</h1>
+          <h1>코인 시장</h1>
           <span className="market-feed-state">
             {feed.rows.some((row) => row.live)
               ? '실시간 가격'
@@ -235,7 +235,7 @@ export function MarketHome() {
                         navigate(href(id));
                     }}
                   >
-                    <td>
+                    <td className="market-favorite-cell">
                       <button
                         className="favorite-button"
                         aria-label={`${name} 관심 코인`}
@@ -245,7 +245,7 @@ export function MarketHome() {
                         <Star size={17} fill={starred.includes(id) ? 'currentColor' : 'none'} />
                       </button>
                     </td>
-                    <th scope="row">
+                    <th scope="row" className="market-coin-cell">
                       <Link to={href(id)}>
                         <AssetLogo asset={id} size={32} />
                         <span>
@@ -254,7 +254,7 @@ export function MarketHome() {
                         </span>
                       </Link>
                     </th>
-                    <td>
+                    <td className="market-price-cell">
                       <Link to={href(id)}>{money(r?.displayPrice, unit)}</Link>
                       {r?.displayTime ? (
                         <details className={'market-time' + (r.stale ? ' stale-label' : '')}>
@@ -280,14 +280,19 @@ export function MarketHome() {
                         </small>
                       )}
                     </td>
-                    <td className={(r?.quote?.change24h ?? 0) >= 0 ? 'up' : 'down'}>
+                    <td
+                      className={
+                        'market-change-cell ' + ((r?.quote?.change24h ?? 0) >= 0 ? 'up' : 'down')
+                      }
+                    >
+                      <span className="market-mobile-change-label">24시간 </span>
                       {changeText(r?.quote?.change24h)}
                     </td>
-                    <td>{turnover(r?.quote?.volume24h, unit)}</td>
+                    <td className="market-volume-cell">{turnover(r?.quote?.volume24h, unit)}</td>
                     <td className="market-spark">
                       <Spark points={r?.spark ?? []} />
                     </td>
-                    <td>
+                    <td className="market-analysis-cell">
                       <Link
                         to={href(id)}
                         aria-label={`${name} ${indicatorDefinition(defaultIndicator(id))?.title} 분석`}

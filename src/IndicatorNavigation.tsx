@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { ASSETS } from '../shared/catalog';
-import { INDICATOR_QUESTIONS, matchesIndicator } from '../shared/indicator-search';
+import { matchesIndicator } from '../shared/indicator-search';
 import {
   INDICATOR_GROUPS,
   navigationIndicators,
@@ -45,17 +45,6 @@ export function IndicatorNavigation({ onNavigate }: { onNavigate: () => void }) 
           }}
         />
       </label>
-      <div className="indicator-questions" role="group" aria-label="확인하고 싶은 내용">
-        {INDICATOR_QUESTIONS.map((q) => (
-          <button
-            key={q.query}
-            aria-pressed={query === q.query}
-            onClick={() => setQuery(query === q.query ? '' : q.query)}
-          >
-            {q.label}
-          </button>
-        ))}
-      </div>
       <div className="indicator-group-tabs" role="group" aria-label="지표 분류">
         {INDICATOR_GROUPS.map((g) => (
           <button
@@ -94,7 +83,7 @@ export function IndicatorNavigation({ onNavigate }: { onNavigate: () => void }) 
                     <small>{d.shortMeaning}</small>
                   </span>
                   <small className="indicator-support">
-                    지원 · {d.unit.replace('자산 단위', asset).replace('자산', asset)}
+                    {d.unit.replace('자산 단위', asset).replace('자산', asset)}
                   </small>
                 </Link>
               ))}

@@ -32,22 +32,6 @@
   max-width: 95px;
   text-align: right;
 }
-.indicator-questions {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 5px;
-  margin: 12px 0;
-}
-.indicator-questions button {
-  font-size: 12px;
-  padding: 8px;
-  text-align: left;
-}
-.indicator-questions [aria-pressed='true'] {
-  color: var(--accent);
-  background: var(--accent-bg);
-  border-color: var(--accent);
-}
 .indicator-date-tools {
   min-width: 0;
 }
@@ -255,9 +239,6 @@
 .price-toggle:has(input:disabled) {
   display: none;
 }
-.indicator-mobile-picker {
-  display: none;
-}
 .app .indicator-workspace .analysis-legend {
   padding: 0;
   min-height: 34px;
@@ -454,31 +435,21 @@
   }
   .app .indicator-workspace .indicator-toolbar:has(.relative-controls) {
     position: relative;
-    display: grid;
-    grid-template-columns: 70px 1fr auto;
-    gap: 2px 4px;
-    margin-bottom: 0;
-  }
-  .app .indicator-toolbar:has(.relative-controls) .period-picker select {
-    min-height: 32px;
-    height: 32px;
-  }
-  .indicator-toolbar:has(.relative-controls) .indicator-date-tools {
-    grid-column: 2 / 4;
-  }
-  .indicator-toolbar:has(.relative-controls) button,
-  .indicator-toolbar:has(.relative-controls) summary {
-    min-height: 30px;
-    padding: 4px;
-  }
-  .indicator-toolbar:has(.relative-controls) .relative-controls {
-    grid-column: 1;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
   }
   .indicator-toolbar:has(.relative-controls) .relative-controls > summary {
     white-space: nowrap;
+    font-size: 12px;
+    min-height: 36px;
+    padding: 6px 4px;
   }
   .indicator-toolbar .relative-controls {
     position: static;
+  }
+  .relative-compare-label {
+    display: none;
   }
   .indicator-workspace .analysis-legend > span:nth-child(2) {
     display: grid;

@@ -87,8 +87,8 @@ test('brand, market timestamps and core layouts meet the compact white design', 
   test.setTimeout(120000);
   for (const width of [320, 390, 768, 1000, 1280, 1440, 1920]) {
     await page.setViewportSize({ width, height: 900 });
-    await page.goto('/');
-    await expect(page.getByRole('heading', { name: '주요 8코인', exact: true })).toBeVisible();
+    await page.goto('/coins');
+    await expect(page.getByRole('heading', { name: '코인 시장', exact: true })).toBeVisible();
     await expect(page.locator('.market-leaders')).toHaveCount(0);
     await expect(page.locator('.market-table tbody tr')).toHaveCount(8);
     await expect(page.locator('.market-table a').filter({ hasText: /MVRV|RSI 14/ })).toHaveCount(8);
