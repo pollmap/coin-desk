@@ -615,7 +615,7 @@ export function IndicatorWorkspace() {
                 setRevision((r) => r + 1);
               }}
             />
-            {!lab && <div ref={setChartTools} className="indicator-date-tools" />}
+            {(!lab || isRelative) && <div ref={setChartTools} className="indicator-date-tools" />}
             {isRelative && <RelativeControls asset={asset} params={context} change={change} />}
             <label className="price-toggle">
               <input
@@ -659,6 +659,11 @@ export function IndicatorWorkspace() {
                 <Suspense fallback={<p role="status">분석 도구를 여는 중…</p>}>
                   <AnalysisLab
                     controlsInToolbar={isRelative}
+                    toolbarTarget={chartTools}
+                    onVisibleRange={(range) => {
+                      visible.current = range;
+                    }}
+                    onReadingDate={setReadingDate}
                     view={view}
                     asset={asset}
                     basis={basis}

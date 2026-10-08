@@ -219,6 +219,18 @@
 .indicator-workspace .analysis-lab[data-relative-asset] .analysis-legend {
   gap: 2px 10px;
 }
+.indicator-workspace .analysis-lab[data-relative-asset] .analysis-legend > span:nth-child(2) > b {
+  font-size: 20px;
+  line-height: 22px;
+}
+@media (max-width: 1200px) {
+  .app .indicator-toolbar:has(.relative-controls) .period-picker .segments {
+    display: none;
+  }
+  .app .indicator-toolbar:has(.relative-controls) .period-mobile-select {
+    display: block;
+  }
+}
 .indicator-toolbar button,
 .indicator-toolbar label {
   font-size: 12px;
@@ -434,8 +446,30 @@
   .indicator-toolbar button {
     padding: 5px 8px;
   }
-  .indicator-toolbar:has(.relative-controls) {
+  .app .indicator-workspace .indicator-toolbar:has(.relative-controls) {
     position: relative;
+    display: grid;
+    grid-template-columns: 70px 1fr auto;
+    gap: 2px 4px;
+    margin-bottom: 0;
+  }
+  .app .indicator-toolbar:has(.relative-controls) .period-picker select {
+    min-height: 32px;
+    height: 32px;
+  }
+  .indicator-toolbar:has(.relative-controls) .indicator-date-tools {
+    grid-column: 2 / 4;
+  }
+  .indicator-toolbar:has(.relative-controls) button,
+  .indicator-toolbar:has(.relative-controls) summary {
+    min-height: 30px;
+    padding: 4px;
+  }
+  .indicator-toolbar:has(.relative-controls) .relative-controls {
+    grid-column: 1;
+  }
+  .indicator-toolbar:has(.relative-controls) .relative-controls > summary {
+    white-space: nowrap;
   }
   .indicator-toolbar .relative-controls {
     position: static;

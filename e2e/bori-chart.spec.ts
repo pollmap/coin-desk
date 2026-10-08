@@ -164,6 +164,9 @@ test('comparison refresh keeps the actual canvas and zoom; narrow chart starts b
 test('relative settings preserve chart position, focus, and guide context', async ({ page }) => {
   test.setTimeout(90000);
   await page.goto('/coins/ONDO?metric=view:relative&price_source=binance&benchmark_asset=LINK');
+  await expect(
+    page.locator('.indicator-toolbar').getByRole('button', { name: '날짜로 이동' }),
+  ).toBeVisible();
   const chart = page.locator('[data-chart-kind="analysis"]');
   await expect(chart).toHaveAttribute('data-range-ready', '1');
   for (const width of [320, 390, 768, 1000, 1280, 1440]) {
