@@ -1,3 +1,5 @@
+import { referenceAssets, availableMarket } from './asset-registry';
+import { DERIVATIVE_ASSETS } from './derivative-contracts';
 import { ASSETS, METRICS } from './catalog';
 import { NETWORK_METRICS, NETWORK_ASSETS } from './network-catalog';
 import { ANALYSIS_LABELS, type AnalysisView } from './advanced-analysis';
@@ -28,15 +30,15 @@ export interface IndicatorDefinition {
   view?: AnalysisView;
 }
 const all = ASSETS.map((a) => a.id);
-export const supportsReference = (asset: Asset) =>
-  (NETWORK_ASSETS as readonly Asset[]).includes(asset);
-export const defaultIndicator = (asset: Asset) => (supportsReference(asset) ? 'net:mvrv' : 'rsi');
+export const supportsReference = (asset: Asset) => referenceAssets.includes(asset);
+export const defaultIndicator = (asset: Asset) =>
+  NETWORK_METRICS.find((m) => m.id === 'mvrv')?.assets.includes(asset) ? 'net:mvrv' : 'rsi';
 export const validPriceBasis = (asset: Asset, basis: string | null) =>
   basis === 'upbit' || basis === 'binance'
-    ? basis
+    ? availableMarket(asset, basis)
     : supportsReference(asset)
       ? 'reference'
-      : 'binance';
+      : availableMarket(asset, 'binance');
 const valueMetrics = new Set(['mvrv', 'realized_price', 'realized_cap']);
 type IndicatorBase = Omit<
   IndicatorDefinition,
@@ -114,7 +116,7 @@ const definitions: IndicatorBase[] = [
         formula,
         guide,
         group: '선물',
-        assets: all,
+        assets: DERIVATIVE_ASSETS,
         source: 'Bybit USDT 무기한',
         defaultPeriod: '3m',
         renderer: 'series',
@@ -326,7 +328,8 @@ export function indicatorUrl(
   p.set('metric', next);
   let basis = validPriceBasis(asset, p.get('price_source') || p.get('market'));
   if (next === 'view:btc_rainbow' || next === 'view:powerlaw') basis = 'reference';
-  if ((next === 'view:vwap' || next === 'volume') && basis === 'reference') basis = 'binance';
+  if ((next === 'view:vwap' || next === 'volume') && basis === 'reference')
+    basis = availableMarket(asset, 'binance');
   p.set('price_source', basis);
   if (basis === 'reference') p.delete('market');
   else p.set('market', basis);

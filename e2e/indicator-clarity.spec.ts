@@ -43,7 +43,7 @@ test('historical readings can return to latest without changing the chart window
   await expect(page.locator('.analysis-reading-date')).toContainText('최근 확정값');
   await expect(chart).toHaveAttribute('data-visible-from', window!);
   await expect(page.locator('.indicator-method')).toHaveCount(0);
-  await page.getByText('읽는 법 · 계산식 · 데이터 범위', { exact: true }).click();
+  await page.getByRole('button', { name: '지표 설명', exact: true }).click();
   await expect(page.locator('.indicator-method')).toContainText('실현시가총액');
   await expect(page.locator('.indicator-method')).toContainText('150 / 실현시가총액 100 = 1.5배');
   await expect(page.locator('.indicator-method')).toContainText(
@@ -113,8 +113,11 @@ test('source date and chart observation date are distinct; the reading toolbar f
   });
   await page.goto('/coins/ONDO?metric=rsi&price_source=upbit');
   await expect(page.locator('[data-primary-metric="rsi"]')).toBeVisible();
-  await expect(page.locator('.indicator-provenance')).toContainText('원천 기준');
-  await expect(page.locator('.indicator-provenance')).toContainText('차트 최근 관측');
+  await expect(page.locator('.indicator-provenance')).toHaveCount(0);
+  await page.getByRole('button', { name: '데이터 정보', exact: true }).click();
+  await expect(page.locator('.indicator-provenance')).toContainText('기준일');
+  await expect(page.locator('.indicator-provenance')).toContainText('최근 데이터');
+  await page.keyboard.press('Escape');
   for (const width of [320, 390, 768, 1000, 1280, 1440]) {
     await page.setViewportSize({ width, height: 900 });
     await page.locator('[data-chart-kind="analysis"]').focus();

@@ -9,7 +9,7 @@ test('market only loads themes on demand and restores theme/exchange after analy
     if (r.url().includes('/api/v1/')) calls.push(r.url());
   });
   await page.goto('/?market=binance&sort=volume');
-  await expect(page.locator('.market-table tbody tr')).toHaveCount(8);
+  await expect(page.locator('.market-table tbody tr')).toHaveCount(50);
   expect(calls.filter((u) => /\/themes|\/knowledge|\/overview|\/network/.test(u))).toEqual([]);
   await page.getByRole('button', { name: '테마', exact: true }).click();
   await expect(page.getByLabel('정렬', { exact: true })).toHaveCount(0);
@@ -107,13 +107,14 @@ test('purpose search, pinned date, explanation and save preserve the chosen char
   const rect = (await canvas.boundingBox())!;
   await page.mouse.move(rect.x + rect.width * 0.7, rect.y + 100);
   await expect(page.locator('.analysis-reading-date')).toHaveText(fixed);
-  await page.locator('.indicator-explanation > summary').click();
+  await page.getByRole('button', { name: '지표 설명', exact: true }).click();
   await expect(page.locator('.indicator-selected-context')).toContainText(
     fixed
       .match(/\d{4}-\d{2}-\d{2}/)![0]
       .replaceAll('-', '. ')
       .replace(/$/, '.'),
   );
+  await page.keyboard.press('Escape');
   await page.getByRole('button', { name: '최근값 보기', exact: true }).click();
   await expect(page.locator('.analysis-reading-date')).toContainText('최근 확정값');
   await page.getByRole('button', { name: '분석 저장', exact: true }).click();

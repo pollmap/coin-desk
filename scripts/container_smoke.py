@@ -28,7 +28,7 @@ def smoke(image='coin-desk:ci'):
             result=json.load(response);assert result['data'][0]['value']==35000 and result['meta']['unit']=='USD'
         with urllib.request.urlopen(base+'/',timeout=10) as response: assert 'id="root"' in response.read().decode()
         with urllib.request.urlopen(base+'/api/v1/runtime',timeout=10) as response: assert json.load(response)['kind']=='vps'
-        try: urllib.request.urlopen(base+'/api/v1/reference?asset=ONDO',timeout=10)
+        try: urllib.request.urlopen(base+'/api/v1/reference?asset=BEAM',timeout=10)
         except urllib.error.HTTPError as error: assert error.code==400
         else: raise ValueError('Unsupported USD request was accepted')
         print('Container process/SQLite/static/API smoke passed; fixture only, collectors off')

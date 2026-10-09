@@ -15,11 +15,13 @@ test('stale cache never claims live or minute collection when no collector has r
     await route.fulfill({ response, json: data });
   });
   await page.goto('/');
-  await expect(page.locator('.market-table tbody tr')).toHaveCount(8);
+  await expect(page.locator('.market-table tbody tr')).toHaveCount(50);
   await expect(page.locator('html')).toHaveAttribute('data-theme', 'light');
   await expect(page.locator('body')).toHaveCSS('background-color', 'rgb(255, 255, 255)');
   await expect(page.locator('.market-feed-state')).toContainText('시세 갱신 지연');
-  await expect(page.locator('.market-runtime-notice')).toContainText('수집기 실행 기록이 없습니다');
+  await expect(page.locator('.market-runtime-notice')).toContainText(
+    '시세 갱신을 확인하고 있습니다',
+  );
   await expect(page.locator('.market-feed-state')).not.toContainText('초 단위');
 });
 
@@ -31,7 +33,7 @@ test('market root requests one bounded snapshot, eight assets, and preserves sou
     if (r.url().includes('/api/')) api.push(r.url());
   });
   await page.goto('/');
-  await expect(page.locator('.market-table tbody tr')).toHaveCount(8);
+  await expect(page.locator('.market-table tbody tr')).toHaveCount(50);
   await expect(page.getByRole('button', { name: 'Upbit · 원화' })).toHaveAttribute(
     'aria-pressed',
     'true',
@@ -53,7 +55,7 @@ test('market root requests one bounded snapshot, eight assets, and preserves sou
     'true',
   );
   await page.reload();
-  await expect(page.locator('.market-table tbody tr')).toHaveCount(8);
+  await expect(page.locator('.market-table tbody tr')).toHaveCount(50);
 });
 test('legacy date links and unsupported coins remain explicit; keyboard search works', async ({
   page,
@@ -85,7 +87,7 @@ for (const width of [1280, 1440, 1920])
       height: width === 1280 ? 800 : width === 1920 ? 1080 : 900,
     });
     await page.goto('/');
-    await expect(page.locator('.market-table tbody tr')).toHaveCount(8);
+    await expect(page.locator('.market-table tbody tr')).toHaveCount(50);
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(
       true,
     );

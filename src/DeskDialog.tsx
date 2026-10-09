@@ -10,6 +10,7 @@ export function DeskDialog({
   children,
   returnFocus,
   wide = false,
+  sheet = false,
 }: {
   open: boolean;
   onOpenChange: (open: boolean) => void;
@@ -17,13 +18,16 @@ export function DeskDialog({
   children: ReactNode;
   returnFocus?: RefObject<HTMLElement | null>;
   wide?: boolean;
+  sheet?: boolean;
 }) {
   return (
     <Dialog.Root open={open} onOpenChange={onOpenChange}>
       <Dialog.Portal>
         <Dialog.Backdrop className="desk-dialog-backdrop" />
         <Dialog.Popup
-          className={'desk-dialog' + (wide ? ' desk-dialog-wide' : '')}
+          className={
+            'desk-dialog' + (wide ? ' desk-dialog-wide' : '') + (sheet ? ' desk-dialog-sheet' : '')
+          }
           finalFocus={returnFocus}
         >
           <div className="desk-dialog-heading">

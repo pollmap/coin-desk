@@ -1,3 +1,4 @@
+import { networkProviderId, referenceAssets } from '../shared/asset-registry';
 import type { Asset, Point, SeriesResponse } from '../shared/types';
 import { DAY } from '../shared/math';
 import {
@@ -85,7 +86,7 @@ export function parseNetwork(
   const rows: NetworkDay[] = [];
   for (const candidate of body.data) {
     const raw = candidate as Record<string, unknown>;
-    if (!raw || raw.asset !== asset.toLowerCase() || typeof raw.time !== 'string')
+    if (!raw || raw.asset !== networkProviderId(asset)! || typeof raw.time !== 'string')
       throw new Error('Network response asset/time mismatch');
     const time = Date.parse(raw.time) / 1000;
     if (!validTime(time) || seen.has(time)) throw new Error('Invalid or duplicate UTC network day');
@@ -263,8 +264,13 @@ export async function readNetworkSeries(
 }
 
 /** Each run fetches at most 60 days and commits data, coverage and cursor atomically. */
-export async function updateNetworkData(env: Env, asset: NetworkAsset): Promise<void> {
+export async function updateNetworkData(
+  env: Env,
+  asset: NetworkAsset,
+  mode: 'history' | 'latest' = 'history',
+): Promise<void> {
   if (!isNetworkAsset(asset)) throw new Error('Unsupported network asset');
+  if (env.HISTORY_ALLOWED?.() === false) mode = 'latest';
   const db = env.DB;
   const now = epoch();
   const end = Math.floor(now / DAY) * DAY;
@@ -281,9 +287,12 @@ export async function updateNetworkData(env: Env, asset: NetworkAsset): Promise<
   )
     throw new Error('Invalid saved network cursor');
   // Re-read 32 days to incorporate revisions. Bootstrap uses the CLI for full initial history.
-  const from = checkpoint ?? Math.max(historyStart, latest - 31 * DAY);
+  const from =
+    mode === 'latest'
+      ? Math.max(historyStart, end - 32 * DAY)
+      : (checkpoint ?? Math.max(historyStart, latest - 31 * DAY));
   const params = new URLSearchParams({
-    assets: asset.toLowerCase(),
+    assets: networkProviderId(asset)!,
     metrics: networkSourceMetrics(asset).join(','),
     frequency: '1d',
     start_time: new Date(from * 1000).toISOString(),
@@ -302,7 +311,12 @@ export async function updateNetworkData(env: Env, asset: NetworkAsset): Promise<
   if (!rows.length) throw new Error('Empty completed network source page');
   if (rows.length !== body.data.length || rows.some((row) => row.time < from || row.time >= end))
     throw new Error('Network source range mismatch');
-  if (!existingCoverage.length && checkpoint === null && rows[0].time !== historyStart)
+  if (
+    mode === 'history' &&
+    !existingCoverage.length &&
+    checkpoint === null &&
+    rows[0].time !== historyStart
+  )
     throw new Error('Initial network response did not include the documented history start');
   const buckets = [...new Set(rows.map((row) => networkMonth(row.time)))];
   const stored = (
@@ -374,7 +388,7 @@ export async function updateNetworkData(env: Env, asset: NetworkAsset): Promise<
   const cursor = rows.at(-1)!.time + DAY;
   const more =
     Boolean(body.next_page_token || body.next_page_url || rows.length === 60) && cursor < end;
-  if (more)
+  if (mode === 'history' && more)
     statements.push(
       db
         .prepare(
@@ -382,13 +396,14 @@ export async function updateNetworkData(env: Env, asset: NetworkAsset): Promise<
         )
         .bind(progressKey, JSON.stringify(cursor)),
     );
-  else statements.push(db.prepare('DELETE FROM state WHERE key=?').bind(progressKey));
+  else if (mode === 'history')
+    statements.push(db.prepare('DELETE FROM state WHERE key=?').bind(progressKey));
   const asOf = Math.max(
     ...existingCoverage.map((row) => row.last),
     ...[...stats.values()].map((row) => row.last),
   );
   statements.push(successStatement(db, 'network:' + asset, asOf, now));
-  if (more)
+  if (mode === 'history' && more)
     statements.push(
       db
         .prepare('UPDATE ingestion SET next_attempt=? WHERE key=?')

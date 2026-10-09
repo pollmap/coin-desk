@@ -1,4 +1,5 @@
 import { ASSETS } from '../shared/catalog';
+import { assetDefinition } from '../shared/asset-registry';
 import {
   PUBLIC_SOURCES,
   type PublicPost,
@@ -37,12 +38,23 @@ const plain = (text: string) =>
     .replace(/\s+/g, ' ')
     .trim();
 export function mentionedAssets(text: string) {
-  return ASSETS.filter((a) =>
-    new RegExp(
-      '(?:^|[^a-z0-9])(?:' + [a.id, ...aliases[a.id]].join('|') + ')(?:$|[^a-z0-9])',
-      'i',
-    ).test(text),
-  ).map((a) => a.id);
+  const escape = (s: string) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  return ASSETS.filter((a) => {
+    const names =
+      aliases[a.id] ??
+      [a.name, assetDefinition(a.id)!.englishName].filter(
+        (n) => n.length >= 5 && n.toUpperCase() !== a.id,
+      );
+    // New short/common tickers (A, S, W, GAS, SAFE) require an explicit cashtag.
+    // A normal English word in an article is not proof that it discusses a token.
+    const symbol = aliases[a.id]
+      ? `(?:^|[^a-z0-9])${escape(a.id)}(?:$|[^a-z0-9])`
+      : `\\$${escape(a.id)}(?:$|[^a-z0-9])`;
+    return (
+      new RegExp(symbol, 'i').test(text) ||
+      names.some((n) => new RegExp(`(?:^|[^a-z0-9])${escape(n)}(?:$|[^a-z0-9])`, 'i').test(text))
+    );
+  }).map((a) => a.id);
 }
 function allowedLink(raw: string, source: PublicSource) {
   try {

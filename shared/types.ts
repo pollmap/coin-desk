@@ -1,4 +1,5 @@
-export type Asset = 'BTC' | 'ETH' | 'DOGE' | 'SOL' | 'XRP' | 'LINK' | 'ONDO' | 'PEPE';
+import type { ASSET_IDS } from './asset-ids';
+export type Asset = (typeof ASSET_IDS)[number];
 export type Market = 'binance' | 'upbit';
 export type Interval = '1h' | '4h' | '1d' | '1w' | '1M';
 export type Period = import('./ranges').RangePeriod;

@@ -48,7 +48,7 @@ test('Native server uses the real API, preserves units and errors, and never ref
     const reference = await (await fetch(base + '/api/v1/reference?asset=BTC')).json();
     assert.equal(reference.meta.unit, 'USD');
     assert.equal(reference.data[0].value, 35000);
-    for (const asset of ['SOL', 'ONDO', 'PEPE'])
+    for (const asset of ['TAO', 'BEAM', 'CFG'])
       assert.equal((await fetch(base + '/api/v1/reference?asset=' + asset)).status, 400);
     for (const asset of ['BTC', 'DOGE', 'ETH', 'SOL', 'XRP', 'LINK', 'ONDO', 'PEPE']) {
       const response = await fetch(base + '/api/v1/overview?asset=' + asset + '&market=binance');

@@ -24,6 +24,7 @@ import {
 import worker from '../worker/index';
 import { DAY } from '../shared/math';
 import { networkMetrics } from '../shared/network-catalog';
+import { ASSET_REGISTRY } from '../shared/asset-registry';
 let DB, env, now, waiting;
 const assets = ['BTC', 'DOGE', 'ETH', 'SOL', 'XRP', 'LINK', 'ONDO', 'PEPE'];
 const quote = (asset) => ({
@@ -68,7 +69,7 @@ function ready() {
   DB.sqlite
     .prepare('INSERT INTO onchain(generation,time,data,fetched_at) VALUES(?,?,?,?)')
     .run('active', now - DAY, '{"mvrv":1.2}', now);
-  for (const asset of ['BTC', 'DOGE', 'ETH', 'XRP', 'LINK']) {
+  for (const asset of assets) {
     DB.sqlite
       .prepare('INSERT INTO reference_prices VALUES(?,?,?,?)')
       .run(asset, now - DAY, 100, now);
@@ -685,16 +686,14 @@ it('bounds regular background load below one job a minute without slowing primar
 it('price history recovery is separate from current freshness and does not expose raw errors', async () => {
   ready();
   await scheduled(env);
-  DB.sqlite
-    .prepare('INSERT INTO state(key,value) VALUES (?,?)')
-    .run(
-      'cursor:price-backfill:ETH:upbit:1h',
-      JSON.stringify({
-        cursor: now - 86400,
-        checkedAt: now,
-        error: 'fetch https://private/?token=secret failed',
-      }),
-    );
+  DB.sqlite.prepare('INSERT INTO state(key,value) VALUES (?,?)').run(
+    'cursor:price-backfill:ETH:upbit:1h',
+    JSON.stringify({
+      cursor: now - 86400,
+      checkedAt: now,
+      error: 'fetch https://private/?token=secret failed',
+    }),
+  );
   const before = DB.sqlite.prepare('SELECT total_changes() n').get().n;
   const report = await operationStatus(env);
   expect(report.health.ok).toBe(true);
@@ -707,4 +706,52 @@ it('price history recovery is separate from current freshness and does not expos
     },
   ]);
   expect(DB.sqlite.prepare('SELECT total_changes() n').get().n).toBe(before);
+});
+
+it('150-asset earliest-due queue admits every source despite repeated recent and retry work', () => {
+  const policies = backgroundPolicies(
+    ASSET_REGISTRY.map((a) => a.id),
+    false,
+  );
+  const states = [],
+    visited = new Set();
+  for (let minute = 0; minute < 120; minute++) {
+    const at = now + minute * 60;
+    for (let slot = 0; slot < 24; slot++) {
+      const job = selectJob(policies, states, at, true);
+      if (!job) break;
+      visited.add(job.key);
+      let state = states.find((s) => s.key === job.key);
+      if (!state) {
+        state = { key: job.key };
+        states.push(state);
+      }
+      Object.assign(state, { last_attempt: at, last_success: at, data_as_of: at, next_attempt: 0 });
+      if (slot % 5 === 0)
+        Object.assign(state, { error: 'temporary fixture failure', next_attempt: at + 120 });
+    }
+  }
+  expect([...policies].filter((p) => !visited.has(p.key)).map((p) => p.key)).toEqual([]);
+});
+
+it('slow quote groups resume at the next coins rather than restart with BTC each minute', async () => {
+  env.ENABLED_ASSETS = ASSET_REGISTRY.map((a) => a.id).join(',');
+  const upbitGroups = Math.ceil(ASSET_REGISTRY.filter((a) => a.markets.upbit).length / 8);
+  for (let i = 0; i < upbitGroups; i++)
+    DB.sqlite
+      .prepare('INSERT INTO ingestion(key,next_attempt) VALUES(?,?)')
+      .run('quotes:upbit:' + i, now + 86400);
+  const calls = [];
+  getQuotes.mockImplementation(async (ids, market) => {
+    calls.push([...ids]);
+    vi.setSystemTime(Date.now() + 41000);
+    return { quotes: ids.map(quote), errors: [] };
+  });
+  await refreshMinuteQuotes(env);
+  vi.setSystemTime((now + 120) * 1000);
+  await refreshMinuteQuotes(env);
+  expect(calls).toHaveLength(2);
+  expect(calls[0]).toContain('BTC');
+  expect(calls[1]).not.toContain('BTC');
+  expect(new Set(calls.flat()).size).toBe(16);
 });

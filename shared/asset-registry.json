@@ -1,0 +1,6696 @@
+{
+  "version": 1,
+  "reviewedAt": "2026-10-09T14:39:28.895266+00:00",
+  "selection": "100 Upbit KRW, 50 additional Binance USDT; market cap rank; existing eight and PENGU retained",
+  "assets": [
+    {
+      "id": "BTC",
+      "name": "비트코인",
+      "englishName": "Bitcoin",
+      "aliases": ["Bitcoin", "bitcoin"],
+      "color": "#f59c39",
+      "logo": "/coin-logos/btc.png",
+      "coinloreId": "90",
+      "rank": 1,
+      "markets": {
+        "upbit": "KRW-BTC",
+        "binance": "BTCUSDT"
+      },
+      "network": {
+        "id": "btc",
+        "metrics": {
+          "AdrActCnt": {
+            "first": "2009-01-03",
+            "last": "2026-10-08"
+          },
+          "AdrBalCnt": {
+            "first": "2009-01-03",
+            "last": "2026-10-08"
+          },
+          "BlkCnt": {
+            "first": "2009-01-03",
+            "last": "2026-10-08"
+          },
+          "CapMVRVCur": {
+            "first": "2010-07-18",
+            "last": "2026-10-08"
+          },
+          "CapMrktCurUSD": {
+            "first": "2010-07-18",
+            "last": "2026-10-08"
+          },
+          "FeeTotNtv": {
+            "first": "2009-01-03",
+            "last": "2026-10-08"
+          },
+          "FlowInExNtv": {
+            "first": "2011-04-24",
+            "last": "2026-10-08"
+          },
+          "FlowOutExNtv": {
+            "first": "2011-04-24",
+            "last": "2026-10-08"
+          },
+          "HashRate": {
+            "first": "2009-01-09",
+            "last": "2026-10-08"
+          },
+          "IssTotNtv": {
+            "first": "2009-01-09",
+            "last": "2026-10-08"
+          },
+          "PriceUSD": {
+            "first": "2010-07-18",
+            "last": "2026-10-08"
+          },
+          "SplyCur": {
+            "first": "2009-01-03",
+            "last": "2026-10-08"
+          },
+          "SplyExNtv": {
+            "first": "2011-04-24",
+            "last": "2026-10-08"
+          },
+          "TxCnt": {
+            "first": "2009-01-03",
+            "last": "2026-10-08"
+          },
+          "TxTfrCnt": {
+            "first": "2009-01-03",
+            "last": "2026-10-08"
+          }
+        },
+        "scope": "Bitcoin"
+      },
+      "derivative": {
+        "symbol": "BTCUSDT",
+        "quantityMultiplier": 1
+      },
+      "review": {
+        "pairVerified": true,
+        "sources": [
+          "https://api.upbit.com/v1/market/all",
+          "https://api.binance.com/api/v3/exchangeInfo",
+          "https://api.coinlore.net/api/coin/markets/?id=90",
+          "https://community-api.coinmetrics.io/v4/reference-data/assets?assets=btc"
+        ]
+      }
+    },
+    {
+      "id": "DOGE",
+      "name": "도지코인",
+      "englishName": "Dogecoin",
+      "aliases": ["Dogecoin", "dogecoin"],
+      "color": "#c4a34d",
+      "logo": "/coin-logos/doge-official.png",
+      "coinloreId": "2",
+      "rank": 12,
+      "markets": {
+        "upbit": "KRW-DOGE",
+        "binance": "DOGEUSDT"
+      },
+      "network": {
+        "id": "doge",
+        "metrics": {
+          "AdrActCnt": {
+            "first": "2013-12-08",
+            "last": "2026-10-08"
+          },
+          "AdrBalCnt": {
+            "first": "2013-12-08",
+            "last": "2026-10-08"
+          },
+          "BlkCnt": {
+            "first": "2013-12-08",
+            "last": "2026-10-08"
+          },
+          "CapMVRVCur": {
+            "first": "2014-01-23",
+            "last": "2026-10-08"
+          },
+          "CapMrktCurUSD": {
+            "first": "2014-01-23",
+            "last": "2026-10-08"
+          },
+          "FeeTotNtv": {
+            "first": "2013-12-08",
+            "last": "2026-10-08"
+          },
+          "HashRate": {
+            "first": "2013-12-08",
+            "last": "2026-10-08"
+          },
+          "IssTotNtv": {
+            "first": "2013-12-08",
+            "last": "2026-10-08"
+          },
+          "PriceUSD": {
+            "first": "2014-01-23",
+            "last": "2026-10-08"
+          },
+          "SplyCur": {
+            "first": "2013-12-08",
+            "last": "2026-10-08"
+          },
+          "TxCnt": {
+            "first": "2013-12-08",
+            "last": "2026-10-08"
+          },
+          "TxTfrCnt": {
+            "first": "2013-12-08",
+            "last": "2026-10-08"
+          }
+        },
+        "scope": "Dogecoin"
+      },
+      "derivative": {
+        "symbol": "DOGEUSDT",
+        "quantityMultiplier": 1
+      },
+      "review": {
+        "pairVerified": true,
+        "sources": [
+          "https://api.upbit.com/v1/market/all",
+          "https://api.binance.com/api/v3/exchangeInfo",
+          "https://api.coinlore.net/api/coin/markets/?id=2",
+          "https://community-api.coinmetrics.io/v4/reference-data/assets?assets=doge"
+        ]
+      }
+    },
+    {
+      "id": "ETH",
+      "name": "이더리움",
+      "englishName": "Ethereum",
+      "aliases": ["Ethereum", "ethereum"],
+      "color": "#899cff",
+      "logo": "/coin-logos/eth.png",
+      "coinloreId": "80",
+      "rank": 2,
+      "markets": {
+        "upbit": "KRW-ETH",
+        "binance": "ETHUSDT"
+      },
+      "network": {
+        "id": "eth",
+        "metrics": {
+          "AdrActCnt": {
+            "first": "2015-07-30",
+            "last": "2026-10-08"
+          },
+          "AdrBalCnt": {
+            "first": "2015-07-30",
+            "last": "2026-10-08"
+          },
+          "BlkCnt": {
+            "first": "2015-07-30",
+            "last": "2026-10-08"
+          },
+          "CapMVRVCur": {
+            "first": "2015-08-08",
+            "last": "2026-10-08"
+          },
+          "CapMrktCurUSD": {
+            "first": "2015-08-08",
+            "last": "2026-10-08"
+          },
+          "FeeTotNtv": {
+            "first": "2015-07-30",
+            "last": "2026-10-08"
+          },
+          "FlowInExNtv": {
+            "first": "2015-07-30",
+            "last": "2026-10-08"
+          },
+          "FlowOutExNtv": {
+            "first": "2015-07-30",
+            "last": "2026-10-08"
+          },
+          "IssTotNtv": {
+            "first": "2015-07-30",
+            "last": "2026-10-08"
+          },
+          "PriceUSD": {
+            "first": "2015-08-08",
+            "last": "2026-10-08"
+          },
+          "SplyCur": {
+            "first": "2015-07-30",
+            "last": "2026-10-08"
+          },
+          "SplyExNtv": {
+            "first": "2015-07-30",
+            "last": "2026-10-08"
+          },
+          "TxCnt": {
+            "first": "2015-07-30",
+            "last": "2026-10-08"
+          },
+          "TxTfrCnt": {
+            "first": "2015-07-30",
+            "last": "2026-10-08"
+          }
+        },
+        "scope": "Ethereum"
+      },
+      "derivative": {
+        "symbol": "ETHUSDT",
+        "quantityMultiplier": 1
+      },
+      "review": {
+        "pairVerified": true,
+        "sources": [
+          "https://api.upbit.com/v1/market/all",
+          "https://api.binance.com/api/v3/exchangeInfo",
+          "https://api.coinlore.net/api/coin/markets/?id=80",
+          "https://community-api.coinmetrics.io/v4/reference-data/assets?assets=eth"
+        ]
+      }
+    },
+    {
+      "id": "SOL",
+      "name": "솔라나",
+      "englishName": "Solana",
+      "aliases": ["Solana", "solana"],
+      "color": "#73dac5",
+      "logo": "/coin-logos/sol.png",
+      "coinloreId": "48543",
+      "rank": 7,
+      "markets": {
+        "upbit": "KRW-SOL",
+        "binance": "SOLUSDT"
+      },
+      "network": {
+        "id": "sol",
+        "metrics": {
+          "PriceUSD": {
+            "first": "2020-04-10",
+            "last": "2026-10-08"
+          }
+        },
+        "scope": "Solana"
+      },
+      "derivative": {
+        "symbol": "SOLUSDT",
+        "quantityMultiplier": 1
+      },
+      "review": {
+        "pairVerified": true,
+        "sources": [
+          "https://api.upbit.com/v1/market/all",
+          "https://api.binance.com/api/v3/exchangeInfo",
+          "https://api.coinlore.net/api/coin/markets/?id=48543",
+          "https://community-api.coinmetrics.io/v4/reference-data/assets?assets=sol"
+        ]
+      }
+    },
+    {
+      "id": "XRP",
+      "name": "리플",
+      "englishName": "XRP",
+      "aliases": ["XRP", "ripple"],
+      "color": "#d2d9e2",
+      "logo": "/coin-logos/xrp.png",
+      "coinloreId": "58",
+      "rank": 5,
+      "markets": {
+        "upbit": "KRW-XRP",
+        "binance": "XRPUSDT"
+      },
+      "network": {
+        "id": "xrp",
+        "metrics": {
+          "AdrActCnt": {
+            "first": "2013-01-01",
+            "last": "2026-10-08"
+          },
+          "AdrBalCnt": {
+            "first": "2013-01-01",
+            "last": "2026-10-08"
+          },
+          "BlkCnt": {
+            "first": "2013-01-01",
+            "last": "2026-10-08"
+          },
+          "CapMVRVCur": {
+            "first": "2014-08-15",
+            "last": "2026-10-08"
+          },
+          "CapMrktCurUSD": {
+            "first": "2014-08-15",
+            "last": "2026-10-08"
+          },
+          "FeeTotNtv": {
+            "first": "2013-01-01",
+            "last": "2026-10-08"
+          },
+          "PriceUSD": {
+            "first": "2014-08-15",
+            "last": "2026-10-08"
+          },
+          "SplyCur": {
+            "first": "2013-01-01",
+            "last": "2026-10-08"
+          },
+          "TxCnt": {
+            "first": "2013-01-01",
+            "last": "2026-10-08"
+          },
+          "TxTfrCnt": {
+            "first": "2013-01-01",
+            "last": "2026-10-08"
+          }
+        },
+        "scope": "XRP"
+      },
+      "derivative": {
+        "symbol": "XRPUSDT",
+        "quantityMultiplier": 1
+      },
+      "review": {
+        "pairVerified": true,
+        "sources": [
+          "https://api.upbit.com/v1/market/all",
+          "https://api.binance.com/api/v3/exchangeInfo",
+          "https://api.coinlore.net/api/coin/markets/?id=58",
+          "https://community-api.coinmetrics.io/v4/reference-data/assets?assets=xrp"
+        ]
+      }
+    },
+    {
+      "id": "LINK",
+      "name": "체인링크",
+      "englishName": "ChainLink",
+      "aliases": ["ChainLink", "chainlink"],
+      "color": "#6084ff",
+      "logo": "/coin-logos/link.png",
+      "coinloreId": "2751",
+      "rank": 18,
+      "markets": {
+        "upbit": "KRW-LINK",
+        "binance": "LINKUSDT"
+      },
+      "network": {
+        "id": "link",
+        "metrics": {
+          "AdrActCnt": {
+            "first": "2017-09-16",
+            "last": "2026-10-08"
+          },
+          "AdrBalCnt": {
+            "first": "2017-09-16",
+            "last": "2026-10-08"
+          },
+          "CapMVRVCur": {
+            "first": "2017-09-29",
+            "last": "2026-10-08"
+          },
+          "CapMrktCurUSD": {
+            "first": "2017-09-29",
+            "last": "2026-10-08"
+          },
+          "IssTotNtv": {
+            "first": "2017-09-16",
+            "last": "2026-10-08"
+          },
+          "PriceUSD": {
+            "first": "2017-09-29",
+            "last": "2026-10-08"
+          },
+          "SplyCur": {
+            "first": "2017-09-16",
+            "last": "2026-10-08"
+          },
+          "TxCnt": {
+            "first": "2017-09-16",
+            "last": "2026-10-08"
+          },
+          "TxTfrCnt": {
+            "first": "2017-09-16",
+            "last": "2026-10-08"
+          }
+        },
+        "scope": "Chainlink"
+      },
+      "derivative": {
+        "symbol": "LINKUSDT",
+        "quantityMultiplier": 1
+      },
+      "review": {
+        "pairVerified": true,
+        "sources": [
+          "https://api.upbit.com/v1/market/all",
+          "https://api.binance.com/api/v3/exchangeInfo",
+          "https://api.coinlore.net/api/coin/markets/?id=2751",
+          "https://community-api.coinmetrics.io/v4/reference-data/assets?assets=link"
+        ]
+      }
+    },
+    {
+      "id": "ONDO",
+      "name": "온도파이낸스",
+      "englishName": "Ondo",
+      "aliases": ["Ondo", "ondo-finance"],
+      "color": "#829dbc",
+      "logo": "/coin-logos/ondo.png",
+      "coinloreId": "121611",
+      "rank": 42,
+      "markets": {
+        "upbit": "KRW-ONDO",
+        "binance": "ONDOUSDT"
+      },
+      "network": {
+        "id": "ondo",
+        "metrics": {
+          "PriceUSD": {
+            "first": "2024-01-18",
+            "last": "2026-10-08"
+          }
+        },
+        "scope": "Ondo"
+      },
+      "derivative": {
+        "symbol": "ONDOUSDT",
+        "quantityMultiplier": 1
+      },
+      "review": {
+        "pairVerified": true,
+        "sources": [
+          "https://api.upbit.com/v1/market/all",
+          "https://api.binance.com/api/v3/exchangeInfo",
+          "https://api.coinlore.net/api/coin/markets/?id=121611",
+          "https://community-api.coinmetrics.io/v4/reference-data/assets?assets=ondo"
+        ]
+      }
+    },
+    {
+      "id": "PEPE",
+      "name": "페페",
+      "englishName": "Pepe",
+      "aliases": ["Pepe", "pepe"],
+      "color": "#75b67a",
+      "logo": "/coin-logos/pepe.png",
+      "coinloreId": "93841",
+      "rank": 39,
+      "markets": {
+        "upbit": "KRW-PEPE",
+        "binance": "PEPEUSDT"
+      },
+      "network": {
+        "id": "pepe",
+        "metrics": {
+          "PriceUSD": {
+            "first": "2023-08-17",
+            "last": "2026-10-08"
+          }
+        },
+        "scope": "Pepe"
+      },
+      "derivative": {
+        "symbol": "1000PEPEUSDT",
+        "quantityMultiplier": 1000
+      },
+      "review": {
+        "pairVerified": true,
+        "sources": [
+          "https://api.upbit.com/v1/market/all",
+          "https://api.binance.com/api/v3/exchangeInfo",
+          "https://api.coinlore.net/api/coin/markets/?id=93841",
+          "https://community-api.coinmetrics.io/v4/reference-data/assets?assets=pepe"
+        ]
+      }
+    },
+    {
+      "id": "PENGU",
+      "name": "펏지펭귄",
+      "englishName": "Pudgy Penguins",
+      "aliases": [
+        "Pudgy Penguins",
+        "pudgy-penguins",
+        "펭귄",
+        "펏지펭귄",
+        "퍼지펭귄",
+        "pudgy penguins"
+      ],
+      "color": "#0F666B",
+      "logo": "",
+      "coinloreId": "151101",
+      "rank": 86,
+      "markets": {
+        "upbit": "KRW-PENGU",
+        "binance": "PENGUUSDT"
+      },
+      "network": {
+        "id": "pengu",
+        "metrics": {
+          "PriceUSD": {
+            "first": "2025-01-24",
+            "last": "2026-10-08"
+          }
+        },
+        "scope": "Pudgy Penguins"
+      },
+      "derivative": {
+        "symbol": "PENGUUSDT",
+        "quantityMultiplier": 1
+      },
+      "review": {
+        "pairVerified": true,
+        "sources": [
+          "https://api.upbit.com/v1/market/all",
+          "https://api.binance.com/api/v3/exchangeInfo",
+          "https://api.coinlore.net/api/coin/markets/?id=151101",
+          "https://community-api.coinmetrics.io/v4/reference-data/assets?assets=pengu"
+        ]
+      }
+    },
+    {
+      "id": "TRX",
+      "name": "트론",
+      "englishName": "TRON",
+      "aliases": ["TRON", "tron"],
+      "color": "#0F666B",
+      "logo": "",
+      "coinloreId": "2713",
+      "rank": 8,
+      "markets": {
+        "upbit": "KRW-TRX",
+        "binance": "TRXUSDT"
+      },
+      "network": {
+        "id": "trx",
+        "metrics": {
+          "AdrActCnt": {
+            "first": "2018-06-25",
+            "last": "2026-10-08"
+          },
+          "BlkCnt": {
+            "first": "2018-06-25",
+            "last": "2026-10-08"
+          },
+          "PriceUSD": {
+            "first": "2018-06-25",
+            "last": "2026-10-08"
+          },
+          "TxCnt": {
+            "first": "2018-06-25",
+            "last": "2026-10-08"
+          },
+          "TxTfrCnt": {
+            "first": "2018-06-25",
+            "last": "2026-10-08"
+          }
+        },
+        "scope": "TRON"
+      },
+      "derivative": {
+        "symbol": "TRXUSDT",
+        "quantityMultiplier": 1
+      },
+      "review": {
+        "pairVerified": true,
+        "sources": [
+          "https://api.upbit.com/v1/market/all",
+          "https://api.binance.com/api/v3/exchangeInfo",
+          "https://api.coinlore.net/api/coin/markets/?id=2713",
+          "https://community-api.coinmetrics.io/v4/reference-data/assets?assets=trx"
+        ]
+      }
+    },
+    {
+      "id": "ADA",
+      "name": "에이다",
+      "englishName": "Cardano",
+      "aliases": ["Cardano", "cardano"],
+      "color": "#0F666B",
+      "logo": "",
+      "coinloreId": "257",
+      "rank": 19,
+      "markets": {
+        "upbit": "KRW-ADA",
+        "binance": "ADAUSDT"
+      },
+      "network": {
+        "id": "ada",
+        "metrics": {
+          "AdrActCnt": {
+            "first": "2017-09-23",
+            "last": "2026-10-08"
+          },
+          "AdrBalCnt": {
+            "first": "2017-09-23",
+            "last": "2026-10-08"
+          },
+          "BlkCnt": {
+            "first": "2017-09-23",
+            "last": "2026-10-08"
+          },
+          "CapMVRVCur": {
+            "first": "2017-12-01",
+            "last": "2026-10-08"
+          },
+          "CapMrktCurUSD": {
+            "first": "2017-12-01",
+            "last": "2026-10-08"
+          },
+          "FeeTotNtv": {
+            "first": "2017-09-23",
+            "last": "2026-10-08"
+          },
+          "IssTotNtv": {
+            "first": "2017-09-23",
+            "last": "2026-10-08"
+          },
+          "PriceUSD": {
+            "first": "2017-12-01",
+            "last": "2026-10-08"
+          },
+          "SplyCur": {
+            "first": "2017-09-23",
+            "last": "2026-10-08"
+          },
+          "TxCnt": {
+            "first": "2017-09-23",
+            "last": "2026-10-08"
+          },
+          "TxTfrCnt": {
+            "first": "2017-09-23",
+            "last": "2026-10-08"
+          }
+        },
+        "scope": "Cardano"
+      },
+      "derivative": {
+        "symbol": "ADAUSDT",
+        "quantityMultiplier": 1
+      },
+      "review": {
+        "pairVerified": true,
+        "sources": [
+          "https://api.upbit.com/v1/market/all",
+          "https://api.binance.com/api/v3/exchangeInfo",
+          "https://api.coinlore.net/api/coin/markets/?id=257",
+          "https://community-api.coinmetrics.io/v4/reference-data/assets?assets=ada"
+        ]
+      }
+    },
+    {
+      "id": "XLM",
+      "name": "스텔라루멘",
+      "englishName": "Stellar",
+      "aliases": ["Stellar", "stellar"],
+      "color": "#0F666B",
+      "logo": "",
+      "coinloreId": "89",
+      "rank": 21,
+      "markets": {
+        "upbit": "KRW-XLM",
+        "binance": "XLMUSDT"
+      },
+      "network": {
+        "id": "xlm",
+        "metrics": {
+          "AdrActCnt": {
+            "first": "2015-09-30",
+            "last": "2026-10-08"
+          },
+          "AdrBalCnt": {
+            "first": "2015-09-30",
+            "last": "2026-10-08"
+          },
+          "BlkCnt": {
+            "first": "2015-09-30",
+            "last": "2026-10-08"
+          },
+          "CapMVRVCur": {
+            "first": "2015-09-30",
+            "last": "2026-10-08"
+          },
+          "CapMrktCurUSD": {
+            "first": "2015-09-30",
+            "last": "2026-10-08"
+          },
+          "FeeTotNtv": {
+            "first": "2015-09-30",
+            "last": "2026-10-08"
+          },
+          "IssTotNtv": {
+            "first": "2015-09-30",
+            "last": "2026-10-08"
+          },
+          "PriceUSD": {
+            "first": "2015-09-30",
+            "last": "2026-10-08"
+          },
+          "SplyCur": {
+            "first": "2015-09-30",
+            "last": "2026-10-08"
+          },
+          "TxCnt": {
+            "first": "2015-09-30",
+            "last": "2026-10-08"
+          },
+          "TxTfrCnt": {
+            "first": "2015-09-30",
+            "last": "2026-10-08"
+          }
+        },
+        "scope": "Stellar"
+      },
+      "derivative": {
+        "symbol": "XLMUSDT",
+        "quantityMultiplier": 1
+      },
+      "review": {
+        "pairVerified": true,
+        "sources": [
+          "https://api.upbit.com/v1/market/all",
+          "https://api.binance.com/api/v3/exchangeInfo",
+          "https://api.coinlore.net/api/coin/markets/?id=89",
+          "https://community-api.coinmetrics.io/v4/reference-data/assets?assets=xlm"
+        ]
+      }
+    },
+    {
+      "id": "NEAR",
+      "name": "니어프로토콜",
+      "englishName": "NEAR Protocol",
+      "aliases": ["NEAR Protocol", "near-protocol"],
+      "color": "#0F666B",
+      "logo": "",
+      "coinloreId": "48563",
+      "rank": 22,
+      "markets": {
+        "upbit": "KRW-NEAR",
+        "binance": "NEARUSDT"
+      },
+      "network": {
+        "id": "near",
+        "metrics": {
+          "PriceUSD": {
+            "first": "2020-10-15",
+            "last": "2026-10-08"
+          }
+        },
+        "scope": "NEAR Protocol"
+      },
+      "derivative": {
+        "symbol": "NEARUSDT",
+        "quantityMultiplier": 1
+      },
+      "review": {
+        "pairVerified": true,
+        "sources": [
+          "https://api.upbit.com/v1/market/all",
+          "https://api.binance.com/api/v3/exchangeInfo",
+          "https://api.coinlore.net/api/coin/markets/?id=48563",
+          "https://community-api.coinmetrics.io/v4/reference-data/assets?assets=near"
+        ]
+      }
+    },
+    {
+      "id": "BCH",
+      "name": "비트코인캐시",
+      "englishName": "Bitcoin Cash",
+      "aliases": ["Bitcoin Cash", "bitcoin-cash"],
+      "color": "#0F666B",
+      "logo": "",
+      "coinloreId": "2321",
+      "rank": 23,
+      "markets": {
+        "upbit": "KRW-BCH",
+        "binance": "BCHUSDT"
+      },
+      "network": {
+        "id": "bch",
+        "metrics": {
+          "AdrActCnt": {
+            "first": "2017-08-01",
+            "last": "2026-10-08"
+          },
+          "AdrBalCnt": {
+            "first": "2017-08-01",
+            "last": "2026-10-08"
+          },
+          "BlkCnt": {
+            "first": "2017-08-01",
+            "last": "2026-10-08"
+          },
+          "CapMVRVCur": {
+            "first": "2017-08-01",
+            "last": "2026-10-08"
+          },
+          "CapMrktCurUSD": {
+            "first": "2017-08-01",
+            "last": "2026-10-08"
+          },
+          "FeeTotNtv": {
+            "first": "2017-08-01",
+            "last": "2026-10-08"
+          },
+          "HashRate": {
+            "first": "2017-08-01",
+            "last": "2026-10-08"
+          },
+          "IssTotNtv": {
+            "first": "2017-08-01",
+            "last": "2026-10-08"
+          },
+          "PriceUSD": {
+            "first": "2017-08-01",
+            "last": "2026-10-08"
+          },
+          "SplyCur": {
+            "first": "2017-08-01",
+            "last": "2026-10-08"
+          },
+          "TxCnt": {
+            "first": "2017-08-01",
+            "last": "2026-10-08"
+          },
+          "TxTfrCnt": {
+            "first": "2017-08-01",
+            "last": "2026-10-08"
+          }
+        },
+        "scope": "Bitcoin Cash"
+      },
+      "derivative": {
+        "symbol": "BCHUSDT",
+        "quantityMultiplier": 1
+      },
+      "review": {
+        "pairVerified": true,
+        "sources": [
+          "https://api.upbit.com/v1/market/all",
+          "https://api.binance.com/api/v3/exchangeInfo",
+          "https://api.coinlore.net/api/coin/markets/?id=2321",
+          "https://community-api.coinmetrics.io/v4/reference-data/assets?assets=bch"
+        ]
+      }
+    },
+    {
+      "id": "UNI",
+      "name": "유니스왑",
+      "englishName": "Uniswap",
+      "aliases": ["Uniswap", "uniswap"],
+      "color": "#0F666B",
+      "logo": "",
+      "coinloreId": "47305",
+      "rank": 26,
+      "markets": {
+        "upbit": "KRW-UNI",
+        "binance": "UNIUSDT"
+      },
+      "network": {
+        "id": "uni",
+        "metrics": {
+          "AdrActCnt": {
+            "first": "2020-09-14",
+            "last": "2026-10-08"
+          },
+          "AdrBalCnt": {
+            "first": "2020-09-14",
+            "last": "2026-10-08"
+          },
+          "CapMVRVCur": {
+            "first": "2020-09-18",
+            "last": "2026-10-08"
+          },
+          "CapMrktCurUSD": {
+            "first": "2020-09-18",
+            "last": "2026-10-08"
+          },
+          "IssTotNtv": {
+            "first": "2020-09-14",
+            "last": "2026-10-08"
+          },
+          "PriceUSD": {
+            "first": "2020-09-18",
+            "last": "2026-10-08"
+          },
+          "SplyCur": {
+            "first": "2020-09-14",
+            "last": "2026-10-08"
+          },
+          "TxCnt": {
+            "first": "2020-09-14",
+            "last": "2026-10-08"
+          },
+          "TxTfrCnt": {
+            "first": "2020-09-14",
+            "last": "2026-10-08"
+          }
+        },
+        "scope": "Uniswap"
+      },
+      "derivative": {
+        "symbol": "UNIUSDT",
+        "quantityMultiplier": 1
+      },
+      "review": {
+        "pairVerified": true,
+        "sources": [
+          "https://api.upbit.com/v1/market/all",
+          "https://api.binance.com/api/v3/exchangeInfo",
+          "https://api.coinlore.net/api/coin/markets/?id=47305",
+          "https://community-api.coinmetrics.io/v4/reference-data/assets?assets=uni"
+        ]
+      }
+    },
+    {
+      "id": "AVAX",
+      "name": "아발란체",
+      "englishName": "Avalanche",
+      "aliases": ["Avalanche", "avalanche"],
+      "color": "#0F666B",
+      "logo": "",
+      "coinloreId": "44883",
+      "rank": 27,
+      "markets": {
+        "upbit": "KRW-AVAX",
+        "binance": "AVAXUSDT"
+      },
+      "network": {
+        "id": "avaxc",
+        "metrics": {
+          "PriceUSD": {
+            "first": "2020-09-23",
+            "last": "2026-10-08"
+          }
+        },
+        "scope": "Avalanche C-Chain"
+      },
+      "derivative": {
+        "symbol": "AVAXUSDT",
+        "quantityMultiplier": 1
+      },
+      "review": {
+        "pairVerified": true,
+        "sources": [
+          "https://api.upbit.com/v1/market/all",
+          "https://api.binance.com/api/v3/exchangeInfo",
+          "https://api.coinlore.net/api/coin/markets/?id=44883",
+          "https://community-api.coinmetrics.io/v4/reference-data/assets?assets=avaxc"
+        ]
+      }
+    },
+    {
+      "id": "HBAR",
+      "name": "헤데라",
+      "englishName": "Hedera Hashgraph",
+      "aliases": ["Hedera Hashgraph", "hedera-hashgraph"],
+      "color": "#0F666B",
+      "logo": "",
+      "coinloreId": "48555",
+      "rank": 29,
+      "markets": {
+        "upbit": "KRW-HBAR",
+        "binance": "HBARUSDT"
+      },
+      "network": {
+        "id": "hbar",
+        "metrics": {
+          "PriceUSD": {
+            "first": "2019-09-18",
+            "last": "2026-10-08"
+          }
+        },
+        "scope": "Hedera"
+      },
+      "derivative": {
+        "symbol": "HBARUSDT",
+        "quantityMultiplier": 1
+      },
+      "review": {
+        "pairVerified": true,
+        "sources": [
+          "https://api.upbit.com/v1/market/all",
+          "https://api.binance.com/api/v3/exchangeInfo",
+          "https://api.coinlore.net/api/coin/markets/?id=48555",
+          "https://community-api.coinmetrics.io/v4/reference-data/assets?assets=hbar"
+        ]
+      }
+    },
+    {
+      "id": "SUI",
+      "name": "수이",
+      "englishName": "Sui",
+      "aliases": ["Sui", "sui"],
+      "color": "#0F666B",
+      "logo": "",
+      "coinloreId": "93845",
+      "rank": 30,
+      "markets": {
+        "upbit": "KRW-SUI",
+        "binance": "SUIUSDT"
+      },
+      "network": {
+        "id": "sui",
+        "metrics": {
+          "PriceUSD": {
+            "first": "2023-08-17",
+            "last": "2026-10-08"
+          }
+        },
+        "scope": "Sui"
+      },
+      "derivative": {
+        "symbol": "SUIUSDT",
+        "quantityMultiplier": 1
+      },
+      "review": {
+        "pairVerified": true,
+        "sources": [
+          "https://api.upbit.com/v1/market/all",
+          "https://api.binance.com/api/v3/exchangeInfo",
+          "https://api.coinlore.net/api/coin/markets/?id=93845",
+          "https://community-api.coinmetrics.io/v4/reference-data/assets?assets=sui"
+        ]
+      }
+    },
+    {
+      "id": "SHIB",
+      "name": "시바이누",
+      "englishName": "Shiba Inu",
+      "aliases": ["Shiba Inu", "shiba-inu"],
+      "color": "#0F666B",
+      "logo": "",
+      "coinloreId": "45088",
+      "rank": 31,
+      "markets": {
+        "upbit": "KRW-SHIB",
+        "binance": "SHIBUSDT"
+      },
+      "network": {
+        "id": "shib_eth",
+        "metrics": {
+          "AdrActCnt": {
+            "first": "2020-07-31",
+            "last": "2026-10-08"
+          },
+          "AdrBalCnt": {
+            "first": "2020-07-31",
+            "last": "2026-10-08"
+          },
+          "CapMVRVCur": {
+            "first": "2021-05-11",
+            "last": "2026-10-08"
+          },
+          "CapMrktCurUSD": {
+            "first": "2021-05-11",
+            "last": "2026-10-08"
+          },
+          "IssTotNtv": {
+            "first": "2020-07-31",
+            "last": "2026-10-08"
+          },
+          "PriceUSD": {
+            "first": "2021-05-11",
+            "last": "2026-10-08"
+          },
+          "SplyCur": {
+            "first": "2020-07-31",
+            "last": "2026-10-08"
+          },
+          "TxCnt": {
+            "first": "2020-07-31",
+            "last": "2026-10-08"
+          },
+          "TxTfrCnt": {
+            "first": "2020-07-31",
+            "last": "2026-10-08"
+          }
+        },
+        "scope": "Shiba Inu on Ethereum"
+      },
+      "derivative": {
+        "symbol": "SHIB1000USDT",
+        "quantityMultiplier": 1000
+      },
+      "review": {
+        "pairVerified": true,
+        "sources": [
+          "https://api.upbit.com/v1/market/all",
+          "https://api.binance.com/api/v3/exchangeInfo",
+          "https://api.coinlore.net/api/coin/markets/?id=45088",
+          "https://community-api.coinmetrics.io/v4/reference-data/assets?assets=shib_eth",
+          "https://api.bybit.com/v5/market/instruments-info?category=linear&symbol=SHIB1000USDT"
+        ]
+      }
+    },
+    {
+      "id": "TAO",
+      "name": "비트텐서",
+      "englishName": "Bittensor",
+      "aliases": ["Bittensor", "bittensor"],
+      "color": "#0F666B",
+      "logo": "",
+      "coinloreId": "121619",
+      "rank": 33,
+      "markets": {
+        "upbit": "KRW-TAO",
+        "binance": "TAOUSDT"
+      },
+      "network": null,
+      "derivative": {
+        "symbol": "TAOUSDT",
+        "quantityMultiplier": 1
+      },
+      "review": {
+        "pairVerified": true,
+        "sources": [
+          "https://api.upbit.com/v1/market/all",
+          "https://api.binance.com/api/v3/exchangeInfo",
+          "https://api.coinlore.net/api/coin/markets/?id=121619"
+        ]
+      }
+    },
+    {
+      "id": "AAVE",
+      "name": "에이브",
+      "englishName": "Aave",
+      "aliases": ["Aave", "aave"],
+      "color": "#0F666B",
+      "logo": "",
+      "coinloreId": "46018",
+      "rank": 35,
+      "markets": {
+        "upbit": "KRW-AAVE",
+        "binance": "AAVEUSDT"
+      },
+      "network": {
+        "id": "aave",
+        "metrics": {
+          "AdrActCnt": {
+            "first": "2020-09-24",
+            "last": "2026-10-08"
+          },
+          "AdrBalCnt": {
+            "first": "2020-10-02",
+            "last": "2026-10-08"
+          },
+          "CapMVRVCur": {
+            "first": "2020-10-10",
+            "last": "2026-10-08"
+          },
+          "CapMrktCurUSD": {
+            "first": "2020-10-10",
+            "last": "2026-10-08"
+          },
+          "IssTotNtv": {
+            "first": "2020-09-24",
+            "last": "2026-10-08"
+          },
+          "PriceUSD": {
+            "first": "2020-10-10",
+            "last": "2026-10-08"
+          },
+          "SplyCur": {
+            "first": "2020-10-02",
+            "last": "2026-10-08"
+          },
+          "TxCnt": {
+            "first": "2020-09-24",
+            "last": "2026-10-08"
+          },
+          "TxTfrCnt": {
+            "first": "2020-09-24",
+            "last": "2026-10-08"
+          }
+        },
+        "scope": "Aave"
+      },
+      "derivative": {
+        "symbol": "AAVEUSDT",
+        "quantityMultiplier": 1
+      },
+      "review": {
+        "pairVerified": true,
+        "sources": [
+          "https://api.upbit.com/v1/market/all",
+          "https://api.binance.com/api/v3/exchangeInfo",
+          "https://api.coinlore.net/api/coin/markets/?id=46018",
+          "https://community-api.coinmetrics.io/v4/reference-data/assets?assets=aave"
+        ]
+      }
+    },
+    {
+      "id": "MNT",
+      "name": "맨틀",
+      "englishName": "Mantle",
+      "aliases": ["Mantle", "mantle"],
+      "color": "#0F666B",
+      "logo": "",
+      "coinloreId": "121595",
+      "rank": 36,
+      "markets": {
+        "upbit": "KRW-MNT",
+        "binance": null
+      },
+      "network": {
+        "id": "mnt",
+        "metrics": {
+          "PriceUSD": {
+            "first": "2023-08-17",
+            "last": "2026-10-08"
+          }
+        },
+        "scope": "Mantle"
+      },
+      "derivative": {
+        "symbol": "MNTUSDT",
+        "quantityMultiplier": 1
+      },
+      "review": {
+        "pairVerified": true,
+        "sources": [
+          "https://api.upbit.com/v1/market/all",
+          "https://api.binance.com/api/v3/exchangeInfo",
+          "https://api.coinlore.net/api/coin/markets/?id=121595",
+          "https://community-api.coinmetrics.io/v4/reference-data/assets?assets=mnt"
+        ]
+      }
+    },
+    {
+      "id": "DOT",
+      "name": "폴카닷",
+      "englishName": "Polkadot",
+      "aliases": ["Polkadot", "polkadot"],
+      "color": "#0F666B",
+      "logo": "",
+      "coinloreId": "45219",
+      "rank": 37,
+      "markets": {
+        "upbit": "KRW-DOT",
+        "binance": "DOTUSDT"
+      },
+      "network": {
+        "id": "dot",
+        "metrics": {
+          "PriceUSD": {
+            "first": "2020-08-20",
+            "last": "2026-10-08"
+          }
+        },
+        "scope": "Polkadot"
+      },
+      "derivative": {
+        "symbol": "DOTUSDT",
+        "quantityMultiplier": 1
+      },
+      "review": {
+        "pairVerified": true,
+        "sources": [
+          "https://api.upbit.com/v1/market/all",
+          "https://api.binance.com/api/v3/exchangeInfo",
+          "https://api.coinlore.net/api/coin/markets/?id=45219",
+          "https://community-api.coinmetrics.io/v4/reference-data/assets?assets=dot"
+        ]
+      }
+    },
+    {
+      "id": "ICP",
+      "name": "인터넷컴퓨터",
+      "englishName": "Internet Computer",
+      "aliases": ["Internet Computer (IOU)", "dfinity", "Internet Computer"],
+      "color": "#0F666B",
+      "logo": "",
+      "coinloreId": "47311",
+      "rank": 40,
+      "markets": {
+        "upbit": "KRW-ICP",
+        "binance": "ICPUSDT"
+      },
+      "network": {
+        "id": "icp",
+        "metrics": {
+          "AdrActCnt": {
+            "first": "2021-05-06",
+            "last": "2026-10-08"
+          },
+          "AdrBalCnt": {
+            "first": "2021-05-06",
+            "last": "2026-10-08"
+          },
+          "BlkCnt": {
+            "first": "2021-05-06",
+            "last": "2026-10-08"
+          },
+          "CapMVRVCur": {
+            "first": "2021-05-11",
+            "last": "2026-10-08"
+          },
+          "CapMrktCurUSD": {
+            "first": "2021-05-11",
+            "last": "2026-10-08"
+          },
+          "FeeTotNtv": {
+            "first": "2021-05-06",
+            "last": "2026-10-08"
+          },
+          "IssTotNtv": {
+            "first": "2021-05-06",
+            "last": "2026-10-08"
+          },
+          "PriceUSD": {
+            "first": "2021-05-11",
+            "last": "2026-10-08"
+          },
+          "SplyCur": {
+            "first": "2021-05-06",
+            "last": "2026-10-08"
+          },
+          "TxCnt": {
+            "first": "2021-05-06",
+            "last": "2026-10-08"
+          },
+          "TxTfrCnt": {
+            "first": "2021-05-06",
+            "last": "2026-10-08"
+          }
+        },
+        "scope": "Internet Computer"
+      },
+      "derivative": {
+        "symbol": "ICPUSDT",
+        "quantityMultiplier": 1
+      },
+      "review": {
+        "pairVerified": true,
+        "sources": [
+          "https://api.upbit.com/v1/market/all",
+          "https://api.binance.com/api/v3/exchangeInfo",
+          "https://api.coinlore.net/api/coin/markets/?id=47311",
+          "https://community-api.coinmetrics.io/v4/reference-data/assets?assets=icp"
+        ]
+      }
+    },
+    {
+      "id": "XAUT",
+      "name": "테더골드",
+      "englishName": "Tether Gold",
+      "aliases": ["Tether Gold", "tether-gold"],
+      "color": "#0F666B",
+      "logo": "",
+      "coinloreId": "42855",
+      "rank": 41,
+      "markets": {
+        "upbit": "KRW-XAUT",
+        "binance": "XAUTUSDT"
+      },
+      "network": {
+        "id": "xaut",
+        "metrics": {
+          "AdrActCnt": {
+            "first": "2020-01-08",
+            "last": "2026-10-08"
+          },
+          "AdrBalCnt": {
+            "first": "2020-01-08",
+            "last": "2026-10-08"
+          },
+          "CapMVRVCur": {
+            "first": "2020-01-25",
+            "last": "2026-10-08"
+          },
+          "CapMrktCurUSD": {
+            "first": "2020-01-25",
+            "last": "2026-10-08"
+          },
+          "IssTotNtv": {
+            "first": "2020-01-08",
+            "last": "2026-10-08"
+          },
+          "PriceUSD": {
+            "first": "2020-01-25",
+            "last": "2026-10-08"
+          },
+          "SplyCur": {
+            "first": "2020-01-08",
+            "last": "2026-10-08"
+          },
+          "TxCnt": {
+            "first": "2020-01-08",
+            "last": "2026-10-08"
+          },
+          "TxTfrCnt": {
+            "first": "2020-01-08",
+            "last": "2026-10-08"
+          }
+        },
+        "scope": "Tether Gold"
+      },
+      "derivative": {
+        "symbol": "XAUTUSDT",
+        "quantityMultiplier": 1
+      },
+      "review": {
+        "pairVerified": true,
+        "sources": [
+          "https://api.upbit.com/v1/market/all",
+          "https://api.binance.com/api/v3/exchangeInfo",
+          "https://api.coinlore.net/api/coin/markets/?id=42855",
+          "https://community-api.coinmetrics.io/v4/reference-data/assets?assets=xaut"
+        ]
+      }
+    },
+    {
+      "id": "ENA",
+      "name": "에테나",
+      "englishName": "Ethena",
+      "aliases": ["Ethena", "ethena"],
+      "color": "#0F666B",
+      "logo": "",
+      "coinloreId": "126763",
+      "rank": 43,
+      "markets": {
+        "upbit": "KRW-ENA",
+        "binance": "ENAUSDT"
+      },
+      "network": {
+        "id": "ena",
+        "metrics": {
+          "PriceUSD": {
+            "first": "2024-04-18",
+            "last": "2026-10-08"
+          }
+        },
+        "scope": "Ethena"
+      },
+      "derivative": {
+        "symbol": "ENAUSDT",
+        "quantityMultiplier": 1
+      },
+      "review": {
+        "pairVerified": true,
+        "sources": [
+          "https://api.upbit.com/v1/market/all",
+          "https://api.binance.com/api/v3/exchangeInfo",
+          "https://api.coinlore.net/api/coin/markets/?id=126763",
+          "https://community-api.coinmetrics.io/v4/reference-data/assets?assets=ena"
+        ]
+      }
+    },
+    {
+      "id": "JST",
+      "name": "저스트",
+      "englishName": "JUST",
+      "aliases": ["JUST", "just"],
+      "color": "#0F666B",
+      "logo": "",
+      "coinloreId": "44043",
+      "rank": 45,
+      "markets": {
+        "upbit": "KRW-JST",
+        "binance": "JSTUSDT"
+      },
+      "network": {
+        "id": "jst",
+        "metrics": {
+          "PriceUSD": {
+            "first": "2020-08-11",
+            "last": "2026-10-08"
+          }
+        },
+        "scope": "JUST"
+      },
+      "derivative": {
+        "symbol": "JSTUSDT",
+        "quantityMultiplier": 1
+      },
+      "review": {
+        "pairVerified": true,
+        "sources": [
+          "https://api.upbit.com/v1/market/all",
+          "https://api.binance.com/api/v3/exchangeInfo",
+          "https://api.coinlore.net/api/coin/markets/?id=44043",
+          "https://community-api.coinmetrics.io/v4/reference-data/assets?assets=jst"
+        ]
+      }
+    },
+    {
+      "id": "WLFI",
+      "name": "월드리버티파이낸셜",
+      "englishName": "World Liberty Financial",
+      "aliases": ["World Liberty Financial", "world-liberty-financial-wlfi"],
+      "color": "#0F666B",
+      "logo": "",
+      "coinloreId": "165635",
+      "rank": 48,
+      "markets": {
+        "upbit": "KRW-WLFI",
+        "binance": "WLFIUSDT"
+      },
+      "network": {
+        "id": "wlfi",
+        "metrics": {
+          "PriceUSD": {
+            "first": "2025-09-01",
+            "last": "2026-10-08"
+          }
+        },
+        "scope": "World Liberty Financial"
+      },
+      "derivative": {
+        "symbol": "WLFIUSDT",
+        "quantityMultiplier": 1
+      },
+      "review": {
+        "pairVerified": true,
+        "sources": [
+          "https://api.upbit.com/v1/market/all",
+          "https://api.binance.com/api/v3/exchangeInfo",
+          "https://api.coinlore.net/api/coin/markets/?id=165635",
+          "https://community-api.coinmetrics.io/v4/reference-data/assets?assets=wlfi"
+        ]
+      }
+    },
+    {
+      "id": "ETC",
+      "name": "이더리움클래식",
+      "englishName": "Ethereum Classic",
+      "aliases": ["Ethereum Classic", "ethereum-classic"],
+      "color": "#0F666B",
+      "logo": "",
+      "coinloreId": "118",
+      "rank": 49,
+      "markets": {
+        "upbit": "KRW-ETC",
+        "binance": "ETCUSDT"
+      },
+      "network": {
+        "id": "etc",
+        "metrics": {
+          "AdrActCnt": {
+            "first": "2016-07-20",
+            "last": "2026-10-08"
+          },
+          "AdrBalCnt": {
+            "first": "2016-07-20",
+            "last": "2026-10-08"
+          },
+          "BlkCnt": {
+            "first": "2016-07-20",
+            "last": "2026-10-08"
+          },
+          "CapMVRVCur": {
+            "first": "2016-07-25",
+            "last": "2026-10-08"
+          },
+          "CapMrktCurUSD": {
+            "first": "2016-07-25",
+            "last": "2026-10-08"
+          },
+          "FeeTotNtv": {
+            "first": "2016-07-20",
+            "last": "2026-10-08"
+          },
+          "HashRate": {
+            "first": "2016-07-20",
+            "last": "2026-10-08"
+          },
+          "IssTotNtv": {
+            "first": "2016-07-20",
+            "last": "2026-10-08"
+          },
+          "PriceUSD": {
+            "first": "2016-07-25",
+            "last": "2026-10-08"
+          },
+          "SplyCur": {
+            "first": "2016-07-20",
+            "last": "2026-10-08"
+          },
+          "TxCnt": {
+            "first": "2016-07-20",
+            "last": "2026-10-08"
+          },
+          "TxTfrCnt": {
+            "first": "2016-07-20",
+            "last": "2026-10-08"
+          }
+        },
+        "scope": "Ethereum Classic"
+      },
+      "derivative": {
+        "symbol": "ETCUSDT",
+        "quantityMultiplier": 1
+      },
+      "review": {
+        "pairVerified": true,
+        "sources": [
+          "https://api.upbit.com/v1/market/all",
+          "https://api.binance.com/api/v3/exchangeInfo",
+          "https://api.coinlore.net/api/coin/markets/?id=118",
+          "https://community-api.coinmetrics.io/v4/reference-data/assets?assets=etc"
+        ]
+      }
+    },
+    {
+      "id": "ALGO",
+      "name": "알고랜드",
+      "englishName": "Algorand",
+      "aliases": ["Algorand", "algorand"],
+      "color": "#0F666B",
+      "logo": "",
+      "coinloreId": "34406",
+      "rank": 54,
+      "markets": {
+        "upbit": "KRW-ALGO",
+        "binance": "ALGOUSDT"
+      },
+      "network": {
+        "id": "algo",
+        "metrics": {
+          "AdrActCnt": {
+            "first": "2019-06-11",
+            "last": "2026-10-08"
+          },
+          "AdrBalCnt": {
+            "first": "2019-06-11",
+            "last": "2026-10-08"
+          },
+          "BlkCnt": {
+            "first": "2019-06-11",
+            "last": "2026-10-08"
+          },
+          "CapMVRVCur": {
+            "first": "2019-06-22",
+            "last": "2026-10-08"
+          },
+          "CapMrktCurUSD": {
+            "first": "2019-06-22",
+            "last": "2026-10-08"
+          },
+          "FeeTotNtv": {
+            "first": "2019-06-11",
+            "last": "2026-10-08"
+          },
+          "IssTotNtv": {
+            "first": "2019-06-11",
+            "last": "2026-10-08"
+          },
+          "PriceUSD": {
+            "first": "2019-06-22",
+            "last": "2026-10-08"
+          },
+          "SplyCur": {
+            "first": "2019-06-11",
+            "last": "2026-10-08"
+          },
+          "TxCnt": {
+            "first": "2019-06-11",
+            "last": "2026-10-08"
+          },
+          "TxTfrCnt": {
+            "first": "2019-06-11",
+            "last": "2026-10-08"
+          }
+        },
+        "scope": "Algorand"
+      },
+      "derivative": {
+        "symbol": "ALGOUSDT",
+        "quantityMultiplier": 1
+      },
+      "review": {
+        "pairVerified": true,
+        "sources": [
+          "https://api.upbit.com/v1/market/all",
+          "https://api.binance.com/api/v3/exchangeInfo",
+          "https://api.coinlore.net/api/coin/markets/?id=34406",
+          "https://community-api.coinmetrics.io/v4/reference-data/assets?assets=algo"
+        ]
+      }
+    },
+    {
+      "id": "WLD",
+      "name": "월드코인",
+      "englishName": "Worldcoin",
+      "aliases": ["Worldcoin", "worldcoin-wld"],
+      "color": "#0F666B",
+      "logo": "",
+      "coinloreId": "99329",
+      "rank": 55,
+      "markets": {
+        "upbit": "KRW-WLD",
+        "binance": "WLDUSDT"
+      },
+      "network": {
+        "id": "wld",
+        "metrics": {
+          "PriceUSD": {
+            "first": "2023-07-24",
+            "last": "2026-10-08"
+          }
+        },
+        "scope": "Worldcoin"
+      },
+      "derivative": {
+        "symbol": "WLDUSDT",
+        "quantityMultiplier": 1
+      },
+      "review": {
+        "pairVerified": true,
+        "sources": [
+          "https://api.upbit.com/v1/market/all",
+          "https://api.binance.com/api/v3/exchangeInfo",
+          "https://api.coinlore.net/api/coin/markets/?id=99329",
+          "https://community-api.coinmetrics.io/v4/reference-data/assets?assets=wld"
+        ]
+      }
+    },
+    {
+      "id": "RENDER",
+      "name": "렌더토큰",
+      "englishName": "Render",
+      "aliases": ["Render", "render"],
+      "color": "#0F666B",
+      "logo": "",
+      "coinloreId": "135601",
+      "rank": 56,
+      "markets": {
+        "upbit": "KRW-RENDER",
+        "binance": "RENDERUSDT"
+      },
+      "network": {
+        "id": "render",
+        "metrics": {
+          "PriceUSD": {
+            "first": "2024-06-17",
+            "last": "2026-10-08"
+          }
+        },
+        "scope": "Render"
+      },
+      "derivative": {
+        "symbol": "RENDERUSDT",
+        "quantityMultiplier": 1
+      },
+      "review": {
+        "pairVerified": true,
+        "sources": [
+          "https://api.upbit.com/v1/market/all",
+          "https://api.binance.com/api/v3/exchangeInfo",
+          "https://api.coinlore.net/api/coin/markets/?id=135601",
+          "https://community-api.coinmetrics.io/v4/reference-data/assets?assets=render"
+        ]
+      }
+    },
+    {
+      "id": "ARB",
+      "name": "아비트럼",
+      "englishName": "Arbitrum",
+      "aliases": ["Arbitrum", "arbitrum"],
+      "color": "#0F666B",
+      "logo": "",
+      "coinloreId": "93847",
+      "rank": 57,
+      "markets": {
+        "upbit": "KRW-ARB",
+        "binance": "ARBUSDT"
+      },
+      "network": {
+        "id": "arb",
+        "metrics": {
+          "PriceUSD": {
+            "first": "2023-03-23",
+            "last": "2026-10-08"
+          }
+        },
+        "scope": "Arbitrum"
+      },
+      "derivative": {
+        "symbol": "ARBUSDT",
+        "quantityMultiplier": 1
+      },
+      "review": {
+        "pairVerified": true,
+        "sources": [
+          "https://api.upbit.com/v1/market/all",
+          "https://api.binance.com/api/v3/exchangeInfo",
+          "https://api.coinlore.net/api/coin/markets/?id=93847",
+          "https://community-api.coinmetrics.io/v4/reference-data/assets?assets=arb"
+        ]
+      }
+    },
+    {
+      "id": "ATOM",
+      "name": "코스모스",
+      "englishName": "Cosmos",
+      "aliases": ["Cosmos", "cosmos"],
+      "color": "#0F666B",
+      "logo": "",
+      "coinloreId": "33830",
+      "rank": 60,
+      "markets": {
+        "upbit": "KRW-ATOM",
+        "binance": "ATOMUSDT"
+      },
+      "network": {
+        "id": "atom",
+        "metrics": {
+          "PriceUSD": {
+            "first": "2019-04-23",
+            "last": "2026-10-08"
+          }
+        },
+        "scope": "Cosmos"
+      },
+      "derivative": {
+        "symbol": "ATOMUSDT",
+        "quantityMultiplier": 1
+      },
+      "review": {
+        "pairVerified": true,
+        "sources": [
+          "https://api.upbit.com/v1/market/all",
+          "https://api.binance.com/api/v3/exchangeInfo",
+          "https://api.coinlore.net/api/coin/markets/?id=33830",
+          "https://community-api.coinmetrics.io/v4/reference-data/assets?assets=atom"
+        ]
+      }
+    },
+    {
+      "id": "VVV",
+      "name": "베니스토큰",
+      "englishName": "Venice Token",
+      "aliases": ["Venice Token", "venice-token"],
+      "color": "#0F666B",
+      "logo": "",
+      "coinloreId": "148135",
+      "rank": 62,
+      "markets": {
+        "upbit": "KRW-VVV",
+        "binance": null
+      },
+      "network": {
+        "id": "vvv",
+        "metrics": {
+          "PriceUSD": {
+            "first": "2025-03-28",
+            "last": "2026-10-08"
+          }
+        },
+        "scope": "Venice Token"
+      },
+      "derivative": {
+        "symbol": "VVVUSDT",
+        "quantityMultiplier": 1
+      },
+      "review": {
+        "pairVerified": true,
+        "sources": [
+          "https://api.upbit.com/v1/market/all",
+          "https://api.binance.com/api/v3/exchangeInfo",
+          "https://api.coinlore.net/api/coin/markets/?id=148135",
+          "https://community-api.coinmetrics.io/v4/reference-data/assets?assets=vvv"
+        ]
+      }
+    },
+    {
+      "id": "MORPHO",
+      "name": "모포",
+      "englishName": "Morpho",
+      "aliases": ["Morpho", "morpho"],
+      "color": "#0F666B",
+      "logo": "",
+      "coinloreId": "161453",
+      "rank": 63,
+      "markets": {
+        "upbit": "KRW-MORPHO",
+        "binance": "MORPHOUSDT"
+      },
+      "network": {
+        "id": "morpho",
+        "metrics": {
+          "PriceUSD": {
+            "first": "2024-12-13",
+            "last": "2026-10-08"
+          }
+        },
+        "scope": "Morpho"
+      },
+      "derivative": {
+        "symbol": "MORPHOUSDT",
+        "quantityMultiplier": 1
+      },
+      "review": {
+        "pairVerified": true,
+        "sources": [
+          "https://api.upbit.com/v1/market/all",
+          "https://api.binance.com/api/v3/exchangeInfo",
+          "https://api.coinlore.net/api/coin/markets/?id=161453",
+          "https://community-api.coinmetrics.io/v4/reference-data/assets?assets=morpho"
+        ]
+      }
+    },
+    {
+      "id": "FIL",
+      "name": "파일코인",
+      "englishName": "Filecoin",
+      "aliases": ["Filecoin", "filecoin"],
+      "color": "#0F666B",
+      "logo": "",
+      "coinloreId": "32607",
+      "rank": 65,
+      "markets": {
+        "upbit": "KRW-FIL",
+        "binance": "FILUSDT"
+      },
+      "network": {
+        "id": "fil",
+        "metrics": {
+          "PriceUSD": {
+            "first": "2020-10-16",
+            "last": "2026-10-08"
+          }
+        },
+        "scope": "Filecoin"
+      },
+      "derivative": {
+        "symbol": "FILUSDT",
+        "quantityMultiplier": 1
+      },
+      "review": {
+        "pairVerified": true,
+        "sources": [
+          "https://api.upbit.com/v1/market/all",
+          "https://api.binance.com/api/v3/exchangeInfo",
+          "https://api.coinlore.net/api/coin/markets/?id=32607",
+          "https://community-api.coinmetrics.io/v4/reference-data/assets?assets=fil"
+        ]
+      }
+    },
+    {
+      "id": "AERO",
+      "name": "에어로드롬파이낸스",
+      "englishName": "Aerodrome Finance",
+      "aliases": ["Aerodrome Finance", "aerodrome-finance"],
+      "color": "#0F666B",
+      "logo": "",
+      "coinloreId": "122319",
+      "rank": 67,
+      "markets": {
+        "upbit": "KRW-AERO",
+        "binance": "AEROUSDT"
+      },
+      "network": {
+        "id": "aero",
+        "metrics": {
+          "PriceUSD": {
+            "first": "2024-04-18",
+            "last": "2026-10-08"
+          }
+        },
+        "scope": "Aerodrome Finance"
+      },
+      "derivative": {
+        "symbol": "AEROUSDT",
+        "quantityMultiplier": 1
+      },
+      "review": {
+        "pairVerified": true,
+        "sources": [
+          "https://api.upbit.com/v1/market/all",
+          "https://api.binance.com/api/v3/exchangeInfo",
+          "https://api.coinlore.net/api/coin/markets/?id=122319",
+          "https://community-api.coinmetrics.io/v4/reference-data/assets?assets=aero"
+        ]
+      }
+    },
+    {
+      "id": "STX",
+      "name": "스택스",
+      "englishName": "Stacks",
+      "aliases": ["Stacks", "stacks"],
+      "color": "#0F666B",
+      "logo": "",
+      "coinloreId": "48569",
+      "rank": 68,
+      "markets": {
+        "upbit": "KRW-STX",
+        "binance": "STXUSDT"
+      },
+      "network": {
+        "id": "stx",
+        "metrics": {
+          "PriceUSD": {
+            "first": "2019-11-01",
+            "last": "2026-10-08"
+          }
+        },
+        "scope": "Stacks"
+      },
+      "derivative": {
+        "symbol": "STXUSDT",
+        "quantityMultiplier": 1
+      },
+      "review": {
+        "pairVerified": true,
+        "sources": [
+          "https://api.upbit.com/v1/market/all",
+          "https://api.binance.com/api/v3/exchangeInfo",
+          "https://api.coinlore.net/api/coin/markets/?id=48569",
+          "https://community-api.coinmetrics.io/v4/reference-data/assets?assets=stx"
+        ]
+      }
+    },
+    {
+      "id": "INJ",
+      "name": "인젝티브",
+      "englishName": "Injective Protocol",
+      "aliases": ["Injective Protocol", "injective-protocol"],
+      "color": "#0F666B",
+      "logo": "",
+      "coinloreId": "46183",
+      "rank": 69,
+      "markets": {
+        "upbit": "KRW-INJ",
+        "binance": "INJUSDT"
+      },
+      "network": {
+        "id": "inj",
+        "metrics": {
+          "PriceUSD": {
+            "first": "2020-10-22",
+            "last": "2026-10-08"
+          }
+        },
+        "scope": "Injective"
+      },
+      "derivative": {
+        "symbol": "INJUSDT",
+        "quantityMultiplier": 1
+      },
+      "review": {
+        "pairVerified": true,
+        "sources": [
+          "https://api.upbit.com/v1/market/all",
+          "https://api.binance.com/api/v3/exchangeInfo",
+          "https://api.coinlore.net/api/coin/markets/?id=46183",
+          "https://community-api.coinmetrics.io/v4/reference-data/assets?assets=inj"
+        ]
+      }
+    },
+    {
+      "id": "VET",
+      "name": "비체인",
+      "englishName": "VeChain",
+      "aliases": ["VeChain", "vechain"],
+      "color": "#0F666B",
+      "logo": "",
+      "coinloreId": "2741",
+      "rank": 72,
+      "markets": {
+        "upbit": "KRW-VET",
+        "binance": "VETUSDT"
+      },
+      "network": {
+        "id": "vet",
+        "metrics": {
+          "PriceUSD": {
+            "first": "2018-07-14",
+            "last": "2026-10-08"
+          }
+        },
+        "scope": "VeChain"
+      },
+      "derivative": {
+        "symbol": "VETUSDT",
+        "quantityMultiplier": 1
+      },
+      "review": {
+        "pairVerified": true,
+        "sources": [
+          "https://api.upbit.com/v1/market/all",
+          "https://api.binance.com/api/v3/exchangeInfo",
+          "https://api.coinlore.net/api/coin/markets/?id=2741",
+          "https://community-api.coinmetrics.io/v4/reference-data/assets?assets=vet"
+        ]
+      }
+    },
+    {
+      "id": "RAY",
+      "name": "레이디움",
+      "englishName": "Raydium",
+      "aliases": ["Raydium", "raydium"],
+      "color": "#0F666B",
+      "logo": "",
+      "coinloreId": "47371",
+      "rank": 75,
+      "markets": {
+        "upbit": "KRW-RAY",
+        "binance": "RAYUSDT"
+      },
+      "network": {
+        "id": "ray",
+        "metrics": {
+          "PriceUSD": {
+            "first": "2021-02-22",
+            "last": "2026-10-08"
+          }
+        },
+        "scope": "Raydium"
+      },
+      "derivative": null,
+      "review": {
+        "pairVerified": true,
+        "sources": [
+          "https://api.upbit.com/v1/market/all",
+          "https://api.binance.com/api/v3/exchangeInfo",
+          "https://api.coinlore.net/api/coin/markets/?id=47371",
+          "https://community-api.coinmetrics.io/v4/reference-data/assets?assets=ray"
+        ]
+      }
+    },
+    {
+      "id": "CRO",
+      "name": "크로노스",
+      "englishName": "Crypto.com Chain",
+      "aliases": ["Crypto.com Chain", "crypto-com-chain"],
+      "color": "#0F666B",
+      "logo": "",
+      "coinloreId": "33819",
+      "rank": 78,
+      "markets": {
+        "upbit": "KRW-CRO",
+        "binance": null
+      },
+      "network": {
+        "id": "cro",
+        "metrics": {
+          "AdrActCnt": {
+            "first": "2018-11-14",
+            "last": "2026-10-08"
+          },
+          "AdrBalCnt": {
+            "first": "2018-11-14",
+            "last": "2026-10-08"
+          },
+          "CapMVRVCur": {
+            "first": "2019-03-20",
+            "last": "2026-10-08"
+          },
+          "CapMrktCurUSD": {
+            "first": "2019-03-20",
+            "last": "2026-10-08"
+          },
+          "IssTotNtv": {
+            "first": "2018-11-14",
+            "last": "2026-10-08"
+          },
+          "PriceUSD": {
+            "first": "2019-03-20",
+            "last": "2026-10-08"
+          },
+          "SplyCur": {
+            "first": "2018-11-14",
+            "last": "2026-10-08"
+          },
+          "TxCnt": {
+            "first": "2018-11-14",
+            "last": "2026-10-08"
+          },
+          "TxTfrCnt": {
+            "first": "2018-11-14",
+            "last": "2026-10-08"
+          }
+        },
+        "scope": "Cronos"
+      },
+      "derivative": {
+        "symbol": "CROUSDT",
+        "quantityMultiplier": 1
+      },
+      "review": {
+        "pairVerified": true,
+        "sources": [
+          "https://api.upbit.com/v1/market/all",
+          "https://api.binance.com/api/v3/exchangeInfo",
+          "https://api.coinlore.net/api/coin/markets/?id=33819",
+          "https://community-api.coinmetrics.io/v4/reference-data/assets?assets=cro"
+        ]
+      }
+    },
+    {
+      "id": "APT",
+      "name": "앱토스",
+      "englishName": "Aptos",
+      "aliases": ["Aptos", "aptos"],
+      "color": "#0F666B",
+      "logo": "",
+      "coinloreId": "111341",
+      "rank": 80,
+      "markets": {
+        "upbit": "KRW-APT",
+        "binance": "APTUSDT"
+      },
+      "network": {
+        "id": "apt",
+        "metrics": {
+          "PriceUSD": {
+            "first": "2022-10-13",
+            "last": "2026-10-08"
+          }
+        },
+        "scope": "Aptos"
+      },
+      "derivative": {
+        "symbol": "APTUSDT",
+        "quantityMultiplier": 1
+      },
+      "review": {
+        "pairVerified": true,
+        "sources": [
+          "https://api.upbit.com/v1/market/all",
+          "https://api.binance.com/api/v3/exchangeInfo",
+          "https://api.coinlore.net/api/coin/markets/?id=111341",
+          "https://community-api.coinmetrics.io/v4/reference-data/assets?assets=apt"
+        ]
+      }
+    },
+    {
+      "id": "ZRO",
+      "name": "레이어제로",
+      "englishName": "LayerZero",
+      "aliases": ["LayerZero", "layerzero"],
+      "color": "#0F666B",
+      "logo": "",
+      "coinloreId": "148123",
+      "rank": 85,
+      "markets": {
+        "upbit": "KRW-ZRO",
+        "binance": "ZROUSDT"
+      },
+      "network": {
+        "id": "zro",
+        "metrics": {
+          "PriceUSD": {
+            "first": "2024-06-25",
+            "last": "2026-10-08"
+          }
+        },
+        "scope": "LayerZero"
+      },
+      "derivative": {
+        "symbol": "ZROUSDT",
+        "quantityMultiplier": 1
+      },
+      "review": {
+        "pairVerified": true,
+        "sources": [
+          "https://api.upbit.com/v1/market/all",
+          "https://api.binance.com/api/v3/exchangeInfo",
+          "https://api.coinlore.net/api/coin/markets/?id=148123",
+          "https://community-api.coinmetrics.io/v4/reference-data/assets?assets=zro"
+        ]
+      }
+    },
+    {
+      "id": "PYTH",
+      "name": "피스네트워크",
+      "englishName": "Pyth Network",
+      "aliases": ["Pyth Network", "pyth-network"],
+      "color": "#0F666B",
+      "logo": "",
+      "coinloreId": "111347",
+      "rank": 88,
+      "markets": {
+        "upbit": "KRW-PYTH",
+        "binance": "PYTHUSDT"
+      },
+      "network": {
+        "id": "pyth",
+        "metrics": {
+          "PriceUSD": {
+            "first": "2023-11-20",
+            "last": "2026-10-08"
+          }
+        },
+        "scope": "Pyth Network"
+      },
+      "derivative": {
+        "symbol": "PYTHUSDT",
+        "quantityMultiplier": 1
+      },
+      "review": {
+        "pairVerified": true,
+        "sources": [
+          "https://api.upbit.com/v1/market/all",
+          "https://api.binance.com/api/v3/exchangeInfo",
+          "https://api.coinlore.net/api/coin/markets/?id=111347",
+          "https://community-api.coinmetrics.io/v4/reference-data/assets?assets=pyth"
+        ]
+      }
+    },
+    {
+      "id": "CRV",
+      "name": "커브",
+      "englishName": "Curve DAO Token",
+      "aliases": ["Curve DAO Token", "curve-dao-token"],
+      "color": "#0F666B",
+      "logo": "",
+      "coinloreId": "48581",
+      "rank": 89,
+      "markets": {
+        "upbit": "KRW-CRV",
+        "binance": "CRVUSDT"
+      },
+      "network": {
+        "id": "crv",
+        "metrics": {
+          "AdrActCnt": {
+            "first": "2020-08-12",
+            "last": "2026-10-08"
+          },
+          "AdrBalCnt": {
+            "first": "2020-08-12",
+            "last": "2026-10-08"
+          },
+          "CapMVRVCur": {
+            "first": "2020-08-15",
+            "last": "2026-10-08"
+          },
+          "CapMrktCurUSD": {
+            "first": "2020-08-15",
+            "last": "2026-10-08"
+          },
+          "IssTotNtv": {
+            "first": "2020-08-12",
+            "last": "2026-10-08"
+          },
+          "PriceUSD": {
+            "first": "2020-08-15",
+            "last": "2026-10-08"
+          },
+          "SplyCur": {
+            "first": "2020-08-12",
+            "last": "2026-10-08"
+          },
+          "TxCnt": {
+            "first": "2020-08-12",
+            "last": "2026-10-08"
+          },
+          "TxTfrCnt": {
+            "first": "2020-08-12",
+            "last": "2026-10-08"
+          }
+        },
+        "scope": "Curve DAO Token"
+      },
+      "derivative": {
+        "symbol": "CRVUSDT",
+        "quantityMultiplier": 1
+      },
+      "review": {
+        "pairVerified": true,
+        "sources": [
+          "https://api.upbit.com/v1/market/all",
+          "https://api.binance.com/api/v3/exchangeInfo",
+          "https://api.coinlore.net/api/coin/markets/?id=48581",
+          "https://community-api.coinmetrics.io/v4/reference-data/assets?assets=crv"
+        ]
+      }
+    },
+    {
+      "id": "VIRTUAL",
+      "name": "버추얼프로토콜",
+      "englishName": "Virtual Protocol",
+      "aliases": ["Virtual Protocol", "virtual-protocol"],
+      "color": "#0F666B",
+      "logo": "",
+      "coinloreId": "127083",
+      "rank": 90,
+      "markets": {
+        "upbit": "KRW-VIRTUAL",
+        "binance": "VIRTUALUSDT"
+      },
+      "network": {
+        "id": "virtual",
+        "metrics": {
+          "PriceUSD": {
+            "first": "2024-12-13",
+            "last": "2026-10-08"
+          }
+        },
+        "scope": "Virtuals Protocol"
+      },
+      "derivative": {
+        "symbol": "VIRTUALUSDT",
+        "quantityMultiplier": 1
+      },
+      "review": {
+        "pairVerified": true,
+        "sources": [
+          "https://api.upbit.com/v1/market/all",
+          "https://api.binance.com/api/v3/exchangeInfo",
+          "https://api.coinlore.net/api/coin/markets/?id=127083",
+          "https://community-api.coinmetrics.io/v4/reference-data/assets?assets=virtual"
+        ]
+      }
+    },
+    {
+      "id": "SEI",
+      "name": "세이",
+      "englishName": "Sei",
+      "aliases": ["Sei", "sei"],
+      "color": "#0F666B",
+      "logo": "",
+      "coinloreId": "100427",
+      "rank": 92,
+      "markets": {
+        "upbit": "KRW-SEI",
+        "binance": "SEIUSDT"
+      },
+      "network": {
+        "id": "sei",
+        "metrics": {
+          "PriceUSD": {
+            "first": "2023-08-17",
+            "last": "2026-10-08"
+          }
+        },
+        "scope": "Sei"
+      },
+      "derivative": {
+        "symbol": "SEIUSDT",
+        "quantityMultiplier": 1
+      },
+      "review": {
+        "pairVerified": true,
+        "sources": [
+          "https://api.upbit.com/v1/market/all",
+          "https://api.binance.com/api/v3/exchangeInfo",
+          "https://api.coinlore.net/api/coin/markets/?id=100427",
+          "https://community-api.coinmetrics.io/v4/reference-data/assets?assets=sei"
+        ]
+      }
+    },
+    {
+      "id": "TIA",
+      "name": "셀레스티아",
+      "englishName": "Celestia",
+      "aliases": ["Celestia", "celestia"],
+      "color": "#0F666B",
+      "logo": "",
+      "coinloreId": "136105",
+      "rank": 93,
+      "markets": {
+        "upbit": "KRW-TIA",
+        "binance": "TIAUSDT"
+      },
+      "network": {
+        "id": "tia",
+        "metrics": {
+          "PriceUSD": {
+            "first": "2023-10-31",
+            "last": "2026-10-08"
+          }
+        },
+        "scope": "Celestia"
+      },
+      "derivative": {
+        "symbol": "TIAUSDT",
+        "quantityMultiplier": 1
+      },
+      "review": {
+        "pairVerified": true,
+        "sources": [
+          "https://api.upbit.com/v1/market/all",
+          "https://api.binance.com/api/v3/exchangeInfo",
+          "https://api.coinlore.net/api/coin/markets/?id=136105",
+          "https://community-api.coinmetrics.io/v4/reference-data/assets?assets=tia"
+        ]
+      }
+    },
+    {
+      "id": "DRV",
+      "name": "디라이브",
+      "englishName": "Derive",
+      "aliases": ["Derive", "derive"],
+      "color": "#0F666B",
+      "logo": "",
+      "coinloreId": "161497",
+      "rank": 96,
+      "markets": {
+        "upbit": "KRW-DRV",
+        "binance": null
+      },
+      "network": null,
+      "derivative": null,
+      "review": {
+        "pairVerified": true,
+        "sources": [
+          "https://api.upbit.com/v1/market/all",
+          "https://api.binance.com/api/v3/exchangeInfo",
+          "https://api.coinlore.net/api/coin/markets/?id=161497"
+        ]
+      }
+    },
+    {
+      "id": "PENDLE",
+      "name": "펜들",
+      "englishName": "Pendle",
+      "aliases": ["Pendle", "pendle"],
+      "color": "#0F666B",
+      "logo": "",
+      "coinloreId": "48839",
+      "rank": 99,
+      "markets": {
+        "upbit": "KRW-PENDLE",
+        "binance": "PENDLEUSDT"
+      },
+      "network": {
+        "id": "pendle",
+        "metrics": {
+          "PriceUSD": {
+            "first": "2021-10-27",
+            "last": "2026-10-08"
+          }
+        },
+        "scope": "Pendle"
+      },
+      "derivative": {
+        "symbol": "PENDLEUSDT",
+        "quantityMultiplier": 1
+      },
+      "review": {
+        "pairVerified": true,
+        "sources": [
+          "https://api.upbit.com/v1/market/all",
+          "https://api.binance.com/api/v3/exchangeInfo",
+          "https://api.coinlore.net/api/coin/markets/?id=48839",
+          "https://community-api.coinmetrics.io/v4/reference-data/assets?assets=pendle"
+        ]
+      }
+    },
+    {
+      "id": "ETHFI",
+      "name": "이더파이",
+      "englishName": "ether.fi",
+      "aliases": ["ether.fi", "ether-fi-ethfi"],
+      "color": "#0F666B",
+      "logo": "",
+      "coinloreId": "126771",
+      "rank": 101,
+      "markets": {
+        "upbit": "KRW-ETHFI",
+        "binance": "ETHFIUSDT"
+      },
+      "network": {
+        "id": "ethfi",
+        "metrics": {
+          "PriceUSD": {
+            "first": "2024-04-18",
+            "last": "2026-10-08"
+          }
+        },
+        "scope": "ether.fi"
+      },
+      "derivative": {
+        "symbol": "ETHFIUSDT",
+        "quantityMultiplier": 1
+      },
+      "review": {
+        "pairVerified": true,
+        "sources": [
+          "https://api.upbit.com/v1/market/all",
+          "https://api.binance.com/api/v3/exchangeInfo",
+          "https://api.coinlore.net/api/coin/markets/?id=126771",
+          "https://community-api.coinmetrics.io/v4/reference-data/assets?assets=ethfi"
+        ]
+      }
+    },
+    {
+      "id": "SPX",
+      "name": "에스피엑스6900",
+      "englishName": "SPX6900",
+      "aliases": ["SPX6900", "spx6900"],
+      "color": "#0F666B",
+      "logo": "",
+      "coinloreId": "136127",
+      "rank": 102,
+      "markets": {
+        "upbit": "KRW-SPX",
+        "binance": null
+      },
+      "network": {
+        "id": "spx",
+        "metrics": {
+          "PriceUSD": {
+            "first": "2024-11-08",
+            "last": "2026-10-08"
+          }
+        },
+        "scope": "SPX6900"
+      },
+      "derivative": {
+        "symbol": "SPXUSDT",
+        "quantityMultiplier": 1
+      },
+      "review": {
+        "pairVerified": true,
+        "sources": [
+          "https://api.upbit.com/v1/market/all",
+          "https://api.binance.com/api/v3/exchangeInfo",
+          "https://api.coinlore.net/api/coin/markets/?id=136127",
+          "https://community-api.coinmetrics.io/v4/reference-data/assets?assets=spx"
+        ]
+      }
+    },
+    {
+      "id": "KAIA",
+      "name": "카이아",
+      "englishName": "Kaia",
+      "aliases": ["Kaia", "kaia"],
+      "color": "#0F666B",
+      "logo": "",
+      "coinloreId": "141199",
+      "rank": 103,
+      "markets": {
+        "upbit": "KRW-KAIA",
+        "binance": "KAIAUSDT"
+      },
+      "network": {
+        "id": "kaia",
+        "metrics": {
+          "PriceUSD": {
+            "first": "2024-11-08",
+            "last": "2026-10-08"
+          }
+        },
+        "scope": "Kaia"
+      },
+      "derivative": {
+        "symbol": "KAIAUSDT",
+        "quantityMultiplier": 1
+      },
+      "review": {
+        "pairVerified": true,
+        "sources": [
+          "https://api.upbit.com/v1/market/all",
+          "https://api.binance.com/api/v3/exchangeInfo",
+          "https://api.coinlore.net/api/coin/markets/?id=141199",
+          "https://community-api.coinmetrics.io/v4/reference-data/assets?assets=kaia"
+        ]
+      }
+    },
+    {
+      "id": "XTZ",
+      "name": "테조스",
+      "englishName": "Tezos",
+      "aliases": ["Tezos", "tezos"],
+      "color": "#0F666B",
+      "logo": "",
+      "coinloreId": "3682",
+      "rank": 104,
+      "markets": {
+        "upbit": "KRW-XTZ",
+        "binance": "XTZUSDT"
+      },
+      "network": {
+        "id": "xtz",
+        "metrics": {
+          "PriceUSD": {
+            "first": "2018-06-30",
+            "last": "2026-10-08"
+          }
+        },
+        "scope": "Tezos"
+      },
+      "derivative": {
+        "symbol": "XTZUSDT",
+        "quantityMultiplier": 1
+      },
+      "review": {
+        "pairVerified": true,
+        "sources": [
+          "https://api.upbit.com/v1/market/all",
+          "https://api.binance.com/api/v3/exchangeInfo",
+          "https://api.coinlore.net/api/coin/markets/?id=3682",
+          "https://community-api.coinmetrics.io/v4/reference-data/assets?assets=xtz"
+        ]
+      }
+    },
+    {
+      "id": "GRT",
+      "name": "더그래프",
+      "englishName": "The Graph",
+      "aliases": ["The Graph", "the-graph"],
+      "color": "#0F666B",
+      "logo": "",
+      "coinloreId": "48561",
+      "rank": 109,
+      "markets": {
+        "upbit": "KRW-GRT",
+        "binance": "GRTUSDT"
+      },
+      "network": {
+        "id": "grt",
+        "metrics": {
+          "PriceUSD": {
+            "first": "2020-12-18",
+            "last": "2026-10-08"
+          }
+        },
+        "scope": "The Graph"
+      },
+      "derivative": {
+        "symbol": "GRTUSDT",
+        "quantityMultiplier": 1
+      },
+      "review": {
+        "pairVerified": true,
+        "sources": [
+          "https://api.upbit.com/v1/market/all",
+          "https://api.binance.com/api/v3/exchangeInfo",
+          "https://api.coinlore.net/api/coin/markets/?id=48561",
+          "https://community-api.coinmetrics.io/v4/reference-data/assets?assets=grt"
+        ]
+      }
+    },
+    {
+      "id": "SYRUP",
+      "name": "메이플파이낸스",
+      "englishName": "Maple Finance",
+      "aliases": ["Maple Finance", "maple-finance"],
+      "color": "#0F666B",
+      "logo": "",
+      "coinloreId": "141535",
+      "rank": 111,
+      "markets": {
+        "upbit": "KRW-SYRUP",
+        "binance": "SYRUPUSDT"
+      },
+      "network": {
+        "id": "syrup",
+        "metrics": {
+          "PriceUSD": {
+            "first": "2025-01-24",
+            "last": "2026-10-08"
+          }
+        },
+        "scope": "Maple Finance"
+      },
+      "derivative": {
+        "symbol": "SYRUPUSDT",
+        "quantityMultiplier": 1
+      },
+      "review": {
+        "pairVerified": true,
+        "sources": [
+          "https://api.upbit.com/v1/market/all",
+          "https://api.binance.com/api/v3/exchangeInfo",
+          "https://api.coinlore.net/api/coin/markets/?id=141535",
+          "https://community-api.coinmetrics.io/v4/reference-data/assets?assets=syrup"
+        ]
+      }
+    },
+    {
+      "id": "CFX",
+      "name": "콘플럭스",
+      "englishName": "Conflux",
+      "aliases": ["Conflux", "conflux-network"],
+      "color": "#0F666B",
+      "logo": "",
+      "coinloreId": "121599",
+      "rank": 115,
+      "markets": {
+        "upbit": "KRW-CFX",
+        "binance": "CFXUSDT"
+      },
+      "network": {
+        "id": "cfx",
+        "metrics": {
+          "PriceUSD": {
+            "first": "2020-11-12",
+            "last": "2026-10-08"
+          }
+        },
+        "scope": "Conflux"
+      },
+      "derivative": {
+        "symbol": "CFXUSDT",
+        "quantityMultiplier": 1
+      },
+      "review": {
+        "pairVerified": true,
+        "sources": [
+          "https://api.upbit.com/v1/market/all",
+          "https://api.binance.com/api/v3/exchangeInfo",
+          "https://api.coinlore.net/api/coin/markets/?id=121599",
+          "https://community-api.coinmetrics.io/v4/reference-data/assets?assets=cfx"
+        ]
+      }
+    },
+    {
+      "id": "ENS",
+      "name": "이더리움네임서비스",
+      "englishName": "Ethereum Name Service",
+      "aliases": ["Ethereum Name Service", "ethereum-name-service"],
+      "color": "#0F666B",
+      "logo": "",
+      "coinloreId": "56821",
+      "rank": 121,
+      "markets": {
+        "upbit": "KRW-ENS",
+        "binance": "ENSUSDT"
+      },
+      "network": {
+        "id": "ens",
+        "metrics": {
+          "PriceUSD": {
+            "first": "2021-11-10",
+            "last": "2026-10-08"
+          }
+        },
+        "scope": "Ethereum Name Service"
+      },
+      "derivative": {
+        "symbol": "ENSUSDT",
+        "quantityMultiplier": 1
+      },
+      "review": {
+        "pairVerified": true,
+        "sources": [
+          "https://api.upbit.com/v1/market/all",
+          "https://api.binance.com/api/v3/exchangeInfo",
+          "https://api.coinlore.net/api/coin/markets/?id=56821",
+          "https://community-api.coinmetrics.io/v4/reference-data/assets?assets=ens"
+        ]
+      }
+    },
+    {
+      "id": "COMP",
+      "name": "컴파운드",
+      "englishName": "Compound",
+      "aliases": ["Compound", "compound"],
+      "color": "#0F666B",
+      "logo": "",
+      "coinloreId": "47304",
+      "rank": 122,
+      "markets": {
+        "upbit": "KRW-COMP",
+        "binance": "COMPUSDT"
+      },
+      "network": {
+        "id": "comp",
+        "metrics": {
+          "AdrActCnt": {
+            "first": "2020-03-04",
+            "last": "2026-10-08"
+          },
+          "AdrBalCnt": {
+            "first": "2020-03-04",
+            "last": "2026-10-08"
+          },
+          "CapMVRVCur": {
+            "first": "2020-06-18",
+            "last": "2026-10-08"
+          },
+          "CapMrktCurUSD": {
+            "first": "2020-06-18",
+            "last": "2026-10-08"
+          },
+          "IssTotNtv": {
+            "first": "2020-03-04",
+            "last": "2026-10-08"
+          },
+          "PriceUSD": {
+            "first": "2020-06-18",
+            "last": "2026-10-08"
+          },
+          "SplyCur": {
+            "first": "2020-03-04",
+            "last": "2026-10-08"
+          },
+          "TxCnt": {
+            "first": "2020-03-04",
+            "last": "2026-10-08"
+          },
+          "TxTfrCnt": {
+            "first": "2020-03-04",
+            "last": "2026-10-08"
+          }
+        },
+        "scope": "Compound"
+      },
+      "derivative": {
+        "symbol": "COMPUSDT",
+        "quantityMultiplier": 1
+      },
+      "review": {
+        "pairVerified": true,
+        "sources": [
+          "https://api.upbit.com/v1/market/all",
+          "https://api.binance.com/api/v3/exchangeInfo",
+          "https://api.coinlore.net/api/coin/markets/?id=47304",
+          "https://community-api.coinmetrics.io/v4/reference-data/assets?assets=comp"
+        ]
+      }
+    },
+    {
+      "id": "OP",
+      "name": "옵티미즘",
+      "englishName": "Optimism",
+      "aliases": ["Optimism", "optimism"],
+      "color": "#0F666B",
+      "logo": "",
+      "coinloreId": "70497",
+      "rank": 124,
+      "markets": {
+        "upbit": "KRW-OP",
+        "binance": "OPUSDT"
+      },
+      "network": {
+        "id": "op",
+        "metrics": {
+          "PriceUSD": {
+            "first": "2022-06-22",
+            "last": "2026-10-08"
+          }
+        },
+        "scope": "Optimism"
+      },
+      "derivative": {
+        "symbol": "OPUSDT",
+        "quantityMultiplier": 1
+      },
+      "review": {
+        "pairVerified": true,
+        "sources": [
+          "https://api.upbit.com/v1/market/all",
+          "https://api.binance.com/api/v3/exchangeInfo",
+          "https://api.coinlore.net/api/coin/markets/?id=70497",
+          "https://community-api.coinmetrics.io/v4/reference-data/assets?assets=op"
+        ]
+      }
+    },
+    {
+      "id": "THETA",
+      "name": "쎄타토큰",
+      "englishName": "Theta Token",
+      "aliases": ["Theta Token", "theta-token"],
+      "color": "#0F666B",
+      "logo": "",
+      "coinloreId": "32360",
+      "rank": 125,
+      "markets": {
+        "upbit": "KRW-THETA",
+        "binance": "THETAUSDT"
+      },
+      "network": {
+        "id": "theta",
+        "metrics": {
+          "PriceUSD": {
+            "first": "2018-01-17",
+            "last": "2026-10-08"
+          }
+        },
+        "scope": "Theta Network"
+      },
+      "derivative": {
+        "symbol": "THETAUSDT",
+        "quantityMultiplier": 1
+      },
+      "review": {
+        "pairVerified": true,
+        "sources": [
+          "https://api.upbit.com/v1/market/all",
+          "https://api.binance.com/api/v3/exchangeInfo",
+          "https://api.coinlore.net/api/coin/markets/?id=32360",
+          "https://community-api.coinmetrics.io/v4/reference-data/assets?assets=theta"
+        ]
+      }
+    },
+    {
+      "id": "WIF",
+      "name": "도그위프햇",
+      "englishName": "dogwifhat",
+      "aliases": ["dogwifhat", "dogwifhat"],
+      "color": "#0F666B",
+      "logo": "",
+      "coinloreId": "121613",
+      "rank": 127,
+      "markets": {
+        "upbit": "KRW-WIF",
+        "binance": "WIFUSDT"
+      },
+      "network": {
+        "id": "wif",
+        "metrics": {
+          "PriceUSD": {
+            "first": "2023-12-19",
+            "last": "2026-10-08"
+          }
+        },
+        "scope": "dogwifhat"
+      },
+      "derivative": {
+        "symbol": "WIFUSDT",
+        "quantityMultiplier": 1
+      },
+      "review": {
+        "pairVerified": true,
+        "sources": [
+          "https://api.upbit.com/v1/market/all",
+          "https://api.binance.com/api/v3/exchangeInfo",
+          "https://api.coinlore.net/api/coin/markets/?id=121613",
+          "https://community-api.coinmetrics.io/v4/reference-data/assets?assets=wif"
+        ]
+      }
+    },
+    {
+      "id": "TRAC",
+      "name": "오리진트레일",
+      "englishName": "OriginTrail",
+      "aliases": ["OriginTrail", "origintrail"],
+      "color": "#0F666B",
+      "logo": "",
+      "coinloreId": "32382",
+      "rank": 130,
+      "markets": {
+        "upbit": "KRW-TRAC",
+        "binance": null
+      },
+      "network": {
+        "id": "trac",
+        "metrics": {
+          "PriceUSD": {
+            "first": "2018-01-26",
+            "last": "2026-10-08"
+          }
+        },
+        "scope": "OriginTrail"
+      },
+      "derivative": null,
+      "review": {
+        "pairVerified": true,
+        "sources": [
+          "https://api.upbit.com/v1/market/all",
+          "https://api.binance.com/api/v3/exchangeInfo",
+          "https://api.coinlore.net/api/coin/markets/?id=32382",
+          "https://community-api.coinmetrics.io/v4/reference-data/assets?assets=trac"
+        ]
+      }
+    },
+    {
+      "id": "AKT",
+      "name": "아카시네트워크",
+      "englishName": "Akash Network",
+      "aliases": ["Akash Network", "akash-network"],
+      "color": "#0F666B",
+      "logo": "",
+      "coinloreId": "46194",
+      "rank": 131,
+      "markets": {
+        "upbit": "KRW-AKT",
+        "binance": null
+      },
+      "network": {
+        "id": "akt",
+        "metrics": {
+          "PriceUSD": {
+            "first": "2021-03-12",
+            "last": "2026-10-08"
+          }
+        },
+        "scope": "Akash Network"
+      },
+      "derivative": {
+        "symbol": "AKTUSDT",
+        "quantityMultiplier": 1
+      },
+      "review": {
+        "pairVerified": true,
+        "sources": [
+          "https://api.upbit.com/v1/market/all",
+          "https://api.binance.com/api/v3/exchangeInfo",
+          "https://api.coinlore.net/api/coin/markets/?id=46194",
+          "https://community-api.coinmetrics.io/v4/reference-data/assets?assets=akt"
+        ]
+      }
+    },
+    {
+      "id": "JTO",
+      "name": "지토",
+      "englishName": "Jito",
+      "aliases": ["Jito", "jito"],
+      "color": "#0F666B",
+      "logo": "",
+      "coinloreId": "111351",
+      "rank": 132,
+      "markets": {
+        "upbit": "KRW-JTO",
+        "binance": "JTOUSDT"
+      },
+      "network": {
+        "id": "jto",
+        "metrics": {
+          "PriceUSD": {
+            "first": "2023-12-07",
+            "last": "2026-10-08"
+          }
+        },
+        "scope": "Jito"
+      },
+      "derivative": {
+        "symbol": "JTOUSDT",
+        "quantityMultiplier": 1
+      },
+      "review": {
+        "pairVerified": true,
+        "sources": [
+          "https://api.upbit.com/v1/market/all",
+          "https://api.binance.com/api/v3/exchangeInfo",
+          "https://api.coinlore.net/api/coin/markets/?id=111351",
+          "https://community-api.coinmetrics.io/v4/reference-data/assets?assets=jto"
+        ]
+      }
+    },
+    {
+      "id": "AXS",
+      "name": "엑시인피니티",
+      "englishName": "Axie Infinity",
+      "aliases": ["Axie Infinity", "axie-infinity"],
+      "color": "#0F666B",
+      "logo": "",
+      "coinloreId": "46575",
+      "rank": 133,
+      "markets": {
+        "upbit": "KRW-AXS",
+        "binance": "AXSUSDT"
+      },
+      "network": {
+        "id": "axs",
+        "metrics": {
+          "PriceUSD": {
+            "first": "2020-11-05",
+            "last": "2026-10-08"
+          }
+        },
+        "scope": "Axie Infinity"
+      },
+      "derivative": {
+        "symbol": "AXSUSDT",
+        "quantityMultiplier": 1
+      },
+      "review": {
+        "pairVerified": true,
+        "sources": [
+          "https://api.upbit.com/v1/market/all",
+          "https://api.binance.com/api/v3/exchangeInfo",
+          "https://api.coinlore.net/api/coin/markets/?id=46575",
+          "https://community-api.coinmetrics.io/v4/reference-data/assets?assets=axs"
+        ]
+      }
+    },
+    {
+      "id": "MANA",
+      "name": "디센트럴랜드",
+      "englishName": "Decentraland",
+      "aliases": ["Decentraland", "decentraland"],
+      "color": "#0F666B",
+      "logo": "",
+      "coinloreId": "258",
+      "rank": 134,
+      "markets": {
+        "upbit": "KRW-MANA",
+        "binance": "MANAUSDT"
+      },
+      "network": {
+        "id": "mana",
+        "metrics": {
+          "AdrActCnt": {
+            "first": "2017-08-15",
+            "last": "2026-10-08"
+          },
+          "AdrBalCnt": {
+            "first": "2017-08-15",
+            "last": "2026-10-08"
+          },
+          "CapMVRVCur": {
+            "first": "2017-09-06",
+            "last": "2026-10-08"
+          },
+          "CapMrktCurUSD": {
+            "first": "2017-08-25",
+            "last": "2026-10-08"
+          },
+          "IssTotNtv": {
+            "first": "2017-08-15",
+            "last": "2026-10-08"
+          },
+          "PriceUSD": {
+            "first": "2017-08-25",
+            "last": "2026-10-08"
+          },
+          "SplyCur": {
+            "first": "2017-08-15",
+            "last": "2026-10-08"
+          },
+          "TxCnt": {
+            "first": "2017-08-15",
+            "last": "2026-10-08"
+          },
+          "TxTfrCnt": {
+            "first": "2017-08-15",
+            "last": "2026-10-08"
+          }
+        },
+        "scope": "Decentraland"
+      },
+      "derivative": {
+        "symbol": "MANAUSDT",
+        "quantityMultiplier": 1
+      },
+      "review": {
+        "pairVerified": true,
+        "sources": [
+          "https://api.upbit.com/v1/market/all",
+          "https://api.binance.com/api/v3/exchangeInfo",
+          "https://api.coinlore.net/api/coin/markets/?id=258",
+          "https://community-api.coinmetrics.io/v4/reference-data/assets?assets=mana"
+        ]
+      }
+    },
+    {
+      "id": "SAND",
+      "name": "샌드박스",
+      "englishName": "The Sandbox",
+      "aliases": ["The Sandbox", "the-sandbox"],
+      "color": "#0F666B",
+      "logo": "",
+      "coinloreId": "45161",
+      "rank": 137,
+      "markets": {
+        "upbit": "KRW-SAND",
+        "binance": "SANDUSDT"
+      },
+      "network": {
+        "id": "sand",
+        "metrics": {
+          "PriceUSD": {
+            "first": "2020-08-15",
+            "last": "2026-10-08"
+          }
+        },
+        "scope": "The Sandbox"
+      },
+      "derivative": {
+        "symbol": "SANDUSDT",
+        "quantityMultiplier": 1
+      },
+      "review": {
+        "pairVerified": true,
+        "sources": [
+          "https://api.upbit.com/v1/market/all",
+          "https://api.binance.com/api/v3/exchangeInfo",
+          "https://api.coinlore.net/api/coin/markets/?id=45161",
+          "https://community-api.coinmetrics.io/v4/reference-data/assets?assets=sand"
+        ]
+      }
+    },
+    {
+      "id": "BAT",
+      "name": "베이직어텐션토큰",
+      "englishName": "Basic Attention Token",
+      "aliases": ["Basic Attention Token", "basic-attention-token"],
+      "color": "#0F666B",
+      "logo": "",
+      "coinloreId": "184",
+      "rank": 140,
+      "markets": {
+        "upbit": "KRW-BAT",
+        "binance": "BATUSDT"
+      },
+      "network": {
+        "id": "bat",
+        "metrics": {
+          "AdrActCnt": {
+            "first": "2017-05-29",
+            "last": "2026-10-08"
+          },
+          "AdrBalCnt": {
+            "first": "2017-05-29",
+            "last": "2026-10-08"
+          },
+          "CapMVRVCur": {
+            "first": "2017-10-06",
+            "last": "2026-10-08"
+          },
+          "CapMrktCurUSD": {
+            "first": "2017-10-06",
+            "last": "2026-10-08"
+          },
+          "IssTotNtv": {
+            "first": "2017-05-29",
+            "last": "2026-10-08"
+          },
+          "PriceUSD": {
+            "first": "2017-10-06",
+            "last": "2026-10-08"
+          },
+          "SplyCur": {
+            "first": "2017-05-29",
+            "last": "2026-10-08"
+          },
+          "TxCnt": {
+            "first": "2017-05-29",
+            "last": "2026-10-08"
+          },
+          "TxTfrCnt": {
+            "first": "2017-05-29",
+            "last": "2026-10-08"
+          }
+        },
+        "scope": "Basic Attention Token"
+      },
+      "derivative": {
+        "symbol": "BATUSDT",
+        "quantityMultiplier": 1
+      },
+      "review": {
+        "pairVerified": true,
+        "sources": [
+          "https://api.upbit.com/v1/market/all",
+          "https://api.binance.com/api/v3/exchangeInfo",
+          "https://api.coinlore.net/api/coin/markets/?id=184",
+          "https://community-api.coinmetrics.io/v4/reference-data/assets?assets=bat"
+        ]
+      }
+    },
+    {
+      "id": "NEO",
+      "name": "네오",
+      "englishName": "Neo",
+      "aliases": ["Neo", "neo"],
+      "color": "#0F666B",
+      "logo": "",
+      "coinloreId": "133",
+      "rank": 141,
+      "markets": {
+        "upbit": "KRW-NEO",
+        "binance": "NEOUSDT"
+      },
+      "network": {
+        "id": "neo",
+        "metrics": {
+          "PriceUSD": {
+            "first": "2017-07-15",
+            "last": "2026-10-08"
+          }
+        },
+        "scope": "Neo"
+      },
+      "derivative": {
+        "symbol": "NEOUSDT",
+        "quantityMultiplier": 1
+      },
+      "review": {
+        "pairVerified": true,
+        "sources": [
+          "https://api.upbit.com/v1/market/all",
+          "https://api.binance.com/api/v3/exchangeInfo",
+          "https://api.coinlore.net/api/coin/markets/?id=133",
+          "https://community-api.coinmetrics.io/v4/reference-data/assets?assets=neo"
+        ]
+      }
+    },
+    {
+      "id": "A",
+      "name": "볼타",
+      "englishName": "Vaulta",
+      "aliases": ["Vaulta", "vaulta"],
+      "color": "#0F666B",
+      "logo": "",
+      "coinloreId": "161451",
+      "rank": 146,
+      "markets": {
+        "upbit": "KRW-A",
+        "binance": "AUSDT"
+      },
+      "network": {
+        "id": "a",
+        "metrics": {
+          "PriceUSD": {
+            "first": "2025-06-02",
+            "last": "2026-10-08"
+          }
+        },
+        "scope": "Vaulta"
+      },
+      "derivative": {
+        "symbol": "AUSDT",
+        "quantityMultiplier": 1
+      },
+      "review": {
+        "pairVerified": true,
+        "sources": [
+          "https://api.upbit.com/v1/market/all",
+          "https://api.binance.com/api/v3/exchangeInfo",
+          "https://api.coinlore.net/api/coin/markets/?id=161451",
+          "https://community-api.coinmetrics.io/v4/reference-data/assets?assets=a"
+        ]
+      }
+    },
+    {
+      "id": "CHZ",
+      "name": "칠리즈",
+      "englishName": "Chiliz",
+      "aliases": ["Chiliz", "chiliz"],
+      "color": "#0F666B",
+      "logo": "",
+      "coinloreId": "34391",
+      "rank": 150,
+      "markets": {
+        "upbit": "KRW-CHZ",
+        "binance": "CHZUSDT"
+      },
+      "network": {
+        "id": "chz",
+        "metrics": {
+          "PriceUSD": {
+            "first": "2019-09-07",
+            "last": "2026-10-08"
+          }
+        },
+        "scope": "Chiliz"
+      },
+      "derivative": {
+        "symbol": "CHZUSDT",
+        "quantityMultiplier": 1
+      },
+      "review": {
+        "pairVerified": true,
+        "sources": [
+          "https://api.upbit.com/v1/market/all",
+          "https://api.binance.com/api/v3/exchangeInfo",
+          "https://api.coinlore.net/api/coin/markets/?id=34391",
+          "https://community-api.coinmetrics.io/v4/reference-data/assets?assets=chz"
+        ]
+      }
+    },
+    {
+      "id": "XCN",
+      "name": "오닉스코인",
+      "englishName": "Onyxcoin",
+      "aliases": ["Onyxcoin", "onyxcoin"],
+      "color": "#0F666B",
+      "logo": "",
+      "coinloreId": "148117",
+      "rank": 151,
+      "markets": {
+        "upbit": "KRW-XCN",
+        "binance": null
+      },
+      "network": {
+        "id": "xcn",
+        "metrics": {
+          "PriceUSD": {
+            "first": "2022-03-17",
+            "last": "2026-10-08"
+          }
+        },
+        "scope": "Onyxcoin"
+      },
+      "derivative": {
+        "symbol": "XCNUSDT",
+        "quantityMultiplier": 1
+      },
+      "review": {
+        "pairVerified": true,
+        "sources": [
+          "https://api.upbit.com/v1/market/all",
+          "https://api.binance.com/api/v3/exchangeInfo",
+          "https://api.coinlore.net/api/coin/markets/?id=148117",
+          "https://community-api.coinmetrics.io/v4/reference-data/assets?assets=xcn"
+        ]
+      }
+    },
+    {
+      "id": "ORCA",
+      "name": "오르카",
+      "englishName": "ORCA",
+      "aliases": ["ORCA", "orca"],
+      "color": "#0F666B",
+      "logo": "",
+      "coinloreId": "44909",
+      "rank": 155,
+      "markets": {
+        "upbit": "KRW-ORCA",
+        "binance": "ORCAUSDT"
+      },
+      "network": {
+        "id": "orca",
+        "metrics": {
+          "PriceUSD": {
+            "first": "2021-10-06",
+            "last": "2026-10-08"
+          }
+        },
+        "scope": "Orca"
+      },
+      "derivative": {
+        "symbol": "ORCAUSDT",
+        "quantityMultiplier": 1
+      },
+      "review": {
+        "pairVerified": true,
+        "sources": [
+          "https://api.upbit.com/v1/market/all",
+          "https://api.binance.com/api/v3/exchangeInfo",
+          "https://api.coinlore.net/api/coin/markets/?id=44909",
+          "https://community-api.coinmetrics.io/v4/reference-data/assets?assets=orca"
+        ]
+      }
+    },
+    {
+      "id": "XEC",
+      "name": "이캐시",
+      "englishName": "eCash",
+      "aliases": ["eCash", "ecash"],
+      "color": "#0F666B",
+      "logo": "",
+      "coinloreId": "51539",
+      "rank": 158,
+      "markets": {
+        "upbit": "KRW-XEC",
+        "binance": "XECUSDT"
+      },
+      "network": {
+        "id": "xec",
+        "metrics": {
+          "PriceUSD": {
+            "first": "2021-07-03",
+            "last": "2026-10-08"
+          }
+        },
+        "scope": "eCash"
+      },
+      "derivative": {
+        "symbol": "1000XECUSDT",
+        "quantityMultiplier": 1000
+      },
+      "review": {
+        "pairVerified": true,
+        "sources": [
+          "https://api.upbit.com/v1/market/all",
+          "https://api.binance.com/api/v3/exchangeInfo",
+          "https://api.coinlore.net/api/coin/markets/?id=51539",
+          "https://community-api.coinmetrics.io/v4/reference-data/assets?assets=xec"
+        ]
+      }
+    },
+    {
+      "id": "SUPER",
+      "name": "슈퍼버스",
+      "englishName": "SuperVerse",
+      "aliases": ["SuperVerse", "superverse"],
+      "color": "#0F666B",
+      "logo": "",
+      "coinloreId": "120831",
+      "rank": 159,
+      "markets": {
+        "upbit": "KRW-SUPER",
+        "binance": "SUPERUSDT"
+      },
+      "network": {
+        "id": "super",
+        "metrics": {
+          "PriceUSD": {
+            "first": "2021-02-24",
+            "last": "2026-10-08"
+          }
+        },
+        "scope": "SuperVerse"
+      },
+      "derivative": {
+        "symbol": "SUPERUSDT",
+        "quantityMultiplier": 1
+      },
+      "review": {
+        "pairVerified": true,
+        "sources": [
+          "https://api.upbit.com/v1/market/all",
+          "https://api.binance.com/api/v3/exchangeInfo",
+          "https://api.coinlore.net/api/coin/markets/?id=120831",
+          "https://community-api.coinmetrics.io/v4/reference-data/assets?assets=super"
+        ]
+      }
+    },
+    {
+      "id": "BEAM",
+      "name": "빔",
+      "englishName": "Beam",
+      "aliases": ["Beam", "onbeam"],
+      "color": "#0F666B",
+      "logo": "",
+      "coinloreId": "136107",
+      "rank": 167,
+      "markets": {
+        "upbit": "KRW-BEAM",
+        "binance": null
+      },
+      "network": null,
+      "derivative": {
+        "symbol": "BEAMUSDT",
+        "quantityMultiplier": 1
+      },
+      "review": {
+        "pairVerified": true,
+        "sources": [
+          "https://api.upbit.com/v1/market/all",
+          "https://api.binance.com/api/v3/exchangeInfo",
+          "https://api.coinlore.net/api/coin/markets/?id=136107"
+        ]
+      }
+    },
+    {
+      "id": "GLM",
+      "name": "골렘",
+      "englishName": "Golem",
+      "aliases": ["Golem", "golem"],
+      "color": "#0F666B",
+      "logo": "",
+      "coinloreId": "46571",
+      "rank": 169,
+      "markets": {
+        "upbit": "KRW-GLM",
+        "binance": "GLMUSDT"
+      },
+      "network": {
+        "id": "glm",
+        "metrics": {
+          "PriceUSD": {
+            "first": "2020-11-29",
+            "last": "2026-10-08"
+          }
+        },
+        "scope": "Golem"
+      },
+      "derivative": {
+        "symbol": "GLMUSDT",
+        "quantityMultiplier": 1
+      },
+      "review": {
+        "pairVerified": true,
+        "sources": [
+          "https://api.upbit.com/v1/market/all",
+          "https://api.binance.com/api/v3/exchangeInfo",
+          "https://api.coinlore.net/api/coin/markets/?id=46571",
+          "https://community-api.coinmetrics.io/v4/reference-data/assets?assets=glm"
+        ]
+      }
+    },
+    {
+      "id": "2Z",
+      "name": "더블제로",
+      "englishName": "DoubleZero",
+      "aliases": ["DoubleZero", "doublezero"],
+      "color": "#0F666B",
+      "logo": "",
+      "coinloreId": "165639",
+      "rank": 171,
+      "markets": {
+        "upbit": "KRW-2Z",
+        "binance": "2ZUSDT"
+      },
+      "network": {
+        "id": "2z",
+        "metrics": {
+          "PriceUSD": {
+            "first": "2025-11-06",
+            "last": "2026-10-08"
+          }
+        },
+        "scope": "DoubleZero"
+      },
+      "derivative": {
+        "symbol": "2ZUSDT",
+        "quantityMultiplier": 1
+      },
+      "review": {
+        "pairVerified": true,
+        "sources": [
+          "https://api.upbit.com/v1/market/all",
+          "https://api.binance.com/api/v3/exchangeInfo",
+          "https://api.coinlore.net/api/coin/markets/?id=165639",
+          "https://community-api.coinmetrics.io/v4/reference-data/assets?assets=2z"
+        ]
+      }
+    },
+    {
+      "id": "ZK",
+      "name": "지케이싱크",
+      "englishName": "zkSync",
+      "aliases": ["zkSync", "zksync"],
+      "color": "#0F666B",
+      "logo": "",
+      "coinloreId": "136111",
+      "rank": 178,
+      "markets": {
+        "upbit": "KRW-ZK",
+        "binance": "ZKUSDT"
+      },
+      "network": {
+        "id": "zk",
+        "metrics": {
+          "PriceUSD": {
+            "first": "2024-04-18",
+            "last": "2026-10-08"
+          }
+        },
+        "scope": "ZKsync"
+      },
+      "derivative": {
+        "symbol": "ZKUSDT",
+        "quantityMultiplier": 1
+      },
+      "review": {
+        "pairVerified": true,
+        "sources": [
+          "https://api.upbit.com/v1/market/all",
+          "https://api.binance.com/api/v3/exchangeInfo",
+          "https://api.coinlore.net/api/coin/markets/?id=136111",
+          "https://community-api.coinmetrics.io/v4/reference-data/assets?assets=zk"
+        ]
+      }
+    },
+    {
+      "id": "NMR",
+      "name": "뉴메레르",
+      "englishName": "Numeraire",
+      "aliases": ["Numeraire", "numeraire"],
+      "color": "#0F666B",
+      "logo": "",
+      "coinloreId": "202",
+      "rank": 180,
+      "markets": {
+        "upbit": "KRW-NMR",
+        "binance": "NMRUSDT"
+      },
+      "network": {
+        "id": "nmr",
+        "metrics": {
+          "PriceUSD": {
+            "first": "2018-12-20",
+            "last": "2026-10-08"
+          }
+        },
+        "scope": "Numeraire"
+      },
+      "derivative": {
+        "symbol": "NMRUSDT",
+        "quantityMultiplier": 1
+      },
+      "review": {
+        "pairVerified": true,
+        "sources": [
+          "https://api.upbit.com/v1/market/all",
+          "https://api.binance.com/api/v3/exchangeInfo",
+          "https://api.coinlore.net/api/coin/markets/?id=202",
+          "https://community-api.coinmetrics.io/v4/reference-data/assets?assets=nmr"
+        ]
+      }
+    },
+    {
+      "id": "QTUM",
+      "name": "퀀텀",
+      "englishName": "Qtum",
+      "aliases": ["Qtum", "qtum"],
+      "color": "#0F666B",
+      "logo": "",
+      "coinloreId": "237",
+      "rank": 189,
+      "markets": {
+        "upbit": "KRW-QTUM",
+        "binance": "QTUMUSDT"
+      },
+      "network": {
+        "id": "qtum",
+        "metrics": {
+          "PriceUSD": {
+            "first": "2017-07-28",
+            "last": "2026-10-08"
+          }
+        },
+        "scope": "Qtum"
+      },
+      "derivative": {
+        "symbol": "QTUMUSDT",
+        "quantityMultiplier": 1
+      },
+      "review": {
+        "pairVerified": true,
+        "sources": [
+          "https://api.upbit.com/v1/market/all",
+          "https://api.binance.com/api/v3/exchangeInfo",
+          "https://api.coinlore.net/api/coin/markets/?id=237",
+          "https://community-api.coinmetrics.io/v4/reference-data/assets?assets=qtum"
+        ]
+      }
+    },
+    {
+      "id": "KMNO",
+      "name": "카미노파이낸스",
+      "englishName": "Kamino Finance",
+      "aliases": ["Kamino Finance", "kamino-finance"],
+      "color": "#0F666B",
+      "logo": "",
+      "coinloreId": "130985",
+      "rank": 190,
+      "markets": {
+        "upbit": "KRW-KMNO",
+        "binance": "KMNOUSDT"
+      },
+      "network": {
+        "id": "kmno",
+        "metrics": {
+          "PriceUSD": {
+            "first": "2024-07-24",
+            "last": "2026-10-08"
+          }
+        },
+        "scope": "Kamino"
+      },
+      "derivative": {
+        "symbol": "KMNOUSDT",
+        "quantityMultiplier": 1
+      },
+      "review": {
+        "pairVerified": true,
+        "sources": [
+          "https://api.upbit.com/v1/market/all",
+          "https://api.binance.com/api/v3/exchangeInfo",
+          "https://api.coinlore.net/api/coin/markets/?id=130985",
+          "https://community-api.coinmetrics.io/v4/reference-data/assets?assets=kmno"
+        ]
+      }
+    },
+    {
+      "id": "GEOD",
+      "name": "지오드넷",
+      "englishName": "GEODNET",
+      "aliases": ["GEODNET", "geodnet"],
+      "color": "#0F666B",
+      "logo": "",
+      "coinloreId": "127565",
+      "rank": 193,
+      "markets": {
+        "upbit": "KRW-GEOD",
+        "binance": null
+      },
+      "network": null,
+      "derivative": null,
+      "review": {
+        "pairVerified": true,
+        "sources": [
+          "https://api.upbit.com/v1/market/all",
+          "https://api.binance.com/api/v3/exchangeInfo",
+          "https://api.coinlore.net/api/coin/markets/?id=127565"
+        ]
+      }
+    },
+    {
+      "id": "GAS",
+      "name": "가스",
+      "englishName": "Gas",
+      "aliases": ["Gas", "gas"],
+      "color": "#0F666B",
+      "logo": "",
+      "coinloreId": "2708",
+      "rank": 204,
+      "markets": {
+        "upbit": "KRW-GAS",
+        "binance": "GASUSDT"
+      },
+      "network": {
+        "id": "gas",
+        "metrics": {
+          "PriceUSD": {
+            "first": "2017-08-08",
+            "last": "2026-10-08"
+          }
+        },
+        "scope": "Gas"
+      },
+      "derivative": {
+        "symbol": "GASUSDT",
+        "quantityMultiplier": 1
+      },
+      "review": {
+        "pairVerified": true,
+        "sources": [
+          "https://api.upbit.com/v1/market/all",
+          "https://api.binance.com/api/v3/exchangeInfo",
+          "https://api.coinlore.net/api/coin/markets/?id=2708",
+          "https://community-api.coinmetrics.io/v4/reference-data/assets?assets=gas"
+        ]
+      }
+    },
+    {
+      "id": "W",
+      "name": "웜홀",
+      "englishName": "Wormhole",
+      "aliases": ["Wormhole", "wormhole"],
+      "color": "#0F666B",
+      "logo": "",
+      "coinloreId": "126765",
+      "rank": 207,
+      "markets": {
+        "upbit": "KRW-W",
+        "binance": "WUSDT"
+      },
+      "network": {
+        "id": "w",
+        "metrics": {
+          "PriceUSD": {
+            "first": "2024-04-18",
+            "last": "2026-10-08"
+          }
+        },
+        "scope": "Wormhole"
+      },
+      "derivative": {
+        "symbol": "WUSDT",
+        "quantityMultiplier": 1
+      },
+      "review": {
+        "pairVerified": true,
+        "sources": [
+          "https://api.upbit.com/v1/market/all",
+          "https://api.binance.com/api/v3/exchangeInfo",
+          "https://api.coinlore.net/api/coin/markets/?id=126765",
+          "https://community-api.coinmetrics.io/v4/reference-data/assets?assets=w"
+        ]
+      }
+    },
+    {
+      "id": "ATH",
+      "name": "에이셔",
+      "englishName": "Aethir",
+      "aliases": ["Aethir", "aethir"],
+      "color": "#0F666B",
+      "logo": "",
+      "coinloreId": "148129",
+      "rank": 215,
+      "markets": {
+        "upbit": "KRW-ATH",
+        "binance": null
+      },
+      "network": {
+        "id": "ath",
+        "metrics": {
+          "PriceUSD": {
+            "first": "2024-07-24",
+            "last": "2026-10-08"
+          }
+        },
+        "scope": "Aethir"
+      },
+      "derivative": {
+        "symbol": "ATHUSDT",
+        "quantityMultiplier": 1
+      },
+      "review": {
+        "pairVerified": true,
+        "sources": [
+          "https://api.upbit.com/v1/market/all",
+          "https://api.binance.com/api/v3/exchangeInfo",
+          "https://api.coinlore.net/api/coin/markets/?id=148129",
+          "https://community-api.coinmetrics.io/v4/reference-data/assets?assets=ath"
+        ]
+      }
+    },
+    {
+      "id": "CFG",
+      "name": "센트리퓨즈",
+      "englishName": "Centrifuge",
+      "aliases": ["Centrifuge", "centrifuge"],
+      "color": "#0F666B",
+      "logo": "",
+      "coinloreId": "49753",
+      "rank": 216,
+      "markets": {
+        "upbit": "KRW-CFG",
+        "binance": "CFGUSDT"
+      },
+      "network": null,
+      "derivative": {
+        "symbol": "CFGUSDT",
+        "quantityMultiplier": 1
+      },
+      "review": {
+        "pairVerified": true,
+        "sources": [
+          "https://api.upbit.com/v1/market/all",
+          "https://api.binance.com/api/v3/exchangeInfo",
+          "https://api.coinlore.net/api/coin/markets/?id=49753"
+        ]
+      }
+    },
+    {
+      "id": "LPT",
+      "name": "라이브피어",
+      "englishName": "Livepeer",
+      "aliases": ["Livepeer", "livepeer"],
+      "color": "#0F666B",
+      "logo": "",
+      "coinloreId": "33433",
+      "rank": 220,
+      "markets": {
+        "upbit": "KRW-LPT",
+        "binance": "LPTUSDT"
+      },
+      "network": {
+        "id": "lpt",
+        "metrics": {
+          "AdrActCnt": {
+            "first": "2018-04-30",
+            "last": "2026-10-08"
+          },
+          "AdrBalCnt": {
+            "first": "2018-04-30",
+            "last": "2026-10-08"
+          },
+          "CapMVRVCur": {
+            "first": "2018-12-20",
+            "last": "2026-10-08"
+          },
+          "CapMrktCurUSD": {
+            "first": "2018-12-20",
+            "last": "2026-10-08"
+          },
+          "IssTotNtv": {
+            "first": "2018-04-30",
+            "last": "2026-10-08"
+          },
+          "PriceUSD": {
+            "first": "2018-12-20",
+            "last": "2026-10-08"
+          },
+          "SplyCur": {
+            "first": "2018-04-30",
+            "last": "2026-10-08"
+          },
+          "TxCnt": {
+            "first": "2018-04-30",
+            "last": "2026-10-08"
+          },
+          "TxTfrCnt": {
+            "first": "2018-04-30",
+            "last": "2026-10-08"
+          }
+        },
+        "scope": "Livepeer"
+      },
+      "derivative": {
+        "symbol": "LPTUSDT",
+        "quantityMultiplier": 1
+      },
+      "review": {
+        "pairVerified": true,
+        "sources": [
+          "https://api.upbit.com/v1/market/all",
+          "https://api.binance.com/api/v3/exchangeInfo",
+          "https://api.coinlore.net/api/coin/markets/?id=33433",
+          "https://community-api.coinmetrics.io/v4/reference-data/assets?assets=lpt"
+        ]
+      }
+    },
+    {
+      "id": "KAVA",
+      "name": "카바",
+      "englishName": "Kava",
+      "aliases": ["Kava", "kava"],
+      "color": "#0F666B",
+      "logo": "",
+      "coinloreId": "64675",
+      "rank": 223,
+      "markets": {
+        "upbit": "KRW-KAVA",
+        "binance": "KAVAUSDT"
+      },
+      "network": {
+        "id": "kava",
+        "metrics": {
+          "PriceUSD": {
+            "first": "2019-10-26",
+            "last": "2026-10-08"
+          }
+        },
+        "scope": "Kava"
+      },
+      "derivative": {
+        "symbol": "KAVAUSDT",
+        "quantityMultiplier": 1
+      },
+      "review": {
+        "pairVerified": true,
+        "sources": [
+          "https://api.upbit.com/v1/market/all",
+          "https://api.binance.com/api/v3/exchangeInfo",
+          "https://api.coinlore.net/api/coin/markets/?id=64675",
+          "https://community-api.coinmetrics.io/v4/reference-data/assets?assets=kava"
+        ]
+      }
+    },
+    {
+      "id": "KAITO",
+      "name": "카이토",
+      "englishName": "KAITO",
+      "aliases": ["KAITO", "kaito"],
+      "color": "#0F666B",
+      "logo": "",
+      "coinloreId": "150885",
+      "rank": 224,
+      "markets": {
+        "upbit": "KRW-KAITO",
+        "binance": "KAITOUSDT"
+      },
+      "network": {
+        "id": "kaito",
+        "metrics": {
+          "PriceUSD": {
+            "first": "2025-03-28",
+            "last": "2026-10-08"
+          }
+        },
+        "scope": "KAITO"
+      },
+      "derivative": {
+        "symbol": "KAITOUSDT",
+        "quantityMultiplier": 1
+      },
+      "review": {
+        "pairVerified": true,
+        "sources": [
+          "https://api.upbit.com/v1/market/all",
+          "https://api.binance.com/api/v3/exchangeInfo",
+          "https://api.coinlore.net/api/coin/markets/?id=150885",
+          "https://community-api.coinmetrics.io/v4/reference-data/assets?assets=kaito"
+        ]
+      }
+    },
+    {
+      "id": "COW",
+      "name": "카우프로토콜",
+      "englishName": "CoW Protocol",
+      "aliases": ["CoW Protocol", "cow-protocol"],
+      "color": "#0F666B",
+      "logo": "",
+      "coinloreId": "147565",
+      "rank": 225,
+      "markets": {
+        "upbit": "KRW-COW",
+        "binance": "COWUSDT"
+      },
+      "network": {
+        "id": "cow",
+        "metrics": {
+          "PriceUSD": {
+            "first": "2024-11-08",
+            "last": "2026-10-08"
+          }
+        },
+        "scope": "CoW Protocol"
+      },
+      "derivative": {
+        "symbol": "COWUSDT",
+        "quantityMultiplier": 1
+      },
+      "review": {
+        "pairVerified": true,
+        "sources": [
+          "https://api.upbit.com/v1/market/all",
+          "https://api.binance.com/api/v3/exchangeInfo",
+          "https://api.coinlore.net/api/coin/markets/?id=147565",
+          "https://community-api.coinmetrics.io/v4/reference-data/assets?assets=cow"
+        ]
+      }
+    },
+    {
+      "id": "TFUEL",
+      "name": "쎄타퓨엘",
+      "englishName": "Theta Fuel",
+      "aliases": ["Theta Fuel", "theta-fuel"],
+      "color": "#0F666B",
+      "logo": "",
+      "coinloreId": "33768",
+      "rank": 234,
+      "markets": {
+        "upbit": "KRW-TFUEL",
+        "binance": "TFUELUSDT"
+      },
+      "network": {
+        "id": "tfuel",
+        "metrics": {
+          "PriceUSD": {
+            "first": "2019-06-22",
+            "last": "2026-10-08"
+          }
+        },
+        "scope": "Theta Fuel"
+      },
+      "derivative": null,
+      "review": {
+        "pairVerified": true,
+        "sources": [
+          "https://api.upbit.com/v1/market/all",
+          "https://api.binance.com/api/v3/exchangeInfo",
+          "https://api.coinlore.net/api/coin/markets/?id=33768",
+          "https://community-api.coinmetrics.io/v4/reference-data/assets?assets=tfuel"
+        ]
+      }
+    },
+    {
+      "id": "SAFE",
+      "name": "세이프",
+      "englishName": "Safe",
+      "aliases": ["Safe", "safe1"],
+      "color": "#0F666B",
+      "logo": "",
+      "coinloreId": "161455",
+      "rank": 235,
+      "markets": {
+        "upbit": "KRW-SAFE",
+        "binance": null
+      },
+      "network": {
+        "id": "safe",
+        "metrics": {
+          "PriceUSD": {
+            "first": "2024-06-17",
+            "last": "2026-10-08"
+          }
+        },
+        "scope": "Safe"
+      },
+      "derivative": {
+        "symbol": "SAFEUSDT",
+        "quantityMultiplier": 1
+      },
+      "review": {
+        "pairVerified": true,
+        "sources": [
+          "https://api.upbit.com/v1/market/all",
+          "https://api.binance.com/api/v3/exchangeInfo",
+          "https://api.coinlore.net/api/coin/markets/?id=161455",
+          "https://community-api.coinmetrics.io/v4/reference-data/assets?assets=safe"
+        ]
+      }
+    },
+    {
+      "id": "ZIL",
+      "name": "질리카",
+      "englishName": "Zilliqa",
+      "aliases": ["Zilliqa", "zilliqa"],
+      "color": "#0F666B",
+      "logo": "",
+      "coinloreId": "32334",
+      "rank": 238,
+      "markets": {
+        "upbit": "KRW-ZIL",
+        "binance": "ZILUSDT"
+      },
+      "network": {
+        "id": "zil",
+        "metrics": {
+          "PriceUSD": {
+            "first": "2018-01-27",
+            "last": "2026-10-08"
+          }
+        },
+        "scope": "Zilliqa"
+      },
+      "derivative": {
+        "symbol": "ZILUSDT",
+        "quantityMultiplier": 1
+      },
+      "review": {
+        "pairVerified": true,
+        "sources": [
+          "https://api.upbit.com/v1/market/all",
+          "https://api.binance.com/api/v3/exchangeInfo",
+          "https://api.coinlore.net/api/coin/markets/?id=32334",
+          "https://community-api.coinmetrics.io/v4/reference-data/assets?assets=zil"
+        ]
+      }
+    },
+    {
+      "id": "VTHO",
+      "name": "비토르토큰",
+      "englishName": "VeThor Token",
+      "aliases": ["VeThor Token", "vethor-token"],
+      "color": "#0F666B",
+      "logo": "",
+      "coinloreId": "33157",
+      "rank": 243,
+      "markets": {
+        "upbit": "KRW-VTHO",
+        "binance": "VTHOUSDT"
+      },
+      "network": {
+        "id": "vtho",
+        "metrics": {
+          "PriceUSD": {
+            "first": "2019-06-22",
+            "last": "2026-10-08"
+          }
+        },
+        "scope": "VeThor Token"
+      },
+      "derivative": null,
+      "review": {
+        "pairVerified": true,
+        "sources": [
+          "https://api.upbit.com/v1/market/all",
+          "https://api.binance.com/api/v3/exchangeInfo",
+          "https://api.coinlore.net/api/coin/markets/?id=33157",
+          "https://community-api.coinmetrics.io/v4/reference-data/assets?assets=vtho"
+        ]
+      }
+    },
+    {
+      "id": "CKB",
+      "name": "너보스",
+      "englishName": "Nervos Network",
+      "aliases": ["Nervos Network", "nervos-network"],
+      "color": "#0F666B",
+      "logo": "",
+      "coinloreId": "59971",
+      "rank": 247,
+      "markets": {
+        "upbit": "KRW-CKB",
+        "binance": "CKBUSDT"
+      },
+      "network": {
+        "id": "ckb",
+        "metrics": {
+          "PriceUSD": {
+            "first": "2019-11-18",
+            "last": "2026-10-08"
+          }
+        },
+        "scope": "Nervos Network"
+      },
+      "derivative": {
+        "symbol": "CKBUSDT",
+        "quantityMultiplier": 1
+      },
+      "review": {
+        "pairVerified": true,
+        "sources": [
+          "https://api.upbit.com/v1/market/all",
+          "https://api.binance.com/api/v3/exchangeInfo",
+          "https://api.coinlore.net/api/coin/markets/?id=59971",
+          "https://community-api.coinmetrics.io/v4/reference-data/assets?assets=ckb"
+        ]
+      }
+    },
+    {
+      "id": "ARKM",
+      "name": "아캄",
+      "englishName": "Arkham",
+      "aliases": ["Arkham", "arkham"],
+      "color": "#0F666B",
+      "logo": "",
+      "coinloreId": "100449",
+      "rank": 248,
+      "markets": {
+        "upbit": "KRW-ARKM",
+        "binance": "ARKMUSDT"
+      },
+      "network": {
+        "id": "arkm",
+        "metrics": {
+          "PriceUSD": {
+            "first": "2023-07-18",
+            "last": "2026-10-08"
+          }
+        },
+        "scope": "Arkham"
+      },
+      "derivative": {
+        "symbol": "ARKMUSDT",
+        "quantityMultiplier": 1
+      },
+      "review": {
+        "pairVerified": true,
+        "sources": [
+          "https://api.upbit.com/v1/market/all",
+          "https://api.binance.com/api/v3/exchangeInfo",
+          "https://api.coinlore.net/api/coin/markets/?id=100449",
+          "https://community-api.coinmetrics.io/v4/reference-data/assets?assets=arkm"
+        ]
+      }
+    },
+    {
+      "id": "BNB",
+      "name": "비앤비",
+      "englishName": "Binance Coin",
+      "aliases": ["Binance Coin", "binance-coin", "비앤비"],
+      "color": "#0F666B",
+      "logo": "",
+      "coinloreId": "2710",
+      "rank": 4,
+      "markets": {
+        "upbit": null,
+        "binance": "BNBUSDT"
+      },
+      "network": {
+        "id": "bnb",
+        "metrics": {
+          "PriceUSD": {
+            "first": "2017-07-15",
+            "last": "2026-10-08"
+          }
+        },
+        "scope": "BNB"
+      },
+      "derivative": {
+        "symbol": "BNBUSDT",
+        "quantityMultiplier": 1
+      },
+      "review": {
+        "pairVerified": true,
+        "sources": [
+          "https://api.upbit.com/v1/market/all",
+          "https://api.binance.com/api/v3/exchangeInfo",
+          "https://api.coinlore.net/api/coin/markets/?id=2710",
+          "https://community-api.coinmetrics.io/v4/reference-data/assets?assets=bnb"
+        ]
+      }
+    },
+    {
+      "id": "HYPE",
+      "name": "하이퍼리퀴드",
+      "englishName": "Hyperliquid",
+      "aliases": ["Hyperliquid", "hyperliquid", "하이퍼리퀴드"],
+      "color": "#0F666B",
+      "logo": "",
+      "coinloreId": "148109",
+      "rank": 9,
+      "markets": {
+        "upbit": null,
+        "binance": "HYPEUSDT"
+      },
+      "network": {
+        "id": "hype",
+        "metrics": {
+          "PriceUSD": {
+            "first": "2024-12-13",
+            "last": "2026-10-08"
+          }
+        },
+        "scope": "Hyperliquid"
+      },
+      "derivative": {
+        "symbol": "HYPEUSDT",
+        "quantityMultiplier": 1
+      },
+      "review": {
+        "pairVerified": true,
+        "sources": [
+          "https://api.upbit.com/v1/market/all",
+          "https://api.binance.com/api/v3/exchangeInfo",
+          "https://api.coinlore.net/api/coin/markets/?id=148109",
+          "https://www.binance.com/en/support/announcement/detail/d49de208bb6d4a26b02677d7c3d89b5d",
+          "https://community-api.coinmetrics.io/v4/reference-data/assets?assets=hype"
+        ]
+      }
+    },
+    {
+      "id": "ZEC",
+      "name": "지캐시",
+      "englishName": "Zcash",
+      "aliases": ["Zcash", "zcash", "지캐시"],
+      "color": "#0F666B",
+      "logo": "",
+      "coinloreId": "134",
+      "rank": 11,
+      "markets": {
+        "upbit": null,
+        "binance": "ZECUSDT"
+      },
+      "network": {
+        "id": "zec",
+        "metrics": {
+          "AdrActCnt": {
+            "first": "2016-10-28",
+            "last": "2026-10-08"
+          },
+          "AdrBalCnt": {
+            "first": "2016-10-28",
+            "last": "2026-10-08"
+          },
+          "BlkCnt": {
+            "first": "2016-10-28",
+            "last": "2026-10-08"
+          },
+          "CapMVRVCur": {
+            "first": "2016-10-29",
+            "last": "2026-10-08"
+          },
+          "CapMrktCurUSD": {
+            "first": "2016-10-29",
+            "last": "2026-10-08"
+          },
+          "FeeTotNtv": {
+            "first": "2016-10-28",
+            "last": "2026-10-08"
+          },
+          "HashRate": {
+            "first": "2016-10-28",
+            "last": "2026-10-08"
+          },
+          "IssTotNtv": {
+            "first": "2016-10-28",
+            "last": "2026-10-08"
+          },
+          "PriceUSD": {
+            "first": "2016-10-29",
+            "last": "2026-10-08"
+          },
+          "SplyCur": {
+            "first": "2016-10-28",
+            "last": "2026-10-08"
+          },
+          "TxCnt": {
+            "first": "2016-10-28",
+            "last": "2026-10-08"
+          },
+          "TxTfrCnt": {
+            "first": "2016-10-28",
+            "last": "2026-10-08"
+          }
+        },
+        "scope": "Zcash"
+      },
+      "derivative": {
+        "symbol": "ZECUSDT",
+        "quantityMultiplier": 1
+      },
+      "review": {
+        "pairVerified": true,
+        "sources": [
+          "https://api.upbit.com/v1/market/all",
+          "https://api.binance.com/api/v3/exchangeInfo",
+          "https://api.coinlore.net/api/coin/markets/?id=134",
+          "https://community-api.coinmetrics.io/v4/reference-data/assets?assets=zec"
+        ]
+      }
+    },
+    {
+      "id": "LTC",
+      "name": "라이트코인",
+      "englishName": "Litecoin",
+      "aliases": ["Litecoin", "litecoin", "라이트코인"],
+      "color": "#0F666B",
+      "logo": "",
+      "coinloreId": "1",
+      "rank": 25,
+      "markets": {
+        "upbit": null,
+        "binance": "LTCUSDT"
+      },
+      "network": {
+        "id": "ltc",
+        "metrics": {
+          "AdrActCnt": {
+            "first": "2011-10-07",
+            "last": "2026-10-08"
+          },
+          "AdrBalCnt": {
+            "first": "2011-10-07",
+            "last": "2026-10-08"
+          },
+          "BlkCnt": {
+            "first": "2011-10-07",
+            "last": "2026-10-08"
+          },
+          "CapMVRVCur": {
+            "first": "2013-04-01",
+            "last": "2026-10-08"
+          },
+          "CapMrktCurUSD": {
+            "first": "2013-04-01",
+            "last": "2026-10-08"
+          },
+          "FeeTotNtv": {
+            "first": "2011-10-07",
+            "last": "2026-10-08"
+          },
+          "HashRate": {
+            "first": "2011-10-08",
+            "last": "2026-10-08"
+          },
+          "IssTotNtv": {
+            "first": "2011-10-08",
+            "last": "2026-10-08"
+          },
+          "PriceUSD": {
+            "first": "2013-04-01",
+            "last": "2026-10-08"
+          },
+          "SplyCur": {
+            "first": "2011-10-07",
+            "last": "2026-10-08"
+          },
+          "TxCnt": {
+            "first": "2011-10-07",
+            "last": "2026-10-08"
+          },
+          "TxTfrCnt": {
+            "first": "2011-10-07",
+            "last": "2026-10-08"
+          }
+        },
+        "scope": "Litecoin"
+      },
+      "derivative": {
+        "symbol": "LTCUSDT",
+        "quantityMultiplier": 1
+      },
+      "review": {
+        "pairVerified": true,
+        "sources": [
+          "https://api.upbit.com/v1/market/all",
+          "https://api.binance.com/api/v3/exchangeInfo",
+          "https://api.coinlore.net/api/coin/markets/?id=1",
+          "https://community-api.coinmetrics.io/v4/reference-data/assets?assets=ltc"
+        ]
+      }
+    },
+    {
+      "id": "QNT",
+      "name": "퀀트",
+      "englishName": "Quant",
+      "aliases": ["Quant", "quant", "퀀트"],
+      "color": "#0F666B",
+      "logo": "",
+      "coinloreId": "33085",
+      "rank": 32,
+      "markets": {
+        "upbit": null,
+        "binance": "QNTUSDT"
+      },
+      "network": {
+        "id": "qnt",
+        "metrics": {
+          "AdrActCnt": {
+            "first": "2018-04-06",
+            "last": "2026-10-08"
+          },
+          "AdrBalCnt": {
+            "first": "2018-04-06",
+            "last": "2026-10-08"
+          },
+          "CapMVRVCur": {
+            "first": "2019-03-16",
+            "last": "2026-10-08"
+          },
+          "CapMrktCurUSD": {
+            "first": "2019-03-16",
+            "last": "2026-10-08"
+          },
+          "IssTotNtv": {
+            "first": "2018-04-06",
+            "last": "2026-10-08"
+          },
+          "PriceUSD": {
+            "first": "2019-03-16",
+            "last": "2026-10-08"
+          },
+          "SplyCur": {
+            "first": "2018-04-06",
+            "last": "2026-10-08"
+          },
+          "TxCnt": {
+            "first": "2018-04-06",
+            "last": "2026-10-08"
+          },
+          "TxTfrCnt": {
+            "first": "2018-04-06",
+            "last": "2026-10-08"
+          }
+        },
+        "scope": "Quant"
+      },
+      "derivative": {
+        "symbol": "QNTUSDT",
+        "quantityMultiplier": 1
+      },
+      "review": {
+        "pairVerified": true,
+        "sources": [
+          "https://api.upbit.com/v1/market/all",
+          "https://api.binance.com/api/v3/exchangeInfo",
+          "https://api.coinlore.net/api/coin/markets/?id=33085",
+          "https://community-api.coinmetrics.io/v4/reference-data/assets?assets=qnt"
+        ]
+      }
+    },
+    {
+      "id": "PAXG",
+      "name": "팍스골드",
+      "englishName": "PAX Gold",
+      "aliases": ["PAX Gold", "pax-gold", "팍스골드"],
+      "color": "#0F666B",
+      "logo": "",
+      "coinloreId": "42227",
+      "rank": 50,
+      "markets": {
+        "upbit": null,
+        "binance": "PAXGUSDT"
+      },
+      "network": {
+        "id": "paxg",
+        "metrics": {
+          "AdrActCnt": {
+            "first": "2019-08-26",
+            "last": "2026-10-08"
+          },
+          "AdrBalCnt": {
+            "first": "2019-08-26",
+            "last": "2026-10-08"
+          },
+          "CapMVRVCur": {
+            "first": "2020-02-15",
+            "last": "2026-10-08"
+          },
+          "CapMrktCurUSD": {
+            "first": "2020-02-15",
+            "last": "2026-10-08"
+          },
+          "IssTotNtv": {
+            "first": "2019-08-26",
+            "last": "2026-10-08"
+          },
+          "PriceUSD": {
+            "first": "2020-02-15",
+            "last": "2026-10-08"
+          },
+          "SplyCur": {
+            "first": "2019-08-26",
+            "last": "2026-10-08"
+          },
+          "TxCnt": {
+            "first": "2019-08-26",
+            "last": "2026-10-08"
+          },
+          "TxTfrCnt": {
+            "first": "2019-08-26",
+            "last": "2026-10-08"
+          }
+        },
+        "scope": "PAX Gold"
+      },
+      "derivative": {
+        "symbol": "PAXGUSDT",
+        "quantityMultiplier": 1
+      },
+      "review": {
+        "pairVerified": true,
+        "sources": [
+          "https://api.upbit.com/v1/market/all",
+          "https://api.binance.com/api/v3/exchangeInfo",
+          "https://api.coinlore.net/api/coin/markets/?id=42227",
+          "https://community-api.coinmetrics.io/v4/reference-data/assets?assets=paxg"
+        ]
+      }
+    },
+    {
+      "id": "ASTER",
+      "name": "아스터",
+      "englishName": "Aster",
+      "aliases": ["Aster", "aster", "아스터"],
+      "color": "#0F666B",
+      "logo": "",
+      "coinloreId": "165637",
+      "rank": 51,
+      "markets": {
+        "upbit": null,
+        "binance": "ASTERUSDT"
+      },
+      "network": {
+        "id": "aster",
+        "metrics": {
+          "PriceUSD": {
+            "first": "2025-09-26",
+            "last": "2026-10-08"
+          }
+        },
+        "scope": "Aster"
+      },
+      "derivative": {
+        "symbol": "ASTERUSDT",
+        "quantityMultiplier": 1
+      },
+      "review": {
+        "pairVerified": true,
+        "sources": [
+          "https://api.upbit.com/v1/market/all",
+          "https://api.binance.com/api/v3/exchangeInfo",
+          "https://api.coinlore.net/api/coin/markets/?id=165637",
+          "https://community-api.coinmetrics.io/v4/reference-data/assets?assets=aster"
+        ]
+      }
+    },
+    {
+      "id": "CAKE",
+      "name": "팬케이크스왑",
+      "englishName": "PancakeSwap",
+      "aliases": ["PancakeSwap", "pancakeswap", "팬케이크스왑"],
+      "color": "#0F666B",
+      "logo": "",
+      "coinloreId": "45985",
+      "rank": 64,
+      "markets": {
+        "upbit": null,
+        "binance": "CAKEUSDT"
+      },
+      "network": {
+        "id": "cake",
+        "metrics": {
+          "PriceUSD": {
+            "first": "2021-02-19",
+            "last": "2026-10-08"
+          }
+        },
+        "scope": "PancakeSwap"
+      },
+      "derivative": {
+        "symbol": "CAKEUSDT",
+        "quantityMultiplier": 1
+      },
+      "review": {
+        "pairVerified": true,
+        "sources": [
+          "https://api.upbit.com/v1/market/all",
+          "https://api.binance.com/api/v3/exchangeInfo",
+          "https://api.coinlore.net/api/coin/markets/?id=45985",
+          "https://community-api.coinmetrics.io/v4/reference-data/assets?assets=cake"
+        ]
+      }
+    },
+    {
+      "id": "DASH",
+      "name": "대시",
+      "englishName": "Dash",
+      "aliases": ["Dash", "dash", "대시"],
+      "color": "#0F666B",
+      "logo": "",
+      "coinloreId": "8",
+      "rank": 74,
+      "markets": {
+        "upbit": null,
+        "binance": "DASHUSDT"
+      },
+      "network": {
+        "id": "dash",
+        "metrics": {
+          "AdrActCnt": {
+            "first": "2014-01-19",
+            "last": "2026-10-08"
+          },
+          "AdrBalCnt": {
+            "first": "2014-01-19",
+            "last": "2026-10-08"
+          },
+          "BlkCnt": {
+            "first": "2014-01-19",
+            "last": "2026-10-08"
+          },
+          "CapMVRVCur": {
+            "first": "2014-02-08",
+            "last": "2026-10-08"
+          },
+          "CapMrktCurUSD": {
+            "first": "2014-02-08",
+            "last": "2026-10-08"
+          },
+          "HashRate": {
+            "first": "2014-01-19",
+            "last": "2026-10-08"
+          },
+          "IssTotNtv": {
+            "first": "2014-01-19",
+            "last": "2026-10-08"
+          },
+          "PriceUSD": {
+            "first": "2014-02-08",
+            "last": "2026-10-08"
+          },
+          "SplyCur": {
+            "first": "2014-01-19",
+            "last": "2026-10-08"
+          },
+          "TxCnt": {
+            "first": "2014-01-19",
+            "last": "2026-10-08"
+          },
+          "TxTfrCnt": {
+            "first": "2014-01-19",
+            "last": "2026-10-08"
+          }
+        },
+        "scope": "Dash"
+      },
+      "derivative": {
+        "symbol": "DASHUSDT",
+        "quantityMultiplier": 1
+      },
+      "review": {
+        "pairVerified": true,
+        "sources": [
+          "https://api.upbit.com/v1/market/all",
+          "https://api.binance.com/api/v3/exchangeInfo",
+          "https://api.coinlore.net/api/coin/markets/?id=8",
+          "https://community-api.coinmetrics.io/v4/reference-data/assets?assets=dash"
+        ],
+        "inactiveMetrics": {
+          "FeeTotNtv": "Negative historical source values failed the fee-total validation; raw responses retained for review."
+        }
+      }
+    },
+    {
+      "id": "FET",
+      "name": "페치에이아이",
+      "englishName": "Fetch.ai",
+      "aliases": ["Fetch.ai", "fetch", "페치에이아이"],
+      "color": "#0F666B",
+      "logo": "",
+      "coinloreId": "33718",
+      "rank": 79,
+      "markets": {
+        "upbit": null,
+        "binance": "FETUSDT"
+      },
+      "network": {
+        "id": "fet",
+        "metrics": {
+          "PriceUSD": {
+            "first": "2019-03-01",
+            "last": "2026-10-08"
+          }
+        },
+        "scope": "Artificial Superintelligence Alliance"
+      },
+      "derivative": null,
+      "review": {
+        "pairVerified": true,
+        "sources": [
+          "https://api.upbit.com/v1/market/all",
+          "https://api.binance.com/api/v3/exchangeInfo",
+          "https://api.coinlore.net/api/coin/markets/?id=33718",
+          "https://community-api.coinmetrics.io/v4/reference-data/assets?assets=fet"
+        ]
+      }
+    },
+    {
+      "id": "NEXO",
+      "name": "넥소",
+      "englishName": "Nexo",
+      "aliases": ["Nexo", "nexo", "넥소"],
+      "color": "#0F666B",
+      "logo": "",
+      "coinloreId": "32604",
+      "rank": 82,
+      "markets": {
+        "upbit": null,
+        "binance": "NEXOUSDT"
+      },
+      "network": {
+        "id": "nexo",
+        "metrics": {
+          "PriceUSD": {
+            "first": "2019-06-22",
+            "last": "2026-10-08"
+          }
+        },
+        "scope": "Nexo"
+      },
+      "derivative": null,
+      "review": {
+        "pairVerified": true,
+        "sources": [
+          "https://api.upbit.com/v1/market/all",
+          "https://api.binance.com/api/v3/exchangeInfo",
+          "https://api.coinlore.net/api/coin/markets/?id=32604",
+          "https://community-api.coinmetrics.io/v4/reference-data/assets?assets=nexo"
+        ]
+      }
+    },
+    {
+      "id": "LDO",
+      "name": "리도다오",
+      "englishName": "Lido DAO",
+      "aliases": ["Lido DAO", "lido-dao", "리도다오"],
+      "color": "#0F666B",
+      "logo": "",
+      "coinloreId": "46981",
+      "rank": 95,
+      "markets": {
+        "upbit": null,
+        "binance": "LDOUSDT"
+      },
+      "network": {
+        "id": "ldo",
+        "metrics": {
+          "AdrActCnt": {
+            "first": "2020-12-17",
+            "last": "2026-10-08"
+          },
+          "AdrBalCnt": {
+            "first": "2020-12-17",
+            "last": "2026-10-08"
+          },
+          "CapMVRVCur": {
+            "first": "2021-09-11",
+            "last": "2026-10-08"
+          },
+          "CapMrktCurUSD": {
+            "first": "2021-09-11",
+            "last": "2026-10-08"
+          },
+          "IssTotNtv": {
+            "first": "2020-12-17",
+            "last": "2026-10-08"
+          },
+          "PriceUSD": {
+            "first": "2021-09-11",
+            "last": "2026-10-08"
+          },
+          "SplyCur": {
+            "first": "2020-12-17",
+            "last": "2026-10-08"
+          },
+          "TxCnt": {
+            "first": "2020-12-17",
+            "last": "2026-10-08"
+          },
+          "TxTfrCnt": {
+            "first": "2020-12-17",
+            "last": "2026-10-08"
+          }
+        },
+        "scope": "Lido DAO"
+      },
+      "derivative": {
+        "symbol": "LDOUSDT",
+        "quantityMultiplier": 1
+      },
+      "review": {
+        "pairVerified": true,
+        "sources": [
+          "https://api.upbit.com/v1/market/all",
+          "https://api.binance.com/api/v3/exchangeInfo",
+          "https://api.coinlore.net/api/coin/markets/?id=46981",
+          "https://community-api.coinmetrics.io/v4/reference-data/assets?assets=ldo"
+        ]
+      }
+    },
+    {
+      "id": "GNO",
+      "name": "노시스",
+      "englishName": "Gnosis",
+      "aliases": ["Gnosis", "gnosis-gno", "노시스"],
+      "color": "#0F666B",
+      "logo": "",
+      "coinloreId": "167",
+      "rank": 105,
+      "markets": {
+        "upbit": null,
+        "binance": "GNOUSDT"
+      },
+      "network": {
+        "id": "gno",
+        "metrics": {
+          "AdrActCnt": {
+            "first": "2017-04-18",
+            "last": "2026-10-08"
+          },
+          "AdrBalCnt": {
+            "first": "2017-04-18",
+            "last": "2026-10-08"
+          },
+          "CapMVRVCur": {
+            "first": "2017-05-02",
+            "last": "2026-10-08"
+          },
+          "CapMrktCurUSD": {
+            "first": "2017-05-02",
+            "last": "2026-10-08"
+          },
+          "IssTotNtv": {
+            "first": "2017-04-18",
+            "last": "2026-10-08"
+          },
+          "PriceUSD": {
+            "first": "2017-05-02",
+            "last": "2026-10-08"
+          },
+          "SplyCur": {
+            "first": "2017-04-18",
+            "last": "2026-10-08"
+          },
+          "TxCnt": {
+            "first": "2017-04-18",
+            "last": "2026-10-08"
+          },
+          "TxTfrCnt": {
+            "first": "2017-04-18",
+            "last": "2026-10-08"
+          }
+        },
+        "scope": "Gnosis"
+      },
+      "derivative": null,
+      "review": {
+        "pairVerified": true,
+        "sources": [
+          "https://api.upbit.com/v1/market/all",
+          "https://api.binance.com/api/v3/exchangeInfo",
+          "https://api.coinlore.net/api/coin/markets/?id=167",
+          "https://community-api.coinmetrics.io/v4/reference-data/assets?assets=gno"
+        ]
+      }
+    },
+    {
+      "id": "DCR",
+      "name": "디크레드",
+      "englishName": "Decred",
+      "aliases": ["Decred", "decred", "디크레드"],
+      "color": "#0F666B",
+      "logo": "",
+      "coinloreId": "99",
+      "rank": 106,
+      "markets": {
+        "upbit": null,
+        "binance": "DCRUSDT"
+      },
+      "network": {
+        "id": "dcr",
+        "metrics": {
+          "AdrActCnt": {
+            "first": "2016-02-08",
+            "last": "2026-10-08"
+          },
+          "AdrBalCnt": {
+            "first": "2016-02-08",
+            "last": "2026-10-08"
+          },
+          "BlkCnt": {
+            "first": "2016-02-08",
+            "last": "2026-10-08"
+          },
+          "CapMVRVCur": {
+            "first": "2016-05-17",
+            "last": "2026-10-08"
+          },
+          "CapMrktCurUSD": {
+            "first": "2016-05-17",
+            "last": "2026-10-08"
+          },
+          "PriceUSD": {
+            "first": "2016-05-17",
+            "last": "2026-10-08"
+          },
+          "SplyCur": {
+            "first": "2016-02-08",
+            "last": "2026-10-08"
+          },
+          "TxCnt": {
+            "first": "2016-02-08",
+            "last": "2026-10-08"
+          },
+          "TxTfrCnt": {
+            "first": "2016-02-08",
+            "last": "2026-10-08"
+          }
+        },
+        "scope": "Decred"
+      },
+      "derivative": null,
+      "review": {
+        "pairVerified": true,
+        "sources": [
+          "https://api.upbit.com/v1/market/all",
+          "https://api.binance.com/api/v3/exchangeInfo",
+          "https://api.coinlore.net/api/coin/markets/?id=99",
+          "https://community-api.coinmetrics.io/v4/reference-data/assets?assets=dcr"
+        ],
+        "inactiveMetrics": {
+          "FeeTotNtv": "Negative historical source values failed the fee-total validation; raw responses retained for review."
+        }
+      }
+    },
+    {
+      "id": "STRK",
+      "name": "스타크넷",
+      "englishName": "Starknet",
+      "aliases": ["Starknet", "starknet-token", "스타크넷"],
+      "color": "#0F666B",
+      "logo": "",
+      "coinloreId": "136109",
+      "rank": 108,
+      "markets": {
+        "upbit": null,
+        "binance": "STRKUSDT"
+      },
+      "network": {
+        "id": "strk",
+        "metrics": {
+          "PriceUSD": {
+            "first": "2022-11-16",
+            "last": "2026-10-08"
+          }
+        },
+        "scope": "Starknet"
+      },
+      "derivative": {
+        "symbol": "STRKUSDT",
+        "quantityMultiplier": 1
+      },
+      "review": {
+        "pairVerified": true,
+        "sources": [
+          "https://api.upbit.com/v1/market/all",
+          "https://api.binance.com/api/v3/exchangeInfo",
+          "https://api.coinlore.net/api/coin/markets/?id=136109",
+          "https://community-api.coinmetrics.io/v4/reference-data/assets?assets=strk"
+        ]
+      }
+    },
+    {
+      "id": "LUNC",
+      "name": "루나클래식",
+      "englishName": "Terra Classic",
+      "aliases": ["Terra Classic", "terra-luna", "루나클래식"],
+      "color": "#0F666B",
+      "logo": "",
+      "coinloreId": "48537",
+      "rank": 110,
+      "markets": {
+        "upbit": null,
+        "binance": "LUNCUSDT"
+      },
+      "network": null,
+      "derivative": {
+        "symbol": "1000LUNCUSDT",
+        "quantityMultiplier": 1000
+      },
+      "review": {
+        "pairVerified": true,
+        "sources": [
+          "https://api.upbit.com/v1/market/all",
+          "https://api.binance.com/api/v3/exchangeInfo",
+          "https://api.coinlore.net/api/coin/markets/?id=48537"
+        ]
+      }
+    },
+    {
+      "id": "AR",
+      "name": "알위브",
+      "englishName": "Arweave",
+      "aliases": ["Arweave", "arweave", "알위브"],
+      "color": "#0F666B",
+      "logo": "",
+      "coinloreId": "42441",
+      "rank": 112,
+      "markets": {
+        "upbit": null,
+        "binance": "ARUSDT"
+      },
+      "network": {
+        "id": "ar",
+        "metrics": {
+          "PriceUSD": {
+            "first": "2020-07-28",
+            "last": "2026-10-08"
+          }
+        },
+        "scope": "Arweave"
+      },
+      "derivative": {
+        "symbol": "ARUSDT",
+        "quantityMultiplier": 1
+      },
+      "review": {
+        "pairVerified": true,
+        "sources": [
+          "https://api.upbit.com/v1/market/all",
+          "https://api.binance.com/api/v3/exchangeInfo",
+          "https://api.coinlore.net/api/coin/markets/?id=42441",
+          "https://community-api.coinmetrics.io/v4/reference-data/assets?assets=ar"
+        ]
+      }
+    },
+    {
+      "id": "BONK",
+      "name": "봉크",
+      "englishName": "Bonk",
+      "aliases": ["Bonk", "bonk", "봉크"],
+      "color": "#0F666B",
+      "logo": "",
+      "coinloreId": "82537",
+      "rank": 113,
+      "markets": {
+        "upbit": null,
+        "binance": "BONKUSDT"
+      },
+      "network": {
+        "id": "bonk",
+        "metrics": {
+          "PriceUSD": {
+            "first": "2023-01-03",
+            "last": "2026-10-08"
+          }
+        },
+        "scope": "Bonk"
+      },
+      "derivative": {
+        "symbol": "1000BONKUSDT",
+        "quantityMultiplier": 1000
+      },
+      "review": {
+        "pairVerified": true,
+        "sources": [
+          "https://api.upbit.com/v1/market/all",
+          "https://api.binance.com/api/v3/exchangeInfo",
+          "https://api.coinlore.net/api/coin/markets/?id=82537",
+          "https://community-api.coinmetrics.io/v4/reference-data/assets?assets=bonk"
+        ]
+      }
+    },
+    {
+      "id": "FLOKI",
+      "name": "플로키",
+      "englishName": "Floki Inu",
+      "aliases": ["Floki Inu", "floki-inu", "플로키"],
+      "color": "#0F666B",
+      "logo": "",
+      "coinloreId": "51947",
+      "rank": 114,
+      "markets": {
+        "upbit": null,
+        "binance": "FLOKIUSDT"
+      },
+      "network": {
+        "id": "floki",
+        "metrics": {
+          "PriceUSD": {
+            "first": "2022-01-18",
+            "last": "2026-10-08"
+          }
+        },
+        "scope": "FLOKI"
+      },
+      "derivative": {
+        "symbol": "1000FLOKIUSDT",
+        "quantityMultiplier": 1000
+      },
+      "review": {
+        "pairVerified": true,
+        "sources": [
+          "https://api.upbit.com/v1/market/all",
+          "https://api.binance.com/api/v3/exchangeInfo",
+          "https://api.coinlore.net/api/coin/markets/?id=51947",
+          "https://community-api.coinmetrics.io/v4/reference-data/assets?assets=floki"
+        ]
+      }
+    },
+    {
+      "id": "RUNE",
+      "name": "토르체인",
+      "englishName": "THORChain",
+      "aliases": ["THORChain", "thorchain", "토르체인"],
+      "color": "#0F666B",
+      "logo": "",
+      "coinloreId": "36447",
+      "rank": 117,
+      "markets": {
+        "upbit": null,
+        "binance": "RUNEUSDT"
+      },
+      "network": {
+        "id": "rune",
+        "metrics": {
+          "PriceUSD": {
+            "first": "2021-05-18",
+            "last": "2026-10-08"
+          }
+        },
+        "scope": "THORChain"
+      },
+      "derivative": {
+        "symbol": "RUNEUSDT",
+        "quantityMultiplier": 1
+      },
+      "review": {
+        "pairVerified": true,
+        "sources": [
+          "https://api.upbit.com/v1/market/all",
+          "https://api.binance.com/api/v3/exchangeInfo",
+          "https://api.coinlore.net/api/coin/markets/?id=36447",
+          "https://community-api.coinmetrics.io/v4/reference-data/assets?assets=rune"
+        ]
+      }
+    },
+    {
+      "id": "JASMY",
+      "name": "재스미",
+      "englishName": "JasmyCoin",
+      "aliases": ["JasmyCoin", "jasmycoin", "재스미"],
+      "color": "#0F666B",
+      "logo": "",
+      "coinloreId": "48039",
+      "rank": 120,
+      "markets": {
+        "upbit": null,
+        "binance": "JASMYUSDT"
+      },
+      "network": {
+        "id": "jasmy",
+        "metrics": {
+          "PriceUSD": {
+            "first": "2021-02-17",
+            "last": "2026-10-08"
+          }
+        },
+        "scope": "JasmyCoin"
+      },
+      "derivative": {
+        "symbol": "JASMYUSDT",
+        "quantityMultiplier": 1
+      },
+      "review": {
+        "pairVerified": true,
+        "sources": [
+          "https://api.upbit.com/v1/market/all",
+          "https://api.binance.com/api/v3/exchangeInfo",
+          "https://api.coinlore.net/api/coin/markets/?id=48039",
+          "https://community-api.coinmetrics.io/v4/reference-data/assets?assets=jasmy"
+        ]
+      }
+    },
+    {
+      "id": "TWT",
+      "name": "트러스트월렛토큰",
+      "englishName": "Trust Wallet Token",
+      "aliases": ["Trust Wallet Token", "trust-wallet-token", "트러스트월렛토큰"],
+      "color": "#0F666B",
+      "logo": "",
+      "coinloreId": "44178",
+      "rank": 126,
+      "markets": {
+        "upbit": null,
+        "binance": "TWTUSDT"
+      },
+      "network": {
+        "id": "twt",
+        "metrics": {
+          "PriceUSD": {
+            "first": "2022-06-22",
+            "last": "2026-10-08"
+          }
+        },
+        "scope": "Trust Wallet Token"
+      },
+      "derivative": {
+        "symbol": "TWTUSDT",
+        "quantityMultiplier": 1
+      },
+      "review": {
+        "pairVerified": true,
+        "sources": [
+          "https://api.upbit.com/v1/market/all",
+          "https://api.binance.com/api/v3/exchangeInfo",
+          "https://api.coinlore.net/api/coin/markets/?id=44178",
+          "https://community-api.coinmetrics.io/v4/reference-data/assets?assets=twt"
+        ]
+      }
+    },
+    {
+      "id": "S",
+      "name": "소닉",
+      "englishName": "Sonic (prev. FTM)",
+      "aliases": ["Sonic (prev. FTM)", "sonic-prev-ftm", "소닉"],
+      "color": "#0F666B",
+      "logo": "",
+      "coinloreId": "148191",
+      "rank": 142,
+      "markets": {
+        "upbit": null,
+        "binance": "SUSDT"
+      },
+      "network": {
+        "id": "s",
+        "metrics": {
+          "PriceUSD": {
+            "first": "2025-01-24",
+            "last": "2026-10-08"
+          }
+        },
+        "scope": "Sonic (prev. FTM)"
+      },
+      "derivative": {
+        "symbol": "SUSDT",
+        "quantityMultiplier": 1
+      },
+      "review": {
+        "pairVerified": true,
+        "sources": [
+          "https://api.upbit.com/v1/market/all",
+          "https://api.binance.com/api/v3/exchangeInfo",
+          "https://api.coinlore.net/api/coin/markets/?id=148191",
+          "https://community-api.coinmetrics.io/v4/reference-data/assets?assets=s"
+        ]
+      }
+    },
+    {
+      "id": "CVX",
+      "name": "컨벡스파이낸스",
+      "englishName": "Convex Finance",
+      "aliases": ["Convex Finance", "convex-finance", "컨벡스파이낸스"],
+      "color": "#0F666B",
+      "logo": "",
+      "coinloreId": "48829",
+      "rank": 143,
+      "markets": {
+        "upbit": null,
+        "binance": "CVXUSDT"
+      },
+      "network": {
+        "id": "cvx",
+        "metrics": {
+          "PriceUSD": {
+            "first": "2021-06-03",
+            "last": "2026-10-08"
+          }
+        },
+        "scope": "Convex Finance"
+      },
+      "derivative": {
+        "symbol": "CVXUSDT",
+        "quantityMultiplier": 1
+      },
+      "review": {
+        "pairVerified": true,
+        "sources": [
+          "https://api.upbit.com/v1/market/all",
+          "https://api.binance.com/api/v3/exchangeInfo",
+          "https://api.coinlore.net/api/coin/markets/?id=48829",
+          "https://community-api.coinmetrics.io/v4/reference-data/assets?assets=cvx"
+        ]
+      }
+    },
+    {
+      "id": "SFP",
+      "name": "세이프팔",
+      "englishName": "SafePal",
+      "aliases": ["SafePal", "safepal", "세이프팔"],
+      "color": "#0F666B",
+      "logo": "",
+      "coinloreId": "47369",
+      "rank": 161,
+      "markets": {
+        "upbit": null,
+        "binance": "SFPUSDT"
+      },
+      "network": {
+        "id": "sfp",
+        "metrics": {
+          "PriceUSD": {
+            "first": "2021-02-08",
+            "last": "2026-10-08"
+          }
+        },
+        "scope": "SafePal"
+      },
+      "derivative": null,
+      "review": {
+        "pairVerified": true,
+        "sources": [
+          "https://api.upbit.com/v1/market/all",
+          "https://api.binance.com/api/v3/exchangeInfo",
+          "https://api.coinlore.net/api/coin/markets/?id=47369",
+          "https://community-api.coinmetrics.io/v4/reference-data/assets?assets=sfp"
+        ]
+      }
+    },
+    {
+      "id": "ZEN",
+      "name": "호라이즌",
+      "englishName": "Horizen",
+      "aliases": ["Horizen", "zencash", "호라이즌"],
+      "color": "#0F666B",
+      "logo": "",
+      "coinloreId": "186",
+      "rank": 177,
+      "markets": {
+        "upbit": null,
+        "binance": "ZENUSDT"
+      },
+      "network": {
+        "id": "zen",
+        "metrics": {
+          "PriceUSD": {
+            "first": "2019-06-22",
+            "last": "2026-10-08"
+          }
+        },
+        "scope": "Horizen"
+      },
+      "derivative": {
+        "symbol": "ZENUSDT",
+        "quantityMultiplier": 1
+      },
+      "review": {
+        "pairVerified": true,
+        "sources": [
+          "https://api.upbit.com/v1/market/all",
+          "https://api.binance.com/api/v3/exchangeInfo",
+          "https://api.coinlore.net/api/coin/markets/?id=186",
+          "https://community-api.coinmetrics.io/v4/reference-data/assets?assets=zen"
+        ]
+      }
+    },
+    {
+      "id": "APE",
+      "name": "에이프코인",
+      "englishName": "APEcoin",
+      "aliases": ["APEcoin", "apecoin", "에이프코인"],
+      "color": "#0F666B",
+      "logo": "",
+      "coinloreId": "45930",
+      "rank": 179,
+      "markets": {
+        "upbit": null,
+        "binance": "APEUSDT"
+      },
+      "network": {
+        "id": "ape",
+        "metrics": {
+          "PriceUSD": {
+            "first": "2022-03-25",
+            "last": "2026-10-08"
+          }
+        },
+        "scope": "ApeCoin"
+      },
+      "derivative": {
+        "symbol": "APEUSDT",
+        "quantityMultiplier": 1
+      },
+      "review": {
+        "pairVerified": true,
+        "sources": [
+          "https://api.upbit.com/v1/market/all",
+          "https://api.binance.com/api/v3/exchangeInfo",
+          "https://api.coinlore.net/api/coin/markets/?id=45930",
+          "https://community-api.coinmetrics.io/v4/reference-data/assets?assets=ape"
+        ]
+      }
+    },
+    {
+      "id": "DYDX",
+      "name": "디와이디엑스",
+      "englishName": "dYdX",
+      "aliases": ["dYdX", "dydx", "디와이디엑스"],
+      "color": "#0F666B",
+      "logo": "",
+      "coinloreId": "54377",
+      "rank": 181,
+      "markets": {
+        "upbit": null,
+        "binance": "DYDXUSDT"
+      },
+      "network": {
+        "id": "dydx",
+        "metrics": {
+          "PriceUSD": {
+            "first": "2021-09-09",
+            "last": "2026-10-08"
+          }
+        },
+        "scope": "dYdX"
+      },
+      "derivative": {
+        "symbol": "DYDXUSDT",
+        "quantityMultiplier": 1
+      },
+      "review": {
+        "pairVerified": true,
+        "sources": [
+          "https://api.upbit.com/v1/market/all",
+          "https://api.binance.com/api/v3/exchangeInfo",
+          "https://api.coinlore.net/api/coin/markets/?id=54377",
+          "https://community-api.coinmetrics.io/v4/reference-data/assets?assets=dydx"
+        ]
+      }
+    },
+    {
+      "id": "DEXE",
+      "name": "덱스",
+      "englishName": "DeXe",
+      "aliases": ["DeXe", "dexe", "덱스"],
+      "color": "#0F666B",
+      "logo": "",
+      "coinloreId": "46273",
+      "rank": 184,
+      "markets": {
+        "upbit": null,
+        "binance": "DEXEUSDT"
+      },
+      "network": {
+        "id": "dexe",
+        "metrics": {
+          "PriceUSD": {
+            "first": "2021-01-21",
+            "last": "2026-10-08"
+          }
+        },
+        "scope": "DeXe"
+      },
+      "derivative": {
+        "symbol": "DEXEUSDT",
+        "quantityMultiplier": 1
+      },
+      "review": {
+        "pairVerified": true,
+        "sources": [
+          "https://api.upbit.com/v1/market/all",
+          "https://api.binance.com/api/v3/exchangeInfo",
+          "https://api.coinlore.net/api/coin/markets/?id=46273",
+          "https://community-api.coinmetrics.io/v4/reference-data/assets?assets=dexe"
+        ]
+      }
+    },
+    {
+      "id": "GALA",
+      "name": "갈라",
+      "englishName": "Gala",
+      "aliases": ["Gala", "gala", "갈라"],
+      "color": "#0F666B",
+      "logo": "",
+      "coinloreId": "45577",
+      "rank": 185,
+      "markets": {
+        "upbit": null,
+        "binance": "GALAUSDT"
+      },
+      "network": {
+        "id": "gala",
+        "metrics": {
+          "PriceUSD": {
+            "first": "2021-08-13",
+            "last": "2026-10-08"
+          }
+        },
+        "scope": "Gala"
+      },
+      "derivative": {
+        "symbol": "GALAUSDT",
+        "quantityMultiplier": 1
+      },
+      "review": {
+        "pairVerified": true,
+        "sources": [
+          "https://api.upbit.com/v1/market/all",
+          "https://api.binance.com/api/v3/exchangeInfo",
+          "https://api.coinlore.net/api/coin/markets/?id=45577",
+          "https://community-api.coinmetrics.io/v4/reference-data/assets?assets=gala"
+        ]
+      }
+    },
+    {
+      "id": "RSR",
+      "name": "리저브라이트",
+      "englishName": "Reserve Rights",
+      "aliases": ["Reserve Rights", "reserve-rights", "리저브라이트"],
+      "color": "#0F666B",
+      "logo": "",
+      "coinloreId": "33878",
+      "rank": 195,
+      "markets": {
+        "upbit": null,
+        "binance": "RSRUSDT"
+      },
+      "network": {
+        "id": "rsr",
+        "metrics": {
+          "PriceUSD": {
+            "first": "2019-07-17",
+            "last": "2026-10-08"
+          }
+        },
+        "scope": "Reserve Rights"
+      },
+      "derivative": {
+        "symbol": "RSRUSDT",
+        "quantityMultiplier": 1
+      },
+      "review": {
+        "pairVerified": true,
+        "sources": [
+          "https://api.upbit.com/v1/market/all",
+          "https://api.binance.com/api/v3/exchangeInfo",
+          "https://api.coinlore.net/api/coin/markets/?id=33878",
+          "https://community-api.coinmetrics.io/v4/reference-data/assets?assets=rsr"
+        ]
+      }
+    },
+    {
+      "id": "RLC",
+      "name": "아이젝",
+      "englishName": "iExec RLC",
+      "aliases": ["iExec RLC", "rlc", "아이젝"],
+      "color": "#0F666B",
+      "logo": "",
+      "coinloreId": "166",
+      "rank": 196,
+      "markets": {
+        "upbit": null,
+        "binance": "RLCUSDT"
+      },
+      "network": {
+        "id": "rlc",
+        "metrics": {
+          "PriceUSD": {
+            "first": "2017-04-21",
+            "last": "2026-10-08"
+          }
+        },
+        "scope": "iExec RLC"
+      },
+      "derivative": {
+        "symbol": "RLCUSDT",
+        "quantityMultiplier": 1
+      },
+      "review": {
+        "pairVerified": true,
+        "sources": [
+          "https://api.upbit.com/v1/market/all",
+          "https://api.binance.com/api/v3/exchangeInfo",
+          "https://api.coinlore.net/api/coin/markets/?id=166",
+          "https://community-api.coinmetrics.io/v4/reference-data/assets?assets=rlc"
+        ]
+      }
+    },
+    {
+      "id": "ORDI",
+      "name": "오디널스",
+      "englishName": "Ordinals",
+      "aliases": ["Ordinals", "ordinals", "오디널스"],
+      "color": "#0F666B",
+      "logo": "",
+      "coinloreId": "97137",
+      "rank": 199,
+      "markets": {
+        "upbit": null,
+        "binance": "ORDIUSDT"
+      },
+      "network": {
+        "id": "ordi",
+        "metrics": {
+          "PriceUSD": {
+            "first": "2023-05-08",
+            "last": "2026-10-08"
+          }
+        },
+        "scope": "ORDI"
+      },
+      "derivative": {
+        "symbol": "ORDIUSDT",
+        "quantityMultiplier": 1
+      },
+      "review": {
+        "pairVerified": true,
+        "sources": [
+          "https://api.upbit.com/v1/market/all",
+          "https://api.binance.com/api/v3/exchangeInfo",
+          "https://api.coinlore.net/api/coin/markets/?id=97137",
+          "https://community-api.coinmetrics.io/v4/reference-data/assets?assets=ordi"
+        ]
+      }
+    },
+    {
+      "id": "GMX",
+      "name": "지엠엑스",
+      "englishName": "GMX",
+      "aliases": ["GMX", "gmx", "지엠엑스"],
+      "color": "#0F666B",
+      "logo": "",
+      "coinloreId": "77735",
+      "rank": 202,
+      "markets": {
+        "upbit": null,
+        "binance": "GMXUSDT"
+      },
+      "network": {
+        "id": "gmx",
+        "metrics": {
+          "PriceUSD": {
+            "first": "2022-03-09",
+            "last": "2026-10-08"
+          }
+        },
+        "scope": "GMX"
+      },
+      "derivative": {
+        "symbol": "GMXUSDT",
+        "quantityMultiplier": 1
+      },
+      "review": {
+        "pairVerified": true,
+        "sources": [
+          "https://api.upbit.com/v1/market/all",
+          "https://api.binance.com/api/v3/exchangeInfo",
+          "https://api.coinlore.net/api/coin/markets/?id=77735",
+          "https://community-api.coinmetrics.io/v4/reference-data/assets?assets=gmx"
+        ]
+      }
+    },
+    {
+      "id": "KSM",
+      "name": "쿠사마",
+      "englishName": "Kusama",
+      "aliases": ["Kusama", "kusama", "쿠사마"],
+      "color": "#0F666B",
+      "logo": "",
+      "coinloreId": "42277",
+      "rank": 206,
+      "markets": {
+        "upbit": null,
+        "binance": "KSMUSDT"
+      },
+      "network": {
+        "id": "ksm",
+        "metrics": {
+          "PriceUSD": {
+            "first": "2020-06-13",
+            "last": "2026-10-08"
+          }
+        },
+        "scope": "Kusama"
+      },
+      "derivative": {
+        "symbol": "KSMUSDT",
+        "quantityMultiplier": 1
+      },
+      "review": {
+        "pairVerified": true,
+        "sources": [
+          "https://api.upbit.com/v1/market/all",
+          "https://api.binance.com/api/v3/exchangeInfo",
+          "https://api.coinlore.net/api/coin/markets/?id=42277",
+          "https://community-api.coinmetrics.io/v4/reference-data/assets?assets=ksm"
+        ]
+      }
+    },
+    {
+      "id": "FTT",
+      "name": "에프티엑스토큰",
+      "englishName": "FTX Token",
+      "aliases": ["FTX Token", "ftx-token", "에프티엑스토큰"],
+      "color": "#0F666B",
+      "logo": "",
+      "coinloreId": "48547",
+      "rank": 208,
+      "markets": {
+        "upbit": null,
+        "binance": "FTTUSDT"
+      },
+      "network": {
+        "id": "ftt",
+        "metrics": {
+          "AdrActCnt": {
+            "first": "2019-04-21",
+            "last": "2026-10-08"
+          },
+          "AdrBalCnt": {
+            "first": "2019-04-21",
+            "last": "2026-10-08"
+          },
+          "CapMVRVCur": {
+            "first": "2019-08-20",
+            "last": "2026-10-08"
+          },
+          "CapMrktCurUSD": {
+            "first": "2019-08-20",
+            "last": "2026-10-08"
+          },
+          "IssTotNtv": {
+            "first": "2019-04-21",
+            "last": "2026-10-08"
+          },
+          "PriceUSD": {
+            "first": "2019-08-20",
+            "last": "2026-10-08"
+          },
+          "SplyCur": {
+            "first": "2019-04-21",
+            "last": "2026-10-08"
+          },
+          "TxCnt": {
+            "first": "2019-04-21",
+            "last": "2026-10-08"
+          },
+          "TxTfrCnt": {
+            "first": "2019-04-21",
+            "last": "2026-10-08"
+          }
+        },
+        "scope": "FTX Token"
+      },
+      "derivative": null,
+      "review": {
+        "pairVerified": true,
+        "sources": [
+          "https://api.upbit.com/v1/market/all",
+          "https://api.binance.com/api/v3/exchangeInfo",
+          "https://api.coinlore.net/api/coin/markets/?id=48547",
+          "https://community-api.coinmetrics.io/v4/reference-data/assets?assets=ftt"
+        ]
+      }
+    },
+    {
+      "id": "SNX",
+      "name": "신세틱스",
+      "englishName": "Synthetix Network",
+      "aliases": ["Synthetix Network", "synthetix-network-token", "신세틱스"],
+      "color": "#0F666B",
+      "logo": "",
+      "coinloreId": "33723",
+      "rank": 213,
+      "markets": {
+        "upbit": null,
+        "binance": "SNXUSDT"
+      },
+      "network": {
+        "id": "snx",
+        "metrics": {
+          "AdrActCnt": {
+            "first": "2018-03-11",
+            "last": "2026-10-08"
+          },
+          "AdrBalCnt": {
+            "first": "2018-03-11",
+            "last": "2026-10-08"
+          },
+          "CapMVRVCur": {
+            "first": "2020-04-09",
+            "last": "2026-10-08"
+          },
+          "CapMrktCurUSD": {
+            "first": "2020-04-09",
+            "last": "2026-10-08"
+          },
+          "IssTotNtv": {
+            "first": "2018-03-11",
+            "last": "2026-10-08"
+          },
+          "PriceUSD": {
+            "first": "2020-04-09",
+            "last": "2026-10-08"
+          },
+          "SplyCur": {
+            "first": "2018-03-11",
+            "last": "2026-10-08"
+          },
+          "TxCnt": {
+            "first": "2018-03-11",
+            "last": "2026-10-08"
+          },
+          "TxTfrCnt": {
+            "first": "2018-03-11",
+            "last": "2026-10-08"
+          }
+        },
+        "scope": "Synthetix"
+      },
+      "derivative": {
+        "symbol": "SNXUSDT",
+        "quantityMultiplier": 1
+      },
+      "review": {
+        "pairVerified": true,
+        "sources": [
+          "https://api.upbit.com/v1/market/all",
+          "https://api.binance.com/api/v3/exchangeInfo",
+          "https://api.coinlore.net/api/coin/markets/?id=33723",
+          "https://community-api.coinmetrics.io/v4/reference-data/assets?assets=snx"
+        ]
+      }
+    },
+    {
+      "id": "YFI",
+      "name": "연파이낸스",
+      "englishName": "yearn.finance",
+      "aliases": ["yearn.finance", "yearn-finance", "연파이낸스"],
+      "color": "#0F666B",
+      "logo": "",
+      "coinloreId": "44710",
+      "rank": 218,
+      "markets": {
+        "upbit": null,
+        "binance": "YFIUSDT"
+      },
+      "network": {
+        "id": "yfi",
+        "metrics": {
+          "AdrActCnt": {
+            "first": "2020-07-17",
+            "last": "2026-10-08"
+          },
+          "AdrBalCnt": {
+            "first": "2020-07-17",
+            "last": "2026-10-08"
+          },
+          "CapMVRVCur": {
+            "first": "2020-07-25",
+            "last": "2026-10-08"
+          },
+          "CapMrktCurUSD": {
+            "first": "2020-07-25",
+            "last": "2026-10-08"
+          },
+          "IssTotNtv": {
+            "first": "2020-07-17",
+            "last": "2026-10-08"
+          },
+          "PriceUSD": {
+            "first": "2020-07-25",
+            "last": "2026-10-08"
+          },
+          "SplyCur": {
+            "first": "2020-07-17",
+            "last": "2026-10-08"
+          },
+          "TxCnt": {
+            "first": "2020-07-17",
+            "last": "2026-10-08"
+          },
+          "TxTfrCnt": {
+            "first": "2020-07-17",
+            "last": "2026-10-08"
+          }
+        },
+        "scope": "yearn.finance"
+      },
+      "derivative": {
+        "symbol": "YFIUSDT",
+        "quantityMultiplier": 1
+      },
+      "review": {
+        "pairVerified": true,
+        "sources": [
+          "https://api.upbit.com/v1/market/all",
+          "https://api.binance.com/api/v3/exchangeInfo",
+          "https://api.coinlore.net/api/coin/markets/?id=44710",
+          "https://community-api.coinmetrics.io/v4/reference-data/assets?assets=yfi"
+        ]
+      }
+    },
+    {
+      "id": "EIGEN",
+      "name": "아이겐레이어",
+      "englishName": "EigenLayer",
+      "aliases": ["EigenLayer", "eigenlayer", "아이겐레이어"],
+      "color": "#0F666B",
+      "logo": "",
+      "coinloreId": "141205",
+      "rank": 221,
+      "markets": {
+        "upbit": null,
+        "binance": "EIGENUSDT"
+      },
+      "network": {
+        "id": "eigen",
+        "metrics": {
+          "PriceUSD": {
+            "first": "2024-10-01",
+            "last": "2026-10-08"
+          }
+        },
+        "scope": "EigenLayer"
+      },
+      "derivative": {
+        "symbol": "EIGENUSDT",
+        "quantityMultiplier": 1
+      },
+      "review": {
+        "pairVerified": true,
+        "sources": [
+          "https://api.upbit.com/v1/market/all",
+          "https://api.binance.com/api/v3/exchangeInfo",
+          "https://api.coinlore.net/api/coin/markets/?id=141205",
+          "https://community-api.coinmetrics.io/v4/reference-data/assets?assets=eigen"
+        ]
+      }
+    },
+    {
+      "id": "MUBARAK",
+      "name": "무바락",
+      "englishName": "Mubarak",
+      "aliases": ["Mubarak", "mubarak", "무바락"],
+      "color": "#0F666B",
+      "logo": "",
+      "coinloreId": "151139",
+      "rank": 222,
+      "markets": {
+        "upbit": null,
+        "binance": "MUBARAKUSDT"
+      },
+      "network": {
+        "id": "mubarak",
+        "metrics": {
+          "PriceUSD": {
+            "first": "2025-05-14",
+            "last": "2026-10-08"
+          }
+        },
+        "scope": "Mubarak"
+      },
+      "derivative": {
+        "symbol": "MUBARAKUSDT",
+        "quantityMultiplier": 1
+      },
+      "review": {
+        "pairVerified": true,
+        "sources": [
+          "https://api.upbit.com/v1/market/all",
+          "https://api.binance.com/api/v3/exchangeInfo",
+          "https://api.coinlore.net/api/coin/markets/?id=151139",
+          "https://community-api.coinmetrics.io/v4/reference-data/assets?assets=mubarak"
+        ]
+      }
+    },
+    {
+      "id": "HUMA",
+      "name": "휴마파이낸스",
+      "englishName": "Huma Finance",
+      "aliases": ["Huma Finance", "huma-finance", "휴마파이낸스"],
+      "color": "#0F666B",
+      "logo": "",
+      "coinloreId": "158425",
+      "rank": 228,
+      "markets": {
+        "upbit": null,
+        "binance": "HUMAUSDT"
+      },
+      "network": {
+        "id": "huma",
+        "metrics": {
+          "PriceUSD": {
+            "first": "2025-08-08",
+            "last": "2026-10-08"
+          }
+        },
+        "scope": "Huma Finance"
+      },
+      "derivative": {
+        "symbol": "HUMAUSDT",
+        "quantityMultiplier": 1
+      },
+      "review": {
+        "pairVerified": true,
+        "sources": [
+          "https://api.upbit.com/v1/market/all",
+          "https://api.binance.com/api/v3/exchangeInfo",
+          "https://api.coinlore.net/api/coin/markets/?id=158425",
+          "https://community-api.coinmetrics.io/v4/reference-data/assets?assets=huma"
+        ]
+      }
+    },
+    {
+      "id": "BOME",
+      "name": "북오브밈",
+      "englishName": "BOOK OF MEME",
+      "aliases": ["BOOK OF MEME", "book-of-meme", "북오브밈"],
+      "color": "#0F666B",
+      "logo": "",
+      "coinloreId": "126767",
+      "rank": 229,
+      "markets": {
+        "upbit": null,
+        "binance": "BOMEUSDT"
+      },
+      "network": {
+        "id": "bome",
+        "metrics": {
+          "PriceUSD": {
+            "first": "2024-03-28",
+            "last": "2026-10-08"
+          }
+        },
+        "scope": "BOOK OF MEME"
+      },
+      "derivative": {
+        "symbol": "BOMEUSDT",
+        "quantityMultiplier": 1
+      },
+      "review": {
+        "pairVerified": true,
+        "sources": [
+          "https://api.upbit.com/v1/market/all",
+          "https://api.binance.com/api/v3/exchangeInfo",
+          "https://api.coinlore.net/api/coin/markets/?id=126767",
+          "https://community-api.coinmetrics.io/v4/reference-data/assets?assets=bome"
+        ]
+      }
+    },
+    {
+      "id": "HOT",
+      "name": "홀로",
+      "englishName": "Holo",
+      "aliases": ["Holo", "holo", "홀로"],
+      "color": "#0F666B",
+      "logo": "",
+      "coinloreId": "32686",
+      "rank": 230,
+      "markets": {
+        "upbit": null,
+        "binance": "HOTUSDT"
+      },
+      "network": null,
+      "derivative": null,
+      "review": {
+        "pairVerified": true,
+        "sources": [
+          "https://api.upbit.com/v1/market/all",
+          "https://api.binance.com/api/v3/exchangeInfo",
+          "https://api.coinlore.net/api/coin/markets/?id=32686"
+        ]
+      }
+    },
+    {
+      "id": "DGB",
+      "name": "디지바이트",
+      "englishName": "Digibyte",
+      "aliases": ["Digibyte", "digibyte", "디지바이트"],
+      "color": "#0F666B",
+      "logo": "",
+      "coinloreId": "43",
+      "rank": 232,
+      "markets": {
+        "upbit": null,
+        "binance": "DGBUSDT"
+      },
+      "network": {
+        "id": "dgb",
+        "metrics": {
+          "AdrActCnt": {
+            "first": "2014-01-10",
+            "last": "2026-10-08"
+          },
+          "AdrBalCnt": {
+            "first": "2014-01-10",
+            "last": "2026-10-08"
+          },
+          "BlkCnt": {
+            "first": "2014-01-10",
+            "last": "2026-10-08"
+          },
+          "CapMVRVCur": {
+            "first": "2015-02-10",
+            "last": "2026-10-08"
+          },
+          "CapMrktCurUSD": {
+            "first": "2015-02-10",
+            "last": "2026-10-08"
+          },
+          "FeeTotNtv": {
+            "first": "2014-01-10",
+            "last": "2026-10-08"
+          },
+          "IssTotNtv": {
+            "first": "2014-01-10",
+            "last": "2026-10-08"
+          },
+          "PriceUSD": {
+            "first": "2015-02-10",
+            "last": "2026-10-08"
+          },
+          "SplyCur": {
+            "first": "2014-01-10",
+            "last": "2026-10-08"
+          },
+          "TxCnt": {
+            "first": "2014-01-10",
+            "last": "2026-10-08"
+          },
+          "TxTfrCnt": {
+            "first": "2014-01-10",
+            "last": "2026-10-08"
+          }
+        },
+        "scope": "DigiByte"
+      },
+      "derivative": null,
+      "review": {
+        "pairVerified": true,
+        "sources": [
+          "https://api.upbit.com/v1/market/all",
+          "https://api.binance.com/api/v3/exchangeInfo",
+          "https://api.coinlore.net/api/coin/markets/?id=43",
+          "https://community-api.coinmetrics.io/v4/reference-data/assets?assets=dgb"
+        ]
+      }
+    },
+    {
+      "id": "BANANAS31",
+      "name": "바나나포스케일",
+      "englishName": "Banana For Scale",
+      "aliases": ["Banana For Scale", "banana-for-scale", "바나나포스케일"],
+      "color": "#0F666B",
+      "logo": "",
+      "coinloreId": "141501",
+      "rank": 236,
+      "markets": {
+        "upbit": null,
+        "binance": "BANANAS31USDT"
+      },
+      "network": {
+        "id": "bananas31",
+        "metrics": {
+          "PriceUSD": {
+            "first": "2025-03-28",
+            "last": "2026-10-08"
+          }
+        },
+        "scope": "Banana For Scale"
+      },
+      "derivative": {
+        "symbol": "BANANAS31USDT",
+        "quantityMultiplier": 1
+      },
+      "review": {
+        "pairVerified": true,
+        "sources": [
+          "https://api.upbit.com/v1/market/all",
+          "https://api.binance.com/api/v3/exchangeInfo",
+          "https://api.coinlore.net/api/coin/markets/?id=141501",
+          "https://community-api.coinmetrics.io/v4/reference-data/assets?assets=bananas31"
+        ]
+      }
+    },
+    {
+      "id": "0G",
+      "name": "제로지",
+      "englishName": "0G",
+      "aliases": ["0G", "zero-gravity"],
+      "color": "#0F666B",
+      "logo": "",
+      "coinloreId": "165641",
+      "rank": 250,
+      "markets": {
+        "upbit": "KRW-0G",
+        "binance": "0GUSDT"
+      },
+      "network": {
+        "id": "0g",
+        "metrics": {
+          "PriceUSD": {
+            "first": "2025-09-26",
+            "last": "2026-10-08"
+          }
+        },
+        "scope": "0G"
+      },
+      "derivative": {
+        "symbol": "0GUSDT",
+        "quantityMultiplier": 1
+      },
+      "review": {
+        "pairVerified": true,
+        "sources": [
+          "https://api.upbit.com/v1/market/all",
+          "https://api.binance.com/api/v3/exchangeInfo",
+          "https://api.coinlore.net/api/coin/markets/?id=165641",
+          "https://community-api.coinmetrics.io/v4/reference-data/assets?assets=0g"
+        ]
+      }
+    },
+    {
+      "id": "ENJ",
+      "name": "엔진코인",
+      "englishName": "Enjin Coin",
+      "aliases": ["Enjin Coin", "enjin-coin", "엔진코인"],
+      "color": "#0F666B",
+      "logo": "",
+      "coinloreId": "2581",
+      "rank": 252,
+      "markets": {
+        "upbit": null,
+        "binance": "ENJUSDT"
+      },
+      "network": {
+        "id": "enj",
+        "metrics": {
+          "PriceUSD": {
+            "first": "2017-11-02",
+            "last": "2026-10-08"
+          }
+        },
+        "scope": "Enjin Coin"
+      },
+      "derivative": {
+        "symbol": "ENJUSDT",
+        "quantityMultiplier": 1
+      },
+      "review": {
+        "pairVerified": true,
+        "sources": [
+          "https://api.upbit.com/v1/market/all",
+          "https://api.binance.com/api/v3/exchangeInfo",
+          "https://api.coinlore.net/api/coin/markets/?id=2581",
+          "https://community-api.coinmetrics.io/v4/reference-data/assets?assets=enj"
+        ]
+      }
+    },
+    {
+      "id": "ROSE",
+      "name": "오아시스",
+      "englishName": "Oasis Network",
+      "aliases": ["Oasis Network", "oasis-network", "오아시스"],
+      "color": "#0F666B",
+      "logo": "",
+      "coinloreId": "46572",
+      "rank": 257,
+      "markets": {
+        "upbit": null,
+        "binance": "ROSEUSDT"
+      },
+      "network": {
+        "id": "rose",
+        "metrics": {
+          "PriceUSD": {
+            "first": "2020-11-20",
+            "last": "2026-10-08"
+          }
+        },
+        "scope": "Oasis"
+      },
+      "derivative": {
+        "symbol": "ROSEUSDT",
+        "quantityMultiplier": 1
+      },
+      "review": {
+        "pairVerified": true,
+        "sources": [
+          "https://api.upbit.com/v1/market/all",
+          "https://api.binance.com/api/v3/exchangeInfo",
+          "https://api.coinlore.net/api/coin/markets/?id=46572",
+          "https://community-api.coinmetrics.io/v4/reference-data/assets?assets=rose"
+        ]
+      }
+    },
+    {
+      "id": "ONT",
+      "name": "온톨로지",
+      "englishName": "Ontology",
+      "aliases": ["Ontology", "ontology"],
+      "color": "#0F666B",
+      "logo": "",
+      "coinloreId": "32331",
+      "rank": 260,
+      "markets": {
+        "upbit": "KRW-ONT",
+        "binance": "ONTUSDT"
+      },
+      "network": {
+        "id": "ont",
+        "metrics": {
+          "PriceUSD": {
+            "first": "2018-03-09",
+            "last": "2026-10-08"
+          }
+        },
+        "scope": "Ontology"
+      },
+      "derivative": {
+        "symbol": "ONTUSDT",
+        "quantityMultiplier": 1
+      },
+      "review": {
+        "pairVerified": true,
+        "sources": [
+          "https://api.upbit.com/v1/market/all",
+          "https://api.binance.com/api/v3/exchangeInfo",
+          "https://api.coinlore.net/api/coin/markets/?id=32331",
+          "https://community-api.coinmetrics.io/v4/reference-data/assets?assets=ont"
+        ]
+      }
+    },
+    {
+      "id": "ASTR",
+      "name": "아스타",
+      "englishName": "Astar",
+      "aliases": ["Astar", "astar"],
+      "color": "#0F666B",
+      "logo": "",
+      "coinloreId": "62661",
+      "rank": 261,
+      "markets": {
+        "upbit": "KRW-ASTR",
+        "binance": "ASTRUSDT"
+      },
+      "network": {
+        "id": "astr",
+        "metrics": {
+          "PriceUSD": {
+            "first": "2022-06-22",
+            "last": "2026-10-08"
+          }
+        },
+        "scope": "Astar"
+      },
+      "derivative": {
+        "symbol": "ASTRUSDT",
+        "quantityMultiplier": 1
+      },
+      "review": {
+        "pairVerified": true,
+        "sources": [
+          "https://api.upbit.com/v1/market/all",
+          "https://api.binance.com/api/v3/exchangeInfo",
+          "https://api.coinlore.net/api/coin/markets/?id=62661",
+          "https://community-api.coinmetrics.io/v4/reference-data/assets?assets=astr"
+        ]
+      }
+    }
+  ],
+  "reviewStatus": "identity-and-recent-samples-verified",
+  "excludedAmbiguities": {
+    "GTC": "CoinLore Game.com differs from Binance Gitcoin; excluded",
+    "FRAX": "CoinLore stablecoin differs from Binance renamed FXS; excluded",
+    "BFUSD": "Yield collateral product; excluded",
+    "EURI": "Fiat stablecoin excluded from this initial analysis universe",
+    "TON": "Binance USDT pair not TRADING at selection time"
+  }
+}

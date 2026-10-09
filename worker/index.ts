@@ -1,5 +1,7 @@
 import { dailyTechnical } from '../shared/market-watch';
 import { marketSnapshot } from './market-snapshot';
+import { discoverAssets } from '../shared/asset-discovery';
+import { supportsMarket } from '../shared/asset-registry';
 import { assetKnowledge, themesResponse } from '../shared/knowledge';
 import { marketDerivatives } from './market-derivatives';
 import { refreshProviderWatch } from './provider-watch';
@@ -57,7 +59,8 @@ function canonicalRequest(request: Request) {
   if (url.href.length > 2048) throw new RequestError('Invalid URL length');
   const endpoint = url.pathname.slice('/api/v1/'.length);
   const fields: Record<string, string[]> = {
-    market: ['market'],
+    market: ['market', 'assets', 'q', 'supported', 'sort', 'offset', 'limit', 'spark_limit'],
+    assets: ['q', 'market', 'metric', 'theme', 'offset', 'limit'],
     themes: [],
     knowledge: ['asset'],
     overview: ['asset', 'market'],
@@ -93,7 +96,13 @@ function canonicalRequest(request: Request) {
     limit: '1000',
   };
   for (const key of fields[endpoint]) {
-    let value = url.searchParams.get(key) ?? defaults[key];
+    let value =
+      url.searchParams.get(key) ??
+      (['market', 'assets'].includes(endpoint)
+        ? endpoint === 'market' && key === 'market'
+          ? 'binance'
+          : undefined
+        : defaults[key]);
     if (value === undefined) continue; // Keep a missing "to" stable instead of adding the current second.
     if (key === 'asset') value = value.toUpperCase();
     if (key === 'cursor' && !/^\d{1,12}\|[A-Za-z0-9:_.-]{1,400}$/.test(value))
@@ -459,7 +468,38 @@ async function api(request: Request, env: Env): Promise<Response> {
     return response({ error: '아직 수집하지 않은 자산입니다.', code: 'NOT_ENABLED' }, 404);
   if (endpoint === 'themes') return response(themesResponse());
   if (endpoint === 'knowledge') return response(assetKnowledge(asset));
-  if (endpoint === 'market') return response(await marketSnapshot(env, market));
+  if (endpoint === 'assets' || endpoint === 'market') {
+    for (const key of ['offset', 'limit', 'spark_limit']) {
+      if (
+        q.has(key) &&
+        (!/^\d+$/.test(q.get(key)!) ||
+          Number(q.get(key)) > 150 ||
+          (key === 'limit' && Number(q.get(key)) < 1))
+      )
+        return response({ error: '잘못된 조회 범위입니다.' }, 400);
+    }
+    if ((q.get('q')?.length ?? 0) > 100) return response({ error: '검색어가 너무 깁니다.' }, 400);
+    if (q.has('assets')) {
+      const ids = q.get('assets')!.split(',');
+      if (
+        new Set(ids).size !== ids.length ||
+        ids.length > ASSETS.length ||
+        ids.some((id) => !ASSETS.some((a) => a.id === id))
+      )
+        return response({ error: '잘못된 코인 목록입니다.' }, 400);
+    }
+    return response(
+      endpoint === 'assets' ? discoverAssets(q) : await marketSnapshot(env, market, q),
+    );
+  }
+  if (['overview', 'candles'].includes(endpoint) && !supportsMarket(asset, market))
+    return response(
+      {
+        error: '선택한 거래소에서 거래하지 않는 코인입니다. 거래소를 변경해 주세요.',
+        code: 'UNSUPPORTED_MARKET',
+      },
+      400,
+    );
   if (endpoint === 'overview') return response(await overview(env, asset, market));
   const from = number(q, 'from', 0),
     to = number(q, 'to', epoch() + DAY),
@@ -482,7 +522,13 @@ async function api(request: Request, env: Env): Promise<Response> {
   }
   if (endpoint === 'reference') {
     if (!(REFERENCE_ASSETS as readonly string[]).includes(asset))
-      return response({ error: '장기 USD 이력은 BTC·DOGE·ETH·XRP·LINK를 지원합니다.' }, 400);
+      return response(
+        {
+          error: '이 코인의 USD 참조가격 원천은 아직 지원하지 않습니다.',
+          code: 'UNSUPPORTED_SOURCE',
+        },
+        400,
+      );
     const [rows, extent, state] = await Promise.all([
       env.DB.prepare(
         'SELECT time,value FROM reference_prices WHERE asset=? AND time>=? AND time<? ORDER BY time LIMIT ?',

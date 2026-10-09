@@ -6,7 +6,7 @@ import './asset-logo.css';
 export function AssetLogo({ asset, size = 24 }: { asset: Asset; size?: number }) {
   const [failedAsset, setFailedAsset] = useState<Asset | null>(null);
   const item = ASSETS.find((entry) => entry.id === asset);
-  if (!item || failedAsset === asset)
+  if (!item?.logo || failedAsset === asset)
     return (
       <span
         className="asset-logo fallback"

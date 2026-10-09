@@ -1,16 +1,8 @@
+import { ASSET_REGISTRY } from './asset-registry';
 import type { Asset, Metric } from './types';
 export const PRIMARY_ASSETS: readonly Asset[] = ['BTC', 'DOGE', 'ETH'];
 export const isPrimaryAsset = (asset: Asset) => PRIMARY_ASSETS.includes(asset);
-export const ASSETS: { id: Asset; name: string; color: string; logo: string }[] = [
-  { id: 'BTC', name: '비트코인', color: '#f59c39', logo: '/coin-logos/btc.png' },
-  { id: 'DOGE', name: '도지코인', color: '#c4a34d', logo: '/coin-logos/doge-official.png' },
-  { id: 'ETH', name: '이더리움', color: '#899cff', logo: '/coin-logos/eth.png' },
-  { id: 'SOL', name: '솔라나', color: '#73dac5', logo: '/coin-logos/sol.png' },
-  { id: 'XRP', name: '리플', color: '#d2d9e2', logo: '/coin-logos/xrp.png' },
-  { id: 'LINK', name: '체인링크', color: '#6084ff', logo: '/coin-logos/link.png' },
-  { id: 'ONDO', name: '온도파이낸스', color: '#829dbc', logo: '/coin-logos/ondo.png' },
-  { id: 'PEPE', name: '페페', color: '#75b67a', logo: '/coin-logos/pepe.png' },
-];
+export const ASSETS = ASSET_REGISTRY;
 export const BASE_SERIES = [
   'date',
   'price',

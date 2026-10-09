@@ -1,3 +1,4 @@
+import { supportsReference } from '../shared/indicator-catalog';
 import {
   ArrowDownRight,
   ArrowUpRight,
@@ -213,7 +214,7 @@ export function PricePage({ workspace = false }: { workspace?: boolean }) {
   }, [asset, routeLocation.hash, navigate]);
   const coin = ASSETS.find((a) => a.id === asset);
   const { market, interval, period, indicators, log, change } = usePreferences();
-  const hasLongHistory = ['BTC', 'DOGE', 'ETH', 'XRP', 'LINK'].includes(asset);
+  const hasLongHistory = supportsReference(asset);
   const historical = !workspace;
   const supportsPosition = ['BTC', 'DOGE', 'ETH'].includes(asset);
   const priceView = supportsPosition && params.get('visual') === 'rainbow' ? 'rainbow' : 'price';

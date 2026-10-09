@@ -1,14 +1,16 @@
 import { lazy, Suspense, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { Link, useSearchParams, useNavigate } from 'react-router-dom';
-import { Star } from 'lucide-react';
+import { Star, Search } from 'lucide-react';
 import { ASSETS } from '../shared/catalog';
+import { matchesCoin } from '../shared/coin-search';
+import { assetDefinition, availableMarket } from '../shared/asset-registry';
 import { defaultIndicator, indicatorDefinition, indicatorUrl } from '../shared/indicator-catalog';
 import type { Asset, Point } from '../shared/types';
 import { AssetLogo } from './AssetLogo';
 import { useQuoteFeed } from './useQuoteFeed';
 import { useMarket } from './useMarket';
 import { usePersonalDesk } from './PersonalDesk';
-import { dateLabel, money, numeric, saved, save, turnover } from './lib';
+import { money, numeric, saved, save, turnover } from './lib';
 const ThemeExplorer = lazy(() => import('./ThemeExplorer'));
 
 function Spark({ points }: { points: Point[] }) {
@@ -37,19 +39,33 @@ export function MarketHome() {
   const navigate = useNavigate();
   const [saveError, setSaveError] = useState('');
   const { market, changeMarket } = useMarket();
-  const feed = useQuoteFeed(market);
+  const [pageSize] = useState(() => (window.matchMedia('(max-width: 767px)').matches ? 20 : 50));
+  const [visibleCount, setVisibleCount] = useState(() =>
+    Math.max(pageSize, Math.min(150, saved('market-visible-count', pageSize))),
+  );
+  const [subscribed, setSubscribed] = useState<string[]>([]);
+  const feed = useQuoteFeed(market, { assets: subscribed, sparkLimit: pageSize === 20 ? 0 : 150 });
   const { desk, update } = usePersonalDesk();
   const [params, setParams] = useSearchParams();
   const sort = params.get('sort') || saved('market-sort', 'default');
-  const view = ['favorites', 'themes'].includes(params.get('view') ?? '')
-    ? params.get('view')
-    : 'all';
+  const requestedView = params.get('view') ?? saved('market-view', 'all');
+  const view = ['favorites', 'themes'].includes(requestedView) ? requestedView : 'all';
+  const query = params.get('q') ?? '';
+  const filterKey = [query, view, market, sort, pageSize].join('|');
+  const previousFilter = useRef(filterKey);
+  useEffect(() => {
+    if (previousFilter.current !== filterKey) {
+      setVisibleCount(pageSize);
+      save('market-visible-count', pageSize);
+      previousFilter.current = filterKey;
+    }
+  }, [filterKey, pageSize]);
   const [sortRevision, setSortRevision] = useState(0);
-  const recent = saved<Asset[]>('recent-coins', []);
-  const resume = saved<{ href?: string; asset?: string }>('recent-analysis', {});
+  const [recent] = useState(() => saved<Asset[]>('recent-coins', []));
+  const [resume] = useState(() => saved<{ href?: string; asset?: string }>('recent-analysis', {}));
   const resumeHref =
     typeof resume.href === 'string' &&
-    /^\/coins\/(BTC|DOGE|ETH|SOL|XRP|LINK|ONDO|PEPE)(\?|$)/.test(resume.href)
+    ASSETS.some((a) => resume.href!.split('?')[0] === '/coins/' + a.id)
       ? resume.href
       : null;
   const unit = market === 'upbit' ? 'KRW' : 'USDT';
@@ -69,7 +85,10 @@ export function MarketHome() {
     indicatorUrl(
       asset,
       defaultIndicator(asset),
-      new URLSearchParams({ price_source: market, market }),
+      new URLSearchParams({
+        price_source: availableMarket(asset, market),
+        market: availableMarket(asset, market),
+      }),
     );
   // Capture ordering on entry or explicit sorting only. Live ticks update values,
   // never move a row underneath a pointer or keyboard focus.
@@ -86,12 +105,23 @@ export function MarketHome() {
         .map((a) => a.id),
     [market, sort, !!feed.data, sortRevision],
   );
-  const rows = order
-    .filter((id) => view !== 'favorites' || desk.favorites.includes(id))
-    .map((id) => ({
-      ...ASSETS.find((a) => a.id === id)!,
-      data: feed.rows.find((r) => r.asset === id),
-    }));
+  const filtered = order
+    .filter(
+      (id) =>
+        (!query || matchesCoin(id, query)) &&
+        (query || view === 'favorites' || assetDefinition(id)?.markets[market]),
+    )
+    .filter((id) => view !== 'favorites' || desk.favorites.includes(id));
+  const visible = filtered.slice(0, visibleCount);
+  const subscription = [...new Set([...visible, ...desk.favorites])]
+    .filter((id) => assetDefinition(id)?.markets[market])
+    .sort()
+    .join(',');
+  useEffect(() => setSubscribed(subscription.split(',').filter(Boolean)), [subscription]);
+  const rows = visible.map((id) => ({
+    ...ASSETS.find((a) => a.id === id)!,
+    data: feed.rows.find((r) => r.asset === id),
+  }));
   const starred = desk.favorites;
   const favorite = (asset: Asset) => {
     try {
@@ -110,7 +140,7 @@ export function MarketHome() {
     <div className="market-home">
       <div className="market-body">
         <div className="market-heading">
-          <h1>코인 시장</h1>
+          <h1>시장</h1>
           <span className="market-feed-state">
             {feed.rows.some((row) => row.live)
               ? '실시간 가격'
@@ -132,6 +162,7 @@ export function MarketHome() {
               aria-pressed={view === key}
               onClick={() =>
                 setParams((p) => {
+                  save('market-view', key);
                   p.set('view', key);
                   if (key !== 'themes') p.delete('theme');
                   return p;
@@ -142,11 +173,31 @@ export function MarketHome() {
             </button>
           ))}
         </div>
+        {view !== 'themes' && (
+          <label className="market-search">
+            <Search size={18} aria-hidden="true" />
+            <input
+              aria-label="시장 코인 검색"
+              placeholder="코인 이름·티커 검색"
+              value={query}
+              onChange={(e) =>
+                setParams(
+                  (p) => {
+                    if (e.target.value) p.set('q', e.target.value);
+                    else p.delete('q');
+                    return p;
+                  },
+                  { replace: true },
+                )
+              }
+            />
+          </label>
+        )}
         {feed.data?.collection && !feed.data.collection.healthy && (
           <p className="market-runtime-notice" role="status">
             {['no_execution_ledger', 'not_started'].includes(feed.data.collection.reason || '')
-              ? '수집기 실행 기록이 없습니다. 마지막 저장 시세를 표시합니다.'
-              : '분 단위 수집의 정상 실행을 확인하지 못했습니다. 표시된 체결 시각을 확인해 주세요.'}{' '}
+              ? '시세 갱신을 확인하고 있습니다.'
+              : '시세 갱신이 지연되고 있습니다.'}{' '}
             <Link to="/status">데이터 상태</Link>
           </p>
         )}
@@ -249,35 +300,34 @@ export function MarketHome() {
                       <Link to={href(id)}>
                         <AssetLogo asset={id} size={32} />
                         <span>
-                          {name}
-                          <small>{id}</small>
+                          <span className="market-coin-name" title={name}>
+                            {name}
+                          </span>
+                          <small>
+                            {id}
+                            {!assetDefinition(id)?.markets[market] &&
+                              ` · ${availableMarket(id, market) === 'binance' ? 'Binance USDT' : 'Upbit KRW'}`}
+                          </small>
                         </span>
                       </Link>
                     </th>
                     <td className="market-price-cell">
-                      <Link to={href(id)}>{money(r?.displayPrice, unit)}</Link>
-                      {r?.displayTime ? (
-                        <details className={'market-time' + (r.stale ? ' stale-label' : '')}>
-                          <summary>
-                            {r.status === 'error' ? '확인 실패 · ' : r.stale ? '갱신 지연 · ' : ''}
-                            {Math.max(0, Math.floor((Date.now() / 1000 - r.displayTime) / 60)) < 1
-                              ? '방금'
-                              : `${Math.max(0, Math.floor((Date.now() / 1000 - r.displayTime) / 60))}분 전`}
-                          </summary>
-                          <span>실제 체결 {dateLabel(r.displayTime, true)}</span>
-                        </details>
-                      ) : (
-                        <small>
-                          {feed.error
-                            ? '시세 확인 필요'
-                            : feed.loading
-                              ? '불러오는 중'
-                              : r?.status === 'unsupported'
-                                ? '거래 미지원'
-                                : r?.status === 'error'
-                                  ? '시세 확인 필요'
-                                  : '수집 대기'}
+                      <Link to={href(id)}>
+                        {r?.status === 'unsupported'
+                          ? '다른 거래소에서 보기'
+                          : money(r?.displayPrice, unit)}
+                      </Link>
+                      {r?.displayTime && (r.stale || r.status === 'error') ? (
+                        <small className="stale-label">
+                          {r.status === 'error' ? '확인 실패' : '갱신 지연'}
                         </small>
+                      ) : (
+                        !r?.displayTime &&
+                        r?.status !== 'unsupported' && (
+                          <small>
+                            {feed.error ? '확인 필요' : feed.loading ? '불러오는 중' : '수집 대기'}
+                          </small>
+                        )
                       )}
                     </td>
                     <td
@@ -305,7 +355,23 @@ export function MarketHome() {
               </tbody>
             </table>
             {!rows.length && (
-              <p className="market-empty">관심 코인이 없습니다. 전체에서 별을 눌러 추가하세요.</p>
+              <p className="market-empty">
+                {query
+                  ? '일치하는 코인이 없습니다.'
+                  : '관심 코인이 없습니다. 전체에서 별을 눌러 추가하세요.'}
+              </p>
+            )}
+            {filtered.length > visibleCount && (
+              <button
+                className="market-more"
+                onClick={() => {
+                  const count = Math.min(150, visibleCount + pageSize);
+                  setVisibleCount(count);
+                  save('market-visible-count', count);
+                }}
+              >
+                더 보기
+              </button>
             )}
           </div>
         )}

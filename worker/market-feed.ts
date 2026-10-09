@@ -1,10 +1,11 @@
+import { ASSET_REGISTRY } from '../shared/asset-registry';
 import { DERIVATIVE_ASSETS, derivativeContract } from '../shared/derivative-contracts';
 import { coinloreSnapshot } from './dominance';
 import type { Asset } from '../shared/types';
 /** Allowlisted public market-data adapter. A shared token prevents public proxy use. */
 import { binanceRequest, upstream } from './providers';
 const spotSymbols = new Set(
-  ['BTC', 'DOGE', 'ETH', 'SOL', 'XRP', 'LINK', 'ONDO', 'PEPE'].map((asset) => asset + 'USDT'),
+  ASSET_REGISTRY.flatMap((a) => (a.markets.binance ? [a.markets.binance] : [])),
 );
 export function validSpotRequest(method: string, params: Record<string, unknown>) {
   if (method === 'ticker.24hr') {

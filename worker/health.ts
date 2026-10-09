@@ -1,3 +1,4 @@
+import { assetDefinition } from '../shared/asset-registry';
 import { observeAutomation, type ObservationRun } from '../shared/automation-observation';
 import { ASSETS, isPrimaryAsset } from '../shared/catalog';
 import { DAY } from '../shared/math';
@@ -112,16 +113,17 @@ export function jobPolicies(assets: Asset[], rebuilding: boolean): JobPolicy[] {
         assets: [asset],
       });
   for (const market of ['binance', 'upbit'] as Market[]) {
-    for (let start = 0; start < assets.length; start += 8)
+    const marketAssets = assets.filter((a) => assetDefinition(a)?.markets[market]);
+    for (let start = 0; start < marketAssets.length; start += 8)
       jobs.push({
         key: 'quotes:' + market + ':' + start / 8,
         kind: 'quote-batch',
         every: BACKGROUND_QUOTE_SECONDS,
         maxLag: 180,
-        assets: assets.slice(start, start + 8),
+        assets: marketAssets.slice(start, start + 8),
         market,
       });
-    for (const asset of assets)
+    for (const asset of marketAssets)
       for (const interval of ['1h', '1d'] as const)
         jobs.push({
           key: asset + ':' + market + ':' + interval,
@@ -145,8 +147,13 @@ export function backgroundPolicies(assets: Asset[], rebuilding: boolean): JobPol
         : job,
     );
 }
-export function dueAt(job: JobPolicy, states: IngestionState[], now: number) {
-  const state = states.find((s) => s.key === job.key);
+export function dueAt(
+  job: JobPolicy,
+  states: IngestionState[],
+  now: number,
+  index?: Map<string, IngestionState>,
+) {
+  const state = index ? index.get(job.key) : states.find((s) => s.key === job.key);
   if (state?.next_attempt) return state.next_attempt;
   let due = state?.last_attempt ? state.last_attempt + job.every : 0;
   if (job.kind === 'price' && job.interval === '1d' && state?.data_as_of)
@@ -155,7 +162,8 @@ export function dueAt(job: JobPolicy, states: IngestionState[], now: number) {
     due = Math.min(due, state.last_attempt + 60);
   if (job.kind === 'quote-batch') {
     for (const asset of job.assets!) {
-      const individual = states.find((s) => s.key === 'quote:' + asset + ':' + job.market);
+      const key = 'quote:' + asset + ':' + job.market;
+      const individual = index ? index.get(key) : states.find((s) => s.key === key);
       if (individual?.next_attempt)
         due = Math.min(
           due,
@@ -166,15 +174,13 @@ export function dueAt(job: JobPolicy, states: IngestionState[], now: number) {
   return due;
 }
 export function selectJob(jobs: JobPolicy[], states: IngestionState[], now: number, fair = false) {
+  const index = new Map(states.map((s) => [s.key, s]));
   const eligible = jobs
     .map((job) => ({
       job,
       due: fair
-        ? Math.max(
-            dueAt(job, states, now),
-            (states.find((s) => s.key === job.key)?.last_attempt ?? -60) + 60,
-          )
-        : dueAt(job, states, now),
+        ? Math.max(dueAt(job, states, now, index), (index.get(job.key)?.last_attempt ?? -60) + 60)
+        : dueAt(job, states, now, index),
     }))
     .filter((item) => item.due <= now)
     .sort((a, b) => a.due - b.due);
@@ -271,14 +277,15 @@ export async function operationStatus(env: Env) {
   );
   for (const asset of assets)
     for (const market of ['binance', 'upbit'] as Market[])
-      expected.set('quote:' + asset + ':' + market, {
-        key: 'quote:' + asset + ':' + market,
-        kind: 'quote-batch',
-        every: quoteRefreshSeconds(asset, env.RUNTIME_KIND),
-        maxLag: quoteRefreshSeconds(asset, env.RUNTIME_KIND) === 60 ? 180 : 600,
-        market,
-        assets: [asset],
-      });
+      if (assetDefinition(asset)?.markets[market])
+        expected.set('quote:' + asset + ':' + market, {
+          key: 'quote:' + asset + ':' + market,
+          kind: 'quote-batch',
+          every: quoteRefreshSeconds(asset, env.RUNTIME_KIND),
+          maxLag: quoteRefreshSeconds(asset, env.RUNTIME_KIND) === 60 ? 180 : 600,
+          market,
+          assets: [asset],
+        });
   const sourceKeys = new Set([...expected.keys(), ...ingestion.results.map((s) => s.key)]);
   const sources = [...sourceKeys].map((key) => {
     const row = ingestion.results.find((s) => s.key === key);
@@ -491,7 +498,8 @@ export async function operationStatus(env: Env) {
     history,
     historyRecovery: recoveryRows.results.flatMap((row) => {
       const key = row.key.slice('cursor:price-backfill:'.length);
-      if (!/^(BTC|DOGE|ETH|SOL|XRP|LINK|ONDO|PEPE):(binance|upbit):(1h|1d)$/.test(key)) return [];
+      if (!/^[A-Z0-9_]+:(binance|upbit):(1h|1d)$/.test(key) || !assetDefinition(key.split(':')[0]))
+        return [];
       try {
         const value = JSON.parse(row.value);
         if (!Number.isSafeInteger(value.cursor) || value.cursor < 0 || value.cursor > now)

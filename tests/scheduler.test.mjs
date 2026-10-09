@@ -7,7 +7,7 @@ vi.mock('../worker/providers', () => ({
   getQuotes: vi.fn(),
 }));
 import { bitviewPage, getRecentCandles } from '../worker/providers';
-import { scheduled, updatePrice } from '../worker/scheduled';
+import { scheduled, updatePrice, updateOnchain } from '../worker/scheduled';
 const now = Math.floor(Date.now() / 1000);
 let DB, env;
 beforeEach(() => {
@@ -351,6 +351,19 @@ it.each(['1h', '1d'])(
         .get().data_as_of,
     ).toBe(hour - step);
     const cursor = state.cursor;
+    env.HISTORY_ALLOWED = () => false;
+    getRecentCandles.mockClear();
+    await updatePrice(env, 'BTC', 'binance', interval);
+    expect(getRecentCandles).toHaveBeenCalledTimes(1);
+    expect(getRecentCandles.mock.calls[0][3]).toBeUndefined();
+    expect(
+      JSON.parse(
+        DB.sqlite
+          .prepare('SELECT value FROM state WHERE key=?')
+          .get(`cursor:price-backfill:BTC:binance:${interval}`).value,
+      ),
+    ).toEqual(state);
+    env.HISTORY_ALLOWED = () => true;
     getRecentCandles.mockImplementation(async (_a, _m, _i, since) => {
       if (since !== undefined) throw new Error('HTTP 429 private upstream detail');
       return [candle(hour - step)];
@@ -380,3 +393,28 @@ it.each(['1h', '1d'])(
     ).toBeUndefined();
   },
 );
+
+it('low storage preserves the published generation and pending onchain rebuild', async () => {
+  state('onchain_generation', 'published');
+  const build = {
+    generation: 'pending',
+    cursor: 32,
+    versions: null,
+    n: 0,
+    mean: 0,
+    m2: 0,
+    start: null,
+  };
+  state('onchain_build', build);
+  env.HISTORY_ALLOWED = () => false;
+  await expect(updateOnchain(env)).rejects.toThrow('STORAGE_HISTORY_PAUSED');
+  expect(bitviewPage).not.toHaveBeenCalled();
+  expect(
+    JSON.parse(DB.sqlite.prepare("SELECT value FROM state WHERE key='onchain_build'").get().value),
+  ).toEqual(build);
+  expect(
+    JSON.parse(
+      DB.sqlite.prepare("SELECT value FROM state WHERE key='onchain_generation'").get().value,
+    ),
+  ).toBe('published');
+});

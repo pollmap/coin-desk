@@ -14,7 +14,7 @@ it('themes and relationships are read-only, asset isolated and reject unsupporte
   try {
     const before = DB.sqlite.prepare('SELECT total_changes() n').get().n;
     const themes = await (await call('themes')).json();
-    expect(themes.themes).toHaveLength(5);
+    expect(themes.themes).toHaveLength(6);
     const ondo = await (await call('knowledge?asset=ONDO')).json();
     const btc = await (await call('knowledge?asset=BTC')).json();
     expect(ondo.asset).toBe('ONDO');

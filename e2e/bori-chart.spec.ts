@@ -88,10 +88,12 @@ test('brand, market timestamps and core layouts meet the compact white design', 
   for (const width of [320, 390, 768, 1000, 1280, 1440, 1920]) {
     await page.setViewportSize({ width, height: 900 });
     await page.goto('/coins');
-    await expect(page.getByRole('heading', { name: '코인 시장', exact: true })).toBeVisible();
+    await expect(page.getByRole('heading', { name: '시장', exact: true })).toBeVisible();
     await expect(page.locator('.market-leaders')).toHaveCount(0);
-    await expect(page.locator('.market-table tbody tr')).toHaveCount(8);
-    await expect(page.locator('.market-table a').filter({ hasText: /MVRV|RSI 14/ })).toHaveCount(8);
+    await expect(page.locator('.market-table tbody tr')).toHaveCount(width < 768 ? 20 : 50);
+    await expect(page.locator('.market-table a').filter({ hasText: /MVRV|RSI 14/ })).toHaveCount(
+      width < 768 ? 20 : 50,
+    );
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(
       true,
     );
@@ -122,7 +124,7 @@ test('brand, market timestamps and core layouts meet the compact white design', 
         }),
       ),
     );
-    expect((await chart.boundingBox())!.y).toBeLessThanOrEqual(width < 768 ? 300 : 240);
+    expect((await chart.boundingBox())!.y).toBeLessThanOrEqual(width < 768 ? 280 : 240);
     if (width >= 1280) expect((await chart.boundingBox())!.height).toBeGreaterThanOrEqual(420);
     await page.screenshot({ path: test.info().outputPath(`detail-${width}.png`) });
   }
@@ -193,7 +195,7 @@ test('relative settings preserve chart position, focus, and guide context', asyn
         }),
       ),
     );
-    expect(before.y).toBeLessThanOrEqual(width < 768 ? 300 : 240);
+    expect(before.y).toBeLessThanOrEqual(width < 768 ? 280 : 240);
     await page.getByLabel('비교 설정', { exact: true }).click();
     await expect(page.getByLabel('비교 코인', { exact: true })).toBeVisible();
     const menu = (await page.locator('.relative-control-fields').boundingBox())!;
@@ -222,6 +224,7 @@ test('relative settings preserve chart position, focus, and guide context', asyn
         .evaluate((el) => el.scrollWidth <= el.clientWidth + 1),
     ).toBe(true);
   }
+  await page.getByRole('button', { name: '지표 설명', exact: true }).click();
   await page.getByRole('link', { name: '현재 분석 설명', exact: true }).click();
   await expect(page).toHaveURL(/benchmark_asset=LINK/);
   await expect(page).toHaveURL(/normalization=ratio/);

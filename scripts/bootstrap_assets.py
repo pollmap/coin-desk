@@ -3,18 +3,24 @@ Keeps bootstrap.py BTC/onchain evidence intact. No mock or interpolated candles.
 """
 import argparse, json, time
 from bootstrap import ASSETS, WORK, FETCHED, prices, statement, iso
+from registry import ASSETS as REGISTRY
 
 def main():
     p=argparse.ArgumentParser()
     p.add_argument('--assets',default='DOGE,ETH,SOL,XRP,LINK,ONDO,PEPE')
     p.add_argument('--refresh',action='store_true')
+    p.add_argument('--resume',action='store_true')
     a=p.parse_args(); assets=a.assets.upper().split(',')
     if any(x not in ASSETS for x in assets): raise ValueError('Unknown asset')
     out=WORK/'assets'; out.mkdir(exist_ok=True)
     report={'checkedAt':iso(int(time.time())), 'prices':{}, 'archiveChunkSize':256}
     for asset in assets:
+        if a.resume and (out/(asset+'.sql')).exists():
+            print(asset,'existing seed retained',flush=True)
+            continue
         sql=[]
         for market in ['binance','upbit']:
+            if not REGISTRY[asset]['markets'].get(market): continue
             for interval in ['1d','1h']:
                 rows=prices(asset,market,interval,a.refresh)
                 if not rows: raise ValueError('Empty source '+asset+market+interval)

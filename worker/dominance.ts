@@ -102,7 +102,7 @@ export function normalizeDominance(
   const total = Number(global?.[0]?.total_mcap);
   if (!positive(total) || !Array.isArray(markets)) throw new Error('Invalid market cap source');
   const coins: Dominance['coins'] = [
-    ...ASSETS.map((a) => ({ id: a.id, label: a.name })),
+    ...ASSETS.filter((a) => ids[a.id]).map((a) => ({ id: a.id, label: a.name })),
     { id: 'USDT', label: 'USDT' },
     { id: 'USDC', label: 'USDC' },
   ].map((asset) => {

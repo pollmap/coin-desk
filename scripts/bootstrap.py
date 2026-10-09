@@ -6,7 +6,8 @@ import argparse, datetime as dt, gzip, json, math, pathlib, time, urllib.request
 ROOT=pathlib.Path(__file__).resolve().parents[1]
 WORK=ROOT/'work'; RAW=WORK/'raw'; RAW.mkdir(parents=True,exist_ok=True)
 BASE=['date','price','market_cap','realized_cap','mvrv','sth_mvrv','lth_mvrv','realized_price','sth_realized_price','nupl','sopr_24h']
-ASSETS=['BTC','ETH','DOGE','SOL','XRP','LINK','ONDO','PEPE']
+from registry import ASSETS as REGISTRY
+ASSETS=list(REGISTRY)
 NOW=int(time.time()); DAY=86400
 FETCHED={}
 
@@ -43,15 +44,17 @@ def validate(c):
     assert min(o,l,close)>0 and h>=max(o,close) and l<=min(o,close) and vol>=0
 
 def prices(asset,market,interval,refresh):
+    symbol=REGISTRY[asset]['markets'].get(market)
+    if not symbol: raise ValueError('Unsupported market for '+asset)
     step=DAY if interval=='1d' else 3600
     start=0 if interval=='1d' else (NOW//3600-90*24)*3600
     out={}; cursor=start if market=='binance' else NOW;page=0
     while True:
         if market=='binance':
-            url='https://data-api.binance.vision/api/v3/klines?'+urllib.parse.urlencode({'symbol':asset+'USDT','interval':interval,'startTime':cursor*1000,'limit':1000})
+            url='https://data-api.binance.vision/api/v3/klines?'+urllib.parse.urlencode({'symbol':symbol,'interval':interval,'startTime':cursor*1000,'limit':1000})
         else:
             endpoint='days' if interval=='1d' else 'minutes/60'
-            url='https://api.upbit.com/v1/candles/'+endpoint+'?'+urllib.parse.urlencode({'market':'KRW-'+asset,'count':200,'to':iso(cursor)})
+            url='https://api.upbit.com/v1/candles/'+endpoint+'?'+urllib.parse.urlencode({'market':symbol,'count':200,'to':iso(cursor)})
         snap=snapshot(asset+'-'+market+'-'+interval+'-'+str(cursor),url,refresh); rows=snap['data']
         if not isinstance(rows,list):raise ValueError(str(rows)[:300])
         if not rows:break

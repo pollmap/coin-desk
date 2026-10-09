@@ -1,3 +1,4 @@
+import { supportsReference } from '../shared/indicator-catalog';
 import { useMemo } from 'react';
 import type { Asset, Market, Period, CandleResponse } from '../shared/types';
 import { closeHistory } from '../shared/price-history';
@@ -37,7 +38,7 @@ export function ExchangeHistoryPanel({
               ? `${dateLabel(series.data[0].time)}부터 · 확정 일봉 종가`
               : '거래소 최초 이력부터'}
           </small>
-          {['BTC', 'DOGE', 'ETH', 'XRP', 'LINK'].includes(asset) ? (
+          {supportsReference(asset) ? (
             <a
               className="earliest-link"
               href="#reference-history"
