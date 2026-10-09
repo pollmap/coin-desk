@@ -1,0 +1,116 @@
+{
+  "firstAttempt": {
+    "startedAt": 1791567455,
+    "previousRelease": "vps-f76588783920dcb4",
+    "release": "vps-29f6a85aaef183d4",
+    "nginxChanged": false,
+    "schemaMigration": false,
+    "dataRestoreRequired": false,
+    "verifiedBackup": "/srv/services/coin-desk/audit/registry-025/cutover-backups/20261009T173736627422Z",
+    "merge": {
+      "inserted": {
+        "candles": 110031,
+        "price_archive": 3484,
+        "network_months": 3006,
+        "network_coverage": 367,
+        "reference_prices": 273794,
+        "derivative_series": 17920,
+        "ingestion": 1257,
+        "state": 450,
+        "raw_samples": 640
+      },
+      "preservedExistingPartitions": {
+        "candles": 32,
+        "price_archive": 28,
+        "network_months": 5,
+        "network_coverage": 75,
+        "reference_prices": 5,
+        "derivative_series": 40
+      },
+      "updates": 276,
+      "deletes": 0,
+      "addedNetworkMetricValues": 8339,
+      "existingNetworkValuesReplaced": 0,
+      "integrity": "ok",
+      "seedSha256": "1d1e5104b8ed482fe49899e2698cea56d50003681f7684536950c59050e8aa2b"
+    },
+    "codeRolledBack": true,
+    "completedAt": 1791567481
+  },
+  "retry": {
+    "startedAt": 1791567561,
+    "previousRelease": "vps-f76588783920dcb4",
+    "release": "vps-29f6a85aaef183d4",
+    "nginxChanged": false,
+    "schemaMigration": false,
+    "dataRestoreRequired": false,
+    "verifiedBackup": "/srv/services/coin-desk/audit/registry-025/cutover-backups/20261009T173922743725Z",
+    "merge": {
+      "inserted": {
+        "candles": 0,
+        "price_archive": 0,
+        "network_months": 0,
+        "network_coverage": 0,
+        "reference_prices": 0,
+        "derivative_series": 0,
+        "ingestion": 0,
+        "state": 0,
+        "raw_samples": 0
+      },
+      "preservedExistingPartitions": {
+        "candles": 482,
+        "price_archive": 481,
+        "network_months": 34,
+        "network_coverage": 442,
+        "reference_prices": 143,
+        "derivative_series": 680
+      },
+      "updates": 0,
+      "deletes": 0,
+      "addedNetworkMetricValues": 0,
+      "existingNetworkValuesReplaced": 0,
+      "integrity": "ok",
+      "seedSha256": "1d1e5104b8ed482fe49899e2698cea56d50003681f7684536950c59050e8aa2b"
+    },
+    "promoted": true,
+    "services": {
+      "api": {
+        "image": "coin-desk:vps-29f6a85aaef183d4",
+        "startedAt": "2026-10-09T17:40:00.400582506Z",
+        "healthy": "healthy"
+      },
+      "quotes": {
+        "image": "coin-desk:vps-29f6a85aaef183d4",
+        "startedAt": "2026-10-09T17:40:00.33750602Z",
+        "healthy": "healthy"
+      },
+      "background": {
+        "image": "coin-desk:vps-29f6a85aaef183d4",
+        "startedAt": "2026-10-09T17:40:00.377166651Z",
+        "healthy": "healthy"
+      },
+      "recent": {
+        "image": "coin-desk:vps-29f6a85aaef183d4",
+        "startedAt": "2026-10-09T17:40:00.395990277Z",
+        "healthy": "healthy"
+      },
+      "analysis": {
+        "image": "coin-desk:vps-29f6a85aaef183d4",
+        "startedAt": "2026-10-09T17:40:00.30644656Z",
+        "healthy": "healthy"
+      },
+      "backup": {
+        "image": "coin-desk:vps-6270048e66efc7fa",
+        "startedAt": "2026-10-09T17:40:34.477627867Z",
+        "healthy": "starting"
+      },
+      "quote-hub": {
+        "image": "coin-desk:vps-29f6a85aaef183d4",
+        "startedAt": "2026-10-09T17:40:00.383826469Z",
+        "healthy": "healthy"
+      }
+    },
+    "completedAt": 1791567639
+  },
+  "firstFailure": "Audit SELECT used JSON path time rather than $.time. Old code/services were restored; additive data was retained. No provider or API failure caused this audit-script rollback."
+}

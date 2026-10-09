@@ -1,0 +1,48 @@
+{
+  "version": "0.25.0",
+  "pullRequest": 51,
+  "prCI": {
+    "id": 37965443588,
+    "conclusion": "success",
+    "headSha": "0ffa1f2520bc52a7a50da668b39757a4e479d067",
+    "status": "completed"
+  },
+  "mainCI": {
+    "id": 37967541561,
+    "conclusion": "success",
+    "headSha": "1b736d9b02a7c278a61f95c3f5591a2a75245e1b",
+    "status": "completed"
+  },
+  "checks": {
+    "unit": 670,
+    "nodeServer": 20,
+    "pythonVps": 18,
+    "backupRecovery": 2,
+    "chromiumWebkitPassed": 186,
+    "privateOptInSkipped": 2,
+    "retries": 0
+  },
+  "typesBuildStorybookDockerSmokeDocs": "passed",
+  "earlyFailedCI": 37959320897,
+  "releaseSource": {
+    "release": "vps-29f6a85aaef183d4",
+    "filesMatchHead": 326,
+    "head": "1b736d9b02a7c278a61f95c3f5591a2a75245e1b"
+  },
+  "metadata": {
+    "pullRequest": 52,
+    "ci": {
+      "id": 37969366758,
+      "conclusion": "success",
+      "headSha": "e8dfe17d222bddea318c3ea8d5c7b8ccb98f2572",
+      "status": "completed"
+    },
+    "source": {
+      "release": "vps-6770ebcbb08ad9cc",
+      "filesMatchHead": 326,
+      "head": "aaa443d518d8fb353630e3a4b69c354ecc80965e"
+    },
+    "sameCountsAndZeroRetries": true,
+    "mergedMainRepeatSkipped": "Only index.html description changed; full PR CI passed, source files match merged main. Feature main CI separately passed."
+  }
+}

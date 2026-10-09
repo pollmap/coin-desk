@@ -1,0 +1,362 @@
+{
+  "checkedAt": 1791568183,
+  "errorCounts": {
+    "Error: Invalid or outdated quote": 37
+  },
+  "ingestion": [
+    {
+      "key": "quote:PEPE:upbit",
+      "error": "Error: Invalid or outdated quote",
+      "failures": 3,
+      "last_attempt": 1791567665,
+      "next_attempt": 1791568145,
+      "last_success": 1791567124
+    },
+    {
+      "key": "quote:ICP:upbit",
+      "error": "Error: Invalid or outdated quote",
+      "failures": 2,
+      "last_attempt": 1791568027,
+      "next_attempt": 1791568267,
+      "last_success": 1791567789
+    },
+    {
+      "key": "quote:MNT:upbit",
+      "error": "Error: Invalid or outdated quote",
+      "failures": 3,
+      "last_attempt": 1791568087,
+      "next_attempt": 1791568567,
+      "last_success": null
+    },
+    {
+      "key": "quote:WLFI:upbit",
+      "error": "Error: Invalid or outdated quote",
+      "failures": 2,
+      "last_attempt": 1791568088,
+      "next_attempt": 1791568328,
+      "last_success": 1791567910
+    },
+    {
+      "key": "quote:RENDER:upbit",
+      "error": "Error: Invalid or outdated quote",
+      "failures": 1,
+      "last_attempt": 1791568088,
+      "next_attempt": 1791568208,
+      "last_success": 1791568028
+    },
+    {
+      "key": "quote:XAUT:upbit",
+      "error": "Error: Invalid or outdated quote",
+      "failures": 3,
+      "last_attempt": 1791568088,
+      "next_attempt": 1791568568,
+      "last_success": null
+    },
+    {
+      "key": "quote:JST:upbit",
+      "error": "Error: Invalid or outdated quote",
+      "failures": 3,
+      "last_attempt": 1791568088,
+      "next_attempt": 1791568568,
+      "last_success": null
+    },
+    {
+      "key": "quote:ARB:upbit",
+      "error": "Error: Invalid or outdated quote",
+      "failures": 2,
+      "last_attempt": 1791567970,
+      "next_attempt": 1791568210,
+      "last_success": 1791567732
+    },
+    {
+      "key": "quote:VVV:upbit",
+      "error": "Error: Invalid or outdated quote",
+      "failures": 2,
+      "last_attempt": 1791568152,
+      "next_attempt": 1791568392,
+      "last_success": 1791567970
+    },
+    {
+      "key": "quote:AERO:upbit",
+      "error": "Error: Invalid or outdated quote",
+      "failures": 2,
+      "last_attempt": 1791568152,
+      "next_attempt": 1791568392,
+      "last_success": 1791567970
+    },
+    {
+      "key": "quote:CRV:upbit",
+      "error": "Error: Invalid or outdated quote",
+      "failures": 2,
+      "last_attempt": 1791567972,
+      "next_attempt": 1791568212,
+      "last_success": 1791567734
+    },
+    {
+      "key": "quote:CRO:upbit",
+      "error": "Error: Invalid or outdated quote",
+      "failures": 3,
+      "last_attempt": 1791568156,
+      "next_attempt": 1791568636,
+      "last_success": null
+    },
+    {
+      "key": "quote:PENDLE:upbit",
+      "error": "Error: Invalid or outdated quote",
+      "failures": 3,
+      "last_attempt": 1791568157,
+      "next_attempt": 1791568637,
+      "last_success": null
+    },
+    {
+      "key": "quote:SPX:upbit",
+      "error": "Error: Invalid or outdated quote",
+      "failures": 3,
+      "last_attempt": 1791568157,
+      "next_attempt": 1791568637,
+      "last_success": null
+    },
+    {
+      "key": "quote:XTZ:upbit",
+      "error": "Error: Invalid or outdated quote",
+      "failures": 3,
+      "last_attempt": 1791568157,
+      "next_attempt": 1791568637,
+      "last_success": null
+    },
+    {
+      "key": "quote:GRT:upbit",
+      "error": "Error: Invalid or outdated quote",
+      "failures": 3,
+      "last_attempt": 1791568159,
+      "next_attempt": 1791568639,
+      "last_success": null
+    },
+    {
+      "key": "quote:CFX:upbit",
+      "error": "Error: Invalid or outdated quote",
+      "failures": 3,
+      "last_attempt": 1791568159,
+      "next_attempt": 1791568639,
+      "last_success": null
+    },
+    {
+      "key": "quote:COMP:upbit",
+      "error": "Error: Invalid or outdated quote",
+      "failures": 1,
+      "last_attempt": 1791568097,
+      "next_attempt": 1791568217,
+      "last_success": 1791568038
+    },
+    {
+      "key": "quote:THETA:upbit",
+      "error": "Error: Invalid or outdated quote",
+      "failures": 3,
+      "last_attempt": 1791568159,
+      "next_attempt": 1791568639,
+      "last_success": null
+    },
+    {
+      "key": "quote:AKT:upbit",
+      "error": "Error: Invalid or outdated quote",
+      "failures": 1,
+      "last_attempt": 1791568163,
+      "next_attempt": 1791568283,
+      "last_success": 1791568101
+    },
+    {
+      "key": "quote:MANA:upbit",
+      "error": "Error: Invalid or outdated quote",
+      "failures": 1,
+      "last_attempt": 1791568101,
+      "next_attempt": 1791568221,
+      "last_success": 1791568040
+    },
+    {
+      "key": "quote:A:upbit",
+      "error": "Error: Invalid or outdated quote",
+      "failures": 1,
+      "last_attempt": 1791568165,
+      "next_attempt": 1791568285,
+      "last_success": 1791568103
+    },
+    {
+      "key": "quote:CHZ:upbit",
+      "error": "Error: Invalid or outdated quote",
+      "failures": 3,
+      "last_attempt": 1791568165,
+      "next_attempt": 1791568645,
+      "last_success": null
+    },
+    {
+      "key": "quote:XCN:upbit",
+      "error": "Error: Invalid or outdated quote",
+      "failures": 3,
+      "last_attempt": 1791568165,
+      "next_attempt": 1791568645,
+      "last_success": null
+    },
+    {
+      "key": "quote:SUPER:upbit",
+      "error": "Error: Invalid or outdated quote",
+      "failures": 3,
+      "last_attempt": 1791568165,
+      "next_attempt": 1791568645,
+      "last_success": null
+    },
+    {
+      "key": "quote:GLM:upbit",
+      "error": "Error: Invalid or outdated quote",
+      "failures": 3,
+      "last_attempt": 1791568165,
+      "next_attempt": 1791568645,
+      "last_success": null
+    },
+    {
+      "key": "quote:KMNO:upbit",
+      "error": "Error: Invalid or outdated quote",
+      "failures": 2,
+      "last_attempt": 1791568043,
+      "next_attempt": 1791568283,
+      "last_success": 1791567805
+    },
+    {
+      "key": "quote:GAS:upbit",
+      "error": "Error: Invalid or outdated quote",
+      "failures": 3,
+      "last_attempt": 1791568169,
+      "next_attempt": 1791568649,
+      "last_success": null
+    },
+    {
+      "key": "quote:KAVA:upbit",
+      "error": "Error: Invalid or outdated quote",
+      "failures": 2,
+      "last_attempt": 1791568107,
+      "next_attempt": 1791568347,
+      "last_success": 1791567927
+    },
+    {
+      "key": "quote:KAITO:upbit",
+      "error": "Error: Invalid or outdated quote",
+      "failures": 2,
+      "last_attempt": 1791568107,
+      "next_attempt": 1791568347,
+      "last_success": 1791567927
+    },
+    {
+      "key": "quote:CFG:upbit",
+      "error": "Error: Invalid or outdated quote",
+      "failures": 3,
+      "last_attempt": 1791568170,
+      "next_attempt": 1791568650,
+      "last_success": null
+    },
+    {
+      "key": "quote:SAFE:upbit",
+      "error": "Error: Invalid or outdated quote",
+      "failures": 3,
+      "last_attempt": 1791568170,
+      "next_attempt": 1791568650,
+      "last_success": null
+    },
+    {
+      "key": "quote:VTHO:upbit",
+      "error": "Error: Invalid or outdated quote",
+      "failures": 3,
+      "last_attempt": 1791568172,
+      "next_attempt": 1791568652,
+      "last_success": 1791567692
+    },
+    {
+      "key": "quote:ARKM:upbit",
+      "error": "Error: Invalid or outdated quote",
+      "failures": 2,
+      "last_attempt": 1791567985,
+      "next_attempt": 1791568225,
+      "last_success": 1791567748
+    },
+    {
+      "key": "quote:ONT:upbit",
+      "error": "Error: Invalid or outdated quote",
+      "failures": 2,
+      "last_attempt": 1791568109,
+      "next_attempt": 1791568349,
+      "last_success": 1791567872
+    },
+    {
+      "key": "quote:CKB:upbit",
+      "error": "Error: Invalid or outdated quote",
+      "failures": 3,
+      "last_attempt": 1791568172,
+      "next_attempt": 1791568652,
+      "last_success": null
+    },
+    {
+      "key": "quote:ASTR:upbit",
+      "error": "Error: Invalid or outdated quote",
+      "failures": 3,
+      "last_attempt": 1791568172,
+      "next_attempt": 1791568652,
+      "last_success": null
+    }
+  ],
+  "source": [
+    {
+      "asset": "KRW-AVAX",
+      "tradeAgeSeconds": 244,
+      "price": 13940.0,
+      "low": 13780.0,
+      "high": 14360.0,
+      "tradeAt": 1791567939
+    },
+    {
+      "asset": "KRW-MNT",
+      "tradeAgeSeconds": 2223,
+      "price": 751.0,
+      "low": 744.0,
+      "high": 766.0,
+      "tradeAt": 1791565960
+    },
+    {
+      "asset": "KRW-CRO",
+      "tradeAgeSeconds": 1660,
+      "price": 83.4,
+      "low": 82.3,
+      "high": 84.8,
+      "tradeAt": 1791566523
+    },
+    {
+      "asset": "KRW-PEPE",
+      "tradeAgeSeconds": 186,
+      "price": 0.00533,
+      "low": 0.00526,
+      "high": 0.00542,
+      "tradeAt": 1791567997
+    },
+    {
+      "asset": "KRW-GRT",
+      "tradeAgeSeconds": 834,
+      "price": 36.7,
+      "low": 35.5,
+      "high": 37.1,
+      "tradeAt": 1791567349
+    },
+    {
+      "asset": "KRW-OP",
+      "tradeAgeSeconds": 248,
+      "price": 170.0,
+      "low": 162.0,
+      "high": 176.0,
+      "tradeAt": 1791567935
+    },
+    {
+      "asset": "KRW-THETA",
+      "tradeAgeSeconds": 2886,
+      "price": 301.0,
+      "low": 286.0,
+      "high": 302.0,
+      "tradeAt": 1791565297
+    }
+  ]
+}

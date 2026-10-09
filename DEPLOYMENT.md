@@ -1,5 +1,7 @@
 # Coin Desk VPS 이전과 배포
 
+2026-10-10 KST: **0.25는 150개 종목 개편**입니다. 현재 코드·서비스별 이미지·원천 상태·배포와 복구 검증은 [0.25 운영 기록](docs/audit-25/README.md)을 따릅니다. 아래 0.21 식별자와 8개 종목 검사는 최초 VPS 이전 당시 기록입니다. 주소·포트·프로젝트 격리는 유지합니다.
+
 2026-10-03 KST 기준 **VPS 운영 전환과 PR #43 차트 수정 배포 완료**입니다. [최신 검증](docs/audit-21/completion/README.md). 사용자 요청으로 48시간 점검·대기 조건은 폐지했습니다. [실제 전환 기록](docs/audit-21/live/README.md)과 [앞선 UX 배포](docs/audit-21/closeout/deployment/README.md)는 당시 이력입니다. 운영 D1 19개 테이블·149,190행을 검증해 이관했습니다. `/srv/services/coin-desk/current`와 API는 `vps-7e72771fa7feac35`, 수집기·hub·백업은 `vps-f1546991c2aab31a`입니다. 루프백 포트는 `18420`, HTTPS는 `https://coin-desk.62.171.141.206.sslip.io`입니다. 기존 Pages도 동일 VPS의 읽기 API에 연결합니다.
 
 **이관 후 `npm run deploy`와 `npm run deploy:collectors`를 실행하지 마세요.** 이 명령은 과거 Cloudflare 수집기를 다시 배포합니다. 예전 프로젝트 Cron은 중지했고 VPS 네 수집기가 운영 쓰기를 담당합니다. D1은 최소 30일 보존합니다. 후속 웹 배포는 기존 해시 자산 보존 후 `npm run deploy:pages`, 서버 변경은 검증된 새 VPS 릴리스만 배포합니다. 아래 단계는 재배포 명령 묶음이 아니라 최초 이관 절차와 복구 안내입니다.

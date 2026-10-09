@@ -1,0 +1,14 @@
+{
+  "startedAt": 1791569437,
+  "previousRelease": "vps-29f6a85aaef183d4",
+  "release": "vps-6770ebcbb08ad9cc",
+  "changedFiles": [
+    "index.html"
+  ],
+  "dbChanged": false,
+  "nginxChanged": false,
+  "backupVerifiedAt": 1791567688,
+  "promoted": true,
+  "collectorHubBackupContainersUnchanged": true,
+  "completedAt": 1791569456
+}

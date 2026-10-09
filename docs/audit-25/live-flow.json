@@ -1,0 +1,123 @@
+{
+  "checkedAt": "2026-10-09T17:47:50.389Z",
+  "fixture": false,
+  "browser": "153.0.8010.12",
+  "results": [
+    {
+      "origin": "https://coin-desk.pages.dev",
+      "width": 390,
+      "flow": "market -> alias search -> PENGU RSI -> data panel -> pinned date -> save -> restore -> reload",
+      "chartLoadMs": 5175,
+      "chartBounds": {
+        "x": 16,
+        "y": 266,
+        "width": 358,
+        "height": 330
+      },
+      "initialMarketRequests": 1,
+      "axeViolations": 0,
+      "backupTransfer": false,
+      "apiWrites": 0,
+      "passed": true
+    },
+    {
+      "origin": "https://coin-desk.pages.dev",
+      "width": 1000,
+      "flow": "market -> alias search -> PENGU RSI -> data panel -> pinned date -> save -> restore -> reload",
+      "chartLoadMs": 896,
+      "chartBounds": {
+        "x": 28,
+        "y": 226,
+        "width": 944,
+        "height": 440
+      },
+      "initialMarketRequests": 1,
+      "axeViolations": 0,
+      "backupTransfer": false,
+      "apiWrites": 0,
+      "passed": true
+    },
+    {
+      "origin": "https://coin-desk.pages.dev",
+      "width": 1280,
+      "flow": "market -> alias search -> PENGU RSI -> data panel -> pinned date -> save -> restore -> reload",
+      "chartLoadMs": 901,
+      "chartBounds": {
+        "x": 28,
+        "y": 226,
+        "width": 1224,
+        "height": 440
+      },
+      "initialMarketRequests": 1,
+      "axeViolations": 0,
+      "backupTransfer": true,
+      "apiWrites": 0,
+      "passed": true
+    },
+    {
+      "origin": "https://coin-desk.62.171.141.206.sslip.io",
+      "width": 390,
+      "flow": "market -> alias search -> PENGU RSI -> data panel -> pinned date -> save -> restore -> reload",
+      "chartLoadMs": 1449,
+      "chartBounds": {
+        "x": 16,
+        "y": 266,
+        "width": 358,
+        "height": 330
+      },
+      "initialMarketRequests": 1,
+      "axeViolations": 0,
+      "backupTransfer": false,
+      "apiWrites": 0,
+      "passed": true
+    },
+    {
+      "origin": "https://coin-desk.62.171.141.206.sslip.io",
+      "width": 1000,
+      "flow": "market -> alias search -> PENGU RSI -> data panel -> pinned date -> save -> restore -> reload",
+      "chartLoadMs": 973,
+      "chartBounds": {
+        "x": 28,
+        "y": 226,
+        "width": 944,
+        "height": 440
+      },
+      "initialMarketRequests": 1,
+      "axeViolations": 0,
+      "backupTransfer": false,
+      "apiWrites": 0,
+      "passed": true
+    },
+    {
+      "origin": "https://coin-desk.62.171.141.206.sslip.io",
+      "width": 1280,
+      "flow": "market -> alias search -> PENGU RSI -> data panel -> pinned date -> save -> restore -> reload",
+      "chartLoadMs": 941,
+      "chartBounds": {
+        "x": 28,
+        "y": 226,
+        "width": 1224,
+        "height": 440
+      },
+      "initialMarketRequests": 1,
+      "axeViolations": 0,
+      "backupTransfer": false,
+      "apiWrites": 0,
+      "passed": true
+    }
+  ],
+  "windowsChrome": {
+    "verified": true,
+    "tool": "Actual Chrome via browser UI",
+    "actions": [
+      "Korean SHIB search",
+      "Open SHIB MVRV",
+      "Observe last confirmed value 0.37 with 2026-10-08 date",
+      "Open data information and see 2021-05-11 start and Coin Metrics daily source",
+      "Escape and keep chart"
+    ],
+    "privateItemsRead": false,
+    "privateItemsWritten": false,
+    "humanUsabilityStudy": false
+  }
+}

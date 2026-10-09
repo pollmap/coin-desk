@@ -1,0 +1,207 @@
+{
+  "checkedAt": 1791568620.4549544,
+  "alpn": "h2",
+  "nginxChanged": false,
+  "cutoverBackups": [
+    {
+      "directory": "20261009T173736627422Z",
+      "verified": true,
+      "completedAt": 1791567459,
+      "fileSha256": "056fb06dbcb8d07125608eaa852531c5fd497cf12fd55d778bc442a8598d662f",
+      "content": {
+        "schemaSha256": "9242fcb6b2d233d89f48e4e111d4e7c00890ec5fc7a2c6ca449701faf3daaf2f",
+        "schemaObjects": 22,
+        "tables": {
+          "_coin_desk_migrations": {
+            "rows": 9,
+            "sha256": "b2d51443e164519eb88833f5c642d1eaccd662114aac2cf8e8ad1afd185cdae0"
+          },
+          "_coin_desk_runtime_runs": {
+            "rows": 29292,
+            "sha256": "5ce8bcf665133696f0ef1e7aece51a6ab3faaac60253da9e6d51ae93afd90132"
+          },
+          "candles": {
+            "rows": 25430,
+            "sha256": "69b28017c3e72fc6158128fb6c6f1524ead3574c82fa193aedca7fd640bd4518"
+          },
+          "chain_history": {
+            "rows": 218,
+            "sha256": "72fc586917751f78e7d0bf16f74b23ca95c7816bbd256eb47012d9c3a6cdba4f"
+          },
+          "cron_runs": {
+            "rows": 4320,
+            "sha256": "cf52277aac05a404b41bd784923e6cac214d345c58d735b85eb7c7e9c81d43b7"
+          },
+          "cron_state": {
+            "rows": 1,
+            "sha256": "5e4575d84250703784367faf9b9d404d51ff134103466cd1af0a1fc6e63b15d9"
+          },
+          "d1_migrations": {
+            "rows": 9,
+            "sha256": "1054cb7c7494723f71b146faf3d1be036d975f1e823aa7c3df7ece9e6607c224"
+          },
+          "daily_briefings": {
+            "rows": 14,
+            "sha256": "e4f370e8b9c40349417ba35bb9c2f414d7c14383a3002e4d1b7702a4a7b83c16"
+          },
+          "derivative_series": {
+            "rows": 93506,
+            "sha256": "dc6434b6d54d7c221051f52012f0fc4a4fce52eb0904e3ada167e0e8e5d8b47f"
+          },
+          "dominance_history": {
+            "rows": 367,
+            "sha256": "23bdb5cd755104d87046ec2c52751b2c52affbbc0ad3d2aa712b444facc72712"
+          },
+          "ingestion": {
+            "rows": 126,
+            "sha256": "ac24fba0c1f8518d15ba164156d407f7abb3a97931ca78d7fb4f64abbb7887ec"
+          },
+          "network_coverage": {
+            "rows": 75,
+            "sha256": "3515f12043d15461cb2116ed13669a0d25173d5d9d06f3056f1ecce4cde8fb59"
+          },
+          "network_months": {
+            "rows": 781,
+            "sha256": "607d37902231a637caa746542221b07fe13604675599dd83508939126bb62d51"
+          },
+          "observation_signals": {
+            "rows": 74,
+            "sha256": "1d5cd93e8bbe89f9ffa53dba19a7ebf2ca6cc902ea6188af4f48b37a3a684cec"
+          },
+          "onchain": {
+            "rows": 6490,
+            "sha256": "a69ea1b7d9efc1cfc17229195061c5679c4d01a58ff9d4af640b6e82a99786c9"
+          },
+          "price_archive": {
+            "rows": 234,
+            "sha256": "87b6dbb2fafc2b82a4b1d07e3fb567d0da1e74cd3e6bc4de5ef6fefc0f8c336c"
+          },
+          "raw_samples": {
+            "rows": 447,
+            "sha256": "63ebef29c044029da487a03fa4b75a4677a61bdc00da3030224c039d00522d15"
+          },
+          "reference_prices": {
+            "rows": 22384,
+            "sha256": "a4d68611e2b1673c1490c49b907328dcb14943cfeb3e9daab6e4735a177aa951"
+          },
+          "signal_revisions": {
+            "rows": 4,
+            "sha256": "af516f3d6b9e5c9d14beb7d6bd2b07c1d5dae598824455e392dc294b1e4f7534"
+          },
+          "snapshots": {
+            "rows": 17,
+            "sha256": "c36480bd4d4eee110521d3ed3fb58d5b893a72028fd878f91c962a1b5fc59a41"
+          },
+          "state": {
+            "rows": 225,
+            "sha256": "b9ed69aecda9154a4c28974ed9373a5ecba1596931b7bb571569ff47e575e504"
+          }
+        }
+      }
+    },
+    {
+      "directory": "20261009T173922743725Z",
+      "verified": true,
+      "completedAt": 1791567573,
+      "fileSha256": "73c678f8f1a6004ebc9a61a5aa2f0fcb5526bda7aa0acbe88fa8d5b07a9c9480",
+      "content": {
+        "schemaSha256": "9242fcb6b2d233d89f48e4e111d4e7c00890ec5fc7a2c6ca449701faf3daaf2f",
+        "schemaObjects": 22,
+        "tables": {
+          "_coin_desk_migrations": {
+            "rows": 9,
+            "sha256": "b2d51443e164519eb88833f5c642d1eaccd662114aac2cf8e8ad1afd185cdae0"
+          },
+          "_coin_desk_runtime_runs": {
+            "rows": 29300,
+            "sha256": "f6c7cdd32c0c15b0c07b5d46e8ed515d9edbce6a371517333270f318628be81e"
+          },
+          "candles": {
+            "rows": 135462,
+            "sha256": "8e42df398319e9cf6b840bfd5b78649bfb35830a526b14f0f6e71384283e6c06"
+          },
+          "chain_history": {
+            "rows": 218,
+            "sha256": "72fc586917751f78e7d0bf16f74b23ca95c7816bbd256eb47012d9c3a6cdba4f"
+          },
+          "cron_runs": {
+            "rows": 4320,
+            "sha256": "88f92c540b05429d99c763383433fff7c8c9b3b9fa9b9659892285a5db10f617"
+          },
+          "cron_state": {
+            "rows": 1,
+            "sha256": "a5e4dc53ebe16742e61e02360394943e518e15a9abc95461b73ae3a43ae0686c"
+          },
+          "d1_migrations": {
+            "rows": 9,
+            "sha256": "1054cb7c7494723f71b146faf3d1be036d975f1e823aa7c3df7ece9e6607c224"
+          },
+          "daily_briefings": {
+            "rows": 14,
+            "sha256": "e4f370e8b9c40349417ba35bb9c2f414d7c14383a3002e4d1b7702a4a7b83c16"
+          },
+          "derivative_series": {
+            "rows": 111426,
+            "sha256": "f6f33c72c5727f0d5b4bc6469158220aaa0cec49ab344295d201c71c1f0953bd"
+          },
+          "dominance_history": {
+            "rows": 367,
+            "sha256": "23bdb5cd755104d87046ec2c52751b2c52affbbc0ad3d2aa712b444facc72712"
+          },
+          "ingestion": {
+            "rows": 1383,
+            "sha256": "c72f70108283c3577edcac41d8ca8f4a45c4f70fb0b4cf4c74f2a4b4dda30441"
+          },
+          "network_coverage": {
+            "rows": 442,
+            "sha256": "6b37fb670249f8c7cbf4b7f1b8547c8d7803e33e187801076db34ff724673e46"
+          },
+          "network_months": {
+            "rows": 3787,
+            "sha256": "c8c117e41b02aa1a20f58afdf6d9a0ecfcd1c88a534069b4c954b9a8a35bee94"
+          },
+          "observation_signals": {
+            "rows": 74,
+            "sha256": "1d5cd93e8bbe89f9ffa53dba19a7ebf2ca6cc902ea6188af4f48b37a3a684cec"
+          },
+          "onchain": {
+            "rows": 6490,
+            "sha256": "a69ea1b7d9efc1cfc17229195061c5679c4d01a58ff9d4af640b6e82a99786c9"
+          },
+          "price_archive": {
+            "rows": 3718,
+            "sha256": "2ce659c4065fba73bb099ac2b4fb4bad496f8987f9fe0b314232cd9247d5633f"
+          },
+          "raw_samples": {
+            "rows": 1087,
+            "sha256": "09e31a74033fb9d25e559135b6047910b50d37c17138f65b27bcc9d81d8ec32d"
+          },
+          "reference_prices": {
+            "rows": 296178,
+            "sha256": "6555c83bee9278eb6d3010b6f9c7d695c09aa37f45707291215fd21deb758316"
+          },
+          "signal_revisions": {
+            "rows": 4,
+            "sha256": "af516f3d6b9e5c9d14beb7d6bd2b07c1d5dae598824455e392dc294b1e4f7534"
+          },
+          "snapshots": {
+            "rows": 17,
+            "sha256": "c8706420ab42040a1e7d274aedf0d0d7e21e3e6717e1ec91989a6bce7bc5cbca"
+          },
+          "state": {
+            "rows": 675,
+            "sha256": "aa3b6dec303ea884205b7cdc555bcab280b5e3353732a7d2dc9324b9460f95cd"
+          }
+        }
+      }
+    }
+  ],
+  "postCutoverBackupStatus": {
+    "ok": true,
+    "verified": true,
+    "completedAt": 1791567688,
+    "retainedBytes": 997662066,
+    "offsite": false
+  },
+  "freeBytes": 23175503872
+}

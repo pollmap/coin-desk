@@ -1,0 +1,40 @@
+{
+  "recordedAt": "2026-10-09T18:14:54.563838+00:00",
+  "version": "0.25.0",
+  "codeMain": "aaa443d518d8fb353630e3a4b69c354ecc80965e",
+  "uiAndCode": "implemented and verified",
+  "priceHistoryTechnicalAnalysisAssets": 150,
+  "publicStreamAssets": 150,
+  "tradablePairs": 241,
+  "networkAssets": 34,
+  "mvrvAssets": 33,
+  "referencePriceAssets": 143,
+  "bybitContracts": 136,
+  "deployment": {
+    "verified": true,
+    "public": "https://coin-desk.pages.dev",
+    "pages": "https://519365c1.coin-desk.pages.dev",
+    "vps": "https://coin-desk.62.171.141.206.sslip.io",
+    "apiRelease": "vps-6770ebcbb08ad9cc",
+    "collectorAndHubRelease": "vps-29f6a85aaef183d4",
+    "backupImage": "coin-desk:vps-6270048e66efc7fa",
+    "schema": "0009",
+    "metadataOnlyAfterFeatureRelease": true
+  },
+  "allAcceptanceTargetsPassed": false,
+  "limitations": [
+    "VPS direct-address LCP p95 3052ms exceeds 2500ms target; Pages 960ms passes.",
+    "Some real upstream trades exceed 300 seconds; no freshness relaxation, HTTP health remains 503.",
+    "KAIA Upbit has insufficient closed daily history; Binance history is separate and available.",
+    "Full cadence verification for every six-hour source and complete historical futures backfill are not claimed.",
+    "Verified theme/project relationships cover 13 assets; no invented contract addresses."
+  ],
+  "externalUnverified": [
+    "Actual Apple Safari and VoiceOver",
+    "Human usability study"
+  ],
+  "personalDataPreserved": true,
+  "fortyEightHourWaitRequired": false,
+  "knownLocalUnrelatedFilePreserved": "docs/BORI_CHART_PRODUCT_PLAN.md",
+  "evidenceDocsOnlyNoRedeploy": true
+}

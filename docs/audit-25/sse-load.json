@@ -1,0 +1,53 @@
+{
+  "base": "https://coin-desk.62.171.141.206.sslip.io",
+  "startedAt": 1791568286535,
+  "clients": 100,
+  "durationMs": 30000,
+  "assetRegistry": 150,
+  "successful": 100,
+  "events": 3100,
+  "ticks": 44691,
+  "errors": [],
+  "reconnects": 10,
+  "receiptToClientP95Ms": 957,
+  "delaySamples": 31491,
+  "completedAt": 1791568324743,
+  "sameVpsClocks": true,
+  "syntheticTicks": false,
+  "browserPaintMeasured": false,
+  "resources": [
+    {
+      "service": "coin-desk-api-1",
+      "samples": 7,
+      "memoryMiB": [
+        127.6,
+        128.1,
+        128.1,
+        128.1,
+        128.0,
+        127.7,
+        127.7
+      ],
+      "maximumMiB": 128.1,
+      "changeMiB": 0.1,
+      "maxCpuPercent": 77.37
+    },
+    {
+      "service": "coin-desk-quote-hub-1",
+      "samples": 7,
+      "memoryMiB": [
+        37.82,
+        40.92,
+        41.52,
+        41.8,
+        42.15,
+        42.84,
+        42.87
+      ],
+      "maximumMiB": 42.87,
+      "changeMiB": 5.05,
+      "maxCpuPercent": 10.08
+    }
+  ],
+  "limitation": "100 public HTTPS SSE clients on the same VPS for 30 seconds, then 10 reconnects for 8 seconds; not a browser paint test or a full-day soak."
+}

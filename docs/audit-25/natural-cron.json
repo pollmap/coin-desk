@@ -1,0 +1,4116 @@
+{
+  "start": 1791567597,
+  "end": 1791569494,
+  "seconds": 1897,
+  "collectionEndpointsCalled": false,
+  "overviewCalled": false,
+  "verificationRowsWritten": 0,
+  "otherVisitorsExcluded": false,
+  "successfulSourceChecksAdvanced": {
+    "candles": 463,
+    "other": 20,
+    "derivatives": 13,
+    "network": 3,
+    "quotes": 230,
+    "quoteBatches": 31,
+    "reference": 2
+  },
+  "successfulSources": [
+    {
+      "key": "0G:binance:1d",
+      "lastSuccess": 1791568741,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "0G:binance:1h",
+      "lastSuccess": 1791568743,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "0G:upbit:1d",
+      "lastSuccess": 1791568710,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "0G:upbit:1h",
+      "lastSuccess": 1791568740,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "2Z:binance:1d",
+      "lastSuccess": 1791568326,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "2Z:binance:1h",
+      "lastSuccess": 1791568327,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "2Z:upbit:1d",
+      "lastSuccess": 1791568325,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "2Z:upbit:1h",
+      "lastSuccess": 1791568325,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "A:binance:1d",
+      "lastSuccess": 1791568262,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "A:binance:1h",
+      "lastSuccess": 1791568264,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "A:upbit:1d",
+      "lastSuccess": 1791568221,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "A:upbit:1h",
+      "lastSuccess": 1791568260,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "AAVE:binance:1d",
+      "lastSuccess": 1791567783,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "AAVE:binance:1h",
+      "lastSuccess": 1791567784,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "AAVE:upbit:1d",
+      "lastSuccess": 1791567780,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "AAVE:upbit:1h",
+      "lastSuccess": 1791567782,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "ADA:binance:1d",
+      "lastSuccess": 1791567668,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "ADA:binance:1h",
+      "lastSuccess": 1791567670,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "ADA:upbit:1d",
+      "lastSuccess": 1791567668,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "ADA:upbit:1h",
+      "lastSuccess": 1791567668,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "AERO:binance:1d",
+      "lastSuccess": 1791567917,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "AERO:binance:1h",
+      "lastSuccess": 1791567918,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "AERO:upbit:1d",
+      "lastSuccess": 1791567916,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "AERO:upbit:1h",
+      "lastSuccess": 1791567917,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "AKT:upbit:1d",
+      "lastSuccess": 1791568159,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "AKT:upbit:1h",
+      "lastSuccess": 1791568159,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "ALGO:binance:1d",
+      "lastSuccess": 1791567851,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "ALGO:binance:1h",
+      "lastSuccess": 1791567853,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "ALGO:upbit:1d",
+      "lastSuccess": 1791567851,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "ALGO:upbit:1h",
+      "lastSuccess": 1791567851,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "APE:binance:1d",
+      "lastSuccess": 1791568632,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "APE:binance:1h",
+      "lastSuccess": 1791568633,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "APT:binance:1d",
+      "lastSuccess": 1791567973,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "APT:binance:1h",
+      "lastSuccess": 1791567974,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "APT:upbit:1d",
+      "lastSuccess": 1791567972,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "APT:upbit:1h",
+      "lastSuccess": 1791567973,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "AR:binance:1d",
+      "lastSuccess": 1791568577,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "AR:binance:1h",
+      "lastSuccess": 1791568578,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "ARB:binance:1d",
+      "lastSuccess": 1791567900,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "ARB:binance:1h",
+      "lastSuccess": 1791567902,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "ARB:upbit:1d",
+      "lastSuccess": 1791567861,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "ARB:upbit:1h",
+      "lastSuccess": 1791567861,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "ARKM:binance:1d",
+      "lastSuccess": 1791568503,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "ARKM:binance:1h",
+      "lastSuccess": 1791568504,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "ARKM:upbit:1d",
+      "lastSuccess": 1791568501,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "ARKM:upbit:1h",
+      "lastSuccess": 1791568503,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "ASTER:binance:1d",
+      "lastSuccess": 1791568521,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "ASTER:binance:1h",
+      "lastSuccess": 1791568522,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "ASTR:binance:1d",
+      "lastSuccess": 1791568756,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "ASTR:binance:1h",
+      "lastSuccess": 1791568757,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "ASTR:upbit:1d",
+      "lastSuccess": 1791568755,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "ASTR:upbit:1h",
+      "lastSuccess": 1791569460,
+      "dataAsOf": 1791568800
+    },
+    {
+      "key": "ATH:upbit:1d",
+      "lastSuccess": 1791568389,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "ATH:upbit:1h",
+      "lastSuccess": 1791568389,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "ATOM:binance:1d",
+      "lastSuccess": 1791567906,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "ATOM:binance:1h",
+      "lastSuccess": 1791567908,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "ATOM:upbit:1d",
+      "lastSuccess": 1791567903,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "ATOM:upbit:1h",
+      "lastSuccess": 1791567906,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "AVAX:binance:1d",
+      "lastSuccess": 1791567726,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "AVAX:binance:1h",
+      "lastSuccess": 1791567727,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "AVAX:upbit:1d",
+      "lastSuccess": 1791567725,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "AVAX:upbit:1h",
+      "lastSuccess": 1791567726,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "AXS:binance:1d",
+      "lastSuccess": 1791568205,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "AXS:binance:1h",
+      "lastSuccess": 1791568206,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "AXS:upbit:1d",
+      "lastSuccess": 1791568204,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "AXS:upbit:1h",
+      "lastSuccess": 1791568204,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "BANANAS31:binance:1d",
+      "lastSuccess": 1791568707,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "BANANAS31:binance:1h",
+      "lastSuccess": 1791568708,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "BAT:binance:1d",
+      "lastSuccess": 1791568215,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "BAT:binance:1h",
+      "lastSuccess": 1791568217,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "BAT:upbit:1d",
+      "lastSuccess": 1791568215,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "BAT:upbit:1h",
+      "lastSuccess": 1791568215,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "BCH:binance:1d",
+      "lastSuccess": 1791567678,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "BCH:binance:1h",
+      "lastSuccess": 1791567679,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "BCH:upbit:1d",
+      "lastSuccess": 1791567678,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "BCH:upbit:1h",
+      "lastSuccess": 1791567678,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "BEAM:upbit:1d",
+      "lastSuccess": 1791568279,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "BEAM:upbit:1h",
+      "lastSuccess": 1791568279,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "BNB:binance:1d",
+      "lastSuccess": 1791568505,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "BNB:binance:1h",
+      "lastSuccess": 1791568507,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "BOME:binance:1d",
+      "lastSuccess": 1791568699,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "BOME:binance:1h",
+      "lastSuccess": 1791568700,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "BONK:binance:1d",
+      "lastSuccess": 1791568579,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "BONK:binance:1h",
+      "lastSuccess": 1791568580,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "BTC:binance:1h",
+      "lastSuccess": 1791568804,
+      "dataAsOf": 1791568800
+    },
+    {
+      "key": "BTC:upbit:1h",
+      "lastSuccess": 1791568808,
+      "dataAsOf": 1791568800
+    },
+    {
+      "key": "CAKE:binance:1d",
+      "lastSuccess": 1791568523,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "CAKE:binance:1h",
+      "lastSuccess": 1791568524,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "CFG:binance:1d",
+      "lastSuccess": 1791568390,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "CFG:binance:1h",
+      "lastSuccess": 1791568392,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "CFG:upbit:1d",
+      "lastSuccess": 1791568390,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "CFG:upbit:1h",
+      "lastSuccess": 1791568390,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "CFX:binance:1d",
+      "lastSuccess": 1791568097,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "CFX:binance:1h",
+      "lastSuccess": 1791568099,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "CFX:upbit:1d",
+      "lastSuccess": 1791568096,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "CFX:upbit:1h",
+      "lastSuccess": 1791568809,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "CHZ:binance:1d",
+      "lastSuccess": 1791568266,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "CHZ:binance:1h",
+      "lastSuccess": 1791568267,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "CHZ:upbit:1d",
+      "lastSuccess": 1791568265,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "CHZ:upbit:1h",
+      "lastSuccess": 1791568265,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "CKB:binance:1d",
+      "lastSuccess": 1791568458,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "CKB:binance:1h",
+      "lastSuccess": 1791568500,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "CKB:upbit:1d",
+      "lastSuccess": 1791568458,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "CKB:upbit:1h",
+      "lastSuccess": 1791568458,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "COMP:binance:1d",
+      "lastSuccess": 1791568146,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "COMP:binance:1h",
+      "lastSuccess": 1791568147,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "COMP:upbit:1d",
+      "lastSuccess": 1791568145,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "COMP:upbit:1h",
+      "lastSuccess": 1791568145,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "COW:binance:1d",
+      "lastSuccess": 1791568444,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "COW:binance:1h",
+      "lastSuccess": 1791568445,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "COW:upbit:1d",
+      "lastSuccess": 1791568443,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "COW:upbit:1h",
+      "lastSuccess": 1791568444,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "CRO:upbit:1d",
+      "lastSuccess": 1791567971,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "CRO:upbit:1h",
+      "lastSuccess": 1791567972,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "CRV:binance:1d",
+      "lastSuccess": 1791568025,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "CRV:binance:1h",
+      "lastSuccess": 1791568026,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "CRV:upbit:1d",
+      "lastSuccess": 1791568023,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "CRV:upbit:1h",
+      "lastSuccess": 1791568024,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "CVX:binance:1d",
+      "lastSuccess": 1791568623,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "CVX:binance:1h",
+      "lastSuccess": 1791568625,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "DASH:binance:1d",
+      "lastSuccess": 1791568526,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "DASH:binance:1h",
+      "lastSuccess": 1791568527,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "DCR:binance:1d",
+      "lastSuccess": 1791568569,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "DCR:binance:1h",
+      "lastSuccess": 1791568570,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "DEXE:binance:1d",
+      "lastSuccess": 1791568638,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "DEXE:binance:1h",
+      "lastSuccess": 1791568639,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "DGB:binance:1d",
+      "lastSuccess": 1791568704,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "DGB:binance:1h",
+      "lastSuccess": 1791568706,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "DOGE:binance:1h",
+      "lastSuccess": 1791568802,
+      "dataAsOf": 1791568800
+    },
+    {
+      "key": "DOGE:upbit:1h",
+      "lastSuccess": 1791568806,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "DOT:binance:1d",
+      "lastSuccess": 1791567786,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "DOT:binance:1h",
+      "lastSuccess": 1791567788,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "DOT:upbit:1d",
+      "lastSuccess": 1791567786,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "DOT:upbit:1h",
+      "lastSuccess": 1791567786,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "DRV:upbit:1d",
+      "lastSuccess": 1791568038,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "DRV:upbit:1h",
+      "lastSuccess": 1791568038,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "DYDX:binance:1d",
+      "lastSuccess": 1791568635,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "DYDX:binance:1h",
+      "lastSuccess": 1791568636,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "EIGEN:binance:1d",
+      "lastSuccess": 1791568691,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "EIGEN:binance:1h",
+      "lastSuccess": 1791568693,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "ENA:binance:1d",
+      "lastSuccess": 1791567797,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "ENA:binance:1h",
+      "lastSuccess": 1791567798,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "ENA:upbit:1d",
+      "lastSuccess": 1791567796,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "ENA:upbit:1h",
+      "lastSuccess": 1791567796,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "ENJ:binance:1d",
+      "lastSuccess": 1791568745,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "ENJ:binance:1h",
+      "lastSuccess": 1791568746,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "ENS:binance:1d",
+      "lastSuccess": 1791568142,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "ENS:binance:1h",
+      "lastSuccess": 1791568144,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "ENS:upbit:1d",
+      "lastSuccess": 1791568100,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "ENS:upbit:1h",
+      "lastSuccess": 1791568140,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "ETC:binance:1d",
+      "lastSuccess": 1791567848,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "ETC:binance:1h",
+      "lastSuccess": 1791567849,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "ETC:upbit:1d",
+      "lastSuccess": 1791567848,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "ETC:upbit:1h",
+      "lastSuccess": 1791567848,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "ETH:binance:1h",
+      "lastSuccess": 1791568800,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "ETH:upbit:1h",
+      "lastSuccess": 1791568808,
+      "dataAsOf": 1791568800
+    },
+    {
+      "key": "ETHFI:binance:1d",
+      "lastSuccess": 1791568081,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "ETHFI:binance:1h",
+      "lastSuccess": 1791568083,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "ETHFI:upbit:1d",
+      "lastSuccess": 1791568080,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "ETHFI:upbit:1h",
+      "lastSuccess": 1791568081,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "FET:binance:1d",
+      "lastSuccess": 1791568528,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "FET:binance:1h",
+      "lastSuccess": 1791568560,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "FIL:binance:1d",
+      "lastSuccess": 1791567914,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "FIL:binance:1h",
+      "lastSuccess": 1791567915,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "FIL:upbit:1d",
+      "lastSuccess": 1791567913,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "FIL:upbit:1h",
+      "lastSuccess": 1791567913,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "FLOKI:binance:1d",
+      "lastSuccess": 1791568582,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "FLOKI:binance:1h",
+      "lastSuccess": 1791568583,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "FTT:binance:1d",
+      "lastSuccess": 1791568684,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "FTT:binance:1h",
+      "lastSuccess": 1791568685,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "GALA:binance:1d",
+      "lastSuccess": 1791568640,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "GALA:binance:1h",
+      "lastSuccess": 1791568641,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "GAS:binance:1d",
+      "lastSuccess": 1791568383,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "GAS:binance:1h",
+      "lastSuccess": 1791568384,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "GAS:upbit:1d",
+      "lastSuccess": 1791568382,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "GAS:upbit:1h",
+      "lastSuccess": 1791568383,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "GEOD:upbit:1d",
+      "lastSuccess": 1791568341,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "GEOD:upbit:1h",
+      "lastSuccess": 1791568380,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "GLM:binance:1d",
+      "lastSuccess": 1791568322,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "GLM:binance:1h",
+      "lastSuccess": 1791568324,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "GLM:upbit:1d",
+      "lastSuccess": 1791568279,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "GLM:upbit:1h",
+      "lastSuccess": 1791568320,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "GMX:binance:1d",
+      "lastSuccess": 1791568651,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "GMX:binance:1h",
+      "lastSuccess": 1791568680,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "GNO:binance:1d",
+      "lastSuccess": 1791568566,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "GNO:binance:1h",
+      "lastSuccess": 1791568567,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "GRT:binance:1d",
+      "lastSuccess": 1791568090,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "GRT:binance:1h",
+      "lastSuccess": 1791568092,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "GRT:upbit:1d",
+      "lastSuccess": 1791568090,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "GRT:upbit:1h",
+      "lastSuccess": 1791568090,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "HBAR:binance:1d",
+      "lastSuccess": 1791567730,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "HBAR:binance:1h",
+      "lastSuccess": 1791567731,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "HBAR:upbit:1d",
+      "lastSuccess": 1791567729,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "HBAR:upbit:1h",
+      "lastSuccess": 1791567729,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "HOT:binance:1d",
+      "lastSuccess": 1791568702,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "HOT:binance:1h",
+      "lastSuccess": 1791568703,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "HUMA:binance:1d",
+      "lastSuccess": 1791568696,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "HUMA:binance:1h",
+      "lastSuccess": 1791568698,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "HYPE:binance:1d",
+      "lastSuccess": 1791568508,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "HYPE:binance:1h",
+      "lastSuccess": 1791568509,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "ICP:binance:1d",
+      "lastSuccess": 1791567790,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "ICP:binance:1h",
+      "lastSuccess": 1791567791,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "ICP:upbit:1d",
+      "lastSuccess": 1791567789,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "ICP:upbit:1h",
+      "lastSuccess": 1791567790,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "INJ:binance:1d",
+      "lastSuccess": 1791567961,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "INJ:binance:1h",
+      "lastSuccess": 1791567963,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "INJ:upbit:1d",
+      "lastSuccess": 1791567960,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "INJ:upbit:1h",
+      "lastSuccess": 1791567961,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "JASMY:binance:1d",
+      "lastSuccess": 1791568587,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "JASMY:binance:1h",
+      "lastSuccess": 1791568588,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "JST:binance:1d",
+      "lastSuccess": 1791567840,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "JST:binance:1h",
+      "lastSuccess": 1791567841,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "JST:upbit:1d",
+      "lastSuccess": 1791567799,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "JST:upbit:1h",
+      "lastSuccess": 1791567800,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "JTO:binance:1d",
+      "lastSuccess": 1791568200,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "JTO:binance:1h",
+      "lastSuccess": 1791568202,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "JTO:upbit:1d",
+      "lastSuccess": 1791568159,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "JTO:upbit:1h",
+      "lastSuccess": 1791568200,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "KAIA:binance:1d",
+      "lastSuccess": 1791568085,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "KAIA:binance:1h",
+      "lastSuccess": 1791568759,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "KAIA:upbit:1h",
+      "lastSuccess": 1791568758,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "KAITO:binance:1d",
+      "lastSuccess": 1791568441,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "KAITO:binance:1h",
+      "lastSuccess": 1791568442,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "KAITO:upbit:1d",
+      "lastSuccess": 1791568399,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "KAITO:upbit:1h",
+      "lastSuccess": 1791568440,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "KAVA:binance:1d",
+      "lastSuccess": 1791568397,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "KAVA:binance:1h",
+      "lastSuccess": 1791568398,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "KAVA:upbit:1d",
+      "lastSuccess": 1791568396,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "KAVA:upbit:1h",
+      "lastSuccess": 1791568396,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "KMNO:binance:1d",
+      "lastSuccess": 1791568338,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "KMNO:binance:1h",
+      "lastSuccess": 1791568340,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "KMNO:upbit:1d",
+      "lastSuccess": 1791568338,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "KMNO:upbit:1h",
+      "lastSuccess": 1791568338,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "KSM:binance:1d",
+      "lastSuccess": 1791568681,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "KSM:binance:1h",
+      "lastSuccess": 1791568682,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "LDO:binance:1d",
+      "lastSuccess": 1791568563,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "LDO:binance:1h",
+      "lastSuccess": 1791568565,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "LINK:binance:1d",
+      "lastSuccess": 1791569340,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "LINK:binance:1h",
+      "lastSuccess": 1791568762,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "LPT:binance:1d",
+      "lastSuccess": 1791568393,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "LPT:binance:1h",
+      "lastSuccess": 1791568395,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "LPT:upbit:1d",
+      "lastSuccess": 1791568393,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "LPT:upbit:1h",
+      "lastSuccess": 1791568393,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "LTC:binance:1d",
+      "lastSuccess": 1791568513,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "LTC:binance:1h",
+      "lastSuccess": 1791568514,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "LUNC:binance:1d",
+      "lastSuccess": 1791568574,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "LUNC:binance:1h",
+      "lastSuccess": 1791568575,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "MANA:binance:1d",
+      "lastSuccess": 1791568208,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "MANA:binance:1h",
+      "lastSuccess": 1791568210,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "MANA:upbit:1d",
+      "lastSuccess": 1791568208,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "MANA:upbit:1h",
+      "lastSuccess": 1791568208,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "MNT:upbit:1d",
+      "lastSuccess": 1791567785,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "MNT:upbit:1h",
+      "lastSuccess": 1791567786,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "MORPHO:binance:1d",
+      "lastSuccess": 1791567910,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "MORPHO:binance:1h",
+      "lastSuccess": 1791567912,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "MORPHO:upbit:1d",
+      "lastSuccess": 1791567910,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "MORPHO:upbit:1h",
+      "lastSuccess": 1791567910,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "MUBARAK:binance:1d",
+      "lastSuccess": 1791568694,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "MUBARAK:binance:1h",
+      "lastSuccess": 1791568695,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "NEAR:binance:1d",
+      "lastSuccess": 1791567675,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "NEAR:binance:1h",
+      "lastSuccess": 1791567676,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "NEAR:upbit:1d",
+      "lastSuccess": 1791567674,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "NEAR:upbit:1h",
+      "lastSuccess": 1791567675,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "NEO:binance:1d",
+      "lastSuccess": 1791568218,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "NEO:binance:1h",
+      "lastSuccess": 1791568220,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "NEO:upbit:1d",
+      "lastSuccess": 1791568218,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "NEO:upbit:1h",
+      "lastSuccess": 1791568218,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "NEXO:binance:1d",
+      "lastSuccess": 1791568561,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "NEXO:binance:1h",
+      "lastSuccess": 1791568562,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "NMR:binance:1d",
+      "lastSuccess": 1791568332,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "NMR:binance:1h",
+      "lastSuccess": 1791568333,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "NMR:upbit:1d",
+      "lastSuccess": 1791568332,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "NMR:upbit:1h",
+      "lastSuccess": 1791568332,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "ONDO:binance:1d",
+      "lastSuccess": 1791569462,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "ONDO:upbit:1h",
+      "lastSuccess": 1791568760,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "ONT:binance:1d",
+      "lastSuccess": 1791568753,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "ONT:binance:1h",
+      "lastSuccess": 1791568754,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "ONT:upbit:1d",
+      "lastSuccess": 1791568750,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "ONT:upbit:1h",
+      "lastSuccess": 1791568752,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "OP:binance:1d",
+      "lastSuccess": 1791568149,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "OP:binance:1h",
+      "lastSuccess": 1791568151,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "OP:upbit:1d",
+      "lastSuccess": 1791568149,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "OP:upbit:1h",
+      "lastSuccess": 1791568149,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "ORCA:binance:1d",
+      "lastSuccess": 1791568269,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "ORCA:binance:1h",
+      "lastSuccess": 1791568271,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "ORCA:upbit:1d",
+      "lastSuccess": 1791568269,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "ORCA:upbit:1h",
+      "lastSuccess": 1791568269,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "ORDI:binance:1d",
+      "lastSuccess": 1791568648,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "ORDI:binance:1h",
+      "lastSuccess": 1791568650,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "PAXG:binance:1d",
+      "lastSuccess": 1791568518,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "PAXG:binance:1h",
+      "lastSuccess": 1791568519,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "PENDLE:binance:1d",
+      "lastSuccess": 1791568040,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "PENDLE:binance:1h",
+      "lastSuccess": 1791568041,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "PENDLE:upbit:1d",
+      "lastSuccess": 1791568039,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "PENDLE:upbit:1h",
+      "lastSuccess": 1791568039,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "PENGU:binance:1d",
+      "lastSuccess": 1791567662,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "PENGU:binance:1h",
+      "lastSuccess": 1791567663,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "PENGU:upbit:1d",
+      "lastSuccess": 1791567660,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "PENGU:upbit:1h",
+      "lastSuccess": 1791567662,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "PYTH:binance:1d",
+      "lastSuccess": 1791568020,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "PYTH:binance:1h",
+      "lastSuccess": 1791568021,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "PYTH:upbit:1d",
+      "lastSuccess": 1791567979,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "PYTH:upbit:1h",
+      "lastSuccess": 1791567979,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "QNT:binance:1d",
+      "lastSuccess": 1791568516,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "QNT:binance:1h",
+      "lastSuccess": 1791568517,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "QTUM:binance:1d",
+      "lastSuccess": 1791568335,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "QTUM:binance:1h",
+      "lastSuccess": 1791568337,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "QTUM:upbit:1d",
+      "lastSuccess": 1791568335,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "QTUM:upbit:1h",
+      "lastSuccess": 1791568335,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "RAY:binance:1d",
+      "lastSuccess": 1791567968,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "RAY:binance:1h",
+      "lastSuccess": 1791567970,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "RAY:upbit:1d",
+      "lastSuccess": 1791567968,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "RAY:upbit:1h",
+      "lastSuccess": 1791567968,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "RENDER:binance:1d",
+      "lastSuccess": 1791567858,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "RENDER:binance:1h",
+      "lastSuccess": 1791567859,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "RENDER:upbit:1d",
+      "lastSuccess": 1791567858,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "RENDER:upbit:1h",
+      "lastSuccess": 1791567858,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "RLC:binance:1d",
+      "lastSuccess": 1791568645,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "RLC:binance:1h",
+      "lastSuccess": 1791568647,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "ROSE:binance:1d",
+      "lastSuccess": 1791568747,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "ROSE:binance:1h",
+      "lastSuccess": 1791568748,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "RSR:binance:1d",
+      "lastSuccess": 1791568643,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "RSR:binance:1h",
+      "lastSuccess": 1791568644,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "RUNE:binance:1d",
+      "lastSuccess": 1791568584,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "RUNE:binance:1h",
+      "lastSuccess": 1791568586,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "S:binance:1d",
+      "lastSuccess": 1791568621,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "S:binance:1h",
+      "lastSuccess": 1791568622,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "SAFE:upbit:1d",
+      "lastSuccess": 1791568450,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "SAFE:upbit:1h",
+      "lastSuccess": 1791568451,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "SAND:binance:1d",
+      "lastSuccess": 1791568212,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "SAND:binance:1h",
+      "lastSuccess": 1791568213,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "SAND:upbit:1d",
+      "lastSuccess": 1791568211,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "SAND:upbit:1h",
+      "lastSuccess": 1791568211,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "SEI:binance:1d",
+      "lastSuccess": 1791568031,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "SEI:binance:1h",
+      "lastSuccess": 1791568033,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "SEI:upbit:1d",
+      "lastSuccess": 1791568031,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "SEI:upbit:1h",
+      "lastSuccess": 1791568031,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "SFP:binance:1d",
+      "lastSuccess": 1791568627,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "SFP:binance:1h",
+      "lastSuccess": 1791568628,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "SHIB:binance:1d",
+      "lastSuccess": 1791567737,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "SHIB:binance:1h",
+      "lastSuccess": 1791567738,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "SHIB:upbit:1d",
+      "lastSuccess": 1791567736,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "SHIB:upbit:1h",
+      "lastSuccess": 1791567736,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "SNX:binance:1d",
+      "lastSuccess": 1791568686,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "SNX:binance:1h",
+      "lastSuccess": 1791568688,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "SOL:binance:1d",
+      "lastSuccess": 1791569100,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "SOL:binance:1h",
+      "lastSuccess": 1791568763,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "SPX:upbit:1d",
+      "lastSuccess": 1791568084,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "SPX:upbit:1h",
+      "lastSuccess": 1791568084,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "STRK:binance:1d",
+      "lastSuccess": 1791568571,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "STRK:binance:1h",
+      "lastSuccess": 1791568573,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "STX:binance:1d",
+      "lastSuccess": 1791567920,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "STX:binance:1h",
+      "lastSuccess": 1791567922,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "STX:upbit:1d",
+      "lastSuccess": 1791567920,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "STX:upbit:1h",
+      "lastSuccess": 1791567920,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "SUI:binance:1d",
+      "lastSuccess": 1791567733,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "SUI:binance:1h",
+      "lastSuccess": 1791567735,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "SUI:upbit:1d",
+      "lastSuccess": 1791567732,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "SUI:upbit:1h",
+      "lastSuccess": 1791567733,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "SUPER:binance:1d",
+      "lastSuccess": 1791568276,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "SUPER:binance:1h",
+      "lastSuccess": 1791568278,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "SUPER:upbit:1d",
+      "lastSuccess": 1791568275,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "SUPER:upbit:1h",
+      "lastSuccess": 1791568276,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "SYRUP:binance:1d",
+      "lastSuccess": 1791568094,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "SYRUP:binance:1h",
+      "lastSuccess": 1791568095,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "SYRUP:upbit:1d",
+      "lastSuccess": 1791568093,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "SYRUP:upbit:1h",
+      "lastSuccess": 1791568093,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "TAO:binance:1d",
+      "lastSuccess": 1791567740,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "TAO:binance:1h",
+      "lastSuccess": 1791567741,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "TAO:upbit:1d",
+      "lastSuccess": 1791567739,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "TAO:upbit:1h",
+      "lastSuccess": 1791567740,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "TFUEL:binance:1d",
+      "lastSuccess": 1791568447,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "TFUEL:binance:1h",
+      "lastSuccess": 1791568449,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "TFUEL:upbit:1d",
+      "lastSuccess": 1791568447,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "TFUEL:upbit:1h",
+      "lastSuccess": 1791568447,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "THETA:binance:1d",
+      "lastSuccess": 1791568153,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "THETA:binance:1h",
+      "lastSuccess": 1791568154,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "THETA:upbit:1d",
+      "lastSuccess": 1791568152,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "THETA:upbit:1h",
+      "lastSuccess": 1791568152,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "TIA:binance:1d",
+      "lastSuccess": 1791568035,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "TIA:binance:1h",
+      "lastSuccess": 1791568036,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "TIA:upbit:1d",
+      "lastSuccess": 1791568034,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "TIA:upbit:1h",
+      "lastSuccess": 1791568035,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "TRAC:upbit:1d",
+      "lastSuccess": 1791568158,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "TRAC:upbit:1h",
+      "lastSuccess": 1791568159,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "TRX:binance:1d",
+      "lastSuccess": 1791567665,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "TRX:binance:1h",
+      "lastSuccess": 1791567666,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "TRX:upbit:1d",
+      "lastSuccess": 1791567665,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "TRX:upbit:1h",
+      "lastSuccess": 1791567665,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "TWT:binance:1d",
+      "lastSuccess": 1791568589,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "TWT:binance:1h",
+      "lastSuccess": 1791568620,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "UNI:binance:1d",
+      "lastSuccess": 1791567723,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "UNI:binance:1h",
+      "lastSuccess": 1791567724,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "UNI:upbit:1d",
+      "lastSuccess": 1791567720,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "UNI:upbit:1h",
+      "lastSuccess": 1791567722,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "VET:binance:1d",
+      "lastSuccess": 1791567965,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "VET:binance:1h",
+      "lastSuccess": 1791567966,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "VET:upbit:1d",
+      "lastSuccess": 1791567964,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "VET:upbit:1h",
+      "lastSuccess": 1791567964,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "VIRTUAL:binance:1d",
+      "lastSuccess": 1791568028,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "VIRTUAL:binance:1h",
+      "lastSuccess": 1791568029,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "VIRTUAL:upbit:1d",
+      "lastSuccess": 1791568027,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "VIRTUAL:upbit:1h",
+      "lastSuccess": 1791568028,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "VTHO:binance:1d",
+      "lastSuccess": 1791568455,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "VTHO:binance:1h",
+      "lastSuccess": 1791568456,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "VTHO:upbit:1d",
+      "lastSuccess": 1791568454,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "VTHO:upbit:1h",
+      "lastSuccess": 1791568454,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "VVV:upbit:1d",
+      "lastSuccess": 1791567909,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "VVV:upbit:1h",
+      "lastSuccess": 1791567909,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "W:binance:1d",
+      "lastSuccess": 1791568386,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "W:binance:1h",
+      "lastSuccess": 1791568388,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "W:upbit:1d",
+      "lastSuccess": 1791568386,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "W:upbit:1h",
+      "lastSuccess": 1791568386,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "WIF:binance:1d",
+      "lastSuccess": 1791568156,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "WIF:binance:1h",
+      "lastSuccess": 1791568157,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "WIF:upbit:1d",
+      "lastSuccess": 1791568155,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "WIF:upbit:1h",
+      "lastSuccess": 1791568155,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "WLD:binance:1d",
+      "lastSuccess": 1791567855,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "WLD:binance:1h",
+      "lastSuccess": 1791567856,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "WLD:upbit:1d",
+      "lastSuccess": 1791567854,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "WLD:upbit:1h",
+      "lastSuccess": 1791567855,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "WLFI:binance:1d",
+      "lastSuccess": 1791567845,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "WLFI:binance:1h",
+      "lastSuccess": 1791567846,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "WLFI:upbit:1d",
+      "lastSuccess": 1791567842,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "WLFI:upbit:1h",
+      "lastSuccess": 1791567845,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "XAUT:binance:1d",
+      "lastSuccess": 1791567793,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "XAUT:binance:1h",
+      "lastSuccess": 1791567795,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "XAUT:upbit:1d",
+      "lastSuccess": 1791567793,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "XAUT:upbit:1h",
+      "lastSuccess": 1791567793,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "XCN:upbit:1d",
+      "lastSuccess": 1791568268,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "XCN:upbit:1h",
+      "lastSuccess": 1791568920,
+      "dataAsOf": 1791568800
+    },
+    {
+      "key": "XEC:binance:1d",
+      "lastSuccess": 1791568272,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "XEC:binance:1h",
+      "lastSuccess": 1791568274,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "XEC:upbit:1d",
+      "lastSuccess": 1791568272,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "XEC:upbit:1h",
+      "lastSuccess": 1791568272,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "XLM:binance:1d",
+      "lastSuccess": 1791567672,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "XLM:binance:1h",
+      "lastSuccess": 1791567673,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "XLM:upbit:1d",
+      "lastSuccess": 1791567671,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "XLM:upbit:1h",
+      "lastSuccess": 1791567672,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "XRP:binance:1d",
+      "lastSuccess": 1791569160,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "XRP:binance:1h",
+      "lastSuccess": 1791568761,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "XTZ:binance:1d",
+      "lastSuccess": 1791568087,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "XTZ:binance:1h",
+      "lastSuccess": 1791568088,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "XTZ:upbit:1d",
+      "lastSuccess": 1791568086,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "XTZ:upbit:1h",
+      "lastSuccess": 1791568087,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "YFI:binance:1d",
+      "lastSuccess": 1791568689,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "YFI:binance:1h",
+      "lastSuccess": 1791568690,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "ZEC:binance:1d",
+      "lastSuccess": 1791568510,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "ZEC:binance:1h",
+      "lastSuccess": 1791568512,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "ZEN:binance:1d",
+      "lastSuccess": 1791568629,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "ZEN:binance:1h",
+      "lastSuccess": 1791568631,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "ZIL:binance:1d",
+      "lastSuccess": 1791568452,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "ZIL:binance:1h",
+      "lastSuccess": 1791568453,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "ZIL:upbit:1d",
+      "lastSuccess": 1791568451,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "ZIL:upbit:1h",
+      "lastSuccess": 1791568451,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "ZK:binance:1d",
+      "lastSuccess": 1791568329,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "ZK:binance:1h",
+      "lastSuccess": 1791568330,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "ZK:upbit:1d",
+      "lastSuccess": 1791568328,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "ZK:upbit:1h",
+      "lastSuccess": 1791568329,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "ZRO:binance:1d",
+      "lastSuccess": 1791567976,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "ZRO:binance:1h",
+      "lastSuccess": 1791567978,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "ZRO:upbit:1d",
+      "lastSuccess": 1791567976,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "ZRO:upbit:1h",
+      "lastSuccess": 1791567976,
+      "dataAsOf": 1791565200
+    },
+    {
+      "key": "bitview",
+      "lastSuccess": 1791568811,
+      "dataAsOf": 1791417600
+    },
+    {
+      "key": "coinlore",
+      "lastSuccess": 1791568810,
+      "dataAsOf": 1791568810
+    },
+    {
+      "key": "defillama",
+      "lastSuccess": 1791568812,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "derivatives:BTC:funding",
+      "lastSuccess": 1791569400,
+      "dataAsOf": 1791561600
+    },
+    {
+      "key": "derivatives:BTC:long_account_ratio",
+      "lastSuccess": 1791569400,
+      "dataAsOf": 1791568800
+    },
+    {
+      "key": "derivatives:BTC:open_interest",
+      "lastSuccess": 1791569400,
+      "dataAsOf": 1791568800
+    },
+    {
+      "key": "derivatives:BTC:open_interest_daily",
+      "lastSuccess": 1791568980,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "derivatives:DOGE:funding",
+      "lastSuccess": 1791569460,
+      "dataAsOf": 1791561600
+    },
+    {
+      "key": "derivatives:DOGE:long_account_ratio",
+      "lastSuccess": 1791569460,
+      "dataAsOf": 1791568800
+    },
+    {
+      "key": "derivatives:DOGE:long_account_ratio_daily",
+      "lastSuccess": 1791569282,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "derivatives:DOGE:open_interest",
+      "lastSuccess": 1791569460,
+      "dataAsOf": 1791568800
+    },
+    {
+      "key": "derivatives:ETH:funding",
+      "lastSuccess": 1791569220,
+      "dataAsOf": 1791561600
+    },
+    {
+      "key": "derivatives:ETH:long_account_ratio",
+      "lastSuccess": 1791569220,
+      "dataAsOf": 1791568800
+    },
+    {
+      "key": "derivatives:ETH:long_account_ratio_daily",
+      "lastSuccess": 1791569462,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "derivatives:ETH:open_interest",
+      "lastSuccess": 1791569220,
+      "dataAsOf": 1791568800
+    },
+    {
+      "key": "derivatives:ETH:open_interest_daily",
+      "lastSuccess": 1791568812,
+      "dataAsOf": 1791504000
+    },
+    {
+      "key": "maintenance",
+      "lastSuccess": 1791568765,
+      "dataAsOf": 1791568765
+    },
+    {
+      "key": "mempool:BTC",
+      "lastSuccess": 1791568760,
+      "dataAsOf": 1791568760
+    },
+    {
+      "key": "network:BTC",
+      "lastSuccess": 1791568922,
+      "dataAsOf": 1791417600
+    },
+    {
+      "key": "network:DOGE",
+      "lastSuccess": 1791569100,
+      "dataAsOf": 1791417600
+    },
+    {
+      "key": "network:ETH",
+      "lastSuccess": 1791568765,
+      "dataAsOf": 1791417600
+    },
+    {
+      "key": "observations:0",
+      "lastSuccess": 1791568800,
+      "dataAsOf": 1791568800
+    },
+    {
+      "key": "observations:1",
+      "lastSuccess": 1791568860,
+      "dataAsOf": 1791568860
+    },
+    {
+      "key": "observations:10",
+      "lastSuccess": 1791569400,
+      "dataAsOf": 1791569400
+    },
+    {
+      "key": "observations:11",
+      "lastSuccess": 1791569460,
+      "dataAsOf": 1791569460
+    },
+    {
+      "key": "observations:12",
+      "lastSuccess": 1791568320,
+      "dataAsOf": 1791568320
+    },
+    {
+      "key": "observations:13",
+      "lastSuccess": 1791568380,
+      "dataAsOf": 1791568380
+    },
+    {
+      "key": "observations:14",
+      "lastSuccess": 1791568440,
+      "dataAsOf": 1791568440
+    },
+    {
+      "key": "observations:2",
+      "lastSuccess": 1791568920,
+      "dataAsOf": 1791568920
+    },
+    {
+      "key": "observations:3",
+      "lastSuccess": 1791568980,
+      "dataAsOf": 1791568980
+    },
+    {
+      "key": "observations:4",
+      "lastSuccess": 1791569040,
+      "dataAsOf": 1791569040
+    },
+    {
+      "key": "observations:5",
+      "lastSuccess": 1791569100,
+      "dataAsOf": 1791569100
+    },
+    {
+      "key": "observations:6",
+      "lastSuccess": 1791569160,
+      "dataAsOf": 1791569160
+    },
+    {
+      "key": "observations:7",
+      "lastSuccess": 1791569220,
+      "dataAsOf": 1791569220
+    },
+    {
+      "key": "observations:8",
+      "lastSuccess": 1791569280,
+      "dataAsOf": 1791569280
+    },
+    {
+      "key": "observations:9",
+      "lastSuccess": 1791569340,
+      "dataAsOf": 1791569340
+    },
+    {
+      "key": "quote:0G:binance",
+      "lastSuccess": 1791569483,
+      "dataAsOf": 1791569481
+    },
+    {
+      "key": "quote:0G:upbit",
+      "lastSuccess": 1791569493,
+      "dataAsOf": 1791569435
+    },
+    {
+      "key": "quote:2Z:binance",
+      "lastSuccess": 1791569472,
+      "dataAsOf": 1791569472
+    },
+    {
+      "key": "quote:2Z:upbit",
+      "lastSuccess": 1791569244,
+      "dataAsOf": 1791568945
+    },
+    {
+      "key": "quote:A:binance",
+      "lastSuccess": 1791569472,
+      "dataAsOf": 1791569471
+    },
+    {
+      "key": "quote:A:upbit",
+      "lastSuccess": 1791569484,
+      "dataAsOf": 1791569314
+    },
+    {
+      "key": "quote:AAVE:binance",
+      "lastSuccess": 1791569463,
+      "dataAsOf": 1791569463
+    },
+    {
+      "key": "quote:AAVE:upbit",
+      "lastSuccess": 1791569046,
+      "dataAsOf": 1791568800
+    },
+    {
+      "key": "quote:ADA:binance",
+      "lastSuccess": 1791569462,
+      "dataAsOf": 1791569462
+    },
+    {
+      "key": "quote:ADA:upbit",
+      "lastSuccess": 1791569466,
+      "dataAsOf": 1791569403
+    },
+    {
+      "key": "quote:AERO:binance",
+      "lastSuccess": 1791569466,
+      "dataAsOf": 1791569464
+    },
+    {
+      "key": "quote:AERO:upbit",
+      "lastSuccess": 1791567970,
+      "dataAsOf": 1791567698
+    },
+    {
+      "key": "quote:AKT:upbit",
+      "lastSuccess": 1791569483,
+      "dataAsOf": 1791569479
+    },
+    {
+      "key": "quote:ALGO:binance",
+      "lastSuccess": 1791569465,
+      "dataAsOf": 1791569464
+    },
+    {
+      "key": "quote:ALGO:upbit",
+      "lastSuccess": 1791569470,
+      "dataAsOf": 1791569289
+    },
+    {
+      "key": "quote:APE:binance",
+      "lastSuccess": 1791569480,
+      "dataAsOf": 1791569472
+    },
+    {
+      "key": "quote:APT:binance",
+      "lastSuccess": 1791569468,
+      "dataAsOf": 1791569468
+    },
+    {
+      "key": "quote:APT:upbit",
+      "lastSuccess": 1791569473,
+      "dataAsOf": 1791569462
+    },
+    {
+      "key": "quote:AR:binance",
+      "lastSuccess": 1791569479,
+      "dataAsOf": 1791569476
+    },
+    {
+      "key": "quote:ARB:binance",
+      "lastSuccess": 1791569465,
+      "dataAsOf": 1791569465
+    },
+    {
+      "key": "quote:ARB:upbit",
+      "lastSuccess": 1791567732,
+      "dataAsOf": 1791567441
+    },
+    {
+      "key": "quote:ARKM:binance",
+      "lastSuccess": 1791569475,
+      "dataAsOf": 1791569474
+    },
+    {
+      "key": "quote:ARKM:upbit",
+      "lastSuccess": 1791569493,
+      "dataAsOf": 1791569198
+    },
+    {
+      "key": "quote:ASTER:binance",
+      "lastSuccess": 1791569476,
+      "dataAsOf": 1791569476
+    },
+    {
+      "key": "quote:ASTR:binance",
+      "lastSuccess": 1791569484,
+      "dataAsOf": 1791569481
+    },
+    {
+      "key": "quote:ATH:upbit",
+      "lastSuccess": 1791568889,
+      "dataAsOf": 1791568595
+    },
+    {
+      "key": "quote:ATOM:binance",
+      "lastSuccess": 1791569466,
+      "dataAsOf": 1791569466
+    },
+    {
+      "key": "quote:ATOM:upbit",
+      "lastSuccess": 1791569472,
+      "dataAsOf": 1791569453
+    },
+    {
+      "key": "quote:AVAX:binance",
+      "lastSuccess": 1791569462,
+      "dataAsOf": 1791569462
+    },
+    {
+      "key": "quote:AVAX:upbit",
+      "lastSuccess": 1791569466,
+      "dataAsOf": 1791569297
+    },
+    {
+      "key": "quote:AXS:binance",
+      "lastSuccess": 1791569471,
+      "dataAsOf": 1791569469
+    },
+    {
+      "key": "quote:AXS:upbit",
+      "lastSuccess": 1791569483,
+      "dataAsOf": 1791569457
+    },
+    {
+      "key": "quote:BANANAS31:binance",
+      "lastSuccess": 1791569483,
+      "dataAsOf": 1791569459
+    },
+    {
+      "key": "quote:BAT:binance",
+      "lastSuccess": 1791569471,
+      "dataAsOf": 1791569470
+    },
+    {
+      "key": "quote:BAT:upbit",
+      "lastSuccess": 1791569483,
+      "dataAsOf": 1791569478
+    },
+    {
+      "key": "quote:BCH:binance",
+      "lastSuccess": 1791569462,
+      "dataAsOf": 1791569461
+    },
+    {
+      "key": "quote:BCH:upbit",
+      "lastSuccess": 1791569466,
+      "dataAsOf": 1791569240
+    },
+    {
+      "key": "quote:BEAM:upbit",
+      "lastSuccess": 1791569484,
+      "dataAsOf": 1791569394
+    },
+    {
+      "key": "quote:BNB:binance",
+      "lastSuccess": 1791569476,
+      "dataAsOf": 1791569475
+    },
+    {
+      "key": "quote:BOME:binance",
+      "lastSuccess": 1791569483,
+      "dataAsOf": 1791569477
+    },
+    {
+      "key": "quote:BONK:binance",
+      "lastSuccess": 1791569479,
+      "dataAsOf": 1791569474
+    },
+    {
+      "key": "quote:BTC:binance",
+      "lastSuccess": 1791569461,
+      "dataAsOf": 1791569461
+    },
+    {
+      "key": "quote:BTC:upbit",
+      "lastSuccess": 1791569465,
+      "dataAsOf": 1791569460
+    },
+    {
+      "key": "quote:CAKE:binance",
+      "lastSuccess": 1791569476,
+      "dataAsOf": 1791569476
+    },
+    {
+      "key": "quote:CFG:binance",
+      "lastSuccess": 1791569473,
+      "dataAsOf": 1791569467
+    },
+    {
+      "key": "quote:CFG:upbit",
+      "lastSuccess": 1791569490,
+      "dataAsOf": 1791569455
+    },
+    {
+      "key": "quote:CFX:binance",
+      "lastSuccess": 1791569470,
+      "dataAsOf": 1791569467
+    },
+    {
+      "key": "quote:CFX:upbit",
+      "lastSuccess": 1791568757,
+      "dataAsOf": 1791568513
+    },
+    {
+      "key": "quote:CHZ:binance",
+      "lastSuccess": 1791569472,
+      "dataAsOf": 1791569467
+    },
+    {
+      "key": "quote:CHZ:upbit",
+      "lastSuccess": 1791569423,
+      "dataAsOf": 1791569159
+    },
+    {
+      "key": "quote:CKB:binance",
+      "lastSuccess": 1791569475,
+      "dataAsOf": 1791569471
+    },
+    {
+      "key": "quote:COMP:binance",
+      "lastSuccess": 1791569470,
+      "dataAsOf": 1791569469
+    },
+    {
+      "key": "quote:COMP:upbit",
+      "lastSuccess": 1791568038,
+      "dataAsOf": 1791567770
+    },
+    {
+      "key": "quote:COW:binance",
+      "lastSuccess": 1791569475,
+      "dataAsOf": 1791569474
+    },
+    {
+      "key": "quote:COW:upbit",
+      "lastSuccess": 1791568291,
+      "dataAsOf": 1791568002
+    },
+    {
+      "key": "quote:CRV:binance",
+      "lastSuccess": 1791569468,
+      "dataAsOf": 1791569467
+    },
+    {
+      "key": "quote:CRV:upbit",
+      "lastSuccess": 1791569414,
+      "dataAsOf": 1791569152
+    },
+    {
+      "key": "quote:CVX:binance",
+      "lastSuccess": 1791569479,
+      "dataAsOf": 1791569478
+    },
+    {
+      "key": "quote:DASH:binance",
+      "lastSuccess": 1791569477,
+      "dataAsOf": 1791569477
+    },
+    {
+      "key": "quote:DCR:binance",
+      "lastSuccess": 1791569477,
+      "dataAsOf": 1791569472
+    },
+    {
+      "key": "quote:DEXE:binance",
+      "lastSuccess": 1791569480,
+      "dataAsOf": 1791569479
+    },
+    {
+      "key": "quote:DGB:binance",
+      "lastSuccess": 1791569483,
+      "dataAsOf": 1791569415
+    },
+    {
+      "key": "quote:DOGE:binance",
+      "lastSuccess": 1791569461,
+      "dataAsOf": 1791569460
+    },
+    {
+      "key": "quote:DOGE:upbit",
+      "lastSuccess": 1791569465,
+      "dataAsOf": 1791569427
+    },
+    {
+      "key": "quote:DOT:binance",
+      "lastSuccess": 1791569463,
+      "dataAsOf": 1791569462
+    },
+    {
+      "key": "quote:DOT:upbit",
+      "lastSuccess": 1791569468,
+      "dataAsOf": 1791569450
+    },
+    {
+      "key": "quote:DRV:upbit",
+      "lastSuccess": 1791569477,
+      "dataAsOf": 1791569472
+    },
+    {
+      "key": "quote:DYDX:binance",
+      "lastSuccess": 1791569480,
+      "dataAsOf": 1791569479
+    },
+    {
+      "key": "quote:EIGEN:binance",
+      "lastSuccess": 1791569481,
+      "dataAsOf": 1791569479
+    },
+    {
+      "key": "quote:ENA:binance",
+      "lastSuccess": 1791569465,
+      "dataAsOf": 1791569462
+    },
+    {
+      "key": "quote:ENA:upbit",
+      "lastSuccess": 1791569470,
+      "dataAsOf": 1791569342
+    },
+    {
+      "key": "quote:ENJ:binance",
+      "lastSuccess": 1791569483,
+      "dataAsOf": 1791569482
+    },
+    {
+      "key": "quote:ENS:binance",
+      "lastSuccess": 1791569470,
+      "dataAsOf": 1791569469
+    },
+    {
+      "key": "quote:ENS:upbit",
+      "lastSuccess": 1791569479,
+      "dataAsOf": 1791569391
+    },
+    {
+      "key": "quote:ETC:binance",
+      "lastSuccess": 1791569465,
+      "dataAsOf": 1791569462
+    },
+    {
+      "key": "quote:ETC:upbit",
+      "lastSuccess": 1791569470,
+      "dataAsOf": 1791569366
+    },
+    {
+      "key": "quote:ETH:binance",
+      "lastSuccess": 1791569461,
+      "dataAsOf": 1791569461
+    },
+    {
+      "key": "quote:ETH:upbit",
+      "lastSuccess": 1791569465,
+      "dataAsOf": 1791569460
+    },
+    {
+      "key": "quote:ETHFI:binance",
+      "lastSuccess": 1791569470,
+      "dataAsOf": 1791569468
+    },
+    {
+      "key": "quote:ETHFI:upbit",
+      "lastSuccess": 1791569477,
+      "dataAsOf": 1791569461
+    },
+    {
+      "key": "quote:FET:binance",
+      "lastSuccess": 1791569477,
+      "dataAsOf": 1791569477
+    },
+    {
+      "key": "quote:FIL:binance",
+      "lastSuccess": 1791569466,
+      "dataAsOf": 1791569465
+    },
+    {
+      "key": "quote:FIL:upbit",
+      "lastSuccess": 1791569472,
+      "dataAsOf": 1791569238
+    },
+    {
+      "key": "quote:FLOKI:binance",
+      "lastSuccess": 1791569479,
+      "dataAsOf": 1791569476
+    },
+    {
+      "key": "quote:FTT:binance",
+      "lastSuccess": 1791569481,
+      "dataAsOf": 1791569473
+    },
+    {
+      "key": "quote:GALA:binance",
+      "lastSuccess": 1791569480,
+      "dataAsOf": 1791569479
+    },
+    {
+      "key": "quote:GAS:binance",
+      "lastSuccess": 1791569473,
+      "dataAsOf": 1791569471
+    },
+    {
+      "key": "quote:GEOD:upbit",
+      "lastSuccess": 1791569488,
+      "dataAsOf": 1791569266
+    },
+    {
+      "key": "quote:GLM:binance",
+      "lastSuccess": 1791569472,
+      "dataAsOf": 1791569469
+    },
+    {
+      "key": "quote:GLM:upbit",
+      "lastSuccess": 1791568702,
+      "dataAsOf": 1791568416
+    },
+    {
+      "key": "quote:GMX:binance",
+      "lastSuccess": 1791569481,
+      "dataAsOf": 1791569478
+    },
+    {
+      "key": "quote:GNO:binance",
+      "lastSuccess": 1791569477,
+      "dataAsOf": 1791569234
+    },
+    {
+      "key": "quote:GRT:binance",
+      "lastSuccess": 1791569470,
+      "dataAsOf": 1791569466
+    },
+    {
+      "key": "quote:GRT:upbit",
+      "lastSuccess": 1791568876,
+      "dataAsOf": 1791568629
+    },
+    {
+      "key": "quote:HBAR:binance",
+      "lastSuccess": 1791569463,
+      "dataAsOf": 1791569463
+    },
+    {
+      "key": "quote:HBAR:upbit",
+      "lastSuccess": 1791569468,
+      "dataAsOf": 1791569352
+    },
+    {
+      "key": "quote:HOT:binance",
+      "lastSuccess": 1791569483,
+      "dataAsOf": 1791569482
+    },
+    {
+      "key": "quote:HUMA:binance",
+      "lastSuccess": 1791569483,
+      "dataAsOf": 1791569481
+    },
+    {
+      "key": "quote:HYPE:binance",
+      "lastSuccess": 1791569476,
+      "dataAsOf": 1791569475
+    },
+    {
+      "key": "quote:ICP:binance",
+      "lastSuccess": 1791569463,
+      "dataAsOf": 1791569461
+    },
+    {
+      "key": "quote:ICP:upbit",
+      "lastSuccess": 1791567789,
+      "dataAsOf": 1791567516
+    },
+    {
+      "key": "quote:INJ:binance",
+      "lastSuccess": 1791569466,
+      "dataAsOf": 1791569465
+    },
+    {
+      "key": "quote:INJ:upbit",
+      "lastSuccess": 1791568990,
+      "dataAsOf": 1791568704
+    },
+    {
+      "key": "quote:JASMY:binance",
+      "lastSuccess": 1791569479,
+      "dataAsOf": 1791569476
+    },
+    {
+      "key": "quote:JST:binance",
+      "lastSuccess": 1791569465,
+      "dataAsOf": 1791569464
+    },
+    {
+      "key": "quote:JTO:binance",
+      "lastSuccess": 1791569471,
+      "dataAsOf": 1791569470
+    },
+    {
+      "key": "quote:JTO:upbit",
+      "lastSuccess": 1791569483,
+      "dataAsOf": 1791569461
+    },
+    {
+      "key": "quote:KAIA:binance",
+      "lastSuccess": 1791569470,
+      "dataAsOf": 1791569468
+    },
+    {
+      "key": "quote:KAIA:upbit",
+      "lastSuccess": 1791569477,
+      "dataAsOf": 1791569473
+    },
+    {
+      "key": "quote:KAITO:binance",
+      "lastSuccess": 1791569475,
+      "dataAsOf": 1791569474
+    },
+    {
+      "key": "quote:KAITO:upbit",
+      "lastSuccess": 1791569187,
+      "dataAsOf": 1791568938
+    },
+    {
+      "key": "quote:KAVA:binance",
+      "lastSuccess": 1791569475,
+      "dataAsOf": 1791569469
+    },
+    {
+      "key": "quote:KAVA:upbit",
+      "lastSuccess": 1791567927,
+      "dataAsOf": 1791567632
+    },
+    {
+      "key": "quote:KMNO:binance",
+      "lastSuccess": 1791569473,
+      "dataAsOf": 1791569465
+    },
+    {
+      "key": "quote:KMNO:upbit",
+      "lastSuccess": 1791569488,
+      "dataAsOf": 1791569424
+    },
+    {
+      "key": "quote:KSM:binance",
+      "lastSuccess": 1791569481,
+      "dataAsOf": 1791569476
+    },
+    {
+      "key": "quote:LDO:binance",
+      "lastSuccess": 1791569477,
+      "dataAsOf": 1791569476
+    },
+    {
+      "key": "quote:LINK:binance",
+      "lastSuccess": 1791569461,
+      "dataAsOf": 1791569459
+    },
+    {
+      "key": "quote:LINK:upbit",
+      "lastSuccess": 1791569465,
+      "dataAsOf": 1791569391
+    },
+    {
+      "key": "quote:LPT:binance",
+      "lastSuccess": 1791569473,
+      "dataAsOf": 1791569473
+    },
+    {
+      "key": "quote:LPT:upbit",
+      "lastSuccess": 1791569490,
+      "dataAsOf": 1791569473
+    },
+    {
+      "key": "quote:LTC:binance",
+      "lastSuccess": 1791569476,
+      "dataAsOf": 1791569476
+    },
+    {
+      "key": "quote:LUNC:binance",
+      "lastSuccess": 1791569477,
+      "dataAsOf": 1791569474
+    },
+    {
+      "key": "quote:MANA:binance",
+      "lastSuccess": 1791569471,
+      "dataAsOf": 1791569470
+    },
+    {
+      "key": "quote:MANA:upbit",
+      "lastSuccess": 1791569483,
+      "dataAsOf": 1791569290
+    },
+    {
+      "key": "quote:MORPHO:binance",
+      "lastSuccess": 1791569466,
+      "dataAsOf": 1791569465
+    },
+    {
+      "key": "quote:MORPHO:upbit",
+      "lastSuccess": 1791569050,
+      "dataAsOf": 1791568780
+    },
+    {
+      "key": "quote:MUBARAK:binance",
+      "lastSuccess": 1791569481,
+      "dataAsOf": 1791569479
+    },
+    {
+      "key": "quote:NEAR:binance",
+      "lastSuccess": 1791569462,
+      "dataAsOf": 1791569462
+    },
+    {
+      "key": "quote:NEAR:upbit",
+      "lastSuccess": 1791569466,
+      "dataAsOf": 1791569348
+    },
+    {
+      "key": "quote:NEO:binance",
+      "lastSuccess": 1791569472,
+      "dataAsOf": 1791569467
+    },
+    {
+      "key": "quote:NEO:upbit",
+      "lastSuccess": 1791569483,
+      "dataAsOf": 1791569463
+    },
+    {
+      "key": "quote:NEXO:binance",
+      "lastSuccess": 1791569477,
+      "dataAsOf": 1791569446
+    },
+    {
+      "key": "quote:NMR:binance",
+      "lastSuccess": 1791569473,
+      "dataAsOf": 1791569471
+    },
+    {
+      "key": "quote:NMR:upbit",
+      "lastSuccess": 1791569488,
+      "dataAsOf": 1791569368
+    },
+    {
+      "key": "quote:ONDO:binance",
+      "lastSuccess": 1791569461,
+      "dataAsOf": 1791569461
+    },
+    {
+      "key": "quote:ONDO:upbit",
+      "lastSuccess": 1791569465,
+      "dataAsOf": 1791569457
+    },
+    {
+      "key": "quote:ONT:binance",
+      "lastSuccess": 1791569484,
+      "dataAsOf": 1791569477
+    },
+    {
+      "key": "quote:ONT:upbit",
+      "lastSuccess": 1791567872,
+      "dataAsOf": 1791567622
+    },
+    {
+      "key": "quote:OP:binance",
+      "lastSuccess": 1791569471,
+      "dataAsOf": 1791569470
+    },
+    {
+      "key": "quote:OP:upbit",
+      "lastSuccess": 1791569417,
+      "dataAsOf": 1791569119
+    },
+    {
+      "key": "quote:ORCA:binance",
+      "lastSuccess": 1791569472,
+      "dataAsOf": 1791569464
+    },
+    {
+      "key": "quote:ORCA:upbit",
+      "lastSuccess": 1791569484,
+      "dataAsOf": 1791569467
+    },
+    {
+      "key": "quote:ORDI:binance",
+      "lastSuccess": 1791569481,
+      "dataAsOf": 1791569479
+    },
+    {
+      "key": "quote:PAXG:binance",
+      "lastSuccess": 1791569476,
+      "dataAsOf": 1791569473
+    },
+    {
+      "key": "quote:PENDLE:binance",
+      "lastSuccess": 1791569468,
+      "dataAsOf": 1791569467
+    },
+    {
+      "key": "quote:PENDLE:upbit",
+      "lastSuccess": 1791569477,
+      "dataAsOf": 1791569297
+    },
+    {
+      "key": "quote:PENGU:binance",
+      "lastSuccess": 1791569462,
+      "dataAsOf": 1791569461
+    },
+    {
+      "key": "quote:PENGU:upbit",
+      "lastSuccess": 1791568506,
+      "dataAsOf": 1791568224
+    },
+    {
+      "key": "quote:PEPE:binance",
+      "lastSuccess": 1791569461,
+      "dataAsOf": 1791569461
+    },
+    {
+      "key": "quote:PEPE:upbit",
+      "lastSuccess": 1791569465,
+      "dataAsOf": 1791569279
+    },
+    {
+      "key": "quote:PYTH:binance",
+      "lastSuccess": 1791569468,
+      "dataAsOf": 1791569467
+    },
+    {
+      "key": "quote:PYTH:upbit",
+      "lastSuccess": 1791569473,
+      "dataAsOf": 1791569334
+    },
+    {
+      "key": "quote:QNT:binance",
+      "lastSuccess": 1791569476,
+      "dataAsOf": 1791569475
+    },
+    {
+      "key": "quote:QTUM:binance",
+      "lastSuccess": 1791569473,
+      "dataAsOf": 1791569472
+    },
+    {
+      "key": "quote:QTUM:upbit",
+      "lastSuccess": 1791569488,
+      "dataAsOf": 1791569305
+    },
+    {
+      "key": "quote:RAY:binance",
+      "lastSuccess": 1791569466,
+      "dataAsOf": 1791569466
+    },
+    {
+      "key": "quote:RAY:upbit",
+      "lastSuccess": 1791569473,
+      "dataAsOf": 1791569355
+    },
+    {
+      "key": "quote:RENDER:binance",
+      "lastSuccess": 1791569465,
+      "dataAsOf": 1791569464
+    },
+    {
+      "key": "quote:RENDER:upbit",
+      "lastSuccess": 1791569470,
+      "dataAsOf": 1791569216
+    },
+    {
+      "key": "quote:RLC:binance",
+      "lastSuccess": 1791569480,
+      "dataAsOf": 1791569476
+    },
+    {
+      "key": "quote:ROSE:binance",
+      "lastSuccess": 1791569483,
+      "dataAsOf": 1791569482
+    },
+    {
+      "key": "quote:RSR:binance",
+      "lastSuccess": 1791569480,
+      "dataAsOf": 1791569478
+    },
+    {
+      "key": "quote:RUNE:binance",
+      "lastSuccess": 1791569479,
+      "dataAsOf": 1791569476
+    },
+    {
+      "key": "quote:S:binance",
+      "lastSuccess": 1791569479,
+      "dataAsOf": 1791569476
+    },
+    {
+      "key": "quote:SAFE:upbit",
+      "lastSuccess": 1791569125,
+      "dataAsOf": 1791568882
+    },
+    {
+      "key": "quote:SAND:binance",
+      "lastSuccess": 1791569471,
+      "dataAsOf": 1791569470
+    },
+    {
+      "key": "quote:SAND:upbit",
+      "lastSuccess": 1791569483,
+      "dataAsOf": 1791569466
+    },
+    {
+      "key": "quote:SEI:binance",
+      "lastSuccess": 1791569468,
+      "dataAsOf": 1791569467
+    },
+    {
+      "key": "quote:SEI:upbit",
+      "lastSuccess": 1791569477,
+      "dataAsOf": 1791569304
+    },
+    {
+      "key": "quote:SFP:binance",
+      "lastSuccess": 1791569480,
+      "dataAsOf": 1791569468
+    },
+    {
+      "key": "quote:SHIB:binance",
+      "lastSuccess": 1791569463,
+      "dataAsOf": 1791569461
+    },
+    {
+      "key": "quote:SHIB:upbit",
+      "lastSuccess": 1791569468,
+      "dataAsOf": 1791569280
+    },
+    {
+      "key": "quote:SNX:binance",
+      "lastSuccess": 1791569481,
+      "dataAsOf": 1791569476
+    },
+    {
+      "key": "quote:SOL:binance",
+      "lastSuccess": 1791569461,
+      "dataAsOf": 1791569460
+    },
+    {
+      "key": "quote:SOL:upbit",
+      "lastSuccess": 1791569465,
+      "dataAsOf": 1791569460
+    },
+    {
+      "key": "quote:STRK:binance",
+      "lastSuccess": 1791569477,
+      "dataAsOf": 1791569477
+    },
+    {
+      "key": "quote:STX:binance",
+      "lastSuccess": 1791569466,
+      "dataAsOf": 1791569465
+    },
+    {
+      "key": "quote:STX:upbit",
+      "lastSuccess": 1791569472,
+      "dataAsOf": 1791569251
+    },
+    {
+      "key": "quote:SUI:binance",
+      "lastSuccess": 1791569463,
+      "dataAsOf": 1791569463
+    },
+    {
+      "key": "quote:SUI:upbit",
+      "lastSuccess": 1791569468,
+      "dataAsOf": 1791569389
+    },
+    {
+      "key": "quote:SUPER:binance",
+      "lastSuccess": 1791569472,
+      "dataAsOf": 1791569463
+    },
+    {
+      "key": "quote:SYRUP:binance",
+      "lastSuccess": 1791569470,
+      "dataAsOf": 1791569468
+    },
+    {
+      "key": "quote:SYRUP:upbit",
+      "lastSuccess": 1791568217,
+      "dataAsOf": 1791567934
+    },
+    {
+      "key": "quote:TAO:binance",
+      "lastSuccess": 1791569463,
+      "dataAsOf": 1791569461
+    },
+    {
+      "key": "quote:TAO:upbit",
+      "lastSuccess": 1791569468,
+      "dataAsOf": 1791569391
+    },
+    {
+      "key": "quote:TFUEL:binance",
+      "lastSuccess": 1791569475,
+      "dataAsOf": 1791569461
+    },
+    {
+      "key": "quote:TFUEL:upbit",
+      "lastSuccess": 1791568949,
+      "dataAsOf": 1791568677
+    },
+    {
+      "key": "quote:THETA:binance",
+      "lastSuccess": 1791569471,
+      "dataAsOf": 1791569470
+    },
+    {
+      "key": "quote:TIA:binance",
+      "lastSuccess": 1791569468,
+      "dataAsOf": 1791569467
+    },
+    {
+      "key": "quote:TIA:upbit",
+      "lastSuccess": 1791569355,
+      "dataAsOf": 1791569070
+    },
+    {
+      "key": "quote:TRAC:upbit",
+      "lastSuccess": 1791569358,
+      "dataAsOf": 1791569092
+    },
+    {
+      "key": "quote:TRX:binance",
+      "lastSuccess": 1791569462,
+      "dataAsOf": 1791569461
+    },
+    {
+      "key": "quote:TRX:upbit",
+      "lastSuccess": 1791569466,
+      "dataAsOf": 1791569392
+    },
+    {
+      "key": "quote:TWT:binance",
+      "lastSuccess": 1791569479,
+      "dataAsOf": 1791569473
+    },
+    {
+      "key": "quote:UNI:binance",
+      "lastSuccess": 1791569462,
+      "dataAsOf": 1791569462
+    },
+    {
+      "key": "quote:UNI:upbit",
+      "lastSuccess": 1791569466,
+      "dataAsOf": 1791569370
+    },
+    {
+      "key": "quote:VET:binance",
+      "lastSuccess": 1791569466,
+      "dataAsOf": 1791569465
+    },
+    {
+      "key": "quote:VET:upbit",
+      "lastSuccess": 1791569235,
+      "dataAsOf": 1791568950
+    },
+    {
+      "key": "quote:VIRTUAL:binance",
+      "lastSuccess": 1791569468,
+      "dataAsOf": 1791569467
+    },
+    {
+      "key": "quote:VIRTUAL:upbit",
+      "lastSuccess": 1791569353,
+      "dataAsOf": 1791569065
+    },
+    {
+      "key": "quote:VTHO:binance",
+      "lastSuccess": 1791569475,
+      "dataAsOf": 1791569474
+    },
+    {
+      "key": "quote:VTHO:upbit",
+      "lastSuccess": 1791567692,
+      "dataAsOf": 1791567395
+    },
+    {
+      "key": "quote:VVV:upbit",
+      "lastSuccess": 1791569472,
+      "dataAsOf": 1791569386
+    },
+    {
+      "key": "quote:W:binance",
+      "lastSuccess": 1791569473,
+      "dataAsOf": 1791569473
+    },
+    {
+      "key": "quote:W:upbit",
+      "lastSuccess": 1791569488,
+      "dataAsOf": 1791569405
+    },
+    {
+      "key": "quote:WIF:binance",
+      "lastSuccess": 1791569471,
+      "dataAsOf": 1791569468
+    },
+    {
+      "key": "quote:WIF:upbit",
+      "lastSuccess": 1791568757,
+      "dataAsOf": 1791568500
+    },
+    {
+      "key": "quote:WLD:binance",
+      "lastSuccess": 1791569465,
+      "dataAsOf": 1791569465
+    },
+    {
+      "key": "quote:WLD:upbit",
+      "lastSuccess": 1791569470,
+      "dataAsOf": 1791569199
+    },
+    {
+      "key": "quote:WLFI:binance",
+      "lastSuccess": 1791569465,
+      "dataAsOf": 1791569463
+    },
+    {
+      "key": "quote:WLFI:upbit",
+      "lastSuccess": 1791569470,
+      "dataAsOf": 1791569418
+    },
+    {
+      "key": "quote:XAUT:binance",
+      "lastSuccess": 1791569463,
+      "dataAsOf": 1791569463
+    },
+    {
+      "key": "quote:XAUT:upbit",
+      "lastSuccess": 1791569110,
+      "dataAsOf": 1791568837
+    },
+    {
+      "key": "quote:XEC:binance",
+      "lastSuccess": 1791569472,
+      "dataAsOf": 1791569467
+    },
+    {
+      "key": "quote:XEC:upbit",
+      "lastSuccess": 1791569484,
+      "dataAsOf": 1791569426
+    },
+    {
+      "key": "quote:XLM:binance",
+      "lastSuccess": 1791569462,
+      "dataAsOf": 1791569462
+    },
+    {
+      "key": "quote:XLM:upbit",
+      "lastSuccess": 1791569466,
+      "dataAsOf": 1791569395
+    },
+    {
+      "key": "quote:XRP:binance",
+      "lastSuccess": 1791569461,
+      "dataAsOf": 1791569460
+    },
+    {
+      "key": "quote:XRP:upbit",
+      "lastSuccess": 1791569465,
+      "dataAsOf": 1791569460
+    },
+    {
+      "key": "quote:XTZ:binance",
+      "lastSuccess": 1791569470,
+      "dataAsOf": 1791569467
+    },
+    {
+      "key": "quote:YFI:binance",
+      "lastSuccess": 1791569481,
+      "dataAsOf": 1791569480
+    },
+    {
+      "key": "quote:ZEC:binance",
+      "lastSuccess": 1791569476,
+      "dataAsOf": 1791569475
+    },
+    {
+      "key": "quote:ZEN:binance",
+      "lastSuccess": 1791569480,
+      "dataAsOf": 1791569479
+    },
+    {
+      "key": "quote:ZIL:binance",
+      "lastSuccess": 1791569475,
+      "dataAsOf": 1791569474
+    },
+    {
+      "key": "quote:ZIL:upbit",
+      "lastSuccess": 1791569493,
+      "dataAsOf": 1791569446
+    },
+    {
+      "key": "quote:ZK:binance",
+      "lastSuccess": 1791569473,
+      "dataAsOf": 1791569473
+    },
+    {
+      "key": "quote:ZK:upbit",
+      "lastSuccess": 1791569488,
+      "dataAsOf": 1791569448
+    },
+    {
+      "key": "quote:ZRO:binance",
+      "lastSuccess": 1791569468,
+      "dataAsOf": 1791569467
+    },
+    {
+      "key": "quote:ZRO:upbit",
+      "lastSuccess": 1791569473,
+      "dataAsOf": 1791569352
+    },
+    {
+      "key": "quotes:binance:0",
+      "lastSuccess": 1791569461,
+      "dataAsOf": 1791569461
+    },
+    {
+      "key": "quotes:binance:1",
+      "lastSuccess": 1791569462,
+      "dataAsOf": 1791569462
+    },
+    {
+      "key": "quotes:binance:10",
+      "lastSuccess": 1791569475,
+      "dataAsOf": 1791569475
+    },
+    {
+      "key": "quotes:binance:11",
+      "lastSuccess": 1791569476,
+      "dataAsOf": 1791569476
+    },
+    {
+      "key": "quotes:binance:12",
+      "lastSuccess": 1791569477,
+      "dataAsOf": 1791569477
+    },
+    {
+      "key": "quotes:binance:13",
+      "lastSuccess": 1791569479,
+      "dataAsOf": 1791569479
+    },
+    {
+      "key": "quotes:binance:14",
+      "lastSuccess": 1791569480,
+      "dataAsOf": 1791569480
+    },
+    {
+      "key": "quotes:binance:15",
+      "lastSuccess": 1791569481,
+      "dataAsOf": 1791569481
+    },
+    {
+      "key": "quotes:binance:16",
+      "lastSuccess": 1791569483,
+      "dataAsOf": 1791569483
+    },
+    {
+      "key": "quotes:binance:17",
+      "lastSuccess": 1791569484,
+      "dataAsOf": 1791569484
+    },
+    {
+      "key": "quotes:binance:2",
+      "lastSuccess": 1791569463,
+      "dataAsOf": 1791569463
+    },
+    {
+      "key": "quotes:binance:3",
+      "lastSuccess": 1791569465,
+      "dataAsOf": 1791569465
+    },
+    {
+      "key": "quotes:binance:4",
+      "lastSuccess": 1791569466,
+      "dataAsOf": 1791569466
+    },
+    {
+      "key": "quotes:binance:5",
+      "lastSuccess": 1791569468,
+      "dataAsOf": 1791569468
+    },
+    {
+      "key": "quotes:binance:6",
+      "lastSuccess": 1791569470,
+      "dataAsOf": 1791569470
+    },
+    {
+      "key": "quotes:binance:7",
+      "lastSuccess": 1791569471,
+      "dataAsOf": 1791569471
+    },
+    {
+      "key": "quotes:binance:8",
+      "lastSuccess": 1791569472,
+      "dataAsOf": 1791569472
+    },
+    {
+      "key": "quotes:binance:9",
+      "lastSuccess": 1791569473,
+      "dataAsOf": 1791569473
+    },
+    {
+      "key": "quotes:upbit:0",
+      "lastSuccess": 1791569465,
+      "dataAsOf": 1791569465
+    },
+    {
+      "key": "quotes:upbit:1",
+      "lastSuccess": 1791569466,
+      "dataAsOf": 1791569466
+    },
+    {
+      "key": "quotes:upbit:10",
+      "lastSuccess": 1791569488,
+      "dataAsOf": 1791569488
+    },
+    {
+      "key": "quotes:upbit:11",
+      "lastSuccess": 1791569490,
+      "dataAsOf": 1791569490
+    },
+    {
+      "key": "quotes:upbit:12",
+      "lastSuccess": 1791569493,
+      "dataAsOf": 1791569493
+    },
+    {
+      "key": "quotes:upbit:2",
+      "lastSuccess": 1791569468,
+      "dataAsOf": 1791569468
+    },
+    {
+      "key": "quotes:upbit:3",
+      "lastSuccess": 1791569470,
+      "dataAsOf": 1791569470
+    },
+    {
+      "key": "quotes:upbit:4",
+      "lastSuccess": 1791569472,
+      "dataAsOf": 1791569472
+    },
+    {
+      "key": "quotes:upbit:5",
+      "lastSuccess": 1791569473,
+      "dataAsOf": 1791569473
+    },
+    {
+      "key": "quotes:upbit:6",
+      "lastSuccess": 1791569477,
+      "dataAsOf": 1791569477
+    },
+    {
+      "key": "quotes:upbit:7",
+      "lastSuccess": 1791569479,
+      "dataAsOf": 1791569479
+    },
+    {
+      "key": "quotes:upbit:8",
+      "lastSuccess": 1791569483,
+      "dataAsOf": 1791569483
+    },
+    {
+      "key": "quotes:upbit:9",
+      "lastSuccess": 1791569484,
+      "dataAsOf": 1791569484
+    },
+    {
+      "key": "reference:BTC",
+      "lastSuccess": 1791569160,
+      "dataAsOf": 1791417600
+    },
+    {
+      "key": "reference:DOGE",
+      "lastSuccess": 1791568812,
+      "dataAsOf": 1791417600
+    }
+  ],
+  "quoteSnapshots": 230,
+  "newQuoteSnapshots": 214,
+  "existingQuoteChecksAdvanced": 16,
+  "existingQuoteTradesAdvanced": 16,
+  "runtimeByLane": {
+    "quotes": {
+      "ok": 31
+    },
+    "background": {
+      "ok": 31
+    },
+    "recent": {
+      "ok": 31
+    },
+    "analysis": {
+      "ok": 31
+    }
+  },
+  "backgroundOutcomes": {
+    "ok": 29,
+    "idle": 2
+  },
+  "errors": [
+    {
+      "key": "coingecko",
+      "error": "Error: CoinGecko HTTP 429",
+      "nextAttempt": 1789838480
+    },
+    {
+      "key": "quote:2Z:upbit",
+      "error": "Error: Invalid or outdated quote",
+      "nextAttempt": 1791569665
+    },
+    {
+      "key": "quote:AAVE:upbit",
+      "error": "Error: Invalid or outdated quote",
+      "nextAttempt": 1791569948
+    },
+    {
+      "key": "quote:AERO:upbit",
+      "error": "Error: Invalid or outdated quote",
+      "nextAttempt": 1791569950
+    },
+    {
+      "key": "quote:ARB:upbit",
+      "error": "Error: Invalid or outdated quote",
+      "nextAttempt": 1791569652
+    },
+    {
+      "key": "quote:ASTR:upbit",
+      "error": "Error: Invalid or outdated quote",
+      "nextAttempt": 1791569667
+    },
+    {
+      "key": "quote:ATH:upbit",
+      "error": "Error: Invalid or outdated quote",
+      "nextAttempt": 1791569906
+    },
+    {
+      "key": "quote:CFX:upbit",
+      "error": "Error: Invalid or outdated quote",
+      "nextAttempt": 1791569719
+    },
+    {
+      "key": "quote:CHZ:upbit",
+      "error": "Error: Invalid or outdated quote",
+      "nextAttempt": 1791569604
+    },
+    {
+      "key": "quote:CKB:upbit",
+      "error": "Error: Invalid or outdated quote",
+      "nextAttempt": 1791569667
+    },
+    {
+      "key": "quote:COMP:upbit",
+      "error": "Error: Invalid or outdated quote",
+      "nextAttempt": 1791570014
+    },
+    {
+      "key": "quote:COW:upbit",
+      "error": "Error: Invalid or outdated quote",
+      "nextAttempt": 1791570263
+    },
+    {
+      "key": "quote:CRO:upbit",
+      "error": "Error: Invalid or outdated quote",
+      "nextAttempt": 1791569653
+    },
+    {
+      "key": "quote:CRV:upbit",
+      "error": "Error: Invalid or outdated quote",
+      "nextAttempt": 1791569593
+    },
+    {
+      "key": "quote:GAS:upbit",
+      "error": "Error: Invalid or outdated quote",
+      "nextAttempt": 1791569664
+    },
+    {
+      "key": "quote:GLM:upbit",
+      "error": "Error: Invalid or outdated quote",
+      "nextAttempt": 1791569664
+    },
+    {
+      "key": "quote:GRT:upbit",
+      "error": "Error: Invalid or outdated quote",
+      "nextAttempt": 1791569837
+    },
+    {
+      "key": "quote:ICP:upbit",
+      "error": "Error: Invalid or outdated quote",
+      "nextAttempt": 1791569772
+    },
+    {
+      "key": "quote:INJ:upbit",
+      "error": "Error: Invalid or outdated quote",
+      "nextAttempt": 1791569892
+    },
+    {
+      "key": "quote:JST:upbit",
+      "error": "Error: Invalid or outdated quote",
+      "nextAttempt": 1791569530
+    },
+    {
+      "key": "quote:KAITO:upbit",
+      "error": "Error: Invalid or outdated quote",
+      "nextAttempt": 1791569666
+    },
+    {
+      "key": "quote:KAVA:upbit",
+      "error": "Error: Invalid or outdated quote",
+      "nextAttempt": 1791569792
+    },
+    {
+      "key": "quote:MNT:upbit",
+      "error": "Error: Invalid or outdated quote",
+      "nextAttempt": 1791569587
+    },
+    {
+      "key": "quote:MORPHO:upbit",
+      "error": "Error: Invalid or outdated quote",
+      "nextAttempt": 1791569472
+    },
+    {
+      "key": "quote:ONT:upbit",
+      "error": "Error: Invalid or outdated quote",
+      "nextAttempt": 1791569794
+    },
+    {
+      "key": "quote:OP:upbit",
+      "error": "Error: Invalid or outdated quote",
+      "nextAttempt": 1791569599
+    },
+    {
+      "key": "quote:PENGU:upbit",
+      "error": "Error: Invalid or outdated quote",
+      "nextAttempt": 1791570426
+    },
+    {
+      "key": "quote:SAFE:upbit",
+      "error": "Error: Invalid or outdated quote",
+      "nextAttempt": 1791569603
+    },
+    {
+      "key": "quote:SPX:upbit",
+      "error": "Error: Invalid or outdated quote",
+      "nextAttempt": 1791569655
+    },
+    {
+      "key": "quote:SUPER:upbit",
+      "error": "Error: Invalid or outdated quote",
+      "nextAttempt": 1791569662
+    },
+    {
+      "key": "quote:SYRUP:upbit",
+      "error": "Error: Invalid or outdated quote",
+      "nextAttempt": 1791570199
+    },
+    {
+      "key": "quote:TFUEL:upbit",
+      "error": "Error: Invalid or outdated quote",
+      "nextAttempt": 1791569906
+    },
+    {
+      "key": "quote:THETA:upbit",
+      "error": "Error: Invalid or outdated quote",
+      "nextAttempt": 1791569657
+    },
+    {
+      "key": "quote:TIA:upbit",
+      "error": "Error: Invalid or outdated quote",
+      "nextAttempt": 1791569536
+    },
+    {
+      "key": "quote:TRAC:upbit",
+      "error": "Error: Invalid or outdated quote",
+      "nextAttempt": 1791569541
+    },
+    {
+      "key": "quote:VET:upbit",
+      "error": "Error: Invalid or outdated quote",
+      "nextAttempt": 1791569713
+    },
+    {
+      "key": "quote:VIRTUAL:upbit",
+      "error": "Error: Invalid or outdated quote",
+      "nextAttempt": 1791569534
+    },
+    {
+      "key": "quote:VTHO:upbit",
+      "error": "Error: Invalid or outdated quote",
+      "nextAttempt": 1791569667
+    },
+    {
+      "key": "quote:WIF:upbit",
+      "error": "Error: Invalid or outdated quote",
+      "nextAttempt": 1791569719
+    },
+    {
+      "key": "quote:XAUT:upbit",
+      "error": "Error: Invalid or outdated quote",
+      "nextAttempt": 1791569590
+    },
+    {
+      "key": "quote:XCN:upbit",
+      "error": "Error: Invalid or outdated quote",
+      "nextAttempt": 1791569662
+    },
+    {
+      "key": "quote:XTZ:upbit",
+      "error": "Error: Invalid or outdated quote",
+      "nextAttempt": 1791569655
+    }
+  ],
+  "checkpointCountBefore": 0,
+  "checkpointCountAfter": 2,
+  "notes": [
+    "A bounded live sample, not a full day or guarantee that every six-hour job has become due.",
+    "Actual trade timestamps and collector confirmation timestamps are counted separately.",
+    "Existing observations and execution history were not reset."
+  ],
+  "activeErrorKeysAtSeparateStatusSample": [
+    "quote:PENGU:upbit",
+    "quote:AAVE:upbit",
+    "quote:MNT:upbit",
+    "quote:ICP:upbit",
+    "quote:XAUT:upbit",
+    "quote:JST:upbit",
+    "quote:RENDER:upbit",
+    "quote:ARB:upbit",
+    "quote:MORPHO:upbit",
+    "quote:AERO:upbit",
+    "quote:INJ:upbit",
+    "quote:VET:upbit",
+    "quote:CRO:upbit",
+    "quote:CRV:upbit",
+    "quote:VIRTUAL:upbit",
+    "quote:TIA:upbit",
+    "quote:SPX:upbit",
+    "quote:XTZ:upbit",
+    "quote:GRT:upbit",
+    "quote:SYRUP:upbit",
+    "quote:CFX:upbit",
+    "quote:COMP:upbit",
+    "quote:OP:upbit",
+    "quote:THETA:upbit",
+    "quote:WIF:upbit",
+    "quote:TRAC:upbit",
+    "quote:CHZ:upbit",
+    "quote:XCN:upbit",
+    "quote:SUPER:upbit",
+    "quote:GLM:upbit",
+    "quote:2Z:upbit",
+    "quote:GAS:upbit",
+    "quote:ATH:upbit",
+    "quote:KAVA:upbit",
+    "quote:KAITO:upbit",
+    "quote:COW:upbit",
+    "quote:TFUEL:upbit",
+    "quote:SAFE:upbit",
+    "quote:VTHO:upbit",
+    "quote:CKB:upbit",
+    "quote:ONT:upbit",
+    "quote:ASTR:upbit"
+  ],
+  "errorScope": "errors retains all historical ingestion entries, including inactive entries. Active source counts use the separate public status timestamp."
+}

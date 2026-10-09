@@ -1,0 +1,1713 @@
+{
+  "checkedAt": 1791569060,
+  "method": "First public SSE snapshot only; no collection endpoint invoked. Last trade timestamps remain unchanged.",
+  "markets": [
+    {
+      "market": "upbit",
+      "epoch": "b4c91d81-268a-42c7-b724-e074839d53f0",
+      "sequence": 1583,
+      "connected": true,
+      "quotes": [
+        {
+          "asset": "BTC",
+          "market": "upbit",
+          "price": 112999000,
+          "tradedAt": 1791569053.693,
+          "receivedAt": 1791569053.922
+        },
+        {
+          "asset": "TRAC",
+          "market": "upbit",
+          "price": 559,
+          "tradedAt": 1791569057.909,
+          "receivedAt": 1791569058.219
+        },
+        {
+          "asset": "KAIA",
+          "market": "upbit",
+          "price": 73,
+          "tradedAt": 1791569058.288,
+          "receivedAt": 1791569058.527
+        },
+        {
+          "asset": "SAND",
+          "market": "upbit",
+          "price": 92.3,
+          "tradedAt": 1791569058.713,
+          "receivedAt": 1791569058.951
+        },
+        {
+          "asset": "XRP",
+          "market": "upbit",
+          "price": 1898,
+          "tradedAt": 1791569049.912,
+          "receivedAt": 1791569050.213
+        },
+        {
+          "asset": "ENS",
+          "market": "upbit",
+          "price": 8525,
+          "tradedAt": 1791568923.217,
+          "receivedAt": 1791568923.58
+        },
+        {
+          "asset": "NEAR",
+          "market": "upbit",
+          "price": 6450,
+          "tradedAt": 1791569049.855,
+          "receivedAt": 1791569050.093
+        },
+        {
+          "asset": "AAVE",
+          "market": "upbit",
+          "price": 229800,
+          "tradedAt": 1791568800.19,
+          "receivedAt": 1791568800.414
+        },
+        {
+          "asset": "ALGO",
+          "market": "upbit",
+          "price": 157,
+          "tradedAt": 1791568849.997,
+          "receivedAt": 1791568850.22
+        },
+        {
+          "asset": "HBAR",
+          "market": "upbit",
+          "price": 124,
+          "tradedAt": 1791568848.873,
+          "receivedAt": 1791568849.102
+        },
+        {
+          "asset": "XLM",
+          "market": "upbit",
+          "price": 265,
+          "tradedAt": 1791569047.291,
+          "receivedAt": 1791569047.51
+        },
+        {
+          "asset": "DRV",
+          "market": "upbit",
+          "price": 699,
+          "tradedAt": 1791569058.764,
+          "receivedAt": 1791569058.99
+        },
+        {
+          "asset": "WLD",
+          "market": "upbit",
+          "price": 679,
+          "tradedAt": 1791569059.177,
+          "receivedAt": 1791569059.413
+        },
+        {
+          "asset": "LPT",
+          "market": "upbit",
+          "price": 2448,
+          "tradedAt": 1791569059.362,
+          "receivedAt": 1791569059.58
+        },
+        {
+          "asset": "PEPE",
+          "market": "upbit",
+          "price": 0.00536,
+          "tradedAt": 1791568925.354,
+          "receivedAt": 1791568925.579
+        },
+        {
+          "asset": "ADA",
+          "market": "upbit",
+          "price": 326,
+          "tradedAt": 1791569055.023,
+          "receivedAt": 1791569055.24
+        },
+        {
+          "asset": "NMR",
+          "market": "upbit",
+          "price": 18490,
+          "tradedAt": 1791569054.604,
+          "receivedAt": 1791569054.839
+        },
+        {
+          "asset": "KAVA",
+          "market": "upbit",
+          "price": 92.5,
+          "tradedAt": 1791568991.37,
+          "receivedAt": 1791568991.592
+        },
+        {
+          "asset": "PENDLE",
+          "market": "upbit",
+          "price": 2913,
+          "tradedAt": 1791568617.618,
+          "receivedAt": 1791568617.849
+        },
+        {
+          "asset": "AVAX",
+          "market": "upbit",
+          "price": 13970,
+          "tradedAt": 1791568982.449,
+          "receivedAt": 1791568982.691
+        },
+        {
+          "asset": "SUI",
+          "market": "upbit",
+          "price": 1463,
+          "tradedAt": 1791569055.333,
+          "receivedAt": 1791569055.552
+        },
+        {
+          "asset": "WLFI",
+          "market": "upbit",
+          "price": 74.9,
+          "tradedAt": 1791568976.477,
+          "receivedAt": 1791568976.715
+        },
+        {
+          "asset": "ETH",
+          "market": "upbit",
+          "price": 3400000,
+          "tradedAt": 1791569057.922,
+          "receivedAt": 1791569058.225
+        },
+        {
+          "asset": "JTO",
+          "market": "upbit",
+          "price": 700,
+          "tradedAt": 1791568911.107,
+          "receivedAt": 1791568911.34
+        },
+        {
+          "asset": "ONDO",
+          "market": "upbit",
+          "price": 657,
+          "tradedAt": 1791568967.726,
+          "receivedAt": 1791568967.96
+        },
+        {
+          "asset": "ENA",
+          "market": "upbit",
+          "price": 293,
+          "tradedAt": 1791568891.071,
+          "receivedAt": 1791568891.279
+        },
+        {
+          "asset": "AXS",
+          "market": "upbit",
+          "price": 1606,
+          "tradedAt": 1791569057.887,
+          "receivedAt": 1791569058.121
+        },
+        {
+          "asset": "SOL",
+          "market": "upbit",
+          "price": 150300,
+          "tradedAt": 1791569040.813,
+          "receivedAt": 1791569041.042
+        },
+        {
+          "asset": "APT",
+          "market": "upbit",
+          "price": 1094,
+          "tradedAt": 1791569058.236,
+          "receivedAt": 1791569058.526
+        },
+        {
+          "asset": "BAT",
+          "market": "upbit",
+          "price": 182,
+          "tradedAt": 1791569057.093,
+          "receivedAt": 1791569057.317
+        },
+        {
+          "asset": "ATH",
+          "market": "upbit",
+          "price": 8.8,
+          "tradedAt": 1791568595.788,
+          "receivedAt": 1791568596.038
+        },
+        {
+          "asset": "2Z",
+          "market": "upbit",
+          "price": 49.5,
+          "tradedAt": 1791568945.08,
+          "receivedAt": 1791568945.351
+        },
+        {
+          "asset": "ORCA",
+          "market": "upbit",
+          "price": 3165,
+          "tradedAt": 1791568910.629,
+          "receivedAt": 1791568910.857
+        },
+        {
+          "asset": "STX",
+          "market": "upbit",
+          "price": 523,
+          "tradedAt": 1791569042.797,
+          "receivedAt": 1791569043.031
+        },
+        {
+          "asset": "GEOD",
+          "market": "upbit",
+          "price": 413,
+          "tradedAt": 1791569056.574,
+          "receivedAt": 1791569056.79
+        },
+        {
+          "asset": "GRT",
+          "market": "upbit",
+          "price": 36.9,
+          "tradedAt": 1791568629.41,
+          "receivedAt": 1791568629.63
+        },
+        {
+          "asset": "MANA",
+          "market": "upbit",
+          "price": 127,
+          "tradedAt": 1791568926.375,
+          "receivedAt": 1791568926.608
+        },
+        {
+          "asset": "VVV",
+          "market": "upbit",
+          "price": 30070,
+          "tradedAt": 1791569010.029,
+          "receivedAt": 1791569010.25
+        },
+        {
+          "asset": "ZK",
+          "market": "upbit",
+          "price": 19.1,
+          "tradedAt": 1791569057.927,
+          "receivedAt": 1791569058.224
+        },
+        {
+          "asset": "W",
+          "market": "upbit",
+          "price": 23.8,
+          "tradedAt": 1791569045.864,
+          "receivedAt": 1791569046.1
+        },
+        {
+          "asset": "LINK",
+          "market": "upbit",
+          "price": 17560,
+          "tradedAt": 1791569051.933,
+          "receivedAt": 1791569052.15
+        },
+        {
+          "asset": "XCN",
+          "market": "upbit",
+          "price": 5.81,
+          "tradedAt": 1791568949.367,
+          "receivedAt": 1791568949.589
+        },
+        {
+          "asset": "VIRTUAL",
+          "market": "upbit",
+          "price": 976,
+          "tradedAt": 1791568931.142,
+          "receivedAt": 1791568931.367
+        },
+        {
+          "asset": "TAO",
+          "market": "upbit",
+          "price": 376400,
+          "tradedAt": 1791568685.184,
+          "receivedAt": 1791568685.424
+        },
+        {
+          "asset": "TRX",
+          "market": "upbit",
+          "price": 454,
+          "tradedAt": 1791568946.343,
+          "receivedAt": 1791568946.559
+        },
+        {
+          "asset": "ONT",
+          "market": "upbit",
+          "price": 83.1,
+          "tradedAt": 1791567622.989,
+          "receivedAt": 1791567623.213
+        },
+        {
+          "asset": "MORPHO",
+          "market": "upbit",
+          "price": 3261,
+          "tradedAt": 1791568780.614,
+          "receivedAt": 1791568780.839
+        },
+        {
+          "asset": "VTHO",
+          "market": "upbit",
+          "price": 0.9,
+          "tradedAt": 1791568740.067,
+          "receivedAt": 1791568740.3
+        },
+        {
+          "asset": "DOT",
+          "market": "upbit",
+          "price": 1645,
+          "tradedAt": 1791569057.832,
+          "receivedAt": 1791569058.116
+        },
+        {
+          "asset": "DOGE",
+          "market": "upbit",
+          "price": 116,
+          "tradedAt": 1791569057.937,
+          "receivedAt": 1791569058.223
+        },
+        {
+          "asset": "RAY",
+          "market": "upbit",
+          "price": 3193,
+          "tradedAt": 1791568997.725,
+          "receivedAt": 1791568997.96
+        },
+        {
+          "asset": "ETC",
+          "market": "upbit",
+          "price": 11340,
+          "tradedAt": 1791569034.587,
+          "receivedAt": 1791569034.811
+        },
+        {
+          "asset": "ATOM",
+          "market": "upbit",
+          "price": 2743,
+          "tradedAt": 1791569049.413,
+          "receivedAt": 1791569049.643
+        },
+        {
+          "asset": "SHIB",
+          "market": "upbit",
+          "price": 0.0074,
+          "tradedAt": 1791569040.924,
+          "receivedAt": 1791569041.141
+        },
+        {
+          "asset": "UNI",
+          "market": "upbit",
+          "price": 10020,
+          "tradedAt": 1791568951.816,
+          "receivedAt": 1791568952.04
+        },
+        {
+          "asset": "BCH",
+          "market": "upbit",
+          "price": 376900,
+          "tradedAt": 1791569057.912,
+          "receivedAt": 1791569058.221
+        },
+        {
+          "asset": "PYTH",
+          "market": "upbit",
+          "price": 111,
+          "tradedAt": 1791569047.789,
+          "receivedAt": 1791569048.021
+        },
+        {
+          "asset": "PENGU",
+          "market": "upbit",
+          "price": 11,
+          "tradedAt": 1791568224.316,
+          "receivedAt": 1791568224.542
+        },
+        {
+          "asset": "JST",
+          "market": "upbit",
+          "price": 194,
+          "tradedAt": 1791566223.886,
+          "receivedAt": 1791567637.82
+        },
+        {
+          "asset": "QTUM",
+          "market": "upbit",
+          "price": 1288,
+          "tradedAt": 1791568629.858,
+          "receivedAt": 1791568630.09
+        },
+        {
+          "asset": "ZRO",
+          "market": "upbit",
+          "price": 2758,
+          "tradedAt": 1791569025.18,
+          "receivedAt": 1791569025.413
+        },
+        {
+          "asset": "ZIL",
+          "market": "upbit",
+          "price": 4.5,
+          "tradedAt": 1791569021.81,
+          "receivedAt": 1791569022.032
+        },
+        {
+          "asset": "XEC",
+          "market": "upbit",
+          "price": 0.00988,
+          "tradedAt": 1791568493.563,
+          "receivedAt": 1791568493.789
+        },
+        {
+          "asset": "OP",
+          "market": "upbit",
+          "price": 171,
+          "tradedAt": 1791568893.577,
+          "receivedAt": 1791568893.811
+        },
+        {
+          "asset": "KAITO",
+          "market": "upbit",
+          "price": 424,
+          "tradedAt": 1791568938.739,
+          "receivedAt": 1791568938.951
+        },
+        {
+          "asset": "AERO",
+          "market": "upbit",
+          "price": 1103,
+          "tradedAt": 1791568496.018,
+          "receivedAt": 1791568496.229
+        },
+        {
+          "asset": "ARB",
+          "market": "upbit",
+          "price": 246,
+          "tradedAt": 1791567441.727,
+          "receivedAt": 1791567670.046
+        },
+        {
+          "asset": "XTZ",
+          "market": "upbit",
+          "price": 400,
+          "tradedAt": 1791566899.706,
+          "receivedAt": 1791567671.33
+        },
+        {
+          "asset": "RENDER",
+          "market": "upbit",
+          "price": 2563,
+          "tradedAt": 1791568813.272,
+          "receivedAt": 1791568813.52
+        },
+        {
+          "asset": "CRV",
+          "market": "upbit",
+          "price": 489,
+          "tradedAt": 1791568594.933,
+          "receivedAt": 1791568595.159
+        },
+        {
+          "asset": "INJ",
+          "market": "upbit",
+          "price": 9540,
+          "tradedAt": 1791568704.797,
+          "receivedAt": 1791568705.031
+        },
+        {
+          "asset": "NEO",
+          "market": "upbit",
+          "price": 3287,
+          "tradedAt": 1791568929.927,
+          "receivedAt": 1791568930.149
+        },
+        {
+          "asset": "0G",
+          "market": "upbit",
+          "price": 357,
+          "tradedAt": 1791569052.798,
+          "receivedAt": 1791569053.02
+        },
+        {
+          "asset": "A",
+          "market": "upbit",
+          "price": 140,
+          "tradedAt": 1791568925.924,
+          "receivedAt": 1791568926.166
+        },
+        {
+          "asset": "AKT",
+          "market": "upbit",
+          "price": 996,
+          "tradedAt": 1791568880.56,
+          "receivedAt": 1791568880.79
+        },
+        {
+          "asset": "CRO",
+          "market": "upbit",
+          "price": 84.1,
+          "tradedAt": 1791569052.323,
+          "receivedAt": 1791569052.563
+        },
+        {
+          "asset": "SEI",
+          "market": "upbit",
+          "price": 90.7,
+          "tradedAt": 1791569056.919,
+          "receivedAt": 1791569057.214
+        },
+        {
+          "asset": "BEAM",
+          "market": "upbit",
+          "price": 3.7,
+          "tradedAt": 1791568961.381,
+          "receivedAt": 1791568961.601
+        },
+        {
+          "asset": "TIA",
+          "market": "upbit",
+          "price": 652,
+          "tradedAt": 1791568600.256,
+          "receivedAt": 1791568600.47
+        },
+        {
+          "asset": "FIL",
+          "market": "upbit",
+          "price": 1484,
+          "tradedAt": 1791568991.101,
+          "receivedAt": 1791568991.321
+        },
+        {
+          "asset": "SYRUP",
+          "market": "upbit",
+          "price": 312,
+          "tradedAt": 1791567934.535,
+          "receivedAt": 1791567934.814
+        },
+        {
+          "asset": "COMP",
+          "market": "upbit",
+          "price": 33010,
+          "tradedAt": 1791567770.728,
+          "receivedAt": 1791567770.952
+        },
+        {
+          "asset": "VET",
+          "market": "upbit",
+          "price": 10.7,
+          "tradedAt": 1791568950.849,
+          "receivedAt": 1791568951.07
+        },
+        {
+          "asset": "ICP",
+          "market": "upbit",
+          "price": 4159,
+          "tradedAt": 1791568941.14,
+          "receivedAt": 1791568941.37
+        },
+        {
+          "asset": "ETHFI",
+          "market": "upbit",
+          "price": 933,
+          "tradedAt": 1791568516.429,
+          "receivedAt": 1791568516.66
+        },
+        {
+          "asset": "WIF",
+          "market": "upbit",
+          "price": 289,
+          "tradedAt": 1791568500.663,
+          "receivedAt": 1791568500.89
+        },
+        {
+          "asset": "GLM",
+          "market": "upbit",
+          "price": 181,
+          "tradedAt": 1791568416.952,
+          "receivedAt": 1791568417.179
+        },
+        {
+          "asset": "XAUT",
+          "market": "upbit",
+          "price": 5730000,
+          "tradedAt": 1791568837.018,
+          "receivedAt": 1791568837.242
+        },
+        {
+          "asset": "TFUEL",
+          "market": "upbit",
+          "price": 13.3,
+          "tradedAt": 1791568677.517,
+          "receivedAt": 1791568677.739
+        },
+        {
+          "asset": "KMNO",
+          "market": "upbit",
+          "price": 47.3,
+          "tradedAt": 1791568121.285,
+          "receivedAt": 1791568121.511
+        },
+        {
+          "asset": "GAS",
+          "market": "upbit",
+          "price": 1818,
+          "tradedAt": 1791568982.309,
+          "receivedAt": 1791568982.539
+        },
+        {
+          "asset": "ARKM",
+          "market": "upbit",
+          "price": 173,
+          "tradedAt": 1791568675.18,
+          "receivedAt": 1791568675.391
+        },
+        {
+          "asset": "CHZ",
+          "market": "upbit",
+          "price": 20.9,
+          "tradedAt": 1791568866.176,
+          "receivedAt": 1791568866.592
+        },
+        {
+          "asset": "SUPER",
+          "market": "upbit",
+          "price": 303,
+          "tradedAt": 1791568854.335,
+          "receivedAt": 1791568854.549
+        },
+        {
+          "asset": "COW",
+          "market": "upbit",
+          "price": 197,
+          "tradedAt": 1791568002.882,
+          "receivedAt": 1791568003.115
+        },
+        {
+          "asset": "SPX",
+          "market": "upbit",
+          "price": 507,
+          "tradedAt": 1791566933.639,
+          "receivedAt": 1791568019.732
+        },
+        {
+          "asset": "MNT",
+          "market": "upbit",
+          "price": 751,
+          "tradedAt": 1791565960.146,
+          "receivedAt": 1791568019.751
+        },
+        {
+          "asset": "THETA",
+          "market": "upbit",
+          "price": 301,
+          "tradedAt": 1791565297.404,
+          "receivedAt": 1791568055.55
+        },
+        {
+          "asset": "CKB",
+          "market": "upbit",
+          "price": 1.74,
+          "tradedAt": 1791566885.009,
+          "receivedAt": 1791568108.09
+        },
+        {
+          "asset": "ASTR",
+          "market": "upbit",
+          "price": 9.21,
+          "tradedAt": 1791562634.885,
+          "receivedAt": 1791568157.019
+        },
+        {
+          "asset": "CFG",
+          "market": "upbit",
+          "price": 191,
+          "tradedAt": 1791568741.694,
+          "receivedAt": 1791568741.922
+        },
+        {
+          "asset": "CFX",
+          "market": "upbit",
+          "price": 68,
+          "tradedAt": 1791568513.293,
+          "receivedAt": 1791568513.529
+        },
+        {
+          "asset": "SAFE",
+          "market": "upbit",
+          "price": 150,
+          "tradedAt": 1791568882.575,
+          "receivedAt": 1791568882.805
+        }
+      ],
+      "delta": false
+    },
+    {
+      "market": "binance",
+      "epoch": "b4c91d81-268a-42c7-b724-e074839d53f0",
+      "sequence": 94,
+      "connected": true,
+      "quotes": [
+        {
+          "asset": "DYDX",
+          "market": "binance",
+          "price": 0.13912,
+          "tradedAt": 1791569041.005,
+          "receivedAt": 1791569041.14
+        },
+        {
+          "asset": "0G",
+          "market": "binance",
+          "price": 0.2613,
+          "tradedAt": 1791569057.056,
+          "receivedAt": 1791569057.217
+        },
+        {
+          "asset": "BNB",
+          "market": "binance",
+          "price": 740.94,
+          "tradedAt": 1791569059.428,
+          "receivedAt": 1791569059.562
+        },
+        {
+          "asset": "ROSE",
+          "market": "binance",
+          "price": 0.00831,
+          "tradedAt": 1791569059.558,
+          "receivedAt": 1791569059.69
+        },
+        {
+          "asset": "STRK",
+          "market": "binance",
+          "price": 0.07386,
+          "tradedAt": 1791569059.054,
+          "receivedAt": 1791569059.416
+        },
+        {
+          "asset": "ARB",
+          "market": "binance",
+          "price": 0.1794,
+          "tradedAt": 1791569057.771,
+          "receivedAt": 1791569058.625
+        },
+        {
+          "asset": "AERO",
+          "market": "binance",
+          "price": 0.8065,
+          "tradedAt": 1791569036.224,
+          "receivedAt": 1791569036.356
+        },
+        {
+          "asset": "BTC",
+          "market": "binance",
+          "price": 82675.86,
+          "tradedAt": 1791569059.111,
+          "receivedAt": 1791569059.418
+        },
+        {
+          "asset": "ZEC",
+          "market": "binance",
+          "price": 1219,
+          "tradedAt": 1791569059.213,
+          "receivedAt": 1791569059.424
+        },
+        {
+          "asset": "ONDO",
+          "market": "binance",
+          "price": 0.4801,
+          "tradedAt": 1791569059.04,
+          "receivedAt": 1791569059.414
+        },
+        {
+          "asset": "PEPE",
+          "market": "binance",
+          "price": 3.92e-06,
+          "tradedAt": 1791569058.519,
+          "receivedAt": 1791569058.819
+        },
+        {
+          "asset": "YFI",
+          "market": "binance",
+          "price": 2341,
+          "tradedAt": 1791569014.093,
+          "receivedAt": 1791569014.226
+        },
+        {
+          "asset": "ETH",
+          "market": "binance",
+          "price": 2486.76,
+          "tradedAt": 1791569059.597,
+          "receivedAt": 1791569059.73
+        },
+        {
+          "asset": "ORDI",
+          "market": "binance",
+          "price": 4.199,
+          "tradedAt": 1791569042.82,
+          "receivedAt": 1791569042.954
+        },
+        {
+          "asset": "VET",
+          "market": "binance",
+          "price": 0.007828,
+          "tradedAt": 1791569048.153,
+          "receivedAt": 1791569048.284
+        },
+        {
+          "asset": "ICP",
+          "market": "binance",
+          "price": 3.043,
+          "tradedAt": 1791569059.042,
+          "receivedAt": 1791569059.414
+        },
+        {
+          "asset": "BAT",
+          "market": "binance",
+          "price": 0.1333,
+          "tradedAt": 1791569059.89,
+          "receivedAt": 1791569060.022
+        },
+        {
+          "asset": "QNT",
+          "market": "binance",
+          "price": 244.34,
+          "tradedAt": 1791569055.641,
+          "receivedAt": 1791569055.773
+        },
+        {
+          "asset": "SNX",
+          "market": "binance",
+          "price": 0.2354,
+          "tradedAt": 1791569050.04,
+          "receivedAt": 1791569050.216
+        },
+        {
+          "asset": "JST",
+          "market": "binance",
+          "price": 0.14244,
+          "tradedAt": 1791569056.883,
+          "receivedAt": 1791569057.015
+        },
+        {
+          "asset": "ENA",
+          "market": "binance",
+          "price": 0.2145,
+          "tradedAt": 1791569058.969,
+          "receivedAt": 1791569059.217
+        },
+        {
+          "asset": "HUMA",
+          "market": "binance",
+          "price": 0.03359,
+          "tradedAt": 1791569055.297,
+          "receivedAt": 1791569055.43
+        },
+        {
+          "asset": "PYTH",
+          "market": "binance",
+          "price": 0.08199,
+          "tradedAt": 1791569059.092,
+          "receivedAt": 1791569059.417
+        },
+        {
+          "asset": "FIL",
+          "market": "binance",
+          "price": 1.0856,
+          "tradedAt": 1791569059.601,
+          "receivedAt": 1791569059.734
+        },
+        {
+          "asset": "CFG",
+          "market": "binance",
+          "price": 0.1397,
+          "tradedAt": 1791569058.965,
+          "receivedAt": 1791569059.215
+        },
+        {
+          "asset": "KAIA",
+          "market": "binance",
+          "price": 0.0534,
+          "tradedAt": 1791569056.608,
+          "receivedAt": 1791569056.739
+        },
+        {
+          "asset": "XRP",
+          "market": "binance",
+          "price": 1.3882,
+          "tradedAt": 1791569059.055,
+          "receivedAt": 1791569059.416
+        },
+        {
+          "asset": "MUBARAK",
+          "market": "binance",
+          "price": 0.07702,
+          "tradedAt": 1791569059.634,
+          "receivedAt": 1791569059.767
+        },
+        {
+          "asset": "WLD",
+          "market": "binance",
+          "price": 0.4974,
+          "tradedAt": 1791569059.014,
+          "receivedAt": 1791569059.234
+        },
+        {
+          "asset": "DOGE",
+          "market": "binance",
+          "price": 0.08489,
+          "tradedAt": 1791569059.025,
+          "receivedAt": 1791569059.243
+        },
+        {
+          "asset": "XLM",
+          "market": "binance",
+          "price": 0.1935,
+          "tradedAt": 1791569057.003,
+          "receivedAt": 1791569057.214
+        },
+        {
+          "asset": "INJ",
+          "market": "binance",
+          "price": 6.962,
+          "tradedAt": 1791569059.176,
+          "receivedAt": 1791569059.42
+        },
+        {
+          "asset": "CRV",
+          "market": "binance",
+          "price": 0.3588,
+          "tradedAt": 1791569057.782,
+          "receivedAt": 1791569058.641
+        },
+        {
+          "asset": "XTZ",
+          "market": "binance",
+          "price": 0.2939,
+          "tradedAt": 1791569059.938,
+          "receivedAt": 1791569060.074
+        },
+        {
+          "asset": "NEAR",
+          "market": "binance",
+          "price": 4.715,
+          "tradedAt": 1791569059.64,
+          "receivedAt": 1791569059.773
+        },
+        {
+          "asset": "SAND",
+          "market": "binance",
+          "price": 0.06739,
+          "tradedAt": 1791569055.565,
+          "receivedAt": 1791569055.697
+        },
+        {
+          "asset": "TRX",
+          "market": "binance",
+          "price": 0.3325,
+          "tradedAt": 1791569058.548,
+          "receivedAt": 1791569058.819
+        },
+        {
+          "asset": "DOT",
+          "market": "binance",
+          "price": 1.203,
+          "tradedAt": 1791569059.816,
+          "receivedAt": 1791569059.952
+        },
+        {
+          "asset": "APT",
+          "market": "binance",
+          "price": 0.8015,
+          "tradedAt": 1791569059.633,
+          "receivedAt": 1791569059.764
+        },
+        {
+          "asset": "HBAR",
+          "market": "binance",
+          "price": 0.09074,
+          "tradedAt": 1791569059.102,
+          "receivedAt": 1791569059.418
+        },
+        {
+          "asset": "TIA",
+          "market": "binance",
+          "price": 0.4745,
+          "tradedAt": 1791569059.028,
+          "receivedAt": 1791569059.316
+        },
+        {
+          "asset": "SOL",
+          "market": "binance",
+          "price": 109.89,
+          "tradedAt": 1791569059.632,
+          "receivedAt": 1791569059.764
+        },
+        {
+          "asset": "SUPER",
+          "market": "binance",
+          "price": 0.2211,
+          "tradedAt": 1791569059.06,
+          "receivedAt": 1791569059.417
+        },
+        {
+          "asset": "RLC",
+          "market": "binance",
+          "price": 0.882,
+          "tradedAt": 1791569054.635,
+          "receivedAt": 1791569054.768
+        },
+        {
+          "asset": "ENJ",
+          "market": "binance",
+          "price": 0.03189,
+          "tradedAt": 1791569052.278,
+          "receivedAt": 1791569052.41
+        },
+        {
+          "asset": "SEI",
+          "market": "binance",
+          "price": 0.06637,
+          "tradedAt": 1791569059.028,
+          "receivedAt": 1791569059.315
+        },
+        {
+          "asset": "EIGEN",
+          "market": "binance",
+          "price": 0.2208,
+          "tradedAt": 1791569059.042,
+          "receivedAt": 1791569059.415
+        },
+        {
+          "asset": "ADA",
+          "market": "binance",
+          "price": 0.2384,
+          "tradedAt": 1791569059.016,
+          "receivedAt": 1791569059.235
+        },
+        {
+          "asset": "SUI",
+          "market": "binance",
+          "price": 1.0697,
+          "tradedAt": 1791569058.954,
+          "receivedAt": 1791569059.214
+        },
+        {
+          "asset": "VIRTUAL",
+          "market": "binance",
+          "price": 0.7134,
+          "tradedAt": 1791569058.97,
+          "receivedAt": 1791569059.219
+        },
+        {
+          "asset": "AAVE",
+          "market": "binance",
+          "price": 168.12,
+          "tradedAt": 1791569058.995,
+          "receivedAt": 1791569059.231
+        },
+        {
+          "asset": "W",
+          "market": "binance",
+          "price": 0.01748,
+          "tradedAt": 1791569057.017,
+          "receivedAt": 1791569057.214
+        },
+        {
+          "asset": "LINK",
+          "market": "binance",
+          "price": 12.833,
+          "tradedAt": 1791569059.179,
+          "receivedAt": 1791569059.421
+        },
+        {
+          "asset": "TAO",
+          "market": "binance",
+          "price": 275.1,
+          "tradedAt": 1791569058.465,
+          "receivedAt": 1791569058.818
+        },
+        {
+          "asset": "UNI",
+          "market": "binance",
+          "price": 7.319,
+          "tradedAt": 1791569059.131,
+          "receivedAt": 1791569059.419
+        },
+        {
+          "asset": "OP",
+          "market": "binance",
+          "price": 0.1247,
+          "tradedAt": 1791569059.586,
+          "receivedAt": 1791569059.718
+        },
+        {
+          "asset": "PENGU",
+          "market": "binance",
+          "price": 0.008077,
+          "tradedAt": 1791569059.05,
+          "receivedAt": 1791569059.416
+        },
+        {
+          "asset": "WIF",
+          "market": "binance",
+          "price": 0.212,
+          "tradedAt": 1791569057.082,
+          "receivedAt": 1791569057.219
+        },
+        {
+          "asset": "ETHFI",
+          "market": "binance",
+          "price": 0.681,
+          "tradedAt": 1791569059.022,
+          "receivedAt": 1791569059.238
+        },
+        {
+          "asset": "AVAX",
+          "market": "binance",
+          "price": 10.225,
+          "tradedAt": 1791569059.026,
+          "receivedAt": 1791569059.243
+        },
+        {
+          "asset": "LDO",
+          "market": "binance",
+          "price": 0.4193,
+          "tradedAt": 1791569059.157,
+          "receivedAt": 1791569059.419
+        },
+        {
+          "asset": "FET",
+          "market": "binance",
+          "price": 0.2161,
+          "tradedAt": 1791569059.037,
+          "receivedAt": 1791569059.413
+        },
+        {
+          "asset": "RENDER",
+          "market": "binance",
+          "price": 1.875,
+          "tradedAt": 1791569058.99,
+          "receivedAt": 1791569059.225
+        },
+        {
+          "asset": "ZK",
+          "market": "binance",
+          "price": 0.01399,
+          "tradedAt": 1791569059.535,
+          "receivedAt": 1791569059.668
+        },
+        {
+          "asset": "WLFI",
+          "market": "binance",
+          "price": 0.0549,
+          "tradedAt": 1791569058.49,
+          "receivedAt": 1791569058.819
+        },
+        {
+          "asset": "DASH",
+          "market": "binance",
+          "price": 51.73,
+          "tradedAt": 1791569056.925,
+          "receivedAt": 1791569057.056
+        },
+        {
+          "asset": "ATOM",
+          "market": "binance",
+          "price": 2.006,
+          "tradedAt": 1791569059.909,
+          "receivedAt": 1791569060.042
+        },
+        {
+          "asset": "NMR",
+          "market": "binance",
+          "price": 13.53,
+          "tradedAt": 1791569057.088,
+          "receivedAt": 1791569057.22
+        },
+        {
+          "asset": "LTC",
+          "market": "binance",
+          "price": 63.63,
+          "tradedAt": 1791569059.635,
+          "receivedAt": 1791569059.768
+        },
+        {
+          "asset": "AR",
+          "market": "binance",
+          "price": 4.102,
+          "tradedAt": 1791569059.179,
+          "receivedAt": 1791569059.42
+        },
+        {
+          "asset": "APE",
+          "market": "binance",
+          "price": 0.1462,
+          "tradedAt": 1791569049.96,
+          "receivedAt": 1791569050.127
+        },
+        {
+          "asset": "STX",
+          "market": "binance",
+          "price": 0.3825,
+          "tradedAt": 1791569042.76,
+          "receivedAt": 1791569042.894
+        },
+        {
+          "asset": "MORPHO",
+          "market": "binance",
+          "price": 2.387,
+          "tradedAt": 1791569059.038,
+          "receivedAt": 1791569059.414
+        },
+        {
+          "asset": "ASTER",
+          "market": "binance",
+          "price": 0.6962,
+          "tradedAt": 1791569058.773,
+          "receivedAt": 1791569058.905
+        },
+        {
+          "asset": "COW",
+          "market": "binance",
+          "price": 0.1442,
+          "tradedAt": 1791568969.913,
+          "receivedAt": 1791568970.046
+        },
+        {
+          "asset": "BONK",
+          "market": "binance",
+          "price": 3.35e-06,
+          "tradedAt": 1791569052.068,
+          "receivedAt": 1791569052.203
+        },
+        {
+          "asset": "JASMY",
+          "market": "binance",
+          "price": 0.00492,
+          "tradedAt": 1791569042.709,
+          "receivedAt": 1791569042.842
+        },
+        {
+          "asset": "HYPE",
+          "market": "binance",
+          "price": 84.92,
+          "tradedAt": 1791569059.18,
+          "receivedAt": 1791569059.422
+        },
+        {
+          "asset": "BCH",
+          "market": "binance",
+          "price": 275.5,
+          "tradedAt": 1791569059.914,
+          "receivedAt": 1791569060.046
+        },
+        {
+          "asset": "RAY",
+          "market": "binance",
+          "price": 2.3375,
+          "tradedAt": 1791569058.66,
+          "receivedAt": 1791569058.819
+        },
+        {
+          "asset": "RSR",
+          "market": "binance",
+          "price": 0.001569,
+          "tradedAt": 1791569056.9,
+          "receivedAt": 1791569057.034
+        },
+        {
+          "asset": "LPT",
+          "market": "binance",
+          "price": 1.793,
+          "tradedAt": 1791569050.009,
+          "receivedAt": 1791569050.215
+        },
+        {
+          "asset": "2Z",
+          "market": "binance",
+          "price": 0.03631,
+          "tradedAt": 1791569057.073,
+          "receivedAt": 1791569057.217
+        },
+        {
+          "asset": "BOME",
+          "market": "binance",
+          "price": 0.0010472,
+          "tradedAt": 1791569048.894,
+          "receivedAt": 1791569049.026
+        },
+        {
+          "asset": "GALA",
+          "market": "binance",
+          "price": 0.002222,
+          "tradedAt": 1791569059.022,
+          "receivedAt": 1791569059.239
+        },
+        {
+          "asset": "JTO",
+          "market": "binance",
+          "price": 0.5112,
+          "tradedAt": 1791569052.882,
+          "receivedAt": 1791569053.026
+        },
+        {
+          "asset": "GMX",
+          "market": "binance",
+          "price": 8.52,
+          "tradedAt": 1791569050.048,
+          "receivedAt": 1791569050.216
+        },
+        {
+          "asset": "RUNE",
+          "market": "binance",
+          "price": 0.686,
+          "tradedAt": 1791569006.518,
+          "receivedAt": 1791569006.652
+        },
+        {
+          "asset": "BANANAS31",
+          "market": "binance",
+          "price": 0.006759,
+          "tradedAt": 1791569005.266,
+          "receivedAt": 1791569005.415
+        },
+        {
+          "asset": "ORCA",
+          "market": "binance",
+          "price": 2.319,
+          "tradedAt": 1791569057.769,
+          "receivedAt": 1791569058.62
+        },
+        {
+          "asset": "DEXE",
+          "market": "binance",
+          "price": 1.842,
+          "tradedAt": 1791569041.774,
+          "receivedAt": 1791569042.033
+        },
+        {
+          "asset": "CAKE",
+          "market": "binance",
+          "price": 2.192,
+          "tradedAt": 1791569057.747,
+          "receivedAt": 1791569058.326
+        },
+        {
+          "asset": "LUNC",
+          "market": "binance",
+          "price": 5.126e-05,
+          "tradedAt": 1791569050.537,
+          "receivedAt": 1791569050.669
+        },
+        {
+          "asset": "COMP",
+          "market": "binance",
+          "price": 24.19,
+          "tradedAt": 1791569049.276,
+          "receivedAt": 1791569049.414
+        },
+        {
+          "asset": "TWT",
+          "market": "binance",
+          "price": 0.5161,
+          "tradedAt": 1791568917.134,
+          "receivedAt": 1791568917.266
+        },
+        {
+          "asset": "ASTR",
+          "market": "binance",
+          "price": 0.006826,
+          "tradedAt": 1791569012.637,
+          "receivedAt": 1791569012.771
+        },
+        {
+          "asset": "ALGO",
+          "market": "binance",
+          "price": 0.1145,
+          "tradedAt": 1791569059.019,
+          "receivedAt": 1791569059.236
+        },
+        {
+          "asset": "ZRO",
+          "market": "binance",
+          "price": 2.017,
+          "tradedAt": 1791569059.345,
+          "receivedAt": 1791569059.476
+        },
+        {
+          "asset": "NEXO",
+          "market": "binance",
+          "price": 0.84,
+          "tradedAt": 1791569037.055,
+          "receivedAt": 1791569037.187
+        },
+        {
+          "asset": "FTT",
+          "market": "binance",
+          "price": 0.2483,
+          "tradedAt": 1791568999.058,
+          "receivedAt": 1791568999.19
+        },
+        {
+          "asset": "KMNO",
+          "market": "binance",
+          "price": 0.03462,
+          "tradedAt": 1791569059.639,
+          "receivedAt": 1791569059.772
+        },
+        {
+          "asset": "SHIB",
+          "market": "binance",
+          "price": 5.41e-06,
+          "tradedAt": 1791569055.335,
+          "receivedAt": 1791569055.467
+        },
+        {
+          "asset": "FLOKI",
+          "market": "binance",
+          "price": 2.691e-05,
+          "tradedAt": 1791569057.085,
+          "receivedAt": 1791569057.219
+        },
+        {
+          "asset": "DGB",
+          "market": "binance",
+          "price": 0.00366,
+          "tradedAt": 1791569050.753,
+          "receivedAt": 1791569050.886
+        },
+        {
+          "asset": "KAITO",
+          "market": "binance",
+          "price": 0.3105,
+          "tradedAt": 1791569043.436,
+          "receivedAt": 1791569043.569
+        },
+        {
+          "asset": "KAVA",
+          "market": "binance",
+          "price": 0.06777,
+          "tradedAt": 1791569036.079,
+          "receivedAt": 1791569036.211
+        },
+        {
+          "asset": "CKB",
+          "market": "binance",
+          "price": 0.001284,
+          "tradedAt": 1791568983.942,
+          "receivedAt": 1791568984.073
+        },
+        {
+          "asset": "S",
+          "market": "binance",
+          "price": 0.04411,
+          "tradedAt": 1791569059.807,
+          "receivedAt": 1791569059.939
+        },
+        {
+          "asset": "ZEN",
+          "market": "binance",
+          "price": 6.394,
+          "tradedAt": 1791568975.764,
+          "receivedAt": 1791568975.898
+        },
+        {
+          "asset": "THETA",
+          "market": "binance",
+          "price": 0.2186,
+          "tradedAt": 1791569059.001,
+          "receivedAt": 1791569059.232
+        },
+        {
+          "asset": "CHZ",
+          "market": "binance",
+          "price": 0.01524,
+          "tradedAt": 1791569059.023,
+          "receivedAt": 1791569059.24
+        },
+        {
+          "asset": "ETC",
+          "market": "binance",
+          "price": 8.29,
+          "tradedAt": 1791569058.468,
+          "receivedAt": 1791569058.819
+        },
+        {
+          "asset": "PENDLE",
+          "market": "binance",
+          "price": 2.134,
+          "tradedAt": 1791569057.773,
+          "receivedAt": 1791569058.628
+        },
+        {
+          "asset": "ARKM",
+          "market": "binance",
+          "price": 0.1253,
+          "tradedAt": 1791569050.803,
+          "receivedAt": 1791569050.934
+        },
+        {
+          "asset": "GLM",
+          "market": "binance",
+          "price": 0.1333,
+          "tradedAt": 1791569003.051,
+          "receivedAt": 1791569003.182
+        },
+        {
+          "asset": "ENS",
+          "market": "binance",
+          "price": 6.25,
+          "tradedAt": 1791568839.68,
+          "receivedAt": 1791568839.827
+        },
+        {
+          "asset": "VTHO",
+          "market": "binance",
+          "price": 0.000658,
+          "tradedAt": 1791569036.714,
+          "receivedAt": 1791569036.848
+        },
+        {
+          "asset": "SYRUP",
+          "market": "binance",
+          "price": 0.2279,
+          "tradedAt": 1791569057.048,
+          "receivedAt": 1791569057.217
+        },
+        {
+          "asset": "CFX",
+          "market": "binance",
+          "price": 0.04994,
+          "tradedAt": 1791569031.686,
+          "receivedAt": 1791569031.826
+        },
+        {
+          "asset": "AXS",
+          "market": "binance",
+          "price": 1.175,
+          "tradedAt": 1791569032.447,
+          "receivedAt": 1791569032.579
+        },
+        {
+          "asset": "GRT",
+          "market": "binance",
+          "price": 0.027,
+          "tradedAt": 1791569049.945,
+          "receivedAt": 1791569050.094
+        },
+        {
+          "asset": "HOT",
+          "market": "binance",
+          "price": 0.000409,
+          "tradedAt": 1791568978.635,
+          "receivedAt": 1791568978.766
+        },
+        {
+          "asset": "ONT",
+          "market": "binance",
+          "price": 0.06085,
+          "tradedAt": 1791569050.112,
+          "receivedAt": 1791569050.245
+        },
+        {
+          "asset": "PAXG",
+          "market": "binance",
+          "price": 4194.41,
+          "tradedAt": 1791569045.524,
+          "receivedAt": 1791569045.657
+        },
+        {
+          "asset": "GAS",
+          "market": "binance",
+          "price": 1.332,
+          "tradedAt": 1791568698.538,
+          "receivedAt": 1791568698.67
+        },
+        {
+          "asset": "A",
+          "market": "binance",
+          "price": 0.1021,
+          "tradedAt": 1791569054.51,
+          "receivedAt": 1791569054.643
+        },
+        {
+          "asset": "ZIL",
+          "market": "binance",
+          "price": 0.00348,
+          "tradedAt": 1791568968.04,
+          "receivedAt": 1791568968.171
+        },
+        {
+          "asset": "DCR",
+          "market": "binance",
+          "price": 17.56,
+          "tradedAt": 1791569044.997,
+          "receivedAt": 1791569045.133
+        },
+        {
+          "asset": "SFP",
+          "market": "binance",
+          "price": 0.2777,
+          "tradedAt": 1791568868.005,
+          "receivedAt": 1791568868.138
+        },
+        {
+          "asset": "MANA",
+          "market": "binance",
+          "price": 0.0926,
+          "tradedAt": 1791569059.933,
+          "receivedAt": 1791569060.064
+        },
+        {
+          "asset": "XAUT",
+          "market": "binance",
+          "price": 4193.57,
+          "tradedAt": 1791569047.969,
+          "receivedAt": 1791569048.1
+        },
+        {
+          "asset": "TFUEL",
+          "market": "binance",
+          "price": 0.00975,
+          "tradedAt": 1791568636.092,
+          "receivedAt": 1791568636.231
+        },
+        {
+          "asset": "GNO",
+          "market": "binance",
+          "price": 115.13,
+          "tradedAt": 1791569049.374,
+          "receivedAt": 1791569049.506
+        },
+        {
+          "asset": "NEO",
+          "market": "binance",
+          "price": 2.405,
+          "tradedAt": 1791569055.738,
+          "receivedAt": 1791569055.87
+        },
+        {
+          "asset": "CVX",
+          "market": "binance",
+          "price": 2.07,
+          "tradedAt": 1791569059.722,
+          "receivedAt": 1791569059.856
+        },
+        {
+          "asset": "KSM",
+          "market": "binance",
+          "price": 5,
+          "tradedAt": 1791569049.313,
+          "receivedAt": 1791569049.445
+        },
+        {
+          "asset": "XEC",
+          "market": "binance",
+          "price": 7.24e-06,
+          "tradedAt": 1791568986.488,
+          "receivedAt": 1791568986.619
+        },
+        {
+          "asset": "QTUM",
+          "market": "binance",
+          "price": 0.943,
+          "tradedAt": 1791569009.838,
+          "receivedAt": 1791569009.97
+        }
+      ],
+      "delta": false
+    }
+  ],
+  "coveredAssets": 150,
+  "missingAssets": []
+}
