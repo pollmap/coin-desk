@@ -189,8 +189,23 @@ export function MarketHome() {
               value={query}
               onKeyDown={(e) => {
                 if (e.nativeEvent.isComposing) return;
-                if (e.key === 'Enter' && query.trim() && filtered.length)
-                  navigate(href(filtered[0]));
+                if (e.key === 'Enter') {
+                  // URL updates can still be rendering when Enter follows a keystroke.
+                  const typed = e.currentTarget.value.trim();
+                  const matches = typed
+                    ? order
+                        .filter(
+                          (id) =>
+                            matchesCoin(id, typed) &&
+                            (view !== 'favorites' || desk.favorites.includes(id)),
+                        )
+                        .sort((a, b) => Number(exactCoin(b, typed)) - Number(exactCoin(a, typed)))
+                    : [];
+                  if (matches[0]) {
+                    e.preventDefault();
+                    navigate(href(matches[0]));
+                  }
+                }
                 if (e.key === 'Escape')
                   setParams(
                     (p) => {

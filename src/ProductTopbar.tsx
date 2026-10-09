@@ -1,4 +1,4 @@
-import { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom';
 import { Search, Sun, Moon, HelpCircle, X, List, ArrowLeftRight, Bookmark } from 'lucide-react';
 import { ASSETS } from '../shared/catalog';
@@ -62,9 +62,7 @@ export function ProductTopbar() {
         asset: null,
       })),
   ].slice(0, 12);
-  useLayoutEffect(() => {
-    setQuery('');
-    setSearchOpen(false);
+  useEffect(() => {
     if (help.current) help.current.open = false;
     document.title =
       (location.pathname === '/' || location.pathname === '/coins'
@@ -148,6 +146,8 @@ export function ProductTopbar() {
           if (e.nativeEvent.isComposing) return;
           if (e.key === 'Enter' && e.target === input.current && query.trim() && results.length) {
             e.preventDefault();
+            setQuery('');
+            setSearchOpen(false);
             navigate(results[0].href);
           }
           if (e.key === 'Escape') {
@@ -192,7 +192,14 @@ export function ProductTopbar() {
         {query.trim() && (
           <div className="product-search-results" id="product-search-results">
             {results.map((r) => (
-              <Link key={r.id} to={r.href}>
+              <Link
+                key={r.id}
+                to={r.href}
+                onClick={() => {
+                  setQuery('');
+                  setSearchOpen(false);
+                }}
+              >
                 {r.asset && <AssetLogo asset={r.asset} size={22} />}
                 <span>{r.title}</span>
                 <small>{r.kind}</small>
