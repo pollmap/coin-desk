@@ -1,0 +1,362 @@
+{
+  "operations": [
+    {
+      "checkedAt": 1791581463,
+      "reason": "Recheck legacy pre-0.26 generic quote validation failures once with the new classification. HTTP failures are excluded.",
+      "directCollectionCalled": false,
+      "onlyChangedColumn": "ingestion.next_attempt",
+      "failuresErrorsSuccessAndPricePreserved": true,
+      "affected": [
+        {
+          "key": "quote:AAVE:upbit",
+          "previousNextAttempt": 1791581588,
+          "nextAttempt": 1791581463,
+          "error": "Error: Invalid or outdated quote",
+          "failures": 3
+        },
+        {
+          "key": "quote:ASTR:upbit",
+          "previousNextAttempt": 1791581605,
+          "nextAttempt": 1791581463,
+          "error": "Error: Invalid or outdated quote",
+          "failures": 6
+        },
+        {
+          "key": "quote:CFG:upbit",
+          "previousNextAttempt": 1791584004,
+          "nextAttempt": 1791581463,
+          "error": "Error: Invalid or outdated quote",
+          "failures": 7
+        },
+        {
+          "key": "quote:CFX:upbit",
+          "previousNextAttempt": 1791583577,
+          "nextAttempt": 1791581463,
+          "error": "Error: Invalid or outdated quote",
+          "failures": 8
+        },
+        {
+          "key": "quote:COW:upbit",
+          "previousNextAttempt": 1791583407,
+          "nextAttempt": 1791581463,
+          "error": "Error: Invalid or outdated quote",
+          "failures": 7
+        },
+        {
+          "key": "quote:CRV:upbit",
+          "previousNextAttempt": 1791581953,
+          "nextAttempt": 1791581463,
+          "error": "Error: Invalid or outdated quote",
+          "failures": 5
+        },
+        {
+          "key": "quote:ICP:upbit",
+          "previousNextAttempt": 1791584226,
+          "nextAttempt": 1791581463,
+          "error": "Error: Invalid or outdated quote",
+          "failures": 7
+        },
+        {
+          "key": "quote:JST:upbit",
+          "previousNextAttempt": 1791582850,
+          "nextAttempt": 1791581463,
+          "error": "Error: Invalid or outdated quote",
+          "failures": 7
+        },
+        {
+          "key": "quote:KMNO:upbit",
+          "previousNextAttempt": 1791584545,
+          "nextAttempt": 1791581463,
+          "error": "Error: Invalid or outdated quote",
+          "failures": 8
+        },
+        {
+          "key": "quote:NEO:upbit",
+          "previousNextAttempt": 1791582080,
+          "nextAttempt": 1791581463,
+          "error": "Error: Invalid or outdated quote",
+          "failures": 7
+        },
+        {
+          "key": "quote:PENGU:upbit",
+          "previousNextAttempt": 1791583326,
+          "nextAttempt": 1791581463,
+          "error": "Error: Invalid or outdated quote",
+          "failures": 8
+        },
+        {
+          "key": "quote:PYTH:upbit",
+          "previousNextAttempt": 1791581472,
+          "nextAttempt": 1791581463,
+          "error": "Error: Invalid or outdated quote",
+          "failures": 3
+        },
+        {
+          "key": "quote:QTUM:upbit",
+          "previousNextAttempt": 1791584367,
+          "nextAttempt": 1791581463,
+          "error": "Error: Invalid or outdated quote",
+          "failures": 7
+        },
+        {
+          "key": "quote:SAFE:upbit",
+          "previousNextAttempt": 1791584004,
+          "nextAttempt": 1791581463,
+          "error": "Error: Invalid or outdated quote",
+          "failures": 8
+        },
+        {
+          "key": "quote:SPX:upbit",
+          "previousNextAttempt": 1791582555,
+          "nextAttempt": 1791581463,
+          "error": "Error: Invalid or outdated quote",
+          "failures": 8
+        },
+        {
+          "key": "quote:SUPER:upbit",
+          "previousNextAttempt": 1791583703,
+          "nextAttempt": 1791581463,
+          "error": "Error: Invalid or outdated quote",
+          "failures": 7
+        },
+        {
+          "key": "quote:SYRUP:upbit",
+          "previousNextAttempt": 1791581897,
+          "nextAttempt": 1791581463,
+          "error": "Error: Invalid or outdated quote",
+          "failures": 5
+        },
+        {
+          "key": "quote:TFUEL:upbit",
+          "previousNextAttempt": 1791582925,
+          "nextAttempt": 1791581463,
+          "error": "Error: Invalid or outdated quote",
+          "failures": 5
+        },
+        {
+          "key": "quote:THETA:upbit",
+          "previousNextAttempt": 1791582437,
+          "nextAttempt": 1791581463,
+          "error": "Error: Invalid or outdated quote",
+          "failures": 8
+        },
+        {
+          "key": "quote:WIF:upbit",
+          "previousNextAttempt": 1791581597,
+          "nextAttempt": 1791581463,
+          "error": "Error: Invalid or outdated quote",
+          "failures": 3
+        },
+        {
+          "key": "quote:XCN:upbit",
+          "previousNextAttempt": 1791581721,
+          "nextAttempt": 1791581463,
+          "error": "Error: Invalid or outdated quote",
+          "failures": 7
+        },
+        {
+          "key": "quote:XEC:upbit",
+          "previousNextAttempt": 1791581479,
+          "nextAttempt": 1791581463,
+          "error": "Error: Invalid or outdated quote",
+          "failures": 3
+        },
+        {
+          "key": "quote:XTZ:upbit",
+          "previousNextAttempt": 1791582555,
+          "nextAttempt": 1791581463,
+          "error": "Error: Invalid or outdated quote",
+          "failures": 7
+        }
+      ]
+    },
+    {
+      "checkedAt": 1791581746,
+      "reason": "Recheck legacy pre-0.26 generic quote validation failures once with the new classification. HTTP failures are excluded.",
+      "directCollectionCalled": false,
+      "onlyChangedColumn": "ingestion.next_attempt",
+      "failuresErrorsSuccessAndPricePreserved": true,
+      "affected": [
+        {
+          "key": "quote:CKB:upbit",
+          "previousNextAttempt": 1791583049,
+          "nextAttempt": 1791581746,
+          "error": "Error: Invalid or outdated quote",
+          "failures": 5
+        }
+      ]
+    }
+  ],
+  "checkedAt": 1791582020,
+  "results": [
+    {
+      "key": "quote:AAVE:upbit",
+      "lastAttempt": 1791582008,
+      "lastSuccess": 1791582008,
+      "error": null,
+      "nextAttempt": 0
+    },
+    {
+      "key": "quote:ASTR:upbit",
+      "lastAttempt": 1791581971,
+      "lastSuccess": 1791581913,
+      "error": "StaleQuoteError: QUOTE_STALE: last trade exceeds 300 seconds",
+      "nextAttempt": 1791582031
+    },
+    {
+      "key": "quote:CFG:upbit",
+      "lastAttempt": 1791581967,
+      "lastSuccess": 1791581967,
+      "error": null,
+      "nextAttempt": 0
+    },
+    {
+      "key": "quote:CFX:upbit",
+      "lastAttempt": 1791582018,
+      "lastSuccess": 1791568757,
+      "error": "StaleQuoteError: QUOTE_STALE: last trade exceeds 300 seconds",
+      "nextAttempt": 1791582078
+    },
+    {
+      "key": "quote:COW:upbit",
+      "lastAttempt": 1791581910,
+      "lastSuccess": 1791572249,
+      "error": "StaleQuoteError: QUOTE_STALE: last trade exceeds 300 seconds",
+      "nextAttempt": 1791581970
+    },
+    {
+      "key": "quote:CRV:upbit",
+      "lastAttempt": 1791582014,
+      "lastSuccess": 1791582014,
+      "error": null,
+      "nextAttempt": 0
+    },
+    {
+      "key": "quote:ICP:upbit",
+      "lastAttempt": 1791582008,
+      "lastSuccess": 1791581586,
+      "error": "StaleQuoteError: QUOTE_STALE: last trade exceeds 300 seconds",
+      "nextAttempt": 1791582068
+    },
+    {
+      "key": "quote:JST:upbit",
+      "lastAttempt": 1791582011,
+      "lastSuccess": 1791582011,
+      "error": null,
+      "nextAttempt": 0
+    },
+    {
+      "key": "quote:KMNO:upbit",
+      "lastAttempt": 1791581908,
+      "lastSuccess": 1791569724,
+      "error": "StaleQuoteError: QUOTE_STALE: last trade exceeds 300 seconds",
+      "nextAttempt": 1791581968
+    },
+    {
+      "key": "quote:NEO:upbit",
+      "lastAttempt": 1791581903,
+      "lastSuccess": 1791570803,
+      "error": "StaleQuoteError: QUOTE_STALE: last trade exceeds 300 seconds",
+      "nextAttempt": 1791581963
+    },
+    {
+      "key": "quote:PENGU:upbit",
+      "lastAttempt": 1791582007,
+      "lastSuccess": 1791581829,
+      "error": "StaleQuoteError: QUOTE_STALE: last trade exceeds 300 seconds",
+      "nextAttempt": 1791582067
+    },
+    {
+      "key": "quote:PYTH:upbit",
+      "lastAttempt": 1791582014,
+      "lastSuccess": 1791582014,
+      "error": null,
+      "nextAttempt": 0
+    },
+    {
+      "key": "quote:QTUM:upbit",
+      "lastAttempt": 1791581966,
+      "lastSuccess": 1791581966,
+      "error": null,
+      "nextAttempt": 0
+    },
+    {
+      "key": "quote:SAFE:upbit",
+      "lastAttempt": 1791581910,
+      "lastSuccess": 1791569125,
+      "error": "StaleQuoteError: QUOTE_STALE: last trade exceeds 300 seconds",
+      "nextAttempt": 1791581970
+    },
+    {
+      "key": "quote:SPX:upbit",
+      "lastAttempt": 1791582016,
+      "lastSuccess": 1791581957,
+      "error": "StaleQuoteError: QUOTE_STALE: last trade exceeds 300 seconds",
+      "nextAttempt": 1791582076
+    },
+    {
+      "key": "quote:SUPER:upbit",
+      "lastAttempt": 1791581905,
+      "lastSuccess": 1791572601,
+      "error": "StaleQuoteError: QUOTE_STALE: last trade exceeds 300 seconds",
+      "nextAttempt": 1791581965
+    },
+    {
+      "key": "quote:SYRUP:upbit",
+      "lastAttempt": 1791582018,
+      "lastSuccess": 1791578055,
+      "error": "StaleQuoteError: QUOTE_STALE: last trade exceeds 300 seconds",
+      "nextAttempt": 1791582078
+    },
+    {
+      "key": "quote:TFUEL:upbit",
+      "lastAttempt": 1791581910,
+      "lastSuccess": 1791578965,
+      "error": "StaleQuoteError: QUOTE_STALE: last trade exceeds 300 seconds",
+      "nextAttempt": 1791581970
+    },
+    {
+      "key": "quote:THETA:upbit",
+      "lastAttempt": 1791582018,
+      "lastSuccess": 1791581716,
+      "error": "StaleQuoteError: QUOTE_STALE: last trade exceeds 300 seconds",
+      "nextAttempt": 1791582078
+    },
+    {
+      "key": "quote:WIF:upbit",
+      "lastAttempt": 1791582018,
+      "lastSuccess": 1791580635,
+      "error": "StaleQuoteError: QUOTE_STALE: last trade exceeds 300 seconds",
+      "nextAttempt": 1791582078
+    },
+    {
+      "key": "quote:XCN:upbit",
+      "lastAttempt": 1791581905,
+      "lastSuccess": 1791570503,
+      "error": "StaleQuoteError: QUOTE_STALE: last trade exceeds 300 seconds",
+      "nextAttempt": 1791581965
+    },
+    {
+      "key": "quote:XEC:upbit",
+      "lastAttempt": 1791581962,
+      "lastSuccess": 1791581962,
+      "error": null,
+      "nextAttempt": 0
+    },
+    {
+      "key": "quote:XTZ:upbit",
+      "lastAttempt": 1791581957,
+      "lastSuccess": 1791581900,
+      "error": "StaleQuoteError: QUOTE_STALE: last trade exceeds 300 seconds",
+      "nextAttempt": 1791582017
+    },
+    {
+      "key": "quote:CKB:upbit",
+      "lastAttempt": 1791581913,
+      "lastSuccess": 1791579147,
+      "error": "StaleQuoteError: QUOTE_STALE: last trade exceeds 300 seconds",
+      "nextAttempt": 1791581973
+    }
+  ],
+  "notPartOfReadOnlyNaturalWindow": true
+}

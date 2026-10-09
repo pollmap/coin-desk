@@ -1,0 +1,37 @@
+{
+  "recordedAt": "2026-10-09T21:41:36.724132+00:00",
+  "version": "0.26.0",
+  "codeMain": "e52f272be87a36c5c3ca9178ac9dbb4e2f83a14f",
+  "codeAndDeploymentVerified": true,
+  "allSourcesHealthy": false,
+  "assets": 150,
+  "tradablePairs": 241,
+  "networkAssets": 34,
+  "mvrvAssets": 33,
+  "usdReferenceAssets": 143,
+  "bybitContracts": 136,
+  "activeSourceStatusAt": 1791582044,
+  "activeSources": 1585,
+  "activeStatuses": {
+    "ok": 1539,
+    "delayed": 46
+  },
+  "fullHistoricalCollectionComplete": false,
+  "limitations": [
+    "Real source trade delays remain visible; 300-second freshness is unchanged.",
+    "Full historical futures acquisition continues within the 10000-candidate daily budget.",
+    "KAIA Upbit daily history is insufficient for some calculations; Binance history is separate.",
+    "Verified project relationships cover 13 assets, not all 150.",
+    "The 319-second natural sample is not a full-day or every six-hour-source verification.",
+    "pages LCP target not met: 3176ms.",
+    "vps LCP target not met: 3096ms."
+  ],
+  "externalUnverified": [
+    "Actual Apple Safari/VoiceOver",
+    "Human usability study"
+  ],
+  "personalDataPreserved": true,
+  "unrelatedFilePreserved": "docs/BORI_CHART_PRODUCT_PLAN.md",
+  "fortyEightHourWaitRequired": false,
+  "evidenceDocsOnlyNoRedeploy": true
+}

@@ -1,0 +1,119 @@
+{
+  "measurement": "Five new browser contexts per origin; Chromium 153; 1280x800; 10Mbps down/5Mbps up; CPU 1x; zero added latency. Production remains subject to real network and other visitors.",
+  "before": [
+    {
+      "stage": "before-clean",
+      "name": "pages",
+      "base": "https://coin-desk.pages.dev",
+      "checkedAt": "2026-10-09T21:13:56.555Z",
+      "browser": "153.0.8010.12",
+      "viewport": "1280x800",
+      "downlinkMbps": 10,
+      "uplinkMbps": 5,
+      "addedLatencyMs": 0,
+      "cpuRate": 1,
+      "contexts": 5,
+      "clockOffsetMs": -1279,
+      "clockErrorMs": 370,
+      "lcpSamplesMs": [
+        4876,
+        516,
+        516,
+        432,
+        564
+      ],
+      "lcpP95Ms": 4876,
+      "paintSamples": 13,
+      "clientReceiptToPaintP95Ms": 29.80000001192093,
+      "hubReceiptToPaintP95Ms": 1209,
+      "hubReceiptToPaintUpperMs": 1579
+    },
+    {
+      "stage": "before-clean",
+      "name": "vps",
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "checkedAt": "2026-10-09T21:15:06.389Z",
+      "browser": "153.0.8010.12",
+      "viewport": "1280x800",
+      "downlinkMbps": 10,
+      "uplinkMbps": 5,
+      "addedLatencyMs": 0,
+      "cpuRate": 1,
+      "contexts": 5,
+      "clockOffsetMs": -1262.5,
+      "clockErrorMs": 380.5,
+      "lcpSamplesMs": [
+        2364,
+        2292,
+        2288,
+        2480,
+        2684
+      ],
+      "lcpP95Ms": 2684,
+      "paintSamples": 18,
+      "clientReceiptToPaintP95Ms": 29.19999998807907,
+      "hubReceiptToPaintP95Ms": 2200.5,
+      "hubReceiptToPaintUpperMs": 2581
+    }
+  ],
+  "after": [
+    {
+      "stage": "after",
+      "name": "pages",
+      "base": "https://coin-desk.pages.dev",
+      "checkedAt": "2026-10-09T21:39:42.112Z",
+      "browser": "153.0.8010.12",
+      "viewport": "1280x800",
+      "downlinkMbps": 10,
+      "uplinkMbps": 5,
+      "addedLatencyMs": 0,
+      "cpuRate": 1,
+      "contexts": 5,
+      "clockOffsetMs": -1288.5,
+      "clockErrorMs": 368.5,
+      "lcpSamplesMs": [
+        3176,
+        448,
+        476,
+        416,
+        388
+      ],
+      "lcpP95Ms": 3176,
+      "paintSamples": 27,
+      "clientReceiptToPaintP95Ms": 17.400000035762787,
+      "hubReceiptToPaintP95Ms": 1205.5,
+      "hubReceiptToPaintUpperMs": 1574
+    },
+    {
+      "stage": "after",
+      "name": "vps",
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "checkedAt": "2026-10-09T21:40:50.795Z",
+      "browser": "153.0.8010.12",
+      "viewport": "1280x800",
+      "downlinkMbps": 10,
+      "uplinkMbps": 5,
+      "addedLatencyMs": 0,
+      "cpuRate": 1,
+      "contexts": 5,
+      "clockOffsetMs": -1273.5,
+      "clockErrorMs": 379.5,
+      "lcpSamplesMs": [
+        2276,
+        2208,
+        2232,
+        2240,
+        3096
+      ],
+      "lcpP95Ms": 3096,
+      "paintSamples": 25,
+      "clientReceiptToPaintP95Ms": 14.899999976158142,
+      "hubReceiptToPaintP95Ms": 1273.5,
+      "hubReceiptToPaintUpperMs": 1653
+    }
+  ],
+  "lcpTargetMs": 2500,
+  "streamPaintTargetMs": 3000,
+  "smallSampleP95IsMaximum": true,
+  "earlierOverlappingLocalBuildSampleExcluded": true
+}

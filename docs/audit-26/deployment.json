@@ -1,0 +1,73 @@
+{
+  "source": {
+    "release": "vps-a1c06604282c8ca1",
+    "filesMatchHead": 332,
+    "head": "e52f272be87a36c5c3ca9178ac9dbb4e2f83a14f",
+    "archiveSha256": "941f25b6e9cd2107c2e9349b83410327437474e6e2c794ff41d4b2f714b84be0"
+  },
+  "activation": {
+    "startedAt": 1791581124,
+    "release": "vps-a1c06604282c8ca1",
+    "previousRelease": "vps-6770ebcbb08ad9cc",
+    "backupVerifiedAt": 1791578950,
+    "schemaChanged": false,
+    "nginxChanged": false,
+    "dataDeleted": false,
+    "servicesChanged": [
+      "api",
+      "quotes",
+      "background",
+      "recent"
+    ],
+    "promoted": true,
+    "unchangedContainerIdsVerified": [
+      "analysis",
+      "backup",
+      "quote-hub"
+    ],
+    "services": {
+      "api": {
+        "image": "coin-desk:vps-a1c06604282c8ca1",
+        "healthy": "healthy"
+      },
+      "quotes": {
+        "image": "coin-desk:vps-a1c06604282c8ca1",
+        "healthy": "healthy"
+      },
+      "background": {
+        "image": "coin-desk:vps-a1c06604282c8ca1",
+        "healthy": "healthy"
+      },
+      "recent": {
+        "image": "coin-desk:vps-a1c06604282c8ca1",
+        "healthy": "healthy"
+      },
+      "analysis": {
+        "image": "coin-desk:vps-29f6a85aaef183d4",
+        "healthy": "healthy"
+      },
+      "backup": {
+        "image": "coin-desk:vps-6270048e66efc7fa",
+        "healthy": "healthy"
+      },
+      "quote-hub": {
+        "image": "coin-desk:vps-29f6a85aaef183d4",
+        "healthy": "healthy"
+      }
+    },
+    "completedAt": 1791581143
+  },
+  "pages": "https://f89c13b0.coin-desk.pages.dev",
+  "retainedPreviousPageAssets": 508,
+  "backup": {
+    "ok": true,
+    "verified": true,
+    "completedAt": 1791578950,
+    "retainedBytes": 162839723,
+    "offsite": false
+  },
+  "migrationApplied": false,
+  "rollbackImagePreserved": "coin-desk:vps-6770ebcbb08ad9cc",
+  "priorCollectorsPreserved": "coin-desk:vps-29f6a85aaef183d4",
+  "codeRollbackExecutedThisRelease": false
+}
