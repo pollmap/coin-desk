@@ -955,6 +955,11 @@ body {
     grid-area: price;
     font-weight: 600;
     font-size: 15px;
+    line-height: 1.3;
+  }
+  .market-table .market-price-cell > small {
+    line-height: 1.25;
+    margin-top: 1px;
   }
   .market-mobile-change-label {
     display: none;
@@ -964,6 +969,7 @@ body {
   .market-table .market-change-cell {
     grid-area: change;
     font-size: 13px;
+    line-height: 1.3;
   }
   .market-table .market-analysis-cell {
     display: none;
