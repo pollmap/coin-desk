@@ -342,7 +342,12 @@ export async function updateQuoteBatch(
   ]);
   if (statements.length) await env.DB.batch(statements);
   for (const problem of result.errors)
-    await failure(env.DB, 'quote:' + problem.asset + ':' + market, problem.error);
+    await failure(
+      env.DB,
+      'quote:' + problem.asset + ':' + market,
+      problem.error,
+      problem.error instanceof Error && problem.error.name === 'StaleQuoteError' ? 60 : undefined,
+    );
   return {
     attempted: selected.length,
     failed: result.errors.length,

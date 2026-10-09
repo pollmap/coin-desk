@@ -1,15 +1,16 @@
 import { useEffect, useRef, useState } from 'react';
-import { Link, NavLink, useLocation } from 'react-router-dom';
+import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom';
 import { Search, Sun, Moon, HelpCircle, X, List, ArrowLeftRight, Bookmark } from 'lucide-react';
 import { ASSETS } from '../shared/catalog';
 import { availableMarket, supportsMarket } from '../shared/asset-registry';
-import { matchesCoin } from '../shared/coin-search';
+import { matchesCoin, exactCoin } from '../shared/coin-search';
 import { matchesIndicator } from '../shared/indicator-search';
 import { defaultIndicator, indicatorUrl, navigationIndicators } from '../shared/indicator-catalog';
 import { saved, save } from './lib';
 import { AssetLogo } from './AssetLogo';
 
 export function ProductTopbar() {
+  const navigate = useNavigate();
   const location = useLocation(),
     p = new URLSearchParams(location.search);
   const asset =
@@ -29,26 +30,28 @@ export function ProductTopbar() {
     if (searchOpen) input.current?.focus();
   }, [searchOpen]);
   const results = [
-    ...ASSETS.filter((a) => matchesCoin(a.id, query)).map((a) => ({
-      id: a.id,
-      title: a.name,
-      kind:
-        a.id +
-        (supportsMarket(a.id, preferredMarket)
-          ? ''
-          : availableMarket(a.id, preferredMarket) === 'binance'
-            ? ' · Binance USDT'
-            : ' · Upbit KRW'),
-      href: indicatorUrl(
-        a.id,
-        defaultIndicator(a.id),
-        new URLSearchParams({
-          market: availableMarket(a.id, preferredMarket),
-          price_source: availableMarket(a.id, preferredMarket),
-        }),
-      ),
-      asset: a.id,
-    })),
+    ...ASSETS.filter((a) => matchesCoin(a.id, query))
+      .sort((a, b) => Number(exactCoin(b.id, query)) - Number(exactCoin(a.id, query)))
+      .map((a) => ({
+        id: a.id,
+        title: a.name,
+        kind:
+          a.id +
+          (supportsMarket(a.id, preferredMarket)
+            ? ''
+            : availableMarket(a.id, preferredMarket) === 'binance'
+              ? ' · Binance USDT'
+              : ' · Upbit KRW'),
+        href: indicatorUrl(
+          a.id,
+          defaultIndicator(a.id),
+          new URLSearchParams({
+            market: availableMarket(a.id, preferredMarket),
+            price_source: availableMarket(a.id, preferredMarket),
+          }),
+        ),
+        asset: a.id,
+      })),
     ...navigationIndicators(asset, '')
       .filter((d) => matchesIndicator(d, query))
       .map((d) => ({
@@ -60,8 +63,6 @@ export function ProductTopbar() {
       })),
   ].slice(0, 12);
   useEffect(() => {
-    setQuery('');
-    setSearchOpen(false);
     if (help.current) help.current.open = false;
     document.title =
       (location.pathname === '/' || location.pathname === '/coins'
@@ -102,7 +103,8 @@ export function ProductTopbar() {
         <img
           fetchPriority="low"
           decoding="async"
-          src="/brand/coin-desk-shiba-smile.png"
+          src="/brand/bori-64.png"
+          srcSet="/brand/bori-32.png 1x, /brand/bori-64.png 2x"
           width="32"
           height="32"
           alt=""
@@ -141,6 +143,13 @@ export function ProductTopbar() {
         className={'product-search' + (searchOpen ? ' is-open' : '')}
         ref={box}
         onKeyDown={(e) => {
+          if (e.nativeEvent.isComposing) return;
+          if (e.key === 'Enter' && e.target === input.current && query.trim() && results.length) {
+            e.preventDefault();
+            setQuery('');
+            setSearchOpen(false);
+            navigate(results[0].href);
+          }
           if (e.key === 'Escape') {
             setQuery('');
             setSearchOpen(false);
@@ -183,7 +192,14 @@ export function ProductTopbar() {
         {query.trim() && (
           <div className="product-search-results" id="product-search-results">
             {results.map((r) => (
-              <Link key={r.id} to={r.href}>
+              <Link
+                key={r.id}
+                to={r.href}
+                onClick={() => {
+                  setQuery('');
+                  setSearchOpen(false);
+                }}
+              >
                 {r.asset && <AssetLogo asset={r.asset} size={22} />}
                 <span>{r.title}</span>
                 <small>{r.kind}</small>

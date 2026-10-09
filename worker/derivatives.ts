@@ -123,8 +123,37 @@ export async function updateDerivatives(
   const daily = metric.endsWith('_daily');
   const now = epoch();
   const id = key(asset, metric);
+  const floor = daily
+    ? kind === 'long_account_ratio'
+      ? Date.parse('2020-07-20T00:00:00Z')
+      : fundingFloor
+    : metric === 'funding'
+      ? fundingFloor
+      : (now - 30 * DAY) * 1000;
   const coverage = await readDerivativeExtent(env.DB, asset, metric);
-  const cursor = await readState<number | null>(env.DB, 'cursor:' + id, null);
+  let cursor = await readState<number | null>(env.DB, 'cursor:' + id, null);
+  // Recent-only imports have no history page or cursor. Resume those partitions
+  // from their oldest saved point; preserve completed legacy history and budgets.
+  if (
+    env.RUNTIME_KIND === 'vps' &&
+    cursor === null &&
+    coverage?.first &&
+    coverage.first * 1000 > floor
+  ) {
+    const complete = await readState<number | null>(env.DB, 'history-complete:' + id, null);
+    const history =
+      complete === null
+        ? await env.DB.prepare('SELECT id FROM raw_samples WHERE id>=? AND id<? LIMIT 1')
+            .bind(id + ':history:', id + ':history;')
+            .first()
+        : true;
+    if (!history) {
+      cursor = coverage.first * 1000 - 1;
+      await env.DB.prepare('INSERT OR IGNORE INTO state(key,value) VALUES(?,?)')
+        .bind('cursor:' + id, JSON.stringify(cursor))
+        .run();
+    }
+  }
   const refreshRecent =
     recentOnly ||
     (!!coverage?.last &&
@@ -183,13 +212,6 @@ export async function updateDerivatives(
   if (!parsed.length && !coverage?.last) throw new Error('No derivatives history available');
   if (backfill && parsed.some((point) => point.time * 1000 > cursor!))
     throw new Error('Derivatives history cursor did not advance');
-  const floor = daily
-    ? kind === 'long_account_ratio'
-      ? Date.parse('2020-07-20T00:00:00Z')
-      : fundingFloor
-    : metric === 'funding'
-      ? fundingFloor
-      : (now - 30 * DAY) * 1000;
   const points = parsed.filter((point) => point.time * 1000 >= floor);
   const fetched = epoch();
   const statements: D1PreparedStatement[] = points.length
@@ -201,16 +223,29 @@ export async function updateDerivatives(
     : [];
   const last = Math.max(coverage?.last ?? 0, points.at(-1)?.time ?? 0);
   const more = (backfill || firstPage) && parsed.length === size && parsed[0].time * 1000 > floor;
-  if (more)
+  const seededRecent =
+    env.RUNTIME_KIND === 'vps' &&
+    recentOnly &&
+    !coverage?.last &&
+    points.length > 0 &&
+    points[0].time * 1000 > floor;
+  if (more || seededRecent)
     statements.push(
       env.DB.prepare(
         'INSERT INTO state(key,value) VALUES(?,?) ON CONFLICT(key) DO UPDATE SET value=excluded.value',
       ).bind('cursor:' + id, JSON.stringify(parsed[0].time * 1000 - 1)),
     );
-  else if (!refreshRecent)
+  else if (!refreshRecent) {
     statements.push(env.DB.prepare('DELETE FROM state WHERE key=?').bind('cursor:' + id));
+    if (backfill || firstPage)
+      statements.push(
+        env.DB.prepare(
+          'INSERT INTO state(key,value) VALUES(?,?) ON CONFLICT(key) DO UPDATE SET value=excluded.value',
+        ).bind('history-complete:' + id, JSON.stringify(fetched)),
+      );
+  }
   statements.push(successStatement(env.DB, id, last, fetched));
-  if (!historyPaused && (more || (refreshRecent && cursor !== null)))
+  if (!historyPaused && (more || seededRecent || (refreshRecent && cursor !== null)))
     statements.push(
       env.DB.prepare('UPDATE ingestion SET next_attempt=? WHERE key=?').bind(fetched + 60, id),
     );

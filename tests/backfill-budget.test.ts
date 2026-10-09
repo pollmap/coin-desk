@@ -8,6 +8,70 @@ import {
 import { updateDerivatives } from '../worker/derivatives';
 import type { Env } from '../worker/storage';
 import { DAY } from '../shared/math';
+
+it.each([false, true])(
+  'VPS recent imports resume older history once, including an existing seed: %s',
+  async (existing) => {
+    const env = { DB: db, RUNTIME_KIND: 'vps' } as Env;
+    const state = (name: string) =>
+      db.sqlite.prepare('SELECT value FROM state WHERE key=?').get(name)?.value;
+    const first = now - 8 * 3600;
+    if (existing)
+      db.sqlite
+        .prepare('INSERT INTO derivative_series VALUES(?,?,?,?,?)')
+        .run('BTC', 'funding', first, 0.01, now);
+    const fetcher = vi.fn(async (input: RequestInfo | URL) => {
+      const historical = new URL(String(input)).searchParams.has('endTime');
+      return Response.json({
+        retCode: 0,
+        result: {
+          category: 'linear',
+          list: historical
+            ? []
+            : [
+                {
+                  symbol: 'BTCUSDT',
+                  fundingRateTimestamp: String(first * 1000),
+                  fundingRate: '0.0001',
+                },
+              ],
+        },
+      });
+    });
+    vi.stubGlobal('fetch', fetcher);
+    await updateDerivatives(env, 'BTC', 'funding', true);
+    expect(state('cursor:derivatives:BTC:funding')).toBe(String(first * 1000 - 1));
+    expect(state('budget:derivatives-backfill')).toBeUndefined();
+    await updateDerivatives(env, 'BTC', 'funding');
+    expect(new URL(String(fetcher.mock.calls[1][0])).searchParams.get('endTime')).toBe(
+      String(first * 1000 - 1),
+    );
+    expect(state('cursor:derivatives:BTC:funding')).toBeUndefined();
+    expect(state('history-complete:derivatives:BTC:funding')).toBe(String(now));
+    await updateDerivatives(env, 'BTC', 'funding');
+    expect(new URL(String(fetcher.mock.calls[2][0])).searchParams.has('endTime')).toBe(false);
+    expect(JSON.parse(state('budget:derivatives-backfill')).reserved).toBe(200);
+    expect(db.sqlite.prepare('SELECT COUNT(*) n FROM derivative_series').get().n).toBe(1);
+  },
+);
+
+it('VPS preserves completed legacy history instead of starting it again', async () => {
+  db.sqlite
+    .prepare('INSERT INTO derivative_series VALUES(?,?,?,?,?)')
+    .run('BTC', 'funding', now - 3600, 0.01, now);
+  db.sqlite
+    .prepare('INSERT INTO raw_samples VALUES(?,?,?,?)')
+    .run('derivatives:BTC:funding:history:old', 'Bybit', now, '{}');
+  const fetcher = vi.fn(async (_input: RequestInfo | URL) =>
+    Response.json({ retCode: 0, result: { category: 'linear', list: [] } }),
+  );
+  vi.stubGlobal('fetch', fetcher);
+  await updateDerivatives({ DB: db, RUNTIME_KIND: 'vps' } as Env, 'BTC', 'funding');
+  expect(new URL(String(fetcher.mock.calls[0][0])).searchParams.has('endTime')).toBe(false);
+  expect(
+    db.sqlite.prepare("SELECT value FROM state WHERE key='cursor:derivatives:BTC:funding'").get(),
+  ).toBeUndefined();
+});
 let db: ReturnType<typeof openDatabase>;
 const now = Date.UTC(2026, 8, 26) / 1000;
 beforeEach(() => {

@@ -130,7 +130,10 @@ export default function App() {
         // Reading pages focus their heading. Do not overwrite that destination
         // with the main landmark in a later animation frame.
         const target = main?.querySelector<HTMLElement>('[data-route-focus]') ?? main;
-        target?.focus({ preventScroll: true });
+        // A user may already be typing the next search before this frame runs.
+        // Keep that deliberate focus instead of swallowing their Enter key.
+        if (!document.activeElement?.matches('.product-search input'))
+          target?.focus({ preventScroll: true });
       }
       previousPage.current = pageKey;
     });
