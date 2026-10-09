@@ -2,6 +2,12 @@ import type { Asset, Candle, Market, Quote } from '../shared/types';
 import { BASE_SERIES } from '../shared/catalog';
 import { DAY, validCandle } from '../shared/math';
 import { feedRequest, type FeedConfig } from './feed-client';
+export class StaleQuoteError extends Error {
+  constructor() {
+    super('QUOTE_STALE: last trade exceeds 300 seconds');
+    this.name = 'StaleQuoteError';
+  }
+}
 export function validateQuote(q: Quote): Quote {
   const now = Math.floor(Date.now() / 1000);
   const validChange =
@@ -17,10 +23,13 @@ export function validateQuote(q: Quote): Quote {
     q.low24h > q.price ||
     q.high24h < q.price ||
     !Number.isSafeInteger(q.time) ||
-    q.time > now + 60 ||
-    now - q.time > 300
+    q.time <= 0 ||
+    q.time > now + 60
   )
     throw new Error('Invalid or outdated quote');
+  // A valid HTTP response with an old trade is not a failed request. Keep the
+  // freshness requirement, but let the collector check again next minute.
+  if (now - q.time > 300) throw new StaleQuoteError();
   return q;
 }
 export async function upstream(url: string): Promise<unknown> {

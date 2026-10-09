@@ -1,5 +1,11 @@
 import { afterEach, expect, it, vi } from 'vitest';
-import { binanceRequest, getRecentCandles, getQuotes } from '../worker/providers';
+import {
+  binanceRequest,
+  getRecentCandles,
+  getQuotes,
+  validateQuote,
+  StaleQuoteError,
+} from '../worker/providers';
 function socket(response?: unknown, event = 'message') {
   const calls: Record<string, unknown>[] = [];
   const closed = vi.fn();
@@ -89,7 +95,30 @@ it('one Binance batch request maps symbols exactly and isolates an outdated peer
   expect(result.quotes.map((q) => q.asset)).toEqual(['BTC']);
   expect(result.errors.map((q) => q.asset)).toEqual(['DOGE']);
   expect(result.requestFailed).toBe(false);
+  expect(result.errors[0].error).toBeInstanceOf(StaleQuoteError);
   expect(mock.closed).toHaveBeenCalledTimes(1);
+});
+
+it('keeps the exact 300-second boundary and distinguishes malformed data from old trades', () => {
+  const now = Math.floor(Date.now() / 1000);
+  const valid = {
+    asset: 'BTC' as const,
+    price: 100,
+    high24h: 110,
+    low24h: 90,
+    volume24h: 10,
+    change24h: 0,
+    time: now - 300,
+  };
+  expect(() => validateQuote(valid)).not.toThrow();
+  expect(() => validateQuote({ ...valid, time: now - 301 })).toThrow(StaleQuoteError);
+  try {
+    validateQuote({ ...valid, price: NaN, time: now - 301 });
+    throw new Error('accepted invalid quote');
+  } catch (error) {
+    expect(error).not.toBeInstanceOf(StaleQuoteError);
+    expect(String(error)).toContain('Invalid');
+  }
 });
 it('Upbit uses one batched ticker request and preserves a valid peer when one ticker is absent', async () => {
   const timestamp = Date.now();

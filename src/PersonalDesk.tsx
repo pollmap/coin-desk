@@ -267,7 +267,7 @@ export function WorkspaceBar({
               ))
             ) : (
               <div className="saved-empty">
-                <img src="/brand/coin-desk-shiba-smile.png" alt="보리" width="64" height="64" />
+                <img src="/brand/bori-128.png" alt="보리" width="64" height="64" />
                 <p>저장한 분석이 없습니다.</p>
                 <Link to="/coins/BTC?metric=net%3Amvrv&period=5y">분석 열기</Link>
               </div>

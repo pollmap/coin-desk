@@ -31,14 +31,14 @@ export async function marketSnapshot(
       .all<{ key: string; data: string; fetched_at: number }>()
   ).results;
   const storedByKey = new Map(snapshots.map((s) => [s.key, s]));
-  const failed = new Set(
+  const failed = new Map(
     (
       await env.DB.prepare(
-        `SELECT key FROM ingestion WHERE key IN (${slots}) AND (error IS NOT NULL OR failures>0)`,
+        `SELECT key,error FROM ingestion WHERE key IN (${slots}) AND (error IS NOT NULL OR failures>0)`,
       )
         .bind(...keys)
-        .all<{ key: string }>()
-    ).results.map((row) => row.key),
+        .all<{ key: string; error: string | null }>()
+    ).results.map((row) => [row.key, row.error]),
   );
   let rows: MarketRow[] = selection.map(({ id }) => {
     const stored = storedByKey.get(`quote:${id}:${market}`);
@@ -72,13 +72,15 @@ export async function marketSnapshot(
       spark: [],
       status: !supported
         ? 'unsupported'
-        : invalid || failed.has(`quote:${id}:${market}`)
-          ? 'error'
-          : !quote
-            ? 'pending'
-            : now - quote.time > 300 || now - stored!.fetched_at > 300
-              ? 'delayed'
-              : 'ready',
+        : !invalid && failed.get(`quote:${id}:${market}`)?.includes('QUOTE_STALE:')
+          ? 'delayed'
+          : invalid || failed.has(`quote:${id}:${market}`)
+            ? 'error'
+            : !quote
+              ? 'pending'
+              : now - quote.time > 300 || now - stored!.fetched_at > 300
+                ? 'delayed'
+                : 'ready',
     };
   });
   if (['volume', 'change'].includes(query.get('sort') ?? '')) {

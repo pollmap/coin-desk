@@ -1,8 +1,8 @@
 import { lazy, Suspense, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { Link, useSearchParams, useNavigate } from 'react-router-dom';
-import { Star, Search } from 'lucide-react';
+import { Star, Search, X } from 'lucide-react';
 import { ASSETS } from '../shared/catalog';
-import { matchesCoin } from '../shared/coin-search';
+import { matchesCoin, exactCoin } from '../shared/coin-search';
 import { assetDefinition, availableMarket } from '../shared/asset-registry';
 import { defaultIndicator, indicatorDefinition, indicatorUrl } from '../shared/indicator-catalog';
 import type { Asset, Point } from '../shared/types';
@@ -11,7 +11,9 @@ import { useQuoteFeed } from './useQuoteFeed';
 import { useMarket } from './useMarket';
 import { usePersonalDesk } from './PersonalDesk';
 import { money, numeric, saved, save, turnover } from './lib';
+import type { QuoteInfo } from './MarketQuoteInfo';
 const ThemeExplorer = lazy(() => import('./ThemeExplorer'));
+const MarketQuoteInfo = lazy(() => import('./MarketQuoteInfo'));
 
 function Spark({ points }: { points: Point[] }) {
   if (points.length < 2) return <span className="muted">이력 대기</span>;
@@ -38,6 +40,9 @@ const changeText = (value: number | null | undefined) =>
 export function MarketHome() {
   const navigate = useNavigate();
   const [saveError, setSaveError] = useState('');
+  const [quoteInfo, setQuoteInfo] = useState<QuoteInfo | null>(null);
+  const quoteTrigger = useRef<HTMLElement | null>(null);
+  const searchInput = useRef<HTMLInputElement>(null);
   const { market, changeMarket } = useMarket();
   const [pageSize] = useState(() => (window.matchMedia('(max-width: 767px)').matches ? 20 : 50));
   const [visibleCount, setVisibleCount] = useState(() =>
@@ -111,7 +116,8 @@ export function MarketHome() {
         (!query || matchesCoin(id, query)) &&
         (query || view === 'favorites' || assetDefinition(id)?.markets[market]),
     )
-    .filter((id) => view !== 'favorites' || desk.favorites.includes(id));
+    .filter((id) => view !== 'favorites' || desk.favorites.includes(id))
+    .sort((a, b) => Number(exactCoin(b, query)) - Number(exactCoin(a, query)));
   const visible = filtered.slice(0, visibleCount);
   const subscription = [...new Set([...visible, ...desk.favorites])]
     .filter((id) => assetDefinition(id)?.markets[market])
@@ -174,12 +180,26 @@ export function MarketHome() {
           ))}
         </div>
         {view !== 'themes' && (
-          <label className="market-search">
+          <div className="market-search">
             <Search size={18} aria-hidden="true" />
             <input
+              ref={searchInput}
               aria-label="시장 코인 검색"
               placeholder="코인 이름·티커 검색"
               value={query}
+              onKeyDown={(e) => {
+                if (e.nativeEvent.isComposing) return;
+                if (e.key === 'Enter' && query.trim() && filtered.length)
+                  navigate(href(filtered[0]));
+                if (e.key === 'Escape')
+                  setParams(
+                    (p) => {
+                      p.delete('q');
+                      return p;
+                    },
+                    { replace: true },
+                  );
+              }}
               onChange={(e) =>
                 setParams(
                   (p) => {
@@ -191,7 +211,25 @@ export function MarketHome() {
                 )
               }
             />
-          </label>
+            {query && (
+              <button
+                className="icon-button"
+                aria-label="시장 검색 지우기"
+                onClick={() => {
+                  setParams(
+                    (p) => {
+                      p.delete('q');
+                      return p;
+                    },
+                    { replace: true },
+                  );
+                  searchInput.current?.focus();
+                }}
+              >
+                <X size={18} />
+              </button>
+            )}
+          </div>
         )}
         {feed.data?.collection && !feed.data.collection.healthy && (
           <p className="market-runtime-notice" role="status">
@@ -318,9 +356,16 @@ export function MarketHome() {
                           : money(r?.displayPrice, unit)}
                       </Link>
                       {r?.displayTime && (r.stale || r.status === 'error') ? (
-                        <small className="stale-label">
-                          {r.status === 'error' ? '확인 실패' : '갱신 지연'}
-                        </small>
+                        <button
+                          className="market-quote-status stale-label"
+                          aria-label={`${name} 시세 정보`}
+                          onClick={(event) => {
+                            quoteTrigger.current = event.currentTarget;
+                            setQuoteInfo(r);
+                          }}
+                        >
+                          {r.status === 'error' ? '확인 실패' : '체결 지연'}
+                        </button>
                       ) : (
                         !r?.displayTime &&
                         r?.status !== 'unsupported' && (
@@ -416,6 +461,16 @@ export function MarketHome() {
           </>
         )}
       </aside>
+      {quoteInfo && (
+        <Suspense fallback={null}>
+          <MarketQuoteInfo
+            row={quoteInfo}
+            market={market}
+            returnFocus={quoteTrigger}
+            onClose={() => setQuoteInfo(null)}
+          />
+        </Suspense>
+      )}
     </div>
   );
 }

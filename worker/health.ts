@@ -52,6 +52,7 @@ export interface CronState {
 export function failureCode(error: unknown): string | null {
   if (!error) return null;
   const message = String(error);
+  if (message.includes('QUOTE_STALE:')) return 'TRADE_STALE';
   if (/SQLITE_FULL|database or disk is full|no space left/i.test(message)) return 'STORAGE_FULL';
   if (/SQLITE_BUSY|database is locked/i.test(message)) return 'STORAGE_BUSY';
   if (/rollback.*no transaction/i.test(message)) return 'STORAGE_TRANSACTION';
@@ -63,6 +64,7 @@ export function failureCode(error: unknown): string | null {
 export const cleanError = (error: unknown) => {
   const code = failureCode(error);
   if (!code) return null;
+  if (code === 'TRADE_STALE') return '최근 체결 지연 · 다음 분에 다시 확인합니다';
   if (code.startsWith('STORAGE_')) return '저장 처리 오류 · 마지막 정상 관측을 표시합니다';
   if (code === 'SOURCE_REVISION') return '원천 관측 수정 · 이력 재검증 필요';
   return String(error).match(/(?:HTTP|API)\s+\d{3}/)?.[0] || '원천 연결 또는 데이터 검증 오류';
@@ -309,7 +311,9 @@ export async function operationStatus(env: Env) {
           (expectedMetrics > 0 && (network?.metrics ?? 0) < expectedMetrics)
         ? 'missing'
         : row.error
-          ? 'error'
+          ? failureCode(row.error) === 'TRADE_STALE'
+            ? 'delayed'
+            : 'error'
           : collectorAgeSeconds! > collectorLimit || dataAgeSeconds! > policy.maxLag
             ? 'delayed'
             : 'ok';

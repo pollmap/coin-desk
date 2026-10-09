@@ -16,6 +16,17 @@ const normalize = (text: string) =>
     .normalize('NFKC')
     .toLowerCase()
     .replace(/[\s\-_/$]/g, '');
+export const exactCoin = (asset: Asset, query: string) => {
+  const coin = assetDefinition(asset);
+  const q = normalize(query);
+  return (
+    !!q &&
+    !!coin &&
+    [coin.id, coin.name, coin.englishName, ...coin.aliases, ...(COIN_ALIASES[asset] ?? [])].some(
+      (name) => normalize(name) === q,
+    )
+  );
+};
 export function matchesCoin(asset: Asset, query: string): boolean {
   const q = normalize(query);
   if (!q || ['코인', 'coin', 'crypto', '암호화폐', '가상자산', '가상화폐'].includes(q)) return true;

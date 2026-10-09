@@ -316,6 +316,57 @@ it('a failed upstream request backs off the market, preserves snapshots, then re
       .get('quote:BTC:upbit'),
   ).toMatchObject({ last_success: now + 122, error: null });
 });
+
+it('old trades retry next minute even after many failures, preserve the snapshot and recover without clearing history early', async () => {
+  ready();
+  env.RUNTIME_KIND = 'vps';
+  const id = 'quote:PEPE:upbit';
+  source(id, now - 900);
+  DB.sqlite.prepare('UPDATE ingestion SET failures=8 WHERE key=?').run(id);
+  const before = DB.sqlite.prepare('SELECT * FROM snapshots WHERE key=?').get(id);
+  const error = new Error('QUOTE_STALE: last trade exceeds 300 seconds');
+  error.name = 'StaleQuoteError';
+  getQuotes.mockResolvedValue({
+    quotes: [],
+    errors: [{ asset: 'PEPE', error }],
+    requestFailed: false,
+  });
+  await updateQuoteBatch(
+    env,
+    ['PEPE'],
+    'upbit',
+    DB.sqlite.prepare('SELECT * FROM ingestion').all(),
+  );
+  expect(
+    DB.sqlite
+      .prepare('SELECT last_success,data_as_of,next_attempt,failures FROM ingestion WHERE key=?')
+      .get(id),
+  ).toMatchObject({
+    last_success: now - 900,
+    data_as_of: now - 900,
+    next_attempt: now + 60,
+    failures: 9,
+  });
+  expect(DB.sqlite.prepare('SELECT * FROM snapshots WHERE key=?').get(id)).toEqual(before);
+  const status = await operationStatus(env);
+  expect(status.sources.find((row) => row.key === id)).toMatchObject({
+    status: 'delayed',
+    errorCode: 'TRADE_STALE',
+  });
+  vi.setSystemTime((now + 60) * 1000);
+  getQuotes.mockResolvedValue({ quotes: [quote('PEPE')], errors: [], requestFailed: false });
+  await updateQuoteBatch(
+    env,
+    ['PEPE'],
+    'upbit',
+    DB.sqlite.prepare('SELECT * FROM ingestion').all(),
+  );
+  expect(
+    DB.sqlite
+      .prepare('SELECT last_success,data_as_of,error,failures FROM ingestion WHERE key=?')
+      .get(id),
+  ).toMatchObject({ last_success: now + 60, data_as_of: now + 60, error: null, failures: 0 });
+});
 it('does not let failed quote and mempool sources repeatedly jump ahead of older candle work', () => {
   const jobs = [
     {

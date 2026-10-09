@@ -16,6 +16,7 @@ doc = Metadata(); doc.feed((root/'index.html').read_text(encoding='utf-8'))
 manifest = json.loads((root/'public/site.webmanifest').read_text(encoding='utf-8'))
 assert manifest['name'].startswith('보리차트')
 sizes = {'favicon-32.png': (32,32), 'apple-touch-icon.png': (180,180), 'icon-192.png': (192,192), 'icon-512.png': (512,512), 'og-card-v2.png': (1200,630), 'coin-desk-shiba-smile.png': (1254,1254)}
+sizes.update({f'bori-{size}.png': (size,size) for size in [32,64,128,192,512]})
 for name, expected in sizes.items():
     data = (root/'public/brand'/name).read_bytes()
     assert data[:8] == b'\x89PNG\r\n\x1a\n' and struct.unpack('>II', data[16:24]) == expected, name
@@ -35,7 +36,7 @@ assert struct.unpack('<HHH',ico[:6]) == (0,1,4)
 assert doc.meta['og:image'] == 'https://coin-desk.pages.dev/brand/coin-desk-shiba-smile.png'
 assert doc.meta['twitter:card'] == 'summary'
 assert (int(doc.meta['og:image:width']), int(doc.meta['og:image:height'])) == sizes['coin-desk-shiba-smile.png']
-assert any(item.get('rel') == 'icon' and item.get('href') == '/brand/coin-desk-shiba-smile.png' for item in doc.links)
+assert any(item.get('rel') == 'icon' and item.get('href') == '/brand/bori-32.png' for item in doc.links)
 for icon in manifest['icons']:
     assert (root/'public'/icon['src'].lstrip('/')).is_file()
 if args.base:

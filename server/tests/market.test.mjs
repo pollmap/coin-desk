@@ -17,6 +17,12 @@ test('Market snapshot reads 150 registered assets without writes and isolates co
   put('ETH', { asset: 'ETH', price: 100, time: now - 301 });
   db.sqlite
     .prepare('INSERT INTO ingestion(key,error,failures) VALUES(?,?,1)')
+    .run('quote:ETH:upbit', 'StaleQuoteError: QUOTE_STALE: last trade exceeds 300 seconds');
+  db.sqlite
+    .prepare('INSERT INTO ingestion(key,error,failures) VALUES(?,?,1)')
+    .run('quote:DOGE:upbit', 'StaleQuoteError: QUOTE_STALE: last trade exceeds 300 seconds');
+  db.sqlite
+    .prepare('INSERT INTO ingestion(key,error,failures) VALUES(?,?,1)')
     .run('quote:XRP:upbit', 'must not publish raw error detail');
   const before = db.sqlite.prepare('SELECT total_changes() AS n').get().n;
   const env = await createEnvironment(db);

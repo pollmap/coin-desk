@@ -76,14 +76,14 @@ export function successStatement(db: D1Database, key: string, asOf: number, now 
     )
     .bind(key, now, now, asOf, now, now, asOf);
 }
-export async function failure(db: D1Database, key: string, error: unknown) {
+export async function failure(db: D1Database, key: string, error: unknown, retrySeconds?: number) {
   const now = epoch();
   const previous = await db
     .prepare('SELECT failures FROM ingestion WHERE key=?')
     .bind(key)
     .first<{ failures: number }>();
   const failures = (previous?.failures || 0) + 1;
-  const next = now + Math.min(3600, 60 * 2 ** Math.min(failures, 6));
+  const next = now + (retrySeconds ?? Math.min(3600, 60 * 2 ** Math.min(failures, 6)));
   await db
     .prepare(
       'INSERT INTO ingestion(key,last_attempt,error,failures,next_attempt) VALUES (?,?,?,?,?) ON CONFLICT(key) DO UPDATE SET last_attempt=?,error=?,failures=?,next_attempt=?',
