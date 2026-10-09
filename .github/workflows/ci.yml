@@ -10,7 +10,7 @@ concurrency:
   group: ci-${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 jobs:
-  verify:
+  checks:
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
@@ -29,22 +29,62 @@ jobs:
       - run: npm run test:server
       - run: npm run build
       - run: npm run build:storybook -- --disable-telemetry
-      - run: npx playwright install --with-deps chromium webkit
-      - run: npm run test:e2e
+      - run: python scripts/check_docs.py
+      - run: python scripts/check_brand.py
+      - run: python scripts/package_release.py
+      - run: npm run package:vps
+  browser:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        project: [chromium, webkit]
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
+        with:
+          node-version: '24'
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+      - run: npx playwright install --with-deps ${{ matrix.project }}
+      - run: npm run test:e2e -- --project=${{ matrix.project }}
         env:
           COIN_DESK_FIXTURE_TRACE: '1'
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         if: failure()
         with:
-          name: browser-failure-evidence
+          name: browser-failure-evidence-${{ matrix.project }}
           path: |
             playwright-report/
             test-results/
             work/browser-checks/
           retention-days: 7
-      - run: python scripts/check_docs.py
-      - run: python scripts/check_brand.py
-      - run: python scripts/package_release.py
-      - run: npm run package:vps
-      - run: docker build --tag coin-desk:ci .
+  container:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
+        with:
+          python-version: '3.13'
+      # Official Docker publisher mirror, same digest as the deployed Node base.
+      # Keep container failures independent of the browser regression results.
+      - run: docker build --build-arg NODE_IMAGE=public.ecr.aws/docker/library/node:24.18.0-bookworm-slim@sha256:6f7b03f7c2c8e2e784dcf9295400527b9b1270fd37b7e9a7285cf83b6951452d --tag coin-desk:ci .
       - run: python scripts/container_smoke.py
+  verify:
+    if: always()
+    needs: [checks, browser, container]
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    steps:
+      - name: Require every check
+        env:
+          CHECKS_RESULT: ${{ needs.checks.result }}
+          BROWSER_RESULT: ${{ needs.browser.result }}
+          CONTAINER_RESULT: ${{ needs.container.result }}
+        run: |
+          test "$CHECKS_RESULT" = success
+          test "$BROWSER_RESULT" = success
+          test "$CONTAINER_RESULT" = success
