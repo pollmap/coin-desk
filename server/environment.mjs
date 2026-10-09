@@ -1,6 +1,8 @@
 import { ASSET_REGISTRY } from '../server-dist/assets.mjs';
 import { randomBytes } from 'node:crypto';
 import { memoryCache } from '../scripts/local-db.mjs';
+import { dirname } from 'node:path';
+import { historyCapacity } from './history-capacity.mjs';
 
 export async function createEnvironment(DB, options = {}) {
   const feed = options.feed ?? (await import('../server-dist/feed.mjs')).default;
@@ -10,6 +12,9 @@ export async function createEnvironment(DB, options = {}) {
     DB,
     RUNTIME_KIND: 'vps',
     READ_ONLY_API: true,
+    HISTORY_ALLOWED: historyCapacity(
+      dirname(process.env.COIN_DESK_DB || '/app/data/coin-desk.sqlite'),
+    ),
     BITVIEW_BASE_URL: process.env.BITVIEW_BASE_URL || 'https://bitview.space',
     ENABLED_ASSETS: process.env.ENABLED_ASSETS || ASSET_REGISTRY.map((a) => a.id).join(','),
     ASSETS: { fetch: async () => new Response(null, { status: 404 }) },

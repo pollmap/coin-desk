@@ -102,7 +102,13 @@ export function createHttpServer({
               /* pending/failure stays visible */
             }
           }
-          out = json({ kind: 'vps', release, scheduler: schedulerState(database), backup });
+          out = json({
+            kind: 'vps',
+            release,
+            scheduler: schedulerState(database),
+            backup,
+            historyCollection: env.HISTORY_ALLOWED?.() === false ? 'paused_low_space' : 'enabled',
+          });
         } else if (url.pathname === '/api/v1/quotes/stream' && req.method === 'GET') {
           const market = url.searchParams.get('market');
           if (

@@ -90,6 +90,7 @@ export async function updateOnchain(env: Env) {
     };
   }
   if (build) {
+    if (env.HISTORY_ALLOWED?.() === false) throw new Error('STORAGE_HISTORY_PAUSED');
     const page = await bitviewPage(env.BITVIEW_BASE_URL, build.cursor, 32);
     await rawSample(env, 'bitview', page.raw);
     if (build.versions && JSON.stringify(build.versions) !== JSON.stringify(page.versions)) {
@@ -185,6 +186,7 @@ export async function updatePrice(env: Env, asset: Asset, market: Market, interv
   const now = epoch();
   const key = asset + ':' + market + ':' + interval;
   const cursorKey = 'cursor:price-backfill:' + key;
+  const historyAllowed = env.HISTORY_ALLOWED?.() !== false;
   const savedCursor =
     env.RUNTIME_KIND === 'vps'
       ? await readState<{ cursor: number; error: string | null; checkedAt: number } | null>(
@@ -211,7 +213,12 @@ export async function updatePrice(env: Env, asset: Asset, market: Market, interv
     env,
   );
   let recovery: { cursor: number; error: string | null; checkedAt: number } | null = null;
-  if (env.RUNTIME_KIND === 'vps' && since !== undefined && now - since > 6 * step) {
+  if (
+    historyAllowed &&
+    env.RUNTIME_KIND === 'vps' &&
+    since !== undefined &&
+    now - since > 6 * step
+  ) {
     // Keep current observations independent of a bounded historical page. An
     // older page failing must not discard a validated current response.
     try {
@@ -281,7 +288,7 @@ export async function updatePrice(env: Env, asset: Asset, market: Market, interv
       ),
     ),
     historyStatement,
-    ...(env.RUNTIME_KIND === 'vps'
+    ...(env.RUNTIME_KIND === 'vps' && historyAllowed
       ? [
           recovery
             ? env.DB.prepare('INSERT OR REPLACE INTO state(key,value) VALUES (?,?)').bind(

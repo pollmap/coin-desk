@@ -117,6 +117,8 @@ export async function updateDerivatives(
   metric: DerivativeMetric,
   recentOnly = false,
 ) {
+  const historyPaused = env.HISTORY_ALLOWED?.() === false;
+  recentOnly ||= historyPaused;
   const kind = derivativeKind(metric);
   const daily = metric.endsWith('_daily');
   const now = epoch();
@@ -201,7 +203,7 @@ export async function updateDerivatives(
   else if (!refreshRecent)
     statements.push(env.DB.prepare('DELETE FROM state WHERE key=?').bind('cursor:' + id));
   statements.push(successStatement(env.DB, id, last, fetched));
-  if (more || (refreshRecent && cursor !== null))
+  if (!historyPaused && (more || (refreshRecent && cursor !== null)))
     statements.push(
       env.DB.prepare('UPDATE ingestion SET next_attempt=? WHERE key=?').bind(fetched + 60, id),
     );

@@ -200,19 +200,27 @@ describe('reference API against actual SQLite and Worker routing', () => {
     });
   });
 
-  it('updates the latest reference without consuming a historical checkpoint', async () => {
-    const progress = JSON.stringify({ cursor: start });
-    db.sqlite.prepare('INSERT INTO state VALUES(?,?)').run('reference-progress:BTC', progress);
-    const fetcher = vi.fn(async () => Response.json({ data: [raw(now - DAY, '60000')] }));
-    vi.stubGlobal('fetch', fetcher);
-    await updateReference(env, 'BTC', 'latest');
-    expect(
-      db.sqlite.prepare("SELECT value FROM state WHERE key='reference-progress:BTC'").get()?.value,
-    ).toBe(progress);
-    expect(
-      db.sqlite.prepare("SELECT data_as_of FROM ingestion WHERE key='reference:BTC'").get()
-        ?.data_as_of,
-    ).toBe(now - DAY);
-    expect(fetcher).toHaveBeenCalledOnce();
-  });
+  it.each([false, true])(
+    'updates the latest reference without consuming a historical checkpoint (low space: %s)',
+    async (lowSpace) => {
+      const progress = JSON.stringify({ cursor: start });
+      db.sqlite.prepare('INSERT INTO state VALUES(?,?)').run('reference-progress:BTC', progress);
+      const fetcher = vi.fn(async () => Response.json({ data: [raw(now - DAY, '60000')] }));
+      vi.stubGlobal('fetch', fetcher);
+      await updateReference(
+        { ...env, HISTORY_ALLOWED: () => !lowSpace },
+        'BTC',
+        lowSpace ? 'history' : 'latest',
+      );
+      expect(
+        db.sqlite.prepare("SELECT value FROM state WHERE key='reference-progress:BTC'").get()
+          ?.value,
+      ).toBe(progress);
+      expect(
+        db.sqlite.prepare("SELECT data_as_of FROM ingestion WHERE key='reference:BTC'").get()
+          ?.data_as_of,
+      ).toBe(now - DAY);
+      expect(fetcher).toHaveBeenCalledOnce();
+    },
+  );
 });

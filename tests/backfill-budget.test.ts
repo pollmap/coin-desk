@@ -43,7 +43,7 @@ it('defers backfills without advancing their cursor, while recent funding still 
   db.sqlite
     .prepare('INSERT INTO state VALUES(?,?)')
     .run('cursor:derivatives:BTC:funding', String((now - 16 * 3600) * 1000));
-  const fetcher = vi.fn(async () =>
+  const fetcher = vi.fn(async (_input: RequestInfo | URL) =>
     Response.json({
       retCode: 0,
       result: {
@@ -75,4 +75,43 @@ it('defers backfills without advancing their cursor, while recent funding still 
     db.sqlite.prepare("SELECT value FROM state WHERE key='cursor:derivatives:BTC:funding'").get()
       .value,
   ).toBe(cursor);
+});
+
+it('low storage refreshes recent funding without consuming history budget or moving its cursor', async () => {
+  const cursor = String((now - 16 * 3600) * 1000);
+  db.sqlite
+    .prepare('INSERT INTO derivative_series VALUES(?,?,?,?,?)')
+    .run('BTC', 'funding', now - 8 * 3600, 0.01, now);
+  db.sqlite.prepare('INSERT INTO state VALUES(?,?)').run('cursor:derivatives:BTC:funding', cursor);
+  const fetcher = vi.fn(async (_input: RequestInfo | URL) =>
+    Response.json({
+      retCode: 0,
+      result: {
+        category: 'linear',
+        list: [
+          { symbol: 'BTCUSDT', fundingRateTimestamp: String(now * 1000), fundingRate: '0.0002' },
+        ],
+      },
+    }),
+  );
+  vi.stubGlobal('fetch', fetcher);
+  await updateDerivatives({ DB: db, HISTORY_ALLOWED: () => false } as Env, 'BTC', 'funding');
+  const url = new URL(String(fetcher.mock.calls[0][0]));
+  expect(url.searchParams.get('limit')).toBe('20');
+  expect(url.searchParams.has('endTime')).toBe(false);
+  expect(
+    db.sqlite.prepare("SELECT value FROM state WHERE key='budget:derivatives-backfill'").get(),
+  ).toBeUndefined();
+  expect(
+    db.sqlite.prepare("SELECT value FROM state WHERE key='cursor:derivatives:BTC:funding'").get()
+      .value,
+  ).toBe(cursor);
+  expect(
+    db.sqlite
+      .prepare("SELECT next_attempt,data_as_of FROM ingestion WHERE key='derivatives:BTC:funding'")
+      .get(),
+  ).toMatchObject({ next_attempt: 0, data_as_of: now });
+  expect(
+    db.sqlite.prepare("SELECT COUNT(*) AS n FROM derivative_series WHERE asset='BTC'").get().n,
+  ).toBe(2);
 });

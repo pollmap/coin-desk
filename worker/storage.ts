@@ -3,6 +3,7 @@ import { isPrimaryAsset } from '../shared/catalog';
 export interface Env {
   RUNTIME_KIND?: 'vps' | 'cloudflare';
   READ_ONLY_API?: boolean;
+  HISTORY_ALLOWED?: () => boolean;
   X_BEARER_TOKEN?: string;
   X_COLLECTION_ENABLED?: string;
   X_MAX_REQUESTS_PER_DAY?: string;

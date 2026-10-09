@@ -163,27 +163,34 @@ describe('monthly network storage against actual SQLite', () => {
     expect(url.searchParams.get('start_time')).toBe(new Date(start * 1000).toISOString());
   });
 
-  it('refreshes recent observations while preserving an old history cursor', async () => {
-    db.sqlite
-      .prepare('INSERT INTO state VALUES(?,?)')
-      .run('network-cursor:BTC', String(start + 60 * DAY));
-    const fetcher = source([raw(now - 2 * DAY), raw(now - DAY)]);
-    await updateNetworkData(env, 'BTC', 'latest');
-    const requested = new URL(String(fetcher.mock.calls[0]?.[0]));
-    expect(requested.searchParams.get('start_time')).toBe(
-      new Date((now - 32 * DAY) * 1000).toISOString(),
-    );
-    expect(
-      db.sqlite.prepare("SELECT value FROM state WHERE key='network-cursor:BTC'").get()?.value,
-    ).toBe(String(start + 60 * DAY));
-    expect(
-      db.sqlite.prepare("SELECT data_as_of FROM ingestion WHERE key='network:BTC'").get()
-        ?.data_as_of,
-    ).toBe(now - DAY);
-    expect(
-      (await readNetworkSeries(db, 'BTC', 'mvrv', now - 2 * DAY, now, 1000)).data,
-    ).toHaveLength(2);
-  });
+  it.each([false, true])(
+    'refreshes recent observations while preserving an old history cursor (low space: %s)',
+    async (lowSpace) => {
+      db.sqlite
+        .prepare('INSERT INTO state VALUES(?,?)')
+        .run('network-cursor:BTC', String(start + 60 * DAY));
+      const fetcher = source([raw(now - 2 * DAY), raw(now - DAY)]);
+      await updateNetworkData(
+        { ...env, HISTORY_ALLOWED: () => !lowSpace },
+        'BTC',
+        lowSpace ? 'history' : 'latest',
+      );
+      const requested = new URL(String(fetcher.mock.calls[0]?.[0]));
+      expect(requested.searchParams.get('start_time')).toBe(
+        new Date((now - 32 * DAY) * 1000).toISOString(),
+      );
+      expect(
+        db.sqlite.prepare("SELECT value FROM state WHERE key='network-cursor:BTC'").get()?.value,
+      ).toBe(String(start + 60 * DAY));
+      expect(
+        db.sqlite.prepare("SELECT data_as_of FROM ingestion WHERE key='network:BTC'").get()
+          ?.data_as_of,
+      ).toBe(now - DAY);
+      expect(
+        (await readNetworkSeries(db, 'BTC', 'mvrv', now - 2 * DAY, now, 1000)).data,
+      ).toHaveLength(2);
+    },
+  );
 
   it('re-reading unchanged source days preserves month timestamps and coverage counts; a source revision replaces its value', async () => {
     source([raw(start), raw(start + DAY)]);

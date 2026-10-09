@@ -270,6 +270,7 @@ export async function updateNetworkData(
   mode: 'history' | 'latest' = 'history',
 ): Promise<void> {
   if (!isNetworkAsset(asset)) throw new Error('Unsupported network asset');
+  if (env.HISTORY_ALLOWED?.() === false) mode = 'latest';
   const db = env.DB;
   const now = epoch();
   const end = Math.floor(now / DAY) * DAY;

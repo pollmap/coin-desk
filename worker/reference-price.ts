@@ -35,6 +35,7 @@ export async function updateReference(
 ) {
   if (!(REFERENCE_ASSETS as readonly string[]).includes(asset))
     throw new Error('Unsupported reference asset');
+  if (env.HISTORY_ALLOWED?.() === false) mode = 'latest';
   const progressKey = 'reference-progress:' + asset;
   const [latest, progress] = await Promise.all([
     env.DB.prepare('SELECT MAX(time) AS time FROM reference_prices WHERE asset=?')
