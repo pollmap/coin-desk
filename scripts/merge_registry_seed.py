@@ -31,11 +31,19 @@ def merge(seed, target, seed_report, backup_manifest):
             'candles': ['asset', 'market', 'interval'],
             'price_archive': ['asset', 'market', 'interval'],
             'network_months': ['asset'],
-            'network_coverage': ['asset'],
+            'network_coverage': ['asset', 'metric'],
             'reference_prices': ['asset'],
             'derivative_series': ['asset', 'metric'],
         }
-        report = {'inserted': {}, 'preservedExistingPartitions': {}, 'updates': 0, 'deletes': 0}
+        report = {'inserted': {}, 'preservedExistingPartitions': {}, 'updates': 0, 'deletes': 0,
+                  'addedNetworkMetricValues': 0, 'existingNetworkValuesReplaced': 0}
+        existing_network = set(db.execute('SELECT asset,metric FROM main.network_coverage'))
+        incoming_network = set(db.execute('SELECT asset,metric FROM seed.network_coverage'))
+        existing_network_assets = {asset for asset, _ in existing_network}
+        new_metrics = {}
+        for asset, metric in incoming_network - existing_network:
+            if asset in existing_network_assets:
+                new_metrics.setdefault(asset, set()).add(metric)
         with db:
             for table, keys in partitions.items():
                 before = db.total_changes
@@ -49,6 +57,35 @@ def merge(seed, target, seed_report, backup_manifest):
                     db.execute(f'INSERT INTO main.{table} SELECT * FROM seed.{table} WHERE {conditions}', partition)
                 report['inserted'][table] = db.total_changes-before
                 report['preservedExistingPartitions'][table] = len(existing)
+            # An existing asset can gain a newly verified metric. Add that metric's
+            # observations without filling gaps or changing any existing metric.
+            for asset, metrics in new_metrics.items():
+                for bucket, payload, fetched in db.execute('SELECT bucket,payload,fetched_at FROM seed.network_months WHERE asset=?', (asset,)).fetchall():
+                    previous = db.execute('SELECT payload FROM main.network_months WHERE asset=? AND bucket=?', (asset,bucket)).fetchone()
+                    days = {day['time']: day for day in json.loads(previous[0])} if previous else {}
+                    added = 0
+                    for incoming in json.loads(payload):
+                        values = {key:value for key,value in incoming['values'].items() if key in metrics}
+                        if not values:
+                            continue
+                        day = days.setdefault(incoming['time'], {'time': incoming['time'], 'values': {}})
+                        for key,value in values.items():
+                            if key not in day['values']:
+                                day['values'][key] = value
+                                if key in incoming.get('statuses', {}):
+                                    day.setdefault('statuses', {})[key] = incoming['statuses'][key]
+                                added += 1
+                        if 'price' not in day['values'] and 'price' in incoming['values']:
+                            day['values']['price'] = incoming['values']['price']
+                    if added:
+                        merged = json.dumps(sorted(days.values(), key=lambda d:d['time']), separators=(',', ':'))
+                        if previous:
+                            db.execute('UPDATE main.network_months SET payload=? WHERE asset=? AND bucket=?', (merged,asset,bucket))
+                            report['updates'] += 1
+                        else:
+                            db.execute('INSERT INTO main.network_months VALUES(?,?,?,?)', (asset,bucket,merged,fetched))
+                            report['inserted']['network_months'] += 1
+                        report['addedNetworkMetricValues'] += added
             for table in ['ingestion', 'state', 'raw_samples']:
                 before = db.total_changes
                 db.execute(f'INSERT OR IGNORE INTO main.{table} SELECT * FROM seed.{table}')
