@@ -173,3 +173,23 @@ it('distinguishes a rejected upstream request from individually rejected tickers
   expect(missingTickers.requestFailed).toBe(false);
   expect(missingTickers.errors.map((row) => row.asset)).toEqual(['BTC', 'DOGE']);
 });
+it('never substitutes an Upbit response timestamp for a missing actual trade timestamp', async () => {
+  const fetcher = vi.fn(async () =>
+    Response.json([
+      {
+        market: 'KRW-BTC',
+        trade_price: 100,
+        timestamp: Date.now(),
+        acc_trade_price_24h: 1000,
+        high_price: 110,
+        low_price: 90,
+      },
+    ]),
+  );
+  vi.stubGlobal('fetch', fetcher);
+  const result = await getQuotes(['BTC'], 'upbit');
+  expect(result.quotes).toEqual([]);
+  expect(result.errors).toHaveLength(1);
+  expect(result.requestFailed).toBe(false);
+  expect(fetcher).toHaveBeenCalledTimes(1);
+});

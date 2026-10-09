@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom';
 import { Search, Sun, Moon, HelpCircle, X, List, ArrowLeftRight, Bookmark } from 'lucide-react';
 import { ASSETS } from '../shared/catalog';
@@ -62,7 +62,7 @@ export function ProductTopbar() {
         asset: null,
       })),
   ].slice(0, 12);
-  useEffect(() => {
+  useLayoutEffect(() => {
     setQuery('');
     setSearchOpen(false);
     if (help.current) help.current.open = false;

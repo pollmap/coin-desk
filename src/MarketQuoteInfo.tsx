@@ -35,7 +35,9 @@ export default function MarketQuoteInfo({
         {market === 'upbit' ? 'Upbit KRW' : 'Binance USDT'}
       </p>
       <dl className="quote-info-list">
-        <dt>마지막 체결</dt>
+        <dt>
+          {market === 'upbit' || row.displayTime !== row.quote?.time ? '마지막 체결' : '가격 기준'}
+        </dt>
         <dd>{dateLabel(row.displayTime, true)}</dd>
         <dt>변동률 기준</dt>
         <dd>{row.quote ? dateLabel(row.quote.time, true) : '확인 대기'}</dd>
@@ -57,6 +59,12 @@ export default function MarketQuoteInfo({
       {row.quote?.changeUnavailableReason && <p>{row.quote.changeUnavailableReason}</p>}
       {market === 'upbit' && (
         <p>24시간 변동률은 전일 같은 시각의 확정 분봉과 비교한 근사값입니다.</p>
+      )}
+      {market === 'binance' && (
+        <p>
+          분 단위 가격의 기준 시각은 24시간 통계 종료 시각입니다. 스트림은 실제 체결 시각을
+          사용합니다.
+        </p>
       )}
     </DeskDialog>
   );

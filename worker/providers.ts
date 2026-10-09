@@ -82,7 +82,13 @@ function binanceQuote(asset: Asset, d: Record<string, unknown>): Quote {
   });
 }
 async function upbitQuote(asset: Asset, d: Record<string, number>): Promise<Quote> {
-  if (!d || !Number.isFinite(d.trade_price) || d.trade_price <= 0 || !Number.isFinite(d.timestamp))
+  if (
+    !d ||
+    !Number.isFinite(d.trade_price) ||
+    d.trade_price <= 0 ||
+    !Number.isFinite(d.timestamp) ||
+    !Number.isFinite(d.trade_timestamp)
+  )
     throw new Error('Invalid quote');
   const target = Math.floor(d.timestamp / 1000) - DAY;
   const quote = validateQuote({
@@ -94,7 +100,7 @@ async function upbitQuote(asset: Asset, d: Record<string, number>): Promise<Quot
     volume24h: d.acc_trade_price_24h,
     high24h: d.high_price,
     low24h: d.low_price,
-    time: Math.floor((d.trade_timestamp ?? d.timestamp) / 1000),
+    time: Math.floor(d.trade_timestamp / 1000),
     changeBasis: 'rolling24h-minute',
     rangeBasis: 'utc-day',
     referenceAt: null,
