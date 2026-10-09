@@ -21,9 +21,10 @@ for name, expected in sizes.items():
     assert data[:8] == b'\x89PNG\r\n\x1a\n' and struct.unpack('>II', data[16:24]) == expected, name
 for name in ['coin-desk-mark.svg','coin-desk-wordmark.svg']:
     assert ET.fromstring((root/'public/brand'/name).read_text(encoding='utf-8')).tag.endswith('svg')
-# Every catalog coin must have a local, readable PNG. No remote image dependency.
-import re
-logos = re.findall(r"logo: '([^']+)'", (root/'shared/catalog.ts').read_text(encoding='utf-8'))
+# Original logos stay local; expanded identities use an accessible text fallback.
+registry = json.loads((root/'shared/asset-registry.json').read_text(encoding='utf-8'))['assets']
+assert len(registry) == 150 and len({a['id'] for a in registry}) == 150
+logos = [a['logo'] for a in registry if a['logo']]
 assert len(logos) == 8 and len(set(logos)) == 8
 for logo in logos:
     data = (root/'public'/logo.lstrip('/')).read_bytes()

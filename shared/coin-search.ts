@@ -1,6 +1,7 @@
+import { assetDefinition } from './asset-registry';
 import { ASSETS } from './catalog';
 import type { Asset, Market } from './types';
-export const COIN_ALIASES: Record<Asset, string[]> = {
+export const COIN_ALIASES: Partial<Record<Asset, string[]>> = {
   BTC: ['bitcoin', '비트', '비트코인', '비코', '비트 코인'],
   DOGE: ['dogecoin', '도지', '도지코인', '도지 코인'],
   ETH: ['ethereum', 'ether', '이더', '이더리움'],
@@ -19,7 +20,12 @@ export function matchesCoin(asset: Asset, query: string): boolean {
   const q = normalize(query);
   if (!q || ['코인', 'coin', 'crypto', '암호화폐', '가상자산', '가상화폐'].includes(q)) return true;
   const coin = ASSETS.find((item) => item.id === asset)!;
-  return [coin.id, coin.name, ...COIN_ALIASES[asset]].some((name) => normalize(name).includes(q));
+  return [
+    coin.id,
+    coin.name,
+    ...(COIN_ALIASES[asset] ?? []),
+    ...(assetDefinition(asset)?.aliases ?? []),
+  ].some((name) => normalize(name).includes(q));
 }
 export function selectedMarket(query: string | null, previous: unknown): Market {
   return query === 'upbit' || query === 'binance'
@@ -28,7 +34,7 @@ export function selectedMarket(query: string | null, previous: unknown): Market 
       ? 'upbit'
       : 'binance';
 }
-export const COIN_SITES: Record<Asset, string> = {
+export const COIN_SITES: Partial<Record<Asset, string>> = {
   BTC: 'https://bitcoin.org',
   DOGE: 'https://dogecoin.com',
   ETH: 'https://ethereum.org',

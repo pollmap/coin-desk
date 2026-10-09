@@ -4,12 +4,21 @@ import type { MarketSnapshot, QuoteStream } from '../shared/market-snapshot';
 import { useData } from './hooks';
 import { mergeQuoteStream } from '../shared/quote-stream';
 
-export function useQuoteFeed(market: Market) {
-  const snapshot = useData<MarketSnapshot>(`/api/v1/market?market=${market}`, false, 60000);
+export function useQuoteFeed(
+  market: Market,
+  options: { assets?: string[]; snapshotAssets?: string[]; sparkLimit?: number } = {},
+) {
+  const subscription = options.assets?.join(',');
+  const snapshot = useData<MarketSnapshot>(
+    `/api/v1/market?market=${market}${options.snapshotAssets ? '&assets=' + encodeURIComponent(options.snapshotAssets.join(',')) : ''}${options.sparkLimit === undefined ? '' : '&spark_limit=' + options.sparkLimit}`,
+    false,
+    60000,
+  );
   const [stream, setStream] = useState<QuoteStream | null>(null);
   const [transport, setTransport] = useState('connecting');
   const [now, setNow] = useState(Date.now() / 1000);
   useEffect(() => {
+    if (subscription === '') return;
     let active = true;
     let current: QuoteStream | null = null;
     let lastEvent = Date.now();
@@ -19,7 +28,9 @@ export function useQuoteFeed(market: Market) {
     const connect = () => {
       source?.close();
       lastEvent = Date.now();
-      const connection = new EventSource(`/api/v1/quotes/stream?market=${market}`);
+      const connection = new EventSource(
+        `/api/v1/quotes/stream?market=${market}${subscription === undefined ? '' : '&assets=' + encodeURIComponent(subscription)}`,
+      );
       source = connection;
       connection.addEventListener('quotes', (event) => {
         try {
@@ -63,7 +74,7 @@ export function useQuoteFeed(market: Market) {
       clearInterval(timer);
       document.removeEventListener('visibilitychange', recover);
     };
-  }, [market]);
+  }, [market, subscription]);
   const rows =
     snapshot.data?.market === market
       ? snapshot.data.rows.map((row) => {

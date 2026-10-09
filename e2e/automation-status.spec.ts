@@ -29,7 +29,7 @@ test('VPS status shows minute cadence and missing execution and backup honestly'
   await page.goto('/status');
   await expect(page.locator('.automation-summary').first()).toContainText('VPS 서버에서');
   await page.getByText('목표 주기와 운영 기준', { exact: true }).click();
-  await expect(page.locator('.server-schedule')).toContainText('여덟 코인 시세 · 1분');
+  await expect(page.locator('.server-schedule')).toContainText('지원 코인 시세 · 1분');
   const runtime = page.getByRole('region', { name: 'VPS 수집·백업 실행 기록' });
   await expect(runtime.getByText('실행 기록 없음', { exact: true })).toHaveCount(4);
   await expect(runtime).toContainText('검증된 백업 없음');

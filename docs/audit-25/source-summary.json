@@ -1,0 +1,20 @@
+{
+  "checkedAt": "2026-10-09T15:26:32.420033+00:00",
+  "fixture": false,
+  "sourceCounts": {
+    "prices": 482,
+    "network": 34,
+    "reference": 143,
+    "derivatives": 136
+  },
+  "totals": {
+    "closedCandles": 891501,
+    "networkDays": 113990,
+    "referenceDays": 296178,
+    "derivativePoints": 19040
+  },
+  "integrity": "ok",
+  "foreignKeys": [],
+  "seedSha256": "1d1e5104b8ed482fe49899e2698cea56d50003681f7684536950c59050e8aa2b",
+  "mvrvAssets": 33
+}

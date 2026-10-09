@@ -1,8 +1,7 @@
 import { accountShares, marketAnalysisLink } from '../shared/market-watch';
-import { DAY } from '../shared/math';
 import { matchesCoin } from '../shared/coin-search';
 import { useMarket } from './useMarket';
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Star, RefreshCw } from 'lucide-react';
 import { MarketNavigation } from './MarketNavigation';
@@ -12,8 +11,9 @@ import { useData } from './hooks';
 import type { MarketDerivatives } from '../shared/market-derivatives';
 import { ASSETS } from '../shared/catalog';
 import { AssetLogo } from './AssetLogo';
-import type { Asset, Market, Overview } from '../shared/types';
-import { dateLabel, json, money, numeric, turnover } from './lib';
+import type { Market } from '../shared/types';
+import type { MarketSnapshot } from '../shared/market-snapshot';
+import { dateLabel, money, numeric, turnover } from './lib';
 import { usePersonalDesk } from './PersonalDesk';
 
 export function WatchlistPage() {
@@ -31,78 +31,14 @@ export function WatchlistPage() {
   const [onlyFavorites, setOnlyFavorites] = useState(false);
   const [sort, setSort] = useState('default');
   const [error, setError] = useState('');
-  const [revision, setRevision] = useState(0);
-  const [state, setState] = useState<{
-    market: Market;
-    quotes: Partial<Record<Asset, Overview>>;
-    errors: Partial<Record<Asset, string>>;
-    loading: boolean;
-  }>({ market, quotes: {}, errors: {}, loading: true });
-  useEffect(() => {
-    const controller = new AbortController();
-    let busy = false;
-    const load = async () => {
-      if (document.hidden || busy || controller.signal.aborted) return;
-      busy = true;
-      setState((prev) =>
-        prev.market === market
-          ? { ...prev, loading: true }
-          : { market, quotes: {}, errors: {}, loading: true },
-      );
-      const quotes: Partial<Record<Asset, Overview>> = {},
-        errors: Partial<Record<Asset, string>> = {};
-      let cursor = 0;
-      await Promise.all(
-        [0, 1].map(async () => {
-          while (cursor < ASSETS.length && !controller.signal.aborted) {
-            const asset = ASSETS[cursor++].id;
-            try {
-              const received = await json<Overview>(
-                '/api/v1/overview?asset=' + asset + '&market=' + market,
-                controller.signal,
-              );
-              quotes[asset] = received;
-              if (!controller.signal.aborted)
-                setState((prev) => ({
-                  market,
-                  quotes: { ...(prev.market === market ? prev.quotes : {}), [asset]: received },
-                  errors: { ...(prev.market === market ? prev.errors : {}), [asset]: undefined },
-                  loading: true,
-                }));
-            } catch (e) {
-              errors[asset] = e instanceof Error ? e.message : String(e);
-              if (!controller.signal.aborted)
-                setState((prev) => ({
-                  ...prev,
-                  errors: { ...prev.errors, [asset]: errors[asset] },
-                }));
-            }
-          }
-        }),
-      );
-      if (!controller.signal.aborted)
-        setState((prev) => ({
-          market,
-          quotes: { ...(prev.market === market ? prev.quotes : {}), ...quotes },
-          errors,
-          loading: false,
-        }));
-      busy = false;
-    };
-    void load();
-    const timer = setInterval(() => void load(), 60000);
-    const visible = () => {
-      if (!document.hidden) void load();
-    };
-    document.addEventListener('visibilitychange', visible);
-    return () => {
-      controller.abort();
-      clearInterval(timer);
-      document.removeEventListener('visibilitychange', visible);
-    };
-  }, [market, revision]);
-  const quotes = state.market === market ? state.quotes : {};
-  const errors = state.market === market ? state.errors : {};
+  const snapshot = useData<MarketSnapshot>(
+    '/api/v1/market?market=' + market + '&spark_limit=0',
+    false,
+    60000,
+  );
+  const quotes = Object.fromEntries(
+    (snapshot.data?.market === market ? snapshot.data.rows : []).map((row) => [row.asset, row]),
+  );
   const assets = useMemo(
     () =>
       ASSETS.filter(
@@ -153,7 +89,7 @@ export function WatchlistPage() {
               })
             }
           >
-            {value === 'core' ? 'BTC · DOGE · ETH' : '전체 8개'}
+            {value === 'core' ? 'BTC · DOGE · ETH' : '전체'}
           </button>
         ))}
         <div className="market-view" role="group" aria-label="비교할 데이터">
@@ -213,15 +149,15 @@ export function WatchlistPage() {
         </button>
         <button
           className="desk-button"
-          disabled={state.loading}
+          disabled={snapshot.loading}
           aria-label="코인 목록 새로고침"
           onClick={() => {
-            setRevision((v) => v + 1);
+            snapshot.reload();
             if (derivatives) futures.reload();
           }}
         >
           <RefreshCw size={15} />
-          {state.loading ? '조회 중' : '새로고침'}
+          {snapshot.loading ? '조회 중' : '새로고침'}
         </button>
       </div>
       {error ? (
@@ -268,17 +204,9 @@ export function WatchlistPage() {
               const overview = quotes[a.id],
                 q = overview?.quote;
               const stale =
-                !!errors[a.id] || overview?.meta.stale || (!!q && Date.now() / 1000 - q.time > 420);
-              const technicalTime = overview?.technical.asOf;
-              const technicalDelayed =
-                !!overview && (!technicalTime || Date.now() / 1000 - technicalTime > 3 * DAY);
-              const technicalTitle = technicalTime
-                ? '확정 일봉 ' + dateLabel(technicalTime)
-                : '지표 기준일 확인 중';
-              const gap =
-                q && overview?.technical.sma200
-                  ? 100 * (q.price / overview.technical.sma200 - 1)
-                  : null;
+                !!snapshot.error ||
+                overview?.status === 'delayed' ||
+                (!!q && Date.now() / 1000 - q.time > 300);
               return (
                 <tr key={a.id}>
                   <td>
@@ -315,11 +243,17 @@ export function WatchlistPage() {
                   <td title={q ? '가격 시각 ' + dateLabel(q.time, true) : undefined}>
                     {money(q?.price, currency)}
                     {stale ? (
-                      <small className="amber" title={errors[a.id] || overview?.meta.warning}>
+                      <small className="amber" title={snapshot.error || undefined}>
                         {q ? '갱신 지연 · 보관값' : '조회 실패'}
                       </small>
                     ) : !q ? (
-                      <small>{errors[a.id] ? '조회 실패' : '연결 중'}</small>
+                      <small>
+                        {overview?.status === 'unsupported'
+                          ? '거래 미지원'
+                          : snapshot.error
+                            ? '조회 실패'
+                            : '수집 대기'}
+                      </small>
                     ) : null}
                   </td>
                   <td
@@ -386,21 +320,8 @@ export function WatchlistPage() {
                   ) : (
                     <>
                       <td data-label="24H 거래대금">{turnover(q?.volume24h, currency)}</td>
-                      <td data-label="RSI 14" title={technicalTitle}>
-                        {numeric(overview?.technical.rsi)}
-                        {technicalDelayed ? <small className="amber">지표 갱신 지연</small> : null}
-                      </td>
-                      <td
-                        data-label="200일선 대비"
-                        title={technicalTitle}
-                        className={gap === null ? 'muted' : gap < 0 ? 'down' : 'up'}
-                      >
-                        {gap === null ? '—' : (gap >= 0 ? '+' : '') + numeric(gap) + '%'}
-                        {technicalDelayed ? (
-                          <small className="amber">
-                            {technicalTime ? dateLabel(technicalTime) + ' 기준' : '기준일 확인 중'}
-                          </small>
-                        ) : null}
+                      <td colSpan={2}>
+                        <Link to={marketAnalysisLink(a.id, market)}>기술 지표 보기</Link>
                       </td>
                     </>
                   )}

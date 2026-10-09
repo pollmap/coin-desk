@@ -11,7 +11,7 @@ x-service: &service
   environment: &environment
     COIN_DESK_DB: /app/data/coin-desk.sqlite
     COIN_DESK_RELEASE: ${COIN_DESK_RELEASE:?Set the Git release ID}
-    ENABLED_ASSETS: BTC,DOGE,ETH,SOL,XRP,LINK,ONDO,PEPE
+    ENABLED_ASSETS: '${COIN_DESK_ENABLED_ASSETS:-}'
   volumes: ['${COIN_DESK_ROOT:?Set the isolated project root}/shared/data:/app/data']
   logging:
     driver: local

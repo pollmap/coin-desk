@@ -1,17 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
 import { Link, NavLink, useLocation } from 'react-router-dom';
-import {
-  Search,
-  Sun,
-  Moon,
-  HelpCircle,
-  X,
-  ChartNoAxesCombined,
-  List,
-  ArrowLeftRight,
-  Bookmark,
-} from 'lucide-react';
+import { Search, Sun, Moon, HelpCircle, X, List, ArrowLeftRight, Bookmark } from 'lucide-react';
 import { ASSETS } from '../shared/catalog';
+import { availableMarket, supportsMarket } from '../shared/asset-registry';
 import { matchesCoin } from '../shared/coin-search';
 import { matchesIndicator } from '../shared/indicator-search';
 import { defaultIndicator, indicatorUrl, navigationIndicators } from '../shared/indicator-catalog';
@@ -28,6 +19,8 @@ export function ProductTopbar() {
       document.documentElement.dataset.theme === 'dark' ? 'dark' : 'light',
     );
   const [searchOpen, setSearchOpen] = useState(false);
+  const preferredMarket =
+    (p.get('market') || saved('price-market', 'upbit')) === 'binance' ? 'binance' : 'upbit';
   const searchButton = useRef<HTMLButtonElement>(null);
   const input = useRef<HTMLInputElement>(null),
     box = useRef<HTMLDivElement>(null),
@@ -35,24 +28,23 @@ export function ProductTopbar() {
   useEffect(() => {
     if (searchOpen) input.current?.focus();
   }, [searchOpen]);
-  const recentAnalysis = saved<{ href?: string }>('recent-analysis', {});
-  const analysisHref = location.pathname.startsWith('/coins/')
-    ? location.pathname + location.search
-    : typeof recentAnalysis.href === 'string' &&
-        /^\/coins\/(BTC|DOGE|ETH|SOL|XRP|LINK|ONDO|PEPE)(\?|$)/.test(recentAnalysis.href)
-      ? recentAnalysis.href
-      : indicatorUrl('BTC', 'net:mvrv', new URLSearchParams());
   const results = [
     ...ASSETS.filter((a) => matchesCoin(a.id, query)).map((a) => ({
       id: a.id,
       title: a.name,
-      kind: a.id,
+      kind:
+        a.id +
+        (supportsMarket(a.id, preferredMarket)
+          ? ''
+          : availableMarket(a.id, preferredMarket) === 'binance'
+            ? ' · Binance USDT'
+            : ' · Upbit KRW'),
       href: indicatorUrl(
         a.id,
         defaultIndicator(a.id),
         new URLSearchParams({
-          market: p.get('market') || saved('price-market', 'upbit'),
-          price_source: p.get('market') || saved('price-market', 'upbit'),
+          market: availableMarket(a.id, preferredMarket),
+          price_source: availableMarket(a.id, preferredMarket),
         }),
       ),
       asset: a.id,
@@ -118,16 +110,6 @@ export function ProductTopbar() {
         <b>보리차트</b>
       </Link>
       <nav className="product-nav" aria-label="주요 화면">
-        <Link
-          to={analysisHref}
-          className={
-            'mobile-indicator-link' + (location.pathname.startsWith('/coins/') ? ' active' : '')
-          }
-          aria-current={location.pathname.startsWith('/coins/') ? 'page' : undefined}
-        >
-          <ChartNoAxesCombined size={20} aria-hidden="true" />
-          지표
-        </Link>
         <NavLink
           to="/coins"
           end

@@ -19,7 +19,7 @@ export function mergeQuoteStream(
     next.sequence < 0 ||
     typeof next.connected !== 'boolean' ||
     !Array.isArray(next.quotes) ||
-    next.quotes.length > 8
+    next.quotes.length > ASSETS.length
   )
     return previous;
   const old = previous?.market === market ? previous : null;

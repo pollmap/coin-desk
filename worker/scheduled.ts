@@ -1,3 +1,4 @@
+import { assetDefinition } from '../shared/asset-registry';
 import { DAY, zStep, type ZState } from '../shared/math';
 import type { Asset, Market } from '../shared/types';
 import { bitviewPage, getQuotes, getRecentCandles } from './providers';
@@ -378,11 +379,12 @@ async function executeJob(env: Env, job: JobPolicy, states: IngestionState[]) {
   } else if (job.kind === 'network') {
     const asset = job.assets![0];
     if (!isNetworkAsset(asset)) throw new Error('Unsupported network job');
-    await updateNetworkData(env, asset);
+    await updateNetworkData(env, asset, 'latest');
   } else if (job.kind === 'reference')
     await updateReference(
       env,
       job.assets![0] as (typeof import('./reference-price').REFERENCE_ASSETS)[number],
+      'latest',
     );
   else if (job.key === 'defillama') await updateStable(env);
   else if (job.key === 'coinlore') {
@@ -460,9 +462,36 @@ export async function scheduled(env: Env, scheduledAt = epoch(), separateQuotes 
     error: string | null = null;
   try {
     if (job) {
-      outcome = (await executeJob(env, job, rows.results)) ? 'partial' : 'ok';
-      if (outcome === 'partial')
-        error = '일부 자산의 시세를 갱신하지 못했습니다. 정상 자산은 저장했습니다.';
+      const attempted = new Set<string>();
+      let current: JobPolicy | undefined = job;
+      let failed = false;
+      const deadline = Date.now() + 40000;
+      const maxJobs = env.RUNTIME_KIND === 'vps' && separateQuotes ? 24 : 1;
+      while (current && attempted.size < maxJobs && Date.now() < deadline) {
+        attempted.add(current.key);
+        await env.DB.prepare(
+          'INSERT INTO ingestion(key,last_attempt) VALUES(?,?) ON CONFLICT(key) DO UPDATE SET last_attempt=excluded.last_attempt',
+        )
+          .bind(current.key, epoch())
+          .run();
+        try {
+          if (await executeJob(env, current, rows.results)) failed = true;
+        } catch (cause) {
+          failed = true;
+          await failure(env.DB, current.key, cause);
+        }
+        if (maxJobs === 1) break;
+        const fresh = (await env.DB.prepare('SELECT * FROM ingestion').all<IngestionState>())
+          .results;
+        current = selectJob(
+          backgroundPolicies(enabledAssets(env), !!build).filter((j) => !attempted.has(j.key)),
+          fresh,
+          epoch(),
+          true,
+        );
+      }
+      outcome = failed ? 'partial' : 'ok';
+      if (failed) error = '일부 원천의 갱신에 실패했습니다. 개별 원천 상태를 확인하세요.';
     }
   } catch (cause) {
     outcome = 'error';
@@ -488,18 +517,41 @@ export async function refreshMinuteQuotes(env: Env) {
   const assets = enabledAssets(env);
   await Promise.all(
     (['binance', 'upbit'] as Market[]).map(async (market) => {
-      const key = 'quotes:' + market + ':0';
-      if ((states.find((s) => s.key === key)?.next_attempt || 0) > epoch()) return;
-      try {
-        const result = await updateQuoteBatch(env, assets, market, states);
-        if (!result.attempted) return;
-        // Stale/invalid individual tickers retain their own backoff. Only a failed
-        // batch request backs off the market, including when a sole peer was due.
-        if (result.requestFailed) await failure(env.DB, key, 'Quote source request failed');
-        else await success(env.DB, key, epoch());
-      } catch (error) {
-        await failure(env.DB, key, error);
+      const tradable = assets.filter((a) => assetDefinition(a)?.markets[market]);
+      const groups = Math.ceil(tradable.length / 8);
+      if (!groups) return;
+      const cursorKey = 'quote-lane-next:' + market;
+      const stored = await readState<number>(env.DB, cursorKey, 0);
+      const first = Number.isSafeInteger(stored) && stored >= 0 ? stored % groups : 0;
+      const deadline = Date.now() + 40000;
+      let next = first;
+      for (let offset = 0; offset < groups && Date.now() < deadline; offset++) {
+        const group = (first + offset) % groups;
+        const start = group * 8;
+        next = (group + 1) % groups;
+        const key = 'quotes:' + market + ':' + group;
+        if ((states.find((s) => s.key === key)?.next_attempt || 0) > epoch()) continue;
+        try {
+          const result = await updateQuoteBatch(
+            env,
+            tradable.slice(start, start + 8),
+            market,
+            states,
+          );
+          if (result.attempted) {
+            if (result.requestFailed) await failure(env.DB, key, 'Quote source request failed');
+            else await success(env.DB, key, epoch());
+          }
+        } catch (error) {
+          await failure(env.DB, key, error);
+        }
+        // A group issues at most eight prior-minute requests. Leave room for
+        // other lanes in Upbit's shared candle request group.
+        if (market === 'upbit' && offset + 1 < groups)
+          await new Promise((r) => setTimeout(r, 1100));
       }
+      // A slow provider must not repeatedly consume the minute on the first coins.
+      await putState(env.DB, cursorKey, next);
     }),
   );
 }

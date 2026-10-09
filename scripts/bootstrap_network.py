@@ -14,12 +14,13 @@ import time
 import urllib.error
 import urllib.parse
 import urllib.request
+from registry import ASSETS as REGISTRY, network_id, network_fields
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 BASE = 'https://community-api.coinmetrics.io/v4/timeseries/asset-metrics'
 DAY = 86400
-ASSETS = ['BTC', 'DOGE', 'ETH', 'XRP', 'LINK']
-HISTORY = dict(zip(ASSETS, ['2009-01-03', '2013-12-08', '2015-07-30', '2013-01-01', '2017-09-16']))
+ASSETS = [a for a in REGISTRY if len(network_fields(a)) > 1]
+HISTORY = {a: min(m['first'] for m in network_fields(a).values()) for a in ASSETS}
 FIELDS = {
     'price': 'PriceUSD', 'mvrv': 'CapMVRVCur', 'active_addresses': 'AdrActCnt',
     'balance_addresses': 'AdrBalCnt', 'transactions': 'TxCnt', 'transfers': 'TxTfrCnt',
@@ -30,11 +31,7 @@ FIELDS = {
 }
 
 def fields_for(asset):
-    return {key: value for key, value in FIELDS.items()
-            if (key != 'fees_native' or asset != 'LINK') and
-            (key != 'hashrate' or asset in ['BTC', 'DOGE']) and
-            (key not in ['blocks', 'issuance'] or asset in ['BTC', 'DOGE', 'ETH']) and
-            (key not in ['exchange_inflow', 'exchange_outflow', 'exchange_balance'] or asset in ['BTC', 'ETH'])}
+    return {key: value for key, value in FIELDS.items() if value in network_fields(asset)}
 
 def stamp(value):
     return int(dt.datetime.fromisoformat(value.replace('Z', '+00:00')).timestamp())
@@ -45,7 +42,7 @@ def normalize(body, asset, fetched_at):
         raise ValueError('Invalid source body')
     rows, seen = [], set()
     for raw in body['data']:
-        if raw.get('asset') != asset.lower():
+        if raw.get('asset') != network_id(asset):
             raise ValueError('Wrong source asset')
         instant = dt.datetime.fromisoformat(raw['time'].replace('Z', '+00:00')).timestamp()
         if not instant.is_integer() or instant < 0 or instant % DAY or instant in seen:
@@ -109,7 +106,7 @@ def sql_text(value):
     return "'" + value.replace("'", "''") + "'"
 
 def collect(asset, folder, reuse=False):
-    params = {'assets': asset.lower(), 'metrics': ','.join(fields_for(asset).values()), 'frequency': '1d',
+    params = {'assets': network_id(asset), 'metrics': ','.join(fields_for(asset).values()), 'frequency': '1d',
               'start_time': HISTORY[asset], 'page_size': '10000', 'paging_from': 'start'}
     url = BASE + '?' + urllib.parse.urlencode(params)
     raw_path = folder / (asset + '.raw.json')

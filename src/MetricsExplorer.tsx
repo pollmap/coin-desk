@@ -314,7 +314,7 @@ export function MetricsExplorer() {
         ))}
         {tech.map((m) => (
           <article className="panel library-card" key={m.id}>
-            <span className="micro-label">8개 코인 · 기술지표</span>
+            <span className="micro-label">기술 지표</span>
             <h2>{m.title}</h2>
             <p>{m.description}</p>
             <details className="library-formula">

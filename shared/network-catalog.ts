@@ -1,16 +1,20 @@
+import { ASSET_REGISTRY, hasNetworkField } from './asset-registry';
 import type { Asset } from './types';
 
-export const NETWORK_ASSETS = ['BTC', 'DOGE', 'ETH', 'XRP', 'LINK'] as const;
+export const NETWORK_ASSETS: readonly Asset[] = ASSET_REGISTRY.filter(
+  (a) => a.network && Object.keys(a.network.metrics).some((k) => k !== 'PriceUSD'),
+).map((a) => a.id);
 export type NetworkAsset = (typeof NETWORK_ASSETS)[number];
 export const NETWORK_SOURCE = 'Coin Metrics Community · CC BY-NC 4.0';
 export const NETWORK_VERSION = 'coinmetrics-network-monthly-v2';
-export const NETWORK_HISTORY: Record<NetworkAsset, string> = {
-  BTC: '2009-01-03',
-  DOGE: '2013-12-08',
-  ETH: '2015-07-30',
-  XRP: '2013-01-01',
-  LINK: '2017-09-16',
-};
+export const NETWORK_HISTORY = Object.fromEntries(
+  ASSET_REGISTRY.filter((a) => a.network).map((a) => [
+    a.id,
+    Object.values(a.network!.metrics)
+      .map((m) => m.first)
+      .sort()[0],
+  ]),
+) as Record<Asset, string>;
 export interface NetworkMetric {
   id: string;
   title: string;
@@ -24,7 +28,7 @@ export interface NetworkMetric {
 }
 const all = NETWORK_ASSETS;
 const definition = 'https://docs.coinmetrics.io/network-data/network-data-overview/';
-export const NETWORK_METRICS: readonly NetworkMetric[] = [
+const definitions: readonly NetworkMetric[] = [
   {
     id: 'mvrv',
     title: 'MVRV',
@@ -224,6 +228,20 @@ export const NETWORK_METRICS: readonly NetworkMetric[] = [
     source: definition + 'market/market-capitalization',
   },
 ];
+const derivedFields: Record<string, string[]> = {
+  realized_cap: ['CapMrktCurUSD', 'CapMVRVCur'],
+  realized_price: ['PriceUSD', 'CapMVRVCur'],
+  nupl: ['CapMVRVCur'],
+  exchange_netflow: ['FlowInExNtv', 'FlowOutExNtv'],
+};
+export const NETWORK_METRICS: readonly NetworkMetric[] = definitions.map((m) => ({
+  ...m,
+  assets: NETWORK_ASSETS.filter((a) =>
+    (m.sourceMetric ? [m.sourceMetric] : (derivedFields[m.id] ?? [])).every((f) =>
+      hasNetworkField(a, f),
+    ),
+  ),
+}));
 export const isNetworkAsset = (asset: string): asset is NetworkAsset =>
   NETWORK_ASSETS.some((item) => item === asset);
 export const getNetworkMetric = (id: string) => NETWORK_METRICS.find((item) => item.id === id);

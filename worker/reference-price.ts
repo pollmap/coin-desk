@@ -1,8 +1,9 @@
+import { networkProviderId, referenceAssets } from '../shared/asset-registry';
 import type { Asset, Point } from '../shared/types';
 import { DAY } from '../shared/math';
 import { upstream } from './providers';
 import { epoch, readState, type Env } from './storage';
-export const REFERENCE_ASSETS = ['BTC', 'DOGE', 'ETH', 'XRP', 'LINK'] as const;
+export const REFERENCE_ASSETS = referenceAssets;
 export const REFERENCE_SOURCE = 'Coin Metrics Community · PriceUSD';
 export const REFERENCE_VERSION = 'coinmetrics-priceusd-utc-close-v1';
 export function parseReference(body: unknown, asset: Asset, now = epoch()): Point[] {
@@ -12,7 +13,7 @@ export function parseReference(body: unknown, asset: Asset, now = epoch()): Poin
   const points: Point[] = [];
   const seen = new Set<number>();
   for (const row of rows) {
-    if (row.asset !== asset.toLowerCase()) throw new Error('Reference asset mismatch');
+    if (row.asset !== networkProviderId(asset)!) throw new Error('Reference asset mismatch');
     const time = Date.parse(String(row.time)) / 1000;
     if (!Number.isSafeInteger(time) || time < 0 || time % DAY !== 0 || seen.has(time))
       throw new Error('Invalid reference date');
@@ -27,7 +28,11 @@ export function parseReference(body: unknown, asset: Asset, now = epoch()): Poin
   }
   return points.sort((a, b) => a.time - b.time);
 }
-export async function updateReference(env: Env, asset: Asset) {
+export async function updateReference(
+  env: Env,
+  asset: Asset,
+  mode: 'history' | 'latest' = 'history',
+) {
   if (!(REFERENCE_ASSETS as readonly string[]).includes(asset))
     throw new Error('Unsupported reference asset');
   const progressKey = 'reference-progress:' + asset;
@@ -50,9 +55,14 @@ export async function updateReference(env: Env, asset: Asset) {
     throw new Error('Invalid reference checkpoint');
   // A null-only page must still advance through the source calendar. The normal
   // correction window resumes after catch-up, independently of this checkpoint.
-  const from = progress ? Math.max(correctionFrom, progress.cursor) : correctionFrom;
+  const from =
+    mode === 'latest'
+      ? end - 3 * DAY
+      : progress
+        ? Math.max(correctionFrom, progress.cursor)
+        : correctionFrom;
   const params = new URLSearchParams({
-    assets: asset.toLowerCase(),
+    assets: networkProviderId(asset)!,
     metrics: 'PriceUSD',
     frequency: '1d',
     page_size: '32',
@@ -86,16 +96,20 @@ export async function updateReference(env: Env, asset: Asset) {
         'INSERT INTO reference_prices(asset,time,value,fetched_at) VALUES(?,?,?,?) ON CONFLICT(asset,time) DO UPDATE SET value=excluded.value,fetched_at=excluded.fetched_at WHERE reference_prices.value!=excluded.value',
       ).bind(asset, p.time, p.value, now),
     ),
-    catchingUp
-      ? env.DB.prepare('INSERT OR REPLACE INTO state(key,value) VALUES(?,?)').bind(
-          progressKey,
-          JSON.stringify({ cursor, nextPageToken: token || null, fetchedAt: now }),
-        )
-      : env.DB.prepare('DELETE FROM state WHERE key=?').bind(progressKey),
+    ...(mode === 'history'
+      ? [
+          catchingUp
+            ? env.DB.prepare('INSERT OR REPLACE INTO state(key,value) VALUES(?,?)').bind(
+                progressKey,
+                JSON.stringify({ cursor, nextPageToken: token || null, fetchedAt: now }),
+              )
+            : env.DB.prepare('DELETE FROM state WHERE key=?').bind(progressKey),
+        ]
+      : []),
     // Collector success and actual valid-price date are distinct: a null-only
     // page cannot turn its last calendar date into a fresh market observation.
     env.DB.prepare(
       'INSERT INTO ingestion(key,last_attempt,last_success,data_as_of,failures,error,next_attempt) VALUES(?,?,?,?,0,NULL,?) ON CONFLICT(key) DO UPDATE SET last_attempt=excluded.last_attempt,last_success=excluded.last_success,data_as_of=excluded.data_as_of,failures=0,error=NULL,next_attempt=excluded.next_attempt',
-    ).bind(key, now, now, asOf || null, catchingUp ? now + 60 : 0),
+    ).bind(key, now, now, asOf || null, mode === 'history' && catchingUp ? now + 60 : 0),
   ]);
 }

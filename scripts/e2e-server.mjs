@@ -32,7 +32,10 @@ for (const policy of jobPolicies(enabled, false)) {
 DB.sqlite.exec('BEGIN');
 for (const [index, asset] of enabled.entries()) {
   const base = { BTC: 60000, ETH: 3000, DOGE: 0.1 }[asset] ?? 20;
-  const first = last - 1099 * day;
+  // Long-range regressions use the original core assets; discovery assets need
+  // 90 complete bars for RSI, search and paging, not millions of duplicate fixtures.
+  const count = index < 8 ? 1100 : 90;
+  const first = last - (count - 1) * day;
   const months = new Map();
   for (const market of ['upbit', 'binance']) {
     const factor = market === 'upbit' ? 1400 : 1;
@@ -61,11 +64,11 @@ for (const [index, asset] of enabled.entries()) {
         interval,
         first,
         last,
-        rows: 1100,
+        rows: count,
         complete: true,
       });
-      for (let i = 0; i < 1100; i++) {
-        const time = interval === '1d' ? first + i * day : last - (1099 - i) * 3600;
+      for (let i = 0; i < count; i++) {
+        const time = interval === '1d' ? first + i * day : last - (count - 1 - i) * 3600;
         const price = base * factor * (0.75 + i / 4400 + Math.sin(i / 12) / 50);
         DB.sqlite
           .prepare('INSERT INTO candles VALUES(?,?,?,?,?,?,?,?,?,?,?)')
@@ -85,7 +88,7 @@ for (const [index, asset] of enabled.entries()) {
       }
     }
   }
-  for (let i = 0; i < 1100; i++) {
+  for (let i = 0; i < count; i++) {
     const time = first + i * day,
       price = base * (0.75 + i / 4400 + Math.sin(i / 12) / 50);
     DB.sqlite.prepare('INSERT INTO reference_prices VALUES(?,?,?,?)').run(asset, time, price, now);
@@ -127,7 +130,7 @@ for (const [index, asset] of enabled.entries()) {
   for (const metric of networkMetrics(asset))
     DB.sqlite
       .prepare('INSERT INTO network_coverage VALUES(?,?,?,?,?,?)')
-      .run(asset, metric.id, first, last, 1100, now);
+      .run(asset, metric.id, first, last, count, now);
 }
 DB.sqlite.exec('COMMIT');
 globalThis.caches = { default: memoryCache() };

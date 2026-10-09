@@ -6,7 +6,12 @@ import worker from '../worker/index';
 import { DAY } from '../shared/math';
 import type { Asset, Point, SeriesResponse } from '../shared/types';
 import { pages } from '../src/lib';
-import { parseReference, REFERENCE_SOURCE, REFERENCE_VERSION } from '../worker/reference-price';
+import {
+  parseReference,
+  updateReference,
+  REFERENCE_SOURCE,
+  REFERENCE_VERSION,
+} from '../worker/reference-price';
 import { success, type Env } from '../worker/storage';
 
 const start = Date.UTC(2010, 0, 1) / 1000;
@@ -76,7 +81,7 @@ describe('reference API against actual SQLite and Worker routing', () => {
     db = openDatabase(':memory:');
     env = {
       DB: db,
-      ENABLED_ASSETS: 'BTC,DOGE,ETH,XRP,LINK,SOL',
+      ENABLED_ASSETS: 'BTC,DOGE,ETH,XRP,LINK,SOL,BEAM',
       BITVIEW_BASE_URL: 'https://bitview.space',
       ASSETS: { fetch: async () => new Response('asset') } as unknown as Fetcher,
     };
@@ -165,7 +170,7 @@ describe('reference API against actual SQLite and Worker routing', () => {
 
   it('rejects unsupported assets, ambiguous query keys, and invalid ranges before returning data', async () => {
     for (const query of [
-      'asset=SOL',
+      'asset=BEAM',
       'asset=UNKNOWN',
       'asset=BTC&asset=DOGE',
       'asset=BTC&market=binance',
@@ -193,5 +198,21 @@ describe('reference API against actual SQLite and Worker routing', () => {
         source: REFERENCE_SOURCE,
       },
     });
+  });
+
+  it('updates the latest reference without consuming a historical checkpoint', async () => {
+    const progress = JSON.stringify({ cursor: start });
+    db.sqlite.prepare('INSERT INTO state VALUES(?,?)').run('reference-progress:BTC', progress);
+    const fetcher = vi.fn(async () => Response.json({ data: [raw(now - DAY, '60000')] }));
+    vi.stubGlobal('fetch', fetcher);
+    await updateReference(env, 'BTC', 'latest');
+    expect(
+      db.sqlite.prepare("SELECT value FROM state WHERE key='reference-progress:BTC'").get()?.value,
+    ).toBe(progress);
+    expect(
+      db.sqlite.prepare("SELECT data_as_of FROM ingestion WHERE key='reference:BTC'").get()
+        ?.data_as_of,
+    ).toBe(now - DAY);
+    expect(fetcher).toHaveBeenCalledOnce();
   });
 });

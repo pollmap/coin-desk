@@ -246,14 +246,14 @@ export function DataStatusPage() {
             <div>
               <b>
                 {a?.cadence.quoteSecondaryTargetSeconds === 60
-                  ? '여덟 코인 시세 · 1분'
+                  ? '지원 코인 시세 · 1분'
                   : '현재가 수집'}
               </b>
               <p>
                 {!a
                   ? '서버 설정을 확인한 뒤 목표 주기를 표시합니다.'
                   : a.cadence.quoteSecondaryTargetSeconds === 60
-                    ? '여덟 코인 모두 1분마다 저장 시세 갱신을 시도합니다. 실시간 연결은 체결을 초 단위로 전달합니다.'
+                    ? '거래 가능한 코인의 저장 시세를 1분마다 확인합니다. 실시간 연결은 체결을 초 단위로 전달합니다.'
                     : '핵심 3개 코인은 1분, 보조 코인은 5분마다 서버 갱신을 시도합니다.'}
               </p>
             </div>

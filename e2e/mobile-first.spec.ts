@@ -9,14 +9,17 @@ for (const width of [320, 390, 430])
       if (r.url().includes('/api/v1/')) calls.push(r.url());
     });
     await page.goto('/');
+    await expect(page.locator('.market-table tbody tr')).toHaveCount(20);
+    await page.getByRole('link', { name: '비트코인 BTC', exact: true }).click();
     const chart = page.locator('[data-chart-kind=analysis]');
     await expect(chart).toHaveAttribute('data-primary-metric', 'net:mvrv');
     await expect(chart).toHaveAttribute('data-range-ready', '1');
+    await page.mouse.move(0, 0);
     await expect(page.locator('.analysis-reading-date')).toContainText('최근 확정값');
     expect(calls.filter((u) => /\/overview|\/themes|\/knowledge/.test(u))).toEqual([]);
-    expect(calls.filter((u) => /\/market\?/.test(u))).toHaveLength(1);
+    expect(calls.filter((u) => /\/market\?/.test(u))).toHaveLength(2);
     const geometry = (await chart.boundingBox())!;
-    expect(geometry.y).toBeLessThanOrEqual(300);
+    expect(geometry.y).toBeLessThanOrEqual(280);
     expect(geometry.height).toBeGreaterThanOrEqual(320);
     // A control fitting the viewport is insufficient: it must also not overlap another control.
     const controls = await page
@@ -62,11 +65,11 @@ for (const width of [320, 390, 430])
       ).toEqual([]);
     }
     await page.getByRole('link', { name: '시장', exact: true }).click();
-    await expect(page.locator('.market-table tbody tr')).toHaveCount(8);
+    await expect(page.locator('.market-table tbody tr')).toHaveCount(20);
     // Desktop cell heights must not double the mobile two-line row height.
     for (const row of await page.locator('.market-table tbody tr').all())
-      expect((await row.boundingBox())!.height).toBeLessThanOrEqual(130);
-    const analysis = page.getByRole('link', { name: '비트코인 MVRV 분석', exact: true });
+      expect((await row.boundingBox())!.height).toBeLessThanOrEqual(76);
+    const analysis = page.getByRole('link', { name: '비트코인 BTC', exact: true });
     const entry = (await analysis.boundingBox())!;
     expect(entry.x).toBeGreaterThanOrEqual(0);
     expect(entry.x + entry.width).toBeLessThanOrEqual(width);
@@ -83,6 +86,8 @@ test('mobile coin, indicator, date, explanation, save and reopen keep the same a
 }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto('/');
+  await expect(page.locator('.market-table tbody tr')).toHaveCount(20);
+  await page.getByRole('link', { name: '비트코인 BTC', exact: true }).click();
   const chart = page.locator('[data-chart-kind=analysis]');
   await expect(chart).toHaveAttribute('data-range-ready', '1');
   await page.getByRole('button', { name: '코인 변경 · 비트코인 BTC' }).click();
@@ -99,9 +104,10 @@ test('mobile coin, indicator, date, explanation, save and reopen keep the same a
   await page.getByRole('button', { name: '이동', exact: true }).click();
   await expect(page.locator('.analysis-reading-date')).toContainText('날짜 고정');
   const from = await chart.getAttribute('data-visible-from');
-  await page.getByText('읽는 법 · 계산식 · 데이터 범위', { exact: true }).click();
+  await page.getByRole('button', { name: '지표 설명', exact: true }).click();
   await expect(page.locator('.indicator-explanation')).toContainText('기준선을 읽는 법');
   await expect(chart).toHaveAttribute('data-visible-from', from!);
+  await page.keyboard.press('Escape');
   await page.getByRole('button', { name: '분석 저장', exact: true }).click();
   await page.getByLabel('작업공간 이름', { exact: true }).fill('모바일 ONDO 검토');
   await page.getByRole('button', { name: '현재 구성 저장', exact: true }).click();
@@ -148,6 +154,8 @@ test('USD indicator keeps its KRW quote and pinned date through save, share and 
 }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto('/');
+  await expect(page.locator('.market-table tbody tr')).toHaveCount(20);
+  await page.getByRole('link', { name: '비트코인 BTC', exact: true }).click();
   const chart = page.locator('[data-chart-kind=analysis]');
   await expect(chart).toHaveAttribute('data-range-ready', '1');
   await expect(page.locator('.detail-quote')).toContainText('Upbit · KRW');
@@ -176,6 +184,7 @@ test('USD indicator keeps its KRW quote and pinned date through save, share and 
   await expect(page.locator('.detail-quote')).toContainText('Upbit · KRW');
   await expect(page.locator('.analysis-reading-date')).toContainText('2026-09-01');
   await page.getByRole('button', { name: '최근값 보기', exact: true }).click();
+  await page.mouse.move(0, 0);
   await expect(page.locator('.analysis-reading-date')).toContainText('최근 확정값');
   await page.locator('details.analysis-tools > summary').click();
   await page.getByRole('button', { name: '링크 공유', exact: true }).click();

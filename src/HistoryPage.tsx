@@ -1,3 +1,4 @@
+import { supportsReference } from '../shared/indicator-catalog';
 import { lazy, Suspense, useMemo, useRef, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { ASSETS } from '../shared/catalog';
@@ -40,7 +41,7 @@ function HistoryWorkspace({ asset }: { asset: Asset }) {
   );
   if (reverse) events.reverse();
   const index = selected ? events.findIndex((e) => e.id === selected.id) : -1;
-  const referenceAvailable = ['BTC', 'DOGE', 'ETH', 'XRP', 'LINK'].includes(asset);
+  const referenceAvailable = supportsReference(asset);
   const requestedSource = params.get('price_source');
   const source =
     requestedSource === 'upbit' || requestedSource === 'binance'

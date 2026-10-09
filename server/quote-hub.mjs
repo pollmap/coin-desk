@@ -1,17 +1,24 @@
 import { createServer } from 'node:http';
 import { randomUUID } from 'node:crypto';
 import { pathToFileURL } from 'node:url';
+import { ASSET_REGISTRY } from '../server-dist/assets.mjs';
 
-export const assets = ['BTC', 'DOGE', 'ETH', 'SOL', 'XRP', 'LINK', 'ONDO', 'PEPE'];
+export const assets = ASSET_REGISTRY.map((a) => a.id);
+const symbols = Object.fromEntries(
+  ['upbit', 'binance'].map((m) => [
+    m,
+    new Map(ASSET_REGISTRY.filter((a) => a.markets[m]).map((a) => [a.markets[m], a.id])),
+  ]),
+);
 export function parseTick(market, message, now = Date.now() / 1000) {
   if (!['upbit', 'binance'].includes(market) || !message || typeof message !== 'object')
     return null;
   const data = message.data ?? message;
   if (!data || typeof data !== 'object') return null;
-  const asset = market === 'upbit' ? data.code?.replace(/^KRW-/, '') : data.s?.replace(/USDT$/, '');
+  const asset = symbols[market].get(market === 'upbit' ? data.code : data.s);
   if (!assets.includes(asset)) return null;
-  if (market === 'upbit' && (data.type !== 'ticker' || data.code !== `KRW-${asset}`)) return null;
-  if (market === 'binance' && (data.e !== 'aggTrade' || data.s !== `${asset}USDT`)) return null;
+  if (market === 'upbit' && data.type !== 'ticker') return null;
+  if (market === 'binance' && data.e !== 'aggTrade') return null;
   const price = Number(market === 'upbit' ? data.trade_price : data.p);
   const tradedAt = Number(market === 'upbit' ? data.trade_timestamp : data.T) / 1000;
   if (
@@ -49,13 +56,21 @@ export function createQuoteHub({ clock = () => Date.now() / 1000, maxClients = 2
       quotes: [...state.quotes.values()],
     };
   }
-  function send(res, market) {
+  function send(res, client, payload) {
     if (res.destroyed || res.writableLength > 65536) {
       res.destroy();
       clients.delete(res);
       return;
     }
-    res.write(`event: quotes\ndata: ${JSON.stringify(snapshot(market))}\n\n`);
+    const quotes = payload.quotes.filter(
+      (q) => client.assets === null || client.assets.has(q.asset),
+    );
+    const delta = client.assets !== null;
+    const changed = delta
+      ? quotes.filter((q) => q.tradedAt > (client.sent.get(q.asset) ?? 0))
+      : quotes;
+    for (const q of changed) client.sent.set(q.asset, q.tradedAt);
+    res.write(`event: quotes\ndata: ${JSON.stringify({ ...payload, delta, quotes: changed })}\n\n`);
   }
   const server = createServer((req, res) => {
     const url = new URL(req.url, 'http://quote-hub.internal');
@@ -64,27 +79,38 @@ export function createQuoteHub({ clock = () => Date.now() / 1000, maxClients = 2
       return;
     }
     if (url.pathname === '/healthz') {
-      res
-        .writeHead(200, { 'content-type': 'application/json' })
-        .end(
-          JSON.stringify({
-            ok: true,
-            markets: Object.fromEntries(
-              Object.entries(markets).map(([m, s]) => [
-                m,
-                { connected: s.connected, assets: s.quotes.size },
-              ]),
-            ),
-          }),
-        );
+      res.writeHead(200, { 'content-type': 'application/json' }).end(
+        JSON.stringify({
+          ok: true,
+          markets: Object.fromEntries(
+            Object.entries(markets).map(([m, s]) => [
+              m,
+              { connected: s.connected, assets: s.quotes.size },
+            ]),
+          ),
+        }),
+      );
       return;
     }
     const market = url.searchParams.get('market');
     if (
       url.pathname !== '/stream' ||
       !['upbit', 'binance'].includes(market) ||
-      [...url.searchParams.keys()].some((k) => k !== 'market') ||
-      url.searchParams.getAll('market').length !== 1
+      [...url.searchParams.keys()].some((k) => !['market', 'assets'].includes(k)) ||
+      url.searchParams.getAll('market').length !== 1 ||
+      url.searchParams.getAll('assets').length > 1
+    ) {
+      res.writeHead(400).end();
+      return;
+    }
+    const requested = url.searchParams.has('assets')
+      ? url.searchParams.get('assets').split(',').filter(Boolean)
+      : null;
+    if (
+      requested &&
+      (requested.length > assets.length ||
+        new Set(requested).size !== requested.length ||
+        requested.some((a) => !assets.includes(a)))
     ) {
       res.writeHead(400).end();
       return;
@@ -99,12 +125,21 @@ export function createQuoteHub({ clock = () => Date.now() / 1000, maxClients = 2
       'x-accel-buffering': 'no',
     });
     res.write('retry: 5000\n\n');
-    clients.set(res, market);
-    send(res, market);
+    const client = {
+      market,
+      assets: requested === null ? null : new Set(requested),
+      sent: new Map(),
+    };
+    clients.set(res, client);
+    send(res, client, snapshot(market));
     res.on('close', () => clients.delete(res));
   });
   const timer = setInterval(() => {
-    for (const [res, market] of clients) send(res, market);
+    const payloads = new Map();
+    for (const [res, client] of clients) {
+      if (!payloads.has(client.market)) payloads.set(client.market, snapshot(client.market));
+      send(res, client, payloads.get(client.market));
+    }
   }, 1000);
   timer.unref();
   return {
@@ -128,7 +163,7 @@ export function connectExchange(hub, market, WebSocketClass = WebSocket) {
     attempts = 0;
   function connect() {
     if (stopped) return;
-    const streams = assets.map((a) => `${a.toLowerCase()}usdt@aggTrade`).join('/');
+    const streams = [...symbols.binance.keys()].map((s) => `${s.toLowerCase()}@aggTrade`).join('/');
     socket = new WebSocketClass(
       market === 'upbit'
         ? 'wss://api.upbit.com/websocket/v1'
@@ -143,7 +178,7 @@ export function connectExchange(hub, market, WebSocketClass = WebSocket) {
         socket.send(
           JSON.stringify([
             { ticket: randomUUID() },
-            { type: 'ticker', codes: assets.map((a) => `KRW-${a}`), is_only_realtime: true },
+            { type: 'ticker', codes: [...symbols.upbit.keys()], is_only_realtime: true },
             { format: 'DEFAULT' },
           ]),
         );

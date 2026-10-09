@@ -17,6 +17,7 @@ await build({
           ['observations', 'worker/observations.ts'],
           ['feed', 'worker/market-feed.ts'],
           ['providers', 'worker/providers.ts'],
+          ['assets', 'shared/asset-registry.ts'],
         ].map(([name, file]) => [name, resolve(file)]),
       ),
       output: { entryFileNames: '[name].mjs', chunkFileNames: 'chunks/[name]-[hash].mjs' },

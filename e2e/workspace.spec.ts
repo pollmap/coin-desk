@@ -80,7 +80,7 @@ test('BTC detail defaults to MVRV; eight coins use supported metrics and sources
     await input.press('Enter');
     await expect(chart(page)).toHaveAttribute('data-asset', asset);
     if (['ONDO', 'SOL', 'PEPE'].includes(asset)) {
-      expect(new URL(page.url()).searchParams.get('price_source')).toBe('binance');
+      expect(new URL(page.url()).searchParams.get('price_source')).toBe('reference');
       await expect(chart(page)).toHaveAttribute('data-primary-metric', 'rsi');
     }
   }
@@ -116,7 +116,8 @@ test('legacy metric URLs use the same indicator workspace without automatic pric
   });
   await page.goto('/metrics/mvrv?period=all&visual=price');
   await expect(chart(page)).toHaveAttribute('data-primary-metric', 'btc:mvrv');
-  await expect(page.getByLabel('가격 비교', { exact: true })).not.toBeChecked();
+  await page.getByRole('button', { name: '더보기', exact: true }).click();
+  await expect(page.getByLabel('가격 비교 추가', { exact: true })).not.toBeChecked();
   await expect(page.getByRole('button', { name: /지표 변경$/ })).toBeVisible();
   expect(requests).toEqual([]);
   await page.goto('/metrics/mvrv?asset=ONDO');
@@ -172,6 +173,7 @@ test('unsupported URLs do not request data or retry and ONDO help retains asset'
   await page.keyboard.press('Escape');
   await page.getByRole('link', { name: '지원되는 원천·분석으로 열기' }).click();
   await expect(chart(page)).toHaveAttribute('data-primary-metric', 'rsi');
+  await page.getByRole('button', { name: '지표 설명', exact: true }).click();
   await page.getByRole('link', { name: '현재 분석 설명' }).click();
   expect(new URL(page.url()).searchParams.get('asset')).toBe('ONDO');
   await expect(page.locator('[data-chart-kind],canvas')).toHaveCount(0);
@@ -183,7 +185,7 @@ test('slow failures, logos and stale data never contaminate another asset', asyn
   });
   await page.route('**/coin-logos/btc.png', (r) => r.abort());
   await page.goto('/?asset=BTC');
-  await expect(page.locator('.coin-picker .asset-logo.fallback')).toBeVisible();
+  await expect(page.locator('.coin-picker > summary .asset-logo.fallback')).toBeVisible();
   await page.getByRole('button', { name: /코인 변경/ }).click();
   await page.getByRole('searchbox', { name: '코인 검색' }).fill('DOGE');
   await page.keyboard.press('Enter');
@@ -359,9 +361,13 @@ test('source selection stays separate and automatic refresh preserves the canvas
   await expect(page.locator('.analysis-legend')).not.toHaveText(before);
   expect(await canvas!.evaluate((el) => el.isConnected)).toBe(true);
   await expect(surface).toHaveAttribute('data-visible-from', String(target));
+  await page.getByRole('button', { name: '데이터 정보', exact: true }).click();
   await page.getByLabel('지표 원천', { exact: true }).selectOption('btc:mvrv');
+  await page.keyboard.press('Escape');
   await expect(surface).toHaveAttribute('data-primary-metric', 'btc:mvrv');
-  await expect(page.locator('.indicator-heading')).toContainText('Bitview');
+  await page.getByRole('button', { name: '데이터 정보', exact: true }).click();
+  await expect(page.getByRole('dialog', { name: '데이터 정보' })).toContainText('Bitview');
+  await page.keyboard.press('Escape');
   await page.getByRole('button', { name: /지표 변경$/ }).click();
   const navLinks = page.getByRole('navigation', { name: '지표 목록', exact: true });
   await expect(navLinks.locator('a[aria-current=page]')).toHaveCount(1);

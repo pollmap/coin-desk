@@ -20,7 +20,8 @@ it.each(['BTC', 'btc', '비트코인', '비트', '비트 코인', 'ＢＴＣ', '
   (query) => expect(matchesCoin('BTC', query)).toBe(true),
 );
 it('supports generic coin search without making DOGE match Bitcoin', () => {
-  expect(ASSETS.filter((a) => matchesCoin(a.id, '코인'))).toHaveLength(8);
+  expect(ASSETS.filter((a) => matchesCoin(a.id, '코인'))).toHaveLength(150);
+  expect(matchesCoin('PENGU', '펭귄')).toBe(true);
   expect(matchesCoin('DOGE', '비트')).toBe(false);
   expect(matchesCoin('ETH', '이더')).toBe(true);
 });
@@ -36,7 +37,9 @@ it('retains coin, market, selected range and price axis when navigating analyses
       <AssetSections asset="DOGE" current="chart" />
     </MemoryRouter>,
   );
-  expect(html).toContain('/?market=upbit&amp;period=1y&amp;log=0&amp;asset=DOGE&amp;price_source=upbit');
+  expect(html).toContain(
+    '/?market=upbit&amp;period=1y&amp;log=0&amp;asset=DOGE&amp;price_source=upbit',
+  );
   expect(html).toContain('/onchain/DOGE?market=upbit&amp;period=1y&amp;log=0');
   expect(html.match(/aria-current="page"/g)).toHaveLength(1);
   expect(html).not.toContain('/futures/BTC');

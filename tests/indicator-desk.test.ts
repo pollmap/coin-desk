@@ -56,8 +56,8 @@ describe('indicator entry and compatibility', () => {
       expect(p.get('asset')).toBe(asset);
       expect(p.get('metric')).toBe(defaultIndicator(asset));
       if (['SOL', 'ONDO', 'PEPE'].includes(asset)) {
-        expect(p.get('price_source')).toBe('binance');
-        expect(p.get('market')).toBe('binance');
+        expect(p.get('price_source')).toBe('reference');
+        expect(p.has('market')).toBe(false);
         expect(p.get('period')).toBe('1y');
         expect(p.get('transition')).toBe('net:mvrv');
       }

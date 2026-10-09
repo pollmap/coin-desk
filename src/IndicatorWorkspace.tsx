@@ -1,4 +1,4 @@
-import { ChevronDown } from 'lucide-react';
+import { ChevronDown, Bookmark } from 'lucide-react';
 import { DeskDialog } from './DeskDialog';
 import { IndicatorState } from './IndicatorState';
 import { ASSET_REFERENCES } from '../shared/asset-references';
@@ -6,6 +6,7 @@ import { relativePair } from '../shared/relative-pair';
 import { lazy, Suspense, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Link, useLocation, useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { ASSETS } from '../shared/catalog';
+import { availableMarket, supportsMarket } from '../shared/asset-registry';
 import {
   defaultIndicator,
   INDICATORS_CATALOG,
@@ -92,10 +93,10 @@ export function IndicatorWorkspace() {
     setLegacyNotice(true);
     navigate(`/coins/${pair.asset}?${next}`, { replace: true });
   }, [isRelative, pair.migrated, pair.asset, pair.benchmark, navigate, params]);
-  const quoteMarket =
-    params.get('market') === 'binance' || params.get('price_source') === 'binance'
-      ? 'binance'
-      : 'upbit';
+  const quoteMarket = availableMarket(
+    asset,
+    (params.get('market') ?? params.get('price_source')) === 'binance' ? 'binance' : 'upbit',
+  );
   useEffect(() => {
     save(
       'recent-coins',
@@ -112,6 +113,7 @@ export function IndicatorWorkspace() {
   const basis = validPriceBasis(asset, rawBasis) as PriceBasis,
     unit = basisUnit(basis);
   const invalidBasis =
+    ((rawBasis === 'upbit' || rawBasis === 'binance') && !supportsMarket(asset, rawBasis)) ||
     (rawBasis === 'reference' && !supportsReference(asset)) ||
     (['view:btc_rainbow', 'view:powerlaw'].includes(id) && basis !== 'reference') ||
     (['volume', 'view:vwap'].includes(id) && basis === 'reference');
@@ -161,6 +163,9 @@ export function IndicatorWorkspace() {
     ? Number(params.get('reading_date'))
     : undefined;
   const [explanationOpen, setExplanationOpen] = useState(false);
+  const [dataInfoOpen, setDataInfoOpen] = useState(false);
+  const infoButton = useRef<HTMLButtonElement>(null);
+  const explanationButton = useRef<HTMLButtonElement>(null);
   const sources = indicatorSources(asset, id);
   const [revision, setRevision] = useState(0),
     [annotations, setAnnotations] = useState<Annotation[]>([]);
@@ -587,36 +592,15 @@ export function IndicatorWorkspace() {
                   <ChevronDown size={18} aria-hidden="true" />
                 </button>
               </h1>
-              {d?.shortMeaning && <span className="indicator-meaning">{d.shortMeaning}</span>}
-              <span>
-                {asset} · {local || d?.renderer !== 'series' ? basisName(basis) : d.source} ·{' '}
-                {isRelative
-                  ? `${asset} · ${pair.benchmark}`
-                  : d?.renderer === 'series'
-                    ? primary?.unit
-                    : unit}
-                {availability === 'delayed' && ' · 갱신 지연'}
-              </span>
             </div>
-            {sources.length > 1 && (
-              <label className="indicator-source">
-                원천{' '}
-                <select
-                  aria-label="지표 원천"
-                  value={id}
-                  onChange={(e) => change({ metric: e.target.value })}
-                >
-                  {sources.map((s) => (
-                    <option key={s.id} value={s.id}>
-                      {s.source} · {s.unit.replace('자산 단위', asset)}
-                    </option>
-                  ))}
-                </select>
-              </label>
-            )}
             <div className="indicator-heading-actions">
-              <button className="indicator-save" ref={saveButton} onClick={() => setSaving(true)}>
-                분석 저장
+              <button
+                className="indicator-save"
+                aria-label="분석 저장"
+                ref={saveButton}
+                onClick={() => setSaving(true)}
+              >
+                <Bookmark size={18} aria-hidden="true" />
               </button>
             </div>
           </div>
@@ -630,21 +614,6 @@ export function IndicatorWorkspace() {
             />
             {(!lab || isRelative) && <div ref={setChartTools} className="indicator-date-tools" />}
             {isRelative && <RelativeControls asset={asset} params={context} change={change} />}
-            <label className="price-toggle desktop-chart-action">
-              <input
-                type="checkbox"
-                checked={compare}
-                disabled={d?.renderer !== 'series'}
-                onChange={(e) => change({ compare_price: e.target.checked ? '1' : null })}
-              />
-              가격 비교
-            </label>
-            <button
-              className="desktop-chart-action"
-              onClick={() => area.current?.requestFullscreen?.().catch(() => {})}
-            >
-              전체화면
-            </button>
             <button
               aria-expanded={more}
               aria-controls="indicator-more"
@@ -655,23 +624,7 @@ export function IndicatorWorkspace() {
           </div>
           {more && (
             <div className="indicator-more" id="indicator-more">
-              {sources.length > 1 && (
-                <label className="mobile-chart-action">
-                  지표 원천
-                  <select
-                    aria-label="모바일 지표 원천"
-                    value={id}
-                    onChange={(e) => change({ metric: e.target.value })}
-                  >
-                    {sources.map((s) => (
-                      <option key={s.id} value={s.id}>
-                        {s.source} · {s.unit.replace('자산 단위', asset)}
-                      </option>
-                    ))}
-                  </select>
-                </label>
-              )}
-              <label className="price-toggle mobile-chart-action">
+              <label className="price-toggle">
                 <input
                   type="checkbox"
                   aria-label="가격 비교 추가"
@@ -681,10 +634,7 @@ export function IndicatorWorkspace() {
                 />
                 가격 비교
               </label>
-              <button
-                className="mobile-chart-action"
-                onClick={() => area.current?.requestFullscreen?.().catch(() => {})}
-              >
+              <button onClick={() => area.current?.requestFullscreen?.().catch(() => {})}>
                 전체화면
               </button>
               {!lab &&
@@ -900,13 +850,6 @@ export function IndicatorWorkspace() {
                           : '이전 연속 730일의 가격 분포'}{' '}
                         · 실제 가격은 밴드 밖에서도 표시됩니다.
                       </span>
-                      {'a' in lastBand && (
-                        <span>
-                          회귀 a={lastBand.a.toFixed(6)}, b={lastBand.b.toFixed(6)} ·{' '}
-                          {lastBand.observations}개 · {dateLabel(lastBand.first)}–
-                          {dateLabel(lastBand.last)} · {RAINBOW_VERSION}
-                        </span>
-                      )}
                     </div>
                   )}
                 </>
@@ -923,7 +866,7 @@ export function IndicatorWorkspace() {
                             ? '이력을 불러오지 못했습니다.'
                             : bands
                               ? '밴드 계산에 필요한 이력이 부족합니다.'
-                              : '확보된 관측이 없습니다.'
+                              : '아직 데이터가 없습니다.'
                     }
                   />
                   {!loading && (
@@ -954,28 +897,72 @@ export function IndicatorWorkspace() {
               갱신 지연 · 마지막 정상 관측을 표시합니다. {error || response.data?.meta.warning}
             </p>
           )}
-          <div className="indicator-provenance">
-            {response.data?.meta.historyStart && (
-              <span>확보 시작 {dateLabel(response.data.meta.historyStart)}</span>
-            )}
-            <span>
-              {primary?.source ??
-                (d?.source === '선택 가격 원천' ? basisName(basis) : d?.source) ??
-                basisName(basis)}{' '}
-              · 확정 관측 ·{' '}
-              {primary?.step === 3600
-                ? '시간별'
-                : id === 'futures:funding'
-                  ? '정산 시점별'
-                  : '일별'}
-            </span>
-            {response.data?.meta.dataAsOf && (
-              <span>원천 기준 {dateLabel(response.data.meta.dataAsOf)}</span>
-            )}
-            {chartPoints.at(-1) && chartPoints.at(-1)!.time !== response.data?.meta.dataAsOf && (
-              <span>차트 최근 관측 {dateLabel(chartPoints.at(-1)!.time)}</span>
-            )}
+          <div className="indicator-info-actions">
+            <button ref={explanationButton} onClick={() => setExplanationOpen(true)}>
+              지표 설명
+            </button>
+            <button ref={infoButton} onClick={() => setDataInfoOpen(true)}>
+              데이터 정보
+            </button>
           </div>
+          <DeskDialog
+            open={dataInfoOpen}
+            onOpenChange={setDataInfoOpen}
+            title="데이터 정보"
+            returnFocus={infoButton}
+            sheet
+          >
+            {sources.length > 1 && (
+              <label className="indicator-source">
+                원천{' '}
+                <select
+                  aria-label="지표 원천"
+                  value={id}
+                  onChange={(e) => change({ metric: e.target.value })}
+                >
+                  {sources.map((s) => (
+                    <option key={s.id} value={s.id}>
+                      {s.source} · {s.unit.replace('자산 단위', asset)}
+                    </option>
+                  ))}
+                </select>
+              </label>
+            )}
+            {bands && lastBand && (
+              <>
+                {' '}
+                {'a' in lastBand && (
+                  <span>
+                    회귀 a={lastBand.a.toFixed(6)}, b={lastBand.b.toFixed(6)} ·{' '}
+                    {lastBand.observations}개 · {dateLabel(lastBand.first)}–
+                    {dateLabel(lastBand.last)} · {RAINBOW_VERSION}
+                  </span>
+                )}
+              </>
+            )}
+            <div className="indicator-provenance">
+              {response.data?.meta.historyStart && (
+                <span>데이터 시작 {dateLabel(response.data.meta.historyStart)}</span>
+              )}
+              <span>
+                {primary?.source ??
+                  (d?.source === '선택 가격 원천' ? basisName(basis) : d?.source) ??
+                  basisName(basis)}{' '}
+                · 확정 관측 ·{' '}
+                {primary?.step === 3600
+                  ? '시간별'
+                  : id === 'futures:funding'
+                    ? '정산 시점별'
+                    : '일별'}
+              </span>
+              {response.data?.meta.dataAsOf && (
+                <span>기준일 {dateLabel(response.data.meta.dataAsOf)}</span>
+              )}
+              {chartPoints.at(-1) && chartPoints.at(-1)!.time !== response.data?.meta.dataAsOf && (
+                <span>최근 데이터 {dateLabel(chartPoints.at(-1)!.time)}</span>
+              )}
+            </div>
+          </DeskDialog>
           {patternIds.length > 0 && (
             <PatternObservations
               hits={hits}
@@ -987,12 +974,14 @@ export function IndicatorWorkspace() {
               loading={loading}
             />
           )}
-          <details
-            className="indicator-explanation"
-            onToggle={(e) => setExplanationOpen(e.currentTarget.open)}
+          <DeskDialog
+            open={explanationOpen}
+            onOpenChange={setExplanationOpen}
+            title="지표 설명"
+            returnFocus={explanationButton}
+            sheet
           >
-            <summary>읽는 법 · 계산식 · 데이터 범위</summary>
-            <div>
+            <div className="indicator-explanation">
               <h2>무엇을 보는가</h2>
               <p>{d?.shortMeaning ?? article?.summary ?? d?.title}</p>
               <h2>기준선을 읽는 법</h2>
@@ -1028,31 +1017,30 @@ export function IndicatorWorkspace() {
                 {article?.caution ??
                   '결측은 보간하지 않고 미래 데이터를 사용하지 않습니다. 관측 이력이 짧으면 계산 결과가 없습니다.'}
               </p>
-              {article && <Link to={guideHref(article.id, context)}>상세 설명 읽기</Link>}
-              <h2>프로젝트·공급 참고</h2>
-              <ul>
-                {ASSET_REFERENCES[asset].map((link) => (
-                  <li key={link.url}>
-                    <a href={link.url} target="_blank" rel="noreferrer">
-                      {link.provider} · {link.purpose} ↗
-                    </a>
-                  </li>
-                ))}
-              </ul>
-              <p>
-                프로젝트 측 원문입니다. 독립적인 위험 평가나 언락 일정의 실시간 확인은 아닙니다.
-              </p>
+              {article && (
+                <Link aria-label="현재 분석 설명" to={guideHref(article.id, context)}>
+                  상세 설명 읽기
+                </Link>
+              )}
+              {!!ASSET_REFERENCES[asset]?.length && (
+                <>
+                  <h2>프로젝트·공급 참고</h2>
+                  <ul>
+                    {(ASSET_REFERENCES[asset] ?? []).map((link) => (
+                      <li key={link.url}>
+                        <a href={link.url} target="_blank" rel="noreferrer">
+                          {link.provider} · {link.purpose} ↗
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                  <p>
+                    프로젝트 측 원문입니다. 독립적인 위험 평가나 언락 일정의 실시간 확인은 아닙니다.
+                  </p>
+                </>
+              )}
             </div>
-          </details>
-          {article && (
-            <Link
-              className="indicator-help"
-              to={guideHref(article.id, context)}
-              aria-label="현재 분석 설명"
-            >
-              {d?.title} 상세 설명 ↗
-            </Link>
-          )}
+          </DeskDialog>
           <DeskDialog
             open={saving}
             onOpenChange={setSaving}
@@ -1149,16 +1137,6 @@ export function IndicatorWorkspace() {
             </div>
           )}
         </section>
-        <aside className="indicator-context">
-          <h2>{d?.title} 읽는 법</h2>
-          <p>{d?.shortMeaning ?? article?.summary ?? d?.title}</p>
-          <h3>기준값</h3>
-          <p>{d?.baselineMeaning ?? article?.read ?? '단위와 확정 관측일을 함께 확인하세요.'}</p>
-          <h3>계산 기준</h3>
-          <p>{d?.formula}</p>
-          {article && <Link to={guideHref(article.id, context)}>공식과 예시 자세히 보기</Link>}
-          <small>{d?.source}</small>
-        </aside>
       </div>
       <DeskDialog open={picker} onOpenChange={setPicker} title="지표 선택" returnFocus={pickButton}>
         {picker && <IndicatorNavigation onNavigate={() => setPicker(false)} />}

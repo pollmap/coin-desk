@@ -107,8 +107,10 @@ export function createHttpServer({
           const market = url.searchParams.get('market');
           if (
             !['upbit', 'binance'].includes(market) ||
-            [...url.searchParams.keys()].some((k) => k !== 'market') ||
-            url.searchParams.getAll('market').length !== 1
+            [...url.searchParams.keys()].some((k) => !['market', 'assets'].includes(k)) ||
+            url.searchParams.getAll('market').length !== 1 ||
+            url.searchParams.getAll('assets').length > 1 ||
+            (url.searchParams.get('assets')?.length ?? 0) > 2500
           ) {
             out = json({ error: 'Invalid market' }, 400);
           } else if (!quoteHubUrl) {
@@ -118,7 +120,7 @@ export function createHttpServer({
             res.on('close', () => controller.abort());
             const deadline = setTimeout(() => controller.abort(), 5000);
             try {
-              out = await fetch(`${quoteHubUrl}/stream?market=${market}`, {
+              out = await fetch(`${quoteHubUrl}/stream?${url.searchParams}`, {
                 signal: controller.signal,
               });
             } finally {

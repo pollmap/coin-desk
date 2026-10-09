@@ -363,6 +363,14 @@
   max-width: 680px;
   line-height: 1.7;
 }
+.indicator-info-actions {
+  display: flex;
+  gap: 8px;
+  padding: 8px 0;
+}
+.indicator-info-actions button {
+  min-height: 36px;
+}
 .indicator-provenance {
   display: flex;
   gap: 14px;

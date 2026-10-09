@@ -611,15 +611,19 @@ export const AnalysisChart = memo(function AnalysisChart({
           {asset} · {primary?.title ?? unit}
         </span>
         <span>
-          <span className="analysis-reading-date">
+          <span className="analysis-reading-date" title={timestamp(time)}>
+            <span className={selectedTime === null ? 'sr-only' : undefined}>
+              {selectedTime === null
+                ? primary
+                  ? '최근 확정값'
+                  : '최근 관측'
+                : pinned
+                  ? '날짜 고정'
+                  : '미리 보기'}
+            </span>{' '}
             {selectedTime === null
-              ? primary
-                ? '최근 확정값'
-                : '최근 관측'
-              : pinned
-                ? '날짜 고정'
-                : '미리 보기'}{' '}
-            · {timestamp(time)}
+              ? `${timestamp(time).slice(5, 10).replace('-', '.')} 기준`
+              : `· ${timestamp(time)}`}
           </span>{' '}
           <b className="analysis-reading-value">
             {primary || !['USD', 'USDT', 'KRW'].includes(unit) ? (

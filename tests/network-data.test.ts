@@ -36,8 +36,10 @@ const raw = (time: number, asset: NetworkAsset = 'BTC', changes: Record<string, 
 
 describe('free network metric definitions and normalization', () => {
   it('subtracts large exchange decimals before float conversion', () => {
-    expect(decimalDifference('593183.075487895027779039', '593197.4758625682507349'))
-      .toBeCloseTo(-14.400374673222956, 12);
+    expect(decimalDifference('593183.075487895027779039', '593197.4758625682507349')).toBeCloseTo(
+      -14.400374673222956,
+      12,
+    );
     expect(decimalDifference('1.20', '1.2')).toBe(0);
   });
   it('registers actual free availability and chain-specific units, without inventing unsupported token fees', () => {
@@ -45,7 +47,7 @@ describe('free network metric definitions and normalization', () => {
       ['BTC', 'DOGE', 'ETH', 'XRP', 'LINK'].map(
         (asset) => networkMetrics(asset as NetworkAsset).length,
       ),
-    ).toEqual([18, 14, 17, 11, 10]);
+    ).toEqual([18, 14, 17, 12, 11]);
     expect(networkMetrics('SOL')).toEqual([]);
     expect(networkUnit('DOGE', 'fees_native')).toBe('DOGE / 일');
     expect(networkUnit('BTC', 'hashrate')).toBe('TH/s');
@@ -159,6 +161,28 @@ describe('monthly network storage against actual SQLite', () => {
     const url = new URL(String(fetcher.mock.calls[0]?.[0]));
     expect(url.searchParams.get('page_size')).toBe('60');
     expect(url.searchParams.get('start_time')).toBe(new Date(start * 1000).toISOString());
+  });
+
+  it('refreshes recent observations while preserving an old history cursor', async () => {
+    db.sqlite
+      .prepare('INSERT INTO state VALUES(?,?)')
+      .run('network-cursor:BTC', String(start + 60 * DAY));
+    const fetcher = source([raw(now - 2 * DAY), raw(now - DAY)]);
+    await updateNetworkData(env, 'BTC', 'latest');
+    const requested = new URL(String(fetcher.mock.calls[0]?.[0]));
+    expect(requested.searchParams.get('start_time')).toBe(
+      new Date((now - 32 * DAY) * 1000).toISOString(),
+    );
+    expect(
+      db.sqlite.prepare("SELECT value FROM state WHERE key='network-cursor:BTC'").get()?.value,
+    ).toBe(String(start + 60 * DAY));
+    expect(
+      db.sqlite.prepare("SELECT data_as_of FROM ingestion WHERE key='network:BTC'").get()
+        ?.data_as_of,
+    ).toBe(now - DAY);
+    expect(
+      (await readNetworkSeries(db, 'BTC', 'mvrv', now - 2 * DAY, now, 1000)).data,
+    ).toHaveLength(2);
   });
 
   it('re-reading unchanged source days preserves month timestamps and coverage counts; a source revision replaces its value', async () => {

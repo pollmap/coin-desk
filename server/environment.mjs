@@ -1,3 +1,4 @@
+import { ASSET_REGISTRY } from '../server-dist/assets.mjs';
 import { randomBytes } from 'node:crypto';
 import { memoryCache } from '../scripts/local-db.mjs';
 
@@ -10,7 +11,7 @@ export async function createEnvironment(DB, options = {}) {
     RUNTIME_KIND: 'vps',
     READ_ONLY_API: true,
     BITVIEW_BASE_URL: process.env.BITVIEW_BASE_URL || 'https://bitview.space',
-    ENABLED_ASSETS: process.env.ENABLED_ASSETS || 'BTC,DOGE,ETH,SOL,XRP,LINK,ONDO,PEPE',
+    ENABLED_ASSETS: process.env.ENABLED_ASSETS || ASSET_REGISTRY.map((a) => a.id).join(','),
     ASSETS: { fetch: async () => new Response(null, { status: 404 }) },
     // Private in-process binding; no public proxy route, Cloudflare URL or token.
     FEED_SERVICE: {

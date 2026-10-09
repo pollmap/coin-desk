@@ -12,6 +12,9 @@ export interface MarketSnapshot {
   currency: 'KRW' | 'USDT';
   asOf: number;
   rows: MarketRow[];
+  total?: number;
+  offset?: number;
+  limit?: number;
   collection?: {
     healthy: boolean;
     reason: string | null;
@@ -28,6 +31,7 @@ export interface LiveQuote {
   receivedAt: number;
 }
 export interface QuoteStream {
+  delta?: boolean;
   epoch: string;
   sequence: number;
   market: Market;

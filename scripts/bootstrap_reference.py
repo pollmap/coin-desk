@@ -6,16 +6,17 @@ Community data attribution: Coin Metrics, CC BY-NC 4.0; noncommercial use only.
 import argparse, datetime as dt, hashlib, json, math, pathlib, time, urllib.request
 ROOT=pathlib.Path(__file__).resolve().parents[1]
 BASE='https://community-api.coinmetrics.io/v4/timeseries/asset-metrics'
-ASSETS=['BTC','DOGE','ETH','XRP','LINK']
+from registry import ASSETS as REGISTRY, network_id, network_fields
+ASSETS=[a for a in REGISTRY if 'PriceUSD' in network_fields(a)]
 def collect(asset,folder):
-    url=BASE+'?assets='+asset.lower()+'&metrics=PriceUSD&frequency=1d&page_size=10000&start_time=2009-01-01&paging_from=start'
+    url=BASE+'?assets='+network_id(asset)+'&metrics=PriceUSD&frequency=1d&page_size=10000&start_time=2009-01-01&paging_from=start'
     request=urllib.request.Request(url,headers={'User-Agent':'CoinDesk/0.4 personal noncommercial dashboard'})
     with urllib.request.urlopen(request,timeout=40) as response:raw=response.read()
     data=json.loads(raw)
     if data.get('next_page_url'):raise ValueError('More than 10000 rows; pagination must be extended explicitly')
     now=int(time.time()); points=[]; seen=set(); nulls=0
     for row in data['data']:
-        assert row['asset']==asset.lower()
+        assert row['asset']==network_id(asset)
         stamp=int(dt.datetime.fromisoformat(row['time'].replace('Z','+00:00')).timestamp())
         assert stamp%86400==0 and stamp not in seen
         seen.add(stamp)

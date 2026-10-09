@@ -1,3 +1,4 @@
+import { assetDefinition } from './asset-registry';
 import { ASSETS } from './catalog';
 import { defaultIndicator, indicatorDefinition } from './indicator-catalog';
 import type { Asset } from './types';
@@ -46,17 +47,19 @@ export const evidence = (
   checkedAt: KNOWLEDGE_REVIEWED,
   review: 'reviewed',
 });
-const facts: Record<
-  Asset,
-  {
-    url: string;
-    provider: string;
-    note: string;
-    network?: string;
-    networkUrl?: string;
-    project?: string;
-    projectDescription?: string;
-  }
+const facts: Partial<
+  Record<
+    Asset,
+    {
+      url: string;
+      provider: string;
+      note: string;
+      network?: string;
+      networkUrl?: string;
+      project?: string;
+      projectDescription?: string;
+    }
+  >
 > = {
   BTC: {
     url: 'https://bitcoin.org/en/bitcoin-for-individuals',
@@ -112,6 +115,41 @@ const facts: Record<
     projectDescription: 'PEPE 밈 토큰의 프로젝트입니다.',
     network: 'Ethereum',
   },
+  PENGU: {
+    url: 'https://www.binance.com/en/academy/articles/what-are-pudgy-penguins-pengu',
+    provider: 'Binance Academy',
+    note: 'Pudgy Penguins 생태계의 커뮤니티 토큰입니다. NFT 자체와 구분합니다.',
+    project: 'Pudgy Penguins',
+    projectDescription: '펭귄 캐릭터 NFT와 상품·콘텐츠를 전개하는 프로젝트입니다.',
+  },
+  ADA: {
+    url: 'https://cardano.org/what-is-ada/',
+    provider: 'Cardano',
+    note: 'Cardano 네트워크에서 전송과 스테이킹에 사용하는 네이티브 자산입니다.',
+    network: 'Cardano',
+  },
+  AAVE: {
+    url: 'https://www.aave.com/docs/ecosystem/aave',
+    provider: 'Aave',
+    note: '대출 프로토콜 Aave의 거버넌스 토큰입니다. 예치 자산이나 대출 잔액과 구분합니다.',
+    project: 'Aave',
+    projectDescription: '암호자산을 예치하거나 담보로 대출하는 프로토콜입니다.',
+    network: 'Ethereum',
+  },
+  SHIB: {
+    url: 'https://shib.io/developers',
+    provider: 'Shiba Inu',
+    note: 'Shiba Inu 생태계의 토큰입니다. 이 화면의 온체인 지표는 Ethereum의 SHIB를 측정합니다.',
+    project: 'Shiba Inu',
+    projectDescription: 'SHIB와 Shibarium 등으로 구성된 생태계입니다.',
+    network: 'Ethereum',
+  },
+  SUI: {
+    url: 'https://docs.sui.io/develop/sui-architecture',
+    provider: 'Sui',
+    note: 'Sui 네트워크에서 가스 비용과 스테이킹에 사용하는 네이티브 자산입니다.',
+    network: 'Sui',
+  },
 };
 export interface ThemeDefinition {
   id: string;
@@ -131,9 +169,9 @@ const theme = (
   members: assets.map((asset) => ({
     asset,
     evidence: evidence(
-      facts[asset].url,
-      facts[asset].provider,
-      facts[asset].note + ' 이 테마 연결은 보리차트의 편집 분류입니다.',
+      facts[asset]!.url,
+      facts[asset]!.provider,
+      facts[asset]!.note + ' 이 테마 연결은 보리차트의 편집 분류입니다.',
       'editorial',
     ),
   })),
@@ -143,10 +181,18 @@ export const THEMES: ThemeDefinition[] = [
   theme('platforms', '스마트계약 플랫폼', '앱 실행과 네트워크 수수료에 사용하는 자산', [
     'ETH',
     'SOL',
+    'ADA',
+    'SUI',
   ]),
-  theme('memes', '밈', '밈과 커뮤니티를 중심으로 알려진 코인·토큰', ['DOGE', 'PEPE']),
+  theme('memes', '밈·커뮤니티', '밈과 커뮤니티를 중심으로 알려진 코인·토큰', [
+    'DOGE',
+    'PEPE',
+    'SHIB',
+    'PENGU',
+  ]),
   theme('oracles', '오라클', '블록체인과 외부 데이터의 연결', ['LINK']),
   theme('rwa', 'RWA 관련', '실물자산 토큰화 프로젝트와 관련된 거버넌스 토큰', ['ONDO']),
+  theme('defi', '디파이', '블록체인 금융 프로토콜과 관련된 토큰', ['AAVE']),
 ];
 export const themesResponse = () => ({
   version: KNOWLEDGE_VERSION,
@@ -156,7 +202,11 @@ export const themesResponse = () => ({
 });
 const implementation = 'https://github.com/pollmap/coin-desk/blob/main/shared/indicator-catalog.ts';
 export function assetKnowledge(asset: Asset): KnowledgeResponse {
-  const fact = facts[asset],
+  const fact = facts[asset] ?? {
+      url: assetDefinition(asset)!.review.sources[0],
+      provider: '거래소 종목 정보',
+      note: '거래소에서 확인한 자산입니다. 프로젝트·네트워크 관계는 검토 중입니다.',
+    },
     root = 'asset:' + asset;
   const proof = evidence(fact.url, fact.provider, fact.note);
   const nodes: KnowledgeNode[] = [
@@ -196,7 +246,7 @@ export function assetKnowledge(asset: Asset): KnowledgeResponse {
         id: 'network:' + fact.network,
         kind: 'network',
         label: fact.network,
-        description: ['LINK', 'PEPE'].includes(asset)
+        description: ['LINK', 'PEPE', 'AAVE', 'SHIB'].includes(asset)
           ? '확인한 발행 네트워크입니다. 다른 체인의 배포 전체 목록은 아닙니다.'
           : `${asset}를 네이티브 자산으로 사용하는 네트워크입니다.`,
         evidence: evidence(fact.networkUrl ?? fact.url, fact.provider, fact.note),

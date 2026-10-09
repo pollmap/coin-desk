@@ -61,7 +61,10 @@ export function AssetHeader({
     return () => document.removeEventListener('pointerdown', dismiss);
   }, []);
   const coin = ASSETS.find((a) => a.id === asset)!;
-  const results = ASSETS.filter((a) => matchesCoin(a.id, query));
+  const exact = query.trim().toUpperCase();
+  const results = ASSETS.filter((a) => matchesCoin(a.id, query)).sort(
+    (a, b) => Number(b.id === exact) - Number(a.id === exact),
+  );
   return (
     <div className={'asset-header' + (compact ? ' compact-coins' : '')}>
       <div className="coin-context">
@@ -107,7 +110,7 @@ export function AssetHeader({
                     ?.querySelector<HTMLButtonElement>('.coin-result-list button')
                     ?.focus();
                 }
-                if (e.key === 'Enter' && results.length === 1) {
+                if (e.key === 'Enter' && results.length > 0) {
                   e.preventDefault();
                   navigate(target(results[0].id));
                   if (picker.current) picker.current.open = false;
@@ -160,9 +163,11 @@ export function AssetHeader({
         </details>
         <div className="coin-context-links">
           <p>{subtitle}</p>
-          <a href={COIN_SITES[asset]} target="_blank" rel="noreferrer">
-            {asset} 공식 사이트 ↗
-          </a>
+          {COIN_SITES[asset] && (
+            <a href={COIN_SITES[asset]} target="_blank" rel="noreferrer">
+              {asset} 공식 사이트 ↗
+            </a>
+          )}
         </div>
         <div className="coin-shortcuts" aria-label="자주 보는 코인">
           {(compact
