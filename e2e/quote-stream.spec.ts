@@ -1,8 +1,11 @@
 import { test, expect } from '@playwright/test';
 
-test('live prices preserve the historical canvas, reject out-of-order events and fall back on disconnect', async ({
+test('live prices preserve the historical canvas, reject old events and retain the last trade on disconnect', async ({
   page,
 }) => {
+  // Make the minute snapshot stale regardless of how long earlier tests took.
+  // Stream trades below use this same browser clock and remain current.
+  await page.clock.install({ time: new Date(Date.now() + 600000) });
   await page.addInitScript(() => {
     const sources: EventTarget[] = [];
     class FixtureSource extends EventTarget {
@@ -65,9 +68,11 @@ test('live prices preserve the historical canvas, reject out-of-order events and
   await expect(page.locator('.analysis-legend')).toHaveText(latest, { useInnerText: true });
   expect(await canvas!.evaluate((el) => el.isConnected)).toBe(true);
   await emit(3, 86000000, now + 1, false);
-  await expect(page.locator('.detail-quote')).toContainText('₩84,000,000');
+  await expect(page.locator('.detail-quote')).toContainText('₩86,000,000');
+  await expect(page.locator('.detail-quote')).toContainText('갱신 지연');
   await emit(4, 87000000, now + 2);
   await expect(page.locator('.detail-quote')).toContainText('₩87,000,000');
+  await expect(page.locator('.detail-quote')).not.toContainText('갱신 지연');
   expect(await canvas!.evaluate((el) => el.isConnected)).toBe(true);
 });
 
