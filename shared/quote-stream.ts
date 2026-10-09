@@ -1,6 +1,36 @@
 import { ASSETS } from './catalog';
 import type { Market } from './types';
-import type { QuoteStream, LiveQuote } from './market-snapshot';
+import type { QuoteStream, LiveQuote, MarketRow } from './market-snapshot';
+
+/** Keep the last known trade visible without promoting an old trade to live. */
+export function quoteRowView(
+  row: MarketRow,
+  stream: QuoteStream | null,
+  market: Market,
+  transport: string,
+  now: number,
+) {
+  const tick =
+    stream?.market === market
+      ? stream.quotes.find((q) => q.asset === row.asset && q.market === market)
+      : undefined;
+  const preferred =
+    row.status !== 'unsupported' &&
+    !!tick &&
+    Number.isFinite(tick.price) &&
+    tick.price > 0 &&
+    tick.tradedAt <= now + 60 &&
+    tick.tradedAt >= (row.quote?.time ?? 0);
+  const live =
+    preferred && transport === 'live' && stream?.connected === true && now - tick.tradedAt <= 300;
+  return {
+    ...row,
+    live,
+    displayPrice: preferred ? tick.price : row.quote?.price,
+    displayTime: preferred ? tick.tradedAt : row.quote?.time,
+    stale: !live && (!row.quote || now - row.quote.time > 300 || now - (row.fetchedAt ?? 0) > 300),
+  };
+}
 
 /** Accept only this market and monotone trade times, including across hub restarts. */
 export function mergeQuoteStream(

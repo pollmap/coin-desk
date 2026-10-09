@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import type { Market } from '../shared/types';
 import type { MarketSnapshot, QuoteStream } from '../shared/market-snapshot';
 import { useData } from './hooks';
-import { mergeQuoteStream } from '../shared/quote-stream';
+import { mergeQuoteStream, quoteRowView } from '../shared/quote-stream';
 
 export function useQuoteFeed(
   market: Market,
@@ -77,28 +77,7 @@ export function useQuoteFeed(
   }, [market, subscription]);
   const rows =
     snapshot.data?.market === market
-      ? snapshot.data.rows.map((row) => {
-          const tick =
-            stream?.market === market && transport === 'live'
-              ? stream.quotes.find((q) => q.asset === row.asset && q.market === market)
-              : undefined;
-          const live =
-            !!tick &&
-            Number.isFinite(tick.price) &&
-            tick.price > 0 &&
-            now - tick.tradedAt <= 300 &&
-            tick.tradedAt <= now + 60 &&
-            tick.tradedAt >= (row.quote?.time ?? 0);
-          return {
-            ...row,
-            live,
-            displayPrice: live ? tick.price : row.quote?.price,
-            displayTime: live ? tick.tradedAt : row.quote?.time,
-            stale:
-              !live &&
-              (!row.quote || now - row.quote.time > 300 || now - (row.fetchedAt ?? 0) > 300),
-          };
-        })
+      ? snapshot.data.rows.map((row) => quoteRowView(row, stream, market, transport, now))
       : [];
   return { ...snapshot, rows, transport };
 }
