@@ -115,3 +115,46 @@ it('low storage refreshes recent funding without consuming history budget or mov
     db.sqlite.prepare("SELECT COUNT(*) AS n FROM derivative_series WHERE asset='BTC'").get().n,
   ).toBe(2);
 });
+
+it('VPS non-primary recent observations continue after the daily history budget is exhausted', async () => {
+  await reserveDerivativeBackfill(db, LIMIT, now);
+  const cursor = String((now - 16 * 3600) * 1000);
+  db.sqlite
+    .prepare('INSERT INTO derivative_series VALUES(?,?,?,?,?)')
+    .run('SHIB', 'funding', now - 8 * 3600, 0.01, now);
+  db.sqlite.prepare('INSERT INTO state VALUES(?,?)').run('cursor:derivatives:SHIB:funding', cursor);
+  const fetcher = vi.fn(async (_input: RequestInfo | URL) =>
+    Response.json({
+      retCode: 0,
+      result: {
+        category: 'linear',
+        list: [
+          {
+            symbol: 'SHIB1000USDT',
+            fundingRateTimestamp: String(now * 1000),
+            fundingRate: '0.0002',
+          },
+        ],
+      },
+    }),
+  );
+  vi.stubGlobal('fetch', fetcher);
+  await updateDerivatives({ DB: db, RUNTIME_KIND: 'vps' } as Env, 'SHIB', 'funding');
+  expect(fetcher).toHaveBeenCalledTimes(1);
+  expect(new URL(String(fetcher.mock.calls[0][0])).searchParams.get('limit')).toBe('20');
+  expect(
+    db.sqlite.prepare("SELECT value FROM state WHERE key='cursor:derivatives:SHIB:funding'").get()
+      .value,
+  ).toBe(cursor);
+  expect(
+    db.sqlite
+      .prepare("SELECT next_attempt,data_as_of FROM ingestion WHERE key='derivatives:SHIB:funding'")
+      .get(),
+  ).toMatchObject({ next_attempt: now + 6 * 3600, data_as_of: now });
+  expect(
+    JSON.parse(
+      db.sqlite.prepare("SELECT value FROM state WHERE key='budget:derivatives-backfill'").get()
+        .value,
+    ).reserved,
+  ).toBe(LIMIT);
+});

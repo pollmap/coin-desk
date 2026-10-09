@@ -134,7 +134,14 @@ export async function updateDerivatives(
   const size = backfill || firstPage ? 200 : metric === 'funding' ? 20 : 30;
   if ((backfill || firstPage) && !(await reserveDerivativeBackfill(env.DB, size, now))) {
     // Preserve the cursor and saved observations. The independent recent lane continues.
-    const resumeAt = (Math.floor(now / DAY) + 1) * DAY;
+    // Expanded VPS assets do not all use the primary-coins recent lane. Their
+    // current observations must remain independent of the historical row budget.
+    if (env.RUNTIME_KIND === 'vps' && coverage?.last)
+      await updateDerivatives(env, asset, metric, true);
+    const resumeAt = Math.min(
+      (Math.floor(now / DAY) + 1) * DAY,
+      env.RUNTIME_KIND === 'vps' ? now + 6 * 3600 : Infinity,
+    );
     await env.DB.prepare(
       'INSERT INTO ingestion(key,last_attempt,next_attempt) VALUES(?,?,?) ON CONFLICT(key) DO UPDATE SET next_attempt=excluded.next_attempt',
     )
