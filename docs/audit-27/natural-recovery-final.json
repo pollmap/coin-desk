@@ -1,0 +1,67 @@
+{
+  "observedAt": "2026-10-10T18:28:50.913942+00:00",
+  "earlierSourceComparisonAt": "2026-10-10T18:25:53.367623+00:00",
+  "directCollectionCalled": false,
+  "recoveredCases": [
+    {
+      "key": "quote:SHIB:upbit",
+      "earlierDiagnosis": "TRADE_STALE",
+      "status": "ok",
+      "last_success": 1791656888,
+      "data_as_of": 1791656763,
+      "confirmationAdvanced": true,
+      "dataAdvanced": true,
+      "currentDiagnosis": "CURRENT"
+    },
+    {
+      "key": "quote:WLFI:upbit",
+      "earlierDiagnosis": "TRADE_STALE",
+      "status": "delayed",
+      "last_success": 1791656890,
+      "data_as_of": 1791656736,
+      "confirmationAdvanced": true,
+      "dataAdvanced": true,
+      "currentDiagnosis": "TRADE_STALE"
+    },
+    {
+      "key": "quote:INJ:upbit",
+      "earlierDiagnosis": "TRADE_STALE",
+      "status": "ok",
+      "last_success": 1791656891,
+      "data_as_of": 1791656887,
+      "confirmationAdvanced": true,
+      "dataAdvanced": true,
+      "currentDiagnosis": "CURRENT"
+    },
+    {
+      "key": "quote:CRO:upbit",
+      "earlierDiagnosis": "TRADE_STALE",
+      "status": "delayed",
+      "last_success": 1791656893,
+      "data_as_of": 1791656723,
+      "confirmationAdvanced": true,
+      "dataAdvanced": true,
+      "currentDiagnosis": "TRADE_STALE"
+    },
+    {
+      "key": "quote:SEI:upbit",
+      "earlierDiagnosis": "TRADE_STALE",
+      "status": "delayed",
+      "last_success": 1791656895,
+      "data_as_of": 1791656720,
+      "confirmationAdvanced": true,
+      "dataAdvanced": true,
+      "currentDiagnosis": "TRADE_STALE"
+    },
+    {
+      "key": "quote:DGB:binance",
+      "earlierDiagnosis": "QUOTE_WINDOW_STALE",
+      "status": "ok",
+      "last_success": 1791656903,
+      "data_as_of": 1791656781,
+      "confirmationAdvanced": true,
+      "dataAdvanced": true,
+      "currentDiagnosis": "CURRENT"
+    }
+  ]
+}

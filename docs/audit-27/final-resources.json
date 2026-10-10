@@ -1,0 +1,52 @@
+{
+  "observedAt": 1791656615.242521,
+  "removedOnlyOwnedCandidateContainers": [
+    "coin-desk-api-0272-check",
+    "coin-desk-api-0273-check",
+    "coin-desk-api-0273-enforce"
+  ],
+  "diskFreeBytes": 9228320768,
+  "diskFreeGiB": 8.595,
+  "diskTotalBytes": 154894188544,
+  "optionalHistorySpaceGateBytes": 8589934592,
+  "aboveSpaceGate": true,
+  "otherProjectsChanged": false,
+  "production": [
+    {
+      "name": "coin-desk-api-1",
+      "image": "coin-desk:vps-c4973ddd75c4b96b",
+      "status": "Up 21 minutes (healthy)"
+    },
+    {
+      "name": "coin-desk-background-1",
+      "image": "coin-desk:vps-c4973ddd75c4b96b",
+      "status": "Up 21 minutes (healthy)"
+    },
+    {
+      "name": "coin-desk-recent-1",
+      "image": "coin-desk:vps-a1c06604282c8ca1",
+      "status": "Up 21 hours (healthy)"
+    },
+    {
+      "name": "coin-desk-quotes-1",
+      "image": "coin-desk:vps-a1c06604282c8ca1",
+      "status": "Up 21 hours (healthy)"
+    },
+    {
+      "name": "coin-desk-analysis-1",
+      "image": "coin-desk:vps-29f6a85aaef183d4",
+      "status": "Up 25 hours (healthy)"
+    },
+    {
+      "name": "coin-desk-quote-hub-1",
+      "image": "coin-desk:vps-29f6a85aaef183d4",
+      "status": "Up 25 hours (healthy)"
+    },
+    {
+      "name": "coin-desk-backup-1",
+      "image": "coin-desk:vps-6270048e66efc7fa",
+      "status": "Up 25 hours (healthy)"
+    }
+  ],
+  "dataAndBackupsDeleted": false
+}

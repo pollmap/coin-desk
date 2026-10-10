@@ -1,0 +1,166 @@
+{
+  "failedRun": 38074050004,
+  "failedCase": "WebKit all 150 market logos decode and match their own identity 390",
+  "error": "EncodingError: Loading error",
+  "browserConsoleErrorsBeforeFailure": [
+    {
+      "time": 33536.1,
+      "message": "WebSocket connection to 'ws://127.0.0.1:5190/?token=d32NWkwV-rKr' failed: WebSocket network error: Network process crashed.",
+      "resource": ""
+    },
+    {
+      "time": 33608.103,
+      "message": "Failed to load resource: WebKit encountered an internal error",
+      "resource": "eigen-9e5103e29738.png"
+    },
+    {
+      "time": 33608.242,
+      "message": "Failed to load resource: WebKit encountered an internal error",
+      "resource": "jasmy-6c10370c40d4.png"
+    },
+    {
+      "time": 33609.293,
+      "message": "Failed to load resource: WebKit encountered an internal error",
+      "resource": "bananas31-d00490957a7e.png"
+    },
+    {
+      "time": 33609.37,
+      "message": "Failed to load resource: WebKit encountered an internal error",
+      "resource": "floki-6213fcb3e856.png"
+    },
+    {
+      "time": 33609.904,
+      "message": "Failed to load resource: WebKit encountered an internal error",
+      "resource": "huma-5e7284652b3c.png"
+    },
+    {
+      "time": 33609.968,
+      "message": "Failed to load resource: WebKit encountered an internal error",
+      "resource": "twt-faa60adc11db.png"
+    },
+    {
+      "time": 33610.023,
+      "message": "Failed to load resource: WebKit encountered an internal error",
+      "resource": "enj-06cf489fba1e.png"
+    },
+    {
+      "time": 33610.079,
+      "message": "Failed to load resource: WebKit encountered an internal error",
+      "resource": "cvx-cb4411bc3d92.png"
+    },
+    {
+      "time": 33610.135,
+      "message": "Failed to load resource: WebKit encountered an internal error",
+      "resource": "dgb-8e8542fa8344.png"
+    },
+    {
+      "time": 33610.221,
+      "message": "Failed to load resource: WebKit encountered an internal error",
+      "resource": "zec-eef747ec1f7d.png"
+    },
+    {
+      "time": 33610.281,
+      "message": "Failed to load resource: WebKit encountered an internal error",
+      "resource": "nexo-0e284ddc7293.png"
+    },
+    {
+      "time": 33611.368,
+      "message": "Failed to load resource: WebKit encountered an internal error",
+      "resource": "bonk-3fb62f100984.png"
+    },
+    {
+      "time": 33611.444,
+      "message": "Failed to load resource: WebKit encountered an internal error",
+      "resource": "gala-7f51415db3f2.png"
+    },
+    {
+      "time": 33611.505,
+      "message": "Failed to load resource: WebKit encountered an internal error",
+      "resource": "ltc-50b7635088e7.png"
+    },
+    {
+      "time": 33611.557,
+      "message": "Failed to load resource: WebKit encountered an internal error",
+      "resource": "rose-099bad8ce174.png"
+    },
+    {
+      "time": 33611.61,
+      "message": "Failed to load resource: WebKit encountered an internal error",
+      "resource": "cake-371c6b531f96.png"
+    },
+    {
+      "time": 33611.662,
+      "message": "Failed to load resource: WebKit encountered an internal error",
+      "resource": "paxg-909ded8d23eb.png"
+    },
+    {
+      "time": 33611.714,
+      "message": "Failed to load resource: WebKit encountered an internal error",
+      "resource": "ftt-63baf71b67e1.png"
+    },
+    {
+      "time": 33611.764,
+      "message": "Failed to load resource: WebKit encountered an internal error",
+      "resource": "dydx-392904871821.png"
+    },
+    {
+      "time": 33612.043,
+      "message": "Failed to load resource: WebKit encountered an internal error",
+      "resource": "s-41c19b60f7ab.png"
+    },
+    {
+      "time": 33612.105,
+      "message": "Failed to load resource: WebKit encountered an internal error",
+      "resource": "gmx-a03154426ce4.png"
+    },
+    {
+      "time": 33612.158,
+      "message": "Failed to load resource: WebKit encountered an internal error",
+      "resource": "hot-e4e766eac79f.png"
+    },
+    {
+      "time": 33613.282,
+      "message": "Failed to load resource: WebKit encountered an internal error",
+      "resource": "sfp-a3a567f3a8bb.png"
+    },
+    {
+      "time": 33613.351,
+      "message": "Failed to load resource: WebKit encountered an internal error",
+      "resource": "ksm-3a098ceb5ad0.png"
+    },
+    {
+      "time": 33613.408,
+      "message": "Failed to load resource: WebKit encountered an internal error",
+      "resource": "dexe-0954a7b9b3d4.png"
+    },
+    {
+      "time": 33613.461,
+      "message": "Failed to load resource: WebKit encountered an internal error",
+      "resource": "yfi-ff6b11fac357.png"
+    },
+    {
+      "time": 33613.512,
+      "message": "Failed to load resource: WebKit encountered an internal error",
+      "resource": "snx-03e35df7ec2c.png"
+    },
+    {
+      "time": 33613.565,
+      "message": "Failed to load resource: WebKit encountered an internal error",
+      "resource": "lunc-0eba8de7b862.png"
+    }
+  ],
+  "rootCauseConfirmed": false,
+  "change": "Inventory QA no longer forces every off-screen logo to eager simultaneously. Each image must load with a 15s deadline, decode, match its own registry path and retain its dimensions. Errors still fail. Product lazy loading and all 150 identity assertions are unchanged.",
+  "localFocusedWebkit": {
+    "passed": 10,
+    "retries": 0,
+    "widths": [
+      390,
+      1280
+    ]
+  },
+  "localChromiumLogoSuite": {
+    "passed": 4,
+    "retries": 0
+  }
+}

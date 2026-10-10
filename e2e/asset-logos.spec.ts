@@ -27,20 +27,45 @@ for (const width of [390, 1280])
       await expect(page.locator('.market-table tbody tr')).toHaveCount(count);
       const images = await page.locator('.market-coin-cell img').evaluateAll(async (nodes) => {
         const logos = nodes as HTMLImageElement[];
-        // Explicitly request off-screen files for inventory QA; production stays lazy.
-        for (const logo of logos) logo.loading = 'eager';
-        return Promise.all(
-          logos.map(async (logo) => {
-            await logo.decode();
-            return {
-              asset: logo.dataset.asset!,
-              path: new URL(logo.src).pathname,
-              width: logo.width,
-              height: logo.height,
-              naturalWidth: logo.naturalWidth,
+        const inventory = [];
+        // Production requests visible logos lazily. Bound the inventory probe too:
+        // forcing 138 simultaneous off-screen loads is not the user loading path.
+        for (const logo of logos) {
+          await new Promise<void>((resolve, reject) => {
+            const description = `${logo.dataset.asset}: ${new URL(logo.src).pathname}`;
+            const cleanup = () => {
+              clearTimeout(deadline);
+              logo.removeEventListener('load', loaded);
+              logo.removeEventListener('error', failed);
             };
-          }),
-        );
+            const loaded = () => {
+              cleanup();
+              if (logo.naturalWidth > 0) resolve();
+              else reject(new Error(`Empty logo: ${description}`));
+            };
+            const failed = () => {
+              cleanup();
+              reject(new Error(`Failed logo load: ${description}`));
+            };
+            const deadline = setTimeout(() => {
+              cleanup();
+              reject(new Error(`Logo load deadline: ${description}`));
+            }, 15000);
+            logo.addEventListener('load', loaded);
+            logo.addEventListener('error', failed);
+            logo.loading = 'eager';
+            if (logo.complete) loaded();
+          });
+          await logo.decode();
+          inventory.push({
+            asset: logo.dataset.asset!,
+            path: new URL(logo.src).pathname,
+            width: logo.width,
+            height: logo.height,
+            naturalWidth: logo.naturalWidth,
+          });
+        }
+        return inventory;
       });
       expect(images).toHaveLength(count);
       for (const item of images) {

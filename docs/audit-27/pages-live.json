@@ -1,0 +1,71 @@
+{
+  "base": "https://coin-desk.pages.dev",
+  "mode": "enforce",
+  "observedAt": "2026-10-10T18:03:32.464Z",
+  "violations": [],
+  "pageErrors": [],
+  "geometry": [
+    {
+      "screen": "market",
+      "width": 320,
+      "firstRowY": 312.796875
+    },
+    {
+      "screen": "market",
+      "width": 390,
+      "firstRowY": 268.796875
+    },
+    {
+      "screen": "market",
+      "width": 768,
+      "firstRowY": 346.09375
+    },
+    {
+      "screen": "market",
+      "width": 1000,
+      "firstRowY": 346.09375
+    },
+    {
+      "screen": "market",
+      "width": 1280,
+      "firstRowY": 346.09375
+    },
+    {
+      "screen": "market",
+      "width": 1440,
+      "firstRowY": 346.09375
+    },
+    {
+      "screen": "market",
+      "width": 1920,
+      "firstRowY": 346.09375
+    },
+    {
+      "screen": "detail",
+      "width": 390,
+      "y": 261,
+      "height": 330
+    },
+    {
+      "screen": "detail",
+      "width": 1280,
+      "y": 226,
+      "height": 440
+    },
+    {
+      "screen": "detail",
+      "width": 1440,
+      "y": 226,
+      "height": 440
+    }
+  ],
+  "passed": true,
+  "headers": {
+    "content-security-policy": "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https://pbs.twimg.com; font-src 'self'; connect-src 'self'; worker-src 'self' blob:; object-src 'none'; base-uri 'none'; frame-ancestors 'none'; form-action 'self'",
+    "content-security-policy-report-only": null,
+    "strict-transport-security": "max-age=31536000",
+    "permissions-policy": "camera=(), microphone=(), geolocation=(), payment=(), usb=()",
+    "x-frame-options": "DENY",
+    "x-content-type-options": "nosniff"
+  }
+}

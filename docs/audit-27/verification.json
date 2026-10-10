@@ -1,0 +1,99 @@
+{
+  "release": "0.27.0",
+  "updatedAt": "2026-10-10T18:29:34.975139+00:00",
+  "implemented": true,
+  "deployed": true,
+  "allQualityGoalsPassed": false,
+  "productMain": "e5bd176eefd1ced0e81567fed8df5485bd6feb6c",
+  "vpsRelease": "vps-c4973ddd75c4b96b",
+  "pagesDeployment": "c393b9a1",
+  "pr": 56,
+  "prCI": {
+    "run": 38072694087,
+    "conclusion": "success",
+    "unit": 686,
+    "server": 22,
+    "vps": 22,
+    "recovery": 2,
+    "browserPassed": 216,
+    "browserOptInExcluded": 2,
+    "retries": 0
+  },
+  "firstMainCI": {
+    "run": 38074050004,
+    "conclusion": "failure",
+    "webkitLogoFailures": 1,
+    "rootCauseConfirmed": false
+  },
+  "followupCI": {
+    "pending": true,
+    "runtimeChanged": false,
+    "deploymentRequired": false
+  },
+  "search": {
+    "exactAssets": 150,
+    "fixedTasks": 100,
+    "top5Success": 100,
+    "wrongAssets": 0,
+    "serverLoopbackP95Ms": 14.376902,
+    "notArbitraryLanguageBenchmark": true
+  },
+  "vector": {
+    "productionEnabled": false,
+    "improvementPercentagePoints": 0,
+    "reason": "Quality improvement gate not met; no model weights installed on VPS"
+  },
+  "sourceCoverage": {
+    "trackedAssets": 150,
+    "marketPairs": 241,
+    "networkAssets": 34,
+    "networkMetricCoverageRows": 442,
+    "independentMvrvProviderMatches": 33,
+    "networkStorageApiContractMatches": 408,
+    "storageContractsNotIndependentProviderChecks": true
+  },
+  "naturalRecovery": {
+    "freshProviderCases": 6,
+    "allSixDataAndConfirmationAdvanced": true,
+    "allCurrentlyFresh": false,
+    "directCollectionCalled": false
+  },
+  "performance": {
+    "pagesLcpP95Ms": 1208,
+    "vpsLcpP95Ms": 2760,
+    "lcpGoalMs": 2500,
+    "pagesPassed": true,
+    "vpsPassed": false,
+    "pagesP95IncreasedFromBeforeByMs": 212,
+    "sseClients": 100,
+    "sseReconnects": 10,
+    "sseErrors": 0,
+    "sseReceiptToClientP95Ms": 986,
+    "sseNotBrowserPaint": true
+  },
+  "security": {
+    "cspReportOnlyThenEnforce": true,
+    "bothOriginsHeadersVerified": true,
+    "npmKnownVulnerabilities": 0,
+    "fixableHighCriticalContainerFindings": 0,
+    "vendorUnfixedPackageCveFindings": 66,
+    "uniqueCves": 20,
+    "entireSecurityAuditComplete": false
+  },
+  "preservation": {
+    "schemaChanged": false,
+    "privateDataPublished": false,
+    "existingDataDeleted": false,
+    "otherVpsProjectsChanged": false,
+    "untrackedUserPlanPreserved": true,
+    "oldImageAndVerifiedBackupsPreserved": true
+  },
+  "externalUnverified": [
+    "Apple Safari/VoiceOver",
+    "Five recruited novice users",
+    "Actual installed user Chrome extension reconnection",
+    "Independent provider requery for every network metric",
+    "Full UTC-day or disaster-recovery guarantee"
+  ],
+  "no48HourGate": true
+}
