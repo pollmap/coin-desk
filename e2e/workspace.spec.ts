@@ -183,7 +183,7 @@ test('slow failures, logos and stale data never contaminate another asset', asyn
     await new Promise((resolve) => setTimeout(resolve, 1200));
     await r.fulfill({ status: 503, json: { error: 'BTC fixture outage' } });
   });
-  await page.route('**/coin-logos/btc.png', (r) => r.abort());
+  await page.route('**/coin-logos/v2/btc-*.png', (r) => r.abort());
   await page.goto('/?asset=BTC');
   await expect(page.locator('.coin-picker > summary .asset-logo.fallback')).toBeVisible();
   await page.getByRole('button', { name: /코인 변경/ }).click();

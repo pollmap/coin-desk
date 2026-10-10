@@ -1,12 +1,13 @@
 import { indicatorDefinition } from '../shared/indicator-catalog';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { BookmarkPlus, ChevronDown, ChevronUp, Download, Star, Trash2 } from 'lucide-react';
+import { BookmarkPlus, ChevronDown, ChevronUp, Download, Trash2 } from 'lucide-react';
 import { METRICS } from '../shared/catalog';
 import { DEFAULT_DESK, importDesk, normalizeDesk, workspaceUrl } from '../shared/workspace';
 import type { PersonalDesk, Workspace } from '../shared/workspace';
 import { annotationKey } from '../shared/annotations';
 import { PERSONAL_DESK_KEY } from '../shared/personal-favorites';
+import { AssetLogo } from './AssetLogo';
 
 const KEY = PERSONAL_DESK_KEY;
 function readDesk(): PersonalDesk {
@@ -233,7 +234,7 @@ export function WorkspaceBar({
                       setMessage('');
                     }}
                   >
-                    <Star size={14} />
+                    <AssetLogo asset={w.asset} size={24} />
                     <b>{w.name}</b>
                     <small>
                       {w.asset} · {indicatorDefinition(w.metric ?? '')?.title ?? '가격·지표'} ·{' '}

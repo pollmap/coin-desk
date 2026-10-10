@@ -9,7 +9,7 @@
       "englishName": "Bitcoin",
       "aliases": ["Bitcoin", "bitcoin"],
       "color": "#f59c39",
-      "logo": "/coin-logos/btc.png",
+      "logo": "/coin-logos/v2/btc-a7bb905c8174.png",
       "coinloreId": "90",
       "rank": 1,
       "markets": {
@@ -102,7 +102,7 @@
       "englishName": "Dogecoin",
       "aliases": ["Dogecoin", "dogecoin"],
       "color": "#c4a34d",
-      "logo": "/coin-logos/doge-official.png",
+      "logo": "/coin-logos/v2/doge-df62df4d6de7.png",
       "coinloreId": "2",
       "rank": 12,
       "markets": {
@@ -183,7 +183,7 @@
       "englishName": "Ethereum",
       "aliases": ["Ethereum", "ethereum"],
       "color": "#899cff",
-      "logo": "/coin-logos/eth.png",
+      "logo": "/coin-logos/v2/eth-403fc20d198d.png",
       "coinloreId": "80",
       "rank": 2,
       "markets": {
@@ -272,7 +272,7 @@
       "englishName": "Solana",
       "aliases": ["Solana", "solana"],
       "color": "#73dac5",
-      "logo": "/coin-logos/sol.png",
+      "logo": "/coin-logos/v2/sol-8f5a9d292475.png",
       "coinloreId": "48543",
       "rank": 7,
       "markets": {
@@ -309,7 +309,7 @@
       "englishName": "XRP",
       "aliases": ["XRP", "ripple"],
       "color": "#d2d9e2",
-      "logo": "/coin-logos/xrp.png",
+      "logo": "/coin-logos/v2/xrp-b988aa684402.png",
       "coinloreId": "58",
       "rank": 5,
       "markets": {
@@ -382,7 +382,7 @@
       "englishName": "ChainLink",
       "aliases": ["ChainLink", "chainlink"],
       "color": "#6084ff",
-      "logo": "/coin-logos/link.png",
+      "logo": "/coin-logos/v2/link-214146de3eb7.png",
       "coinloreId": "2751",
       "rank": 18,
       "markets": {
@@ -451,7 +451,7 @@
       "englishName": "Ondo",
       "aliases": ["Ondo", "ondo-finance"],
       "color": "#829dbc",
-      "logo": "/coin-logos/ondo.png",
+      "logo": "/coin-logos/v2/ondo-ee6a3a7721f3.png",
       "coinloreId": "121611",
       "rank": 42,
       "markets": {
@@ -488,7 +488,7 @@
       "englishName": "Pepe",
       "aliases": ["Pepe", "pepe"],
       "color": "#75b67a",
-      "logo": "/coin-logos/pepe.png",
+      "logo": "/coin-logos/v2/pepe-6f89629e91df.png",
       "coinloreId": "93841",
       "rank": 39,
       "markets": {
@@ -532,7 +532,7 @@
         "pudgy penguins"
       ],
       "color": "#0F666B",
-      "logo": "",
+      "logo": "/coin-logos/v2/pengu-708fb7a39e0f.png",
       "coinloreId": "151101",
       "rank": 86,
       "markets": {
@@ -569,7 +569,7 @@
       "englishName": "TRON",
       "aliases": ["TRON", "tron"],
       "color": "#0F666B",
-      "logo": "",
+      "logo": "/coin-logos/v2/trx-0bf3016637a1.png",
       "coinloreId": "2713",
       "rank": 8,
       "markets": {
@@ -622,7 +622,7 @@
       "englishName": "Cardano",
       "aliases": ["Cardano", "cardano"],
       "color": "#0F666B",
-      "logo": "",
+      "logo": "/coin-logos/v2/ada-171e7e860426.png",
       "coinloreId": "257",
       "rank": 19,
       "markets": {
@@ -699,7 +699,7 @@
       "englishName": "Stellar",
       "aliases": ["Stellar", "stellar"],
       "color": "#0F666B",
-      "logo": "",
+      "logo": "/coin-logos/v2/xlm-485b7fdf4b94.png",
       "coinloreId": "89",
       "rank": 21,
       "markets": {
@@ -776,7 +776,7 @@
       "englishName": "NEAR Protocol",
       "aliases": ["NEAR Protocol", "near-protocol"],
       "color": "#0F666B",
-      "logo": "",
+      "logo": "/coin-logos/v2/near-5ad28d0e5bed.png",
       "coinloreId": "48563",
       "rank": 22,
       "markets": {
@@ -813,7 +813,7 @@
       "englishName": "Bitcoin Cash",
       "aliases": ["Bitcoin Cash", "bitcoin-cash"],
       "color": "#0F666B",
-      "logo": "",
+      "logo": "/coin-logos/v2/bch-b64490adba2f.png",
       "coinloreId": "2321",
       "rank": 23,
       "markets": {
@@ -894,7 +894,7 @@
       "englishName": "Uniswap",
       "aliases": ["Uniswap", "uniswap"],
       "color": "#0F666B",
-      "logo": "",
+      "logo": "/coin-logos/v2/uni-965d190fded6.png",
       "coinloreId": "47305",
       "rank": 26,
       "markets": {
@@ -963,7 +963,7 @@
       "englishName": "Avalanche",
       "aliases": ["Avalanche", "avalanche"],
       "color": "#0F666B",
-      "logo": "",
+      "logo": "/coin-logos/v2/avax-d0dac5c7dc2f.png",
       "coinloreId": "44883",
       "rank": 27,
       "markets": {
@@ -1000,7 +1000,7 @@
       "englishName": "Hedera Hashgraph",
       "aliases": ["Hedera Hashgraph", "hedera-hashgraph"],
       "color": "#0F666B",
-      "logo": "",
+      "logo": "/coin-logos/v2/hbar-643ae65edd28.png",
       "coinloreId": "48555",
       "rank": 29,
       "markets": {
@@ -1037,7 +1037,7 @@
       "englishName": "Sui",
       "aliases": ["Sui", "sui"],
       "color": "#0F666B",
-      "logo": "",
+      "logo": "/coin-logos/v2/sui-a20d9e595c7e.png",
       "coinloreId": "93845",
       "rank": 30,
       "markets": {
@@ -1074,7 +1074,7 @@
       "englishName": "Shiba Inu",
       "aliases": ["Shiba Inu", "shiba-inu"],
       "color": "#0F666B",
-      "logo": "",
+      "logo": "/coin-logos/v2/shib-a8f6ffea983f.png",
       "coinloreId": "45088",
       "rank": 31,
       "markets": {
@@ -1144,7 +1144,7 @@
       "englishName": "Bittensor",
       "aliases": ["Bittensor", "bittensor"],
       "color": "#0F666B",
-      "logo": "",
+      "logo": "/coin-logos/v2/tao-e8b9a9053c83.png",
       "coinloreId": "121619",
       "rank": 33,
       "markets": {
@@ -1171,7 +1171,7 @@
       "englishName": "Aave",
       "aliases": ["Aave", "aave"],
       "color": "#0F666B",
-      "logo": "",
+      "logo": "/coin-logos/v2/aave-d96218949549.png",
       "coinloreId": "46018",
       "rank": 35,
       "markets": {
@@ -1240,7 +1240,7 @@
       "englishName": "Mantle",
       "aliases": ["Mantle", "mantle"],
       "color": "#0F666B",
-      "logo": "",
+      "logo": "/coin-logos/v2/mnt-c86f431c80fd.png",
       "coinloreId": "121595",
       "rank": 36,
       "markets": {
@@ -1277,7 +1277,7 @@
       "englishName": "Polkadot",
       "aliases": ["Polkadot", "polkadot"],
       "color": "#0F666B",
-      "logo": "",
+      "logo": "/coin-logos/v2/dot-a9edda4d3692.png",
       "coinloreId": "45219",
       "rank": 37,
       "markets": {
@@ -1314,7 +1314,7 @@
       "englishName": "Internet Computer",
       "aliases": ["Internet Computer (IOU)", "dfinity", "Internet Computer"],
       "color": "#0F666B",
-      "logo": "",
+      "logo": "/coin-logos/v2/icp-e5bce3f6c9ba.png",
       "coinloreId": "47311",
       "rank": 40,
       "markets": {
@@ -1391,7 +1391,7 @@
       "englishName": "Tether Gold",
       "aliases": ["Tether Gold", "tether-gold"],
       "color": "#0F666B",
-      "logo": "",
+      "logo": "/coin-logos/v2/xaut-092110972afa.png",
       "coinloreId": "42855",
       "rank": 41,
       "markets": {
@@ -1460,7 +1460,7 @@
       "englishName": "Ethena",
       "aliases": ["Ethena", "ethena"],
       "color": "#0F666B",
-      "logo": "",
+      "logo": "/coin-logos/v2/ena-ce392ce8ba87.png",
       "coinloreId": "126763",
       "rank": 43,
       "markets": {
@@ -1497,7 +1497,7 @@
       "englishName": "JUST",
       "aliases": ["JUST", "just"],
       "color": "#0F666B",
-      "logo": "",
+      "logo": "/coin-logos/v2/jst-9c8d86d95256.png",
       "coinloreId": "44043",
       "rank": 45,
       "markets": {
@@ -1534,7 +1534,7 @@
       "englishName": "World Liberty Financial",
       "aliases": ["World Liberty Financial", "world-liberty-financial-wlfi"],
       "color": "#0F666B",
-      "logo": "",
+      "logo": "/coin-logos/v2/wlfi-6ab6a20ee327.png",
       "coinloreId": "165635",
       "rank": 48,
       "markets": {
@@ -1571,7 +1571,7 @@
       "englishName": "Ethereum Classic",
       "aliases": ["Ethereum Classic", "ethereum-classic"],
       "color": "#0F666B",
-      "logo": "",
+      "logo": "/coin-logos/v2/etc-2e566458193d.png",
       "coinloreId": "118",
       "rank": 49,
       "markets": {
@@ -1652,7 +1652,7 @@
       "englishName": "Algorand",
       "aliases": ["Algorand", "algorand"],
       "color": "#0F666B",
-      "logo": "",
+      "logo": "/coin-logos/v2/algo-e1cb92d5abf3.png",
       "coinloreId": "34406",
       "rank": 54,
       "markets": {
@@ -1729,7 +1729,7 @@
       "englishName": "Worldcoin",
       "aliases": ["Worldcoin", "worldcoin-wld"],
       "color": "#0F666B",
-      "logo": "",
+      "logo": "/coin-logos/v2/wld-10910a10d744.png",
       "coinloreId": "99329",
       "rank": 55,
       "markets": {
@@ -1766,7 +1766,7 @@
       "englishName": "Render",
       "aliases": ["Render", "render"],
       "color": "#0F666B",
-      "logo": "",
+      "logo": "/coin-logos/v2/render-04cf4335bb6b.png",
       "coinloreId": "135601",
       "rank": 56,
       "markets": {
@@ -1803,7 +1803,7 @@
       "englishName": "Arbitrum",
       "aliases": ["Arbitrum", "arbitrum"],
       "color": "#0F666B",
-      "logo": "",
+      "logo": "/coin-logos/v2/arb-cdbd042edfff.png",
       "coinloreId": "93847",
       "rank": 57,
       "markets": {
@@ -1840,7 +1840,7 @@
       "englishName": "Cosmos",
       "aliases": ["Cosmos", "cosmos"],
       "color": "#0F666B",
-      "logo": "",
+      "logo": "/coin-logos/v2/atom-28bac5a9ef3f.png",
       "coinloreId": "33830",
       "rank": 60,
       "markets": {
@@ -1877,7 +1877,7 @@
       "englishName": "Venice Token",
       "aliases": ["Venice Token", "venice-token"],
       "color": "#0F666B",
-      "logo": "",
+      "logo": "/coin-logos/v2/vvv-3ff2d654255a.png",
       "coinloreId": "148135",
       "rank": 62,
       "markets": {
@@ -1914,7 +1914,7 @@
       "englishName": "Morpho",
       "aliases": ["Morpho", "morpho"],
       "color": "#0F666B",
-      "logo": "",
+      "logo": "/coin-logos/v2/morpho-a49522e6e897.png",
       "coinloreId": "161453",
       "rank": 63,
       "markets": {
@@ -1951,7 +1951,7 @@
       "englishName": "Filecoin",
       "aliases": ["Filecoin", "filecoin"],
       "color": "#0F666B",
-      "logo": "",
+      "logo": "/coin-logos/v2/fil-91240703bd67.png",
       "coinloreId": "32607",
       "rank": 65,
       "markets": {
@@ -1988,7 +1988,7 @@
       "englishName": "Aerodrome Finance",
       "aliases": ["Aerodrome Finance", "aerodrome-finance"],
       "color": "#0F666B",
-      "logo": "",
+      "logo": "/coin-logos/v2/aero-edeadceb53ae.png",
       "coinloreId": "122319",
       "rank": 67,
       "markets": {
@@ -2025,7 +2025,7 @@
       "englishName": "Stacks",
       "aliases": ["Stacks", "stacks"],
       "color": "#0F666B",
-      "logo": "",
+      "logo": "/coin-logos/v2/stx-312974fa9a99.png",
       "coinloreId": "48569",
       "rank": 68,
       "markets": {
@@ -2062,7 +2062,7 @@
       "englishName": "Injective Protocol",
       "aliases": ["Injective Protocol", "injective-protocol"],
       "color": "#0F666B",
-      "logo": "",
+      "logo": "/coin-logos/v2/inj-03d27d1437fa.png",
       "coinloreId": "46183",
       "rank": 69,
       "markets": {
@@ -2099,7 +2099,7 @@
       "englishName": "VeChain",
       "aliases": ["VeChain", "vechain"],
       "color": "#0F666B",
-      "logo": "",
+      "logo": "/coin-logos/v2/vet-9a098bd5cdfd.png",
       "coinloreId": "2741",
       "rank": 72,
       "markets": {
@@ -2136,7 +2136,7 @@
       "englishName": "Raydium",
       "aliases": ["Raydium", "raydium"],
       "color": "#0F666B",
-      "logo": "",
+      "logo": "/coin-logos/v2/ray-441bab08fe0e.png",
       "coinloreId": "47371",
       "rank": 75,
       "markets": {
@@ -2170,7 +2170,7 @@
       "englishName": "Crypto.com Chain",
       "aliases": ["Crypto.com Chain", "crypto-com-chain"],
       "color": "#0F666B",
-      "logo": "",
+      "logo": "/coin-logos/v2/cro-1d3dd965f296.png",
       "coinloreId": "33819",
       "rank": 78,
       "markets": {
@@ -2239,7 +2239,7 @@
       "englishName": "Aptos",
       "aliases": ["Aptos", "aptos"],
       "color": "#0F666B",
-      "logo": "",
+      "logo": "/coin-logos/v2/apt-7b6877cc5ac3.png",
       "coinloreId": "111341",
       "rank": 80,
       "markets": {
@@ -2276,7 +2276,7 @@
       "englishName": "LayerZero",
       "aliases": ["LayerZero", "layerzero"],
       "color": "#0F666B",
-      "logo": "",
+      "logo": "/coin-logos/v2/zro-94abd16b7b41.png",
       "coinloreId": "148123",
       "rank": 85,
       "markets": {
@@ -2313,7 +2313,7 @@
       "englishName": "Pyth Network",
       "aliases": ["Pyth Network", "pyth-network"],
       "color": "#0F666B",
-      "logo": "",
+      "logo": "/coin-logos/v2/pyth-af5425ad9203.png",
       "coinloreId": "111347",
       "rank": 88,
       "markets": {
@@ -2350,7 +2350,7 @@
       "englishName": "Curve DAO Token",
       "aliases": ["Curve DAO Token", "curve-dao-token"],
       "color": "#0F666B",
-      "logo": "",
+      "logo": "/coin-logos/v2/crv-2eccc30e063c.png",
       "coinloreId": "48581",
       "rank": 89,
       "markets": {
@@ -2419,7 +2419,7 @@
       "englishName": "Virtual Protocol",
       "aliases": ["Virtual Protocol", "virtual-protocol"],
       "color": "#0F666B",
-      "logo": "",
+      "logo": "/coin-logos/v2/virtual-5a6e02546fd6.png",
       "coinloreId": "127083",
       "rank": 90,
       "markets": {
@@ -2456,7 +2456,7 @@
       "englishName": "Sei",
       "aliases": ["Sei", "sei"],
       "color": "#0F666B",
-      "logo": "",
+      "logo": "/coin-logos/v2/sei-570ad40e7ff1.png",
       "coinloreId": "100427",
       "rank": 92,
       "markets": {
@@ -2493,7 +2493,7 @@
       "englishName": "Celestia",
       "aliases": ["Celestia", "celestia"],
       "color": "#0F666B",
-      "logo": "",
+      "logo": "/coin-logos/v2/tia-175a216c3e45.png",
       "coinloreId": "136105",
       "rank": 93,
       "markets": {
@@ -2530,7 +2530,7 @@
       "englishName": "Derive",
       "aliases": ["Derive", "derive"],
       "color": "#0F666B",
-      "logo": "",
+      "logo": "/coin-logos/v2/drv-db05a398f8ee.png",
       "coinloreId": "161497",
       "rank": 96,
       "markets": {
@@ -2554,7 +2554,7 @@
       "englishName": "Pendle",
       "aliases": ["Pendle", "pendle"],
       "color": "#0F666B",
-      "logo": "",
+      "logo": "/coin-logos/v2/pendle-19d533adca0b.png",
       "coinloreId": "48839",
       "rank": 99,
       "markets": {
@@ -2591,7 +2591,7 @@
       "englishName": "ether.fi",
       "aliases": ["ether.fi", "ether-fi-ethfi"],
       "color": "#0F666B",
-      "logo": "",
+      "logo": "/coin-logos/v2/ethfi-6b358239149a.png",
       "coinloreId": "126771",
       "rank": 101,
       "markets": {
@@ -2628,7 +2628,7 @@
       "englishName": "SPX6900",
       "aliases": ["SPX6900", "spx6900"],
       "color": "#0F666B",
-      "logo": "",
+      "logo": "/coin-logos/v2/spx-bb45edd626e3.png",
       "coinloreId": "136127",
       "rank": 102,
       "markets": {
@@ -2665,7 +2665,7 @@
       "englishName": "Kaia",
       "aliases": ["Kaia", "kaia"],
       "color": "#0F666B",
-      "logo": "",
+      "logo": "/coin-logos/v2/kaia-a038f18b5c71.png",
       "coinloreId": "141199",
       "rank": 103,
       "markets": {
@@ -2702,7 +2702,7 @@
       "englishName": "Tezos",
       "aliases": ["Tezos", "tezos"],
       "color": "#0F666B",
-      "logo": "",
+      "logo": "/coin-logos/v2/xtz-b6fe745b84ab.png",
       "coinloreId": "3682",
       "rank": 104,
       "markets": {
@@ -2739,7 +2739,7 @@
       "englishName": "The Graph",
       "aliases": ["The Graph", "the-graph"],
       "color": "#0F666B",
-      "logo": "",
+      "logo": "/coin-logos/v2/grt-aa06fea218da.png",
       "coinloreId": "48561",
       "rank": 109,
       "markets": {
@@ -2776,7 +2776,7 @@
       "englishName": "Maple Finance",
       "aliases": ["Maple Finance", "maple-finance"],
       "color": "#0F666B",
-      "logo": "",
+      "logo": "/coin-logos/v2/syrup-820cdc38ff36.png",
       "coinloreId": "141535",
       "rank": 111,
       "markets": {
@@ -2813,7 +2813,7 @@
       "englishName": "Conflux",
       "aliases": ["Conflux", "conflux-network"],
       "color": "#0F666B",
-      "logo": "",
+      "logo": "/coin-logos/v2/cfx-1f1b20867294.png",
       "coinloreId": "121599",
       "rank": 115,
       "markets": {
@@ -2850,7 +2850,7 @@
       "englishName": "Ethereum Name Service",
       "aliases": ["Ethereum Name Service", "ethereum-name-service"],
       "color": "#0F666B",
-      "logo": "",
+      "logo": "/coin-logos/v2/ens-f30b964a8d50.png",
       "coinloreId": "56821",
       "rank": 121,
       "markets": {
@@ -2887,7 +2887,7 @@
       "englishName": "Compound",
       "aliases": ["Compound", "compound"],
       "color": "#0F666B",
-      "logo": "",
+      "logo": "/coin-logos/v2/comp-c9cdb667bfd3.png",
       "coinloreId": "47304",
       "rank": 122,
       "markets": {
@@ -2956,7 +2956,7 @@
       "englishName": "Optimism",
       "aliases": ["Optimism", "optimism"],
       "color": "#0F666B",
-      "logo": "",
+      "logo": "/coin-logos/v2/op-fb2c6023c750.png",
       "coinloreId": "70497",
       "rank": 124,
       "markets": {
@@ -2993,7 +2993,7 @@
       "englishName": "Theta Token",
       "aliases": ["Theta Token", "theta-token"],
       "color": "#0F666B",
-      "logo": "",
+      "logo": "/coin-logos/v2/theta-71911a046eef.png",
       "coinloreId": "32360",
       "rank": 125,
       "markets": {
@@ -3030,7 +3030,7 @@
       "englishName": "dogwifhat",
       "aliases": ["dogwifhat", "dogwifhat"],
       "color": "#0F666B",
-      "logo": "",
+      "logo": "/coin-logos/v2/wif-681ae79ffa51.png",
       "coinloreId": "121613",
       "rank": 127,
       "markets": {
@@ -3067,7 +3067,7 @@
       "englishName": "OriginTrail",
       "aliases": ["OriginTrail", "origintrail"],
       "color": "#0F666B",
-      "logo": "",
+      "logo": "/coin-logos/v2/trac-89305cf2a364.png",
       "coinloreId": "32382",
       "rank": 130,
       "markets": {
@@ -3101,7 +3101,7 @@
       "englishName": "Akash Network",
       "aliases": ["Akash Network", "akash-network"],
       "color": "#0F666B",
-      "logo": "",
+      "logo": "/coin-logos/v2/akt-5cc60d19875d.png",
       "coinloreId": "46194",
       "rank": 131,
       "markets": {
@@ -3138,7 +3138,7 @@
       "englishName": "Jito",
       "aliases": ["Jito", "jito"],
       "color": "#0F666B",
-      "logo": "",
+      "logo": "/coin-logos/v2/jto-0c4773009692.png",
       "coinloreId": "111351",
       "rank": 132,
       "markets": {
@@ -3175,7 +3175,7 @@
       "englishName": "Axie Infinity",
       "aliases": ["Axie Infinity", "axie-infinity"],
       "color": "#0F666B",
-      "logo": "",
+      "logo": "/coin-logos/v2/axs-72be6f74cda0.png",
       "coinloreId": "46575",
       "rank": 133,
       "markets": {
@@ -3212,7 +3212,7 @@
       "englishName": "Decentraland",
       "aliases": ["Decentraland", "decentraland"],
       "color": "#0F666B",
-      "logo": "",
+      "logo": "/coin-logos/v2/mana-84b4cb4b6bd1.png",
       "coinloreId": "258",
       "rank": 134,
       "markets": {
@@ -3281,7 +3281,7 @@
       "englishName": "The Sandbox",
       "aliases": ["The Sandbox", "the-sandbox"],
       "color": "#0F666B",
-      "logo": "",
+      "logo": "/coin-logos/v2/sand-4a42bef5c820.png",
       "coinloreId": "45161",
       "rank": 137,
       "markets": {
@@ -3318,7 +3318,7 @@
       "englishName": "Basic Attention Token",
       "aliases": ["Basic Attention Token", "basic-attention-token"],
       "color": "#0F666B",
-      "logo": "",
+      "logo": "/coin-logos/v2/bat-318ddd8939c2.png",
       "coinloreId": "184",
       "rank": 140,
       "markets": {
@@ -3387,7 +3387,7 @@
       "englishName": "Neo",
       "aliases": ["Neo", "neo"],
       "color": "#0F666B",
-      "logo": "",
+      "logo": "/coin-logos/v2/neo-63a6c5152ca2.png",
       "coinloreId": "133",
       "rank": 141,
       "markets": {
@@ -3424,7 +3424,7 @@
       "englishName": "Vaulta",
       "aliases": ["Vaulta", "vaulta"],
       "color": "#0F666B",
-      "logo": "",
+      "logo": "/coin-logos/v2/a-438dbe03e877.png",
       "coinloreId": "161451",
       "rank": 146,
       "markets": {
@@ -3461,7 +3461,7 @@
       "englishName": "Chiliz",
       "aliases": ["Chiliz", "chiliz"],
       "color": "#0F666B",
-      "logo": "",
+      "logo": "/coin-logos/v2/chz-b5acef7b9437.png",
       "coinloreId": "34391",
       "rank": 150,
       "markets": {
@@ -3498,7 +3498,7 @@
       "englishName": "Onyxcoin",
       "aliases": ["Onyxcoin", "onyxcoin"],
       "color": "#0F666B",
-      "logo": "",
+      "logo": "/coin-logos/v2/xcn-ccbb030f0457.png",
       "coinloreId": "148117",
       "rank": 151,
       "markets": {
@@ -3535,7 +3535,7 @@
       "englishName": "ORCA",
       "aliases": ["ORCA", "orca"],
       "color": "#0F666B",
-      "logo": "",
+      "logo": "/coin-logos/v2/orca-182be2d3bb7b.png",
       "coinloreId": "44909",
       "rank": 155,
       "markets": {
@@ -3572,7 +3572,7 @@
       "englishName": "eCash",
       "aliases": ["eCash", "ecash"],
       "color": "#0F666B",
-      "logo": "",
+      "logo": "/coin-logos/v2/xec-2185ecb4284a.png",
       "coinloreId": "51539",
       "rank": 158,
       "markets": {
@@ -3609,7 +3609,7 @@
       "englishName": "SuperVerse",
       "aliases": ["SuperVerse", "superverse"],
       "color": "#0F666B",
-      "logo": "",
+      "logo": "/coin-logos/v2/super-34523314602c.png",
       "coinloreId": "120831",
       "rank": 159,
       "markets": {
@@ -3646,7 +3646,7 @@
       "englishName": "Beam",
       "aliases": ["Beam", "onbeam"],
       "color": "#0F666B",
-      "logo": "",
+      "logo": "/coin-logos/v2/beam-4b8f14e01ffb.png",
       "coinloreId": "136107",
       "rank": 167,
       "markets": {
@@ -3673,7 +3673,7 @@
       "englishName": "Golem",
       "aliases": ["Golem", "golem"],
       "color": "#0F666B",
-      "logo": "",
+      "logo": "/coin-logos/v2/glm-a7e6e4ba7581.png",
       "coinloreId": "46571",
       "rank": 169,
       "markets": {
@@ -3710,7 +3710,7 @@
       "englishName": "DoubleZero",
       "aliases": ["DoubleZero", "doublezero"],
       "color": "#0F666B",
-      "logo": "",
+      "logo": "/coin-logos/v2/2z-08efce925f9b.png",
       "coinloreId": "165639",
       "rank": 171,
       "markets": {
@@ -3747,7 +3747,7 @@
       "englishName": "zkSync",
       "aliases": ["zkSync", "zksync"],
       "color": "#0F666B",
-      "logo": "",
+      "logo": "/coin-logos/v2/zk-1721b070954c.png",
       "coinloreId": "136111",
       "rank": 178,
       "markets": {
@@ -3784,7 +3784,7 @@
       "englishName": "Numeraire",
       "aliases": ["Numeraire", "numeraire"],
       "color": "#0F666B",
-      "logo": "",
+      "logo": "/coin-logos/v2/nmr-eab3cf755df4.png",
       "coinloreId": "202",
       "rank": 180,
       "markets": {
@@ -3821,7 +3821,7 @@
       "englishName": "Qtum",
       "aliases": ["Qtum", "qtum"],
       "color": "#0F666B",
-      "logo": "",
+      "logo": "/coin-logos/v2/qtum-7a9a4ee07d53.png",
       "coinloreId": "237",
       "rank": 189,
       "markets": {
@@ -3858,7 +3858,7 @@
       "englishName": "Kamino Finance",
       "aliases": ["Kamino Finance", "kamino-finance"],
       "color": "#0F666B",
-      "logo": "",
+      "logo": "/coin-logos/v2/kmno-25ddf17378a5.png",
       "coinloreId": "130985",
       "rank": 190,
       "markets": {
@@ -3895,7 +3895,7 @@
       "englishName": "GEODNET",
       "aliases": ["GEODNET", "geodnet"],
       "color": "#0F666B",
-      "logo": "",
+      "logo": "/coin-logos/v2/geod-1af8004aa05b.png",
       "coinloreId": "127565",
       "rank": 193,
       "markets": {
@@ -3919,7 +3919,7 @@
       "englishName": "Gas",
       "aliases": ["Gas", "gas"],
       "color": "#0F666B",
-      "logo": "",
+      "logo": "/coin-logos/v2/gas-6315f2ff3e19.png",
       "coinloreId": "2708",
       "rank": 204,
       "markets": {
@@ -3956,7 +3956,7 @@
       "englishName": "Wormhole",
       "aliases": ["Wormhole", "wormhole"],
       "color": "#0F666B",
-      "logo": "",
+      "logo": "/coin-logos/v2/w-a10a6fc46eda.png",
       "coinloreId": "126765",
       "rank": 207,
       "markets": {
@@ -3993,7 +3993,7 @@
       "englishName": "Aethir",
       "aliases": ["Aethir", "aethir"],
       "color": "#0F666B",
-      "logo": "",
+      "logo": "/coin-logos/v2/ath-e3ffd2e0f70a.png",
       "coinloreId": "148129",
       "rank": 215,
       "markets": {
@@ -4030,7 +4030,7 @@
       "englishName": "Centrifuge",
       "aliases": ["Centrifuge", "centrifuge"],
       "color": "#0F666B",
-      "logo": "",
+      "logo": "/coin-logos/v2/cfg-6c38645dd79d.png",
       "coinloreId": "49753",
       "rank": 216,
       "markets": {
@@ -4057,7 +4057,7 @@
       "englishName": "Livepeer",
       "aliases": ["Livepeer", "livepeer"],
       "color": "#0F666B",
-      "logo": "",
+      "logo": "/coin-logos/v2/lpt-229361f756b3.png",
       "coinloreId": "33433",
       "rank": 220,
       "markets": {
@@ -4126,7 +4126,7 @@
       "englishName": "Kava",
       "aliases": ["Kava", "kava"],
       "color": "#0F666B",
-      "logo": "",
+      "logo": "/coin-logos/v2/kava-e51d18950e11.png",
       "coinloreId": "64675",
       "rank": 223,
       "markets": {
@@ -4163,7 +4163,7 @@
       "englishName": "KAITO",
       "aliases": ["KAITO", "kaito"],
       "color": "#0F666B",
-      "logo": "",
+      "logo": "/coin-logos/v2/kaito-bc734145659d.png",
       "coinloreId": "150885",
       "rank": 224,
       "markets": {
@@ -4200,7 +4200,7 @@
       "englishName": "CoW Protocol",
       "aliases": ["CoW Protocol", "cow-protocol"],
       "color": "#0F666B",
-      "logo": "",
+      "logo": "/coin-logos/v2/cow-174ab682e137.png",
       "coinloreId": "147565",
       "rank": 225,
       "markets": {
@@ -4237,7 +4237,7 @@
       "englishName": "Theta Fuel",
       "aliases": ["Theta Fuel", "theta-fuel"],
       "color": "#0F666B",
-      "logo": "",
+      "logo": "/coin-logos/v2/tfuel-550e6f908cdb.png",
       "coinloreId": "33768",
       "rank": 234,
       "markets": {
@@ -4271,7 +4271,7 @@
       "englishName": "Safe",
       "aliases": ["Safe", "safe1"],
       "color": "#0F666B",
-      "logo": "",
+      "logo": "/coin-logos/v2/safe-ced3d84dd496.png",
       "coinloreId": "161455",
       "rank": 235,
       "markets": {
@@ -4308,7 +4308,7 @@
       "englishName": "Zilliqa",
       "aliases": ["Zilliqa", "zilliqa"],
       "color": "#0F666B",
-      "logo": "",
+      "logo": "/coin-logos/v2/zil-35643f4e806a.png",
       "coinloreId": "32334",
       "rank": 238,
       "markets": {
@@ -4345,7 +4345,7 @@
       "englishName": "VeThor Token",
       "aliases": ["VeThor Token", "vethor-token"],
       "color": "#0F666B",
-      "logo": "",
+      "logo": "/coin-logos/v2/vtho-a8ea85a507d3.png",
       "coinloreId": "33157",
       "rank": 243,
       "markets": {
@@ -4379,7 +4379,7 @@
       "englishName": "Nervos Network",
       "aliases": ["Nervos Network", "nervos-network"],
       "color": "#0F666B",
-      "logo": "",
+      "logo": "/coin-logos/v2/ckb-2d797205bf80.png",
       "coinloreId": "59971",
       "rank": 247,
       "markets": {
@@ -4416,7 +4416,7 @@
       "englishName": "Arkham",
       "aliases": ["Arkham", "arkham"],
       "color": "#0F666B",
-      "logo": "",
+      "logo": "/coin-logos/v2/arkm-ddf726d4f3ba.png",
       "coinloreId": "100449",
       "rank": 248,
       "markets": {
@@ -4453,7 +4453,7 @@
       "englishName": "Binance Coin",
       "aliases": ["Binance Coin", "binance-coin", "비앤비"],
       "color": "#0F666B",
-      "logo": "",
+      "logo": "/coin-logos/v2/bnb-0f4502d8c525.png",
       "coinloreId": "2710",
       "rank": 4,
       "markets": {
@@ -4490,7 +4490,7 @@
       "englishName": "Hyperliquid",
       "aliases": ["Hyperliquid", "hyperliquid", "하이퍼리퀴드"],
       "color": "#0F666B",
-      "logo": "",
+      "logo": "/coin-logos/v2/hype-d8a64da38ae8.png",
       "coinloreId": "148109",
       "rank": 9,
       "markets": {
@@ -4528,7 +4528,7 @@
       "englishName": "Zcash",
       "aliases": ["Zcash", "zcash", "지캐시"],
       "color": "#0F666B",
-      "logo": "",
+      "logo": "/coin-logos/v2/zec-eef747ec1f7d.png",
       "coinloreId": "134",
       "rank": 11,
       "markets": {
@@ -4609,7 +4609,7 @@
       "englishName": "Litecoin",
       "aliases": ["Litecoin", "litecoin", "라이트코인"],
       "color": "#0F666B",
-      "logo": "",
+      "logo": "/coin-logos/v2/ltc-50b7635088e7.png",
       "coinloreId": "1",
       "rank": 25,
       "markets": {
@@ -4690,7 +4690,7 @@
       "englishName": "Quant",
       "aliases": ["Quant", "quant", "퀀트"],
       "color": "#0F666B",
-      "logo": "",
+      "logo": "/coin-logos/v2/qnt-1adb961266d1.png",
       "coinloreId": "33085",
       "rank": 32,
       "markets": {
@@ -4759,7 +4759,7 @@
       "englishName": "PAX Gold",
       "aliases": ["PAX Gold", "pax-gold", "팍스골드"],
       "color": "#0F666B",
-      "logo": "",
+      "logo": "/coin-logos/v2/paxg-909ded8d23eb.png",
       "coinloreId": "42227",
       "rank": 50,
       "markets": {
@@ -4828,7 +4828,7 @@
       "englishName": "Aster",
       "aliases": ["Aster", "aster", "아스터"],
       "color": "#0F666B",
-      "logo": "",
+      "logo": "/coin-logos/v2/aster-6416cb4f2210.png",
       "coinloreId": "165637",
       "rank": 51,
       "markets": {
@@ -4865,7 +4865,7 @@
       "englishName": "PancakeSwap",
       "aliases": ["PancakeSwap", "pancakeswap", "팬케이크스왑"],
       "color": "#0F666B",
-      "logo": "",
+      "logo": "/coin-logos/v2/cake-371c6b531f96.png",
       "coinloreId": "45985",
       "rank": 64,
       "markets": {
@@ -4902,7 +4902,7 @@
       "englishName": "Dash",
       "aliases": ["Dash", "dash", "대시"],
       "color": "#0F666B",
-      "logo": "",
+      "logo": "/coin-logos/v2/dash-eedcb4ce6166.png",
       "coinloreId": "8",
       "rank": 74,
       "markets": {
@@ -4982,7 +4982,7 @@
       "englishName": "Fetch.ai",
       "aliases": ["Fetch.ai", "fetch", "페치에이아이"],
       "color": "#0F666B",
-      "logo": "",
+      "logo": "/coin-logos/v2/fet-0d04f3bb3b29.png",
       "coinloreId": "33718",
       "rank": 79,
       "markets": {
@@ -5016,7 +5016,7 @@
       "englishName": "Nexo",
       "aliases": ["Nexo", "nexo", "넥소"],
       "color": "#0F666B",
-      "logo": "",
+      "logo": "/coin-logos/v2/nexo-0e284ddc7293.png",
       "coinloreId": "32604",
       "rank": 82,
       "markets": {
@@ -5050,7 +5050,7 @@
       "englishName": "Lido DAO",
       "aliases": ["Lido DAO", "lido-dao", "리도다오"],
       "color": "#0F666B",
-      "logo": "",
+      "logo": "/coin-logos/v2/ldo-698ef34700c7.png",
       "coinloreId": "46981",
       "rank": 95,
       "markets": {
@@ -5119,7 +5119,7 @@
       "englishName": "Gnosis",
       "aliases": ["Gnosis", "gnosis-gno", "노시스"],
       "color": "#0F666B",
-      "logo": "",
+      "logo": "/coin-logos/v2/gno-ce5c7d010635.png",
       "coinloreId": "167",
       "rank": 105,
       "markets": {
@@ -5185,7 +5185,7 @@
       "englishName": "Decred",
       "aliases": ["Decred", "decred", "디크레드"],
       "color": "#0F666B",
-      "logo": "",
+      "logo": "/coin-logos/v2/dcr-97a4d78b9bb5.png",
       "coinloreId": "99",
       "rank": 106,
       "markets": {
@@ -5254,7 +5254,7 @@
       "englishName": "Starknet",
       "aliases": ["Starknet", "starknet-token", "스타크넷"],
       "color": "#0F666B",
-      "logo": "",
+      "logo": "/coin-logos/v2/strk-44501e617593.png",
       "coinloreId": "136109",
       "rank": 108,
       "markets": {
@@ -5291,7 +5291,7 @@
       "englishName": "Terra Classic",
       "aliases": ["Terra Classic", "terra-luna", "루나클래식"],
       "color": "#0F666B",
-      "logo": "",
+      "logo": "/coin-logos/v2/lunc-0eba8de7b862.png",
       "coinloreId": "48537",
       "rank": 110,
       "markets": {
@@ -5318,7 +5318,7 @@
       "englishName": "Arweave",
       "aliases": ["Arweave", "arweave", "알위브"],
       "color": "#0F666B",
-      "logo": "",
+      "logo": "/coin-logos/v2/ar-951a539e6d58.png",
       "coinloreId": "42441",
       "rank": 112,
       "markets": {
@@ -5355,7 +5355,7 @@
       "englishName": "Bonk",
       "aliases": ["Bonk", "bonk", "봉크"],
       "color": "#0F666B",
-      "logo": "",
+      "logo": "/coin-logos/v2/bonk-3fb62f100984.png",
       "coinloreId": "82537",
       "rank": 113,
       "markets": {
@@ -5392,7 +5392,7 @@
       "englishName": "Floki Inu",
       "aliases": ["Floki Inu", "floki-inu", "플로키"],
       "color": "#0F666B",
-      "logo": "",
+      "logo": "/coin-logos/v2/floki-6213fcb3e856.png",
       "coinloreId": "51947",
       "rank": 114,
       "markets": {
@@ -5429,7 +5429,7 @@
       "englishName": "THORChain",
       "aliases": ["THORChain", "thorchain", "토르체인"],
       "color": "#0F666B",
-      "logo": "",
+      "logo": "/coin-logos/v2/rune-52890372ec0c.png",
       "coinloreId": "36447",
       "rank": 117,
       "markets": {
@@ -5466,7 +5466,7 @@
       "englishName": "JasmyCoin",
       "aliases": ["JasmyCoin", "jasmycoin", "재스미"],
       "color": "#0F666B",
-      "logo": "",
+      "logo": "/coin-logos/v2/jasmy-6c10370c40d4.png",
       "coinloreId": "48039",
       "rank": 120,
       "markets": {
@@ -5503,7 +5503,7 @@
       "englishName": "Trust Wallet Token",
       "aliases": ["Trust Wallet Token", "trust-wallet-token", "트러스트월렛토큰"],
       "color": "#0F666B",
-      "logo": "",
+      "logo": "/coin-logos/v2/twt-faa60adc11db.png",
       "coinloreId": "44178",
       "rank": 126,
       "markets": {
@@ -5540,7 +5540,7 @@
       "englishName": "Sonic (prev. FTM)",
       "aliases": ["Sonic (prev. FTM)", "sonic-prev-ftm", "소닉"],
       "color": "#0F666B",
-      "logo": "",
+      "logo": "/coin-logos/v2/s-41c19b60f7ab.png",
       "coinloreId": "148191",
       "rank": 142,
       "markets": {
@@ -5577,7 +5577,7 @@
       "englishName": "Convex Finance",
       "aliases": ["Convex Finance", "convex-finance", "컨벡스파이낸스"],
       "color": "#0F666B",
-      "logo": "",
+      "logo": "/coin-logos/v2/cvx-cb4411bc3d92.png",
       "coinloreId": "48829",
       "rank": 143,
       "markets": {
@@ -5614,7 +5614,7 @@
       "englishName": "SafePal",
       "aliases": ["SafePal", "safepal", "세이프팔"],
       "color": "#0F666B",
-      "logo": "",
+      "logo": "/coin-logos/v2/sfp-a3a567f3a8bb.png",
       "coinloreId": "47369",
       "rank": 161,
       "markets": {
@@ -5648,7 +5648,7 @@
       "englishName": "Horizen",
       "aliases": ["Horizen", "zencash", "호라이즌"],
       "color": "#0F666B",
-      "logo": "",
+      "logo": "/coin-logos/v2/zen-df1be03d9b5f.png",
       "coinloreId": "186",
       "rank": 177,
       "markets": {
@@ -5685,7 +5685,7 @@
       "englishName": "APEcoin",
       "aliases": ["APEcoin", "apecoin", "에이프코인"],
       "color": "#0F666B",
-      "logo": "",
+      "logo": "/coin-logos/v2/ape-e9ade6fb98f3.png",
       "coinloreId": "45930",
       "rank": 179,
       "markets": {
@@ -5722,7 +5722,7 @@
       "englishName": "dYdX",
       "aliases": ["dYdX", "dydx", "디와이디엑스"],
       "color": "#0F666B",
-      "logo": "",
+      "logo": "/coin-logos/v2/dydx-392904871821.png",
       "coinloreId": "54377",
       "rank": 181,
       "markets": {
@@ -5759,7 +5759,7 @@
       "englishName": "DeXe",
       "aliases": ["DeXe", "dexe", "덱스"],
       "color": "#0F666B",
-      "logo": "",
+      "logo": "/coin-logos/v2/dexe-0954a7b9b3d4.png",
       "coinloreId": "46273",
       "rank": 184,
       "markets": {
@@ -5796,7 +5796,7 @@
       "englishName": "Gala",
       "aliases": ["Gala", "gala", "갈라"],
       "color": "#0F666B",
-      "logo": "",
+      "logo": "/coin-logos/v2/gala-7f51415db3f2.png",
       "coinloreId": "45577",
       "rank": 185,
       "markets": {
@@ -5833,7 +5833,7 @@
       "englishName": "Reserve Rights",
       "aliases": ["Reserve Rights", "reserve-rights", "리저브라이트"],
       "color": "#0F666B",
-      "logo": "",
+      "logo": "/coin-logos/v2/rsr-2618c738100f.png",
       "coinloreId": "33878",
       "rank": 195,
       "markets": {
@@ -5870,7 +5870,7 @@
       "englishName": "iExec RLC",
       "aliases": ["iExec RLC", "rlc", "아이젝"],
       "color": "#0F666B",
-      "logo": "",
+      "logo": "/coin-logos/v2/rlc-468a866c5cea.png",
       "coinloreId": "166",
       "rank": 196,
       "markets": {
@@ -5907,7 +5907,7 @@
       "englishName": "Ordinals",
       "aliases": ["Ordinals", "ordinals", "오디널스"],
       "color": "#0F666B",
-      "logo": "",
+      "logo": "/coin-logos/v2/ordi-db00ad757ce4.png",
       "coinloreId": "97137",
       "rank": 199,
       "markets": {
@@ -5944,7 +5944,7 @@
       "englishName": "GMX",
       "aliases": ["GMX", "gmx", "지엠엑스"],
       "color": "#0F666B",
-      "logo": "",
+      "logo": "/coin-logos/v2/gmx-a03154426ce4.png",
       "coinloreId": "77735",
       "rank": 202,
       "markets": {
@@ -5981,7 +5981,7 @@
       "englishName": "Kusama",
       "aliases": ["Kusama", "kusama", "쿠사마"],
       "color": "#0F666B",
-      "logo": "",
+      "logo": "/coin-logos/v2/ksm-3a098ceb5ad0.png",
       "coinloreId": "42277",
       "rank": 206,
       "markets": {
@@ -6018,7 +6018,7 @@
       "englishName": "FTX Token",
       "aliases": ["FTX Token", "ftx-token", "에프티엑스토큰"],
       "color": "#0F666B",
-      "logo": "",
+      "logo": "/coin-logos/v2/ftt-63baf71b67e1.png",
       "coinloreId": "48547",
       "rank": 208,
       "markets": {
@@ -6084,7 +6084,7 @@
       "englishName": "Synthetix Network",
       "aliases": ["Synthetix Network", "synthetix-network-token", "신세틱스"],
       "color": "#0F666B",
-      "logo": "",
+      "logo": "/coin-logos/v2/snx-03e35df7ec2c.png",
       "coinloreId": "33723",
       "rank": 213,
       "markets": {
@@ -6153,7 +6153,7 @@
       "englishName": "yearn.finance",
       "aliases": ["yearn.finance", "yearn-finance", "연파이낸스"],
       "color": "#0F666B",
-      "logo": "",
+      "logo": "/coin-logos/v2/yfi-ff6b11fac357.png",
       "coinloreId": "44710",
       "rank": 218,
       "markets": {
@@ -6222,7 +6222,7 @@
       "englishName": "EigenLayer",
       "aliases": ["EigenLayer", "eigenlayer", "아이겐레이어"],
       "color": "#0F666B",
-      "logo": "",
+      "logo": "/coin-logos/v2/eigen-9e5103e29738.png",
       "coinloreId": "141205",
       "rank": 221,
       "markets": {
@@ -6259,7 +6259,7 @@
       "englishName": "Mubarak",
       "aliases": ["Mubarak", "mubarak", "무바락"],
       "color": "#0F666B",
-      "logo": "",
+      "logo": "/coin-logos/v2/mubarak-8ca63a0265e7.png",
       "coinloreId": "151139",
       "rank": 222,
       "markets": {
@@ -6296,7 +6296,7 @@
       "englishName": "Huma Finance",
       "aliases": ["Huma Finance", "huma-finance", "휴마파이낸스"],
       "color": "#0F666B",
-      "logo": "",
+      "logo": "/coin-logos/v2/huma-5e7284652b3c.png",
       "coinloreId": "158425",
       "rank": 228,
       "markets": {
@@ -6333,7 +6333,7 @@
       "englishName": "BOOK OF MEME",
       "aliases": ["BOOK OF MEME", "book-of-meme", "북오브밈"],
       "color": "#0F666B",
-      "logo": "",
+      "logo": "/coin-logos/v2/bome-47146a16a3cb.png",
       "coinloreId": "126767",
       "rank": 229,
       "markets": {
@@ -6370,7 +6370,7 @@
       "englishName": "Holo",
       "aliases": ["Holo", "holo", "홀로"],
       "color": "#0F666B",
-      "logo": "",
+      "logo": "/coin-logos/v2/hot-e4e766eac79f.png",
       "coinloreId": "32686",
       "rank": 230,
       "markets": {
@@ -6394,7 +6394,7 @@
       "englishName": "Digibyte",
       "aliases": ["Digibyte", "digibyte", "디지바이트"],
       "color": "#0F666B",
-      "logo": "",
+      "logo": "/coin-logos/v2/dgb-8e8542fa8344.png",
       "coinloreId": "43",
       "rank": 232,
       "markets": {
@@ -6468,7 +6468,7 @@
       "englishName": "Banana For Scale",
       "aliases": ["Banana For Scale", "banana-for-scale", "바나나포스케일"],
       "color": "#0F666B",
-      "logo": "",
+      "logo": "/coin-logos/v2/bananas31-d00490957a7e.png",
       "coinloreId": "141501",
       "rank": 236,
       "markets": {
@@ -6505,7 +6505,7 @@
       "englishName": "0G",
       "aliases": ["0G", "zero-gravity"],
       "color": "#0F666B",
-      "logo": "",
+      "logo": "/coin-logos/v2/0g-159ae4114f8b.png",
       "coinloreId": "165641",
       "rank": 250,
       "markets": {
@@ -6542,7 +6542,7 @@
       "englishName": "Enjin Coin",
       "aliases": ["Enjin Coin", "enjin-coin", "엔진코인"],
       "color": "#0F666B",
-      "logo": "",
+      "logo": "/coin-logos/v2/enj-06cf489fba1e.png",
       "coinloreId": "2581",
       "rank": 252,
       "markets": {
@@ -6579,7 +6579,7 @@
       "englishName": "Oasis Network",
       "aliases": ["Oasis Network", "oasis-network", "오아시스"],
       "color": "#0F666B",
-      "logo": "",
+      "logo": "/coin-logos/v2/rose-099bad8ce174.png",
       "coinloreId": "46572",
       "rank": 257,
       "markets": {
@@ -6616,7 +6616,7 @@
       "englishName": "Ontology",
       "aliases": ["Ontology", "ontology"],
       "color": "#0F666B",
-      "logo": "",
+      "logo": "/coin-logos/v2/ont-2d30e56551a7.png",
       "coinloreId": "32331",
       "rank": 260,
       "markets": {
@@ -6653,7 +6653,7 @@
       "englishName": "Astar",
       "aliases": ["Astar", "astar"],
       "color": "#0F666B",
-      "logo": "",
+      "logo": "/coin-logos/v2/astr-65e2c480cfde.png",
       "coinloreId": "62661",
       "rank": 261,
       "markets": {

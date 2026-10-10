@@ -1126,7 +1126,7 @@ body {
     border: 0;
     background: transparent;
   }
-  .product-desk .indicator-workspace .coin-picker summary > span {
+  .product-desk .indicator-workspace .coin-picker summary > span:not(.asset-logo) {
     min-width: 0;
     flex: 1;
   }

@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { mkdtempSync, writeFileSync, rmSync } from 'node:fs';
+import { mkdtempSync, mkdirSync, writeFileSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { openSqlite, migrate } from '../sqlite.mjs';
@@ -11,6 +11,9 @@ import worker from '../../server-dist/api.mjs';
 test('Native server uses the real API, preserves units and errors, and never refreshes on a read', async () => {
   const root = mkdtempSync(join(tmpdir(), 'coin-http-'));
   writeFileSync(join(root, 'PriorChart-abcdef12.js'), 'export const prior = true;');
+  mkdirSync(join(root, 'coin-logos/v2'), { recursive: true });
+  writeFileSync(join(root, 'coin-logos/v2/btc-abcdef123456.png'), 'logo fixture');
+  writeFileSync(join(root, 'coin-logos/sources.json'), '{}');
   writeFileSync(
     join(root, 'index.html'),
     '<main>Coin Desk</main><meta content="https://coin-desk.pages.dev/brand/coin-desk-shiba-smile.png">',
@@ -64,6 +67,14 @@ test('Native server uses the real API, preserves units and errors, and never ref
     assert.equal((await fetch(base + '/api/v1/reference', { method: 'POST' })).status, 405);
     assert.equal((await fetch(base + '/.env')).status, 404);
     assert.equal((await fetch(base + '/assets/missing.js')).status, 404);
+    const logo = await fetch(base + '/coin-logos/v2/btc-abcdef123456.png');
+    assert.equal(logo.headers.get('content-type'), 'image/png');
+    assert.equal(logo.headers.get('cache-control'), 'public, max-age=31536000, immutable');
+    assert.equal(
+      (await fetch(base + '/coin-logos/sources.json')).headers.get('cache-control'),
+      'no-cache',
+    );
+    assert.equal((await fetch(base + '/coin-logos/v2/missing-abcdef123456.png')).status, 404);
     assert.match(await (await fetch(base + '/assets/PriorChart-abcdef12.js')).text(), /prior/);
     assert.equal((await fetch(base + '/api/v1/quotes/stream?market=other')).status, 400);
     assert.equal((await fetch(base + '/api/v1/quotes/stream?market=upbit')).status, 503);
