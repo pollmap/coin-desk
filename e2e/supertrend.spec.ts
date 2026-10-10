@@ -1,6 +1,29 @@
 import { test, expect } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
 
+test('retains fractional price precision in Supertrend readings', async ({ page }) => {
+  await page.route('**/api/v1/candles?**', async (route) => {
+    const response = await route.fetch();
+    const data = await response.json();
+    data.data = data.data.map((bar: Record<string, number>) => ({
+      ...bar,
+      open: bar.open / 1000,
+      high: bar.high / 1000,
+      low: bar.low / 1000,
+      close: bar.close / 1000,
+    }));
+    await route.fulfill({ response, json: data });
+  });
+  await page.goto('/coins/DOGE?metric=view:supertrend&price_source=binance&interval=1w');
+  await expect(page.locator('[data-chart-kind="analysis"]')).toHaveAttribute(
+    'data-range-ready',
+    '1',
+  );
+  await expect(
+    page.locator('.analysis-legend > span').filter({ hasText: '슈퍼트렌드 10·3' }).locator('b'),
+  ).toHaveText(/\d+\.\d{5,}/);
+});
+
 test('selects Supertrend from USD reference, opens actual DOGE weekly candles and keeps dates while reading help', async ({
   page,
 }) => {

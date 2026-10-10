@@ -13,7 +13,7 @@ import {
 import { createDeskChart } from './chart-theme';
 import type { Candle, Period, Point } from '../shared/types';
 import type { ObservationSignal } from '../shared/signals';
-import { money, numeric, periodStart } from './lib';
+import { money, numeric, periodStart, priceDigits } from './lib';
 import { ChartTools } from './ChartNavigator';
 import { DateNavigator } from './DateNavigator';
 import { availableWindow, type DateWindow } from '../shared/date-navigation';
@@ -178,6 +178,8 @@ export const AnalysisChart = memo(function AnalysisChart({
       ? '—'
       : new Date(t * 1000).toISOString().slice(0, 16).replace('T', ' ') + ' UTC';
   const metricNumber = (value: number | undefined) => numeric(value, readingDigits(value));
+  const lineNumber = (line: AnalysisLine, value: number | undefined) =>
+    numeric(value, line.supertrend ? priceDigits(value ?? 0, line.unit) : readingDigits(value));
   const fileName = (exportName ?? `${asset}-${unit}`).replace(/[\\/:*?"<>|]/g, '-');
   function explore(t: number | null, preserveRange = false) {
     // A layout change under the pointer must not immediately replace “latest”.
@@ -277,7 +279,7 @@ export const AnalysisChart = memo(function AnalysisChart({
           priceLineVisible: false,
           priceFormat: {
             type: 'custom',
-            formatter: (v: number) => numeric(v, readingDigits(v)),
+            formatter: (v: number) => lineNumber(line, v),
           },
         },
         index,
@@ -665,7 +667,8 @@ export const AnalysisChart = memo(function AnalysisChart({
               <i style={{ background: l.color }} />
               {l.legendTitle ?? l.title}{' '}
               <b>
-                {metricNumber(
+                {lineNumber(
+                  l,
                   selectedTime === null
                     ? l.data.at(-1)?.value
                     : time === undefined
@@ -740,7 +743,7 @@ export const AnalysisChart = memo(function AnalysisChart({
       {toolbarTarget ? createPortal(navigator, toolbarTarget) : navigator}
       <span className="sr-only" role="status">
         {selectedTime !== null
-          ? `${timestamp(time)} ${asset} ${display(priceValue)}. ${lines.map((l, i) => `${l.title} ${metricNumber(time === undefined ? undefined : readings.maps[i + 1].get(time))} ${l.unit}`).join('. ')}`
+          ? `${timestamp(time)} ${asset} ${display(priceValue)}. ${lines.map((l, i) => `${l.title} ${lineNumber(l, time === undefined ? undefined : readings.maps[i + 1].get(time))} ${l.unit}`).join('. ')}`
           : ''}
       </span>
       <details className="analysis-tools">
@@ -796,7 +799,7 @@ export const AnalysisChart = memo(function AnalysisChart({
                     <td>{timestamp(t)}</td>
                     <td>{display(readings.maps[0].get(t))}</td>
                     {lines.map((l, i) => (
-                      <td key={l.id}>{metricNumber(readings.maps[i + 1].get(t))}</td>
+                      <td key={l.id}>{lineNumber(l, readings.maps[i + 1].get(t))}</td>
                     ))}
                   </tr>
                 ))}
