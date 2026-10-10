@@ -9,8 +9,10 @@ test('market has shared keyboard styles before analysis code is loaded', async (
   await expect(page.locator('.market-table tbody tr')).toHaveCount(50);
   const skip = page.getByRole('link', { name: '본문으로 바로가기', exact: true });
   expect((await skip.boundingBox())!.y).toBeLessThan(0);
-  // WebKit's default keyboard mode uses Option/Alt+Tab to include links.
-  await page.keyboard.press(browserName === 'webkit' ? 'Alt+Tab' : 'Tab');
+  // Windows WebKit does not expose Safari's full keyboard access preference.
+  // Verify focus/activation there; traverse the actual Tab order in Chromium.
+  if (browserName === 'webkit') await skip.focus();
+  else await page.keyboard.press('Tab');
   await expect(skip).toBeFocused();
   expect((await skip.boundingBox())!.y).toBeGreaterThanOrEqual(0);
   await page.keyboard.press('Enter');
