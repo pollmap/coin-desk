@@ -8,7 +8,11 @@ COPY . .
 RUN npm run build && npm run build:server
 
 FROM ${NODE_IMAGE} AS runtime
-RUN apt-get update && apt-get install -y --no-install-recommends python3 ca-certificates && rm -rf /var/lib/apt/lists/* \
+RUN apt-get update && apt-get upgrade -y --no-install-recommends \
+    && apt-get install -y --no-install-recommends python3 ca-certificates \
+    && rm -rf /var/lib/apt/lists/* \
+    && rm -rf /usr/local/lib/node_modules/npm /usr/local/lib/node_modules/corepack /opt/yarn-v1.22.22 \
+    && rm -f /usr/local/bin/npm /usr/local/bin/npx /usr/local/bin/corepack /usr/local/bin/yarn /usr/local/bin/yarnpkg /usr/local/bin/pnpm /usr/local/bin/pnpx \
     && groupadd -g 10001 coin-desk && useradd -u 10001 -g 10001 -M coin-desk
 WORKDIR /app
 COPY --from=build /app/dist ./dist

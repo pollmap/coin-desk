@@ -22,6 +22,7 @@ def smoke(image='coin-desk:ci'):
                 if ready: break
             except (OSError,ValueError): time.sleep(1)
         if not ready: raise ValueError('Container never became healthy')
+        run('docker','exec',name,'sh','-c','test ! -e /usr/local/lib/node_modules/npm && test ! -e /usr/local/bin/npm')
         seed="import sqlite3; db=sqlite3.connect('/app/data/coin-desk.sqlite'); db.execute('INSERT INTO reference_prices VALUES(?,?,?,?)',('BTC',1700000000,35000,1700000001)); db.commit(); db.close()"
         run('docker','exec',name,'python3','-c',seed)
         with urllib.request.urlopen(base+'/api/v1/reference?asset=BTC',timeout=10) as response:

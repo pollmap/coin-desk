@@ -83,6 +83,14 @@ jobs:
           ignore-unfixed: true
           severity: HIGH,CRITICAL
           scanners: vuln,misconfig
+      - name: Scan container configuration
+        uses: aquasecurity/trivy-action@c03d123cb480c08c69b054af418ea5e69fe6e57e
+        with:
+          scan-type: config
+          scan-ref: Dockerfile
+          format: table
+          exit-code: '1'
+          severity: HIGH,CRITICAL
 
   verify:
     if: always()
