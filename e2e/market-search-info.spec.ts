@@ -1,6 +1,100 @@
 import { test, expect } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
 
+test('a ninth favorite survives reload without altering saved private analysis', async ({
+  page,
+}) => {
+  const stored = {
+    version: 1,
+    favorites: ['BTC', 'DOGE', 'ETH', 'SOL', 'XRP', 'LINK', 'ONDO', 'PEPE'],
+    workspaces: [{ name: 'saved analysis', annotations: [{ text: 'private note' }] }],
+    extra: 'preserve',
+  };
+  await page.addInitScript((value) => {
+    if (!localStorage.getItem('coin-desk.personal.v1'))
+      localStorage.setItem('coin-desk.personal.v1', JSON.stringify(value));
+  }, stored);
+  await page.goto('/');
+  await page.getByRole('textbox', { name: '시장 코인 검색' }).fill('PENGU');
+  const star = page.locator('.market-table .favorite-button').first();
+  await expect(star).toHaveAttribute('aria-pressed', 'false');
+  await star.click();
+  await expect(star).toHaveAttribute('aria-pressed', 'true');
+  await page.reload();
+  await expect(star).toHaveAttribute('aria-pressed', 'true');
+  const restored = await page.evaluate(() =>
+    JSON.parse(localStorage.getItem('coin-desk.personal.v1')!),
+  );
+  expect(restored).toEqual({ ...stored, favorites: [...stored.favorites, 'PENGU'] });
+});
+
+test('market defers indicator code and Enter survives slow first-time indicator search', async ({
+  page,
+}) => {
+  const scriptCalls: string[] = [];
+  page.on('request', (r) => {
+    if (r.resourceType() === 'script') scriptCalls.push(r.url());
+  });
+  await page.goto('/');
+  await expect(page.locator('.market-table tbody tr')).toHaveCount(50);
+  expect(
+    scriptCalls.some((u) => /\/shared\/indicator-catalog\.ts|indicator-catalog-/.test(u)),
+  ).toBe(false);
+  let delayed = 0;
+  let release!: () => void;
+  const blocked = new Promise<void>((resolve) => {
+    release = resolve;
+  });
+  await page.route(
+    (url) =>
+      /\/shared\/indicator-catalog\.ts|\/assets\/indicator-catalog-[^/]+\.js/.test(url.pathname),
+    async (route) => {
+      delayed++;
+      await blocked;
+      await route.continue();
+    },
+  );
+  const input = page.getByRole('textbox', { name: '코인·지표 검색', exact: true });
+  await input.fill('MVRV');
+  await expect.poll(() => delayed).toBe(1);
+  await input.press('Enter');
+  release();
+  await expect(page).toHaveURL(/\/coins\/BTC\?.*metric=net%3Amvrv/);
+  expect(delayed).toBe(1);
+  await expect(page.locator('[data-chart-kind=analysis]')).toHaveAttribute(
+    'data-primary-metric',
+    'net:mvrv',
+  );
+});
+
+test('late indicator search does not navigate after the query is cleared', async ({ page }) => {
+  await page.goto('/');
+  await expect(page.locator('.market-table tbody tr')).toHaveCount(50);
+  let release!: () => void;
+  let requested = false;
+  const blocked = new Promise<void>((resolve) => {
+    release = resolve;
+  });
+  await page.route(
+    (url) =>
+      /\/shared\/indicator-catalog\.ts|\/assets\/indicator-catalog-[^/]+\.js/.test(url.pathname),
+    async (route) => {
+      requested = true;
+      await blocked;
+      await route.continue();
+    },
+  );
+  const input = page.getByRole('textbox', { name: '코인·지표 검색', exact: true });
+  await input.fill('MVRV');
+  await expect.poll(() => requested).toBe(true);
+  await input.press('Enter');
+  await page.getByRole('button', { name: '검색 지우기', exact: true }).click();
+  await expect(input).toHaveValue('');
+  release();
+  await page.waitForTimeout(900);
+  await expect(page).toHaveURL(/\/$/);
+});
+
 test('market search prioritizes an exact ticker, Enter opens it, and clear restores the list', async ({
   page,
 }) => {

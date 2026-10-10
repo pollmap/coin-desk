@@ -5,7 +5,7 @@ import { ASSETS } from '../shared/catalog';
 import { availableMarket, supportsMarket } from '../shared/asset-registry';
 import { matchesCoin, exactCoin } from '../shared/coin-search';
 import { matchesIndicator } from '../shared/indicator-search';
-import { defaultIndicator, indicatorUrl, navigationIndicators } from '../shared/indicator-catalog';
+import { defaultAnalysisUrl } from '../shared/default-analysis';
 import { saved, save } from './lib';
 import { AssetLogo } from './AssetLogo';
 
@@ -20,6 +20,34 @@ export function ProductTopbar() {
       document.documentElement.dataset.theme === 'dark' ? 'dark' : 'light',
     );
   const [searchOpen, setSearchOpen] = useState(false);
+  const [catalog, setCatalog] = useState<typeof import('../shared/indicator-catalog') | null>(null);
+  const [searchError, setSearchError] = useState(false);
+  const catalogRequest = useRef<Promise<typeof import('../shared/indicator-catalog')> | null>(null);
+  const mounted = useRef(true);
+  useEffect(() => {
+    mounted.current = true;
+    return () => {
+      mounted.current = false;
+    };
+  }, []);
+  function loadCatalog() {
+    if (!catalogRequest.current) {
+      catalogRequest.current = import('../shared/indicator-catalog')
+        .then((module) => {
+          if (mounted.current) {
+            setCatalog(module);
+            setSearchError(false);
+          }
+          return module;
+        })
+        .catch((error) => {
+          catalogRequest.current = null;
+          if (mounted.current) setSearchError(true);
+          throw error;
+        });
+    }
+    return catalogRequest.current;
+  }
   const preferredMarket =
     (p.get('market') || saved('price-market', 'upbit')) === 'binance' ? 'binance' : 'upbit';
   const searchButton = useRef<HTMLButtonElement>(null);
@@ -29,9 +57,9 @@ export function ProductTopbar() {
   useEffect(() => {
     if (searchOpen) input.current?.focus();
   }, [searchOpen]);
-  const results = [
-    ...ASSETS.filter((a) => matchesCoin(a.id, query))
-      .sort((a, b) => Number(exactCoin(b.id, query)) - Number(exactCoin(a.id, query)))
+  const coinResults = (text: string) =>
+    ASSETS.filter((a) => matchesCoin(a.id, text))
+      .sort((a, b) => Number(exactCoin(b.id, text)) - Number(exactCoin(a.id, text)))
       .map((a) => ({
         id: a.id,
         title: a.name,
@@ -42,26 +70,47 @@ export function ProductTopbar() {
             : availableMarket(a.id, preferredMarket) === 'binance'
               ? ' · Binance USDT'
               : ' · Upbit KRW'),
-        href: indicatorUrl(
-          a.id,
-          defaultIndicator(a.id),
-          new URLSearchParams({
-            market: availableMarket(a.id, preferredMarket),
-            price_source: availableMarket(a.id, preferredMarket),
-          }),
-        ),
+        href: defaultAnalysisUrl(a.id, preferredMarket),
         asset: a.id,
-      })),
-    ...navigationIndicators(asset, '')
+      }));
+  const results = [
+    ...coinResults(query),
+    ...(catalog?.navigationIndicators(asset, '') ?? [])
       .filter((d) => matchesIndicator(d, query))
       .map((d) => ({
         id: d.id,
         title: d.title,
         kind: asset + ' 지표',
-        href: indicatorUrl(asset, d.id, p),
+        href: catalog!.indicatorUrl(asset, d.id, p),
         asset: null,
       })),
   ].slice(0, 12);
+  function selectResult(href: string) {
+    setQuery('');
+    setSearchOpen(false);
+    navigate(href);
+  }
+  async function openFirstResult(typed: string) {
+    const coin = coinResults(typed)[0];
+    if (coin) {
+      selectResult(coin.href);
+      return;
+    }
+    try {
+      const module = catalog ?? (await loadCatalog());
+      // A delayed chunk must not navigate after the user edits or leaves search.
+      if (
+        !mounted.current ||
+        input.current?.value.trim() !== typed ||
+        document.activeElement !== input.current
+      )
+        return;
+      const match = module.navigationIndicators(asset, '').find((d) => matchesIndicator(d, typed));
+      if (match) selectResult(module.indicatorUrl(asset, match.id, p));
+    } catch {
+      /* The search error below provides a retry. */
+    }
+  }
   useEffect(() => {
     if (help.current) help.current.open = false;
     document.title =
@@ -144,11 +193,9 @@ export function ProductTopbar() {
         ref={box}
         onKeyDown={(e) => {
           if (e.nativeEvent.isComposing) return;
-          if (e.key === 'Enter' && e.target === input.current && query.trim() && results.length) {
+          if (e.key === 'Enter' && e.target === input.current && input.current.value.trim()) {
             e.preventDefault();
-            setQuery('');
-            setSearchOpen(false);
-            navigate(results[0].href);
+            void openFirstResult(input.current.value.trim());
           }
           if (e.key === 'Escape') {
             setQuery('');
@@ -174,6 +221,9 @@ export function ProductTopbar() {
           placeholder="코인이나 지표 검색"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
+          onFocus={() => {
+            void loadCatalog().catch(() => {});
+          }}
           aria-controls={query.trim() ? 'product-search-results' : undefined}
         />
         {query ? (
@@ -205,7 +255,20 @@ export function ProductTopbar() {
                 <small>{r.kind}</small>
               </Link>
             ))}
-            {!results.length && <p role="status">일치하는 코인이나 지표가 없습니다.</p>}
+            {!results.length &&
+              (searchError ? (
+                <button
+                  onClick={() => {
+                    void loadCatalog().catch(() => {});
+                  }}
+                >
+                  지표 검색 다시 불러오기
+                </button>
+              ) : (
+                <p role="status">
+                  {catalog ? '일치하는 코인이나 지표가 없습니다.' : '지표를 불러오는 중…'}
+                </p>
+              ))}
           </div>
         )}
       </div>

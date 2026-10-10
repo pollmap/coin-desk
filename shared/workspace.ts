@@ -7,6 +7,7 @@ import { validAnnotations, type Annotation } from './annotations';
 import { parseUtcDate, type DateWindow } from './date-navigation';
 import { validPatterns } from './candle-patterns';
 import { indicatorDefinition } from './indicator-catalog';
+import { validFavorites } from './personal-favorites';
 
 export interface ChartSettings {
   asset: Asset;
@@ -74,12 +75,7 @@ export function chartSettings(value: unknown): ChartSettings {
 export function normalizeDesk(value: unknown): PersonalDesk {
   const v = record(value);
   if (v.version !== 1 && v.version !== 2) return structuredClone(DEFAULT_DESK);
-  const favorites = Array.isArray(v.favorites)
-    ? [...new Set(v.favorites.filter((id): id is Asset => ASSETS.some((a) => a.id === id)))].slice(
-        0,
-        8,
-      )
-    : [...DEFAULT_DESK.favorites];
+  const favorites = validFavorites(v.favorites);
   const workspaces: Workspace[] = [];
   for (const raw of Array.isArray(v.workspaces) ? v.workspaces.slice(0, 12) : []) {
     const entry = record(raw);

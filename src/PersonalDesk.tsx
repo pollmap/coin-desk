@@ -7,8 +7,9 @@ import { DEFAULT_DESK, importDesk, normalizeDesk, workspaceUrl } from '../shared
 import type { PersonalDesk, Workspace } from '../shared/workspace';
 import { annotationKey } from '../shared/annotations';
 import './desk.css';
+import { PERSONAL_DESK_KEY } from '../shared/personal-favorites';
 
-const KEY = 'coin-desk.personal.v1';
+const KEY = PERSONAL_DESK_KEY;
 function readDesk(): PersonalDesk {
   try {
     return normalizeDesk(JSON.parse(localStorage.getItem(KEY) || 'null'));

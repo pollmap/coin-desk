@@ -4,12 +4,12 @@ import { Star, Search, X } from 'lucide-react';
 import { ASSETS } from '../shared/catalog';
 import { matchesCoin, exactCoin } from '../shared/coin-search';
 import { assetDefinition, availableMarket } from '../shared/asset-registry';
-import { defaultIndicator, indicatorDefinition, indicatorUrl } from '../shared/indicator-catalog';
+import { defaultIndicator, defaultAnalysisUrl } from '../shared/default-analysis';
 import type { Asset, Point } from '../shared/types';
 import { AssetLogo } from './AssetLogo';
 import { useQuoteFeed } from './useQuoteFeed';
 import { useMarket } from './useMarket';
-import { usePersonalDesk } from './PersonalDesk';
+import { useFavorites } from './useFavorites';
 import { money, numeric, saved, save, turnover } from './lib';
 import type { QuoteInfo } from './MarketQuoteInfo';
 const ThemeExplorer = lazy(() => import('./ThemeExplorer'));
@@ -50,7 +50,7 @@ export function MarketHome() {
   );
   const [subscribed, setSubscribed] = useState<string[]>([]);
   const feed = useQuoteFeed(market, { assets: subscribed, sparkLimit: pageSize === 20 ? 0 : 150 });
-  const { desk, update } = usePersonalDesk();
+  const { favorites, toggle } = useFavorites();
   const [params, setParams] = useSearchParams();
   const sort = params.get('sort') || saved('market-sort', 'default');
   const requestedView = params.get('view') ?? saved('market-view', 'all');
@@ -86,15 +86,7 @@ export function MarketHome() {
     window.addEventListener('scroll', track);
     return () => window.removeEventListener('scroll', track);
   }, []);
-  const href = (asset: Asset) =>
-    indicatorUrl(
-      asset,
-      defaultIndicator(asset),
-      new URLSearchParams({
-        price_source: availableMarket(asset, market),
-        market: availableMarket(asset, market),
-      }),
-    );
+  const href = (asset: Asset) => defaultAnalysisUrl(asset, market);
   // Capture ordering on entry or explicit sorting only. Live ticks update values,
   // never move a row underneath a pointer or keyboard focus.
   const order = useMemo(
@@ -116,10 +108,10 @@ export function MarketHome() {
         (!query || matchesCoin(id, query)) &&
         (query || view === 'favorites' || assetDefinition(id)?.markets[market]),
     )
-    .filter((id) => view !== 'favorites' || desk.favorites.includes(id))
+    .filter((id) => view !== 'favorites' || favorites.includes(id))
     .sort((a, b) => Number(exactCoin(b, query)) - Number(exactCoin(a, query)));
   const visible = filtered.slice(0, visibleCount);
-  const subscription = [...new Set([...visible, ...desk.favorites])]
+  const subscription = [...new Set([...visible, ...favorites])]
     .filter((id) => assetDefinition(id)?.markets[market])
     .sort()
     .join(',');
@@ -128,15 +120,10 @@ export function MarketHome() {
     ...ASSETS.find((a) => a.id === id)!,
     data: feed.rows.find((r) => r.asset === id),
   }));
-  const starred = desk.favorites;
+  const starred = favorites;
   const favorite = (asset: Asset) => {
     try {
-      update((current) => ({
-        ...current,
-        favorites: current.favorites.includes(asset)
-          ? current.favorites.filter((a) => a !== asset)
-          : [...current.favorites, asset],
-      }));
+      toggle(asset);
       setSaveError('');
     } catch {
       setSaveError('관심 코인을 저장하지 못했습니다. 브라우저 저장 공간을 확인해 주세요.');
@@ -197,7 +184,7 @@ export function MarketHome() {
                         .filter(
                           (id) =>
                             matchesCoin(id, typed) &&
-                            (view !== 'favorites' || desk.favorites.includes(id)),
+                            (view !== 'favorites' || favorites.includes(id)),
                         )
                         .sort((a, b) => Number(exactCoin(b, typed)) - Number(exactCoin(a, typed)))
                     : [];
@@ -405,7 +392,7 @@ export function MarketHome() {
                     <td className="market-analysis-cell">
                       <Link
                         to={href(id)}
-                        aria-label={`${name} ${indicatorDefinition(defaultIndicator(id))?.title} 분석`}
+                        aria-label={`${name} ${defaultIndicator(id) === 'rsi' ? 'RSI 14' : 'MVRV'} 분석`}
                       >
                         {defaultIndicator(id) === 'rsi' ? '추세 · RSI 14' : '가치평가 · MVRV'} ↗
                       </Link>

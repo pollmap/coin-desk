@@ -1,18 +1,8 @@
 import { lazy, Suspense, useEffect, useRef, useState } from 'react';
-import {
-  Link,
-  Navigate,
-  Route,
-  Routes,
-  useLocation,
-  useParams,
-  useSearchParams,
-} from 'react-router-dom';
+import { Link, Navigate, Route, Routes, useLocation, useSearchParams } from 'react-router-dom';
 import { Database, Clock3 } from 'lucide-react';
 import { NotificationInbox } from './NotificationInbox';
 import { ProductTopbar } from './ProductTopbar';
-import { ASSETS } from '../shared/catalog';
-import { resolveIndicator } from '../shared/indicator-catalog';
 import { MarketHome as WatchlistPage } from './MarketHome';
 import './analysis-ux.css';
 const AnalysisWorkspace = lazy(() =>
@@ -41,6 +31,7 @@ const WorkspacePage = lazy(() =>
   import('./LegacyPages').then((m) => ({ default: m.WorkspacePage })),
 );
 const SourceDialog = lazy(() => import('./LegacyPages').then((m) => ({ default: m.SourceDialog })));
+const LegacyIndicatorRoute = lazy(() => import('./IndicatorRedirect'));
 function EntryRoute() {
   const location = useLocation(),
     p = new URLSearchParams(location.search);
@@ -49,32 +40,13 @@ function EntryRoute() {
       p.has(k),
     )
   ) {
-    const asset = ASSETS.find((a) => a.id === p.get('asset'))?.id ?? 'BTC';
-    p.set('asset', asset);
-    p.set('metric', resolveIndicator(asset, '/', p).id);
-    return (
-      <Navigate
-        replace
-        to={{ pathname: '/coins/' + asset, search: '?' + p, hash: location.hash }}
-      />
-    );
+    return <LegacyIndicatorRoute />;
   }
   return <WatchlistPage />;
 }
 function MarketRoute() {
   const [params] = useSearchParams();
   return params.get('view') === 'derivatives' ? <LegacyWatchlist /> : <WatchlistPage />;
-}
-function LegacyIndicatorRoute() {
-  const route = useParams(),
-    location = useLocation(),
-    p = new URLSearchParams(location.search);
-  const asset = ASSETS.find((a) => a.id === (route.asset || p.get('asset')))?.id ?? 'BTC';
-  p.set('asset', asset);
-  p.set('metric', resolveIndicator(asset, location.pathname, p).id);
-  return (
-    <Navigate replace to={{ pathname: '/coins/' + asset, search: '?' + p, hash: location.hash }} />
-  );
 }
 function Loading({ message = '실제 데이터를 불러오고 있습니다…' }: { message?: string }) {
   return (
