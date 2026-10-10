@@ -25,6 +25,7 @@ jobs:
       - run: npm ci
       - run: npm audit --audit-level=high
       - run: python scripts/verify_custom.py
+      - run: python scripts/verify_supertrend.py
       - run: npm run check
       - run: npm run test:recovery
       - run: npm run test:server

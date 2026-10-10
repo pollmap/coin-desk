@@ -8,6 +8,7 @@ import { validIndicators } from './indicators';
 import { readDateWindow } from './date-navigation';
 import type { Asset } from './types';
 import type { DrawingKind } from './annotations';
+import { validSupertrendOption } from './supertrend';
 
 export const GUIDE_CATEGORIES = [
   '시작·데이터',
@@ -22,7 +23,7 @@ export type GuideCategory = (typeof GUIDE_CATEGORIES)[number];
 export type GuideAction =
   | { kind: 'indicator'; id: string }
   | { kind: 'panel'; id: string; section: 'onchain' | 'futures' | 'price' }
-  | { kind: 'view'; id: AnalysisView }
+  | { kind: 'view'; id: AnalysisView | 'supertrend' }
   | { kind: 'pattern'; id: PatternId }
   | { kind: 'drawing'; id: DrawingKind }
   | { kind: 'link'; path: string };
@@ -79,6 +80,23 @@ function entry(
   };
 }
 const technical: GuideArticle[] = [
+  entry(
+    'supertrend',
+    '슈퍼트렌드',
+    '추세·모멘텀',
+    '고가·저가와 변동 폭(ATR)으로 추세 기준선을 계산합니다.',
+    '상승 추세에서는 아래 경계, 하락 추세에서는 위 경계를 표시합니다. 확정 종가가 경계를 엄격히 넘을 때 방향이 바뀝니다. 봉 간격·ATR 기간·배수를 함께 확인하세요.',
+    'TR=max(H−L, |H−이전 C|, |L−이전 C|); ATR=Wilder RMA(TR,N); 기본 경계=(H+L)/2±k×ATR; 이전 경계를 이어가며 확정 종가로 방향 판정',
+    '횡보 구간에서는 방향이 자주 바뀔 수 있습니다. 추세 표시이며 매수·매도 권고가 아닙니다. 종가만 있는 USD 참조가격에는 적용하지 않습니다.',
+    { kind: 'view', id: 'supertrend' },
+    {
+      english: 'Supertrend',
+      aliases: '슈퍼 트렌드 슈퍼트렌드 ATR 추세',
+      basis: ['upbit', 'binance'],
+      related: ['candles', 'rsi', 'ribbon'],
+      source: tv + 'solutions/43000634738-supertrend/',
+    },
+  ),
   entry(
     'sma',
     '단순이동평균 · SMA',
@@ -682,6 +700,8 @@ export function guideContext(params: URLSearchParams) {
     next.set('metric', params.get('metric')!);
   if (['1h', '4h', '1d', '1w', '1M'].includes(params.get('interval') ?? ''))
     next.set('interval', params.get('interval')!);
+  for (const key of ['st_period', 'st_multiplier'])
+    if (validSupertrendOption(key, params.get(key))) next.set(key, params.get(key)!);
   const range = readDateWindow(params);
   if (range) {
     next.set('chart_from', String(range.from));
@@ -726,6 +746,8 @@ export function guideChartLink(
   } else if (a.kind === 'view') {
     p.set('visual', a.id);
     p.set('metric', 'view:' + a.id);
+    if (a.id === 'supertrend' && !params.has('interval')) p.set('interval', '1w');
+    if (a.id === 'supertrend' && !params.has('log')) p.set('log', '0');
   } else if (a.kind === 'pattern') {
     p.set('patterns', a.id);
     p.set(
