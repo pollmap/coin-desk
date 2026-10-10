@@ -46,7 +46,7 @@ test('status loads a small summary before bounded source pages', async ({ page }
   });
   await page.goto('/status');
   await expect(page.locator('.automation-summary')).toContainText('데이터 원천 상태');
-  expect(calls.some((u) => u.includes('/status/summary'))).toBe(true);
+  await expect.poll(() => calls.some((u) => u.includes('/status/summary'))).toBe(true);
   expect(calls.some((u) => u.includes('/status/sources'))).toBe(false);
   expect(calls.some((u) => new URL(u).pathname === '/api/v1/status')).toBe(false);
   await page.getByRole('button', { name: '원천별 상태 보기' }).click();

@@ -887,6 +887,12 @@ body {
   .market-controls label {
     margin-left: auto;
   }
+  .market-sort-label {
+    display: none;
+  }
+  .market-controls select {
+    width: 94px;
+  }
   .market-resume {
     margin: 0;
   }

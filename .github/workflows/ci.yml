@@ -83,6 +83,13 @@ jobs:
           ignore-unfixed: true
           severity: HIGH,CRITICAL
           scanners: vuln,misconfig
+      - name: Record findings including unfixed vulnerabilities
+        run: trivy image --scanners vuln --severity HIGH,CRITICAL --format json --output trivy-runtime-report.json coin-desk:ci
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: container-security-report
+          path: trivy-runtime-report.json
+          retention-days: 7
       - name: Scan container configuration
         uses: aquasecurity/trivy-action@c03d123cb480c08c69b054af418ea5e69fe6e57e
         with:

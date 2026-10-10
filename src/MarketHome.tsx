@@ -218,8 +218,9 @@ export function MarketHome() {
           </div>
           {view !== 'themes' && (
             <label>
-              정렬{' '}
+              <span className="market-sort-label">정렬 </span>
               <select
+                aria-label="정렬"
                 value={sort}
                 onChange={(e) => {
                   save('market-sort', e.target.value);
