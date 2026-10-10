@@ -15,6 +15,7 @@ test('market geometry and unified search remain compact at every width', async (
     await expect(input).toBeFocused();
     await input.fill('비트코인 고평가');
     await expect(page.locator('.search-hit').first()).toContainText('MVRV');
+    await expect(page.getByRole('link', { name: '목록에서 보기' })).not.toBeVisible();
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(
       true,
     );

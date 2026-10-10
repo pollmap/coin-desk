@@ -150,7 +150,7 @@ export default function SearchDialog({
             setQuery(e.target.value);
           }}
         />
-        {location.pathname === '/' && query.trim() && (
+        {location.pathname === '/' && hits.some((hit) => hit.kind === 'asset') && (
           <Link
             className="search-filter-link"
             to={
