@@ -42,7 +42,7 @@ export function MarketHome() {
   const [saveError, setSaveError] = useState('');
   const [quoteInfo, setQuoteInfo] = useState<QuoteInfo | null>(null);
   const quoteTrigger = useRef<HTMLElement | null>(null);
-  const searchInput = useRef<HTMLInputElement>(null);
+
   const { market, changeMarket } = useMarket();
   const [pageSize] = useState(() => (window.matchMedia('(max-width: 767px)').matches ? 20 : 50));
   const [visibleCount, setVisibleCount] = useState(() =>
@@ -142,6 +142,39 @@ export function MarketHome() {
                 : '1분마다 갱신'}
           </span>
         </div>
+        <div className="market-search">
+          <button
+            className="market-search-trigger"
+            aria-label="시장 코인 검색"
+            onClick={(e) =>
+              window.dispatchEvent(
+                new CustomEvent('bori-open-search', {
+                  detail: { query, trigger: e.currentTarget },
+                }),
+              )
+            }
+          >
+            <Search size={18} aria-hidden="true" />
+            <span>{query || '코인·지표 검색'}</span>
+          </button>
+          {query && (
+            <button
+              className="icon-button"
+              aria-label="시장 검색 지우기"
+              onClick={() =>
+                setParams(
+                  (p) => {
+                    p.delete('q');
+                    return p;
+                  },
+                  { replace: true },
+                )
+              }
+            >
+              <X size={18} />
+            </button>
+          )}
+        </div>
         <div className="market-view-tabs" role="group" aria-label="시장 보기">
           {(
             [
@@ -166,84 +199,12 @@ export function MarketHome() {
             </button>
           ))}
         </div>
-        {view !== 'themes' && (
-          <div className="market-search">
-            <Search size={18} aria-hidden="true" />
-            <input
-              ref={searchInput}
-              aria-label="시장 코인 검색"
-              placeholder="코인 이름·티커 검색"
-              value={query}
-              onKeyDown={(e) => {
-                if (e.nativeEvent.isComposing) return;
-                if (e.key === 'Enter') {
-                  // URL updates can still be rendering when Enter follows a keystroke.
-                  const typed = e.currentTarget.value.trim();
-                  const matches = typed
-                    ? order
-                        .filter(
-                          (id) =>
-                            matchesCoin(id, typed) &&
-                            (view !== 'favorites' || favorites.includes(id)),
-                        )
-                        .sort((a, b) => Number(exactCoin(b, typed)) - Number(exactCoin(a, typed)))
-                    : [];
-                  if (matches[0]) {
-                    e.preventDefault();
-                    navigate(href(matches[0]));
-                  }
-                }
-                if (e.key === 'Escape')
-                  setParams(
-                    (p) => {
-                      p.delete('q');
-                      return p;
-                    },
-                    { replace: true },
-                  );
-              }}
-              onChange={(e) =>
-                setParams(
-                  (p) => {
-                    if (e.target.value) p.set('q', e.target.value);
-                    else p.delete('q');
-                    return p;
-                  },
-                  { replace: true },
-                )
-              }
-            />
-            {query && (
-              <button
-                className="icon-button"
-                aria-label="시장 검색 지우기"
-                onClick={() => {
-                  setParams(
-                    (p) => {
-                      p.delete('q');
-                      return p;
-                    },
-                    { replace: true },
-                  );
-                  searchInput.current?.focus();
-                }}
-              >
-                <X size={18} />
-              </button>
-            )}
-          </div>
-        )}
         {feed.data?.collection && !feed.data.collection.healthy && (
           <p className="market-runtime-notice" role="status">
             {['no_execution_ledger', 'not_started'].includes(feed.data.collection.reason || '')
               ? '시세 갱신을 확인하고 있습니다.'
               : '시세 갱신이 지연되고 있습니다.'}{' '}
             <Link to="/status">데이터 상태</Link>
-          </p>
-        )}
-        {resumeHref && (
-          <p className="market-resume">
-            <Link to={resumeHref}>{resume.asset} 분석 이어 보기</Link>
           </p>
         )}
         <div className="market-controls">
@@ -257,8 +218,9 @@ export function MarketHome() {
           </div>
           {view !== 'themes' && (
             <label>
-              정렬{' '}
+              <span className="market-sort-label">정렬 </span>
               <select
+                aria-label="정렬"
                 value={sort}
                 onChange={(e) => {
                   save('market-sort', e.target.value);
@@ -277,6 +239,11 @@ export function MarketHome() {
           {view !== 'themes' && sort !== 'default' && (
             <button onClick={() => setSortRevision((v) => v + 1)}>지금 값으로 정렬</button>
           )}
+          {resumeHref && (
+            <Link className="market-resume" to={resumeHref}>
+              이어 보기
+            </Link>
+          )}
         </div>
         {saveError && <p role="alert">{saveError}</p>}
         {feed.error && (
@@ -284,7 +251,6 @@ export function MarketHome() {
             시세를 가져오지 못했습니다. <button onClick={feed.reload}>다시 시도</button>
           </div>
         )}
-        {!feed.error && feed.loading && !feed.data && <p role="status">시세를 불러오는 중…</p>}
         {view === 'themes' ? (
           <Suspense fallback={<p role="status">테마를 여는 중…</p>}>
             <ThemeExplorer

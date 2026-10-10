@@ -1,16 +1,11 @@
-import { useEffect, useRef, useState } from 'react';
-import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom';
-import { Search, Sun, Moon, HelpCircle, X, List, ArrowLeftRight, Bookmark } from 'lucide-react';
+import { lazy, Suspense, useEffect, useRef, useState } from 'react';
+import { Link, NavLink, useLocation } from 'react-router-dom';
+import { Search, Sun, Moon, HelpCircle, List, ArrowLeftRight, Bookmark } from 'lucide-react';
 import { ASSETS } from '../shared/catalog';
-import { availableMarket, supportsMarket } from '../shared/asset-registry';
-import { matchesCoin, exactCoin } from '../shared/coin-search';
-import { matchesIndicator } from '../shared/indicator-search';
-import { defaultAnalysisUrl } from '../shared/default-analysis';
 import { saved, save } from './lib';
-import { AssetLogo } from './AssetLogo';
+const SearchDialog = lazy(() => import('./SearchDialog'));
 
 export function ProductTopbar() {
-  const navigate = useNavigate();
   const location = useLocation(),
     p = new URLSearchParams(location.search);
   const asset =
@@ -20,97 +15,9 @@ export function ProductTopbar() {
       document.documentElement.dataset.theme === 'dark' ? 'dark' : 'light',
     );
   const [searchOpen, setSearchOpen] = useState(false);
-  const [catalog, setCatalog] = useState<typeof import('../shared/indicator-catalog') | null>(null);
-  const [searchError, setSearchError] = useState(false);
-  const catalogRequest = useRef<Promise<typeof import('../shared/indicator-catalog')> | null>(null);
-  const mounted = useRef(true);
-  useEffect(() => {
-    mounted.current = true;
-    return () => {
-      mounted.current = false;
-    };
-  }, []);
-  function loadCatalog() {
-    if (!catalogRequest.current) {
-      catalogRequest.current = import('../shared/indicator-catalog')
-        .then((module) => {
-          if (mounted.current) {
-            setCatalog(module);
-            setSearchError(false);
-          }
-          return module;
-        })
-        .catch((error) => {
-          catalogRequest.current = null;
-          if (mounted.current) setSearchError(true);
-          throw error;
-        });
-    }
-    return catalogRequest.current;
-  }
-  const preferredMarket =
-    (p.get('market') || saved('price-market', 'upbit')) === 'binance' ? 'binance' : 'upbit';
-  const searchButton = useRef<HTMLButtonElement>(null);
-  const input = useRef<HTMLInputElement>(null),
-    box = useRef<HTMLDivElement>(null),
-    help = useRef<HTMLDetailsElement>(null);
-  useEffect(() => {
-    if (searchOpen) input.current?.focus();
-  }, [searchOpen]);
-  const coinResults = (text: string) =>
-    ASSETS.filter((a) => matchesCoin(a.id, text))
-      .sort((a, b) => Number(exactCoin(b.id, text)) - Number(exactCoin(a.id, text)))
-      .map((a) => ({
-        id: a.id,
-        title: a.name,
-        kind:
-          a.id +
-          (supportsMarket(a.id, preferredMarket)
-            ? ''
-            : availableMarket(a.id, preferredMarket) === 'binance'
-              ? ' · Binance USDT'
-              : ' · Upbit KRW'),
-        href: defaultAnalysisUrl(a.id, preferredMarket),
-        asset: a.id,
-      }));
-  const results = [
-    ...coinResults(query),
-    ...(catalog?.navigationIndicators(asset, '') ?? [])
-      .filter((d) => matchesIndicator(d, query))
-      .map((d) => ({
-        id: d.id,
-        title: d.title,
-        kind: asset + ' 지표',
-        href: catalog!.indicatorUrl(asset, d.id, p),
-        asset: null,
-      })),
-  ].slice(0, 12);
-  function selectResult(href: string) {
-    setQuery('');
-    setSearchOpen(false);
-    navigate(href);
-  }
-  async function openFirstResult(typed: string) {
-    const coin = coinResults(typed)[0];
-    if (coin) {
-      selectResult(coin.href);
-      return;
-    }
-    try {
-      const module = catalog ?? (await loadCatalog());
-      // A delayed chunk must not navigate after the user edits or leaves search.
-      if (
-        !mounted.current ||
-        input.current?.value.trim() !== typed ||
-        document.activeElement !== input.current
-      )
-        return;
-      const match = module.navigationIndicators(asset, '').find((d) => matchesIndicator(d, typed));
-      if (match) selectResult(module.indicatorUrl(asset, match.id, p));
-    } catch {
-      /* The search error below provides a retry. */
-    }
-  }
+  const searchButton = useRef<HTMLButtonElement>(null),
+    help = useRef<HTMLDetailsElement>(null),
+    searchReturn = useRef<HTMLElement | null>(null);
   useEffect(() => {
     if (help.current) help.current.open = false;
     document.title =
@@ -129,21 +36,25 @@ export function ProductTopbar() {
                   : '보리차트') + ' | 보리차트';
   }, [location.pathname, location.search]);
   useEffect(() => {
+    const openSearch = (e: Event) => {
+      const detail = (e as CustomEvent<{ query: string; trigger: HTMLElement }>).detail;
+      setQuery(detail?.query ?? '');
+      searchReturn.current = detail?.trigger ?? searchButton.current;
+      setSearchOpen(true);
+    };
     const keyboard = (e: KeyboardEvent) => {
       if (e.key === '/' && !/INPUT|TEXTAREA|SELECT/.test((e.target as HTMLElement).tagName)) {
         e.preventDefault();
+        searchReturn.current = document.activeElement as HTMLElement;
+        setQuery('');
         setSearchOpen(true);
-        input.current?.focus();
       }
     };
-    const dismiss = (e: PointerEvent) => {
-      if (!box.current?.contains(e.target as Node)) setQuery('');
-    };
     window.addEventListener('keydown', keyboard);
-    document.addEventListener('pointerdown', dismiss);
+    window.addEventListener('bori-open-search', openSearch);
     return () => {
       window.removeEventListener('keydown', keyboard);
-      document.removeEventListener('pointerdown', dismiss);
+      window.removeEventListener('bori-open-search', openSearch);
     };
   }, []);
   return (
@@ -179,99 +90,30 @@ export function ProductTopbar() {
       </nav>
       <button
         ref={searchButton}
-        className="mobile-search-button"
+        className="product-search search-trigger"
         aria-label="코인·지표 검색 열기"
         aria-expanded={searchOpen}
-        aria-controls="product-search"
-        onClick={() => setSearchOpen(!searchOpen)}
-      >
-        <Search size={20} />
-      </button>
-      <div
-        id="product-search"
-        className={'product-search' + (searchOpen ? ' is-open' : '')}
-        ref={box}
-        onKeyDown={(e) => {
-          if (e.nativeEvent.isComposing) return;
-          if (e.key === 'Enter' && e.target === input.current && input.current.value.trim()) {
-            e.preventDefault();
-            void openFirstResult(input.current.value.trim());
-          }
-          if (e.key === 'Escape') {
-            setQuery('');
-            setSearchOpen(false);
-            if (window.matchMedia('(max-width: 760px)').matches) searchButton.current?.focus();
-            else input.current?.focus();
-          }
-          if (['ArrowDown', 'ArrowUp'].includes(e.key)) {
-            const nodes = [
-              input.current,
-              ...(box.current?.querySelectorAll<HTMLAnchorElement>('a') ?? []),
-            ].filter(Boolean) as HTMLElement[];
-            const i = nodes.indexOf(document.activeElement as HTMLElement);
-            nodes[(i + (e.key === 'ArrowDown' ? 1 : nodes.length - 1)) % nodes.length]?.focus();
-            e.preventDefault();
-          }
+        onClick={() => {
+          searchReturn.current = searchButton.current;
+          setQuery('');
+          setSearchOpen(true);
         }}
       >
-        <Search size={17} />
-        <input
-          ref={input}
-          aria-label="코인·지표 검색"
-          placeholder="코인이나 지표 검색"
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
-          onFocus={() => {
-            void loadCatalog().catch(() => {});
-          }}
-          aria-controls={query.trim() ? 'product-search-results' : undefined}
-        />
-        {query ? (
-          <button
-            aria-label="검색 지우기"
-            onClick={() => {
-              setQuery('');
-              input.current?.focus();
-            }}
-          >
-            <X size={16} />
-          </button>
-        ) : (
-          <kbd>/</kbd>
-        )}
-        {query.trim() && (
-          <div className="product-search-results" id="product-search-results">
-            {results.map((r) => (
-              <Link
-                key={r.id}
-                to={r.href}
-                onClick={() => {
-                  setQuery('');
-                  setSearchOpen(false);
-                }}
-              >
-                {r.asset && <AssetLogo asset={r.asset} size={22} />}
-                <span>{r.title}</span>
-                <small>{r.kind}</small>
-              </Link>
-            ))}
-            {!results.length &&
-              (searchError ? (
-                <button
-                  onClick={() => {
-                    void loadCatalog().catch(() => {});
-                  }}
-                >
-                  지표 검색 다시 불러오기
-                </button>
-              ) : (
-                <p role="status">
-                  {catalog ? '일치하는 코인이나 지표가 없습니다.' : '지표를 불러오는 중…'}
-                </p>
-              ))}
-          </div>
-        )}
-      </div>
+        <Search size={18} aria-hidden="true" />
+        <span>코인·지표 검색</span>
+        <kbd>/</kbd>
+      </button>
+      {searchOpen && (
+        <Suspense fallback={null}>
+          <SearchDialog
+            open
+            close={() => setSearchOpen(false)}
+            asset={asset}
+            initialQuery={query}
+            trigger={searchReturn}
+          />
+        </Suspense>
+      )}
       <details
         className="product-help"
         ref={help}

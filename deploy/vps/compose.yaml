@@ -38,6 +38,7 @@ services:
       {
         <<: *environment,
         COIN_DESK_RELEASE: '${COIN_DESK_API_RELEASE:-${COIN_DESK_RELEASE}}',
+        COIN_DESK_CSP_MODE: '${COIN_DESK_CSP_MODE:-report-only}',
         HOST: 0.0.0.0,
         PORT: '8080',
         COIN_DESK_PUBLIC_ORIGIN: '${COIN_DESK_PUBLIC_ORIGIN:-https://coin-desk.62.171.141.206.sslip.io}',
@@ -86,6 +87,7 @@ services:
       start_period: 150s
   background:
     <<: *service
+    image: ${COIN_DESK_BACKGROUND_IMAGE:-${COIN_DESK_IMAGE}}
     profiles: [collectors]
     command: [node, server/scheduler.mjs]
     environment: { <<: *environment, COIN_DESK_LANE: background }

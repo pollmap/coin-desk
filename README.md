@@ -1,6 +1,6 @@
 # 보리차트
 
-**0.26.2 전체 코인 로고 개선**입니다. 모바일·PC 모두 시장에서 시작하고, 150개 코인을 검색해 필요한 지표를 확인합니다. [변경 내용](docs/RELEASE26_2.md) · [검증·배포 기록](docs/audit-26/patch-0262/README.md) · [150개 종목 명세](docs/RELEASE25.md). 이전 릴리스 문서는 당시 기록이며 48시간 대기는 완료 조건이 아닙니다.
+**0.27 검색·모바일·데이터 상태 개선**입니다. 150개 코인을 검색하고 목적에 맞는 지표를 확인합니다. [변경 내용](docs/RELEASE27.md) · [검증·배포 기록](docs/audit-27/README.md) · [150개 종목 명세](docs/RELEASE25.md). 이전 릴리스 문서는 당시 기록이며 48시간 대기는 완료 조건이 아닙니다.
 
 `node server/index.mjs`는 읽기 전용 API만 실행합니다. 자동 수집까지 검사할 때는 [실시간 실행 안내](DEPLOYMENT.md#로컬에서-수집까지-연결하기)의 `npm run start:live`를 사용합니다. 원천 네트워크와 이관 검증 DB를 먼저 확인하며 원본 캐시를 자동 수정하지 않습니다.
 
@@ -11,7 +11,7 @@
 
 [운영 사이트](https://coin-desk.pages.dev) · [경쟁 기능 비교표](docs/RELEASE15.md#기능-비교) · [데이터 정의](docs/DATA.md)
 
-**백엔드 VPS 운영:** Node·SQLite·독립 수집·백업으로 이전했으며 기존 Pages는 VPS의 읽기 API를 사용합니다. 운영 D1은 보존하고 Cloudflare의 중복 수집은 중지했습니다. 네트워크·SSH·원격 CI·배포가 현재 작동합니다. [최신 검증·배포 기록](docs/audit-26/patch-0262/README.md). [구조·배포·복구](DEPLOYMENT.md) · [이전 검증](docs/audit-vps/README.md)
+**백엔드 VPS 운영:** Node·SQLite·독립 수집·백업으로 이전했으며 기존 Pages는 VPS의 읽기 API를 사용합니다. 운영 D1은 보존하고 Cloudflare의 중복 수집은 중지했습니다. 네트워크·SSH·원격 CI·배포가 현재 작동합니다. [최신 검증·배포 기록](docs/audit-27/README.md). [구조·배포·복구](DEPLOYMENT.md) · [이전 검증](docs/audit-vps/README.md)
 
 ## 새 사용 흐름
 

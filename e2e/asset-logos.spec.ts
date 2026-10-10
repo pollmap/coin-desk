@@ -97,7 +97,8 @@ test('failed logos keep their footprint and recover when switching asset in both
 
 test('search, detail and saved analysis retain the same PENGU logo', async ({ page }) => {
   await page.goto('/');
-  await page.getByRole('textbox', { name: '코인·지표 검색', exact: true }).fill('펭귄');
+  await page.getByRole('button', { name: '코인·지표 검색 열기' }).click();
+  await page.getByRole('searchbox', { name: '코인·지표 검색', exact: true }).fill('펭귄');
   const result = page.locator('#product-search-results a').filter({ hasText: 'PENGU' }).first();
   const path = ASSET_REGISTRY.find((asset) => asset.id === 'PENGU')!.logo;
   await expect(result.locator('img')).toHaveAttribute('src', path);

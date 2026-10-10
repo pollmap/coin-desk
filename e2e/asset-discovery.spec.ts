@@ -18,7 +18,7 @@ for (const width of [390, 1280])
     );
     await page.getByRole('button', { name: '더 보기', exact: true }).click();
     await expect(page.locator('.market-table tbody tr')).toHaveCount(initial * 2);
-    await page.getByRole('textbox', { name: '시장 코인 검색' }).fill('펭귄');
+    await filterMarket(page, '펭귄');
     await expect(page.locator('.market-table tbody tr')).toHaveCount(1);
     const row = page.locator('.market-table tbody tr');
     await expect(row).toContainText('PENGU');
@@ -37,9 +37,9 @@ for (const width of [390, 1280])
     await page.keyboard.press('Escape');
     await expect(chart).toHaveAttribute('data-visible-from', range!);
     await page.goBack();
-    await expect(page.getByRole('textbox', { name: '시장 코인 검색' })).toHaveValue('펭귄');
+    await expect(page.getByRole('button', { name: '시장 코인 검색' })).toContainText('펭귄');
     await expect(page.locator('.market-table tbody tr')).toHaveCount(1);
-    await page.getByRole('textbox', { name: '시장 코인 검색' }).fill('BNB');
+    await filterMarket(page, 'BNB');
     await expect(row).toContainText('Binance USDT');
     await row.locator('.market-coin-cell a').click();
     await expect(chart).toHaveAttribute('data-asset', 'BNB');
@@ -58,3 +58,9 @@ test('exact ticker search wins over a longer token ticker', async ({ page }) => 
   await input.press('Enter');
   await expect(page.locator('[data-chart-kind=analysis]')).toHaveAttribute('data-asset', 'ETH');
 });
+
+async function filterMarket(page: import('@playwright/test').Page, query: string) {
+  await page.getByRole('button', { name: '시장 코인 검색', exact: true }).click();
+  await page.getByRole('searchbox', { name: '코인·지표 검색', exact: true }).fill(query);
+  await page.getByRole('link', { name: '목록에서 보기', exact: true }).click();
+}

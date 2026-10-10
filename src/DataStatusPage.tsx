@@ -36,46 +36,10 @@ function ago(seconds: number | null | undefined) {
           ? Math.floor(seconds / 3600) + '시간 전'
           : Math.floor(seconds / 86400) + '일 전';
 }
-export function sourceLabel(key: string) {
-  if (key === 'automation') return '서버 자동 갱신';
-  if (key === 'bitview') return 'BTC 온체인 · Bitview';
-  if (key === 'coinlore') return '코인 시가총액 · CoinLore';
-  if (key === 'defillama') return '스테이블코인 · DefiLlama';
-  if (key === 'maintenance') return '이력 정리';
-  if (key === 'mempool:BTC') return 'BTC 수수료·미확인 거래 · mempool.space';
-  if (key.startsWith('derivatives:')) {
-    const [, asset, metric] = key.split(':');
-    const labels: Record<string, string> = {
-      funding: '펀딩비',
-      open_interest: '미결제약정',
-      long_account_ratio: '롱 계정 비율',
-      funding_daily: '일별 펀딩비',
-      open_interest_daily: '일별 미결제약정',
-      long_account_ratio_daily: '일별 롱 계정 비율',
-    };
-    return asset + ' · Bybit ' + (labels[metric] || metric);
-  }
-  if (key.startsWith('network:')) return key.split(':')[1] + ' 온체인 · Coin Metrics';
-  if (key.startsWith('reference:')) return key.split(':')[1] + ' 장기 USD · Coin Metrics';
-  if (key.startsWith('quote:')) {
-    const [, asset, market] = key.split(':');
-    return asset + ' · ' + (market === 'binance' ? 'Binance' : 'Upbit') + ' 현재가';
-  }
-  if (key.startsWith('quotes:')) {
-    const [, market, batch] = key.split(':');
-    return (market === 'binance' ? 'Binance' : 'Upbit') + ' 시세 묶음 ' + (Number(batch) + 1);
-  }
-  const [asset, market, interval] = key.split(':');
-  return market
-    ? asset +
-        ' · ' +
-        (market === 'binance' ? 'Binance' : 'Upbit') +
-        ' ' +
-        (interval === '1h' ? '시간봉' : '일봉')
-    : key;
-}
+export { sourceLabel } from '../shared/source-label';
+import { sourceLabel } from '../shared/source-label';
 export function AutomationSummary({ compact = false }: { compact?: boolean }) {
-  const { data, error, reload } = useData<OperationStatus>('/api/v1/status', false, 60000);
+  const { data, error, reload } = useData<OperationStatus>('/api/v1/status/summary', false, 60000);
   const a = data?.automation;
   return (
     <div className="automation-summary">
@@ -162,26 +126,26 @@ export function AutomationSummary({ compact = false }: { compact?: boolean }) {
   );
 }
 export function DataStatusPage() {
-  const { data, error, reload } = useData<OperationStatus>('/api/v1/status', false, 60000);
+  const { data, error, reload } = useData<OperationStatus>('/api/v1/status/summary', false, 60000);
   const [filter, setFilter] = useState('all'),
     [search, setSearch] = useState(''),
     [coreOnly, setCoreOnly] = useState(true);
-  const active = data?.sources.filter((s) => s.active) ?? [];
-  const matchingRows = active.filter(
-    (s) =>
-      (filter === 'all' ||
-        (filter === 'attention'
-          ? s.status !== 'ok'
-          : filter === 'quotes'
-            ? s.key.startsWith('quote:')
-            : filter === 'history'
-              ? /:(1d|1h)$/.test(s.key)
-              : !s.key.startsWith('quote:') && !/:(1d|1h)$/.test(s.key))) &&
-      sourceLabel(s.key).toLowerCase().includes(search.trim().toLowerCase()),
+  const [detailsOpen, setDetailsOpen] = useState(false),
+    [offset, setOffset] = useState(0);
+  const sourceParams = new URLSearchParams({
+    q: search.trim(),
+    state: filter === 'attention' ? 'attention' : 'all',
+    kind: ['quotes', 'history', 'other'].includes(filter) ? filter : 'all',
+    core: coreOnly ? '1' : '0',
+    offset: String(offset),
+    limit: '50',
+  });
+  const sourceData = useData<{ rows: OperationStatus['sources']; total: number }>(
+    detailsOpen ? '/api/v1/status/sources?' + sourceParams : null,
+    false,
+    60000,
   );
-  const rows = matchingRows
-    .filter((s) => !coreOnly || priorityRank(s.key) < 4)
-    .sort((a, b) => priorityRank(a.key) - priorityRank(b.key));
+  const rows = sourceData.data?.rows ?? [];
   const importantIssues = (data?.health.reasons ?? [])
     .filter((r) => priorityRank(r.key) < 4 || r.key === 'automation')
     .sort((a, b) => priorityRank(a.key) - priorityRank(b.key));
@@ -280,106 +244,164 @@ export function DataStatusPage() {
           </p>
         </details>
       </section>
-      <div className="status-filters">
-        <label>
-          원천 검색
-          <input
-            type="search"
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            placeholder="DOGE, 장기 USD, Bitview…"
-          />
-        </label>
-        <label>
-          종류
-          <select value={filter} onChange={(e) => setFilter(e.target.value)}>
-            <option value="all">전체</option>
-            <option value="attention">확인 필요</option>
-            <option value="quotes">현재가</option>
-            <option value="history">거래소 이력</option>
-            <option value="other">온체인·장기 USD·시장 비중</option>
-          </select>
-        </label>
-        <label className="status-scope">
-          <input
-            type="checkbox"
-            checked={coreOnly}
-            onChange={(e) => setCoreOnly(e.target.checked)}
-          />
-          BTC · DOGE · ETH 우선
-        </label>
-        <span>
-          {rows.length}개 표시{coreOnly ? ` · 전체 ${matchingRows.length}개` : ''}
-        </span>
-      </div>
-      <section
-        className="panel status-table-wrap"
-        tabIndex={0}
-        aria-label="원천 상태 표, 좁은 화면에서는 가로로 이동할 수 있습니다"
+      <button
+        className="desk-button"
+        aria-expanded={detailsOpen}
+        onClick={() => setDetailsOpen((v) => !v)}
       >
-        <table className="status-table">
-          <thead>
-            <tr>
-              <th scope="col">원천</th>
-              <th scope="col">수집 상태</th>
-              <th scope="col">실제 자료 시각</th>
-              <th scope="col">마지막 정상 수집</th>
-              <th scope="col">저장 범위·재시도</th>
-            </tr>
-          </thead>
-          <tbody>
-            {rows.map((s) => (
-              <tr key={s.key}>
-                <th scope="row">
-                  {sourceLabel(s.key)}
-                  <small>
-                    {s.expectedCadenceSeconds ? '목표 ' + s.expectedCadenceSeconds / 60 + '분' : ''}
-                  </small>
-                </th>
-                <td className={s.status === 'ok' ? 'server-ok' : 'amber'}>
-                  {statusName[s.status] || s.status}
-                  {s.liveStale ? <small>현재 시세는 5분 이상 경과</small> : null}
-                </td>
-                <td>
-                  {dateLabel(s.data_as_of, true)}
-                  <small>{ago(s.dataAgeSeconds)}</small>
-                </td>
-                <td>
-                  {dateLabel(s.last_success, true)}
-                  <small>{ago(s.collectorAgeSeconds)}</small>
-                </td>
-                <td>
-                  {s.coverage ? (
-                    <>
-                      {dateLabel(s.coverage.first)} ~<br />
-                      {dateLabel(s.coverage.last)}
+        {detailsOpen ? '원천별 상태 접기' : '원천별 상태 보기'}
+      </button>
+      {detailsOpen && (
+        <>
+          <div className="status-filters">
+            <label>
+              원천 검색
+              <input
+                type="search"
+                value={search}
+                onChange={(e) => {
+                  setSearch(e.target.value);
+                  setOffset(0);
+                }}
+                placeholder="DOGE, 장기 USD, Bitview…"
+              />
+            </label>
+            <label>
+              종류
+              <select
+                value={filter}
+                onChange={(e) => {
+                  setFilter(e.target.value);
+                  setOffset(0);
+                }}
+              >
+                <option value="all">전체</option>
+                <option value="attention">확인 필요</option>
+                <option value="quotes">현재가</option>
+                <option value="history">거래소 이력</option>
+                <option value="other">온체인·장기 USD·시장 비중</option>
+              </select>
+            </label>
+            <label className="status-scope">
+              <input
+                type="checkbox"
+                checked={coreOnly}
+                onChange={(e) => {
+                  setCoreOnly(e.target.checked);
+                  setOffset(0);
+                }}
+              />
+              BTC · DOGE · ETH 우선
+            </label>
+            <span>
+              {sourceData.data?.total ?? 0}개 · {rows.length ? offset + 1 : 0}~
+              {offset + rows.length}
+            </span>
+          </div>
+          <section
+            className="panel status-table-wrap"
+            tabIndex={0}
+            aria-label="원천 상태 표, 좁은 화면에서는 가로로 이동할 수 있습니다"
+          >
+            <table className="status-table">
+              <thead>
+                <tr>
+                  <th scope="col">원천</th>
+                  <th scope="col">수집 상태</th>
+                  <th scope="col">실제 자료 시각</th>
+                  <th scope="col">마지막 정상 수집</th>
+                  <th scope="col">저장 범위·재시도</th>
+                </tr>
+              </thead>
+              <tbody>
+                {rows.map((s) => (
+                  <tr key={s.key}>
+                    <th scope="row">
+                      {sourceLabel(s.key)}
                       <small>
-                        {s.coverage.rows === null
-                          ? '행 수 별도 집계 안 함'
-                          : s.coverage.rows.toLocaleString() + '개'}
+                        {s.expectedCadenceSeconds
+                          ? '목표 ' + s.expectedCadenceSeconds / 60 + '분'
+                          : ''}
                       </small>
-                    </>
-                  ) : s.key.startsWith('reference:') ? (
-                    <Link to={'/?asset=' + s.key.split(':')[1] + '&period=all'}>
-                      전체 USD 이력 보기 ↗
-                    </Link>
-                  ) : s.status === 'ok' ? (
-                    '갱신 대기'
-                  ) : (
-                    '확인 중'
-                  )}
-                  {s.retryAt ? (
-                    <small className="amber">재시도 {dateLabel(s.retryAt, true)}</small>
-                  ) : null}
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-        {data && !rows.length ? (
-          <div className="empty-state">해당 조건의 원천이 없습니다.</div>
-        ) : null}
-      </section>
+                    </th>
+                    <td className={s.status === 'ok' ? 'server-ok' : 'amber'}>
+                      {statusName[s.status] || s.status}
+                      {s.status !== 'ok' && (
+                        <small>
+                          {(
+                            {
+                              TRADE_STALE: '최근 체결 없음',
+                              QUOTE_WINDOW_STALE: '통계 기준 시각 지연',
+                              COLLECTOR_LATE: '예약 수집 지연',
+                              OBSERVATION_LATE: '기준일 확인 필요',
+                              PROVIDER_RATE_LIMIT: '원천 요청 제한',
+                              SOURCE_REVISION: '원천 관측 수정',
+                              SOURCE_OR_VALIDATION: '연결·검증 확인 필요',
+                            } as Record<string, string>
+                          )[s.diagnosis ?? ''] ?? ''}
+                        </small>
+                      )}
+                      {s.liveStale ? <small>현재 시세는 5분 이상 경과</small> : null}
+                    </td>
+                    <td>
+                      {dateLabel(s.data_as_of, true)}
+                      <small>{ago(s.dataAgeSeconds)}</small>
+                    </td>
+                    <td>
+                      {dateLabel(s.last_success, true)}
+                      <small>{ago(s.collectorAgeSeconds)}</small>
+                    </td>
+                    <td>
+                      {s.coverage ? (
+                        <>
+                          {dateLabel(s.coverage.first)} ~<br />
+                          {dateLabel(s.coverage.last)}
+                          <small>
+                            {s.coverage.rows === null
+                              ? '행 수 별도 집계 안 함'
+                              : s.coverage.rows.toLocaleString() + '개'}
+                          </small>
+                        </>
+                      ) : s.key.startsWith('reference:') ? (
+                        <Link to={'/?asset=' + s.key.split(':')[1] + '&period=all'}>
+                          전체 USD 이력 보기 ↗
+                        </Link>
+                      ) : s.status === 'ok' ? (
+                        '갱신 대기'
+                      ) : (
+                        '확인 중'
+                      )}
+                      {s.retryAt ? (
+                        <small className="amber">재시도 {dateLabel(s.retryAt, true)}</small>
+                      ) : null}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+            {sourceData.data && !sourceData.loading && !sourceData.error && !rows.length ? (
+              <div className="empty-state">해당 조건의 원천이 없습니다.</div>
+            ) : null}
+          </section>
+          {sourceData.loading && <p role="status">원천 상태를 확인하고 있습니다.</p>}
+          {sourceData.error && (
+            <p role="alert">
+              {sourceData.error} <button onClick={sourceData.reload}>다시 확인</button>
+            </p>
+          )}
+          <div className="status-pagination">
+            <button disabled={!offset} onClick={() => setOffset((v) => Math.max(0, v - 50))}>
+              이전
+            </button>
+            <button
+              disabled={offset + rows.length >= (sourceData.data?.total ?? 0)}
+              onClick={() => setOffset((v) => v + 50)}
+            >
+              다음
+            </button>
+          </div>
+        </>
+      )}
       {!!data?.historyRecovery?.length && (
         <section className="panel server-runs">
           <h2>과거 가격 이력 복구</h2>

@@ -149,7 +149,11 @@ export function IndicatorWorkspace() {
     [picker, setPicker] = useState(false),
     [related, setRelated] = useState(params.get('related') === '1');
   const [saving, setSaving] = useState(false);
-  const [knowledge, setKnowledge] = useState(false);
+  const knowledgeRequested = params.get('knowledge') === '1';
+  const [knowledge, setKnowledge] = useState(knowledgeRequested);
+  useEffect(() => {
+    if (knowledgeRequested) setKnowledge(true);
+  }, [asset, knowledgeRequested]);
   const [chartTools, setChartTools] = useState<HTMLDivElement | null>(null);
   const saveButton = useRef<HTMLButtonElement>(null);
   const knowledgeButton = useRef<HTMLButtonElement>(null);

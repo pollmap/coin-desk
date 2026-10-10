@@ -20,6 +20,8 @@ import {
   dueAt,
   selectJob,
   operationStatus,
+  statusSummary,
+  sourcePage,
 } from '../worker/health';
 import worker from '../worker/index';
 import { DAY } from '../shared/math';
@@ -805,4 +807,24 @@ it('slow quote groups resume at the next coins rather than restart with BTC each
   expect(calls[0]).toContain('BTC');
   expect(calls[1]).not.toContain('BTC');
   expect(new Set(calls.flat()).size).toBe(16);
+});
+
+it('diagnosis distinguishes statistics windows from actual trades and pages preserve the same verdict', async () => {
+  ready();
+  env.RUNTIME_KIND = 'vps';
+  source('quote:BTC:binance', now, now - 301);
+  source('quote:DOGE:upbit', now, now - 301);
+  const report = await operationStatus(env);
+  expect(report.sources.find((s) => s.key === 'quote:BTC:binance')).toMatchObject({
+    diagnosis: 'QUOTE_WINDOW_STALE',
+    liveStale: true,
+  });
+  expect(report.sources.find((s) => s.key === 'quote:DOGE:upbit')).toMatchObject({
+    diagnosis: 'TRADE_STALE',
+    liveStale: true,
+  });
+  expect(statusSummary(report).health).toEqual(report.health);
+  expect(statusSummary(report).sources).toEqual([]);
+  expect(sourcePage(report, new URLSearchParams('limit=2')).rows).toHaveLength(2);
+  expect(() => sourcePage(report, new URLSearchParams('limit=101'))).toThrow();
 });

@@ -1,15 +1,15 @@
-import { assetDefinition } from './asset-registry';
+import { ASSET_REGISTRY_REVIEWED, assetDefinition } from './asset-registry';
 import { ASSETS } from './catalog';
 import { defaultIndicator, indicatorDefinition } from './indicator-catalog';
 import type { Asset } from './types';
 
-export const KNOWLEDGE_VERSION = '1.0.0';
+export const KNOWLEDGE_VERSION = '1.1.0';
 export const KNOWLEDGE_REVIEWED = '2026-10-09';
 export interface Evidence {
   url: string;
   provider: string;
   checkedAt: string;
-  review: 'reviewed';
+  review: 'reviewed' | 'pending' | 'rejected';
   basis: 'official' | 'editorial' | 'implementation';
   note: string;
 }
@@ -21,7 +21,16 @@ export interface KnowledgeNode {
   evidence: Evidence;
   metric?: string;
 }
+export type KnowledgeRelation =
+  | 'native-asset'
+  | 'issued-on'
+  | 'project-token'
+  | 'theme'
+  | 'measurement'
+  | 'data-provider'
+  | 'calculation-input';
 export interface KnowledgeEdge {
+  relation: KnowledgeRelation;
   id: string;
   source: string;
   target: string;
@@ -39,18 +48,21 @@ export const evidence = (
   provider: string,
   note: string,
   basis: Evidence['basis'] = 'official',
+  checkedAt = KNOWLEDGE_REVIEWED,
+  review: Evidence['review'] = 'reviewed',
 ): Evidence => ({
   url,
   provider,
   note,
   basis,
-  checkedAt: KNOWLEDGE_REVIEWED,
-  review: 'reviewed',
+  checkedAt,
+  review,
 });
 const facts: Partial<
   Record<
     Asset,
     {
+      checkedAt: string;
       url: string;
       provider: string;
       note: string;
@@ -62,36 +74,42 @@ const facts: Partial<
   >
 > = {
   BTC: {
+    checkedAt: '2026-10-09',
     url: 'https://bitcoin.org/en/bitcoin-for-individuals',
     provider: 'Bitcoin.org',
     note: 'Bitcoin 네트워크에서 직접 전송하는 자산입니다.',
     network: 'Bitcoin',
   },
   DOGE: {
+    checkedAt: '2026-10-09',
     url: 'https://dogecoin.com/dogepedia/articles/what-is-dogecoin/',
     provider: 'Dogecoin',
     note: '밈에서 출발한 Dogecoin 네트워크의 결제 자산입니다.',
     network: 'Dogecoin',
   },
   ETH: {
+    checkedAt: '2026-10-09',
     url: 'https://ethereum.org/what-is-ether/',
     provider: 'Ethereum.org',
     note: 'Ethereum 수수료와 스테이킹에 사용하는 네이티브 자산입니다.',
     network: 'Ethereum',
   },
   SOL: {
+    checkedAt: '2026-10-09',
     url: 'https://solana.com/docs/core/fees',
     provider: 'Solana',
     note: 'Solana 네트워크의 거래 수수료는 SOL로 지불합니다.',
     network: 'Solana',
   },
   XRP: {
+    checkedAt: '2026-10-09',
     url: 'https://xrpl.org/about/xrp',
     provider: 'XRP Ledger',
     note: 'XRP Ledger의 네이티브 자산이며 Ripple 회사의 주식이 아닙니다.',
     network: 'XRP Ledger',
   },
   LINK: {
+    checkedAt: '2026-10-09',
     url: 'https://docs.chain.link/resources/link-token-contracts',
     provider: 'Chainlink',
     note: '오라클 서비스와 네트워크 보안에 사용하는 Chainlink 토큰입니다.',
@@ -101,6 +119,7 @@ const facts: Partial<
     networkUrl: 'https://docs.chain.link/resources/link-token-contracts',
   },
   ONDO: {
+    checkedAt: '2026-10-09',
     url: 'https://docs.ondo.foundation/ondo-token',
     provider: 'Ondo Foundation',
     note: 'Ondo DAO의 거버넌스 토큰입니다. 국채나 이자 수익청구권이 아닙니다.',
@@ -108,6 +127,7 @@ const facts: Partial<
     projectDescription: 'ONDO 보유자가 거버넌스에 참여하는 DAO입니다.',
   },
   PEPE: {
+    checkedAt: '2026-10-09',
     url: 'https://www.pepe.vip/',
     provider: 'Pepe',
     note: '프로젝트가 밈 토큰으로 설명하는 Ethereum 토큰입니다.',
@@ -116,6 +136,7 @@ const facts: Partial<
     network: 'Ethereum',
   },
   PENGU: {
+    checkedAt: '2026-10-09',
     url: 'https://www.binance.com/en/academy/articles/what-are-pudgy-penguins-pengu',
     provider: 'Binance Academy',
     note: 'Pudgy Penguins 생태계의 커뮤니티 토큰입니다. NFT 자체와 구분합니다.',
@@ -123,12 +144,14 @@ const facts: Partial<
     projectDescription: '펭귄 캐릭터 NFT와 상품·콘텐츠를 전개하는 프로젝트입니다.',
   },
   ADA: {
+    checkedAt: '2026-10-09',
     url: 'https://cardano.org/what-is-ada/',
     provider: 'Cardano',
     note: 'Cardano 네트워크에서 전송과 스테이킹에 사용하는 네이티브 자산입니다.',
     network: 'Cardano',
   },
   AAVE: {
+    checkedAt: '2026-10-09',
     url: 'https://www.aave.com/docs/ecosystem/aave',
     provider: 'Aave',
     note: '대출 프로토콜 Aave의 거버넌스 토큰입니다. 예치 자산이나 대출 잔액과 구분합니다.',
@@ -137,6 +160,7 @@ const facts: Partial<
     network: 'Ethereum',
   },
   SHIB: {
+    checkedAt: '2026-10-09',
     url: 'https://shib.io/developers',
     provider: 'Shiba Inu',
     note: 'Shiba Inu 생태계의 토큰입니다. 이 화면의 온체인 지표는 Ethereum의 SHIB를 측정합니다.',
@@ -145,6 +169,7 @@ const facts: Partial<
     network: 'Ethereum',
   },
   SUI: {
+    checkedAt: '2026-10-09',
     url: 'https://docs.sui.io/develop/sui-architecture',
     provider: 'Sui',
     note: 'Sui 네트워크에서 가스 비용과 스테이킹에 사용하는 네이티브 자산입니다.',
@@ -173,6 +198,7 @@ const theme = (
       facts[asset]!.provider,
       facts[asset]!.note + ' 이 테마 연결은 보리차트의 편집 분류입니다.',
       'editorial',
+      facts[asset]!.checkedAt,
     ),
   })),
 });
@@ -203,12 +229,20 @@ export const themesResponse = () => ({
 const implementation = 'https://github.com/pollmap/coin-desk/blob/main/shared/indicator-catalog.ts';
 export function assetKnowledge(asset: Asset): KnowledgeResponse {
   const fact = facts[asset] ?? {
+      checkedAt: ASSET_REGISTRY_REVIEWED,
       url: assetDefinition(asset)!.review.sources[0],
       provider: '거래소 종목 정보',
       note: '거래소에서 확인한 자산입니다. 프로젝트·네트워크 관계는 검토 중입니다.',
     },
     root = 'asset:' + asset;
-  const proof = evidence(fact.url, fact.provider, fact.note);
+  const proof = evidence(
+    fact.url,
+    fact.provider,
+    fact.note,
+    'official',
+    fact.checkedAt,
+    facts[asset] ? 'reviewed' : 'pending',
+  );
   const nodes: KnowledgeNode[] = [
     {
       id: root,
@@ -226,6 +260,17 @@ export function assetKnowledge(asset: Asset): KnowledgeResponse {
       source,
       target: node.id,
       label,
+      relation:
+        (
+          {
+            '프로젝트의 토큰': 'project-token',
+            '발행 네트워크': 'issued-on',
+            '네이티브 자산': 'native-asset',
+            '관련 테마': 'theme',
+            '확인할 지표': 'measurement',
+            '사용하는 원천': 'data-provider',
+          } as Record<string, KnowledgeRelation>
+        )[label] ?? 'calculation-input',
       evidence: node.evidence,
     });
   };
@@ -249,9 +294,15 @@ export function assetKnowledge(asset: Asset): KnowledgeResponse {
         description: ['LINK', 'PEPE', 'AAVE', 'SHIB'].includes(asset)
           ? '확인한 발행 네트워크입니다. 다른 체인의 배포 전체 목록은 아닙니다.'
           : `${asset}를 네이티브 자산으로 사용하는 네트워크입니다.`,
-        evidence: evidence(fact.networkUrl ?? fact.url, fact.provider, fact.note),
+        evidence: evidence(
+          fact.networkUrl ?? fact.url,
+          fact.provider,
+          fact.note,
+          'official',
+          fact.checkedAt,
+        ),
       },
-      ['LINK', 'PEPE'].includes(asset) ? '발행 네트워크' : '네트워크의 자산',
+      ['LINK', 'PEPE', 'AAVE', 'SHIB'].includes(asset) ? '발행 네트워크' : '네이티브 자산',
     );
   for (const theme of THEMES) {
     const member = theme.members.find((m) => m.asset === asset);

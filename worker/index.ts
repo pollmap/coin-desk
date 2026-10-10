@@ -1,3 +1,4 @@
+import { rankSearch, SEARCH_CATALOG_VERSION } from '../shared/search';
 import { dailyTechnical } from '../shared/market-watch';
 import { marketSnapshot } from './market-snapshot';
 import { discoverAssets } from '../shared/asset-discovery';
@@ -35,7 +36,7 @@ import { researchFeed } from './research';
 import { candleHistory } from './candle-history';
 import { getDominance, DOMINANCE_VERSION } from './dominance';
 import { REFERENCE_ASSETS, REFERENCE_SOURCE, REFERENCE_VERSION } from './reference-price';
-import { operationStatus } from './health';
+import { operationStatus, recentOperationStatus, statusSummary, sourcePage } from './health';
 import { NETWORK_ASSETS, NETWORK_METRICS, networkMetric } from '../shared/network-catalog';
 import { readNetworkSeries } from './network-data';
 import { derivativeAsset, derivativeMetric, readDerivativeSeries } from './derivatives';
@@ -76,6 +77,9 @@ function canonicalRequest(request: Request) {
     signals: ['asset', 'before', 'limit', 'cursor'],
     briefings: ['before', 'limit'],
     'chain-context': ['asset', 'metric'],
+    search: ['q', 'asset', 'kind', 'limit'],
+    'status/summary': [],
+    'status/sources': ['q', 'state', 'kind', 'core', 'offset', 'limit'],
     status: [],
     health: [],
     research: [],
@@ -98,7 +102,7 @@ function canonicalRequest(request: Request) {
   for (const key of fields[endpoint]) {
     let value =
       url.searchParams.get(key) ??
-      (['market', 'assets'].includes(endpoint)
+      (['market', 'assets', 'search', 'status/sources'].includes(endpoint)
         ? endpoint === 'market' && key === 'market'
           ? 'binance'
           : undefined
@@ -421,6 +425,26 @@ async function api(request: Request, env: Env): Promise<Response> {
       source: 'Coin Metrics Community',
     });
   }
+  if (endpoint === 'search') {
+    try {
+      return response({
+        hits: rankSearch(q),
+        indexVersion: SEARCH_CATALOG_VERSION,
+        mode: 'catalog',
+      });
+    } catch {
+      throw new RequestError('Invalid search parameters');
+    }
+  }
+  if (endpoint === 'status/summary')
+    return response(statusSummary(await recentOperationStatus(env)));
+  if (endpoint === 'status/sources') {
+    try {
+      return response(sourcePage(await recentOperationStatus(env), q));
+    } catch {
+      throw new RequestError('Invalid source page');
+    }
+  }
   if (endpoint === 'status' || endpoint === 'health') {
     const report = await operationStatus(env);
     return endpoint === 'status'
@@ -701,9 +725,10 @@ export default {
       const cache = (caches as unknown as { default: Cache }).default;
       // Quotes bypass edge caching so a newly committed scheduled snapshot is
       // visible immediately instead of waiting for an older response to expire.
-      const liveStatus = /\/(health|status|market|overview|dominance|research\/public)$/.test(
-        url.pathname,
-      );
+      const liveStatus =
+        /\/(health|status(?:\/summary|\/sources)?|market|overview|dominance|research\/public)$/.test(
+          url.pathname,
+        );
       const cached = liveStatus ? undefined : await cache.match(canonical).catch(() => undefined);
       if (cached) return cached;
       let pending = inFlight.get(env.DB);

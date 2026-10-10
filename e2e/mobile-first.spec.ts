@@ -137,7 +137,7 @@ test('mobile explicit legacy links, market bookmarks and search retain their int
   );
   await expect(page.getByText('지표 이력을 불러오고 있습니다…')).toHaveCount(0);
   await page.getByRole('button', { name: '코인·지표 검색 열기' }).click();
-  const input = page.getByRole('textbox', { name: '코인·지표 검색', exact: true });
+  const input = page.getByRole('searchbox', { name: '코인·지표 검색', exact: true });
   await expect(input).toBeFocused();
   await input.fill('이더리움');
   await input.press('ArrowDown');

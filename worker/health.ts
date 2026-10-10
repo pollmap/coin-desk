@@ -1,3 +1,4 @@
+import { sourceLabel } from '../shared/source-label';
 import { assetDefinition } from '../shared/asset-registry';
 import { observeAutomation, type ObservationRun } from '../shared/automation-observation';
 import { ASSETS, isPrimaryAsset } from '../shared/catalog';
@@ -288,14 +289,18 @@ export async function operationStatus(env: Env) {
           market,
           assets: [asset],
         });
+  const ingestionByKey = new Map(ingestion.results.map((s) => [s.key, s]));
+  const networkByKey = new Map(networks.results.map((s) => ['network:' + s.asset, s]));
+  const referenceByKey = new Map(references.results.map((s) => ['reference:' + s.asset, s]));
+  const historyByKey = new Map(
+    history.map((h) => [h.asset + ':' + h.market + ':' + h.interval, h]),
+  );
   const sourceKeys = new Set([...expected.keys(), ...ingestion.results.map((s) => s.key)]);
   const sources = [...sourceKeys].map((key) => {
-    const row = ingestion.results.find((s) => s.key === key);
+    const row = ingestionByKey.get(key);
     const policy = expected.get(key);
     const active = !!policy;
-    const network = key.startsWith('network:')
-      ? networks.results.find((row) => key === 'network:' + row.asset)
-      : null;
+    const network = key.startsWith('network:') ? networkByKey.get(key) : null;
     const expectedMetrics =
       policy?.kind === 'network' ? networkMetrics(policy.assets![0]).length : 0;
     const collectorAgeSeconds = row?.last_success ? Math.max(0, now - row.last_success) : null;
@@ -320,8 +325,8 @@ export async function operationStatus(env: Env) {
     const coverage = key.startsWith('network:')
       ? network
       : key.startsWith('reference:')
-        ? references.results.find((r) => key === 'reference:' + r.asset)
-        : history.find((h) => key === h.asset + ':' + h.market + ':' + h.interval);
+        ? referenceByKey.get(key)
+        : historyByKey.get(key);
     return {
       ...row,
       key,
@@ -334,6 +339,24 @@ export async function operationStatus(env: Env) {
       error: cleanError(row?.error),
       errorCode: failureCode(row?.error),
       status,
+      diagnosis:
+        status === 'ok'
+          ? 'CURRENT'
+          : !active
+            ? 'INACTIVE'
+            : row?.error
+              ? failureCode(row.error) === 'TRADE_STALE' && key.endsWith(':binance')
+                ? 'QUOTE_WINDOW_STALE'
+                : failureCode(row.error)
+              : status === 'missing'
+                ? 'PENDING'
+                : collectorAgeSeconds! > collectorLimit
+                  ? 'COLLECTOR_LATE'
+                  : key.startsWith('quote:')
+                    ? key.endsWith(':binance')
+                      ? 'QUOTE_WINDOW_STALE'
+                      : 'TRADE_STALE'
+                    : 'OBSERVATION_LATE',
       collectorAgeSeconds,
       dataAgeSeconds,
       liveStale: key.startsWith('quote:') && (dataAgeSeconds === null || dataAgeSeconds > 300),
@@ -388,7 +411,13 @@ export async function operationStatus(env: Env) {
             ? '초기 데이터 수집을 기다리고 있습니다.'
             : source.status === 'error'
               ? '원천 연결 또는 데이터 검증 오류로 재시도합니다.'
-              : '수집 시각 또는 실제 데이터 시각이 허용 지연을 넘었습니다.',
+              : source.diagnosis === 'TRADE_STALE'
+                ? '최근 체결 시각이 지났습니다. 새 체결을 기다립니다.'
+                : source.diagnosis === 'QUOTE_WINDOW_STALE'
+                  ? '시세 통계 기준 시각이 지났습니다. 원천의 새 통계를 기다립니다.'
+                  : source.diagnosis === 'COLLECTOR_LATE'
+                    ? '예약 수집 확인이 늦어지고 있습니다.'
+                    : '원천값의 기준일이 오래됐습니다. 원천과 대조가 필요합니다.',
       });
   for (const policy of expected.values()) {
     if (
@@ -476,7 +505,7 @@ export async function operationStatus(env: Env) {
   });
   const analysisParts = Array.from({ length: 15 }, (_, part) => {
     const key = 'observations:' + part;
-    const row = ingestion.results.find((s) => s.key === key);
+    const row = ingestionByKey.get(key);
     return {
       key,
       lastSuccess: row?.last_success ?? null,
@@ -575,4 +604,92 @@ export async function operationStatus(env: Env) {
       histories: history.filter((h) => assets.includes(h.asset)).length,
     },
   };
+}
+
+/** Small response, same health verdict and preserved ledger as the compatibility API. */
+export function statusSummary(report: Awaited<ReturnType<typeof operationStatus>>) {
+  const counts: Record<string, number> = {};
+  for (const source of report.sources)
+    if (source.active) counts[source.status] = (counts[source.status] ?? 0) + 1;
+  return {
+    ...report,
+    sources: [],
+    history: [],
+    sourceCounts: counts,
+    totalSources: report.sources.length,
+    automation: { ...report.automation, jobs: [], analysisParts: [] },
+  };
+}
+export function sourcePage(
+  report: Awaited<ReturnType<typeof operationStatus>>,
+  q: URLSearchParams,
+) {
+  const limit = Number(q.get('limit') ?? 50),
+    offset = Number(q.get('offset') ?? 0);
+  if (
+    [...q.keys()].some(
+      (k) =>
+        !['q', 'state', 'kind', 'core', 'limit', 'offset'].includes(k) || q.getAll(k).length !== 1,
+    ) ||
+    !/^\d+$/.test(q.get('limit') ?? '50') ||
+    !/^\d+$/.test(q.get('offset') ?? '0') ||
+    limit < 1 ||
+    limit > 100 ||
+    offset > 10000 ||
+    (q.get('q')?.length ?? 0) > 100
+  )
+    throw new Error('Invalid page');
+  const state = q.get('state') ?? 'all',
+    kind = q.get('kind') ?? 'all',
+    core = q.get('core') === '1';
+  if (
+    !['all', 'attention', 'ok', 'delayed', 'error', 'missing', 'inactive'].includes(state) ||
+    !['all', 'quotes', 'history', 'other'].includes(kind) ||
+    !['0', '1', null].includes(q.get('core'))
+  )
+    throw new Error('Invalid filter');
+  const query = (q.get('q') ?? '').toLowerCase();
+  const rows = report.sources.filter(
+    (s) =>
+      (state === 'all'
+        ? s.active
+        : state === 'attention'
+          ? s.active && s.status !== 'ok'
+          : s.status === state) &&
+      (kind === 'all' ||
+        (kind === 'quotes'
+          ? s.key.startsWith('quote')
+          : kind === 'history'
+            ? /:1[dh]$/.test(s.key)
+            : !s.key.startsWith('quote') && !/:1[dh]$/.test(s.key))) &&
+      (!core ||
+        /(?:^|:)(?:BTC|DOGE|ETH)(?:$|:)|^(?:bitview|coinlore|defillama|maintenance)$/.test(
+          s.key,
+        )) &&
+      (s.key + ' ' + sourceLabel(s.key)).toLowerCase().includes(query),
+  );
+  rows.sort((a, b) => a.key.localeCompare(b.key));
+  return {
+    rows: rows.slice(offset, offset + limit),
+    total: rows.length,
+    offset,
+    limit,
+    checkedAt: report.health.checkedAt,
+  };
+}
+
+const recentStatus = new WeakMap<
+  D1Database,
+  { expires: number; task: Promise<Awaited<ReturnType<typeof operationStatus>>> }
+>();
+/** Only the new summary/page routes share a five-second snapshot; compatibility health stays live. */
+export function recentOperationStatus(env: Env) {
+  const hit = recentStatus.get(env.DB);
+  if (hit && hit.expires > Date.now()) return hit.task;
+  const task = operationStatus(env);
+  recentStatus.set(env.DB, { expires: Date.now() + 5000, task });
+  task.catch(() => {
+    if (recentStatus.get(env.DB)?.task === task) recentStatus.delete(env.DB);
+  });
+  return task;
 }
