@@ -28,7 +28,13 @@
     "browserRetries": 0,
     "brandCheck": true,
     "docsCheck": true,
-    "build": true
+    "build": true,
+    "narrowToolbarFocusRepeat": {
+      "passed": 10,
+      "failed": 0,
+      "retries": 0,
+      "perBrowser": 5
+    }
   },
   "earlierFindings": [
     {
@@ -54,6 +60,19 @@
       "failed": 0,
       "passed": 10,
       "finding": "Final targeted verification, retries zero"
+    },
+    {
+      "run": "PR CI 38048461921",
+      "failed": 1,
+      "browser": "WebKit",
+      "finding": "Existing narrow reading-toolbar test did not observe return button after Escape and keyboard focus. Trace shows closed dialog and populated chart. Local repeat and closing-focus readiness checks follow; root cause not asserted."
+    },
+    {
+      "run": "narrow toolbar local repeat before readiness guard",
+      "failed": 4,
+      "passed": 6,
+      "retries": 0,
+      "finding": "The CI failure also reproduces locally across both browsers. Added explicit dialog-closed, return-focus and chart-ready assertions; no sleep or assertion relaxation."
     }
   ],
   "remoteCi": "pending",

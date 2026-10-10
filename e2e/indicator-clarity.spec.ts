@@ -118,9 +118,16 @@ test('source date and chart observation date are distinct; the reading toolbar f
   await expect(page.locator('.indicator-provenance')).toContainText('기준일');
   await expect(page.locator('.indicator-provenance')).toContainText('최근 데이터');
   await page.keyboard.press('Escape');
+  // Complete the dialog's focus restoration before moving focus into the chart.
+  // Otherwise its closing transition can return focus during the next key press.
+  await expect(page.getByRole('dialog', { name: '데이터 정보', exact: true })).not.toBeVisible();
+  await expect(page.getByRole('button', { name: '데이터 정보', exact: true })).toBeFocused();
+  const chart = page.locator('[data-chart-kind="analysis"]');
+  await expect(chart).toHaveAttribute('data-range-ready', '1');
   for (const width of [320, 390, 768, 1000, 1280, 1440]) {
     await page.setViewportSize({ width, height: 900 });
-    await page.locator('[data-chart-kind="analysis"]').focus();
+    await chart.focus();
+    await expect(chart).toBeFocused();
     await page.keyboard.press('ArrowLeft');
     await expect(page.getByRole('button', { name: '최근값 보기', exact: true })).toBeVisible();
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(
