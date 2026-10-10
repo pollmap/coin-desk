@@ -1,0 +1,5822 @@
+{
+  "observedAt": "2026-10-10T19:19:40.366835+00:00",
+  "rows": [
+    {
+      "asset": "AAVE",
+      "metric": "active_addresses",
+      "first": 1600905600,
+      "last": 1791504000,
+      "observations": 2207,
+      "sourceFields": [
+        "AdrActCnt"
+      ],
+      "providerFirst": 1600905600,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "AAVE",
+      "metric": "balance_addresses",
+      "first": 1601596800,
+      "last": 1791504000,
+      "observations": 2199,
+      "sourceFields": [
+        "AdrBalCnt"
+      ],
+      "providerFirst": 1601596800,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "AAVE",
+      "metric": "issuance",
+      "first": 1600905600,
+      "last": 1791504000,
+      "observations": 2207,
+      "sourceFields": [
+        "IssTotNtv"
+      ],
+      "providerFirst": 1600905600,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "AAVE",
+      "metric": "market_cap",
+      "first": 1602288000,
+      "last": 1791504000,
+      "observations": 2191,
+      "sourceFields": [
+        "CapMrktCurUSD"
+      ],
+      "providerFirst": 1602288000,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "AAVE",
+      "metric": "mvrv",
+      "first": 1602288000,
+      "last": 1791504000,
+      "observations": 2191,
+      "sourceFields": [
+        "CapMVRVCur"
+      ],
+      "providerFirst": 1602288000,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "AAVE",
+      "metric": "nupl",
+      "first": 1602288000,
+      "last": 1791504000,
+      "observations": 2191,
+      "sourceFields": [
+        "CapMVRVCur"
+      ],
+      "providerFirst": 1602288000,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "AAVE",
+      "metric": "price",
+      "first": 1602288000,
+      "last": 1791504000,
+      "observations": 2191,
+      "sourceFields": [
+        "PriceUSD"
+      ],
+      "providerFirst": 1602288000,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "AAVE",
+      "metric": "realized_cap",
+      "first": 1602288000,
+      "last": 1791504000,
+      "observations": 2191,
+      "sourceFields": [
+        "CapMrktCurUSD",
+        "CapMVRVCur"
+      ],
+      "providerFirst": 1602288000,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "AAVE",
+      "metric": "realized_price",
+      "first": 1602288000,
+      "last": 1791504000,
+      "observations": 2191,
+      "sourceFields": [
+        "PriceUSD",
+        "CapMVRVCur"
+      ],
+      "providerFirst": 1602288000,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "AAVE",
+      "metric": "supply",
+      "first": 1601596800,
+      "last": 1791504000,
+      "observations": 2199,
+      "sourceFields": [
+        "SplyCur"
+      ],
+      "providerFirst": 1601596800,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "AAVE",
+      "metric": "transactions",
+      "first": 1600905600,
+      "last": 1791504000,
+      "observations": 2207,
+      "sourceFields": [
+        "TxCnt"
+      ],
+      "providerFirst": 1600905600,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "AAVE",
+      "metric": "transfers",
+      "first": 1600905600,
+      "last": 1791504000,
+      "observations": 2207,
+      "sourceFields": [
+        "TxTfrCnt"
+      ],
+      "providerFirst": 1600905600,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "ADA",
+      "metric": "active_addresses",
+      "first": 1506124800,
+      "last": 1791504000,
+      "observations": 3304,
+      "sourceFields": [
+        "AdrActCnt"
+      ],
+      "providerFirst": 1506124800,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "ADA",
+      "metric": "balance_addresses",
+      "first": 1506124800,
+      "last": 1791504000,
+      "observations": 3304,
+      "sourceFields": [
+        "AdrBalCnt"
+      ],
+      "providerFirst": 1506124800,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "ADA",
+      "metric": "blocks",
+      "first": 1506124800,
+      "last": 1791504000,
+      "observations": 3304,
+      "sourceFields": [
+        "BlkCnt"
+      ],
+      "providerFirst": 1506124800,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "ADA",
+      "metric": "fees_native",
+      "first": 1506124800,
+      "last": 1791504000,
+      "observations": 3304,
+      "sourceFields": [
+        "FeeTotNtv"
+      ],
+      "providerFirst": 1506124800,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "ADA",
+      "metric": "issuance",
+      "first": 1506124800,
+      "last": 1791504000,
+      "observations": 3304,
+      "sourceFields": [
+        "IssTotNtv"
+      ],
+      "providerFirst": 1506124800,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "ADA",
+      "metric": "market_cap",
+      "first": 1512086400,
+      "last": 1791504000,
+      "observations": 3235,
+      "sourceFields": [
+        "CapMrktCurUSD"
+      ],
+      "providerFirst": 1512086400,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "ADA",
+      "metric": "mvrv",
+      "first": 1512086400,
+      "last": 1791504000,
+      "observations": 3235,
+      "sourceFields": [
+        "CapMVRVCur"
+      ],
+      "providerFirst": 1512086400,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "ADA",
+      "metric": "nupl",
+      "first": 1512086400,
+      "last": 1791504000,
+      "observations": 3235,
+      "sourceFields": [
+        "CapMVRVCur"
+      ],
+      "providerFirst": 1512086400,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "ADA",
+      "metric": "price",
+      "first": 1512086400,
+      "last": 1791504000,
+      "observations": 3235,
+      "sourceFields": [
+        "PriceUSD"
+      ],
+      "providerFirst": 1512086400,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "ADA",
+      "metric": "realized_cap",
+      "first": 1512086400,
+      "last": 1791504000,
+      "observations": 3235,
+      "sourceFields": [
+        "CapMrktCurUSD",
+        "CapMVRVCur"
+      ],
+      "providerFirst": 1512086400,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "ADA",
+      "metric": "realized_price",
+      "first": 1512086400,
+      "last": 1791504000,
+      "observations": 3235,
+      "sourceFields": [
+        "PriceUSD",
+        "CapMVRVCur"
+      ],
+      "providerFirst": 1512086400,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "ADA",
+      "metric": "supply",
+      "first": 1506124800,
+      "last": 1791504000,
+      "observations": 3304,
+      "sourceFields": [
+        "SplyCur"
+      ],
+      "providerFirst": 1506124800,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "ADA",
+      "metric": "transactions",
+      "first": 1506124800,
+      "last": 1791504000,
+      "observations": 3304,
+      "sourceFields": [
+        "TxCnt"
+      ],
+      "providerFirst": 1506124800,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "ADA",
+      "metric": "transfers",
+      "first": 1506124800,
+      "last": 1791504000,
+      "observations": 3304,
+      "sourceFields": [
+        "TxTfrCnt"
+      ],
+      "providerFirst": 1506124800,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "ALGO",
+      "metric": "active_addresses",
+      "first": 1560211200,
+      "last": 1791504000,
+      "observations": 2678,
+      "sourceFields": [
+        "AdrActCnt"
+      ],
+      "providerFirst": 1560211200,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "ALGO",
+      "metric": "balance_addresses",
+      "first": 1560211200,
+      "last": 1791504000,
+      "observations": 2678,
+      "sourceFields": [
+        "AdrBalCnt"
+      ],
+      "providerFirst": 1560211200,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "ALGO",
+      "metric": "blocks",
+      "first": 1560211200,
+      "last": 1791504000,
+      "observations": 2678,
+      "sourceFields": [
+        "BlkCnt"
+      ],
+      "providerFirst": 1560211200,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "ALGO",
+      "metric": "fees_native",
+      "first": 1560211200,
+      "last": 1791504000,
+      "observations": 2678,
+      "sourceFields": [
+        "FeeTotNtv"
+      ],
+      "providerFirst": 1560211200,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "ALGO",
+      "metric": "issuance",
+      "first": 1560211200,
+      "last": 1791504000,
+      "observations": 2678,
+      "sourceFields": [
+        "IssTotNtv"
+      ],
+      "providerFirst": 1560211200,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "ALGO",
+      "metric": "market_cap",
+      "first": 1561161600,
+      "last": 1791504000,
+      "observations": 2667,
+      "sourceFields": [
+        "CapMrktCurUSD"
+      ],
+      "providerFirst": 1561161600,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "ALGO",
+      "metric": "mvrv",
+      "first": 1561161600,
+      "last": 1791504000,
+      "observations": 2667,
+      "sourceFields": [
+        "CapMVRVCur"
+      ],
+      "providerFirst": 1561161600,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "ALGO",
+      "metric": "nupl",
+      "first": 1561161600,
+      "last": 1791504000,
+      "observations": 2667,
+      "sourceFields": [
+        "CapMVRVCur"
+      ],
+      "providerFirst": 1561161600,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "ALGO",
+      "metric": "price",
+      "first": 1561161600,
+      "last": 1791504000,
+      "observations": 2667,
+      "sourceFields": [
+        "PriceUSD"
+      ],
+      "providerFirst": 1561161600,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "ALGO",
+      "metric": "realized_cap",
+      "first": 1561161600,
+      "last": 1791504000,
+      "observations": 2667,
+      "sourceFields": [
+        "CapMrktCurUSD",
+        "CapMVRVCur"
+      ],
+      "providerFirst": 1561161600,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "ALGO",
+      "metric": "realized_price",
+      "first": 1561161600,
+      "last": 1791504000,
+      "observations": 2667,
+      "sourceFields": [
+        "PriceUSD",
+        "CapMVRVCur"
+      ],
+      "providerFirst": 1561161600,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "ALGO",
+      "metric": "supply",
+      "first": 1560211200,
+      "last": 1791504000,
+      "observations": 2678,
+      "sourceFields": [
+        "SplyCur"
+      ],
+      "providerFirst": 1560211200,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "ALGO",
+      "metric": "transactions",
+      "first": 1560211200,
+      "last": 1791504000,
+      "observations": 2678,
+      "sourceFields": [
+        "TxCnt"
+      ],
+      "providerFirst": 1560211200,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "ALGO",
+      "metric": "transfers",
+      "first": 1560211200,
+      "last": 1791504000,
+      "observations": 2678,
+      "sourceFields": [
+        "TxTfrCnt"
+      ],
+      "providerFirst": 1560211200,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "BAT",
+      "metric": "active_addresses",
+      "first": 1496016000,
+      "last": 1791504000,
+      "observations": 3421,
+      "sourceFields": [
+        "AdrActCnt"
+      ],
+      "providerFirst": 1496016000,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "BAT",
+      "metric": "balance_addresses",
+      "first": 1496016000,
+      "last": 1791504000,
+      "observations": 3421,
+      "sourceFields": [
+        "AdrBalCnt"
+      ],
+      "providerFirst": 1496016000,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "BAT",
+      "metric": "issuance",
+      "first": 1496016000,
+      "last": 1791504000,
+      "observations": 3421,
+      "sourceFields": [
+        "IssTotNtv"
+      ],
+      "providerFirst": 1496016000,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "BAT",
+      "metric": "market_cap",
+      "first": 1507248000,
+      "last": 1791504000,
+      "observations": 3291,
+      "sourceFields": [
+        "CapMrktCurUSD"
+      ],
+      "providerFirst": 1507248000,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "BAT",
+      "metric": "mvrv",
+      "first": 1507248000,
+      "last": 1791504000,
+      "observations": 3291,
+      "sourceFields": [
+        "CapMVRVCur"
+      ],
+      "providerFirst": 1507248000,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "BAT",
+      "metric": "nupl",
+      "first": 1507248000,
+      "last": 1791504000,
+      "observations": 3291,
+      "sourceFields": [
+        "CapMVRVCur"
+      ],
+      "providerFirst": 1507248000,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "BAT",
+      "metric": "price",
+      "first": 1507248000,
+      "last": 1791504000,
+      "observations": 3291,
+      "sourceFields": [
+        "PriceUSD"
+      ],
+      "providerFirst": 1507248000,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "BAT",
+      "metric": "realized_cap",
+      "first": 1507248000,
+      "last": 1791504000,
+      "observations": 3291,
+      "sourceFields": [
+        "CapMrktCurUSD",
+        "CapMVRVCur"
+      ],
+      "providerFirst": 1507248000,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "BAT",
+      "metric": "realized_price",
+      "first": 1507248000,
+      "last": 1791504000,
+      "observations": 3291,
+      "sourceFields": [
+        "PriceUSD",
+        "CapMVRVCur"
+      ],
+      "providerFirst": 1507248000,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "BAT",
+      "metric": "supply",
+      "first": 1496016000,
+      "last": 1791504000,
+      "observations": 3421,
+      "sourceFields": [
+        "SplyCur"
+      ],
+      "providerFirst": 1496016000,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "BAT",
+      "metric": "transactions",
+      "first": 1496016000,
+      "last": 1791504000,
+      "observations": 3421,
+      "sourceFields": [
+        "TxCnt"
+      ],
+      "providerFirst": 1496016000,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "BAT",
+      "metric": "transfers",
+      "first": 1496016000,
+      "last": 1791504000,
+      "observations": 3421,
+      "sourceFields": [
+        "TxTfrCnt"
+      ],
+      "providerFirst": 1496016000,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "BCH",
+      "metric": "active_addresses",
+      "first": 1501545600,
+      "last": 1791504000,
+      "observations": 3357,
+      "sourceFields": [
+        "AdrActCnt"
+      ],
+      "providerFirst": 1501545600,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "BCH",
+      "metric": "balance_addresses",
+      "first": 1501545600,
+      "last": 1791504000,
+      "observations": 3357,
+      "sourceFields": [
+        "AdrBalCnt"
+      ],
+      "providerFirst": 1501545600,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "BCH",
+      "metric": "blocks",
+      "first": 1501545600,
+      "last": 1791504000,
+      "observations": 3357,
+      "sourceFields": [
+        "BlkCnt"
+      ],
+      "providerFirst": 1501545600,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "BCH",
+      "metric": "fees_native",
+      "first": 1501545600,
+      "last": 1791504000,
+      "observations": 3357,
+      "sourceFields": [
+        "FeeTotNtv"
+      ],
+      "providerFirst": 1501545600,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "BCH",
+      "metric": "hashrate",
+      "first": 1501545600,
+      "last": 1791504000,
+      "observations": 3357,
+      "sourceFields": [
+        "HashRate"
+      ],
+      "providerFirst": 1501545600,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "BCH",
+      "metric": "issuance",
+      "first": 1501545600,
+      "last": 1791504000,
+      "observations": 3357,
+      "sourceFields": [
+        "IssTotNtv"
+      ],
+      "providerFirst": 1501545600,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "BCH",
+      "metric": "market_cap",
+      "first": 1501545600,
+      "last": 1791504000,
+      "observations": 3357,
+      "sourceFields": [
+        "CapMrktCurUSD"
+      ],
+      "providerFirst": 1501545600,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "BCH",
+      "metric": "mvrv",
+      "first": 1501545600,
+      "last": 1791504000,
+      "observations": 3357,
+      "sourceFields": [
+        "CapMVRVCur"
+      ],
+      "providerFirst": 1501545600,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "BCH",
+      "metric": "nupl",
+      "first": 1501545600,
+      "last": 1791504000,
+      "observations": 3357,
+      "sourceFields": [
+        "CapMVRVCur"
+      ],
+      "providerFirst": 1501545600,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "BCH",
+      "metric": "price",
+      "first": 1501545600,
+      "last": 1791504000,
+      "observations": 3357,
+      "sourceFields": [
+        "PriceUSD"
+      ],
+      "providerFirst": 1501545600,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "BCH",
+      "metric": "realized_cap",
+      "first": 1501545600,
+      "last": 1791504000,
+      "observations": 3357,
+      "sourceFields": [
+        "CapMrktCurUSD",
+        "CapMVRVCur"
+      ],
+      "providerFirst": 1501545600,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "BCH",
+      "metric": "realized_price",
+      "first": 1501545600,
+      "last": 1791504000,
+      "observations": 3357,
+      "sourceFields": [
+        "PriceUSD",
+        "CapMVRVCur"
+      ],
+      "providerFirst": 1501545600,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "BCH",
+      "metric": "supply",
+      "first": 1501545600,
+      "last": 1791504000,
+      "observations": 3357,
+      "sourceFields": [
+        "SplyCur"
+      ],
+      "providerFirst": 1501545600,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "BCH",
+      "metric": "transactions",
+      "first": 1501545600,
+      "last": 1791504000,
+      "observations": 3357,
+      "sourceFields": [
+        "TxCnt"
+      ],
+      "providerFirst": 1501545600,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "BCH",
+      "metric": "transfers",
+      "first": 1501545600,
+      "last": 1791504000,
+      "observations": 3357,
+      "sourceFields": [
+        "TxTfrCnt"
+      ],
+      "providerFirst": 1501545600,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "BTC",
+      "metric": "active_addresses",
+      "first": 1230940800,
+      "last": 1791504000,
+      "observations": 6489,
+      "sourceFields": [
+        "AdrActCnt"
+      ],
+      "providerFirst": 1230940800,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "BTC",
+      "metric": "balance_addresses",
+      "first": 1230940800,
+      "last": 1791504000,
+      "observations": 6489,
+      "sourceFields": [
+        "AdrBalCnt"
+      ],
+      "providerFirst": 1230940800,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "BTC",
+      "metric": "blocks",
+      "first": 1230940800,
+      "last": 1791504000,
+      "observations": 6489,
+      "sourceFields": [
+        "BlkCnt"
+      ],
+      "providerFirst": 1230940800,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "BTC",
+      "metric": "exchange_balance",
+      "first": 1303603200,
+      "last": 1791504000,
+      "observations": 5648,
+      "sourceFields": [
+        "SplyExNtv"
+      ],
+      "providerFirst": 1303603200,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "BTC",
+      "metric": "exchange_inflow",
+      "first": 1303603200,
+      "last": 1791504000,
+      "observations": 5648,
+      "sourceFields": [
+        "FlowInExNtv"
+      ],
+      "providerFirst": 1303603200,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "BTC",
+      "metric": "exchange_netflow",
+      "first": 1303603200,
+      "last": 1791504000,
+      "observations": 5648,
+      "sourceFields": [
+        "FlowInExNtv",
+        "FlowOutExNtv"
+      ],
+      "providerFirst": 1303603200,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "BTC",
+      "metric": "exchange_outflow",
+      "first": 1303603200,
+      "last": 1791504000,
+      "observations": 5648,
+      "sourceFields": [
+        "FlowOutExNtv"
+      ],
+      "providerFirst": 1303603200,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "BTC",
+      "metric": "fees_native",
+      "first": 1230940800,
+      "last": 1791504000,
+      "observations": 6489,
+      "sourceFields": [
+        "FeeTotNtv"
+      ],
+      "providerFirst": 1230940800,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "BTC",
+      "metric": "hashrate",
+      "first": 1231459200,
+      "last": 1791504000,
+      "observations": 6483,
+      "sourceFields": [
+        "HashRate"
+      ],
+      "providerFirst": 1231459200,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "BTC",
+      "metric": "issuance",
+      "first": 1231459200,
+      "last": 1791504000,
+      "observations": 6483,
+      "sourceFields": [
+        "IssTotNtv"
+      ],
+      "providerFirst": 1231459200,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "BTC",
+      "metric": "market_cap",
+      "first": 1279411200,
+      "last": 1791504000,
+      "observations": 5928,
+      "sourceFields": [
+        "CapMrktCurUSD"
+      ],
+      "providerFirst": 1279411200,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "BTC",
+      "metric": "mvrv",
+      "first": 1279411200,
+      "last": 1791504000,
+      "observations": 5928,
+      "sourceFields": [
+        "CapMVRVCur"
+      ],
+      "providerFirst": 1279411200,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "BTC",
+      "metric": "nupl",
+      "first": 1279411200,
+      "last": 1791504000,
+      "observations": 5928,
+      "sourceFields": [
+        "CapMVRVCur"
+      ],
+      "providerFirst": 1279411200,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "BTC",
+      "metric": "price",
+      "first": 1279411200,
+      "last": 1791504000,
+      "observations": 5928,
+      "sourceFields": [
+        "PriceUSD"
+      ],
+      "providerFirst": 1279411200,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "BTC",
+      "metric": "realized_cap",
+      "first": 1279411200,
+      "last": 1791504000,
+      "observations": 5928,
+      "sourceFields": [
+        "CapMrktCurUSD",
+        "CapMVRVCur"
+      ],
+      "providerFirst": 1279411200,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "BTC",
+      "metric": "realized_price",
+      "first": 1279411200,
+      "last": 1791504000,
+      "observations": 5928,
+      "sourceFields": [
+        "PriceUSD",
+        "CapMVRVCur"
+      ],
+      "providerFirst": 1279411200,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "BTC",
+      "metric": "supply",
+      "first": 1230940800,
+      "last": 1791504000,
+      "observations": 6489,
+      "sourceFields": [
+        "SplyCur"
+      ],
+      "providerFirst": 1230940800,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "BTC",
+      "metric": "transactions",
+      "first": 1230940800,
+      "last": 1791504000,
+      "observations": 6489,
+      "sourceFields": [
+        "TxCnt"
+      ],
+      "providerFirst": 1230940800,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "BTC",
+      "metric": "transfers",
+      "first": 1230940800,
+      "last": 1791504000,
+      "observations": 6489,
+      "sourceFields": [
+        "TxTfrCnt"
+      ],
+      "providerFirst": 1230940800,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "COMP",
+      "metric": "active_addresses",
+      "first": 1583280000,
+      "last": 1791504000,
+      "observations": 2411,
+      "sourceFields": [
+        "AdrActCnt"
+      ],
+      "providerFirst": 1583280000,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "COMP",
+      "metric": "balance_addresses",
+      "first": 1583280000,
+      "last": 1791504000,
+      "observations": 2411,
+      "sourceFields": [
+        "AdrBalCnt"
+      ],
+      "providerFirst": 1583280000,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "COMP",
+      "metric": "issuance",
+      "first": 1583280000,
+      "last": 1791504000,
+      "observations": 2411,
+      "sourceFields": [
+        "IssTotNtv"
+      ],
+      "providerFirst": 1583280000,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "COMP",
+      "metric": "market_cap",
+      "first": 1592438400,
+      "last": 1791504000,
+      "observations": 2305,
+      "sourceFields": [
+        "CapMrktCurUSD"
+      ],
+      "providerFirst": 1592438400,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "COMP",
+      "metric": "mvrv",
+      "first": 1592438400,
+      "last": 1791504000,
+      "observations": 2305,
+      "sourceFields": [
+        "CapMVRVCur"
+      ],
+      "providerFirst": 1592438400,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "COMP",
+      "metric": "nupl",
+      "first": 1592438400,
+      "last": 1791504000,
+      "observations": 2305,
+      "sourceFields": [
+        "CapMVRVCur"
+      ],
+      "providerFirst": 1592438400,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "COMP",
+      "metric": "price",
+      "first": 1592438400,
+      "last": 1791504000,
+      "observations": 2305,
+      "sourceFields": [
+        "PriceUSD"
+      ],
+      "providerFirst": 1592438400,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "COMP",
+      "metric": "realized_cap",
+      "first": 1592438400,
+      "last": 1791504000,
+      "observations": 2305,
+      "sourceFields": [
+        "CapMrktCurUSD",
+        "CapMVRVCur"
+      ],
+      "providerFirst": 1592438400,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "COMP",
+      "metric": "realized_price",
+      "first": 1592438400,
+      "last": 1791504000,
+      "observations": 2305,
+      "sourceFields": [
+        "PriceUSD",
+        "CapMVRVCur"
+      ],
+      "providerFirst": 1592438400,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "COMP",
+      "metric": "supply",
+      "first": 1583280000,
+      "last": 1791504000,
+      "observations": 2411,
+      "sourceFields": [
+        "SplyCur"
+      ],
+      "providerFirst": 1583280000,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "COMP",
+      "metric": "transactions",
+      "first": 1583280000,
+      "last": 1791504000,
+      "observations": 2411,
+      "sourceFields": [
+        "TxCnt"
+      ],
+      "providerFirst": 1583280000,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "COMP",
+      "metric": "transfers",
+      "first": 1583280000,
+      "last": 1791504000,
+      "observations": 2411,
+      "sourceFields": [
+        "TxTfrCnt"
+      ],
+      "providerFirst": 1583280000,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "CRO",
+      "metric": "active_addresses",
+      "first": 1542153600,
+      "last": 1791504000,
+      "observations": 2887,
+      "sourceFields": [
+        "AdrActCnt"
+      ],
+      "providerFirst": 1542153600,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "CRO",
+      "metric": "balance_addresses",
+      "first": 1542153600,
+      "last": 1791504000,
+      "observations": 2887,
+      "sourceFields": [
+        "AdrBalCnt"
+      ],
+      "providerFirst": 1542153600,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "CRO",
+      "metric": "issuance",
+      "first": 1542153600,
+      "last": 1791504000,
+      "observations": 2887,
+      "sourceFields": [
+        "IssTotNtv"
+      ],
+      "providerFirst": 1542153600,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "CRO",
+      "metric": "market_cap",
+      "first": 1553040000,
+      "last": 1791504000,
+      "observations": 2761,
+      "sourceFields": [
+        "CapMrktCurUSD"
+      ],
+      "providerFirst": 1553040000,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "CRO",
+      "metric": "mvrv",
+      "first": 1553040000,
+      "last": 1791504000,
+      "observations": 2761,
+      "sourceFields": [
+        "CapMVRVCur"
+      ],
+      "providerFirst": 1553040000,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "CRO",
+      "metric": "nupl",
+      "first": 1553040000,
+      "last": 1791504000,
+      "observations": 2761,
+      "sourceFields": [
+        "CapMVRVCur"
+      ],
+      "providerFirst": 1553040000,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "CRO",
+      "metric": "price",
+      "first": 1553040000,
+      "last": 1791504000,
+      "observations": 2761,
+      "sourceFields": [
+        "PriceUSD"
+      ],
+      "providerFirst": 1553040000,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "CRO",
+      "metric": "realized_cap",
+      "first": 1553040000,
+      "last": 1791504000,
+      "observations": 2761,
+      "sourceFields": [
+        "CapMrktCurUSD",
+        "CapMVRVCur"
+      ],
+      "providerFirst": 1553040000,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "CRO",
+      "metric": "realized_price",
+      "first": 1553040000,
+      "last": 1791504000,
+      "observations": 2761,
+      "sourceFields": [
+        "PriceUSD",
+        "CapMVRVCur"
+      ],
+      "providerFirst": 1553040000,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "CRO",
+      "metric": "supply",
+      "first": 1542153600,
+      "last": 1791504000,
+      "observations": 2887,
+      "sourceFields": [
+        "SplyCur"
+      ],
+      "providerFirst": 1542153600,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "CRO",
+      "metric": "transactions",
+      "first": 1542153600,
+      "last": 1791504000,
+      "observations": 2887,
+      "sourceFields": [
+        "TxCnt"
+      ],
+      "providerFirst": 1542153600,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "CRO",
+      "metric": "transfers",
+      "first": 1542153600,
+      "last": 1791504000,
+      "observations": 2887,
+      "sourceFields": [
+        "TxTfrCnt"
+      ],
+      "providerFirst": 1542153600,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "CRV",
+      "metric": "active_addresses",
+      "first": 1597190400,
+      "last": 1791504000,
+      "observations": 2250,
+      "sourceFields": [
+        "AdrActCnt"
+      ],
+      "providerFirst": 1597190400,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "CRV",
+      "metric": "balance_addresses",
+      "first": 1597190400,
+      "last": 1791504000,
+      "observations": 2250,
+      "sourceFields": [
+        "AdrBalCnt"
+      ],
+      "providerFirst": 1597190400,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "CRV",
+      "metric": "issuance",
+      "first": 1597190400,
+      "last": 1791504000,
+      "observations": 2250,
+      "sourceFields": [
+        "IssTotNtv"
+      ],
+      "providerFirst": 1597190400,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "CRV",
+      "metric": "market_cap",
+      "first": 1597449600,
+      "last": 1791504000,
+      "observations": 2247,
+      "sourceFields": [
+        "CapMrktCurUSD"
+      ],
+      "providerFirst": 1597449600,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "CRV",
+      "metric": "mvrv",
+      "first": 1597449600,
+      "last": 1791504000,
+      "observations": 2247,
+      "sourceFields": [
+        "CapMVRVCur"
+      ],
+      "providerFirst": 1597449600,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "CRV",
+      "metric": "nupl",
+      "first": 1597449600,
+      "last": 1791504000,
+      "observations": 2247,
+      "sourceFields": [
+        "CapMVRVCur"
+      ],
+      "providerFirst": 1597449600,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "CRV",
+      "metric": "price",
+      "first": 1597449600,
+      "last": 1791504000,
+      "observations": 2247,
+      "sourceFields": [
+        "PriceUSD"
+      ],
+      "providerFirst": 1597449600,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "CRV",
+      "metric": "realized_cap",
+      "first": 1597449600,
+      "last": 1791504000,
+      "observations": 2247,
+      "sourceFields": [
+        "CapMrktCurUSD",
+        "CapMVRVCur"
+      ],
+      "providerFirst": 1597449600,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "CRV",
+      "metric": "realized_price",
+      "first": 1597449600,
+      "last": 1791504000,
+      "observations": 2247,
+      "sourceFields": [
+        "PriceUSD",
+        "CapMVRVCur"
+      ],
+      "providerFirst": 1597449600,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "CRV",
+      "metric": "supply",
+      "first": 1597190400,
+      "last": 1791504000,
+      "observations": 2250,
+      "sourceFields": [
+        "SplyCur"
+      ],
+      "providerFirst": 1597190400,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "CRV",
+      "metric": "transactions",
+      "first": 1597190400,
+      "last": 1791504000,
+      "observations": 2250,
+      "sourceFields": [
+        "TxCnt"
+      ],
+      "providerFirst": 1597190400,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "CRV",
+      "metric": "transfers",
+      "first": 1597190400,
+      "last": 1791504000,
+      "observations": 2250,
+      "sourceFields": [
+        "TxTfrCnt"
+      ],
+      "providerFirst": 1597190400,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "DASH",
+      "metric": "active_addresses",
+      "first": 1390089600,
+      "last": 1791504000,
+      "observations": 4647,
+      "sourceFields": [
+        "AdrActCnt"
+      ],
+      "providerFirst": 1390089600,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "DASH",
+      "metric": "balance_addresses",
+      "first": 1390089600,
+      "last": 1791504000,
+      "observations": 4647,
+      "sourceFields": [
+        "AdrBalCnt"
+      ],
+      "providerFirst": 1390089600,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "DASH",
+      "metric": "blocks",
+      "first": 1390089600,
+      "last": 1791504000,
+      "observations": 4647,
+      "sourceFields": [
+        "BlkCnt"
+      ],
+      "providerFirst": 1390089600,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "DASH",
+      "metric": "hashrate",
+      "first": 1390089600,
+      "last": 1791504000,
+      "observations": 4647,
+      "sourceFields": [
+        "HashRate"
+      ],
+      "providerFirst": 1390089600,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "DASH",
+      "metric": "issuance",
+      "first": 1390089600,
+      "last": 1791504000,
+      "observations": 4647,
+      "sourceFields": [
+        "IssTotNtv"
+      ],
+      "providerFirst": 1390089600,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "DASH",
+      "metric": "market_cap",
+      "first": 1391817600,
+      "last": 1791504000,
+      "observations": 4627,
+      "sourceFields": [
+        "CapMrktCurUSD"
+      ],
+      "providerFirst": 1391817600,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "DASH",
+      "metric": "mvrv",
+      "first": 1391817600,
+      "last": 1791504000,
+      "observations": 4627,
+      "sourceFields": [
+        "CapMVRVCur"
+      ],
+      "providerFirst": 1391817600,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "DASH",
+      "metric": "nupl",
+      "first": 1391817600,
+      "last": 1791504000,
+      "observations": 4627,
+      "sourceFields": [
+        "CapMVRVCur"
+      ],
+      "providerFirst": 1391817600,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "DASH",
+      "metric": "price",
+      "first": 1391817600,
+      "last": 1791504000,
+      "observations": 4627,
+      "sourceFields": [
+        "PriceUSD"
+      ],
+      "providerFirst": 1391817600,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "DASH",
+      "metric": "realized_cap",
+      "first": 1391817600,
+      "last": 1791504000,
+      "observations": 4627,
+      "sourceFields": [
+        "CapMrktCurUSD",
+        "CapMVRVCur"
+      ],
+      "providerFirst": 1391817600,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "DASH",
+      "metric": "realized_price",
+      "first": 1391817600,
+      "last": 1791504000,
+      "observations": 4627,
+      "sourceFields": [
+        "PriceUSD",
+        "CapMVRVCur"
+      ],
+      "providerFirst": 1391817600,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "DASH",
+      "metric": "supply",
+      "first": 1390089600,
+      "last": 1791504000,
+      "observations": 4647,
+      "sourceFields": [
+        "SplyCur"
+      ],
+      "providerFirst": 1390089600,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "DASH",
+      "metric": "transactions",
+      "first": 1390089600,
+      "last": 1791504000,
+      "observations": 4647,
+      "sourceFields": [
+        "TxCnt"
+      ],
+      "providerFirst": 1390089600,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "DASH",
+      "metric": "transfers",
+      "first": 1390089600,
+      "last": 1791504000,
+      "observations": 4647,
+      "sourceFields": [
+        "TxTfrCnt"
+      ],
+      "providerFirst": 1390089600,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "DCR",
+      "metric": "active_addresses",
+      "first": 1454889600,
+      "last": 1791504000,
+      "observations": 3897,
+      "sourceFields": [
+        "AdrActCnt"
+      ],
+      "providerFirst": 1454889600,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "DCR",
+      "metric": "balance_addresses",
+      "first": 1454889600,
+      "last": 1791504000,
+      "observations": 3897,
+      "sourceFields": [
+        "AdrBalCnt"
+      ],
+      "providerFirst": 1454889600,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "DCR",
+      "metric": "blocks",
+      "first": 1454889600,
+      "last": 1791504000,
+      "observations": 3897,
+      "sourceFields": [
+        "BlkCnt"
+      ],
+      "providerFirst": 1454889600,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "DCR",
+      "metric": "market_cap",
+      "first": 1463443200,
+      "last": 1791504000,
+      "observations": 3796,
+      "sourceFields": [
+        "CapMrktCurUSD"
+      ],
+      "providerFirst": 1463443200,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "DCR",
+      "metric": "mvrv",
+      "first": 1463443200,
+      "last": 1791504000,
+      "observations": 3796,
+      "sourceFields": [
+        "CapMVRVCur"
+      ],
+      "providerFirst": 1463443200,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "DCR",
+      "metric": "nupl",
+      "first": 1463443200,
+      "last": 1791504000,
+      "observations": 3796,
+      "sourceFields": [
+        "CapMVRVCur"
+      ],
+      "providerFirst": 1463443200,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "DCR",
+      "metric": "price",
+      "first": 1463443200,
+      "last": 1791504000,
+      "observations": 3798,
+      "sourceFields": [
+        "PriceUSD"
+      ],
+      "providerFirst": 1463443200,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "DCR",
+      "metric": "realized_cap",
+      "first": 1463443200,
+      "last": 1791504000,
+      "observations": 3796,
+      "sourceFields": [
+        "CapMrktCurUSD",
+        "CapMVRVCur"
+      ],
+      "providerFirst": 1463443200,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "DCR",
+      "metric": "realized_price",
+      "first": 1463443200,
+      "last": 1791504000,
+      "observations": 3796,
+      "sourceFields": [
+        "PriceUSD",
+        "CapMVRVCur"
+      ],
+      "providerFirst": 1463443200,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "DCR",
+      "metric": "supply",
+      "first": 1454889600,
+      "last": 1791504000,
+      "observations": 3895,
+      "sourceFields": [
+        "SplyCur"
+      ],
+      "providerFirst": 1454889600,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "DCR",
+      "metric": "transactions",
+      "first": 1454889600,
+      "last": 1791504000,
+      "observations": 3897,
+      "sourceFields": [
+        "TxCnt"
+      ],
+      "providerFirst": 1454889600,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "DCR",
+      "metric": "transfers",
+      "first": 1454889600,
+      "last": 1791504000,
+      "observations": 3897,
+      "sourceFields": [
+        "TxTfrCnt"
+      ],
+      "providerFirst": 1454889600,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "DGB",
+      "metric": "active_addresses",
+      "first": 1389312000,
+      "last": 1791504000,
+      "observations": 4656,
+      "sourceFields": [
+        "AdrActCnt"
+      ],
+      "providerFirst": 1389312000,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "DGB",
+      "metric": "balance_addresses",
+      "first": 1389312000,
+      "last": 1791504000,
+      "observations": 4656,
+      "sourceFields": [
+        "AdrBalCnt"
+      ],
+      "providerFirst": 1389312000,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "DGB",
+      "metric": "blocks",
+      "first": 1389312000,
+      "last": 1791504000,
+      "observations": 4656,
+      "sourceFields": [
+        "BlkCnt"
+      ],
+      "providerFirst": 1389312000,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "DGB",
+      "metric": "fees_native",
+      "first": 1389312000,
+      "last": 1791504000,
+      "observations": 4656,
+      "sourceFields": [
+        "FeeTotNtv"
+      ],
+      "providerFirst": 1389312000,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "DGB",
+      "metric": "issuance",
+      "first": 1389312000,
+      "last": 1791504000,
+      "observations": 4656,
+      "sourceFields": [
+        "IssTotNtv"
+      ],
+      "providerFirst": 1389312000,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "DGB",
+      "metric": "market_cap",
+      "first": 1423526400,
+      "last": 1791504000,
+      "observations": 4260,
+      "sourceFields": [
+        "CapMrktCurUSD"
+      ],
+      "providerFirst": 1423526400,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "DGB",
+      "metric": "mvrv",
+      "first": 1423526400,
+      "last": 1791504000,
+      "observations": 4260,
+      "sourceFields": [
+        "CapMVRVCur"
+      ],
+      "providerFirst": 1423526400,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "DGB",
+      "metric": "nupl",
+      "first": 1423526400,
+      "last": 1791504000,
+      "observations": 4260,
+      "sourceFields": [
+        "CapMVRVCur"
+      ],
+      "providerFirst": 1423526400,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "DGB",
+      "metric": "price",
+      "first": 1423526400,
+      "last": 1791504000,
+      "observations": 4260,
+      "sourceFields": [
+        "PriceUSD"
+      ],
+      "providerFirst": 1423526400,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "DGB",
+      "metric": "realized_cap",
+      "first": 1423526400,
+      "last": 1791504000,
+      "observations": 4260,
+      "sourceFields": [
+        "CapMrktCurUSD",
+        "CapMVRVCur"
+      ],
+      "providerFirst": 1423526400,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "DGB",
+      "metric": "realized_price",
+      "first": 1423526400,
+      "last": 1791504000,
+      "observations": 4260,
+      "sourceFields": [
+        "PriceUSD",
+        "CapMVRVCur"
+      ],
+      "providerFirst": 1423526400,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "DGB",
+      "metric": "supply",
+      "first": 1389312000,
+      "last": 1791504000,
+      "observations": 4656,
+      "sourceFields": [
+        "SplyCur"
+      ],
+      "providerFirst": 1389312000,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "DGB",
+      "metric": "transactions",
+      "first": 1389312000,
+      "last": 1791504000,
+      "observations": 4656,
+      "sourceFields": [
+        "TxCnt"
+      ],
+      "providerFirst": 1389312000,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "DGB",
+      "metric": "transfers",
+      "first": 1389312000,
+      "last": 1791504000,
+      "observations": 4656,
+      "sourceFields": [
+        "TxTfrCnt"
+      ],
+      "providerFirst": 1389312000,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "DOGE",
+      "metric": "active_addresses",
+      "first": 1386460800,
+      "last": 1791504000,
+      "observations": 4689,
+      "sourceFields": [
+        "AdrActCnt"
+      ],
+      "providerFirst": 1386460800,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "DOGE",
+      "metric": "balance_addresses",
+      "first": 1386460800,
+      "last": 1791504000,
+      "observations": 4689,
+      "sourceFields": [
+        "AdrBalCnt"
+      ],
+      "providerFirst": 1386460800,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "DOGE",
+      "metric": "blocks",
+      "first": 1386460800,
+      "last": 1791504000,
+      "observations": 4689,
+      "sourceFields": [
+        "BlkCnt"
+      ],
+      "providerFirst": 1386460800,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "DOGE",
+      "metric": "fees_native",
+      "first": 1386460800,
+      "last": 1791504000,
+      "observations": 4689,
+      "sourceFields": [
+        "FeeTotNtv"
+      ],
+      "providerFirst": 1386460800,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "DOGE",
+      "metric": "hashrate",
+      "first": 1386460800,
+      "last": 1791504000,
+      "observations": 4689,
+      "sourceFields": [
+        "HashRate"
+      ],
+      "providerFirst": 1386460800,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "DOGE",
+      "metric": "issuance",
+      "first": 1386460800,
+      "last": 1791504000,
+      "observations": 4689,
+      "sourceFields": [
+        "IssTotNtv"
+      ],
+      "providerFirst": 1386460800,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "DOGE",
+      "metric": "market_cap",
+      "first": 1390435200,
+      "last": 1791504000,
+      "observations": 4643,
+      "sourceFields": [
+        "CapMrktCurUSD"
+      ],
+      "providerFirst": 1390435200,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "DOGE",
+      "metric": "mvrv",
+      "first": 1390435200,
+      "last": 1791504000,
+      "observations": 4643,
+      "sourceFields": [
+        "CapMVRVCur"
+      ],
+      "providerFirst": 1390435200,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "DOGE",
+      "metric": "nupl",
+      "first": 1390435200,
+      "last": 1791504000,
+      "observations": 4643,
+      "sourceFields": [
+        "CapMVRVCur"
+      ],
+      "providerFirst": 1390435200,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "DOGE",
+      "metric": "price",
+      "first": 1390435200,
+      "last": 1791504000,
+      "observations": 4643,
+      "sourceFields": [
+        "PriceUSD"
+      ],
+      "providerFirst": 1390435200,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "DOGE",
+      "metric": "realized_cap",
+      "first": 1390435200,
+      "last": 1791504000,
+      "observations": 4643,
+      "sourceFields": [
+        "CapMrktCurUSD",
+        "CapMVRVCur"
+      ],
+      "providerFirst": 1390435200,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "DOGE",
+      "metric": "realized_price",
+      "first": 1390435200,
+      "last": 1791504000,
+      "observations": 4643,
+      "sourceFields": [
+        "PriceUSD",
+        "CapMVRVCur"
+      ],
+      "providerFirst": 1390435200,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "DOGE",
+      "metric": "supply",
+      "first": 1386460800,
+      "last": 1791504000,
+      "observations": 4689,
+      "sourceFields": [
+        "SplyCur"
+      ],
+      "providerFirst": 1386460800,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "DOGE",
+      "metric": "transactions",
+      "first": 1386460800,
+      "last": 1791504000,
+      "observations": 4689,
+      "sourceFields": [
+        "TxCnt"
+      ],
+      "providerFirst": 1386460800,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "DOGE",
+      "metric": "transfers",
+      "first": 1386460800,
+      "last": 1791504000,
+      "observations": 4689,
+      "sourceFields": [
+        "TxTfrCnt"
+      ],
+      "providerFirst": 1386460800,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "ETC",
+      "metric": "active_addresses",
+      "first": 1468972800,
+      "last": 1791504000,
+      "observations": 3734,
+      "sourceFields": [
+        "AdrActCnt"
+      ],
+      "providerFirst": 1468972800,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "ETC",
+      "metric": "balance_addresses",
+      "first": 1468972800,
+      "last": 1791504000,
+      "observations": 3734,
+      "sourceFields": [
+        "AdrBalCnt"
+      ],
+      "providerFirst": 1468972800,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "ETC",
+      "metric": "blocks",
+      "first": 1468972800,
+      "last": 1791504000,
+      "observations": 3734,
+      "sourceFields": [
+        "BlkCnt"
+      ],
+      "providerFirst": 1468972800,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "ETC",
+      "metric": "fees_native",
+      "first": 1468972800,
+      "last": 1791504000,
+      "observations": 3734,
+      "sourceFields": [
+        "FeeTotNtv"
+      ],
+      "providerFirst": 1468972800,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "ETC",
+      "metric": "hashrate",
+      "first": 1468972800,
+      "last": 1791504000,
+      "observations": 3734,
+      "sourceFields": [
+        "HashRate"
+      ],
+      "providerFirst": 1468972800,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "ETC",
+      "metric": "issuance",
+      "first": 1468972800,
+      "last": 1791504000,
+      "observations": 3734,
+      "sourceFields": [
+        "IssTotNtv"
+      ],
+      "providerFirst": 1468972800,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "ETC",
+      "metric": "market_cap",
+      "first": 1469404800,
+      "last": 1791504000,
+      "observations": 3729,
+      "sourceFields": [
+        "CapMrktCurUSD"
+      ],
+      "providerFirst": 1469404800,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "ETC",
+      "metric": "mvrv",
+      "first": 1469404800,
+      "last": 1791504000,
+      "observations": 3729,
+      "sourceFields": [
+        "CapMVRVCur"
+      ],
+      "providerFirst": 1469404800,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "ETC",
+      "metric": "nupl",
+      "first": 1469404800,
+      "last": 1791504000,
+      "observations": 3729,
+      "sourceFields": [
+        "CapMVRVCur"
+      ],
+      "providerFirst": 1469404800,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "ETC",
+      "metric": "price",
+      "first": 1469404800,
+      "last": 1791504000,
+      "observations": 3729,
+      "sourceFields": [
+        "PriceUSD"
+      ],
+      "providerFirst": 1469404800,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "ETC",
+      "metric": "realized_cap",
+      "first": 1469404800,
+      "last": 1791504000,
+      "observations": 3729,
+      "sourceFields": [
+        "CapMrktCurUSD",
+        "CapMVRVCur"
+      ],
+      "providerFirst": 1469404800,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "ETC",
+      "metric": "realized_price",
+      "first": 1469404800,
+      "last": 1791504000,
+      "observations": 3729,
+      "sourceFields": [
+        "PriceUSD",
+        "CapMVRVCur"
+      ],
+      "providerFirst": 1469404800,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "ETC",
+      "metric": "supply",
+      "first": 1468972800,
+      "last": 1791504000,
+      "observations": 3734,
+      "sourceFields": [
+        "SplyCur"
+      ],
+      "providerFirst": 1468972800,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "ETC",
+      "metric": "transactions",
+      "first": 1468972800,
+      "last": 1791504000,
+      "observations": 3734,
+      "sourceFields": [
+        "TxCnt"
+      ],
+      "providerFirst": 1468972800,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "ETC",
+      "metric": "transfers",
+      "first": 1468972800,
+      "last": 1791504000,
+      "observations": 3734,
+      "sourceFields": [
+        "TxTfrCnt"
+      ],
+      "providerFirst": 1468972800,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "ETH",
+      "metric": "active_addresses",
+      "first": 1438214400,
+      "last": 1791504000,
+      "observations": 4090,
+      "sourceFields": [
+        "AdrActCnt"
+      ],
+      "providerFirst": 1438214400,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "ETH",
+      "metric": "balance_addresses",
+      "first": 1438214400,
+      "last": 1791504000,
+      "observations": 4090,
+      "sourceFields": [
+        "AdrBalCnt"
+      ],
+      "providerFirst": 1438214400,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "ETH",
+      "metric": "blocks",
+      "first": 1438214400,
+      "last": 1791504000,
+      "observations": 4090,
+      "sourceFields": [
+        "BlkCnt"
+      ],
+      "providerFirst": 1438214400,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "ETH",
+      "metric": "exchange_balance",
+      "first": 1438214400,
+      "last": 1791504000,
+      "observations": 4090,
+      "sourceFields": [
+        "SplyExNtv"
+      ],
+      "providerFirst": 1438214400,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "ETH",
+      "metric": "exchange_inflow",
+      "first": 1438214400,
+      "last": 1791504000,
+      "observations": 4090,
+      "sourceFields": [
+        "FlowInExNtv"
+      ],
+      "providerFirst": 1438214400,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "ETH",
+      "metric": "exchange_netflow",
+      "first": 1438214400,
+      "last": 1791504000,
+      "observations": 4090,
+      "sourceFields": [
+        "FlowInExNtv",
+        "FlowOutExNtv"
+      ],
+      "providerFirst": 1438214400,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "ETH",
+      "metric": "exchange_outflow",
+      "first": 1438214400,
+      "last": 1791504000,
+      "observations": 4090,
+      "sourceFields": [
+        "FlowOutExNtv"
+      ],
+      "providerFirst": 1438214400,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "ETH",
+      "metric": "fees_native",
+      "first": 1438214400,
+      "last": 1791504000,
+      "observations": 4090,
+      "sourceFields": [
+        "FeeTotNtv"
+      ],
+      "providerFirst": 1438214400,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "ETH",
+      "metric": "issuance",
+      "first": 1438214400,
+      "last": 1791504000,
+      "observations": 4090,
+      "sourceFields": [
+        "IssTotNtv"
+      ],
+      "providerFirst": 1438214400,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "ETH",
+      "metric": "market_cap",
+      "first": 1438992000,
+      "last": 1791504000,
+      "observations": 4081,
+      "sourceFields": [
+        "CapMrktCurUSD"
+      ],
+      "providerFirst": 1438992000,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "ETH",
+      "metric": "mvrv",
+      "first": 1438992000,
+      "last": 1791504000,
+      "observations": 4081,
+      "sourceFields": [
+        "CapMVRVCur"
+      ],
+      "providerFirst": 1438992000,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "ETH",
+      "metric": "nupl",
+      "first": 1438992000,
+      "last": 1791504000,
+      "observations": 4081,
+      "sourceFields": [
+        "CapMVRVCur"
+      ],
+      "providerFirst": 1438992000,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "ETH",
+      "metric": "price",
+      "first": 1438992000,
+      "last": 1791504000,
+      "observations": 4081,
+      "sourceFields": [
+        "PriceUSD"
+      ],
+      "providerFirst": 1438992000,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "ETH",
+      "metric": "realized_cap",
+      "first": 1438992000,
+      "last": 1791504000,
+      "observations": 4081,
+      "sourceFields": [
+        "CapMrktCurUSD",
+        "CapMVRVCur"
+      ],
+      "providerFirst": 1438992000,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "ETH",
+      "metric": "realized_price",
+      "first": 1438992000,
+      "last": 1791504000,
+      "observations": 4081,
+      "sourceFields": [
+        "PriceUSD",
+        "CapMVRVCur"
+      ],
+      "providerFirst": 1438992000,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "ETH",
+      "metric": "supply",
+      "first": 1438214400,
+      "last": 1791504000,
+      "observations": 4090,
+      "sourceFields": [
+        "SplyCur"
+      ],
+      "providerFirst": 1438214400,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "ETH",
+      "metric": "transactions",
+      "first": 1438214400,
+      "last": 1791504000,
+      "observations": 4090,
+      "sourceFields": [
+        "TxCnt"
+      ],
+      "providerFirst": 1438214400,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "ETH",
+      "metric": "transfers",
+      "first": 1438214400,
+      "last": 1791504000,
+      "observations": 4090,
+      "sourceFields": [
+        "TxTfrCnt"
+      ],
+      "providerFirst": 1438214400,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "FTT",
+      "metric": "active_addresses",
+      "first": 1555804800,
+      "last": 1791504000,
+      "observations": 2729,
+      "sourceFields": [
+        "AdrActCnt"
+      ],
+      "providerFirst": 1555804800,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "FTT",
+      "metric": "balance_addresses",
+      "first": 1555804800,
+      "last": 1791504000,
+      "observations": 2729,
+      "sourceFields": [
+        "AdrBalCnt"
+      ],
+      "providerFirst": 1555804800,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "FTT",
+      "metric": "issuance",
+      "first": 1555804800,
+      "last": 1791504000,
+      "observations": 2729,
+      "sourceFields": [
+        "IssTotNtv"
+      ],
+      "providerFirst": 1555804800,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "FTT",
+      "metric": "market_cap",
+      "first": 1566259200,
+      "last": 1791504000,
+      "observations": 2608,
+      "sourceFields": [
+        "CapMrktCurUSD"
+      ],
+      "providerFirst": 1566259200,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "FTT",
+      "metric": "mvrv",
+      "first": 1566259200,
+      "last": 1791504000,
+      "observations": 2608,
+      "sourceFields": [
+        "CapMVRVCur"
+      ],
+      "providerFirst": 1566259200,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "FTT",
+      "metric": "nupl",
+      "first": 1566259200,
+      "last": 1791504000,
+      "observations": 2608,
+      "sourceFields": [
+        "CapMVRVCur"
+      ],
+      "providerFirst": 1566259200,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "FTT",
+      "metric": "price",
+      "first": 1566259200,
+      "last": 1791504000,
+      "observations": 2608,
+      "sourceFields": [
+        "PriceUSD"
+      ],
+      "providerFirst": 1566259200,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "FTT",
+      "metric": "realized_cap",
+      "first": 1566259200,
+      "last": 1791504000,
+      "observations": 2608,
+      "sourceFields": [
+        "CapMrktCurUSD",
+        "CapMVRVCur"
+      ],
+      "providerFirst": 1566259200,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "FTT",
+      "metric": "realized_price",
+      "first": 1566259200,
+      "last": 1791504000,
+      "observations": 2608,
+      "sourceFields": [
+        "PriceUSD",
+        "CapMVRVCur"
+      ],
+      "providerFirst": 1566259200,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "FTT",
+      "metric": "supply",
+      "first": 1555804800,
+      "last": 1791504000,
+      "observations": 2729,
+      "sourceFields": [
+        "SplyCur"
+      ],
+      "providerFirst": 1555804800,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "FTT",
+      "metric": "transactions",
+      "first": 1555804800,
+      "last": 1791504000,
+      "observations": 2729,
+      "sourceFields": [
+        "TxCnt"
+      ],
+      "providerFirst": 1555804800,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "FTT",
+      "metric": "transfers",
+      "first": 1555804800,
+      "last": 1791504000,
+      "observations": 2729,
+      "sourceFields": [
+        "TxTfrCnt"
+      ],
+      "providerFirst": 1555804800,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "GNO",
+      "metric": "active_addresses",
+      "first": 1492473600,
+      "last": 1791504000,
+      "observations": 3462,
+      "sourceFields": [
+        "AdrActCnt"
+      ],
+      "providerFirst": 1492473600,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "GNO",
+      "metric": "balance_addresses",
+      "first": 1492473600,
+      "last": 1791504000,
+      "observations": 3462,
+      "sourceFields": [
+        "AdrBalCnt"
+      ],
+      "providerFirst": 1492473600,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "GNO",
+      "metric": "issuance",
+      "first": 1492473600,
+      "last": 1791504000,
+      "observations": 3462,
+      "sourceFields": [
+        "IssTotNtv"
+      ],
+      "providerFirst": 1492473600,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "GNO",
+      "metric": "market_cap",
+      "first": 1493683200,
+      "last": 1791504000,
+      "observations": 3448,
+      "sourceFields": [
+        "CapMrktCurUSD"
+      ],
+      "providerFirst": 1493683200,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "GNO",
+      "metric": "mvrv",
+      "first": 1493683200,
+      "last": 1791504000,
+      "observations": 3448,
+      "sourceFields": [
+        "CapMVRVCur"
+      ],
+      "providerFirst": 1493683200,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "GNO",
+      "metric": "nupl",
+      "first": 1493683200,
+      "last": 1791504000,
+      "observations": 3448,
+      "sourceFields": [
+        "CapMVRVCur"
+      ],
+      "providerFirst": 1493683200,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "GNO",
+      "metric": "price",
+      "first": 1493683200,
+      "last": 1791504000,
+      "observations": 3448,
+      "sourceFields": [
+        "PriceUSD"
+      ],
+      "providerFirst": 1493683200,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "GNO",
+      "metric": "realized_cap",
+      "first": 1493683200,
+      "last": 1791504000,
+      "observations": 3448,
+      "sourceFields": [
+        "CapMrktCurUSD",
+        "CapMVRVCur"
+      ],
+      "providerFirst": 1493683200,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "GNO",
+      "metric": "realized_price",
+      "first": 1493683200,
+      "last": 1791504000,
+      "observations": 3448,
+      "sourceFields": [
+        "PriceUSD",
+        "CapMVRVCur"
+      ],
+      "providerFirst": 1493683200,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "GNO",
+      "metric": "supply",
+      "first": 1492473600,
+      "last": 1791504000,
+      "observations": 3462,
+      "sourceFields": [
+        "SplyCur"
+      ],
+      "providerFirst": 1492473600,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "GNO",
+      "metric": "transactions",
+      "first": 1492473600,
+      "last": 1791504000,
+      "observations": 3462,
+      "sourceFields": [
+        "TxCnt"
+      ],
+      "providerFirst": 1492473600,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "GNO",
+      "metric": "transfers",
+      "first": 1492473600,
+      "last": 1791504000,
+      "observations": 3462,
+      "sourceFields": [
+        "TxTfrCnt"
+      ],
+      "providerFirst": 1492473600,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "ICP",
+      "metric": "active_addresses",
+      "first": 1620259200,
+      "last": 1791504000,
+      "observations": 1983,
+      "sourceFields": [
+        "AdrActCnt"
+      ],
+      "providerFirst": 1620259200,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "ICP",
+      "metric": "balance_addresses",
+      "first": 1620259200,
+      "last": 1791504000,
+      "observations": 1983,
+      "sourceFields": [
+        "AdrBalCnt"
+      ],
+      "providerFirst": 1620259200,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "ICP",
+      "metric": "blocks",
+      "first": 1620259200,
+      "last": 1791504000,
+      "observations": 1983,
+      "sourceFields": [
+        "BlkCnt"
+      ],
+      "providerFirst": 1620259200,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "ICP",
+      "metric": "fees_native",
+      "first": 1620259200,
+      "last": 1791504000,
+      "observations": 1983,
+      "sourceFields": [
+        "FeeTotNtv"
+      ],
+      "providerFirst": 1620259200,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "ICP",
+      "metric": "issuance",
+      "first": 1620259200,
+      "last": 1791504000,
+      "observations": 1983,
+      "sourceFields": [
+        "IssTotNtv"
+      ],
+      "providerFirst": 1620259200,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "ICP",
+      "metric": "market_cap",
+      "first": 1620691200,
+      "last": 1791504000,
+      "observations": 1978,
+      "sourceFields": [
+        "CapMrktCurUSD"
+      ],
+      "providerFirst": 1620691200,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "ICP",
+      "metric": "mvrv",
+      "first": 1620691200,
+      "last": 1791504000,
+      "observations": 1978,
+      "sourceFields": [
+        "CapMVRVCur"
+      ],
+      "providerFirst": 1620691200,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "ICP",
+      "metric": "nupl",
+      "first": 1620691200,
+      "last": 1791504000,
+      "observations": 1978,
+      "sourceFields": [
+        "CapMVRVCur"
+      ],
+      "providerFirst": 1620691200,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "ICP",
+      "metric": "price",
+      "first": 1620691200,
+      "last": 1791504000,
+      "observations": 1978,
+      "sourceFields": [
+        "PriceUSD"
+      ],
+      "providerFirst": 1620691200,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "ICP",
+      "metric": "realized_cap",
+      "first": 1620691200,
+      "last": 1791504000,
+      "observations": 1978,
+      "sourceFields": [
+        "CapMrktCurUSD",
+        "CapMVRVCur"
+      ],
+      "providerFirst": 1620691200,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "ICP",
+      "metric": "realized_price",
+      "first": 1620691200,
+      "last": 1791504000,
+      "observations": 1978,
+      "sourceFields": [
+        "PriceUSD",
+        "CapMVRVCur"
+      ],
+      "providerFirst": 1620691200,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "ICP",
+      "metric": "supply",
+      "first": 1620259200,
+      "last": 1791504000,
+      "observations": 1983,
+      "sourceFields": [
+        "SplyCur"
+      ],
+      "providerFirst": 1620259200,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "ICP",
+      "metric": "transactions",
+      "first": 1620259200,
+      "last": 1791504000,
+      "observations": 1983,
+      "sourceFields": [
+        "TxCnt"
+      ],
+      "providerFirst": 1620259200,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "ICP",
+      "metric": "transfers",
+      "first": 1620259200,
+      "last": 1791504000,
+      "observations": 1983,
+      "sourceFields": [
+        "TxTfrCnt"
+      ],
+      "providerFirst": 1620259200,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "LDO",
+      "metric": "active_addresses",
+      "first": 1608163200,
+      "last": 1791504000,
+      "observations": 2123,
+      "sourceFields": [
+        "AdrActCnt"
+      ],
+      "providerFirst": 1608163200,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "LDO",
+      "metric": "balance_addresses",
+      "first": 1608163200,
+      "last": 1791504000,
+      "observations": 2123,
+      "sourceFields": [
+        "AdrBalCnt"
+      ],
+      "providerFirst": 1608163200,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "LDO",
+      "metric": "issuance",
+      "first": 1608163200,
+      "last": 1791504000,
+      "observations": 2123,
+      "sourceFields": [
+        "IssTotNtv"
+      ],
+      "providerFirst": 1608163200,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "LDO",
+      "metric": "market_cap",
+      "first": 1631318400,
+      "last": 1791504000,
+      "observations": 1855,
+      "sourceFields": [
+        "CapMrktCurUSD"
+      ],
+      "providerFirst": 1631318400,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "LDO",
+      "metric": "mvrv",
+      "first": 1631318400,
+      "last": 1791504000,
+      "observations": 1855,
+      "sourceFields": [
+        "CapMVRVCur"
+      ],
+      "providerFirst": 1631318400,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "LDO",
+      "metric": "nupl",
+      "first": 1631318400,
+      "last": 1791504000,
+      "observations": 1855,
+      "sourceFields": [
+        "CapMVRVCur"
+      ],
+      "providerFirst": 1631318400,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "LDO",
+      "metric": "price",
+      "first": 1631318400,
+      "last": 1791504000,
+      "observations": 1855,
+      "sourceFields": [
+        "PriceUSD"
+      ],
+      "providerFirst": 1631318400,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "LDO",
+      "metric": "realized_cap",
+      "first": 1631318400,
+      "last": 1791504000,
+      "observations": 1855,
+      "sourceFields": [
+        "CapMrktCurUSD",
+        "CapMVRVCur"
+      ],
+      "providerFirst": 1631318400,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "LDO",
+      "metric": "realized_price",
+      "first": 1631318400,
+      "last": 1791504000,
+      "observations": 1855,
+      "sourceFields": [
+        "PriceUSD",
+        "CapMVRVCur"
+      ],
+      "providerFirst": 1631318400,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "LDO",
+      "metric": "supply",
+      "first": 1608163200,
+      "last": 1791504000,
+      "observations": 2123,
+      "sourceFields": [
+        "SplyCur"
+      ],
+      "providerFirst": 1608163200,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "LDO",
+      "metric": "transactions",
+      "first": 1608163200,
+      "last": 1791504000,
+      "observations": 2123,
+      "sourceFields": [
+        "TxCnt"
+      ],
+      "providerFirst": 1608163200,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "LDO",
+      "metric": "transfers",
+      "first": 1608163200,
+      "last": 1791504000,
+      "observations": 2123,
+      "sourceFields": [
+        "TxTfrCnt"
+      ],
+      "providerFirst": 1608163200,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "LINK",
+      "metric": "active_addresses",
+      "first": 1505520000,
+      "last": 1791504000,
+      "observations": 3311,
+      "sourceFields": [
+        "AdrActCnt"
+      ],
+      "providerFirst": 1505520000,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "LINK",
+      "metric": "balance_addresses",
+      "first": 1505520000,
+      "last": 1791504000,
+      "observations": 3311,
+      "sourceFields": [
+        "AdrBalCnt"
+      ],
+      "providerFirst": 1505520000,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "LINK",
+      "metric": "issuance",
+      "first": 1505520000,
+      "last": 1791504000,
+      "observations": 3311,
+      "sourceFields": [
+        "IssTotNtv"
+      ],
+      "providerFirst": 1505520000,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "LINK",
+      "metric": "market_cap",
+      "first": 1506643200,
+      "last": 1791504000,
+      "observations": 3298,
+      "sourceFields": [
+        "CapMrktCurUSD"
+      ],
+      "providerFirst": 1506643200,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "LINK",
+      "metric": "mvrv",
+      "first": 1506643200,
+      "last": 1791504000,
+      "observations": 3298,
+      "sourceFields": [
+        "CapMVRVCur"
+      ],
+      "providerFirst": 1506643200,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "LINK",
+      "metric": "nupl",
+      "first": 1506643200,
+      "last": 1791504000,
+      "observations": 3298,
+      "sourceFields": [
+        "CapMVRVCur"
+      ],
+      "providerFirst": 1506643200,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "LINK",
+      "metric": "price",
+      "first": 1506643200,
+      "last": 1791504000,
+      "observations": 3298,
+      "sourceFields": [
+        "PriceUSD"
+      ],
+      "providerFirst": 1506643200,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "LINK",
+      "metric": "realized_cap",
+      "first": 1506643200,
+      "last": 1791504000,
+      "observations": 3298,
+      "sourceFields": [
+        "CapMrktCurUSD",
+        "CapMVRVCur"
+      ],
+      "providerFirst": 1506643200,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "LINK",
+      "metric": "realized_price",
+      "first": 1506643200,
+      "last": 1791504000,
+      "observations": 3298,
+      "sourceFields": [
+        "PriceUSD",
+        "CapMVRVCur"
+      ],
+      "providerFirst": 1506643200,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "LINK",
+      "metric": "supply",
+      "first": 1505520000,
+      "last": 1791504000,
+      "observations": 3311,
+      "sourceFields": [
+        "SplyCur"
+      ],
+      "providerFirst": 1505520000,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "LINK",
+      "metric": "transactions",
+      "first": 1505520000,
+      "last": 1791504000,
+      "observations": 3311,
+      "sourceFields": [
+        "TxCnt"
+      ],
+      "providerFirst": 1505520000,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "LINK",
+      "metric": "transfers",
+      "first": 1505520000,
+      "last": 1791504000,
+      "observations": 3311,
+      "sourceFields": [
+        "TxTfrCnt"
+      ],
+      "providerFirst": 1505520000,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "LPT",
+      "metric": "active_addresses",
+      "first": 1525046400,
+      "last": 1791504000,
+      "observations": 3079,
+      "sourceFields": [
+        "AdrActCnt"
+      ],
+      "providerFirst": 1525046400,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "LPT",
+      "metric": "balance_addresses",
+      "first": 1525046400,
+      "last": 1791504000,
+      "observations": 3079,
+      "sourceFields": [
+        "AdrBalCnt"
+      ],
+      "providerFirst": 1525046400,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "LPT",
+      "metric": "issuance",
+      "first": 1525046400,
+      "last": 1791504000,
+      "observations": 3079,
+      "sourceFields": [
+        "IssTotNtv"
+      ],
+      "providerFirst": 1525046400,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "LPT",
+      "metric": "market_cap",
+      "first": 1545264000,
+      "last": 1791504000,
+      "observations": 2845,
+      "sourceFields": [
+        "CapMrktCurUSD"
+      ],
+      "providerFirst": 1545264000,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "LPT",
+      "metric": "mvrv",
+      "first": 1545264000,
+      "last": 1791504000,
+      "observations": 2845,
+      "sourceFields": [
+        "CapMVRVCur"
+      ],
+      "providerFirst": 1545264000,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "LPT",
+      "metric": "nupl",
+      "first": 1545264000,
+      "last": 1791504000,
+      "observations": 2845,
+      "sourceFields": [
+        "CapMVRVCur"
+      ],
+      "providerFirst": 1545264000,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "LPT",
+      "metric": "price",
+      "first": 1545264000,
+      "last": 1791504000,
+      "observations": 2851,
+      "sourceFields": [
+        "PriceUSD"
+      ],
+      "providerFirst": 1545264000,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "LPT",
+      "metric": "realized_cap",
+      "first": 1545264000,
+      "last": 1791504000,
+      "observations": 2845,
+      "sourceFields": [
+        "CapMrktCurUSD",
+        "CapMVRVCur"
+      ],
+      "providerFirst": 1545264000,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "LPT",
+      "metric": "realized_price",
+      "first": 1545264000,
+      "last": 1791504000,
+      "observations": 2845,
+      "sourceFields": [
+        "PriceUSD",
+        "CapMVRVCur"
+      ],
+      "providerFirst": 1545264000,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "LPT",
+      "metric": "supply",
+      "first": 1525046400,
+      "last": 1791504000,
+      "observations": 3079,
+      "sourceFields": [
+        "SplyCur"
+      ],
+      "providerFirst": 1525046400,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "LPT",
+      "metric": "transactions",
+      "first": 1525046400,
+      "last": 1791504000,
+      "observations": 3079,
+      "sourceFields": [
+        "TxCnt"
+      ],
+      "providerFirst": 1525046400,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "LPT",
+      "metric": "transfers",
+      "first": 1525046400,
+      "last": 1791504000,
+      "observations": 3079,
+      "sourceFields": [
+        "TxTfrCnt"
+      ],
+      "providerFirst": 1525046400,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "LTC",
+      "metric": "active_addresses",
+      "first": 1317945600,
+      "last": 1791504000,
+      "observations": 5482,
+      "sourceFields": [
+        "AdrActCnt"
+      ],
+      "providerFirst": 1317945600,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "LTC",
+      "metric": "balance_addresses",
+      "first": 1317945600,
+      "last": 1791504000,
+      "observations": 5482,
+      "sourceFields": [
+        "AdrBalCnt"
+      ],
+      "providerFirst": 1317945600,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "LTC",
+      "metric": "blocks",
+      "first": 1317945600,
+      "last": 1791504000,
+      "observations": 5482,
+      "sourceFields": [
+        "BlkCnt"
+      ],
+      "providerFirst": 1317945600,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "LTC",
+      "metric": "fees_native",
+      "first": 1317945600,
+      "last": 1791504000,
+      "observations": 5482,
+      "sourceFields": [
+        "FeeTotNtv"
+      ],
+      "providerFirst": 1317945600,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "LTC",
+      "metric": "hashrate",
+      "first": 1318032000,
+      "last": 1791504000,
+      "observations": 5478,
+      "sourceFields": [
+        "HashRate"
+      ],
+      "providerFirst": 1318032000,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "LTC",
+      "metric": "issuance",
+      "first": 1318032000,
+      "last": 1791504000,
+      "observations": 5478,
+      "sourceFields": [
+        "IssTotNtv"
+      ],
+      "providerFirst": 1318032000,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "LTC",
+      "metric": "market_cap",
+      "first": 1364774400,
+      "last": 1791504000,
+      "observations": 4940,
+      "sourceFields": [
+        "CapMrktCurUSD"
+      ],
+      "providerFirst": 1364774400,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "LTC",
+      "metric": "mvrv",
+      "first": 1364774400,
+      "last": 1791504000,
+      "observations": 4940,
+      "sourceFields": [
+        "CapMVRVCur"
+      ],
+      "providerFirst": 1364774400,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "LTC",
+      "metric": "nupl",
+      "first": 1364774400,
+      "last": 1791504000,
+      "observations": 4940,
+      "sourceFields": [
+        "CapMVRVCur"
+      ],
+      "providerFirst": 1364774400,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "LTC",
+      "metric": "price",
+      "first": 1364774400,
+      "last": 1791504000,
+      "observations": 4940,
+      "sourceFields": [
+        "PriceUSD"
+      ],
+      "providerFirst": 1364774400,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "LTC",
+      "metric": "realized_cap",
+      "first": 1364774400,
+      "last": 1791504000,
+      "observations": 4940,
+      "sourceFields": [
+        "CapMrktCurUSD",
+        "CapMVRVCur"
+      ],
+      "providerFirst": 1364774400,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "LTC",
+      "metric": "realized_price",
+      "first": 1364774400,
+      "last": 1791504000,
+      "observations": 4940,
+      "sourceFields": [
+        "PriceUSD",
+        "CapMVRVCur"
+      ],
+      "providerFirst": 1364774400,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "LTC",
+      "metric": "supply",
+      "first": 1317945600,
+      "last": 1791504000,
+      "observations": 5482,
+      "sourceFields": [
+        "SplyCur"
+      ],
+      "providerFirst": 1317945600,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "LTC",
+      "metric": "transactions",
+      "first": 1317945600,
+      "last": 1791504000,
+      "observations": 5482,
+      "sourceFields": [
+        "TxCnt"
+      ],
+      "providerFirst": 1317945600,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "LTC",
+      "metric": "transfers",
+      "first": 1317945600,
+      "last": 1791504000,
+      "observations": 5482,
+      "sourceFields": [
+        "TxTfrCnt"
+      ],
+      "providerFirst": 1317945600,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "MANA",
+      "metric": "active_addresses",
+      "first": 1502755200,
+      "last": 1791504000,
+      "observations": 3343,
+      "sourceFields": [
+        "AdrActCnt"
+      ],
+      "providerFirst": 1502755200,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "MANA",
+      "metric": "balance_addresses",
+      "first": 1502755200,
+      "last": 1791504000,
+      "observations": 3343,
+      "sourceFields": [
+        "AdrBalCnt"
+      ],
+      "providerFirst": 1502755200,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "MANA",
+      "metric": "issuance",
+      "first": 1502755200,
+      "last": 1791504000,
+      "observations": 3343,
+      "sourceFields": [
+        "IssTotNtv"
+      ],
+      "providerFirst": 1502755200,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "MANA",
+      "metric": "market_cap",
+      "first": 1503619200,
+      "last": 1791504000,
+      "observations": 3333,
+      "sourceFields": [
+        "CapMrktCurUSD"
+      ],
+      "providerFirst": 1503619200,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "MANA",
+      "metric": "mvrv",
+      "first": 1504656000,
+      "last": 1791504000,
+      "observations": 3321,
+      "sourceFields": [
+        "CapMVRVCur"
+      ],
+      "providerFirst": 1504656000,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "MANA",
+      "metric": "nupl",
+      "first": 1504656000,
+      "last": 1791504000,
+      "observations": 3321,
+      "sourceFields": [
+        "CapMVRVCur"
+      ],
+      "providerFirst": 1504656000,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "MANA",
+      "metric": "price",
+      "first": 1503619200,
+      "last": 1791504000,
+      "observations": 3333,
+      "sourceFields": [
+        "PriceUSD"
+      ],
+      "providerFirst": 1503619200,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "MANA",
+      "metric": "realized_cap",
+      "first": 1504656000,
+      "last": 1791504000,
+      "observations": 3321,
+      "sourceFields": [
+        "CapMrktCurUSD",
+        "CapMVRVCur"
+      ],
+      "providerFirst": 1504656000,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "MANA",
+      "metric": "realized_price",
+      "first": 1504656000,
+      "last": 1791504000,
+      "observations": 3321,
+      "sourceFields": [
+        "PriceUSD",
+        "CapMVRVCur"
+      ],
+      "providerFirst": 1504656000,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "MANA",
+      "metric": "supply",
+      "first": 1502755200,
+      "last": 1791504000,
+      "observations": 3343,
+      "sourceFields": [
+        "SplyCur"
+      ],
+      "providerFirst": 1502755200,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "MANA",
+      "metric": "transactions",
+      "first": 1502755200,
+      "last": 1791504000,
+      "observations": 3343,
+      "sourceFields": [
+        "TxCnt"
+      ],
+      "providerFirst": 1502755200,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "MANA",
+      "metric": "transfers",
+      "first": 1502755200,
+      "last": 1791504000,
+      "observations": 3343,
+      "sourceFields": [
+        "TxTfrCnt"
+      ],
+      "providerFirst": 1502755200,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "PAXG",
+      "metric": "active_addresses",
+      "first": 1566777600,
+      "last": 1791504000,
+      "observations": 2602,
+      "sourceFields": [
+        "AdrActCnt"
+      ],
+      "providerFirst": 1566777600,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "PAXG",
+      "metric": "balance_addresses",
+      "first": 1566777600,
+      "last": 1791504000,
+      "observations": 2602,
+      "sourceFields": [
+        "AdrBalCnt"
+      ],
+      "providerFirst": 1566777600,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "PAXG",
+      "metric": "issuance",
+      "first": 1566777600,
+      "last": 1791504000,
+      "observations": 2602,
+      "sourceFields": [
+        "IssTotNtv"
+      ],
+      "providerFirst": 1566777600,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "PAXG",
+      "metric": "market_cap",
+      "first": 1581724800,
+      "last": 1791504000,
+      "observations": 2429,
+      "sourceFields": [
+        "CapMrktCurUSD"
+      ],
+      "providerFirst": 1581724800,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "PAXG",
+      "metric": "mvrv",
+      "first": 1581724800,
+      "last": 1791504000,
+      "observations": 2429,
+      "sourceFields": [
+        "CapMVRVCur"
+      ],
+      "providerFirst": 1581724800,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "PAXG",
+      "metric": "nupl",
+      "first": 1581724800,
+      "last": 1791504000,
+      "observations": 2429,
+      "sourceFields": [
+        "CapMVRVCur"
+      ],
+      "providerFirst": 1581724800,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "PAXG",
+      "metric": "price",
+      "first": 1581724800,
+      "last": 1791504000,
+      "observations": 2429,
+      "sourceFields": [
+        "PriceUSD"
+      ],
+      "providerFirst": 1581724800,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "PAXG",
+      "metric": "realized_cap",
+      "first": 1581724800,
+      "last": 1791504000,
+      "observations": 2429,
+      "sourceFields": [
+        "CapMrktCurUSD",
+        "CapMVRVCur"
+      ],
+      "providerFirst": 1581724800,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "PAXG",
+      "metric": "realized_price",
+      "first": 1581724800,
+      "last": 1791504000,
+      "observations": 2429,
+      "sourceFields": [
+        "PriceUSD",
+        "CapMVRVCur"
+      ],
+      "providerFirst": 1581724800,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "PAXG",
+      "metric": "supply",
+      "first": 1566777600,
+      "last": 1791504000,
+      "observations": 2602,
+      "sourceFields": [
+        "SplyCur"
+      ],
+      "providerFirst": 1566777600,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "PAXG",
+      "metric": "transactions",
+      "first": 1566777600,
+      "last": 1791504000,
+      "observations": 2602,
+      "sourceFields": [
+        "TxCnt"
+      ],
+      "providerFirst": 1566777600,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "PAXG",
+      "metric": "transfers",
+      "first": 1566777600,
+      "last": 1791504000,
+      "observations": 2602,
+      "sourceFields": [
+        "TxTfrCnt"
+      ],
+      "providerFirst": 1566777600,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "QNT",
+      "metric": "active_addresses",
+      "first": 1522972800,
+      "last": 1791504000,
+      "observations": 3109,
+      "sourceFields": [
+        "AdrActCnt"
+      ],
+      "providerFirst": 1522972800,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "QNT",
+      "metric": "balance_addresses",
+      "first": 1522972800,
+      "last": 1791504000,
+      "observations": 3109,
+      "sourceFields": [
+        "AdrBalCnt"
+      ],
+      "providerFirst": 1522972800,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "QNT",
+      "metric": "issuance",
+      "first": 1522972800,
+      "last": 1791504000,
+      "observations": 3109,
+      "sourceFields": [
+        "IssTotNtv"
+      ],
+      "providerFirst": 1522972800,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "QNT",
+      "metric": "market_cap",
+      "first": 1552694400,
+      "last": 1791504000,
+      "observations": 2765,
+      "sourceFields": [
+        "CapMrktCurUSD"
+      ],
+      "providerFirst": 1552694400,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "QNT",
+      "metric": "mvrv",
+      "first": 1552694400,
+      "last": 1791504000,
+      "observations": 2765,
+      "sourceFields": [
+        "CapMVRVCur"
+      ],
+      "providerFirst": 1552694400,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "QNT",
+      "metric": "nupl",
+      "first": 1552694400,
+      "last": 1791504000,
+      "observations": 2765,
+      "sourceFields": [
+        "CapMVRVCur"
+      ],
+      "providerFirst": 1552694400,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "QNT",
+      "metric": "price",
+      "first": 1552694400,
+      "last": 1791504000,
+      "observations": 2765,
+      "sourceFields": [
+        "PriceUSD"
+      ],
+      "providerFirst": 1552694400,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "QNT",
+      "metric": "realized_cap",
+      "first": 1552694400,
+      "last": 1791504000,
+      "observations": 2765,
+      "sourceFields": [
+        "CapMrktCurUSD",
+        "CapMVRVCur"
+      ],
+      "providerFirst": 1552694400,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "QNT",
+      "metric": "realized_price",
+      "first": 1552694400,
+      "last": 1791504000,
+      "observations": 2765,
+      "sourceFields": [
+        "PriceUSD",
+        "CapMVRVCur"
+      ],
+      "providerFirst": 1552694400,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "QNT",
+      "metric": "supply",
+      "first": 1522972800,
+      "last": 1791504000,
+      "observations": 3109,
+      "sourceFields": [
+        "SplyCur"
+      ],
+      "providerFirst": 1522972800,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "QNT",
+      "metric": "transactions",
+      "first": 1522972800,
+      "last": 1791504000,
+      "observations": 3109,
+      "sourceFields": [
+        "TxCnt"
+      ],
+      "providerFirst": 1522972800,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "QNT",
+      "metric": "transfers",
+      "first": 1522972800,
+      "last": 1791504000,
+      "observations": 3109,
+      "sourceFields": [
+        "TxTfrCnt"
+      ],
+      "providerFirst": 1522972800,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "SHIB",
+      "metric": "active_addresses",
+      "first": 1596153600,
+      "last": 1791504000,
+      "observations": 2262,
+      "sourceFields": [
+        "AdrActCnt"
+      ],
+      "providerFirst": 1596153600,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "SHIB",
+      "metric": "balance_addresses",
+      "first": 1596153600,
+      "last": 1791504000,
+      "observations": 2262,
+      "sourceFields": [
+        "AdrBalCnt"
+      ],
+      "providerFirst": 1596153600,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "SHIB",
+      "metric": "issuance",
+      "first": 1596153600,
+      "last": 1791504000,
+      "observations": 2262,
+      "sourceFields": [
+        "IssTotNtv"
+      ],
+      "providerFirst": 1596153600,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "SHIB",
+      "metric": "market_cap",
+      "first": 1620691200,
+      "last": 1791504000,
+      "observations": 1978,
+      "sourceFields": [
+        "CapMrktCurUSD"
+      ],
+      "providerFirst": 1620691200,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "SHIB",
+      "metric": "mvrv",
+      "first": 1620691200,
+      "last": 1791504000,
+      "observations": 1978,
+      "sourceFields": [
+        "CapMVRVCur"
+      ],
+      "providerFirst": 1620691200,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "SHIB",
+      "metric": "nupl",
+      "first": 1620691200,
+      "last": 1791504000,
+      "observations": 1978,
+      "sourceFields": [
+        "CapMVRVCur"
+      ],
+      "providerFirst": 1620691200,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "SHIB",
+      "metric": "price",
+      "first": 1620691200,
+      "last": 1791504000,
+      "observations": 1978,
+      "sourceFields": [
+        "PriceUSD"
+      ],
+      "providerFirst": 1620691200,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "SHIB",
+      "metric": "realized_cap",
+      "first": 1620691200,
+      "last": 1791504000,
+      "observations": 1978,
+      "sourceFields": [
+        "CapMrktCurUSD",
+        "CapMVRVCur"
+      ],
+      "providerFirst": 1620691200,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "SHIB",
+      "metric": "realized_price",
+      "first": 1620691200,
+      "last": 1791504000,
+      "observations": 1978,
+      "sourceFields": [
+        "PriceUSD",
+        "CapMVRVCur"
+      ],
+      "providerFirst": 1620691200,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "SHIB",
+      "metric": "supply",
+      "first": 1596153600,
+      "last": 1791504000,
+      "observations": 2262,
+      "sourceFields": [
+        "SplyCur"
+      ],
+      "providerFirst": 1596153600,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "SHIB",
+      "metric": "transactions",
+      "first": 1596153600,
+      "last": 1791504000,
+      "observations": 2262,
+      "sourceFields": [
+        "TxCnt"
+      ],
+      "providerFirst": 1596153600,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "SHIB",
+      "metric": "transfers",
+      "first": 1596153600,
+      "last": 1791504000,
+      "observations": 2262,
+      "sourceFields": [
+        "TxTfrCnt"
+      ],
+      "providerFirst": 1596153600,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "SNX",
+      "metric": "active_addresses",
+      "first": 1520726400,
+      "last": 1791504000,
+      "observations": 3135,
+      "sourceFields": [
+        "AdrActCnt"
+      ],
+      "providerFirst": 1520726400,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "SNX",
+      "metric": "balance_addresses",
+      "first": 1520726400,
+      "last": 1791504000,
+      "observations": 3135,
+      "sourceFields": [
+        "AdrBalCnt"
+      ],
+      "providerFirst": 1520726400,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "SNX",
+      "metric": "issuance",
+      "first": 1520726400,
+      "last": 1791504000,
+      "observations": 3135,
+      "sourceFields": [
+        "IssTotNtv"
+      ],
+      "providerFirst": 1520726400,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "SNX",
+      "metric": "market_cap",
+      "first": 1586390400,
+      "last": 1791504000,
+      "observations": 2375,
+      "sourceFields": [
+        "CapMrktCurUSD"
+      ],
+      "providerFirst": 1586390400,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "SNX",
+      "metric": "mvrv",
+      "first": 1586390400,
+      "last": 1791504000,
+      "observations": 2375,
+      "sourceFields": [
+        "CapMVRVCur"
+      ],
+      "providerFirst": 1586390400,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "SNX",
+      "metric": "nupl",
+      "first": 1586390400,
+      "last": 1791504000,
+      "observations": 2375,
+      "sourceFields": [
+        "CapMVRVCur"
+      ],
+      "providerFirst": 1586390400,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "SNX",
+      "metric": "price",
+      "first": 1586390400,
+      "last": 1791504000,
+      "observations": 2375,
+      "sourceFields": [
+        "PriceUSD"
+      ],
+      "providerFirst": 1586390400,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "SNX",
+      "metric": "realized_cap",
+      "first": 1586390400,
+      "last": 1791504000,
+      "observations": 2375,
+      "sourceFields": [
+        "CapMrktCurUSD",
+        "CapMVRVCur"
+      ],
+      "providerFirst": 1586390400,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "SNX",
+      "metric": "realized_price",
+      "first": 1586390400,
+      "last": 1791504000,
+      "observations": 2375,
+      "sourceFields": [
+        "PriceUSD",
+        "CapMVRVCur"
+      ],
+      "providerFirst": 1586390400,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "SNX",
+      "metric": "supply",
+      "first": 1520726400,
+      "last": 1791504000,
+      "observations": 3135,
+      "sourceFields": [
+        "SplyCur"
+      ],
+      "providerFirst": 1520726400,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "SNX",
+      "metric": "transactions",
+      "first": 1520726400,
+      "last": 1791504000,
+      "observations": 3135,
+      "sourceFields": [
+        "TxCnt"
+      ],
+      "providerFirst": 1520726400,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "SNX",
+      "metric": "transfers",
+      "first": 1520726400,
+      "last": 1791504000,
+      "observations": 3135,
+      "sourceFields": [
+        "TxTfrCnt"
+      ],
+      "providerFirst": 1520726400,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "TRX",
+      "metric": "active_addresses",
+      "first": 1529884800,
+      "last": 1791504000,
+      "observations": 3029,
+      "sourceFields": [
+        "AdrActCnt"
+      ],
+      "providerFirst": 1529884800,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "TRX",
+      "metric": "blocks",
+      "first": 1529884800,
+      "last": 1791504000,
+      "observations": 3029,
+      "sourceFields": [
+        "BlkCnt"
+      ],
+      "providerFirst": 1529884800,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "TRX",
+      "metric": "price",
+      "first": 1529884800,
+      "last": 1791504000,
+      "observations": 3029,
+      "sourceFields": [
+        "PriceUSD"
+      ],
+      "providerFirst": 1529884800,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "TRX",
+      "metric": "transactions",
+      "first": 1529884800,
+      "last": 1791504000,
+      "observations": 3029,
+      "sourceFields": [
+        "TxCnt"
+      ],
+      "providerFirst": 1529884800,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "TRX",
+      "metric": "transfers",
+      "first": 1529884800,
+      "last": 1791504000,
+      "observations": 3029,
+      "sourceFields": [
+        "TxTfrCnt"
+      ],
+      "providerFirst": 1529884800,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "UNI",
+      "metric": "active_addresses",
+      "first": 1600041600,
+      "last": 1791504000,
+      "observations": 2217,
+      "sourceFields": [
+        "AdrActCnt"
+      ],
+      "providerFirst": 1600041600,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "UNI",
+      "metric": "balance_addresses",
+      "first": 1600041600,
+      "last": 1791504000,
+      "observations": 2217,
+      "sourceFields": [
+        "AdrBalCnt"
+      ],
+      "providerFirst": 1600041600,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "UNI",
+      "metric": "issuance",
+      "first": 1600041600,
+      "last": 1791504000,
+      "observations": 2217,
+      "sourceFields": [
+        "IssTotNtv"
+      ],
+      "providerFirst": 1600041600,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "UNI",
+      "metric": "market_cap",
+      "first": 1600387200,
+      "last": 1791504000,
+      "observations": 2213,
+      "sourceFields": [
+        "CapMrktCurUSD"
+      ],
+      "providerFirst": 1600387200,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "UNI",
+      "metric": "mvrv",
+      "first": 1600387200,
+      "last": 1791504000,
+      "observations": 2213,
+      "sourceFields": [
+        "CapMVRVCur"
+      ],
+      "providerFirst": 1600387200,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "UNI",
+      "metric": "nupl",
+      "first": 1600387200,
+      "last": 1791504000,
+      "observations": 2213,
+      "sourceFields": [
+        "CapMVRVCur"
+      ],
+      "providerFirst": 1600387200,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "UNI",
+      "metric": "price",
+      "first": 1600387200,
+      "last": 1791504000,
+      "observations": 2213,
+      "sourceFields": [
+        "PriceUSD"
+      ],
+      "providerFirst": 1600387200,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "UNI",
+      "metric": "realized_cap",
+      "first": 1600387200,
+      "last": 1791504000,
+      "observations": 2213,
+      "sourceFields": [
+        "CapMrktCurUSD",
+        "CapMVRVCur"
+      ],
+      "providerFirst": 1600387200,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "UNI",
+      "metric": "realized_price",
+      "first": 1600387200,
+      "last": 1791504000,
+      "observations": 2213,
+      "sourceFields": [
+        "PriceUSD",
+        "CapMVRVCur"
+      ],
+      "providerFirst": 1600387200,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "UNI",
+      "metric": "supply",
+      "first": 1600041600,
+      "last": 1791504000,
+      "observations": 2217,
+      "sourceFields": [
+        "SplyCur"
+      ],
+      "providerFirst": 1600041600,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "UNI",
+      "metric": "transactions",
+      "first": 1600041600,
+      "last": 1791504000,
+      "observations": 2217,
+      "sourceFields": [
+        "TxCnt"
+      ],
+      "providerFirst": 1600041600,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "UNI",
+      "metric": "transfers",
+      "first": 1600041600,
+      "last": 1791504000,
+      "observations": 2217,
+      "sourceFields": [
+        "TxTfrCnt"
+      ],
+      "providerFirst": 1600041600,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "XAUT",
+      "metric": "active_addresses",
+      "first": 1578441600,
+      "last": 1791504000,
+      "observations": 2467,
+      "sourceFields": [
+        "AdrActCnt"
+      ],
+      "providerFirst": 1578441600,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "XAUT",
+      "metric": "balance_addresses",
+      "first": 1578441600,
+      "last": 1791504000,
+      "observations": 2467,
+      "sourceFields": [
+        "AdrBalCnt"
+      ],
+      "providerFirst": 1578441600,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "XAUT",
+      "metric": "issuance",
+      "first": 1578441600,
+      "last": 1791504000,
+      "observations": 2467,
+      "sourceFields": [
+        "IssTotNtv"
+      ],
+      "providerFirst": 1578441600,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "XAUT",
+      "metric": "market_cap",
+      "first": 1579910400,
+      "last": 1791504000,
+      "observations": 2450,
+      "sourceFields": [
+        "CapMrktCurUSD"
+      ],
+      "providerFirst": 1579910400,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "XAUT",
+      "metric": "mvrv",
+      "first": 1579910400,
+      "last": 1791504000,
+      "observations": 2450,
+      "sourceFields": [
+        "CapMVRVCur"
+      ],
+      "providerFirst": 1579910400,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "XAUT",
+      "metric": "nupl",
+      "first": 1579910400,
+      "last": 1791504000,
+      "observations": 2450,
+      "sourceFields": [
+        "CapMVRVCur"
+      ],
+      "providerFirst": 1579910400,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "XAUT",
+      "metric": "price",
+      "first": 1579910400,
+      "last": 1791504000,
+      "observations": 2450,
+      "sourceFields": [
+        "PriceUSD"
+      ],
+      "providerFirst": 1579910400,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "XAUT",
+      "metric": "realized_cap",
+      "first": 1579910400,
+      "last": 1791504000,
+      "observations": 2450,
+      "sourceFields": [
+        "CapMrktCurUSD",
+        "CapMVRVCur"
+      ],
+      "providerFirst": 1579910400,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "XAUT",
+      "metric": "realized_price",
+      "first": 1579910400,
+      "last": 1791504000,
+      "observations": 2450,
+      "sourceFields": [
+        "PriceUSD",
+        "CapMVRVCur"
+      ],
+      "providerFirst": 1579910400,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "XAUT",
+      "metric": "supply",
+      "first": 1578441600,
+      "last": 1791504000,
+      "observations": 2467,
+      "sourceFields": [
+        "SplyCur"
+      ],
+      "providerFirst": 1578441600,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "XAUT",
+      "metric": "transactions",
+      "first": 1578441600,
+      "last": 1791504000,
+      "observations": 2467,
+      "sourceFields": [
+        "TxCnt"
+      ],
+      "providerFirst": 1578441600,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "XAUT",
+      "metric": "transfers",
+      "first": 1578441600,
+      "last": 1791504000,
+      "observations": 2467,
+      "sourceFields": [
+        "TxTfrCnt"
+      ],
+      "providerFirst": 1578441600,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "XLM",
+      "metric": "active_addresses",
+      "first": 1443571200,
+      "last": 1791504000,
+      "observations": 4028,
+      "sourceFields": [
+        "AdrActCnt"
+      ],
+      "providerFirst": 1443571200,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "XLM",
+      "metric": "balance_addresses",
+      "first": 1443571200,
+      "last": 1791504000,
+      "observations": 4028,
+      "sourceFields": [
+        "AdrBalCnt"
+      ],
+      "providerFirst": 1443571200,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "XLM",
+      "metric": "blocks",
+      "first": 1443571200,
+      "last": 1791504000,
+      "observations": 4028,
+      "sourceFields": [
+        "BlkCnt"
+      ],
+      "providerFirst": 1443571200,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "XLM",
+      "metric": "fees_native",
+      "first": 1443571200,
+      "last": 1791504000,
+      "observations": 4028,
+      "sourceFields": [
+        "FeeTotNtv"
+      ],
+      "providerFirst": 1443571200,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "XLM",
+      "metric": "issuance",
+      "first": 1443571200,
+      "last": 1791504000,
+      "observations": 4028,
+      "sourceFields": [
+        "IssTotNtv"
+      ],
+      "providerFirst": 1443571200,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "XLM",
+      "metric": "market_cap",
+      "first": 1443571200,
+      "last": 1791504000,
+      "observations": 4028,
+      "sourceFields": [
+        "CapMrktCurUSD"
+      ],
+      "providerFirst": 1443571200,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "XLM",
+      "metric": "mvrv",
+      "first": 1443571200,
+      "last": 1791504000,
+      "observations": 4028,
+      "sourceFields": [
+        "CapMVRVCur"
+      ],
+      "providerFirst": 1443571200,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "XLM",
+      "metric": "nupl",
+      "first": 1443571200,
+      "last": 1791504000,
+      "observations": 4028,
+      "sourceFields": [
+        "CapMVRVCur"
+      ],
+      "providerFirst": 1443571200,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "XLM",
+      "metric": "price",
+      "first": 1443571200,
+      "last": 1791504000,
+      "observations": 4028,
+      "sourceFields": [
+        "PriceUSD"
+      ],
+      "providerFirst": 1443571200,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "XLM",
+      "metric": "realized_cap",
+      "first": 1443571200,
+      "last": 1791504000,
+      "observations": 4028,
+      "sourceFields": [
+        "CapMrktCurUSD",
+        "CapMVRVCur"
+      ],
+      "providerFirst": 1443571200,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "XLM",
+      "metric": "realized_price",
+      "first": 1443571200,
+      "last": 1791504000,
+      "observations": 4028,
+      "sourceFields": [
+        "PriceUSD",
+        "CapMVRVCur"
+      ],
+      "providerFirst": 1443571200,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "XLM",
+      "metric": "supply",
+      "first": 1443571200,
+      "last": 1791504000,
+      "observations": 4028,
+      "sourceFields": [
+        "SplyCur"
+      ],
+      "providerFirst": 1443571200,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "XLM",
+      "metric": "transactions",
+      "first": 1443571200,
+      "last": 1791504000,
+      "observations": 4028,
+      "sourceFields": [
+        "TxCnt"
+      ],
+      "providerFirst": 1443571200,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "XLM",
+      "metric": "transfers",
+      "first": 1443571200,
+      "last": 1791504000,
+      "observations": 4028,
+      "sourceFields": [
+        "TxTfrCnt"
+      ],
+      "providerFirst": 1443571200,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "XRP",
+      "metric": "active_addresses",
+      "first": 1356998400,
+      "last": 1791504000,
+      "observations": 5030,
+      "sourceFields": [
+        "AdrActCnt"
+      ],
+      "providerFirst": 1356998400,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "XRP",
+      "metric": "balance_addresses",
+      "first": 1356998400,
+      "last": 1791504000,
+      "observations": 5030,
+      "sourceFields": [
+        "AdrBalCnt"
+      ],
+      "providerFirst": 1356998400,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "XRP",
+      "metric": "blocks",
+      "first": 1356998400,
+      "last": 1791504000,
+      "observations": 5030,
+      "sourceFields": [
+        "BlkCnt"
+      ],
+      "providerFirst": 1356998400,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "XRP",
+      "metric": "fees_native",
+      "first": 1356998400,
+      "last": 1791504000,
+      "observations": 5030,
+      "sourceFields": [
+        "FeeTotNtv"
+      ],
+      "providerFirst": 1356998400,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "XRP",
+      "metric": "market_cap",
+      "first": 1408060800,
+      "last": 1791504000,
+      "observations": 4439,
+      "sourceFields": [
+        "CapMrktCurUSD"
+      ],
+      "providerFirst": 1408060800,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "XRP",
+      "metric": "mvrv",
+      "first": 1408060800,
+      "last": 1791504000,
+      "observations": 4439,
+      "sourceFields": [
+        "CapMVRVCur"
+      ],
+      "providerFirst": 1408060800,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "XRP",
+      "metric": "nupl",
+      "first": 1408060800,
+      "last": 1791504000,
+      "observations": 4439,
+      "sourceFields": [
+        "CapMVRVCur"
+      ],
+      "providerFirst": 1408060800,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "XRP",
+      "metric": "price",
+      "first": 1408060800,
+      "last": 1791504000,
+      "observations": 4439,
+      "sourceFields": [
+        "PriceUSD"
+      ],
+      "providerFirst": 1408060800,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "XRP",
+      "metric": "realized_cap",
+      "first": 1408060800,
+      "last": 1791504000,
+      "observations": 4439,
+      "sourceFields": [
+        "CapMrktCurUSD",
+        "CapMVRVCur"
+      ],
+      "providerFirst": 1408060800,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "XRP",
+      "metric": "realized_price",
+      "first": 1408060800,
+      "last": 1791504000,
+      "observations": 4439,
+      "sourceFields": [
+        "PriceUSD",
+        "CapMVRVCur"
+      ],
+      "providerFirst": 1408060800,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "XRP",
+      "metric": "supply",
+      "first": 1356998400,
+      "last": 1791504000,
+      "observations": 5030,
+      "sourceFields": [
+        "SplyCur"
+      ],
+      "providerFirst": 1356998400,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "XRP",
+      "metric": "transactions",
+      "first": 1356998400,
+      "last": 1791504000,
+      "observations": 5030,
+      "sourceFields": [
+        "TxCnt"
+      ],
+      "providerFirst": 1356998400,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "XRP",
+      "metric": "transfers",
+      "first": 1356998400,
+      "last": 1791504000,
+      "observations": 5030,
+      "sourceFields": [
+        "TxTfrCnt"
+      ],
+      "providerFirst": 1356998400,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "YFI",
+      "metric": "active_addresses",
+      "first": 1594944000,
+      "last": 1791504000,
+      "observations": 2276,
+      "sourceFields": [
+        "AdrActCnt"
+      ],
+      "providerFirst": 1594944000,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "YFI",
+      "metric": "balance_addresses",
+      "first": 1594944000,
+      "last": 1791504000,
+      "observations": 2276,
+      "sourceFields": [
+        "AdrBalCnt"
+      ],
+      "providerFirst": 1594944000,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "YFI",
+      "metric": "issuance",
+      "first": 1594944000,
+      "last": 1791504000,
+      "observations": 2276,
+      "sourceFields": [
+        "IssTotNtv"
+      ],
+      "providerFirst": 1594944000,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "YFI",
+      "metric": "market_cap",
+      "first": 1595635200,
+      "last": 1791504000,
+      "observations": 2268,
+      "sourceFields": [
+        "CapMrktCurUSD"
+      ],
+      "providerFirst": 1595635200,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "YFI",
+      "metric": "mvrv",
+      "first": 1595635200,
+      "last": 1791504000,
+      "observations": 2268,
+      "sourceFields": [
+        "CapMVRVCur"
+      ],
+      "providerFirst": 1595635200,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "YFI",
+      "metric": "nupl",
+      "first": 1595635200,
+      "last": 1791504000,
+      "observations": 2268,
+      "sourceFields": [
+        "CapMVRVCur"
+      ],
+      "providerFirst": 1595635200,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "YFI",
+      "metric": "price",
+      "first": 1595635200,
+      "last": 1791504000,
+      "observations": 2268,
+      "sourceFields": [
+        "PriceUSD"
+      ],
+      "providerFirst": 1595635200,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "YFI",
+      "metric": "realized_cap",
+      "first": 1595635200,
+      "last": 1791504000,
+      "observations": 2268,
+      "sourceFields": [
+        "CapMrktCurUSD",
+        "CapMVRVCur"
+      ],
+      "providerFirst": 1595635200,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "YFI",
+      "metric": "realized_price",
+      "first": 1595635200,
+      "last": 1791504000,
+      "observations": 2268,
+      "sourceFields": [
+        "PriceUSD",
+        "CapMVRVCur"
+      ],
+      "providerFirst": 1595635200,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "YFI",
+      "metric": "supply",
+      "first": 1594944000,
+      "last": 1791504000,
+      "observations": 2276,
+      "sourceFields": [
+        "SplyCur"
+      ],
+      "providerFirst": 1594944000,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "YFI",
+      "metric": "transactions",
+      "first": 1594944000,
+      "last": 1791504000,
+      "observations": 2276,
+      "sourceFields": [
+        "TxCnt"
+      ],
+      "providerFirst": 1594944000,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "YFI",
+      "metric": "transfers",
+      "first": 1594944000,
+      "last": 1791504000,
+      "observations": 2276,
+      "sourceFields": [
+        "TxTfrCnt"
+      ],
+      "providerFirst": 1594944000,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "ZEC",
+      "metric": "active_addresses",
+      "first": 1477612800,
+      "last": 1791504000,
+      "observations": 3634,
+      "sourceFields": [
+        "AdrActCnt"
+      ],
+      "providerFirst": 1477612800,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "ZEC",
+      "metric": "balance_addresses",
+      "first": 1477612800,
+      "last": 1791504000,
+      "observations": 3634,
+      "sourceFields": [
+        "AdrBalCnt"
+      ],
+      "providerFirst": 1477612800,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "ZEC",
+      "metric": "blocks",
+      "first": 1477612800,
+      "last": 1791504000,
+      "observations": 3634,
+      "sourceFields": [
+        "BlkCnt"
+      ],
+      "providerFirst": 1477612800,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "ZEC",
+      "metric": "fees_native",
+      "first": 1477612800,
+      "last": 1791504000,
+      "observations": 3634,
+      "sourceFields": [
+        "FeeTotNtv"
+      ],
+      "providerFirst": 1477612800,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "ZEC",
+      "metric": "hashrate",
+      "first": 1477612800,
+      "last": 1791504000,
+      "observations": 3634,
+      "sourceFields": [
+        "HashRate"
+      ],
+      "providerFirst": 1477612800,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "ZEC",
+      "metric": "issuance",
+      "first": 1477612800,
+      "last": 1791504000,
+      "observations": 3634,
+      "sourceFields": [
+        "IssTotNtv"
+      ],
+      "providerFirst": 1477612800,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "ZEC",
+      "metric": "market_cap",
+      "first": 1477699200,
+      "last": 1791504000,
+      "observations": 3633,
+      "sourceFields": [
+        "CapMrktCurUSD"
+      ],
+      "providerFirst": 1477699200,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "ZEC",
+      "metric": "mvrv",
+      "first": 1477699200,
+      "last": 1791504000,
+      "observations": 3633,
+      "sourceFields": [
+        "CapMVRVCur"
+      ],
+      "providerFirst": 1477699200,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "ZEC",
+      "metric": "nupl",
+      "first": 1477699200,
+      "last": 1791504000,
+      "observations": 3633,
+      "sourceFields": [
+        "CapMVRVCur"
+      ],
+      "providerFirst": 1477699200,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "ZEC",
+      "metric": "price",
+      "first": 1477699200,
+      "last": 1791504000,
+      "observations": 3633,
+      "sourceFields": [
+        "PriceUSD"
+      ],
+      "providerFirst": 1477699200,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "ZEC",
+      "metric": "realized_cap",
+      "first": 1477699200,
+      "last": 1791504000,
+      "observations": 3633,
+      "sourceFields": [
+        "CapMrktCurUSD",
+        "CapMVRVCur"
+      ],
+      "providerFirst": 1477699200,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "ZEC",
+      "metric": "realized_price",
+      "first": 1477699200,
+      "last": 1791504000,
+      "observations": 3633,
+      "sourceFields": [
+        "PriceUSD",
+        "CapMVRVCur"
+      ],
+      "providerFirst": 1477699200,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "ZEC",
+      "metric": "supply",
+      "first": 1477612800,
+      "last": 1791504000,
+      "observations": 3634,
+      "sourceFields": [
+        "SplyCur"
+      ],
+      "providerFirst": 1477612800,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "ZEC",
+      "metric": "transactions",
+      "first": 1477612800,
+      "last": 1791504000,
+      "observations": 3634,
+      "sourceFields": [
+        "TxCnt"
+      ],
+      "providerFirst": 1477612800,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    },
+    {
+      "asset": "ZEC",
+      "metric": "transfers",
+      "first": 1477612800,
+      "last": 1791504000,
+      "observations": 3634,
+      "sourceFields": [
+        "TxTfrCnt"
+      ],
+      "providerFirst": 1477612800,
+      "matches": true,
+      "verification": "Independent provider catalog min_time vs stored valid-observation coverage; not all historical values"
+    }
+  ],
+  "matching": 442,
+  "total": 442,
+  "attention": []
+}

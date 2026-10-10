@@ -1,0 +1,691 @@
+{
+  "version": "verified-history-start-v1",
+  "verifiedAt": "2026-10-10T19:12:28.313966+00:00",
+  "scope": "Earliest actual daily observation of each supported provider; not launch dates or the first trade worldwide.",
+  "assets": {
+    "BTC": {
+      "upbit": 1506297600,
+      "binance": 1502928000,
+      "reference": 1279411200
+    },
+    "DOGE": {
+      "upbit": 1614124800,
+      "binance": 1562284800,
+      "reference": 1390435200
+    },
+    "ETH": {
+      "upbit": 1506297600,
+      "binance": 1502928000,
+      "reference": 1438992000
+    },
+    "SOL": {
+      "upbit": 1634256000,
+      "binance": 1597104000,
+      "reference": 1586476800
+    },
+    "XRP": {
+      "upbit": 1506297600,
+      "binance": 1525392000,
+      "reference": 1408060800
+    },
+    "LINK": {
+      "upbit": 1596499200,
+      "binance": 1547596800,
+      "reference": 1506643200
+    },
+    "ONDO": {
+      "upbit": 1718323200,
+      "binance": 1744329600,
+      "reference": 1705536000
+    },
+    "PEPE": {
+      "upbit": 1731542400,
+      "binance": 1683244800,
+      "reference": 1692230400
+    },
+    "PENGU": {
+      "upbit": 1746748800,
+      "binance": 1734393600,
+      "reference": 1737676800
+    },
+    "TRX": {
+      "upbit": 1522886400,
+      "binance": 1528675200,
+      "reference": 1529884800
+    },
+    "ADA": {
+      "upbit": 1507248000,
+      "binance": 1523923200,
+      "reference": 1512086400
+    },
+    "XLM": {
+      "upbit": 1506297600,
+      "binance": 1527724800,
+      "reference": 1443571200
+    },
+    "NEAR": {
+      "upbit": 1639526400,
+      "binance": 1602633600,
+      "reference": 1602720000
+    },
+    "BCH": {
+      "upbit": 1506297600,
+      "binance": 1574899200,
+      "reference": 1501545600
+    },
+    "UNI": {
+      "upbit": 1729555200,
+      "binance": 1600300800,
+      "reference": 1600387200
+    },
+    "AVAX": {
+      "upbit": 1644278400,
+      "binance": 1600732800,
+      "reference": 1600819200
+    },
+    "HBAR": {
+      "upbit": 1568678400,
+      "binance": 1569715200,
+      "reference": 1568764800
+    },
+    "SUI": {
+      "upbit": 1683158400,
+      "binance": 1683072000,
+      "reference": 1692230400
+    },
+    "SHIB": {
+      "upbit": 1674000000,
+      "binance": 1620604800,
+      "reference": 1620691200
+    },
+    "TAO": {
+      "upbit": 1771200000,
+      "binance": 1712793600
+    },
+    "AAVE": {
+      "upbit": 1635292800,
+      "binance": 1602720000,
+      "reference": 1602288000
+    },
+    "MNT": {
+      "upbit": 1711497600,
+      "reference": 1692230400
+    },
+    "DOT": {
+      "upbit": 1601856000,
+      "binance": 1597708800,
+      "reference": 1597881600
+    },
+    "ICP": {
+      "upbit": 1773187200,
+      "binance": 1620691200,
+      "reference": 1620691200
+    },
+    "XAUT": {
+      "upbit": 1767225600,
+      "binance": 1774483200,
+      "reference": 1579910400
+    },
+    "ENA": {
+      "upbit": 1752192000,
+      "binance": 1712016000,
+      "reference": 1713398400
+    },
+    "JST": {
+      "upbit": 1597363200,
+      "binance": 1597104000,
+      "reference": 1597104000
+    },
+    "WLFI": {
+      "upbit": 1756684800,
+      "binance": 1756684800,
+      "reference": 1756684800
+    },
+    "ETC": {
+      "upbit": 1506297600,
+      "binance": 1528761600,
+      "reference": 1469404800
+    },
+    "ALGO": {
+      "upbit": 1637193600,
+      "binance": 1561161600,
+      "reference": 1561161600
+    },
+    "WLD": {
+      "upbit": 1757376000,
+      "binance": 1690156800,
+      "reference": 1690156800
+    },
+    "RENDER": {
+      "upbit": 1733356800,
+      "binance": 1721952000,
+      "reference": 1718582400
+    },
+    "ARB": {
+      "upbit": 1680134400,
+      "binance": 1679529600,
+      "reference": 1679529600
+    },
+    "ATOM": {
+      "upbit": 1556841600,
+      "binance": 1556496000,
+      "reference": 1555977600
+    },
+    "VVV": {
+      "upbit": 1778544000,
+      "reference": 1743120000
+    },
+    "MORPHO": {
+      "upbit": 1784937600,
+      "binance": 1759449600,
+      "reference": 1734048000
+    },
+    "FIL": {
+      "upbit": 1743724800,
+      "binance": 1602720000,
+      "reference": 1602806400
+    },
+    "AERO": {
+      "upbit": 1755820800,
+      "binance": 1784246400,
+      "reference": 1713398400
+    },
+    "STX": {
+      "upbit": 1617580800,
+      "binance": 1571961600,
+      "reference": 1572566400
+    },
+    "INJ": {
+      "upbit": 1729123200,
+      "binance": 1603238400,
+      "reference": 1603324800
+    },
+    "VET": {
+      "upbit": 1586217600,
+      "binance": 1532476800,
+      "reference": 1531526400
+    },
+    "RAY": {
+      "upbit": 1750291200,
+      "binance": 1628553600,
+      "reference": 1613952000
+    },
+    "CRO": {
+      "upbit": 1597968000,
+      "reference": 1553040000
+    },
+    "APT": {
+      "upbit": 1666137600,
+      "binance": 1666137600,
+      "reference": 1665619200
+    },
+    "ZRO": {
+      "upbit": 1718841600,
+      "binance": 1718841600,
+      "reference": 1719273600
+    },
+    "PYTH": {
+      "upbit": 1708992000,
+      "binance": 1706832000,
+      "reference": 1700438400
+    },
+    "CRV": {
+      "upbit": 1787270400,
+      "binance": 1597449600,
+      "reference": 1597449600
+    },
+    "VIRTUAL": {
+      "upbit": 1738281600,
+      "binance": 1744329600,
+      "reference": 1734048000
+    },
+    "SEI": {
+      "upbit": 1692144000,
+      "binance": 1692057600,
+      "reference": 1692230400
+    },
+    "TIA": {
+      "upbit": 1746662400,
+      "binance": 1698710400,
+      "reference": 1698710400
+    },
+    "DRV": {
+      "upbit": 1783987200
+    },
+    "PENDLE": {
+      "upbit": 1722902400,
+      "binance": 1688342400,
+      "reference": 1635292800
+    },
+    "ETHFI": {
+      "upbit": 1773878400,
+      "binance": 1710720000,
+      "reference": 1713398400
+    },
+    "SPX": {
+      "upbit": 1781568000,
+      "reference": 1731024000
+    },
+    "KAIA": {
+      "upbit": 1791504000,
+      "binance": 1730332800,
+      "reference": 1731024000
+    },
+    "XTZ": {
+      "upbit": 1596499200,
+      "binance": 1569283200,
+      "reference": 1530316800
+    },
+    "GRT": {
+      "upbit": 1685577600,
+      "binance": 1608163200,
+      "reference": 1608249600
+    },
+    "SYRUP": {
+      "upbit": 1753401600,
+      "binance": 1746489600,
+      "reference": 1737676800
+    },
+    "CFX": {
+      "upbit": 1785456000,
+      "binance": 1616976000,
+      "reference": 1605139200
+    },
+    "ENS": {
+      "upbit": 1720483200,
+      "binance": 1636502400,
+      "reference": 1636502400
+    },
+    "COMP": {
+      "upbit": 1743465600,
+      "binance": 1593043200,
+      "reference": 1592438400
+    },
+    "OP": {
+      "upbit": 1753660800,
+      "binance": 1654041600,
+      "reference": 1655856000
+    },
+    "THETA": {
+      "upbit": 1543536000,
+      "binance": 1554854400,
+      "reference": 1516147200
+    },
+    "WIF": {
+      "upbit": 1778025600,
+      "binance": 1709596800,
+      "reference": 1702944000
+    },
+    "TRAC": {
+      "upbit": 1779062400,
+      "reference": 1516924800
+    },
+    "AKT": {
+      "upbit": 1713830400,
+      "reference": 1615507200
+    },
+    "JTO": {
+      "upbit": 1740096000,
+      "binance": 1701907200,
+      "reference": 1701907200
+    },
+    "AXS": {
+      "upbit": 1617580800,
+      "binance": 1604448000,
+      "reference": 1604534400
+    },
+    "MANA": {
+      "upbit": 1553731200,
+      "binance": 1596672000,
+      "reference": 1503619200
+    },
+    "SAND": {
+      "upbit": 1611187200,
+      "binance": 1597363200,
+      "reference": 1597449600
+    },
+    "BAT": {
+      "upbit": 1532304000,
+      "binance": 1551657600,
+      "reference": 1507248000
+    },
+    "NEO": {
+      "upbit": 1506297600,
+      "binance": 1511136000,
+      "reference": 1500076800
+    },
+    "A": {
+      "upbit": 1521676800,
+      "binance": 1748390400,
+      "reference": 1748822400
+    },
+    "CHZ": {
+      "upbit": 1587081600,
+      "binance": 1567728000,
+      "reference": 1567814400
+    },
+    "XCN": {
+      "upbit": 1777248000,
+      "reference": 1647475200
+    },
+    "ORCA": {
+      "upbit": 1742515200,
+      "binance": 1733443200,
+      "reference": 1633478400
+    },
+    "XEC": {
+      "upbit": 1605744000,
+      "binance": 1630627200,
+      "reference": 1625270400
+    },
+    "SUPER": {
+      "upbit": 1759104000,
+      "binance": 1616630400,
+      "reference": 1614124800
+    },
+    "BEAM": {
+      "upbit": 1717113600
+    },
+    "GLM": {
+      "upbit": 1523577600,
+      "binance": 1679011200,
+      "reference": 1606608000
+    },
+    "2Z": {
+      "upbit": 1759363200,
+      "binance": 1759363200,
+      "reference": 1762387200
+    },
+    "ZK": {
+      "upbit": 1767657600,
+      "binance": 1718582400,
+      "reference": 1713398400
+    },
+    "NMR": {
+      "upbit": 1791244800,
+      "binance": 1597795200,
+      "reference": 1545264000
+    },
+    "QTUM": {
+      "upbit": 1506297600,
+      "binance": 1521417600,
+      "reference": 1501200000
+    },
+    "KMNO": {
+      "upbit": 1786060800,
+      "binance": 1746489600,
+      "reference": 1721779200
+    },
+    "GEOD": {
+      "upbit": 1785110400
+    },
+    "GAS": {
+      "upbit": 1538092800,
+      "binance": 1679011200,
+      "reference": 1502150400
+    },
+    "W": {
+      "upbit": 1727827200,
+      "binance": 1712102400,
+      "reference": 1713398400
+    },
+    "ATH": {
+      "upbit": 1723593600,
+      "reference": 1721779200
+    },
+    "CFG": {
+      "upbit": 1772064000,
+      "binance": 1773619200
+    },
+    "LPT": {
+      "upbit": 1748563200,
+      "binance": 1622160000,
+      "reference": 1545264000
+    },
+    "KAVA": {
+      "upbit": 1595462400,
+      "binance": 1571961600,
+      "reference": 1572048000
+    },
+    "KAITO": {
+      "upbit": 1741132800,
+      "binance": 1740009600,
+      "reference": 1743120000
+    },
+    "COW": {
+      "upbit": 1740441600,
+      "binance": 1730851200,
+      "reference": 1731024000
+    },
+    "TFUEL": {
+      "upbit": 1553212800,
+      "binance": 1558656000,
+      "reference": 1561161600
+    },
+    "SAFE": {
+      "upbit": 1729728000,
+      "reference": 1718582400
+    },
+    "ZIL": {
+      "upbit": 1525910400,
+      "binance": 1550534400,
+      "reference": 1517011200
+    },
+    "VTHO": {
+      "upbit": 1737417600,
+      "binance": 1594944000,
+      "reference": 1561161600
+    },
+    "CKB": {
+      "upbit": 1726185600,
+      "binance": 1611619200,
+      "reference": 1574035200
+    },
+    "ARKM": {
+      "upbit": 1741651200,
+      "binance": 1689638400,
+      "reference": 1689638400
+    },
+    "BNB": {
+      "binance": 1509926400,
+      "reference": 1500076800
+    },
+    "HYPE": {
+      "binance": 1790208000,
+      "reference": 1734048000
+    },
+    "ZEC": {
+      "binance": 1553126400,
+      "reference": 1477699200
+    },
+    "LTC": {
+      "binance": 1513123200,
+      "reference": 1364774400
+    },
+    "QNT": {
+      "binance": 1627516800,
+      "reference": 1552694400
+    },
+    "PAXG": {
+      "binance": 1598572800,
+      "reference": 1581724800
+    },
+    "ASTER": {
+      "binance": 1759708800,
+      "reference": 1758844800
+    },
+    "CAKE": {
+      "binance": 1613692800,
+      "reference": 1613692800
+    },
+    "DASH": {
+      "binance": 1553731200,
+      "reference": 1391817600
+    },
+    "FET": {
+      "binance": 1551312000,
+      "reference": 1551398400
+    },
+    "NEXO": {
+      "binance": 1651190400,
+      "reference": 1561161600
+    },
+    "LDO": {
+      "binance": 1652054400,
+      "reference": 1631318400
+    },
+    "GNO": {
+      "binance": 1630281600,
+      "reference": 1493683200
+    },
+    "DCR": {
+      "binance": 1596067200,
+      "reference": 1463443200
+    },
+    "STRK": {
+      "binance": 1708387200,
+      "reference": 1668556800
+    },
+    "LUNC": {
+      "binance": 1662681600
+    },
+    "AR": {
+      "binance": 1620950400,
+      "reference": 1595894400
+    },
+    "BONK": {
+      "binance": 1702598400,
+      "reference": 1672704000
+    },
+    "FLOKI": {
+      "binance": 1683244800,
+      "reference": 1642464000
+    },
+    "RUNE": {
+      "binance": 1599177600,
+      "reference": 1621296000
+    },
+    "JASMY": {
+      "binance": 1637539200,
+      "reference": 1613520000
+    },
+    "TWT": {
+      "binance": 1611705600,
+      "reference": 1655856000
+    },
+    "S": {
+      "binance": 1736985600,
+      "reference": 1737676800
+    },
+    "CVX": {
+      "binance": 1640217600,
+      "reference": 1622678400
+    },
+    "SFP": {
+      "binance": 1612742400,
+      "reference": 1612742400
+    },
+    "ZEN": {
+      "binance": 1593993600,
+      "reference": 1561161600
+    },
+    "APE": {
+      "binance": 1647475200,
+      "reference": 1648166400
+    },
+    "DYDX": {
+      "binance": 1631145600,
+      "reference": 1631145600
+    },
+    "DEXE": {
+      "binance": 1626998400,
+      "reference": 1611187200
+    },
+    "GALA": {
+      "binance": 1631491200,
+      "reference": 1628812800
+    },
+    "RSR": {
+      "binance": 1598486400,
+      "reference": 1563321600
+    },
+    "RLC": {
+      "binance": 1573689600,
+      "reference": 1492732800
+    },
+    "ORDI": {
+      "binance": 1699315200,
+      "reference": 1683504000
+    },
+    "GMX": {
+      "binance": 1664928000,
+      "reference": 1646784000
+    },
+    "KSM": {
+      "binance": 1599177600,
+      "reference": 1592006400
+    },
+    "FTT": {
+      "binance": 1576800000,
+      "reference": 1566259200
+    },
+    "SNX": {
+      "binance": 1594252800,
+      "reference": 1586390400
+    },
+    "YFI": {
+      "binance": 1597017600,
+      "reference": 1595635200
+    },
+    "EIGEN": {
+      "binance": 1727740800,
+      "reference": 1727740800
+    },
+    "MUBARAK": {
+      "binance": 1743033600,
+      "reference": 1747180800
+    },
+    "HUMA": {
+      "binance": 1748217600,
+      "reference": 1754611200
+    },
+    "BOME": {
+      "binance": 1710547200,
+      "reference": 1711584000
+    },
+    "HOT": {
+      "binance": 1550448000
+    },
+    "DGB": {
+      "binance": 1595203200,
+      "reference": 1423526400
+    },
+    "BANANAS31": {
+      "binance": 1743033600,
+      "reference": 1743120000
+    },
+    "0G": {
+      "upbit": 1758499200,
+      "binance": 1758499200,
+      "reference": 1758844800
+    },
+    "ENJ": {
+      "binance": 1555545600,
+      "reference": 1509580800
+    },
+    "ROSE": {
+      "binance": 1605744000,
+      "reference": 1605830400
+    },
+    "ONT": {
+      "upbit": 1525305600,
+      "binance": 1528416000,
+      "reference": 1520553600
+    },
+    "ASTR": {
+      "upbit": 1702857600,
+      "binance": 1646006400,
+      "reference": 1655856000
+    }
+  }
+}
