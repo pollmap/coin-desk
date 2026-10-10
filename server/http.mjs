@@ -1,8 +1,11 @@
+import { monitorEventLoopDelay } from 'node:perf_hooks';
+import { securityHeaders, requestBudget } from './security.mjs';
 import { createServer } from 'node:http';
 import { readFile, stat, realpath } from 'node:fs/promises';
 import { resolve, extname, sep } from 'node:path';
-import { Readable } from 'node:stream';
+import { Readable, Transform } from 'node:stream';
 import { schedulerState } from './runtime.mjs';
+import { searchResponse } from './search.mjs';
 import { staticResponder } from './static-response.mjs';
 const mime = {
   '.html': 'text/html; charset=utf-8',
@@ -46,6 +49,13 @@ export function createHttpServer({
       throw new Error('Invalid public HTTPS origin');
     publicOrigin = origin.origin;
   }
+  const cspMode = process.env.COIN_DESK_CSP_MODE ?? 'report-only';
+  if (!['report-only', 'enforce'].includes(cspMode)) throw new Error('Invalid CSP mode');
+  const allow = requestBudget({ perClient: 900 }),
+    searchAllow = requestBudget({ perClient: 120, global: 600 });
+  const loop = monitorEventLoopDelay({ resolution: 20 });
+  loop.enable();
+  const telemetry = { requests: 0, responseBytes: 0, maxRequestMs: 0 };
   const pending = new Set();
   const ctx = {
     waitUntil(p) {
@@ -56,6 +66,7 @@ export function createHttpServer({
   const root = resolve(staticRoot);
   const serveStatic = staticResponder();
   const server = createServer(async (req, res) => {
+    const started = performance.now();
     let out;
     try {
       if (
@@ -68,7 +79,16 @@ export function createHttpServer({
       } else {
         // Never trust Host / forwarded headers for internal fetch URLs or redirects.
         const url = new URL(req.url, 'http://coin-desk.internal');
-        if (!['GET', 'HEAD'].includes(req.method)) out = json({ error: 'Read-only API' }, 405);
+        if (
+          url.pathname.startsWith('/api/') &&
+          (!allow(req.socket.remoteAddress ?? 'unknown') ||
+            (url.pathname === '/api/v1/search' &&
+              !searchAllow(req.socket.remoteAddress ?? 'unknown')))
+        ) {
+          out = json({ error: '요청이 많습니다. 잠시 후 다시 시도해 주세요.', code: 'RATE_LIMIT' }, 429);
+          out.headers.set('Retry-After', '60');
+        } else if (!['GET', 'HEAD'].includes(req.method))
+          out = json({ error: 'Read-only API' }, 405);
         else if (url.pathname === '/healthz') {
           const integrity = database.sqlite.prepare('PRAGMA quick_check(1)').get();
           const schema = database.sqlite
@@ -105,6 +125,11 @@ export function createHttpServer({
           out = json({
             kind: 'vps',
             release,
+            performance: {
+              ...telemetry,
+              eventLoopP95Ms: Math.round(loop.percentile(95) / 1e6),
+              rssMiB: Math.round(process.memoryUsage().rss / 1048576),
+            },
             scheduler: schedulerState(database),
             backup,
             historyCollection: env.HISTORY_ALLOWED?.() === false ? 'paused_low_space' : 'enabled',
@@ -132,6 +157,15 @@ export function createHttpServer({
             } finally {
               clearTimeout(deadline);
             }
+          }
+        } else if (url.pathname === '/api/v1/search') {
+          try {
+            out = json(await searchResponse(url.searchParams));
+          } catch (error) {
+            out =
+              error.code === 'SEARCH_BUSY'
+                ? json({ error: 'Search temporarily busy', code: 'SEARCH_BUSY' }, 503)
+                : json({ error: 'Invalid search request' }, 400);
           }
         } else if (url.pathname.startsWith('/api/')) {
           out = await worker.fetch(new Request(url, { method: 'GET' }), env, ctx);
@@ -200,14 +234,27 @@ export function createHttpServer({
       return;
     }
     const headers = new Headers(out.headers);
-    headers.set('X-Content-Type-Options', 'nosniff');
-    headers.set('Referrer-Policy', 'strict-origin-when-cross-origin');
+    securityHeaders(headers, { https: !!publicOrigin, mode: cspMode });
+    telemetry.requests++;
+    telemetry.maxRequestMs = Math.max(
+      telemetry.maxRequestMs,
+      Math.round(performance.now() - started),
+    );
     res.writeHead(out.status, Object.fromEntries(headers));
     if (req.method === 'HEAD') {
       await out.body?.cancel();
       res.end();
     } else if (out.body)
       Readable.fromWeb(out.body)
+        .on('error', () => res.destroy())
+        .pipe(
+          new Transform({
+            transform(chunk, encoding, callback) {
+              telemetry.responseBytes += chunk.length;
+              callback(null, chunk);
+            },
+          }),
+        )
         .on('error', () => res.destroy())
         .pipe(res);
     else res.end();
@@ -219,6 +266,7 @@ export function createHttpServer({
   return {
     server,
     async drain() {
+      loop.disable();
       const timer = setTimeout(() => server.closeAllConnections(), 10000);
       await new Promise((resolve) => server.close(resolve));
       clearTimeout(timer);

@@ -61,6 +61,28 @@ test('Native server uses the real API, preserves units and errors, and never ref
     assert.equal(upstream, 0);
     assert.equal(await writer.prepare('SELECT COUNT(*) n FROM ingestion').first('n'), 0);
     assert.equal((await fetch(base + '/api/v1/runtime')).status, 200);
+    const summaryResponse = await fetch(base + '/api/v1/status/summary');
+    const summary = await summaryResponse.json();
+    assert.equal(summaryResponse.status, 200);
+    assert.deepEqual(summary.sources, []);
+    assert.ok(summary.totalSources >= 150);
+    const page = await (await fetch(base + '/api/v1/status/sources?limit=2')).json();
+    assert.equal(page.rows.length, 2);
+    for (const path of [
+      '/api/v1/status/sources?limit=101',
+      '/api/v1/status/sources?offset=-1',
+      '/api/v1/search?q=x&limit=21',
+      '/api/v1/search?q=x&q=y',
+    ])
+      assert.equal((await fetch(base + path)).status, 400);
+    const search = await fetch(base + '/api/v1/search?q=' + encodeURIComponent('비트코인 고평가'), {
+      headers: { 'X-Forwarded-For': '127.0.0.1' },
+    });
+    assert.equal((await search.json()).hits[0].metric, 'net:mvrv');
+    assert.match(search.headers.get('Content-Security-Policy-Report-Only'), /object-src 'none'/);
+    assert.match(search.headers.get('Strict-Transport-Security'), /31536000/);
+    assert.match(search.headers.get('Permissions-Policy'), /camera=\(\)/);
+    assert.equal(search.headers.get('X-Frame-Options'), 'DENY');
     const market = await (await fetch(base + '/api/v1/market?market=upbit')).json();
     assert.equal(market.collection.healthy, false);
     assert.equal(market.collection.reason, 'not_started');

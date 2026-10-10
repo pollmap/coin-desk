@@ -108,54 +108,17 @@ body {
   padding: 0 12px;
   height: 38px;
 }
-.product-search input {
-  padding: 0;
-  width: 100%;
-  min-width: 0;
-  color: var(--text);
-  background: transparent;
-  border: 0;
-  outline-offset: 5px;
+.product-search.search-trigger {
+  cursor: pointer;
+  text-align: left;
+  color: var(--muted);
   font-size: 14px;
 }
-.product-search button {
-  border: 0;
-  background: none;
-  color: var(--muted);
-  padding: 0;
+.product-search.search-trigger span {
+  flex: 1;
 }
-.product-search kbd {
+.product-search.search-trigger kbd {
   font-size: 12px;
-  color: var(--muted);
-}
-.product-search-results {
-  position: absolute;
-  top: 45px;
-  right: 0;
-  width: 370px;
-  max-height: 480px;
-  overflow: auto;
-  background: var(--panel);
-  border: 1px solid var(--border);
-  border-radius: 10px;
-}
-.product-search-results a {
-  display: flex;
-  gap: 10px;
-  align-items: center;
-  padding: 12px 16px;
-  color: var(--text);
-}
-.product-search-results a:hover,
-.product-search-results a:focus {
-  background: var(--hover);
-}
-.product-search-results small {
-  margin-left: auto;
-  color: var(--muted);
-}
-.product-search-results p {
-  padding: 16px;
 }
 .product-help {
   position: relative;
@@ -341,7 +304,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 20px 0 12px;
+  padding: 8px 0 8px;
   gap: 12px;
 }
 .market-controls [role='group'] {
@@ -373,7 +336,7 @@ body {
   font-size: 13px;
 }
 .market-resume {
-  margin: 0 0 16px;
+  margin: 0;
   font-size: 14px;
 }
 .market-resume a {
@@ -412,20 +375,25 @@ body {
   display: flex;
   align-items: center;
   gap: 8px;
-  padding: 10px 12px;
-  margin: 12px 0;
+  padding: 0 12px;
+  margin: 0 0 8px;
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: 8px;
 }
-.market-search input {
+.market-search-trigger {
+  display: flex;
+  gap: 8px;
+  align-items: center;
   width: 100%;
-  min-width: 0;
+  min-height: 40px;
+  padding: 0;
   border: 0;
-  background: transparent;
-  color: var(--text);
-  font-size: 16px;
-  outline: none;
+  background: none;
+  color: var(--muted);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
 }
 .market-search:focus-within {
   outline: 2px solid var(--accent);
@@ -879,22 +847,18 @@ body {
     color: var(--accent);
   }
   .product-desk .topbar .product-search {
-    display: none;
-    order: 5;
-    flex: 1 0 100%;
-    width: 100%;
-    height: 42px;
-    margin: 0 0 4px;
+    width: 36px;
+    height: 36px;
+    flex: 0 0 36px;
+    padding: 8px;
+    margin-left: auto;
+    order: initial;
   }
-  .product-desk .topbar .product-search.is-open {
-    display: flex;
+  .product-search.search-trigger span {
+    display: none;
   }
   .product-search kbd {
     display: none;
-  }
-  .product-search-results {
-    width: 100%;
-    max-height: min(480px, 65dvh);
   }
   .product-desk #main-content {
     padding: 16px;

@@ -65,8 +65,10 @@ test('legacy date links and unsupported coins remain explicit; keyboard search w
   );
   await expect(page.locator('[data-chart-kind="analysis"]')).toBeVisible();
   expect(new URL(page.url()).searchParams.get('chart_from')).toBe('1609459200');
-  await page.getByLabel('코인·지표 검색', { exact: true }).fill('온도');
-  await page.getByLabel('코인·지표 검색', { exact: true }).press('ArrowDown');
+  await page.getByRole('button', { name: '코인·지표 검색 열기' }).click();
+  await page.getByRole('searchbox', { name: '코인·지표 검색', exact: true }).fill('온도');
+  await expect(page.locator('.search-hit').first()).toContainText('ONDO');
+  await page.getByRole('searchbox', { name: '코인·지표 검색', exact: true }).press('ArrowDown');
   await page.keyboard.press('Enter');
   await expect(page.locator('[data-chart-kind="analysis"]')).toHaveAttribute(
     'data-primary-metric',

@@ -9,7 +9,7 @@ export function historyCapacity(path, { statfs = statfsSync, now = Date.now } = 
       checkedAt = now();
       try {
         const disk = statfs(path);
-        allowed = disk.bavail * disk.bsize >= 2 * 1024 ** 3;
+        allowed = disk.bavail * disk.bsize >= 8 * 1024 ** 3;
       } catch {
         allowed = false;
       }

@@ -5,7 +5,7 @@ test('VPS status shows minute cadence and missing execution and backup honestly'
   page,
 }) => {
   test.setTimeout(90000);
-  await page.route('**/api/v1/status', async (route) => {
+  await page.route('**/api/v1/status/summary', async (route) => {
     const response = await route.fetch();
     const data = await response.json();
     data.automation.runner = 'VPS minute scheduler';
@@ -62,7 +62,7 @@ test('status explains delayed execution without declaring stable operation', asy
   await page.route('**/*', (route) =>
     new URL(route.request().url()).hostname === '127.0.0.1' ? route.continue() : route.abort(),
   );
-  await page.route('**/api/v1/status', async (route) => {
+  await page.route('**/api/v1/status/summary', async (route) => {
     const response = await route.fetch();
     const data = await response.json();
     data.automation.observation48h = {

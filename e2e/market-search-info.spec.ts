@@ -33,7 +33,7 @@ test('a ninth favorite survives reload without altering saved private analysis',
       localStorage.setItem('coin-desk.personal.v1', JSON.stringify(value));
   }, stored);
   await page.goto('/');
-  await page.getByRole('textbox', { name: '시장 코인 검색' }).fill('PENGU');
+  await filterMarket(page, 'PENGU');
   const star = page.locator('.market-table .favorite-button').first();
   await expect(star).toHaveAttribute('aria-pressed', 'false');
   await star.click();
@@ -64,15 +64,15 @@ test('market defers indicator code and Enter survives slow first-time indicator 
     release = resolve;
   });
   await page.route(
-    (url) =>
-      /\/shared\/indicator-catalog\.ts|\/assets\/indicator-catalog-[^/]+\.js/.test(url.pathname),
+    (url) => url.pathname === '/api/v1/search',
     async (route) => {
       delayed++;
       await blocked;
       await route.continue();
     },
   );
-  const input = page.getByRole('textbox', { name: '코인·지표 검색', exact: true });
+  await page.getByRole('button', { name: '코인·지표 검색 열기' }).click();
+  const input = page.getByRole('searchbox', { name: '코인·지표 검색', exact: true });
   await input.fill('MVRV');
   await expect.poll(() => delayed).toBe(1);
   await input.press('Enter');
@@ -94,46 +94,45 @@ test('late indicator search does not navigate after the query is cleared', async
     release = resolve;
   });
   await page.route(
-    (url) =>
-      /\/shared\/indicator-catalog\.ts|\/assets\/indicator-catalog-[^/]+\.js/.test(url.pathname),
+    (url) => url.pathname === '/api/v1/search',
     async (route) => {
       requested = true;
       await blocked;
       await route.continue();
     },
   );
-  const input = page.getByRole('textbox', { name: '코인·지표 검색', exact: true });
+  await page.getByRole('button', { name: '코인·지표 검색 열기' }).click();
+  const input = page.getByRole('searchbox', { name: '코인·지표 검색', exact: true });
   await input.fill('MVRV');
   await expect.poll(() => requested).toBe(true);
   await input.press('Enter');
-  await page.getByRole('button', { name: '검색 지우기', exact: true }).click();
+  await input.fill('');
   await expect(input).toHaveValue('');
   release();
   await page.waitForTimeout(900);
   await expect(page).toHaveURL(/\/$/);
 });
 
-test('market search prioritizes an exact ticker, Enter opens it, and clear restores the list', async ({
+test('market exact search filters, clears and opens a coin through the same search sheet', async ({
   page,
 }) => {
   await page.goto('/');
-  const input = page.getByRole('textbox', { name: '시장 코인 검색' });
-  await input.fill('ETH');
+  await filterMarket(page, 'ETH');
   await expect(page.locator('.market-table tbody tr').first()).toContainText('이더리움');
-  await input.press('Enter');
+  await page.locator('.market-table tbody tr').first().locator('.market-coin-cell a').click();
   await expect(page).toHaveURL(/\/coins\/ETH\?/);
   await page.goBack();
-  await expect(input).toHaveValue('ETH');
+  await expect(page.getByRole('button', { name: '시장 코인 검색', exact: true })).toContainText(
+    'ETH',
+  );
   await page.getByRole('button', { name: '시장 검색 지우기', exact: true }).click();
-  await expect(input).toBeFocused();
-  await expect(input).toHaveValue('');
   await expect(page.locator('.market-table tbody tr')).toHaveCount(50);
+  await page.getByRole('button', { name: '코인·지표 검색 열기' }).click();
+  const input = page.getByRole('searchbox', { name: '코인·지표 검색', exact: true });
   await input.fill('펭귄');
+  await expect(page.locator('.search-hit').first()).toContainText('PENGU');
   await input.press('Enter');
-  await expect(page).toHaveURL(/\/coins\/PENGU\?/);
-  await page.getByRole('textbox', { name: '코인·지표 검색', exact: true }).fill('ETH');
-  await page.getByRole('textbox', { name: '코인·지표 검색', exact: true }).press('Enter');
-  await expect(page).toHaveURL(/\/coins\/ETH\?/);
+  await expect(page).toHaveURL(/\/coins\/PENGU/);
 });
 
 test('a delayed quote opens accessible timing details and returns keyboard focus without changing the list', async ({
@@ -169,3 +168,9 @@ test('a delayed quote opens accessible timing details and returns keyboard focus
   await expect(page).toHaveURL(/\/$/);
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
 });
+
+async function filterMarket(page: import('@playwright/test').Page, query: string) {
+  await page.getByRole('button', { name: '시장 코인 검색', exact: true }).click();
+  await page.getByRole('searchbox', { name: '코인·지표 검색', exact: true }).fill(query);
+  await page.getByRole('link', { name: '목록에서 보기', exact: true }).click();
+}

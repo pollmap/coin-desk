@@ -98,7 +98,11 @@ export default function KnowledgePanel({
                 <a href={proof.url} target="_blank" rel="noreferrer">
                   {proof.provider} 근거 ↗
                 </a>
-                <small>확인 {proof.checkedAt}</small>
+                <small>
+                  {proof.review === 'reviewed'
+                    ? '근거 확인 ' + proof.checkedAt
+                    : '프로젝트·네트워크 관계 검토 중'}
+                </small>
                 {node.metric && (
                   <Link
                     className="knowledge-analysis"

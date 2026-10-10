@@ -5,7 +5,7 @@ import { historyCapacity } from '../history-capacity.mjs';
 test('history pauses at low space or failed disk inspection and resumes after recovery', () => {
   let time = 0,
     calls = 0,
-    free = 3 * 1024 ** 3,
+    free = 9 * 1024 ** 3,
     failed = false;
   const allowed = historyCapacity('/isolated/data', {
     now: () => time,
@@ -21,7 +21,7 @@ test('history pauses at low space or failed disk inspection and resumes after re
   assert.equal(calls, 1);
   time += 60000;
   assert.equal(allowed(), false);
-  free = 2 * 1024 ** 3;
+  free = 8 * 1024 ** 3;
   time += 60000;
   assert.equal(allowed(), true);
   failed = true;
