@@ -1,14 +1,24 @@
 .asset-logo {
   display: inline-flex;
   flex: none;
+  width: var(--asset-logo-size, 24px);
+  height: var(--asset-logo-size, 24px);
   object-fit: contain;
   border-radius: 50%;
   vertical-align: middle;
 }
+.asset-logo:not(.fallback) {
+  /* Keep transparent black brand marks visible on a saved dark theme. */
+  background: #fff;
+}
 .asset-logo.fallback {
   align-items: center;
   justify-content: center;
-  color: #101719;
-  font-weight: 800;
-  font-size: 11px;
+  background: var(--surface);
+  color: var(--text);
+  border: 1px solid var(--border);
+  box-sizing: border-box;
+  overflow: hidden;
+  font-weight: 700;
+  line-height: 1;
 }

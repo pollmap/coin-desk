@@ -180,9 +180,11 @@ export function createHttpServer({
               if (!exists) file = resolve(root, 'index.html');
               out = await serveStatic(file, {
                 mime: mime[extname(file)] || 'application/octet-stream',
-                cacheControl: path.startsWith('/assets/')
-                  ? 'public, max-age=31536000, immutable'
-                  : 'no-cache',
+                cacheControl:
+                  path.startsWith('/assets/') ||
+                  /^\/coin-logos\/v2\/[a-z0-9]+-[a-f0-9]{12}\.png$/.test(path)
+                    ? 'public, max-age=31536000, immutable'
+                    : 'no-cache',
                 publicOrigin,
                 headers: req.headers,
               });

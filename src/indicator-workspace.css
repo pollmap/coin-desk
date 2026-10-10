@@ -91,7 +91,7 @@
 .compact-coins .coin-picker h1 {
   font-size: 16px;
 }
-.compact-coins .coin-picker summary > img {
+.compact-coins .coin-picker summary > .asset-logo {
   width: 28px;
   height: 28px;
 }

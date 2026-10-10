@@ -1,0 +1,74 @@
+{
+  "release": "0.26.2",
+  "checkedAt": "2026-10-10T11:27:05.125407+00:00",
+  "logoInventory": {
+    "assets": 150,
+    "distinctPngFiles": 150,
+    "totalBytes": 2706128,
+    "originalBytesPreserved": true,
+    "providers": {
+      "Upbit": 91,
+      "Binance": 57,
+      "TrustWallet": 2
+    },
+    "identityWarningsHandled": [
+      "MNT Binance asset code is Mongolian fiat; used verified Mantle project logo"
+    ]
+  },
+  "local": {
+    "typecheck": true,
+    "unitTests": 680,
+    "nodeTests": 20,
+    "pythonVpsTests": 22,
+    "targetedBrowserTests": 10,
+    "browsers": [
+      "Chromium",
+      "WebKit"
+    ],
+    "browserRetries": 0,
+    "brandCheck": true,
+    "docsCheck": true,
+    "build": true
+  },
+  "earlierFindings": [
+    {
+      "run": "targeted initial",
+      "failed": 6,
+      "passed": 4,
+      "finding": "2 actual mobile fallback size failures; 4 inventory test errors assuming 150 Upbit pairs instead of 103"
+    },
+    {
+      "run": "targeted r2",
+      "failed": 4,
+      "passed": 6,
+      "finding": "Old inventory assumption remained after an UTF-8 editing command failed; mobile fallback fix passed"
+    },
+    {
+      "run": "targeted r3",
+      "failed": 4,
+      "passed": 6,
+      "finding": "Test did not wait for exchange-change pagination reset; fixed explicit row readiness before load-more"
+    },
+    {
+      "run": "targeted r4",
+      "failed": 0,
+      "passed": 10,
+      "finding": "Final targeted verification, retries zero"
+    }
+  ],
+  "remoteCi": "pending",
+  "deployment": "pending",
+  "preserved": {
+    "legacy8LogoPaths": true,
+    "personalStorageKeys": true,
+    "privateOriginals": true,
+    "databaseSchema": "0009",
+    "collectorProcesses": true,
+    "userUntrackedProductPlan": true
+  },
+  "externalUntested": [
+    "Apple Safari/VoiceOver on real device",
+    "Human usability recruitment"
+  ],
+  "scopeLimit": "Logo completion does not certify all current sources fresh, all history backfilled or prior LCP goal passed."
+}
