@@ -1,0 +1,157 @@
+{
+  "candidateCleanup": {
+    "completedAt": 1791668461,
+    "candidateRemoved": true,
+    "disposableCloneBytesRemoved": 168075264,
+    "productionDatabasePreserved": true,
+    "backupPreserved": true,
+    "rollbackImagePreserved": true,
+    "freeBeforeBytes": 8445677568,
+    "freeAfterBytes": 8613875712
+  },
+  "olderQaCompression": [
+    {
+      "completedAt": 1791667290,
+      "compressedQaCopies": [
+        {
+          "originalPath": "audit/logos-0262/rehearsal.sqlite",
+          "retainedArchive": "audit/logos-0262/rehearsal.sqlite.gz",
+          "originalBytes": 167497728,
+          "compressedBytes": 51932959,
+          "originalAndExpandedSha256": "62bb9fc22848e6959151995019e403dc3e19d3d6acfb8a988c95e5d1fbe7ead4",
+          "activeMount": false,
+          "exactOriginalBytesPreserved": true
+        },
+        {
+          "originalPath": "audit/first-load-0261-r2/rehearsal.sqlite",
+          "retainedArchive": "audit/first-load-0261-r2/rehearsal.sqlite.gz",
+          "originalBytes": 167473152,
+          "compressedBytes": 51917245,
+          "originalAndExpandedSha256": "4533637e75b665ae6e7a8114c2903ad09141db01ef4be41f1399337402fd4899",
+          "activeMount": false,
+          "exactOriginalBytesPreserved": true
+        },
+        {
+          "originalPath": "audit/first-load-0261/rehearsal.sqlite",
+          "retainedArchive": "audit/first-load-0261/rehearsal.sqlite.gz",
+          "originalBytes": 167460864,
+          "compressedBytes": 51909971,
+          "originalAndExpandedSha256": "034bfe043bd0ba7b787490f95c9487895608647b41762787578be6b81e39091b",
+          "activeMount": false,
+          "exactOriginalBytesPreserved": true
+        },
+        {
+          "originalPath": "audit/reliability-026-r2/rehearsal.sqlite",
+          "retainedArchive": "audit/reliability-026-r2/rehearsal.sqlite.gz",
+          "originalBytes": 162803712,
+          "compressedBytes": 50714247,
+          "originalAndExpandedSha256": "2459d1647329f09082bfb0416e07e043d2976b6418be48515ec2bff8550f54ad",
+          "activeMount": false,
+          "exactOriginalBytesPreserved": true
+        },
+        {
+          "originalPath": "audit/reliability-026/rehearsal.sqlite",
+          "retainedArchive": "audit/reliability-026/rehearsal.sqlite.gz",
+          "originalBytes": 162504704,
+          "compressedBytes": 50631108,
+          "originalAndExpandedSha256": "2351231e1a1b420ffdb4af4dcc21b16099db62b8fbf5d791978cf4b485630c89",
+          "activeMount": false,
+          "exactOriginalBytesPreserved": true
+        }
+      ],
+      "productionDataDeleted": false,
+      "backupsDeleted": false,
+      "rollbackAssetsDeleted": false,
+      "freeBeforeBytes": 8429629440,
+      "previousDeletionPrevented": "QA runtime records differed from the original snapshots; retain exact bytes in verified gzip archives.",
+      "freeAfterBytes": 8999989248
+    },
+    {
+      "completedAt": 1791667366,
+      "compressedQaCopies": [
+        {
+          "originalPath": "audit/registry-025/rehearsal-1791562540.sqlite",
+          "retainedArchive": "audit/registry-025/rehearsal-1791562540.sqlite.gz",
+          "originalBytes": 161566720,
+          "compressedBytes": 50374379,
+          "originalAndExpandedSha256": "fb507fd4119aab7380f94e90aff6aeff06d910d8673899c19bb389d346a63484",
+          "activeMount": false,
+          "exactOriginalBytesPreserved": true
+        },
+        {
+          "originalPath": "audit/registry-025/rehearsal-1791561370.sqlite",
+          "retainedArchive": "audit/registry-025/rehearsal-1791561370.sqlite.gz",
+          "originalBytes": 161411072,
+          "compressedBytes": 50344811,
+          "originalAndExpandedSha256": "26c701f59321dcc871e34d4cbba2ea72138899eea1da50780055cf33600b355e",
+          "activeMount": false,
+          "exactOriginalBytesPreserved": true
+        }
+      ],
+      "productionDataDeleted": false,
+      "backupsDeleted": false,
+      "rollbackAssetsDeleted": false,
+      "freeBeforeBytes": 8999878656,
+      "previousDeletionPrevented": "QA runtime records differed from the original snapshots; retain exact bytes in verified gzip archives.",
+      "freeAfterBytes": 9238798336
+    },
+    {
+      "completedAt": 1791668191,
+      "compressedQaCopies": [
+        {
+          "originalPath": "audit/registry-025/verified-seed.sqlite",
+          "retainedArchive": "audit/registry-025/verified-seed.sqlite.gz",
+          "originalBytes": 139399168,
+          "compressedBytes": 45804565,
+          "originalAndExpandedSha256": "1d1e5104b8ed482fe49899e2698cea56d50003681f7684536950c59050e8aa2b",
+          "activeMount": false,
+          "exactOriginalBytesPreserved": true
+        }
+      ],
+      "productionDataDeleted": false,
+      "backupsDeleted": false,
+      "rollbackAssetsDeleted": false,
+      "freeBeforeBytes": 8620896256,
+      "previousDeletionPrevented": "QA runtime records differed from the original snapshots; retain exact bytes in verified gzip archives.",
+      "freeAfterBytes": 8714436608
+    }
+  ],
+  "olderAuditSnapshotCompression": {
+    "freeBeforeBytes": 8221347840,
+    "compressedInactiveAuditSnapshots": [
+      {
+        "archive": "audit/quality-027/backups/20261010T172320857902Z/snapshot-files.tar.gz",
+        "originalBytes": 167898284,
+        "compressedBytes": 52079904,
+        "originalFileSha256": {
+          "manifest.json": "fc0315c455ad7ff328e3bbb5cde41456577f1e61b88e9acfa2640215af7b35af",
+          "snapshot.sqlite": "e805b1913ebb04820c45441a5ff0bfa6e90784cc4f39d37e95cafe614e14471e",
+          "snapshot.sqlite-shm": "fd4c9fda9cd3f9ae7c962b0ddf37232294d55580e1aa165aa06129b8549389eb",
+          "snapshot.sqlite-wal": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "expandedAllFileHashesVerified": true,
+        "restoreRequiresArchiveExpansion": true,
+        "activeMount": false
+      },
+      {
+        "archive": "audit/quality-027-r2/backups/20261010T172534767722Z/snapshot-files.tar.gz",
+        "originalBytes": 167898284,
+        "compressedBytes": 52080179,
+        "originalFileSha256": {
+          "manifest.json": "78a3c48a2f237ee621230d9fc863d923e1200ca23ac49d1ed81c9d8a9c079382",
+          "snapshot.sqlite": "c41ec624676f90d5faa2bc205b2155250274f0d83a7a7c231f047a2606a859d7",
+          "snapshot.sqlite-shm": "fd4c9fda9cd3f9ae7c962b0ddf37232294d55580e1aa165aa06129b8549389eb",
+          "snapshot.sqlite-wal": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "expandedAllFileHashesVerified": true,
+        "restoreRequiresArchiveExpansion": true,
+        "activeMount": false
+      }
+    ],
+    "currentAndPreviousReleaseBackupsPreserved": true,
+    "productionDatabaseUnchanged": true,
+    "completedAt": 1791668082,
+    "freeAfterBytes": 8452972544
+  },
+  "note": "Exact original QA bytes and SQLite sidecars were retained and expanded SHA256 verified. Two older audit backups now require archive expansion before the original restore command; current and previous release backups remain unchanged."
+}

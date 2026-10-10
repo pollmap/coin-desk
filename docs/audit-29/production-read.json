@@ -1,0 +1,600 @@
+[
+  {
+    "origin": "pages",
+    "observedAt": "2026-10-10T22:01:40.353017+00:00",
+    "reads": [
+      {
+        "path": "/api/v1/runtime",
+        "httpStatus": 200,
+        "responseBytes": 924,
+        "data": {
+          "release": "vps-742d6e1430ffac93",
+          "backup": {
+            "ok": true,
+            "lastCompletedAt": 1791654199,
+            "verified": true
+          }
+        }
+      },
+      {
+        "path": "/api/v1/status/summary",
+        "httpStatus": 200,
+        "responseBytes": 12416,
+        "data": {
+          "now": 1791669694,
+          "sourceCounts": {
+            "ok": 1541,
+            "delayed": 44
+          },
+          "totalSources": 1635
+        }
+      },
+      {
+        "path": "/api/v1/health",
+        "httpStatus": 503,
+        "responseBytes": 1064387,
+        "data": {
+          "ok": false,
+          "checkedAt": 1791669696,
+          "reasons": [
+            {
+              "code": "SOURCE_DELAYED",
+              "key": "COMP:upbit:1h",
+              "message": "원천값의 기준일이 오래됐습니다. 원천과 대조가 필요합니다."
+            },
+            {
+              "code": "SOURCE_DELAYED",
+              "key": "KAVA:upbit:1h",
+              "message": "원천값의 기준일이 오래됐습니다. 원천과 대조가 필요합니다."
+            },
+            {
+              "code": "SOURCE_DELAYED",
+              "key": "quote:LINK:upbit",
+              "message": "최근 체결 시각이 지났습니다. 새 체결을 기다립니다."
+            },
+            {
+              "code": "SOURCE_DELAYED",
+              "key": "quote:PENGU:upbit",
+              "message": "최근 체결 시각이 지났습니다. 새 체결을 기다립니다."
+            },
+            {
+              "code": "SOURCE_DELAYED",
+              "key": "quote:TRX:upbit",
+              "message": "최근 체결 시각이 지났습니다. 새 체결을 기다립니다."
+            },
+            {
+              "code": "SOURCE_DELAYED",
+              "key": "quote:MNT:upbit",
+              "message": "최근 체결 시각이 지났습니다. 새 체결을 기다립니다."
+            },
+            {
+              "code": "SOURCE_DELAYED",
+              "key": "quote:ICP:upbit",
+              "message": "최근 체결 시각이 지났습니다. 새 체결을 기다립니다."
+            },
+            {
+              "code": "SOURCE_DELAYED",
+              "key": "quote:XAUT:upbit",
+              "message": "최근 체결 시각이 지났습니다. 새 체결을 기다립니다."
+            },
+            {
+              "code": "SOURCE_DELAYED",
+              "key": "quote:WLFI:upbit",
+              "message": "최근 체결 시각이 지났습니다. 새 체결을 기다립니다."
+            },
+            {
+              "code": "SOURCE_DELAYED",
+              "key": "quote:ALGO:upbit",
+              "message": "최근 체결 시각이 지났습니다. 새 체결을 기다립니다."
+            },
+            {
+              "code": "SOURCE_DELAYED",
+              "key": "quote:RENDER:upbit",
+              "message": "최근 체결 시각이 지났습니다. 새 체결을 기다립니다."
+            },
+            {
+              "code": "SOURCE_DELAYED",
+              "key": "quote:VVV:upbit",
+              "message": "최근 체결 시각이 지났습니다. 새 체결을 기다립니다."
+            },
+            {
+              "code": "SOURCE_DELAYED",
+              "key": "quote:MORPHO:upbit",
+              "message": "최근 체결 시각이 지났습니다. 새 체결을 기다립니다."
+            },
+            {
+              "code": "SOURCE_DELAYED",
+              "key": "quote:INJ:upbit",
+              "message": "최근 체결 시각이 지났습니다. 새 체결을 기다립니다."
+            },
+            {
+              "code": "SOURCE_DELAYED",
+              "key": "quote:VET:upbit",
+              "message": "최근 체결 시각이 지났습니다. 새 체결을 기다립니다."
+            },
+            {
+              "code": "SOURCE_DELAYED",
+              "key": "quote:RAY:upbit",
+              "message": "최근 체결 시각이 지났습니다. 새 체결을 기다립니다."
+            },
+            {
+              "code": "SOURCE_DELAYED",
+              "key": "quote:CRO:upbit",
+              "message": "최근 체결 시각이 지났습니다. 새 체결을 기다립니다."
+            },
+            {
+              "code": "SOURCE_DELAYED",
+              "key": "quote:PYTH:upbit",
+              "message": "최근 체결 시각이 지났습니다. 새 체결을 기다립니다."
+            },
+            {
+              "code": "SOURCE_DELAYED",
+              "key": "quote:VIRTUAL:upbit",
+              "message": "최근 체결 시각이 지났습니다. 새 체결을 기다립니다."
+            },
+            {
+              "code": "SOURCE_DELAYED",
+              "key": "quote:PENDLE:upbit",
+              "message": "최근 체결 시각이 지났습니다. 새 체결을 기다립니다."
+            },
+            {
+              "code": "SOURCE_DELAYED",
+              "key": "quote:SPX:upbit",
+              "message": "최근 체결 시각이 지났습니다. 새 체결을 기다립니다."
+            },
+            {
+              "code": "SOURCE_DELAYED",
+              "key": "quote:GRT:upbit",
+              "message": "최근 체결 시각이 지났습니다. 새 체결을 기다립니다."
+            },
+            {
+              "code": "SOURCE_DELAYED",
+              "key": "quote:SYRUP:upbit",
+              "message": "최근 체결 시각이 지났습니다. 새 체결을 기다립니다."
+            },
+            {
+              "code": "SOURCE_DELAYED",
+              "key": "quote:ENS:upbit",
+              "message": "최근 체결 시각이 지났습니다. 새 체결을 기다립니다."
+            },
+            {
+              "code": "SOURCE_DELAYED",
+              "key": "quote:COMP:upbit",
+              "message": "최근 체결 시각이 지났습니다. 새 체결을 기다립니다."
+            },
+            {
+              "code": "SOURCE_DELAYED",
+              "key": "quote:THETA:upbit",
+              "message": "최근 체결 시각이 지났습니다. 새 체결을 기다립니다."
+            },
+            {
+              "code": "SOURCE_DELAYED",
+              "key": "quote:WIF:upbit",
+              "message": "최근 체결 시각이 지났습니다. 새 체결을 기다립니다."
+            },
+            {
+              "code": "SOURCE_DELAYED",
+              "key": "quote:TRAC:upbit",
+              "message": "최근 체결 시각이 지났습니다. 새 체결을 기다립니다."
+            },
+            {
+              "code": "SOURCE_DELAYED",
+              "key": "quote:AKT:upbit",
+              "message": "최근 체결 시각이 지났습니다. 새 체결을 기다립니다."
+            },
+            {
+              "code": "SOURCE_DELAYED",
+              "key": "quote:MANA:upbit",
+              "message": "최근 체결 시각이 지났습니다. 새 체결을 기다립니다."
+            },
+            {
+              "code": "SOURCE_DELAYED",
+              "key": "quote:A:upbit",
+              "message": "최근 체결 시각이 지났습니다. 새 체결을 기다립니다."
+            },
+            {
+              "code": "SOURCE_DELAYED",
+              "key": "quote:CHZ:upbit",
+              "message": "최근 체결 시각이 지났습니다. 새 체결을 기다립니다."
+            },
+            {
+              "code": "SOURCE_DELAYED",
+              "key": "quote:SUPER:upbit",
+              "message": "최근 체결 시각이 지났습니다. 새 체결을 기다립니다."
+            },
+            {
+              "code": "SOURCE_DELAYED",
+              "key": "quote:GLM:upbit",
+              "message": "최근 체결 시각이 지났습니다. 새 체결을 기다립니다."
+            },
+            {
+              "code": "SOURCE_DELAYED",
+              "key": "quote:KMNO:upbit",
+              "message": "최근 체결 시각이 지났습니다. 새 체결을 기다립니다."
+            },
+            {
+              "code": "SOURCE_DELAYED",
+              "key": "quote:CFG:upbit",
+              "message": "최근 체결 시각이 지났습니다. 새 체결을 기다립니다."
+            },
+            {
+              "code": "SOURCE_DELAYED",
+              "key": "quote:KAVA:upbit",
+              "message": "최근 체결 시각이 지났습니다. 새 체결을 기다립니다."
+            },
+            {
+              "code": "SOURCE_DELAYED",
+              "key": "quote:KAITO:upbit",
+              "message": "최근 체결 시각이 지났습니다. 새 체결을 기다립니다."
+            },
+            {
+              "code": "SOURCE_DELAYED",
+              "key": "quote:COW:upbit",
+              "message": "최근 체결 시각이 지났습니다. 새 체결을 기다립니다."
+            },
+            {
+              "code": "SOURCE_DELAYED",
+              "key": "quote:TFUEL:upbit",
+              "message": "최근 체결 시각이 지났습니다. 새 체결을 기다립니다."
+            },
+            {
+              "code": "SOURCE_DELAYED",
+              "key": "quote:SAFE:upbit",
+              "message": "최근 체결 시각이 지났습니다. 새 체결을 기다립니다."
+            },
+            {
+              "code": "SOURCE_DELAYED",
+              "key": "quote:ARKM:upbit",
+              "message": "최근 체결 시각이 지났습니다. 새 체결을 기다립니다."
+            },
+            {
+              "code": "SOURCE_DELAYED",
+              "key": "quote:GNO:binance",
+              "message": "시세 통계 기준 시각이 지났습니다. 원천의 새 통계를 기다립니다."
+            },
+            {
+              "code": "SOURCE_DELAYED",
+              "key": "quote:ONT:upbit",
+              "message": "최근 체결 시각이 지났습니다. 새 체결을 기다립니다."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/api/v1/search?q=%EB%8F%84%EC%A7%80%20%EC%8A%88%ED%8D%BC%ED%8A%B8%EB%A0%8C%EB%93%9C&kind=indicator",
+        "httpStatus": 200,
+        "responseBytes": 450,
+        "results": [
+          {
+            "id": "indicator:view:supertrend",
+            "title": "슈퍼트렌드",
+            "kind": "indicator",
+            "asset": "DOGE",
+            "metric": "view:supertrend",
+            "reason": "DOGE · 변동 폭(ATR)을 반영한 추세 기준선",
+            "source": "선택 가격 원천",
+            "href": "/coins/DOGE?asset=DOGE&metric=view%3Asupertrend&interval=1w&log=0&price_source=binance&market=binance&period=all",
+            "indexVersion": "2.1.0"
+          }
+        ]
+      },
+      {
+        "path": "/api/v1/search?q=%ED%8E%AD%EA%B7%84%20supertrend&kind=indicator",
+        "httpStatus": 200,
+        "responseBytes": 452,
+        "results": [
+          {
+            "id": "indicator:view:supertrend",
+            "title": "슈퍼트렌드",
+            "kind": "indicator",
+            "asset": "PENGU",
+            "metric": "view:supertrend",
+            "reason": "PENGU · 변동 폭(ATR)을 반영한 추세 기준선",
+            "source": "선택 가격 원천",
+            "href": "/coins/PENGU?asset=PENGU&metric=view%3Asupertrend&interval=1w&log=0&price_source=binance&market=binance&period=all",
+            "indexVersion": "2.1.0"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "origin": "vps",
+    "observedAt": "2026-10-10T22:01:48.507113+00:00",
+    "reads": [
+      {
+        "path": "/api/v1/runtime",
+        "httpStatus": 200,
+        "responseBytes": 925,
+        "data": {
+          "release": "vps-742d6e1430ffac93",
+          "backup": {
+            "ok": true,
+            "lastCompletedAt": 1791654199,
+            "verified": true
+          }
+        }
+      },
+      {
+        "path": "/api/v1/status/summary",
+        "httpStatus": 200,
+        "responseBytes": 12416,
+        "data": {
+          "now": 1791669700,
+          "sourceCounts": {
+            "ok": 1541,
+            "delayed": 44
+          },
+          "totalSources": 1635
+        }
+      },
+      {
+        "path": "/api/v1/health",
+        "httpStatus": 503,
+        "responseBytes": 1064417,
+        "data": {
+          "ok": false,
+          "checkedAt": 1791669701,
+          "reasons": [
+            {
+              "code": "SOURCE_DELAYED",
+              "key": "COMP:upbit:1h",
+              "message": "원천값의 기준일이 오래됐습니다. 원천과 대조가 필요합니다."
+            },
+            {
+              "code": "SOURCE_DELAYED",
+              "key": "KAVA:upbit:1h",
+              "message": "원천값의 기준일이 오래됐습니다. 원천과 대조가 필요합니다."
+            },
+            {
+              "code": "SOURCE_DELAYED",
+              "key": "quote:LINK:upbit",
+              "message": "최근 체결 시각이 지났습니다. 새 체결을 기다립니다."
+            },
+            {
+              "code": "SOURCE_DELAYED",
+              "key": "quote:PENGU:upbit",
+              "message": "최근 체결 시각이 지났습니다. 새 체결을 기다립니다."
+            },
+            {
+              "code": "SOURCE_DELAYED",
+              "key": "quote:TRX:upbit",
+              "message": "최근 체결 시각이 지났습니다. 새 체결을 기다립니다."
+            },
+            {
+              "code": "SOURCE_DELAYED",
+              "key": "quote:MNT:upbit",
+              "message": "최근 체결 시각이 지났습니다. 새 체결을 기다립니다."
+            },
+            {
+              "code": "SOURCE_DELAYED",
+              "key": "quote:ICP:upbit",
+              "message": "최근 체결 시각이 지났습니다. 새 체결을 기다립니다."
+            },
+            {
+              "code": "SOURCE_DELAYED",
+              "key": "quote:XAUT:upbit",
+              "message": "최근 체결 시각이 지났습니다. 새 체결을 기다립니다."
+            },
+            {
+              "code": "SOURCE_DELAYED",
+              "key": "quote:WLFI:upbit",
+              "message": "최근 체결 시각이 지났습니다. 새 체결을 기다립니다."
+            },
+            {
+              "code": "SOURCE_DELAYED",
+              "key": "quote:ALGO:upbit",
+              "message": "최근 체결 시각이 지났습니다. 새 체결을 기다립니다."
+            },
+            {
+              "code": "SOURCE_DELAYED",
+              "key": "quote:RENDER:upbit",
+              "message": "최근 체결 시각이 지났습니다. 새 체결을 기다립니다."
+            },
+            {
+              "code": "SOURCE_DELAYED",
+              "key": "quote:VVV:upbit",
+              "message": "최근 체결 시각이 지났습니다. 새 체결을 기다립니다."
+            },
+            {
+              "code": "SOURCE_DELAYED",
+              "key": "quote:MORPHO:upbit",
+              "message": "최근 체결 시각이 지났습니다. 새 체결을 기다립니다."
+            },
+            {
+              "code": "SOURCE_DELAYED",
+              "key": "quote:INJ:upbit",
+              "message": "최근 체결 시각이 지났습니다. 새 체결을 기다립니다."
+            },
+            {
+              "code": "SOURCE_DELAYED",
+              "key": "quote:VET:upbit",
+              "message": "최근 체결 시각이 지났습니다. 새 체결을 기다립니다."
+            },
+            {
+              "code": "SOURCE_DELAYED",
+              "key": "quote:RAY:upbit",
+              "message": "최근 체결 시각이 지났습니다. 새 체결을 기다립니다."
+            },
+            {
+              "code": "SOURCE_DELAYED",
+              "key": "quote:CRO:upbit",
+              "message": "최근 체결 시각이 지났습니다. 새 체결을 기다립니다."
+            },
+            {
+              "code": "SOURCE_DELAYED",
+              "key": "quote:PYTH:upbit",
+              "message": "최근 체결 시각이 지났습니다. 새 체결을 기다립니다."
+            },
+            {
+              "code": "SOURCE_DELAYED",
+              "key": "quote:VIRTUAL:upbit",
+              "message": "최근 체결 시각이 지났습니다. 새 체결을 기다립니다."
+            },
+            {
+              "code": "SOURCE_DELAYED",
+              "key": "quote:PENDLE:upbit",
+              "message": "최근 체결 시각이 지났습니다. 새 체결을 기다립니다."
+            },
+            {
+              "code": "SOURCE_DELAYED",
+              "key": "quote:SPX:upbit",
+              "message": "최근 체결 시각이 지났습니다. 새 체결을 기다립니다."
+            },
+            {
+              "code": "SOURCE_DELAYED",
+              "key": "quote:GRT:upbit",
+              "message": "최근 체결 시각이 지났습니다. 새 체결을 기다립니다."
+            },
+            {
+              "code": "SOURCE_DELAYED",
+              "key": "quote:SYRUP:upbit",
+              "message": "최근 체결 시각이 지났습니다. 새 체결을 기다립니다."
+            },
+            {
+              "code": "SOURCE_DELAYED",
+              "key": "quote:ENS:upbit",
+              "message": "최근 체결 시각이 지났습니다. 새 체결을 기다립니다."
+            },
+            {
+              "code": "SOURCE_DELAYED",
+              "key": "quote:COMP:upbit",
+              "message": "최근 체결 시각이 지났습니다. 새 체결을 기다립니다."
+            },
+            {
+              "code": "SOURCE_DELAYED",
+              "key": "quote:THETA:upbit",
+              "message": "최근 체결 시각이 지났습니다. 새 체결을 기다립니다."
+            },
+            {
+              "code": "SOURCE_DELAYED",
+              "key": "quote:WIF:upbit",
+              "message": "최근 체결 시각이 지났습니다. 새 체결을 기다립니다."
+            },
+            {
+              "code": "SOURCE_DELAYED",
+              "key": "quote:TRAC:upbit",
+              "message": "최근 체결 시각이 지났습니다. 새 체결을 기다립니다."
+            },
+            {
+              "code": "SOURCE_DELAYED",
+              "key": "quote:AKT:upbit",
+              "message": "최근 체결 시각이 지났습니다. 새 체결을 기다립니다."
+            },
+            {
+              "code": "SOURCE_DELAYED",
+              "key": "quote:MANA:upbit",
+              "message": "최근 체결 시각이 지났습니다. 새 체결을 기다립니다."
+            },
+            {
+              "code": "SOURCE_DELAYED",
+              "key": "quote:A:upbit",
+              "message": "최근 체결 시각이 지났습니다. 새 체결을 기다립니다."
+            },
+            {
+              "code": "SOURCE_DELAYED",
+              "key": "quote:CHZ:upbit",
+              "message": "최근 체결 시각이 지났습니다. 새 체결을 기다립니다."
+            },
+            {
+              "code": "SOURCE_DELAYED",
+              "key": "quote:SUPER:upbit",
+              "message": "최근 체결 시각이 지났습니다. 새 체결을 기다립니다."
+            },
+            {
+              "code": "SOURCE_DELAYED",
+              "key": "quote:GLM:upbit",
+              "message": "최근 체결 시각이 지났습니다. 새 체결을 기다립니다."
+            },
+            {
+              "code": "SOURCE_DELAYED",
+              "key": "quote:KMNO:upbit",
+              "message": "최근 체결 시각이 지났습니다. 새 체결을 기다립니다."
+            },
+            {
+              "code": "SOURCE_DELAYED",
+              "key": "quote:CFG:upbit",
+              "message": "최근 체결 시각이 지났습니다. 새 체결을 기다립니다."
+            },
+            {
+              "code": "SOURCE_DELAYED",
+              "key": "quote:KAVA:upbit",
+              "message": "최근 체결 시각이 지났습니다. 새 체결을 기다립니다."
+            },
+            {
+              "code": "SOURCE_DELAYED",
+              "key": "quote:KAITO:upbit",
+              "message": "최근 체결 시각이 지났습니다. 새 체결을 기다립니다."
+            },
+            {
+              "code": "SOURCE_DELAYED",
+              "key": "quote:COW:upbit",
+              "message": "최근 체결 시각이 지났습니다. 새 체결을 기다립니다."
+            },
+            {
+              "code": "SOURCE_DELAYED",
+              "key": "quote:TFUEL:upbit",
+              "message": "최근 체결 시각이 지났습니다. 새 체결을 기다립니다."
+            },
+            {
+              "code": "SOURCE_DELAYED",
+              "key": "quote:SAFE:upbit",
+              "message": "최근 체결 시각이 지났습니다. 새 체결을 기다립니다."
+            },
+            {
+              "code": "SOURCE_DELAYED",
+              "key": "quote:ARKM:upbit",
+              "message": "최근 체결 시각이 지났습니다. 새 체결을 기다립니다."
+            },
+            {
+              "code": "SOURCE_DELAYED",
+              "key": "quote:GNO:binance",
+              "message": "시세 통계 기준 시각이 지났습니다. 원천의 새 통계를 기다립니다."
+            },
+            {
+              "code": "SOURCE_DELAYED",
+              "key": "quote:ONT:upbit",
+              "message": "최근 체결 시각이 지났습니다. 새 체결을 기다립니다."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/api/v1/search?q=%EB%8F%84%EC%A7%80%20%EC%8A%88%ED%8D%BC%ED%8A%B8%EB%A0%8C%EB%93%9C&kind=indicator",
+        "httpStatus": 200,
+        "responseBytes": 449,
+        "results": [
+          {
+            "id": "indicator:view:supertrend",
+            "title": "슈퍼트렌드",
+            "kind": "indicator",
+            "asset": "DOGE",
+            "metric": "view:supertrend",
+            "reason": "DOGE · 변동 폭(ATR)을 반영한 추세 기준선",
+            "source": "선택 가격 원천",
+            "href": "/coins/DOGE?asset=DOGE&metric=view%3Asupertrend&interval=1w&log=0&price_source=binance&market=binance&period=all",
+            "indexVersion": "2.1.0"
+          }
+        ]
+      },
+      {
+        "path": "/api/v1/search?q=%ED%8E%AD%EA%B7%84%20supertrend&kind=indicator",
+        "httpStatus": 200,
+        "responseBytes": 450,
+        "results": [
+          {
+            "id": "indicator:view:supertrend",
+            "title": "슈퍼트렌드",
+            "kind": "indicator",
+            "asset": "PENGU",
+            "metric": "view:supertrend",
+            "reason": "PENGU · 변동 폭(ATR)을 반영한 추세 기준선",
+            "source": "선택 가격 원천",
+            "href": "/coins/PENGU?asset=PENGU&metric=view%3Asupertrend&interval=1w&log=0&price_source=binance&market=binance&period=all",
+            "indexVersion": "2.1.0"
+          }
+        ]
+      }
+    ]
+  }
+]

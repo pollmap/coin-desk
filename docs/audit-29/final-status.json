@@ -1,0 +1,9 @@
+{
+  "featureCodeComplete": true,
+  "deploymentComplete": true,
+  "all150ActualSourceCalculationAvailable": true,
+  "allOperatingSourcesHealthy": false,
+  "naturalSampleThresholdMet": false,
+  "appleAndHumanUsabilityUnverified": true,
+  "wait48hRequired": false
+}

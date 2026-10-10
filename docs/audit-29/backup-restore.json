@@ -1,0 +1,109 @@
+{
+  "prepare": {
+    "release": "vps-742d6e1430ffac93",
+    "filesVerified": 509,
+    "backupVerified": true,
+    "backupCompletedAt": 1791667759,
+    "backupFileSha256": "8768df34a29fc4623dcdbfac80cb38ea24fc642d4bd42f05a4ced255be46836f",
+    "productionChanged": false
+  },
+  "verifiedManifest": {
+    "verified": true,
+    "completedAt": 1791667759,
+    "fileSha256": "8768df34a29fc4623dcdbfac80cb38ea24fc642d4bd42f05a4ced255be46836f",
+    "content": {
+      "schemaSha256": "9242fcb6b2d233d89f48e4e111d4e7c00890ec5fc7a2c6ca449701faf3daaf2f",
+      "schemaObjects": 22,
+      "tables": {
+        "_coin_desk_migrations": {
+          "rows": 9,
+          "sha256": "b2d51443e164519eb88833f5c642d1eaccd662114aac2cf8e8ad1afd185cdae0"
+        },
+        "_coin_desk_runtime_runs": {
+          "rows": 30056,
+          "sha256": "05219c752be80511c10bd9fbff8d046d0226f1d09734303df024ccbfa38f6963"
+        },
+        "candles": {
+          "rows": 142818,
+          "sha256": "dc3066a652da16fde4f939be18deaf9748d5e720ac6b4b180ad3fcfe2f223074"
+        },
+        "chain_history": {
+          "rows": 218,
+          "sha256": "f249da04fd96ff410a87f84fc129e91d2e46d4df292fd7f29e62591f525b0169"
+        },
+        "cron_runs": {
+          "rows": 4320,
+          "sha256": "5b956485c3ceb2a4982f7918c1db0b4c502a1c08b7abf3744f8c43518bd0b0a0"
+        },
+        "cron_state": {
+          "rows": 1,
+          "sha256": "9c4c167a7bc9be9071b19b2109080b44630583ae4052c129614ac110cacc8d3c"
+        },
+        "d1_migrations": {
+          "rows": 9,
+          "sha256": "1054cb7c7494723f71b146faf3d1be036d975f1e823aa7c3df7ece9e6607c224"
+        },
+        "daily_briefings": {
+          "rows": 15,
+          "sha256": "7c03c6bc062430bfd4762c3498d0d51c72653594d2beef7b6aae4256d56d1379"
+        },
+        "derivative_series": {
+          "rows": 138586,
+          "sha256": "5bf1c5f60e502139025a40c3e6da527ae20ecc4334b210fbd52d82bff2518696"
+        },
+        "dominance_history": {
+          "rows": 394,
+          "sha256": "094555779830bda61fd6b58a228b33016670ade6eef18db7c65e1ddc410484fa"
+        },
+        "ingestion": {
+          "rows": 1635,
+          "sha256": "6377ed81f0aa25ae94dbf423a251dcb702ea0e1ad1338ba5c7326f3dbcc43cd4"
+        },
+        "network_coverage": {
+          "rows": 442,
+          "sha256": "58161a9774e48266ce36bf6b2d14ad2027bf34a6aafa19b7e12f7b9b4e7bbc26"
+        },
+        "network_months": {
+          "rows": 3787,
+          "sha256": "2044eb1d7e0a93e70b0bbef946f3b6c3d9711a76b02e849b6c8ea8cec4d76dc4"
+        },
+        "observation_signals": {
+          "rows": 78,
+          "sha256": "41e28427e58a75efecc841d3b3b676da189abffd0cf4eb1152dfab4502d7d2bb"
+        },
+        "onchain": {
+          "rows": 6491,
+          "sha256": "9ebbc9c38532eb81a2fcc0f823d6662c592d82829b3b20dcffdd1384dff39e0f"
+        },
+        "price_archive": {
+          "rows": 3718,
+          "sha256": "2ce659c4065fba73bb099ac2b4fb4bad496f8987f9fe0b314232cd9247d5633f"
+        },
+        "raw_samples": {
+          "rows": 1804,
+          "sha256": "016371ae30083b86274d08c9b92bc7e1cb12c6c7d03c72b7a42964a38ae36d88"
+        },
+        "reference_prices": {
+          "rows": 296321,
+          "sha256": "4fe4ef01e575c764ff8e03b613f7d8d1c16990cb5a792630f902d34e5310356b"
+        },
+        "signal_revisions": {
+          "rows": 4,
+          "sha256": "af516f3d6b9e5c9d14beb7d6bd2b07c1d5dae598824455e392dc294b1e4f7534"
+        },
+        "snapshots": {
+          "rows": 242,
+          "sha256": "0b623ea0031de8483d399c6548468a7582f5244ed0758b39247e66f8e250da26"
+        },
+        "state": {
+          "rows": 2190,
+          "sha256": "2f085349803fb1bc7847d5cd2a3a3347224d33a1d4ac637e783371b74fb23366"
+        }
+      }
+    }
+  },
+  "restoredTables": 21,
+  "restoredSchemaObjects": 22,
+  "restoreVerified": true,
+  "productionDatabaseOverwritten": false
+}

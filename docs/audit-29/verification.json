@@ -1,0 +1,109 @@
+{
+  "version": "0.29.0",
+  "checkedAt": "2026-10-10T22:07:58.695586+00:00",
+  "codeMain": "bc0a46e5665121a137eec2560e623ac84ba62e76",
+  "pullRequest": "https://github.com/pollmap/coin-desk/pull/59",
+  "ci": {
+    "prRun": 38088233980,
+    "mainRun": 38088962453,
+    "bothPassed": true,
+    "unitTests": 703,
+    "serverNodeTests": 22,
+    "serverPythonTests": 24,
+    "recoveryTests": 2,
+    "browserPassed": 234,
+    "privateOptInSkipped": 2,
+    "browserRetries": 0,
+    "localFinalSupertrendBrowserPassed": 12,
+    "typeBuildDocsBrandContainerConfiguredChecksPassed": true,
+    "doesNotProveAbsenceOfUnfixedVendorVulnerabilities": true
+  },
+  "actualCalculation": {
+    "assets": 150,
+    "marketSeries": 241,
+    "weeklyReadyAssets": 149,
+    "weeklyReadyMarketSeries": 236,
+    "rowsIndependentlyCompared": 73940,
+    "all150HaveAWorkingWeeklyOrDailySource": true,
+    "shortMarketHistories": [
+      {
+        "asset": "HYPE",
+        "market": "binance",
+        "rawWeeklyBars": 3,
+        "dailyRows": 7,
+        "dailyRawBars": 17
+      },
+      {
+        "asset": "CRV",
+        "market": "upbit",
+        "rawWeeklyBars": 8,
+        "dailyRows": 41,
+        "dailyRawBars": 51
+      },
+      {
+        "asset": "KAIA",
+        "market": "upbit",
+        "rawWeeklyBars": 1,
+        "dailyRows": 0,
+        "dailyRawBars": 2
+      },
+      {
+        "asset": "NMR",
+        "market": "upbit",
+        "rawWeeklyBars": 1,
+        "dailyRows": 0,
+        "dailyRawBars": 5
+      },
+      {
+        "asset": "KMNO",
+        "market": "upbit",
+        "rawWeeklyBars": 10,
+        "dailyRows": 55,
+        "dailyRawBars": 65
+      }
+    ],
+    "providerOHLCRequeriedIndividuallyThisTurn": false
+  },
+  "deployment": {
+    "release": "vps-742d6e1430ffac93",
+    "pagesPreview": "https://3cf4c01d.coin-desk.pages.dev",
+    "origins": [
+      "https://coin-desk.pages.dev",
+      "https://coin-desk.62.171.141.206.sslip.io"
+    ],
+    "allPublicFilesMatchCanonicalBuild": true,
+    "publicFilesPerOrigin": 250,
+    "changedServices": [
+      "api"
+    ],
+    "otherSixContainerIdsUnchanged": true,
+    "schemaChanged": false,
+    "collectorLogicChanged": false,
+    "backupRestoreVerified": true,
+    "previousRelease": "vps-3619f378788bf685"
+  },
+  "sourceHealthAllNormal": false,
+  "naturalSampleThresholdMet": false,
+  "preservation": {
+    "personalDataPublished": false,
+    "existingUntrackedProductDocumentChangedOrStaged": false,
+    "storageKeysChanged": false,
+    "productionDataDeleted": false,
+    "oldQaOriginalBytesRetainedInVerifiedArchives": true
+  },
+  "limitations": [
+    "Default weekly Supertrend needs ten consecutive closed weekly bars. HYPE uses a daily alternative; short newly listed Upbit markets show calculation waiting rather than another market value.",
+    "Source/currency/interval/gaps and confirmed-bar policy may differ from the uploaded TradingView chart; no claim of identical numbers for different inputs.",
+    "Provider OHLC itself was not individually re-requested and revalidated in full this turn; actual stored/API observations were independently recomputed.",
+    "Source health is distinct from indicator calculation and process/database health.",
+    "Actual Safari/VoiceOver and human usability tests remain unverified; no 48-hour waiting condition."
+  ],
+  "verificationIncidents": [
+    "An early browser assertion identified the missing explicit Wilder name in the explanation; repaired and rechecked.",
+    "Actual DOGE comparison identified display rounding to two decimal places; repaired all Supertrend legend/axis/table/accessibility readings and added a browser regression.",
+    "An initial live audit used the system cp949 encoding for UTF-8 JSON; repaired the audit script.",
+    "Backup reuse audit initially expected fileSha256 in status.json rather than the manifest; corrected before production activation.",
+    "Two older audit snapshot compression attempts were refused because SQLite sidecars existed. All snapshot and sidecar bytes were subsequently preserved in verified tar.gz archives.",
+    "The first Pages command used a relative dist path with --cwd pages and failed ENOENT before upload. The absolute canonical dist path succeeded; the production deployment source and every public file were independently checked."
+  ]
+}
