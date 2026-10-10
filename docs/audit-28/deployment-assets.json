@@ -1,0 +1,24 @@
+[
+  {
+    "origin": "pages",
+    "base": "https://coin-desk.pages.dev",
+    "observedAt": "2026-10-10T19:47:59.364002+00:00",
+    "servedFiles": 250,
+    "matched": 250,
+    "mismatches": [],
+    "boundedRetryFiles": [],
+    "indexTransform": null,
+    "canonicalByteIdentical": 250
+  },
+  {
+    "origin": "vps",
+    "base": "https://coin-desk.62.171.141.206.sslip.io",
+    "observedAt": "2026-10-10T19:50:12.357383+00:00",
+    "servedFiles": 250,
+    "matched": 250,
+    "mismatches": [],
+    "boundedRetryFiles": [],
+    "indexTransform": "Two exact deployed-origin image metadata replacements only",
+    "canonicalByteIdentical": 249
+  }
+]

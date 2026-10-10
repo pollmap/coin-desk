@@ -1,0 +1,84 @@
+[
+  {
+    "base": "https://coin-desk.pages.dev",
+    "observedAt": "2026-10-10T19:46:24.893Z",
+    "pageErrors": [],
+    "policyViolations": [],
+    "cases": [
+      {
+        "asset": "DOGE",
+        "source": "reference",
+        "priceFirst": 1390435200,
+        "bandFirst": 1453507200,
+        "initialVisibleFrom": 1390435200,
+        "oldestPriceAccessible": true,
+        "preBandPriceAccessible": true,
+        "mobileChartY": 261,
+        "pinnedMobileChartY": 297
+      },
+      {
+        "screen": "PC",
+        "x": 28,
+        "y": 226,
+        "width": 1224,
+        "height": 440
+      },
+      {
+        "theme": "light",
+        "axeViolations": 0
+      },
+      {
+        "theme": "dark",
+        "axeViolations": 0
+      },
+      {
+        "asset": "DOGE",
+        "source": "upbit",
+        "visibleFrom": 1614124800,
+        "explicitSourcePreserved": true
+      }
+    ],
+    "passed": true
+  },
+  {
+    "base": "https://coin-desk.62.171.141.206.sslip.io",
+    "observedAt": "2026-10-10T19:45:07.146Z",
+    "pageErrors": [],
+    "policyViolations": [],
+    "cases": [
+      {
+        "asset": "DOGE",
+        "source": "reference",
+        "priceFirst": 1390435200,
+        "bandFirst": 1453507200,
+        "initialVisibleFrom": 1390435200,
+        "oldestPriceAccessible": true,
+        "preBandPriceAccessible": true,
+        "mobileChartY": 261,
+        "pinnedMobileChartY": 297
+      },
+      {
+        "screen": "PC",
+        "x": 28,
+        "y": 226,
+        "width": 1224,
+        "height": 440
+      },
+      {
+        "theme": "light",
+        "axeViolations": 0
+      },
+      {
+        "theme": "dark",
+        "axeViolations": 0
+      },
+      {
+        "asset": "DOGE",
+        "source": "upbit",
+        "visibleFrom": 1614124800,
+        "explicitSourcePreserved": true
+      }
+    ],
+    "passed": true
+  }
+]

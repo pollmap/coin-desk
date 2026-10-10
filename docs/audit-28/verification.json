@@ -1,0 +1,88 @@
+{
+  "version": "0.28.0",
+  "checkedAt": "2026-10-10T19:55:27.129826+00:00",
+  "scope": "Earliest actual available daily history of current supported providers; not worldwide first trades or invented launch-day values.",
+  "codeMain": "ef00cb92e5091a7703c38ce2b59755594ae3805c",
+  "pullRequest": "https://github.com/pollmap/coin-desk/pull/58",
+  "ci": {
+    "prRun": 38079801529,
+    "mainRun": 38080411350,
+    "bothPassed": true,
+    "unitTests": 688,
+    "serverNodeTests": 22,
+    "serverPythonTests": 24,
+    "recoveryTests": 2,
+    "browserTestsPassed": 222,
+    "privateOptInSkipped": 2,
+    "browserRetries": 0,
+    "localTargetedBrowserTestsPassed": 6,
+    "typeBuildDocsBrandPassed": true,
+    "containerSmokeAndConfiguredSecurityChecksPassed": true,
+    "doesNotMeanUnfixedVendorVulnerabilitiesAreAbsent": true
+  },
+  "coverage": {
+    "assets": 150,
+    "marketHistories": 241,
+    "usdReferenceHistories": 143,
+    "sourceFirstDatesAndPricesMatched": 384,
+    "networkAssets": 34,
+    "networkStoredCombinationsCatalogStartsMatched": 442,
+    "networkExposedCombinations": 408,
+    "networkInternalReferenceFields": 34,
+    "allHistoricalValuesIndependentlyRecomputed": false,
+    "defaultProviders": {
+      "reference": 83,
+      "binance": 52,
+      "upbit": 15
+    }
+  },
+  "doge": {
+    "priceFirst": "2014-01-23",
+    "bandFirst": "2016-01-23",
+    "binanceFirst": "2019-07-05",
+    "upbitFirst": "2021-02-24",
+    "launch": "2013-12-06",
+    "unavailableLaunchPeriodFilled": false
+  },
+  "deployment": {
+    "release": "vps-3619f378788bf685",
+    "pagesPreview": "https://965c4cea.coin-desk.pages.dev",
+    "origins": [
+      "https://coin-desk.pages.dev",
+      "https://coin-desk.62.171.141.206.sslip.io"
+    ],
+    "publicFilesVerifiedPerOrigin": 250,
+    "vpsIndexOnlyTwoOriginSpecificImageMetadataReplacements": true,
+    "apiOnlyServiceChanged": true,
+    "otherSixContainerIdsUnchanged": true,
+    "schemaChanged": false,
+    "collectorLogicChanged": false,
+    "backupRestoreVerified": true,
+    "oldReleaseRetained": "vps-c4973ddd75c4b96b"
+  },
+  "historyTaskVerified": true,
+  "allOperatingSourcesHealthy": false,
+  "shortNaturalSampleThresholdMet": false,
+  "sourceDelaysRemainVisible": true,
+  "preservation": {
+    "privateDataPublished": false,
+    "existingUntrackedProductDocumentStaged": false,
+    "storageKeysChanged": false,
+    "productionDataDeleted": false,
+    "olderQaCloneExactBytesRetainedInVerifiedGzip": true
+  },
+  "limitations": [
+    "Launch dates do not guarantee tradable price observations; available provider histories remain separate by currency and provider.",
+    "Hourly candles retain the existing 90-day policy; derivative series follow actual contract/provider availability.",
+    "Mobile initial chart Y261; pinned historical date Y297, so that state exceeds the earlier 280px layout target. PC Y226 and height440.",
+    "Actual Safari/VoiceOver and human usability testing remain unverified.",
+    "48-hour waiting is not a completion requirement."
+  ],
+  "verificationHarnessIncidents": [
+    "Initial local fixture startup timed out; the targeted checks subsequently passed serially without retry or timeout-policy changes. Cause unconfirmed.",
+    "The first public Pages history probe timed out; independent provider checks and later public browser checks passed.",
+    "Windows static verifier initially used cp949 for UTF-8 HTML; repaired the audit tool and retained checkpoint results.",
+    "Initial natural probe used Pages /healthz, which is an SPA route; corrected to /api/v1/runtime. This was an audit-path error, not a product JSON error.",
+    "Deletion of two older QA clones was prevented because records differed from snapshots. Exact original bytes were retained in verified gzip archives instead."
+  ]
+}

@@ -1,0 +1,79 @@
+{
+  "observedAt": 1791661970,
+  "quoteRuns": [
+    {
+      "lane": "quotes",
+      "scheduled_at": 1791661920,
+      "started_at": 1791661920,
+      "completed_at": 1791661953,
+      "outcome": "ok"
+    },
+    {
+      "lane": "quotes",
+      "scheduled_at": 1791661860,
+      "started_at": 1791661860,
+      "completed_at": 1791661887,
+      "outcome": "ok"
+    },
+    {
+      "lane": "quotes",
+      "scheduled_at": 1791661800,
+      "started_at": 1791661800,
+      "completed_at": 1791661830,
+      "outcome": "ok"
+    },
+    {
+      "lane": "quotes",
+      "scheduled_at": 1791661740,
+      "started_at": 1791661740,
+      "completed_at": 1791661772,
+      "outcome": "ok"
+    },
+    {
+      "lane": "quotes",
+      "scheduled_at": 1791661680,
+      "started_at": 1791661680,
+      "completed_at": 1791661707,
+      "outcome": "ok"
+    },
+    {
+      "lane": "quotes",
+      "scheduled_at": 1791661620,
+      "started_at": 1791661620,
+      "completed_at": 1791661648,
+      "outcome": "ok"
+    }
+  ],
+  "coreQuotes": [
+    {
+      "key": "quote:BTC:binance",
+      "last_success": 1791661921,
+      "data_as_of": 1791661921
+    },
+    {
+      "key": "quote:BTC:upbit",
+      "last_success": 1791661925,
+      "data_as_of": 1791661920
+    },
+    {
+      "key": "quote:DOGE:binance",
+      "last_success": 1791661921,
+      "data_as_of": 1791661918
+    },
+    {
+      "key": "quote:DOGE:upbit",
+      "last_success": 1791661925,
+      "data_as_of": 1791661772
+    },
+    {
+      "key": "quote:ETH:binance",
+      "last_success": 1791661921,
+      "data_as_of": 1791661921
+    },
+    {
+      "key": "quote:ETH:upbit",
+      "last_success": 1791661925,
+      "data_as_of": 1791661920
+    }
+  ]
+}

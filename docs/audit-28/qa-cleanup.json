@@ -1,0 +1,43 @@
+{
+  "newCandidate": {
+    "completedAt": 1791661082,
+    "candidateRemoved": true,
+    "disposableCloneBytesRemoved": 167956480,
+    "productionDatabasePreserved": true,
+    "backupPreserved": true,
+    "rollbackImagePreserved": true,
+    "freeBeforeBytes": 8211759104,
+    "freeAfterBytes": 8379830272
+  },
+  "olderQaCopies": {
+    "completedAt": 1791661378,
+    "compressedQaCopies": [
+      {
+        "originalPath": "audit/quality-027-r2/rehearsal.sqlite",
+        "retainedArchive": "audit/quality-027-r2/rehearsal.sqlite.gz",
+        "originalBytes": 167882752,
+        "compressedBytes": 52081935,
+        "originalAndExpandedSha256": "2cc9d5dfd008e60ed7724dff6c2e1761728990e604c7847d3ade76f3b7120810",
+        "activeMount": false,
+        "exactOriginalBytesPreserved": true
+      },
+      {
+        "originalPath": "audit/quality-027/rehearsal.sqlite",
+        "retainedArchive": "audit/quality-027/rehearsal.sqlite.gz",
+        "originalBytes": 167862272,
+        "compressedBytes": 52077793,
+        "originalAndExpandedSha256": "ef7b43db52a9b31b3cd6e00a7d73bc9b9a5839901cc0d62f04bffc222924dd2c",
+        "activeMount": false,
+        "exactOriginalBytesPreserved": true
+      }
+    ],
+    "productionDataDeleted": false,
+    "backupsDeleted": false,
+    "rollbackAssetsDeleted": false,
+    "freeBeforeBytes": 8378793984,
+    "previousDeletionPrevented": "QA runtime records differed from the original snapshots; retain exact bytes in verified gzip archives.",
+    "freeAfterBytes": 8274538496
+  },
+  "postProcessFreeBytes": 8607838208,
+  "compressionMeasurementNote": "The earlier freeAfterBytes was sampled before Python released open SQLite handles. postProcessFreeBytes is a later measurement."
+}
