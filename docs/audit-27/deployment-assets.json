@@ -1,0 +1,140 @@
+[
+  {
+    "origin": "pages",
+    "base": "https://coin-desk.pages.dev",
+    "observedAt": "2026-10-10T18:10:42.441942+00:00",
+    "filesVerified": 251,
+    "servedFiles": 251,
+    "mismatches": [],
+    "apis": [
+      {
+        "path": "status/summary",
+        "status": 200,
+        "rawBytes": 14942,
+        "durationMs": 1390.03,
+        "version": null,
+        "release": null,
+        "summary": {}
+      },
+      {
+        "path": "status/sources?limit=50",
+        "status": 200,
+        "rawBytes": 22957,
+        "durationMs": 304.93,
+        "version": null,
+        "release": null,
+        "summary": {
+          "total": 1585,
+          "limit": 50,
+          "offset": 0
+        }
+      },
+      {
+        "path": "status",
+        "status": 200,
+        "rawBytes": 1140610,
+        "durationMs": 1374.67,
+        "version": null,
+        "release": null,
+        "summary": {}
+      },
+      {
+        "path": "runtime",
+        "status": 200,
+        "rawBytes": 928,
+        "durationMs": 362.71,
+        "version": null,
+        "release": "vps-c4973ddd75c4b96b",
+        "summary": {
+          "performance": {
+            "requests": 1657,
+            "responseBytes": 42143601,
+            "maxRequestMs": 645,
+            "eventLoopP95Ms": 22,
+            "rssMiB": 164
+          },
+          "backup": {
+            "ok": true,
+            "lastCompletedAt": 1791654199,
+            "verified": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "origin": "vps",
+    "base": "https://coin-desk.62.171.141.206.sslip.io",
+    "observedAt": "2026-10-10T18:25:02.682990+00:00",
+    "filesVerified": 251,
+    "servedFiles": 251,
+    "mismatches": [],
+    "boundedRetryFiles": [
+      "index.html"
+    ],
+    "earlierAttempt": "Initial four-connection audit stopped at an unidentified 45-second timeout; partial results were not saved. This checkpoint audit uses two connections and at most one retry of failed files.",
+    "apis": [
+      {
+        "path": "status/summary",
+        "status": 200,
+        "rawBytes": 13765,
+        "durationMs": 1631.23,
+        "version": null,
+        "release": null,
+        "summary": {}
+      },
+      {
+        "path": "status/sources?limit=50",
+        "status": 200,
+        "rawBytes": 22945,
+        "durationMs": 1191.9,
+        "version": null,
+        "release": null,
+        "summary": {
+          "total": 1585,
+          "limit": 50,
+          "offset": 0
+        }
+      },
+      {
+        "path": "status",
+        "status": 200,
+        "rawBytes": 1138999,
+        "durationMs": 4542.48,
+        "version": null,
+        "release": null,
+        "summary": {}
+      },
+      {
+        "path": "runtime",
+        "status": 200,
+        "rawBytes": 938,
+        "durationMs": 902.55,
+        "version": null,
+        "release": "vps-c4973ddd75c4b96b",
+        "summary": {
+          "performance": {
+            "requests": 2226,
+            "responseBytes": 63675876,
+            "maxRequestMs": 15492,
+            "eventLoopP95Ms": 22,
+            "rssMiB": 186
+          },
+          "backup": {
+            "ok": true,
+            "lastCompletedAt": 1791654199,
+            "verified": true
+          }
+        }
+      }
+    ],
+    "indexMetadata": {
+      "canonicalSha256": "70ee08f3faf1d266ef0321c550343a8c538ffa574d47c23262b925f25da9d9d0",
+      "expectedVpsSha256": "4b147a8949cc9826baa35343fc309e3f562550731a6cde2cd3c7a579d7f77234",
+      "allowedExactReplacements": 2,
+      "scope": "og:image and twitter:image use this deployed origin; all other bytes must match",
+      "verified": true
+    },
+    "servedFilesByteIdenticalToCanonical": 250
+  }
+]

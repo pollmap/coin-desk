@@ -1,0 +1,33 @@
+{
+  "observedAt": "2026-10-10T17:21:18Z",
+  "repository": "intfloat/multilingual-e5-small",
+  "revision": "614241f622f53c4eeff9890bdc4f31cfecc418b3",
+  "conversion": "onnx/model_qint8_avx512_vnni.onnx",
+  "fileSha256": {
+    "onnx/model_qint8_avx512_vnni.onnx": "dd476dd0c2514e9b9be83aeb3853fac0763e0bdf4a71645407587d77c48a2d88",
+    "tokenizer.json": "0b44a9d7b51c3c62626640cda0e2c2f70fdacdc25bbbd68038369d14ebdf4c39"
+  },
+  "indexVersion": "2.0.0:1:1.1.0",
+  "versions": {
+    "numpy": "2.5.2",
+    "onnxruntime": "1.29.0",
+    "tokenizers": "0.23.1"
+  },
+  "environment": "isolated local CPU affinity, one ONNX thread; not production VPS",
+  "chunking": {
+    "contentTokens": 384,
+    "overlapTokens": 32,
+    "chunks": 1028,
+    "tokenizerRevision": "614241f622f53c4eeff9890bdc4f31cfecc418b3"
+  },
+  "tasks": 100,
+  "baselineTop5": 100,
+  "fusedTop5": 100,
+  "improvementPercentagePoints": 0.0,
+  "wrongAssetResults": 0,
+  "queryP95Ms": 5.860199977178127,
+  "productionEnabled": false,
+  "qualityGatePassed": false,
+  "latencyGatePassed": true,
+  "reason": "Production remains lexical unless every quality, VPS memory/disk and collection-regression gate passes"
+}

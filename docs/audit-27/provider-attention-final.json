@@ -1,0 +1,915 @@
+{
+  "observedAt": "2026-10-10T18:25:53.367623+00:00",
+  "durationSeconds": 4.22,
+  "states": {
+    "ok": 1535,
+    "delayed": 50
+  },
+  "active": 1585,
+  "attention": [
+    {
+      "key": "quote:DOGE:upbit",
+      "status": "delayed",
+      "diagnosis": "TRADE_STALE",
+      "errorCode": null,
+      "storedDataAsOf": 1791656532,
+      "storedLastAttempt": 1791656705,
+      "storedLastSuccess": 1791656705,
+      "freshnessLimitSeconds": 180,
+      "provider": {
+        "providerAt": 1791656532.424,
+        "providerAgeSeconds": 220.81,
+        "field": "trade_timestamp",
+        "observedAt": 1791656753.2312458
+      },
+      "sameProviderAgeExceedsLimit": true,
+      "note": "Actual Upbit executed trade timestamp; observations can change between separate requests."
+    },
+    {
+      "key": "quote:LINK:upbit",
+      "status": "delayed",
+      "diagnosis": "TRADE_STALE",
+      "errorCode": "TRADE_STALE",
+      "storedDataAsOf": 1791656387,
+      "storedLastAttempt": 1791656705,
+      "storedLastSuccess": 1791656644,
+      "freshnessLimitSeconds": 180,
+      "provider": {
+        "providerAt": 1791656387.611,
+        "providerAgeSeconds": 365.62,
+        "field": "trade_timestamp",
+        "observedAt": 1791656753.2312458
+      },
+      "sameProviderAgeExceedsLimit": true,
+      "note": "Actual Upbit executed trade timestamp; observations can change between separate requests."
+    },
+    {
+      "key": "quote:PENGU:upbit",
+      "status": "delayed",
+      "diagnosis": "TRADE_STALE",
+      "errorCode": null,
+      "storedDataAsOf": 1791656450,
+      "storedLastAttempt": 1791656708,
+      "storedLastSuccess": 1791656708,
+      "freshnessLimitSeconds": 180,
+      "provider": {
+        "providerAt": 1791656450.116,
+        "providerAgeSeconds": 303.12,
+        "field": "trade_timestamp",
+        "observedAt": 1791656753.2312458
+      },
+      "sameProviderAgeExceedsLimit": true,
+      "note": "Actual Upbit executed trade timestamp; observations can change between separate requests."
+    },
+    {
+      "key": "quote:HBAR:upbit",
+      "status": "delayed",
+      "diagnosis": "TRADE_STALE",
+      "errorCode": "TRADE_STALE",
+      "storedDataAsOf": 1791656375,
+      "storedLastAttempt": 1791656710,
+      "storedLastSuccess": 1791656648,
+      "freshnessLimitSeconds": 180,
+      "provider": {
+        "providerAt": 1791656375.267,
+        "providerAgeSeconds": 377.96,
+        "field": "trade_timestamp",
+        "observedAt": 1791656753.2312458
+      },
+      "sameProviderAgeExceedsLimit": true,
+      "note": "Actual Upbit executed trade timestamp; observations can change between separate requests."
+    },
+    {
+      "key": "quote:SHIB:upbit",
+      "status": "delayed",
+      "diagnosis": "TRADE_STALE",
+      "errorCode": null,
+      "storedDataAsOf": 1791656466,
+      "storedLastAttempt": 1791656710,
+      "storedLastSuccess": 1791656710,
+      "freshnessLimitSeconds": 180,
+      "provider": {
+        "providerAt": 1791656711.344,
+        "providerAgeSeconds": 41.89,
+        "field": "trade_timestamp",
+        "observedAt": 1791656753.2312458
+      },
+      "sameProviderAgeExceedsLimit": false,
+      "note": "Actual Upbit executed trade timestamp; observations can change between separate requests."
+    },
+    {
+      "key": "quote:MNT:upbit",
+      "status": "delayed",
+      "diagnosis": "TRADE_STALE",
+      "errorCode": "TRADE_STALE",
+      "storedDataAsOf": 1791655230,
+      "storedLastAttempt": 1791656710,
+      "storedLastSuccess": 1791655506,
+      "freshnessLimitSeconds": 180,
+      "provider": {
+        "providerAt": 1791655230.113,
+        "providerAgeSeconds": 1523.12,
+        "field": "trade_timestamp",
+        "observedAt": 1791656753.2312458
+      },
+      "sameProviderAgeExceedsLimit": true,
+      "note": "Actual Upbit executed trade timestamp; observations can change between separate requests."
+    },
+    {
+      "key": "quote:XAUT:upbit",
+      "status": "delayed",
+      "diagnosis": "TRADE_STALE",
+      "errorCode": "TRADE_STALE",
+      "storedDataAsOf": 1791655991,
+      "storedLastAttempt": 1791656712,
+      "storedLastSuccess": 1791656292,
+      "freshnessLimitSeconds": 180,
+      "provider": {
+        "providerAt": 1791655991.389,
+        "providerAgeSeconds": 761.84,
+        "field": "trade_timestamp",
+        "observedAt": 1791656753.2312458
+      },
+      "sameProviderAgeExceedsLimit": true,
+      "note": "Actual Upbit executed trade timestamp; observations can change between separate requests."
+    },
+    {
+      "key": "quote:JST:upbit",
+      "status": "delayed",
+      "diagnosis": "TRADE_STALE",
+      "errorCode": "TRADE_STALE",
+      "storedDataAsOf": 1791655992,
+      "storedLastAttempt": 1791656712,
+      "storedLastSuccess": 1791656292,
+      "freshnessLimitSeconds": 180,
+      "provider": {
+        "providerAt": 1791655992.723,
+        "providerAgeSeconds": 760.51,
+        "field": "trade_timestamp",
+        "observedAt": 1791656753.2312458
+      },
+      "sameProviderAgeExceedsLimit": true,
+      "note": "Actual Upbit executed trade timestamp; observations can change between separate requests."
+    },
+    {
+      "key": "quote:WLFI:upbit",
+      "status": "delayed",
+      "diagnosis": "TRADE_STALE",
+      "errorCode": "TRADE_STALE",
+      "storedDataAsOf": 1791656379,
+      "storedLastAttempt": 1791656712,
+      "storedLastSuccess": 1791656649,
+      "freshnessLimitSeconds": 180,
+      "provider": {
+        "providerAt": 1791656736.42,
+        "providerAgeSeconds": 16.81,
+        "field": "trade_timestamp",
+        "observedAt": 1791656753.2312458
+      },
+      "sameProviderAgeExceedsLimit": false,
+      "note": "Actual Upbit executed trade timestamp; observations can change between separate requests."
+    },
+    {
+      "key": "quote:ETC:upbit",
+      "status": "delayed",
+      "diagnosis": "TRADE_STALE",
+      "errorCode": null,
+      "storedDataAsOf": 1791656514,
+      "storedLastAttempt": 1791656712,
+      "storedLastSuccess": 1791656712,
+      "freshnessLimitSeconds": 180,
+      "provider": {
+        "providerAt": 1791656514.335,
+        "providerAgeSeconds": 238.9,
+        "field": "trade_timestamp",
+        "observedAt": 1791656753.2312458
+      },
+      "sameProviderAgeExceedsLimit": true,
+      "note": "Actual Upbit executed trade timestamp; observations can change between separate requests."
+    },
+    {
+      "key": "quote:RENDER:upbit",
+      "status": "delayed",
+      "diagnosis": "TRADE_STALE",
+      "errorCode": "TRADE_STALE",
+      "storedDataAsOf": 1791655987,
+      "storedLastAttempt": 1791656712,
+      "storedLastSuccess": 1791656233,
+      "freshnessLimitSeconds": 180,
+      "provider": {
+        "providerAt": 1791655987.638,
+        "providerAgeSeconds": 765.59,
+        "field": "trade_timestamp",
+        "observedAt": 1791656753.2312458
+      },
+      "sameProviderAgeExceedsLimit": true,
+      "note": "Actual Upbit executed trade timestamp; observations can change between separate requests."
+    },
+    {
+      "key": "quote:ARB:upbit",
+      "status": "delayed",
+      "diagnosis": "TRADE_STALE",
+      "errorCode": "TRADE_STALE",
+      "storedDataAsOf": 1791655811,
+      "storedLastAttempt": 1791656713,
+      "storedLastSuccess": 1791656110,
+      "freshnessLimitSeconds": 180,
+      "provider": {
+        "providerAt": 1791655811.675,
+        "providerAgeSeconds": 941.56,
+        "field": "trade_timestamp",
+        "observedAt": 1791656753.2312458
+      },
+      "sameProviderAgeExceedsLimit": true,
+      "note": "Actual Upbit executed trade timestamp; observations can change between separate requests."
+    },
+    {
+      "key": "quote:MORPHO:upbit",
+      "status": "delayed",
+      "diagnosis": "TRADE_STALE",
+      "errorCode": "TRADE_STALE",
+      "storedDataAsOf": 1791654848,
+      "storedLastAttempt": 1791656713,
+      "storedLastSuccess": 1791655094,
+      "freshnessLimitSeconds": 180,
+      "provider": {
+        "providerAt": 1791654848.276,
+        "providerAgeSeconds": 1904.96,
+        "field": "trade_timestamp",
+        "observedAt": 1791656753.2312458
+      },
+      "sameProviderAgeExceedsLimit": true,
+      "note": "Actual Upbit executed trade timestamp; observations can change between separate requests."
+    },
+    {
+      "key": "quote:AERO:upbit",
+      "status": "delayed",
+      "diagnosis": "TRADE_STALE",
+      "errorCode": null,
+      "storedDataAsOf": 1791656542,
+      "storedLastAttempt": 1791656713,
+      "storedLastSuccess": 1791656713,
+      "freshnessLimitSeconds": 180,
+      "provider": {
+        "providerAt": 1791656542.241,
+        "providerAgeSeconds": 210.99,
+        "field": "trade_timestamp",
+        "observedAt": 1791656753.2312458
+      },
+      "sameProviderAgeExceedsLimit": true,
+      "note": "Actual Upbit executed trade timestamp; observations can change between separate requests."
+    },
+    {
+      "key": "quote:INJ:upbit",
+      "status": "delayed",
+      "diagnosis": "TRADE_STALE",
+      "errorCode": null,
+      "storedDataAsOf": 1791656525,
+      "storedLastAttempt": 1791656713,
+      "storedLastSuccess": 1791656713,
+      "freshnessLimitSeconds": 180,
+      "provider": {
+        "providerAt": 1791656745.13,
+        "providerAgeSeconds": 8.1,
+        "field": "trade_timestamp",
+        "observedAt": 1791656753.2312458
+      },
+      "sameProviderAgeExceedsLimit": false,
+      "note": "Actual Upbit executed trade timestamp; observations can change between separate requests."
+    },
+    {
+      "key": "quote:VET:upbit",
+      "status": "delayed",
+      "diagnosis": "TRADE_STALE",
+      "errorCode": "TRADE_STALE",
+      "storedDataAsOf": 1791656353,
+      "storedLastAttempt": 1791656655,
+      "storedLastSuccess": 1791656593,
+      "freshnessLimitSeconds": 180,
+      "provider": {
+        "providerAt": 1791656353.056,
+        "providerAgeSeconds": 400.18,
+        "field": "trade_timestamp",
+        "observedAt": 1791656753.2312458
+      },
+      "sameProviderAgeExceedsLimit": true,
+      "note": "Actual Upbit executed trade timestamp; observations can change between separate requests."
+    },
+    {
+      "key": "quote:RAY:upbit",
+      "status": "delayed",
+      "diagnosis": "TRADE_STALE",
+      "errorCode": null,
+      "storedDataAsOf": 1791656558,
+      "storedLastAttempt": 1791656715,
+      "storedLastSuccess": 1791656715,
+      "freshnessLimitSeconds": 180,
+      "provider": {
+        "providerAt": 1791656558.734,
+        "providerAgeSeconds": 194.5,
+        "field": "trade_timestamp",
+        "observedAt": 1791656753.2312458
+      },
+      "sameProviderAgeExceedsLimit": true,
+      "note": "Actual Upbit executed trade timestamp; observations can change between separate requests."
+    },
+    {
+      "key": "quote:CRO:upbit",
+      "status": "delayed",
+      "diagnosis": "TRADE_STALE",
+      "errorCode": "TRADE_STALE",
+      "storedDataAsOf": 1791655160,
+      "storedLastAttempt": 1791656655,
+      "storedLastSuccess": 1791655452,
+      "freshnessLimitSeconds": 180,
+      "provider": {
+        "providerAt": 1791656723.155,
+        "providerAgeSeconds": 30.08,
+        "field": "trade_timestamp",
+        "observedAt": 1791656753.2312458
+      },
+      "sameProviderAgeExceedsLimit": false,
+      "note": "Actual Upbit executed trade timestamp; observations can change between separate requests."
+    },
+    {
+      "key": "quote:CRV:upbit",
+      "status": "delayed",
+      "diagnosis": "TRADE_STALE",
+      "errorCode": "TRADE_STALE",
+      "storedDataAsOf": 1791654396,
+      "storedLastAttempt": 1791656655,
+      "storedLastSuccess": 1791654674,
+      "freshnessLimitSeconds": 180,
+      "provider": {
+        "providerAt": 1791654396.032,
+        "providerAgeSeconds": 2357.2,
+        "field": "trade_timestamp",
+        "observedAt": 1791656753.2312458
+      },
+      "sameProviderAgeExceedsLimit": true,
+      "note": "Actual Upbit executed trade timestamp; observations can change between separate requests."
+    },
+    {
+      "key": "quote:VIRTUAL:upbit",
+      "status": "delayed",
+      "diagnosis": "TRADE_STALE",
+      "errorCode": "TRADE_STALE",
+      "storedDataAsOf": 1791656016,
+      "storedLastAttempt": 1791656655,
+      "storedLastSuccess": 1791656296,
+      "freshnessLimitSeconds": 180,
+      "provider": {
+        "providerAt": 1791656016.003,
+        "providerAgeSeconds": 737.23,
+        "field": "trade_timestamp",
+        "observedAt": 1791656753.2312458
+      },
+      "sameProviderAgeExceedsLimit": true,
+      "note": "Actual Upbit executed trade timestamp; observations can change between separate requests."
+    },
+    {
+      "key": "quote:SEI:upbit",
+      "status": "delayed",
+      "diagnosis": "TRADE_STALE",
+      "errorCode": null,
+      "storedDataAsOf": 1791656436,
+      "storedLastAttempt": 1791656719,
+      "storedLastSuccess": 1791656719,
+      "freshnessLimitSeconds": 180,
+      "provider": {
+        "providerAt": 1791656720.527,
+        "providerAgeSeconds": 32.7,
+        "field": "trade_timestamp",
+        "observedAt": 1791656753.2312458
+      },
+      "sameProviderAgeExceedsLimit": false,
+      "note": "Actual Upbit executed trade timestamp; observations can change between separate requests."
+    },
+    {
+      "key": "quote:PENDLE:upbit",
+      "status": "delayed",
+      "diagnosis": "TRADE_STALE",
+      "errorCode": null,
+      "storedDataAsOf": 1791656498,
+      "storedLastAttempt": 1791656719,
+      "storedLastSuccess": 1791656719,
+      "freshnessLimitSeconds": 180,
+      "provider": {
+        "providerAt": 1791656498.28,
+        "providerAgeSeconds": 254.95,
+        "field": "trade_timestamp",
+        "observedAt": 1791656753.2312458
+      },
+      "sameProviderAgeExceedsLimit": true,
+      "note": "Actual Upbit executed trade timestamp; observations can change between separate requests."
+    },
+    {
+      "key": "quote:SPX:upbit",
+      "status": "delayed",
+      "diagnosis": "TRADE_STALE",
+      "errorCode": "TRADE_STALE",
+      "storedDataAsOf": 1791656406,
+      "storedLastAttempt": 1791656719,
+      "storedLastSuccess": 1791656658,
+      "freshnessLimitSeconds": 180,
+      "provider": {
+        "providerAt": 1791656406.56,
+        "providerAgeSeconds": 346.67,
+        "field": "trade_timestamp",
+        "observedAt": 1791656753.2312458
+      },
+      "sameProviderAgeExceedsLimit": true,
+      "note": "Actual Upbit executed trade timestamp; observations can change between separate requests."
+    },
+    {
+      "key": "quote:XTZ:upbit",
+      "status": "delayed",
+      "diagnosis": "TRADE_STALE",
+      "errorCode": null,
+      "storedDataAsOf": 1791656488,
+      "storedLastAttempt": 1791656719,
+      "storedLastSuccess": 1791656719,
+      "freshnessLimitSeconds": 180,
+      "provider": {
+        "providerAt": 1791656488.768,
+        "providerAgeSeconds": 264.46,
+        "field": "trade_timestamp",
+        "observedAt": 1791656753.2312458
+      },
+      "sameProviderAgeExceedsLimit": true,
+      "note": "Actual Upbit executed trade timestamp; observations can change between separate requests."
+    },
+    {
+      "key": "quote:GRT:upbit",
+      "status": "delayed",
+      "diagnosis": "TRADE_STALE",
+      "errorCode": "TRADE_STALE",
+      "storedDataAsOf": 1791653851,
+      "storedLastAttempt": 1791656720,
+      "storedLastSuccess": 1791654138,
+      "freshnessLimitSeconds": 180,
+      "provider": {
+        "providerAt": 1791653851.95,
+        "providerAgeSeconds": 2901.28,
+        "field": "trade_timestamp",
+        "observedAt": 1791656753.2312458
+      },
+      "sameProviderAgeExceedsLimit": true,
+      "note": "Actual Upbit executed trade timestamp; observations can change between separate requests."
+    },
+    {
+      "key": "quote:SYRUP:upbit",
+      "status": "delayed",
+      "diagnosis": "TRADE_STALE",
+      "errorCode": "TRADE_STALE",
+      "storedDataAsOf": 1791655590,
+      "storedLastAttempt": 1791656720,
+      "storedLastSuccess": 1791655877,
+      "freshnessLimitSeconds": 180,
+      "provider": {
+        "providerAt": 1791655590.698,
+        "providerAgeSeconds": 1162.53,
+        "field": "trade_timestamp",
+        "observedAt": 1791656753.2312458
+      },
+      "sameProviderAgeExceedsLimit": true,
+      "note": "Actual Upbit executed trade timestamp; observations can change between separate requests."
+    },
+    {
+      "key": "quote:ENS:upbit",
+      "status": "delayed",
+      "diagnosis": "TRADE_STALE",
+      "errorCode": "TRADE_STALE",
+      "storedDataAsOf": 1791655996,
+      "storedLastAttempt": 1791656720,
+      "storedLastSuccess": 1791656239,
+      "freshnessLimitSeconds": 180,
+      "provider": {
+        "providerAt": 1791655996.083,
+        "providerAgeSeconds": 757.15,
+        "field": "trade_timestamp",
+        "observedAt": 1791656753.2312458
+      },
+      "sameProviderAgeExceedsLimit": true,
+      "note": "Actual Upbit executed trade timestamp; observations can change between separate requests."
+    },
+    {
+      "key": "quote:COMP:upbit",
+      "status": "delayed",
+      "diagnosis": "TRADE_STALE",
+      "errorCode": "TRADE_STALE",
+      "storedDataAsOf": 1791654131,
+      "storedLastAttempt": 1791656720,
+      "storedLastSuccess": 1791654377,
+      "freshnessLimitSeconds": 180,
+      "provider": {
+        "providerAt": 1791654131.935,
+        "providerAgeSeconds": 2621.3,
+        "field": "trade_timestamp",
+        "observedAt": 1791656753.2312458
+      },
+      "sameProviderAgeExceedsLimit": true,
+      "note": "Actual Upbit executed trade timestamp; observations can change between separate requests."
+    },
+    {
+      "key": "quote:THETA:upbit",
+      "status": "delayed",
+      "diagnosis": "TRADE_STALE",
+      "errorCode": "TRADE_STALE",
+      "storedDataAsOf": 1791654698,
+      "storedLastAttempt": 1791656720,
+      "storedLastSuccess": 1791654979,
+      "freshnessLimitSeconds": 180,
+      "provider": {
+        "providerAt": 1791654698.209,
+        "providerAgeSeconds": 2055.02,
+        "field": "trade_timestamp",
+        "observedAt": 1791656753.2312458
+      },
+      "sameProviderAgeExceedsLimit": true,
+      "note": "Actual Upbit executed trade timestamp; observations can change between separate requests."
+    },
+    {
+      "key": "quote:WIF:upbit",
+      "status": "delayed",
+      "diagnosis": "TRADE_STALE",
+      "errorCode": "TRADE_STALE",
+      "storedDataAsOf": 1791654725,
+      "storedLastAttempt": 1791656720,
+      "storedLastSuccess": 1791654979,
+      "freshnessLimitSeconds": 180,
+      "provider": {
+        "providerAt": 1791654725.388,
+        "providerAgeSeconds": 2027.84,
+        "field": "trade_timestamp",
+        "observedAt": 1791656753.2312458
+      },
+      "sameProviderAgeExceedsLimit": true,
+      "note": "Actual Upbit executed trade timestamp; observations can change between separate requests."
+    },
+    {
+      "key": "quote:AKT:upbit",
+      "status": "delayed",
+      "diagnosis": "TRADE_STALE",
+      "errorCode": "TRADE_STALE",
+      "storedDataAsOf": 1791655383,
+      "storedLastAttempt": 1791656724,
+      "storedLastSuccess": 1791655642,
+      "freshnessLimitSeconds": 180,
+      "provider": {
+        "providerAt": 1791655383.158,
+        "providerAgeSeconds": 1370.07,
+        "field": "trade_timestamp",
+        "observedAt": 1791656753.2312458
+      },
+      "sameProviderAgeExceedsLimit": true,
+      "note": "Actual Upbit executed trade timestamp; observations can change between separate requests."
+    },
+    {
+      "key": "quote:AXS:upbit",
+      "status": "delayed",
+      "diagnosis": "TRADE_STALE",
+      "errorCode": "TRADE_STALE",
+      "storedDataAsOf": 1791656344,
+      "storedLastAttempt": 1791656664,
+      "storedLastSuccess": 1791656603,
+      "freshnessLimitSeconds": 180,
+      "provider": {
+        "providerAt": 1791656344.553,
+        "providerAgeSeconds": 408.68,
+        "field": "trade_timestamp",
+        "observedAt": 1791656753.2312458
+      },
+      "sameProviderAgeExceedsLimit": true,
+      "note": "Actual Upbit executed trade timestamp; observations can change between separate requests."
+    },
+    {
+      "key": "quote:NEO:upbit",
+      "status": "delayed",
+      "diagnosis": "TRADE_STALE",
+      "errorCode": "TRADE_STALE",
+      "storedDataAsOf": 1791656277,
+      "storedLastAttempt": 1791656724,
+      "storedLastSuccess": 1791656543,
+      "freshnessLimitSeconds": 180,
+      "provider": {
+        "providerAt": 1791656277.177,
+        "providerAgeSeconds": 476.05,
+        "field": "trade_timestamp",
+        "observedAt": 1791656753.2312458
+      },
+      "sameProviderAgeExceedsLimit": true,
+      "note": "Actual Upbit executed trade timestamp; observations can change between separate requests."
+    },
+    {
+      "key": "quote:A:upbit",
+      "status": "delayed",
+      "diagnosis": "TRADE_STALE",
+      "errorCode": "TRADE_STALE",
+      "storedDataAsOf": 1791656197,
+      "storedLastAttempt": 1791656666,
+      "storedLastSuccess": 1791656483,
+      "freshnessLimitSeconds": 180,
+      "provider": {
+        "providerAt": 1791656197.3,
+        "providerAgeSeconds": 555.93,
+        "field": "trade_timestamp",
+        "observedAt": 1791656753.2312458
+      },
+      "sameProviderAgeExceedsLimit": true,
+      "note": "Actual Upbit executed trade timestamp; observations can change between separate requests."
+    },
+    {
+      "key": "quote:CHZ:upbit",
+      "status": "delayed",
+      "diagnosis": "TRADE_STALE",
+      "errorCode": "TRADE_STALE",
+      "storedDataAsOf": 1791655360,
+      "storedLastAttempt": 1791656666,
+      "storedLastSuccess": 1791655644,
+      "freshnessLimitSeconds": 180,
+      "provider": {
+        "providerAt": 1791655360.752,
+        "providerAgeSeconds": 1392.48,
+        "field": "trade_timestamp",
+        "observedAt": 1791656753.2312458
+      },
+      "sameProviderAgeExceedsLimit": true,
+      "note": "Actual Upbit executed trade timestamp; observations can change between separate requests."
+    },
+    {
+      "key": "quote:XEC:upbit",
+      "status": "delayed",
+      "diagnosis": "TRADE_STALE",
+      "errorCode": null,
+      "storedDataAsOf": 1791656462,
+      "storedLastAttempt": 1791656726,
+      "storedLastSuccess": 1791656726,
+      "freshnessLimitSeconds": 180,
+      "provider": {
+        "providerAt": 1791656462.464,
+        "providerAgeSeconds": 290.77,
+        "field": "trade_timestamp",
+        "observedAt": 1791656753.2312458
+      },
+      "sameProviderAgeExceedsLimit": true,
+      "note": "Actual Upbit executed trade timestamp; observations can change between separate requests."
+    },
+    {
+      "key": "quote:GLM:upbit",
+      "status": "delayed",
+      "diagnosis": "TRADE_STALE",
+      "errorCode": "TRADE_STALE",
+      "storedDataAsOf": 1791652037,
+      "storedLastAttempt": 1791656666,
+      "storedLastSuccess": 1791652284,
+      "freshnessLimitSeconds": 180,
+      "provider": {
+        "providerAt": 1791652037.574,
+        "providerAgeSeconds": 4715.66,
+        "field": "trade_timestamp",
+        "observedAt": 1791656753.2312458
+      },
+      "sameProviderAgeExceedsLimit": true,
+      "note": "Actual Upbit executed trade timestamp; observations can change between separate requests."
+    },
+    {
+      "key": "quote:GAS:upbit",
+      "status": "delayed",
+      "diagnosis": "TRADE_STALE",
+      "errorCode": "TRADE_STALE",
+      "storedDataAsOf": 1791655921,
+      "storedLastAttempt": 1791656730,
+      "storedLastSuccess": 1791656186,
+      "freshnessLimitSeconds": 180,
+      "provider": {
+        "providerAt": 1791655921.848,
+        "providerAgeSeconds": 831.38,
+        "field": "trade_timestamp",
+        "observedAt": 1791656753.2312458
+      },
+      "sameProviderAgeExceedsLimit": true,
+      "note": "Actual Upbit executed trade timestamp; observations can change between separate requests."
+    },
+    {
+      "key": "quote:W:upbit",
+      "status": "delayed",
+      "diagnosis": "TRADE_STALE",
+      "errorCode": null,
+      "storedDataAsOf": 1791656543,
+      "storedLastAttempt": 1791656730,
+      "storedLastSuccess": 1791656730,
+      "freshnessLimitSeconds": 180,
+      "provider": {
+        "providerAt": 1791656543.192,
+        "providerAgeSeconds": 210.04,
+        "field": "trade_timestamp",
+        "observedAt": 1791656753.2312458
+      },
+      "sameProviderAgeExceedsLimit": true,
+      "note": "Actual Upbit executed trade timestamp; observations can change between separate requests."
+    },
+    {
+      "key": "quote:ATH:upbit",
+      "status": "delayed",
+      "diagnosis": "TRADE_STALE",
+      "errorCode": null,
+      "storedDataAsOf": 1791656490,
+      "storedLastAttempt": 1791656732,
+      "storedLastSuccess": 1791656732,
+      "freshnessLimitSeconds": 180,
+      "provider": {
+        "providerAt": 1791656490.515,
+        "providerAgeSeconds": 262.72,
+        "field": "trade_timestamp",
+        "observedAt": 1791656753.2312458
+      },
+      "sameProviderAgeExceedsLimit": true,
+      "note": "Actual Upbit executed trade timestamp; observations can change between separate requests."
+    },
+    {
+      "key": "quote:LPT:upbit",
+      "status": "delayed",
+      "diagnosis": "TRADE_STALE",
+      "errorCode": null,
+      "storedDataAsOf": 1791656484,
+      "storedLastAttempt": 1791656732,
+      "storedLastSuccess": 1791656732,
+      "freshnessLimitSeconds": 180,
+      "provider": {
+        "providerAt": 1791656484.021,
+        "providerAgeSeconds": 269.21,
+        "field": "trade_timestamp",
+        "observedAt": 1791656753.2312458
+      },
+      "sameProviderAgeExceedsLimit": true,
+      "note": "Actual Upbit executed trade timestamp; observations can change between separate requests."
+    },
+    {
+      "key": "quote:KAVA:upbit",
+      "status": "delayed",
+      "diagnosis": "TRADE_STALE",
+      "errorCode": "TRADE_STALE",
+      "storedDataAsOf": 1791655506,
+      "storedLastAttempt": 1791656732,
+      "storedLastSuccess": 1791655769,
+      "freshnessLimitSeconds": 180,
+      "provider": {
+        "providerAt": 1791655506.037,
+        "providerAgeSeconds": 1247.19,
+        "field": "trade_timestamp",
+        "observedAt": 1791656753.2312458
+      },
+      "sameProviderAgeExceedsLimit": true,
+      "note": "Actual Upbit executed trade timestamp; observations can change between separate requests."
+    },
+    {
+      "key": "quote:COW:upbit",
+      "status": "delayed",
+      "diagnosis": "TRADE_STALE",
+      "errorCode": "TRADE_STALE",
+      "storedDataAsOf": 1791655996,
+      "storedLastAttempt": 1791656732,
+      "storedLastSuccess": 1791656251,
+      "freshnessLimitSeconds": 180,
+      "provider": {
+        "providerAt": 1791655996.58,
+        "providerAgeSeconds": 756.65,
+        "field": "trade_timestamp",
+        "observedAt": 1791656753.2312458
+      },
+      "sameProviderAgeExceedsLimit": true,
+      "note": "Actual Upbit executed trade timestamp; observations can change between separate requests."
+    },
+    {
+      "key": "quote:TFUEL:upbit",
+      "status": "delayed",
+      "diagnosis": "TRADE_STALE",
+      "errorCode": "TRADE_STALE",
+      "storedDataAsOf": 1791653800,
+      "storedLastAttempt": 1791656732,
+      "storedLastSuccess": 1791654088,
+      "freshnessLimitSeconds": 180,
+      "provider": {
+        "providerAt": 1791653800.425,
+        "providerAgeSeconds": 2952.81,
+        "field": "trade_timestamp",
+        "observedAt": 1791656753.2312458
+      },
+      "sameProviderAgeExceedsLimit": true,
+      "note": "Actual Upbit executed trade timestamp; observations can change between separate requests."
+    },
+    {
+      "key": "quote:SAFE:upbit",
+      "status": "delayed",
+      "diagnosis": "TRADE_STALE",
+      "errorCode": "TRADE_STALE",
+      "storedDataAsOf": 1791656056,
+      "storedLastAttempt": 1791656732,
+      "storedLastSuccess": 1791656306,
+      "freshnessLimitSeconds": 180,
+      "provider": {
+        "providerAt": 1791656056.185,
+        "providerAgeSeconds": 697.05,
+        "field": "trade_timestamp",
+        "observedAt": 1791656753.2312458
+      },
+      "sameProviderAgeExceedsLimit": true,
+      "note": "Actual Upbit executed trade timestamp; observations can change between separate requests."
+    },
+    {
+      "key": "quote:VTHO:upbit",
+      "status": "delayed",
+      "diagnosis": "TRADE_STALE",
+      "errorCode": null,
+      "storedDataAsOf": 1791656508,
+      "storedLastAttempt": 1791656733,
+      "storedLastSuccess": 1791656733,
+      "freshnessLimitSeconds": 180,
+      "provider": {
+        "providerAt": 1791656508.538,
+        "providerAgeSeconds": 244.69,
+        "field": "trade_timestamp",
+        "observedAt": 1791656753.2312458
+      },
+      "sameProviderAgeExceedsLimit": true,
+      "note": "Actual Upbit executed trade timestamp; observations can change between separate requests."
+    },
+    {
+      "key": "quote:CKB:upbit",
+      "status": "delayed",
+      "diagnosis": "TRADE_STALE",
+      "errorCode": "TRADE_STALE",
+      "storedDataAsOf": 1791656277,
+      "storedLastAttempt": 1791656733,
+      "storedLastSuccess": 1791656553,
+      "freshnessLimitSeconds": 180,
+      "provider": {
+        "providerAt": 1791656277.188,
+        "providerAgeSeconds": 476.04,
+        "field": "trade_timestamp",
+        "observedAt": 1791656753.2312458
+      },
+      "sameProviderAgeExceedsLimit": true,
+      "note": "Actual Upbit executed trade timestamp; observations can change between separate requests."
+    },
+    {
+      "key": "quote:ARKM:upbit",
+      "status": "delayed",
+      "diagnosis": "TRADE_STALE",
+      "errorCode": "TRADE_STALE",
+      "storedDataAsOf": 1791656072,
+      "storedLastAttempt": 1791656733,
+      "storedLastSuccess": 1791656371,
+      "freshnessLimitSeconds": 180,
+      "provider": {
+        "providerAt": 1791656072.988,
+        "providerAgeSeconds": 680.24,
+        "field": "trade_timestamp",
+        "observedAt": 1791656753.2312458
+      },
+      "sameProviderAgeExceedsLimit": true,
+      "note": "Actual Upbit executed trade timestamp; observations can change between separate requests."
+    },
+    {
+      "key": "quote:DGB:binance",
+      "status": "delayed",
+      "diagnosis": "QUOTE_WINDOW_STALE",
+      "errorCode": "TRADE_STALE",
+      "storedDataAsOf": 1791656232,
+      "storedLastAttempt": 1791656663,
+      "storedLastSuccess": 1791656481,
+      "freshnessLimitSeconds": 180,
+      "provider": {
+        "providerAt": 1791656731.017,
+        "providerAgeSeconds": 22.35,
+        "field": "closeTime",
+        "observedAt": 1791656753.3673236
+      },
+      "sameProviderAgeExceedsLimit": false,
+      "note": "Binance REST closeTime is the rolling window end, not a latest executed trade. This comparison only corroborates that same window field; actual stream trade age remains distinct."
+    },
+    {
+      "key": "quote:ASTR:upbit",
+      "status": "delayed",
+      "diagnosis": "TRADE_STALE",
+      "errorCode": "TRADE_STALE",
+      "storedDataAsOf": 1791655157,
+      "storedLastAttempt": 1791656733,
+      "storedLastSuccess": 1791655411,
+      "freshnessLimitSeconds": 180,
+      "provider": {
+        "providerAt": 1791655157.416,
+        "providerAgeSeconds": 1595.82,
+        "field": "trade_timestamp",
+        "observedAt": 1791656753.2312458
+      },
+      "sameProviderAgeExceedsLimit": true,
+      "note": "Actual Upbit executed trade timestamp; observations can change between separate requests."
+    }
+  ],
+  "providerErrors": [],
+  "directCollectionCalled": false,
+  "limitsUnchanged": true,
+  "sameTimeGuarantee": false
+}

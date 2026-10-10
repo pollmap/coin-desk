@@ -1,0 +1,18 @@
+{
+  "base": "https://coin-desk.62.171.141.206.sslip.io",
+  "startedAt": 1791655477174,
+  "clients": 100,
+  "durationMs": 30000,
+  "assetRegistry": 150,
+  "successful": 100,
+  "events": 3062,
+  "ticks": 42797,
+  "errors": [],
+  "reconnects": 10,
+  "receiptToClientP95Ms": 986,
+  "delaySamples": 29542,
+  "completedAt": 1791655515361,
+  "sameVpsClocks": true,
+  "syntheticTicks": false,
+  "browserPaintMeasured": false
+}

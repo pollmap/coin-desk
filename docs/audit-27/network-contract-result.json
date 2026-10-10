@@ -1,0 +1,5318 @@
+{
+  "observedAt": 1791653885.8270187,
+  "base": "http://127.0.0.1:18428",
+  "contracts": 408,
+  "assets": 34,
+  "matched": 408,
+  "missing": [],
+  "failures": [],
+  "observations": [
+    {
+      "asset": "BTC",
+      "metric": "mvrv",
+      "unit": "\ubc30",
+      "sourceMetric": "CapMVRVCur",
+      "derived": false,
+      "sampleTimes": [
+        1279411200,
+        1279497600
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "BTC",
+      "metric": "active_addresses",
+      "unit": "\uc8fc\uc18c / \uc77c",
+      "sourceMetric": "AdrActCnt",
+      "derived": false,
+      "sampleTimes": [
+        1230940800,
+        1231027200
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "BTC",
+      "metric": "balance_addresses",
+      "unit": "\uc8fc\uc18c",
+      "sourceMetric": "AdrBalCnt",
+      "derived": false,
+      "sampleTimes": [
+        1230940800,
+        1231027200
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "BTC",
+      "metric": "transactions",
+      "unit": "\uac74 / \uc77c",
+      "sourceMetric": "TxCnt",
+      "derived": false,
+      "sampleTimes": [
+        1230940800,
+        1231027200
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "BTC",
+      "metric": "transfers",
+      "unit": "\uac74 / \uc77c",
+      "sourceMetric": "TxTfrCnt",
+      "derived": false,
+      "sampleTimes": [
+        1230940800,
+        1231027200
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "BTC",
+      "metric": "supply",
+      "unit": "\uc790\uc0b0 \ub2e8\uc704",
+      "sourceMetric": "SplyCur",
+      "derived": false,
+      "sampleTimes": [
+        1230940800,
+        1231027200
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "BTC",
+      "metric": "market_cap",
+      "unit": "USD",
+      "sourceMetric": "CapMrktCurUSD",
+      "derived": false,
+      "sampleTimes": [
+        1279411200,
+        1279497600
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "BTC",
+      "metric": "fees_native",
+      "unit": "\uc790\uc0b0 \ub2e8\uc704 / \uc77c",
+      "sourceMetric": "FeeTotNtv",
+      "derived": false,
+      "sampleTimes": [
+        1230940800,
+        1231027200
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "BTC",
+      "metric": "hashrate",
+      "unit": "TH/s",
+      "sourceMetric": "HashRate",
+      "derived": false,
+      "sampleTimes": [
+        1231459200,
+        1231545600
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "BTC",
+      "metric": "blocks",
+      "unit": "\ube14\ub85d / \uc77c",
+      "sourceMetric": "BlkCnt",
+      "derived": false,
+      "sampleTimes": [
+        1230940800,
+        1231027200
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "BTC",
+      "metric": "issuance",
+      "unit": "\uc790\uc0b0 \ub2e8\uc704 / \uc77c",
+      "sourceMetric": "IssTotNtv",
+      "derived": false,
+      "sampleTimes": [
+        1231459200,
+        1231545600
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "BTC",
+      "metric": "exchange_inflow",
+      "unit": "\uc790\uc0b0 \ub2e8\uc704 / \uc77c",
+      "sourceMetric": "FlowInExNtv",
+      "derived": false,
+      "sampleTimes": [
+        1303603200,
+        1303689600
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "BTC",
+      "metric": "exchange_outflow",
+      "unit": "\uc790\uc0b0 \ub2e8\uc704 / \uc77c",
+      "sourceMetric": "FlowOutExNtv",
+      "derived": false,
+      "sampleTimes": [
+        1303603200,
+        1303689600
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "BTC",
+      "metric": "exchange_balance",
+      "unit": "\uc790\uc0b0 \ub2e8\uc704",
+      "sourceMetric": "SplyExNtv",
+      "derived": false,
+      "sampleTimes": [
+        1303603200,
+        1303689600
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "BTC",
+      "metric": "exchange_netflow",
+      "unit": "\uc790\uc0b0 \ub2e8\uc704 / \uc77c",
+      "sourceMetric": null,
+      "derived": true,
+      "sampleTimes": [
+        1303603200,
+        1303689600
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "BTC",
+      "metric": "realized_cap",
+      "unit": "USD",
+      "sourceMetric": null,
+      "derived": true,
+      "sampleTimes": [
+        1279411200,
+        1279497600
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "BTC",
+      "metric": "realized_price",
+      "unit": "USD",
+      "sourceMetric": null,
+      "derived": true,
+      "sampleTimes": [
+        1279411200,
+        1279497600
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "BTC",
+      "metric": "nupl",
+      "unit": "\ube44\uc728",
+      "sourceMetric": null,
+      "derived": true,
+      "sampleTimes": [
+        1279411200,
+        1279497600
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "DOGE",
+      "metric": "mvrv",
+      "unit": "\ubc30",
+      "sourceMetric": "CapMVRVCur",
+      "derived": false,
+      "sampleTimes": [
+        1390435200,
+        1390521600
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "DOGE",
+      "metric": "active_addresses",
+      "unit": "\uc8fc\uc18c / \uc77c",
+      "sourceMetric": "AdrActCnt",
+      "derived": false,
+      "sampleTimes": [
+        1386460800,
+        1386547200
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "DOGE",
+      "metric": "balance_addresses",
+      "unit": "\uc8fc\uc18c",
+      "sourceMetric": "AdrBalCnt",
+      "derived": false,
+      "sampleTimes": [
+        1386460800,
+        1386547200
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "DOGE",
+      "metric": "transactions",
+      "unit": "\uac74 / \uc77c",
+      "sourceMetric": "TxCnt",
+      "derived": false,
+      "sampleTimes": [
+        1386460800,
+        1386547200
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "DOGE",
+      "metric": "transfers",
+      "unit": "\uac74 / \uc77c",
+      "sourceMetric": "TxTfrCnt",
+      "derived": false,
+      "sampleTimes": [
+        1386460800,
+        1386547200
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "DOGE",
+      "metric": "supply",
+      "unit": "\uc790\uc0b0 \ub2e8\uc704",
+      "sourceMetric": "SplyCur",
+      "derived": false,
+      "sampleTimes": [
+        1386460800,
+        1386547200
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "DOGE",
+      "metric": "market_cap",
+      "unit": "USD",
+      "sourceMetric": "CapMrktCurUSD",
+      "derived": false,
+      "sampleTimes": [
+        1390435200,
+        1390521600
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "DOGE",
+      "metric": "fees_native",
+      "unit": "\uc790\uc0b0 \ub2e8\uc704 / \uc77c",
+      "sourceMetric": "FeeTotNtv",
+      "derived": false,
+      "sampleTimes": [
+        1386460800,
+        1386547200
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "DOGE",
+      "metric": "hashrate",
+      "unit": "TH/s",
+      "sourceMetric": "HashRate",
+      "derived": false,
+      "sampleTimes": [
+        1386460800,
+        1386547200
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "DOGE",
+      "metric": "blocks",
+      "unit": "\ube14\ub85d / \uc77c",
+      "sourceMetric": "BlkCnt",
+      "derived": false,
+      "sampleTimes": [
+        1386460800,
+        1386547200
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "DOGE",
+      "metric": "issuance",
+      "unit": "\uc790\uc0b0 \ub2e8\uc704 / \uc77c",
+      "sourceMetric": "IssTotNtv",
+      "derived": false,
+      "sampleTimes": [
+        1386460800,
+        1386547200
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "DOGE",
+      "metric": "realized_cap",
+      "unit": "USD",
+      "sourceMetric": null,
+      "derived": true,
+      "sampleTimes": [
+        1390435200,
+        1390521600
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "DOGE",
+      "metric": "realized_price",
+      "unit": "USD",
+      "sourceMetric": null,
+      "derived": true,
+      "sampleTimes": [
+        1390435200,
+        1390521600
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "DOGE",
+      "metric": "nupl",
+      "unit": "\ube44\uc728",
+      "sourceMetric": null,
+      "derived": true,
+      "sampleTimes": [
+        1390435200,
+        1390521600
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "ETH",
+      "metric": "mvrv",
+      "unit": "\ubc30",
+      "sourceMetric": "CapMVRVCur",
+      "derived": false,
+      "sampleTimes": [
+        1438992000,
+        1439078400
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "ETH",
+      "metric": "active_addresses",
+      "unit": "\uc8fc\uc18c / \uc77c",
+      "sourceMetric": "AdrActCnt",
+      "derived": false,
+      "sampleTimes": [
+        1438214400,
+        1438300800
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "ETH",
+      "metric": "balance_addresses",
+      "unit": "\uc8fc\uc18c",
+      "sourceMetric": "AdrBalCnt",
+      "derived": false,
+      "sampleTimes": [
+        1438214400,
+        1438300800
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "ETH",
+      "metric": "transactions",
+      "unit": "\uac74 / \uc77c",
+      "sourceMetric": "TxCnt",
+      "derived": false,
+      "sampleTimes": [
+        1438214400,
+        1438300800
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "ETH",
+      "metric": "transfers",
+      "unit": "\uac74 / \uc77c",
+      "sourceMetric": "TxTfrCnt",
+      "derived": false,
+      "sampleTimes": [
+        1438214400,
+        1438300800
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "ETH",
+      "metric": "supply",
+      "unit": "\uc790\uc0b0 \ub2e8\uc704",
+      "sourceMetric": "SplyCur",
+      "derived": false,
+      "sampleTimes": [
+        1438214400,
+        1438300800
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "ETH",
+      "metric": "market_cap",
+      "unit": "USD",
+      "sourceMetric": "CapMrktCurUSD",
+      "derived": false,
+      "sampleTimes": [
+        1438992000,
+        1439078400
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "ETH",
+      "metric": "fees_native",
+      "unit": "\uc790\uc0b0 \ub2e8\uc704 / \uc77c",
+      "sourceMetric": "FeeTotNtv",
+      "derived": false,
+      "sampleTimes": [
+        1438214400,
+        1438300800
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "ETH",
+      "metric": "blocks",
+      "unit": "\ube14\ub85d / \uc77c",
+      "sourceMetric": "BlkCnt",
+      "derived": false,
+      "sampleTimes": [
+        1438214400,
+        1438300800
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "ETH",
+      "metric": "issuance",
+      "unit": "\uc790\uc0b0 \ub2e8\uc704 / \uc77c",
+      "sourceMetric": "IssTotNtv",
+      "derived": false,
+      "sampleTimes": [
+        1438214400,
+        1438300800
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "ETH",
+      "metric": "exchange_inflow",
+      "unit": "\uc790\uc0b0 \ub2e8\uc704 / \uc77c",
+      "sourceMetric": "FlowInExNtv",
+      "derived": false,
+      "sampleTimes": [
+        1438214400,
+        1438300800
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "ETH",
+      "metric": "exchange_outflow",
+      "unit": "\uc790\uc0b0 \ub2e8\uc704 / \uc77c",
+      "sourceMetric": "FlowOutExNtv",
+      "derived": false,
+      "sampleTimes": [
+        1438214400,
+        1438300800
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "ETH",
+      "metric": "exchange_balance",
+      "unit": "\uc790\uc0b0 \ub2e8\uc704",
+      "sourceMetric": "SplyExNtv",
+      "derived": false,
+      "sampleTimes": [
+        1438214400,
+        1438300800
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "ETH",
+      "metric": "exchange_netflow",
+      "unit": "\uc790\uc0b0 \ub2e8\uc704 / \uc77c",
+      "sourceMetric": null,
+      "derived": true,
+      "sampleTimes": [
+        1438214400,
+        1438300800
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "ETH",
+      "metric": "realized_cap",
+      "unit": "USD",
+      "sourceMetric": null,
+      "derived": true,
+      "sampleTimes": [
+        1438992000,
+        1439078400
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "ETH",
+      "metric": "realized_price",
+      "unit": "USD",
+      "sourceMetric": null,
+      "derived": true,
+      "sampleTimes": [
+        1438992000,
+        1439078400
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "ETH",
+      "metric": "nupl",
+      "unit": "\ube44\uc728",
+      "sourceMetric": null,
+      "derived": true,
+      "sampleTimes": [
+        1438992000,
+        1439078400
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "XRP",
+      "metric": "mvrv",
+      "unit": "\ubc30",
+      "sourceMetric": "CapMVRVCur",
+      "derived": false,
+      "sampleTimes": [
+        1408060800,
+        1408147200
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "XRP",
+      "metric": "active_addresses",
+      "unit": "\uc8fc\uc18c / \uc77c",
+      "sourceMetric": "AdrActCnt",
+      "derived": false,
+      "sampleTimes": [
+        1356998400,
+        1357084800
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "XRP",
+      "metric": "balance_addresses",
+      "unit": "\uc8fc\uc18c",
+      "sourceMetric": "AdrBalCnt",
+      "derived": false,
+      "sampleTimes": [
+        1356998400,
+        1357084800
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "XRP",
+      "metric": "transactions",
+      "unit": "\uac74 / \uc77c",
+      "sourceMetric": "TxCnt",
+      "derived": false,
+      "sampleTimes": [
+        1356998400,
+        1357084800
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "XRP",
+      "metric": "transfers",
+      "unit": "\uac74 / \uc77c",
+      "sourceMetric": "TxTfrCnt",
+      "derived": false,
+      "sampleTimes": [
+        1356998400,
+        1357084800
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "XRP",
+      "metric": "supply",
+      "unit": "\uc790\uc0b0 \ub2e8\uc704",
+      "sourceMetric": "SplyCur",
+      "derived": false,
+      "sampleTimes": [
+        1356998400,
+        1357084800
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "XRP",
+      "metric": "market_cap",
+      "unit": "USD",
+      "sourceMetric": "CapMrktCurUSD",
+      "derived": false,
+      "sampleTimes": [
+        1408060800,
+        1408147200
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "XRP",
+      "metric": "fees_native",
+      "unit": "\uc790\uc0b0 \ub2e8\uc704 / \uc77c",
+      "sourceMetric": "FeeTotNtv",
+      "derived": false,
+      "sampleTimes": [
+        1356998400,
+        1357084800
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "XRP",
+      "metric": "blocks",
+      "unit": "\ube14\ub85d / \uc77c",
+      "sourceMetric": "BlkCnt",
+      "derived": false,
+      "sampleTimes": [
+        1356998400,
+        1357084800
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "XRP",
+      "metric": "realized_cap",
+      "unit": "USD",
+      "sourceMetric": null,
+      "derived": true,
+      "sampleTimes": [
+        1408060800,
+        1408147200
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "XRP",
+      "metric": "realized_price",
+      "unit": "USD",
+      "sourceMetric": null,
+      "derived": true,
+      "sampleTimes": [
+        1408060800,
+        1408147200
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "XRP",
+      "metric": "nupl",
+      "unit": "\ube44\uc728",
+      "sourceMetric": null,
+      "derived": true,
+      "sampleTimes": [
+        1408060800,
+        1408147200
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "LINK",
+      "metric": "mvrv",
+      "unit": "\ubc30",
+      "sourceMetric": "CapMVRVCur",
+      "derived": false,
+      "sampleTimes": [
+        1506643200,
+        1506729600
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "LINK",
+      "metric": "active_addresses",
+      "unit": "\uc8fc\uc18c / \uc77c",
+      "sourceMetric": "AdrActCnt",
+      "derived": false,
+      "sampleTimes": [
+        1505520000,
+        1505606400
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "LINK",
+      "metric": "balance_addresses",
+      "unit": "\uc8fc\uc18c",
+      "sourceMetric": "AdrBalCnt",
+      "derived": false,
+      "sampleTimes": [
+        1505520000,
+        1505606400
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "LINK",
+      "metric": "transactions",
+      "unit": "\uac74 / \uc77c",
+      "sourceMetric": "TxCnt",
+      "derived": false,
+      "sampleTimes": [
+        1505520000,
+        1505606400
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "LINK",
+      "metric": "transfers",
+      "unit": "\uac74 / \uc77c",
+      "sourceMetric": "TxTfrCnt",
+      "derived": false,
+      "sampleTimes": [
+        1505520000,
+        1505606400
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "LINK",
+      "metric": "supply",
+      "unit": "\uc790\uc0b0 \ub2e8\uc704",
+      "sourceMetric": "SplyCur",
+      "derived": false,
+      "sampleTimes": [
+        1505520000,
+        1505606400
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "LINK",
+      "metric": "market_cap",
+      "unit": "USD",
+      "sourceMetric": "CapMrktCurUSD",
+      "derived": false,
+      "sampleTimes": [
+        1506643200,
+        1506729600
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "LINK",
+      "metric": "issuance",
+      "unit": "\uc790\uc0b0 \ub2e8\uc704 / \uc77c",
+      "sourceMetric": "IssTotNtv",
+      "derived": false,
+      "sampleTimes": [
+        1505520000,
+        1505606400
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "LINK",
+      "metric": "realized_cap",
+      "unit": "USD",
+      "sourceMetric": null,
+      "derived": true,
+      "sampleTimes": [
+        1506643200,
+        1506729600
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "LINK",
+      "metric": "realized_price",
+      "unit": "USD",
+      "sourceMetric": null,
+      "derived": true,
+      "sampleTimes": [
+        1506643200,
+        1506729600
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "LINK",
+      "metric": "nupl",
+      "unit": "\ube44\uc728",
+      "sourceMetric": null,
+      "derived": true,
+      "sampleTimes": [
+        1506643200,
+        1506729600
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "TRX",
+      "metric": "active_addresses",
+      "unit": "\uc8fc\uc18c / \uc77c",
+      "sourceMetric": "AdrActCnt",
+      "derived": false,
+      "sampleTimes": [
+        1529884800,
+        1529971200
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "TRX",
+      "metric": "transactions",
+      "unit": "\uac74 / \uc77c",
+      "sourceMetric": "TxCnt",
+      "derived": false,
+      "sampleTimes": [
+        1529884800,
+        1529971200
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "TRX",
+      "metric": "transfers",
+      "unit": "\uac74 / \uc77c",
+      "sourceMetric": "TxTfrCnt",
+      "derived": false,
+      "sampleTimes": [
+        1529884800,
+        1529971200
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "TRX",
+      "metric": "blocks",
+      "unit": "\ube14\ub85d / \uc77c",
+      "sourceMetric": "BlkCnt",
+      "derived": false,
+      "sampleTimes": [
+        1529884800,
+        1529971200
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "ADA",
+      "metric": "mvrv",
+      "unit": "\ubc30",
+      "sourceMetric": "CapMVRVCur",
+      "derived": false,
+      "sampleTimes": [
+        1512086400,
+        1512172800
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "ADA",
+      "metric": "active_addresses",
+      "unit": "\uc8fc\uc18c / \uc77c",
+      "sourceMetric": "AdrActCnt",
+      "derived": false,
+      "sampleTimes": [
+        1506124800,
+        1506211200
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "ADA",
+      "metric": "balance_addresses",
+      "unit": "\uc8fc\uc18c",
+      "sourceMetric": "AdrBalCnt",
+      "derived": false,
+      "sampleTimes": [
+        1506124800,
+        1506211200
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "ADA",
+      "metric": "transactions",
+      "unit": "\uac74 / \uc77c",
+      "sourceMetric": "TxCnt",
+      "derived": false,
+      "sampleTimes": [
+        1506124800,
+        1506211200
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "ADA",
+      "metric": "transfers",
+      "unit": "\uac74 / \uc77c",
+      "sourceMetric": "TxTfrCnt",
+      "derived": false,
+      "sampleTimes": [
+        1506124800,
+        1506211200
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "ADA",
+      "metric": "supply",
+      "unit": "\uc790\uc0b0 \ub2e8\uc704",
+      "sourceMetric": "SplyCur",
+      "derived": false,
+      "sampleTimes": [
+        1506124800,
+        1506211200
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "ADA",
+      "metric": "market_cap",
+      "unit": "USD",
+      "sourceMetric": "CapMrktCurUSD",
+      "derived": false,
+      "sampleTimes": [
+        1512086400,
+        1512172800
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "ADA",
+      "metric": "fees_native",
+      "unit": "\uc790\uc0b0 \ub2e8\uc704 / \uc77c",
+      "sourceMetric": "FeeTotNtv",
+      "derived": false,
+      "sampleTimes": [
+        1506124800,
+        1506211200
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "ADA",
+      "metric": "blocks",
+      "unit": "\ube14\ub85d / \uc77c",
+      "sourceMetric": "BlkCnt",
+      "derived": false,
+      "sampleTimes": [
+        1506124800,
+        1506211200
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "ADA",
+      "metric": "issuance",
+      "unit": "\uc790\uc0b0 \ub2e8\uc704 / \uc77c",
+      "sourceMetric": "IssTotNtv",
+      "derived": false,
+      "sampleTimes": [
+        1506124800,
+        1506211200
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "ADA",
+      "metric": "realized_cap",
+      "unit": "USD",
+      "sourceMetric": null,
+      "derived": true,
+      "sampleTimes": [
+        1512086400,
+        1512172800
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "ADA",
+      "metric": "realized_price",
+      "unit": "USD",
+      "sourceMetric": null,
+      "derived": true,
+      "sampleTimes": [
+        1512086400,
+        1512172800
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "ADA",
+      "metric": "nupl",
+      "unit": "\ube44\uc728",
+      "sourceMetric": null,
+      "derived": true,
+      "sampleTimes": [
+        1512086400,
+        1512172800
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "XLM",
+      "metric": "mvrv",
+      "unit": "\ubc30",
+      "sourceMetric": "CapMVRVCur",
+      "derived": false,
+      "sampleTimes": [
+        1443571200,
+        1443657600
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "XLM",
+      "metric": "active_addresses",
+      "unit": "\uc8fc\uc18c / \uc77c",
+      "sourceMetric": "AdrActCnt",
+      "derived": false,
+      "sampleTimes": [
+        1443571200,
+        1443657600
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "XLM",
+      "metric": "balance_addresses",
+      "unit": "\uc8fc\uc18c",
+      "sourceMetric": "AdrBalCnt",
+      "derived": false,
+      "sampleTimes": [
+        1443571200,
+        1443657600
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "XLM",
+      "metric": "transactions",
+      "unit": "\uac74 / \uc77c",
+      "sourceMetric": "TxCnt",
+      "derived": false,
+      "sampleTimes": [
+        1443571200,
+        1443657600
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "XLM",
+      "metric": "transfers",
+      "unit": "\uac74 / \uc77c",
+      "sourceMetric": "TxTfrCnt",
+      "derived": false,
+      "sampleTimes": [
+        1443571200,
+        1443657600
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "XLM",
+      "metric": "supply",
+      "unit": "\uc790\uc0b0 \ub2e8\uc704",
+      "sourceMetric": "SplyCur",
+      "derived": false,
+      "sampleTimes": [
+        1443571200,
+        1443657600
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "XLM",
+      "metric": "market_cap",
+      "unit": "USD",
+      "sourceMetric": "CapMrktCurUSD",
+      "derived": false,
+      "sampleTimes": [
+        1443571200,
+        1443657600
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "XLM",
+      "metric": "fees_native",
+      "unit": "\uc790\uc0b0 \ub2e8\uc704 / \uc77c",
+      "sourceMetric": "FeeTotNtv",
+      "derived": false,
+      "sampleTimes": [
+        1443571200,
+        1443657600
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "XLM",
+      "metric": "blocks",
+      "unit": "\ube14\ub85d / \uc77c",
+      "sourceMetric": "BlkCnt",
+      "derived": false,
+      "sampleTimes": [
+        1443571200,
+        1443657600
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "XLM",
+      "metric": "issuance",
+      "unit": "\uc790\uc0b0 \ub2e8\uc704 / \uc77c",
+      "sourceMetric": "IssTotNtv",
+      "derived": false,
+      "sampleTimes": [
+        1443571200,
+        1443657600
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "XLM",
+      "metric": "realized_cap",
+      "unit": "USD",
+      "sourceMetric": null,
+      "derived": true,
+      "sampleTimes": [
+        1443571200,
+        1443657600
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "XLM",
+      "metric": "realized_price",
+      "unit": "USD",
+      "sourceMetric": null,
+      "derived": true,
+      "sampleTimes": [
+        1443571200,
+        1443657600
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "XLM",
+      "metric": "nupl",
+      "unit": "\ube44\uc728",
+      "sourceMetric": null,
+      "derived": true,
+      "sampleTimes": [
+        1443571200,
+        1443657600
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "BCH",
+      "metric": "mvrv",
+      "unit": "\ubc30",
+      "sourceMetric": "CapMVRVCur",
+      "derived": false,
+      "sampleTimes": [
+        1501545600,
+        1501632000
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "BCH",
+      "metric": "active_addresses",
+      "unit": "\uc8fc\uc18c / \uc77c",
+      "sourceMetric": "AdrActCnt",
+      "derived": false,
+      "sampleTimes": [
+        1501545600,
+        1501632000
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "BCH",
+      "metric": "balance_addresses",
+      "unit": "\uc8fc\uc18c",
+      "sourceMetric": "AdrBalCnt",
+      "derived": false,
+      "sampleTimes": [
+        1501545600,
+        1501632000
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "BCH",
+      "metric": "transactions",
+      "unit": "\uac74 / \uc77c",
+      "sourceMetric": "TxCnt",
+      "derived": false,
+      "sampleTimes": [
+        1501545600,
+        1501632000
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "BCH",
+      "metric": "transfers",
+      "unit": "\uac74 / \uc77c",
+      "sourceMetric": "TxTfrCnt",
+      "derived": false,
+      "sampleTimes": [
+        1501545600,
+        1501632000
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "BCH",
+      "metric": "supply",
+      "unit": "\uc790\uc0b0 \ub2e8\uc704",
+      "sourceMetric": "SplyCur",
+      "derived": false,
+      "sampleTimes": [
+        1501545600,
+        1501632000
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "BCH",
+      "metric": "market_cap",
+      "unit": "USD",
+      "sourceMetric": "CapMrktCurUSD",
+      "derived": false,
+      "sampleTimes": [
+        1501545600,
+        1501632000
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "BCH",
+      "metric": "fees_native",
+      "unit": "\uc790\uc0b0 \ub2e8\uc704 / \uc77c",
+      "sourceMetric": "FeeTotNtv",
+      "derived": false,
+      "sampleTimes": [
+        1501545600,
+        1501632000
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "BCH",
+      "metric": "hashrate",
+      "unit": "TH/s",
+      "sourceMetric": "HashRate",
+      "derived": false,
+      "sampleTimes": [
+        1501545600,
+        1501632000
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "BCH",
+      "metric": "blocks",
+      "unit": "\ube14\ub85d / \uc77c",
+      "sourceMetric": "BlkCnt",
+      "derived": false,
+      "sampleTimes": [
+        1501545600,
+        1501632000
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "BCH",
+      "metric": "issuance",
+      "unit": "\uc790\uc0b0 \ub2e8\uc704 / \uc77c",
+      "sourceMetric": "IssTotNtv",
+      "derived": false,
+      "sampleTimes": [
+        1501545600,
+        1501632000
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "BCH",
+      "metric": "realized_cap",
+      "unit": "USD",
+      "sourceMetric": null,
+      "derived": true,
+      "sampleTimes": [
+        1501545600,
+        1501632000
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "BCH",
+      "metric": "realized_price",
+      "unit": "USD",
+      "sourceMetric": null,
+      "derived": true,
+      "sampleTimes": [
+        1501545600,
+        1501632000
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "BCH",
+      "metric": "nupl",
+      "unit": "\ube44\uc728",
+      "sourceMetric": null,
+      "derived": true,
+      "sampleTimes": [
+        1501545600,
+        1501632000
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "UNI",
+      "metric": "mvrv",
+      "unit": "\ubc30",
+      "sourceMetric": "CapMVRVCur",
+      "derived": false,
+      "sampleTimes": [
+        1600387200,
+        1600473600
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "UNI",
+      "metric": "active_addresses",
+      "unit": "\uc8fc\uc18c / \uc77c",
+      "sourceMetric": "AdrActCnt",
+      "derived": false,
+      "sampleTimes": [
+        1600041600,
+        1600128000
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "UNI",
+      "metric": "balance_addresses",
+      "unit": "\uc8fc\uc18c",
+      "sourceMetric": "AdrBalCnt",
+      "derived": false,
+      "sampleTimes": [
+        1600041600,
+        1600128000
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "UNI",
+      "metric": "transactions",
+      "unit": "\uac74 / \uc77c",
+      "sourceMetric": "TxCnt",
+      "derived": false,
+      "sampleTimes": [
+        1600041600,
+        1600128000
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "UNI",
+      "metric": "transfers",
+      "unit": "\uac74 / \uc77c",
+      "sourceMetric": "TxTfrCnt",
+      "derived": false,
+      "sampleTimes": [
+        1600041600,
+        1600128000
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "UNI",
+      "metric": "supply",
+      "unit": "\uc790\uc0b0 \ub2e8\uc704",
+      "sourceMetric": "SplyCur",
+      "derived": false,
+      "sampleTimes": [
+        1600041600,
+        1600128000
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "UNI",
+      "metric": "market_cap",
+      "unit": "USD",
+      "sourceMetric": "CapMrktCurUSD",
+      "derived": false,
+      "sampleTimes": [
+        1600387200,
+        1600473600
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "UNI",
+      "metric": "issuance",
+      "unit": "\uc790\uc0b0 \ub2e8\uc704 / \uc77c",
+      "sourceMetric": "IssTotNtv",
+      "derived": false,
+      "sampleTimes": [
+        1600041600,
+        1600128000
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "UNI",
+      "metric": "realized_cap",
+      "unit": "USD",
+      "sourceMetric": null,
+      "derived": true,
+      "sampleTimes": [
+        1600387200,
+        1600473600
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "UNI",
+      "metric": "realized_price",
+      "unit": "USD",
+      "sourceMetric": null,
+      "derived": true,
+      "sampleTimes": [
+        1600387200,
+        1600473600
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "UNI",
+      "metric": "nupl",
+      "unit": "\ube44\uc728",
+      "sourceMetric": null,
+      "derived": true,
+      "sampleTimes": [
+        1600387200,
+        1600473600
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "SHIB",
+      "metric": "mvrv",
+      "unit": "\ubc30",
+      "sourceMetric": "CapMVRVCur",
+      "derived": false,
+      "sampleTimes": [
+        1620691200,
+        1620777600
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "SHIB",
+      "metric": "active_addresses",
+      "unit": "\uc8fc\uc18c / \uc77c",
+      "sourceMetric": "AdrActCnt",
+      "derived": false,
+      "sampleTimes": [
+        1596153600,
+        1596240000
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "SHIB",
+      "metric": "balance_addresses",
+      "unit": "\uc8fc\uc18c",
+      "sourceMetric": "AdrBalCnt",
+      "derived": false,
+      "sampleTimes": [
+        1596153600,
+        1596240000
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "SHIB",
+      "metric": "transactions",
+      "unit": "\uac74 / \uc77c",
+      "sourceMetric": "TxCnt",
+      "derived": false,
+      "sampleTimes": [
+        1596153600,
+        1596240000
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "SHIB",
+      "metric": "transfers",
+      "unit": "\uac74 / \uc77c",
+      "sourceMetric": "TxTfrCnt",
+      "derived": false,
+      "sampleTimes": [
+        1596153600,
+        1596240000
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "SHIB",
+      "metric": "supply",
+      "unit": "\uc790\uc0b0 \ub2e8\uc704",
+      "sourceMetric": "SplyCur",
+      "derived": false,
+      "sampleTimes": [
+        1596153600,
+        1596240000
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "SHIB",
+      "metric": "market_cap",
+      "unit": "USD",
+      "sourceMetric": "CapMrktCurUSD",
+      "derived": false,
+      "sampleTimes": [
+        1620691200,
+        1620777600
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "SHIB",
+      "metric": "issuance",
+      "unit": "\uc790\uc0b0 \ub2e8\uc704 / \uc77c",
+      "sourceMetric": "IssTotNtv",
+      "derived": false,
+      "sampleTimes": [
+        1596153600,
+        1596240000
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "SHIB",
+      "metric": "realized_cap",
+      "unit": "USD",
+      "sourceMetric": null,
+      "derived": true,
+      "sampleTimes": [
+        1620691200,
+        1620777600
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "SHIB",
+      "metric": "realized_price",
+      "unit": "USD",
+      "sourceMetric": null,
+      "derived": true,
+      "sampleTimes": [
+        1620691200,
+        1620777600
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "SHIB",
+      "metric": "nupl",
+      "unit": "\ube44\uc728",
+      "sourceMetric": null,
+      "derived": true,
+      "sampleTimes": [
+        1620691200,
+        1620777600
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "AAVE",
+      "metric": "mvrv",
+      "unit": "\ubc30",
+      "sourceMetric": "CapMVRVCur",
+      "derived": false,
+      "sampleTimes": [
+        1602288000,
+        1602374400
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "AAVE",
+      "metric": "active_addresses",
+      "unit": "\uc8fc\uc18c / \uc77c",
+      "sourceMetric": "AdrActCnt",
+      "derived": false,
+      "sampleTimes": [
+        1600905600,
+        1600992000
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "AAVE",
+      "metric": "balance_addresses",
+      "unit": "\uc8fc\uc18c",
+      "sourceMetric": "AdrBalCnt",
+      "derived": false,
+      "sampleTimes": [
+        1601596800,
+        1601683200
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "AAVE",
+      "metric": "transactions",
+      "unit": "\uac74 / \uc77c",
+      "sourceMetric": "TxCnt",
+      "derived": false,
+      "sampleTimes": [
+        1600905600,
+        1600992000
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "AAVE",
+      "metric": "transfers",
+      "unit": "\uac74 / \uc77c",
+      "sourceMetric": "TxTfrCnt",
+      "derived": false,
+      "sampleTimes": [
+        1600905600,
+        1600992000
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "AAVE",
+      "metric": "supply",
+      "unit": "\uc790\uc0b0 \ub2e8\uc704",
+      "sourceMetric": "SplyCur",
+      "derived": false,
+      "sampleTimes": [
+        1601596800,
+        1601683200
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "AAVE",
+      "metric": "market_cap",
+      "unit": "USD",
+      "sourceMetric": "CapMrktCurUSD",
+      "derived": false,
+      "sampleTimes": [
+        1602288000,
+        1602374400
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "AAVE",
+      "metric": "issuance",
+      "unit": "\uc790\uc0b0 \ub2e8\uc704 / \uc77c",
+      "sourceMetric": "IssTotNtv",
+      "derived": false,
+      "sampleTimes": [
+        1600905600,
+        1600992000
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "AAVE",
+      "metric": "realized_cap",
+      "unit": "USD",
+      "sourceMetric": null,
+      "derived": true,
+      "sampleTimes": [
+        1602288000,
+        1602374400
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "AAVE",
+      "metric": "realized_price",
+      "unit": "USD",
+      "sourceMetric": null,
+      "derived": true,
+      "sampleTimes": [
+        1602288000,
+        1602374400
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "AAVE",
+      "metric": "nupl",
+      "unit": "\ube44\uc728",
+      "sourceMetric": null,
+      "derived": true,
+      "sampleTimes": [
+        1602288000,
+        1602374400
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "ICP",
+      "metric": "mvrv",
+      "unit": "\ubc30",
+      "sourceMetric": "CapMVRVCur",
+      "derived": false,
+      "sampleTimes": [
+        1620691200,
+        1620777600
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "ICP",
+      "metric": "active_addresses",
+      "unit": "\uc8fc\uc18c / \uc77c",
+      "sourceMetric": "AdrActCnt",
+      "derived": false,
+      "sampleTimes": [
+        1620259200,
+        1620345600
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "ICP",
+      "metric": "balance_addresses",
+      "unit": "\uc8fc\uc18c",
+      "sourceMetric": "AdrBalCnt",
+      "derived": false,
+      "sampleTimes": [
+        1620259200,
+        1620345600
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "ICP",
+      "metric": "transactions",
+      "unit": "\uac74 / \uc77c",
+      "sourceMetric": "TxCnt",
+      "derived": false,
+      "sampleTimes": [
+        1620259200,
+        1620345600
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "ICP",
+      "metric": "transfers",
+      "unit": "\uac74 / \uc77c",
+      "sourceMetric": "TxTfrCnt",
+      "derived": false,
+      "sampleTimes": [
+        1620259200,
+        1620345600
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "ICP",
+      "metric": "supply",
+      "unit": "\uc790\uc0b0 \ub2e8\uc704",
+      "sourceMetric": "SplyCur",
+      "derived": false,
+      "sampleTimes": [
+        1620259200,
+        1620345600
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "ICP",
+      "metric": "market_cap",
+      "unit": "USD",
+      "sourceMetric": "CapMrktCurUSD",
+      "derived": false,
+      "sampleTimes": [
+        1620691200,
+        1620777600
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "ICP",
+      "metric": "fees_native",
+      "unit": "\uc790\uc0b0 \ub2e8\uc704 / \uc77c",
+      "sourceMetric": "FeeTotNtv",
+      "derived": false,
+      "sampleTimes": [
+        1620259200,
+        1620345600
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "ICP",
+      "metric": "blocks",
+      "unit": "\ube14\ub85d / \uc77c",
+      "sourceMetric": "BlkCnt",
+      "derived": false,
+      "sampleTimes": [
+        1620259200,
+        1620345600
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "ICP",
+      "metric": "issuance",
+      "unit": "\uc790\uc0b0 \ub2e8\uc704 / \uc77c",
+      "sourceMetric": "IssTotNtv",
+      "derived": false,
+      "sampleTimes": [
+        1620259200,
+        1620345600
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "ICP",
+      "metric": "realized_cap",
+      "unit": "USD",
+      "sourceMetric": null,
+      "derived": true,
+      "sampleTimes": [
+        1620691200,
+        1620777600
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "ICP",
+      "metric": "realized_price",
+      "unit": "USD",
+      "sourceMetric": null,
+      "derived": true,
+      "sampleTimes": [
+        1620691200,
+        1620777600
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "ICP",
+      "metric": "nupl",
+      "unit": "\ube44\uc728",
+      "sourceMetric": null,
+      "derived": true,
+      "sampleTimes": [
+        1620691200,
+        1620777600
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "XAUT",
+      "metric": "mvrv",
+      "unit": "\ubc30",
+      "sourceMetric": "CapMVRVCur",
+      "derived": false,
+      "sampleTimes": [
+        1579910400,
+        1579996800
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "XAUT",
+      "metric": "active_addresses",
+      "unit": "\uc8fc\uc18c / \uc77c",
+      "sourceMetric": "AdrActCnt",
+      "derived": false,
+      "sampleTimes": [
+        1578441600,
+        1578528000
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "XAUT",
+      "metric": "balance_addresses",
+      "unit": "\uc8fc\uc18c",
+      "sourceMetric": "AdrBalCnt",
+      "derived": false,
+      "sampleTimes": [
+        1578441600,
+        1578528000
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "XAUT",
+      "metric": "transactions",
+      "unit": "\uac74 / \uc77c",
+      "sourceMetric": "TxCnt",
+      "derived": false,
+      "sampleTimes": [
+        1578441600,
+        1578528000
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "XAUT",
+      "metric": "transfers",
+      "unit": "\uac74 / \uc77c",
+      "sourceMetric": "TxTfrCnt",
+      "derived": false,
+      "sampleTimes": [
+        1578441600,
+        1578528000
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "XAUT",
+      "metric": "supply",
+      "unit": "\uc790\uc0b0 \ub2e8\uc704",
+      "sourceMetric": "SplyCur",
+      "derived": false,
+      "sampleTimes": [
+        1578441600,
+        1578528000
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "XAUT",
+      "metric": "market_cap",
+      "unit": "USD",
+      "sourceMetric": "CapMrktCurUSD",
+      "derived": false,
+      "sampleTimes": [
+        1579910400,
+        1579996800
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "XAUT",
+      "metric": "issuance",
+      "unit": "\uc790\uc0b0 \ub2e8\uc704 / \uc77c",
+      "sourceMetric": "IssTotNtv",
+      "derived": false,
+      "sampleTimes": [
+        1578441600,
+        1578528000
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "XAUT",
+      "metric": "realized_cap",
+      "unit": "USD",
+      "sourceMetric": null,
+      "derived": true,
+      "sampleTimes": [
+        1579910400,
+        1579996800
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "XAUT",
+      "metric": "realized_price",
+      "unit": "USD",
+      "sourceMetric": null,
+      "derived": true,
+      "sampleTimes": [
+        1579910400,
+        1579996800
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "XAUT",
+      "metric": "nupl",
+      "unit": "\ube44\uc728",
+      "sourceMetric": null,
+      "derived": true,
+      "sampleTimes": [
+        1579910400,
+        1579996800
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "ETC",
+      "metric": "mvrv",
+      "unit": "\ubc30",
+      "sourceMetric": "CapMVRVCur",
+      "derived": false,
+      "sampleTimes": [
+        1469404800,
+        1469491200
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "ETC",
+      "metric": "active_addresses",
+      "unit": "\uc8fc\uc18c / \uc77c",
+      "sourceMetric": "AdrActCnt",
+      "derived": false,
+      "sampleTimes": [
+        1468972800,
+        1469059200
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "ETC",
+      "metric": "balance_addresses",
+      "unit": "\uc8fc\uc18c",
+      "sourceMetric": "AdrBalCnt",
+      "derived": false,
+      "sampleTimes": [
+        1468972800,
+        1469059200
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "ETC",
+      "metric": "transactions",
+      "unit": "\uac74 / \uc77c",
+      "sourceMetric": "TxCnt",
+      "derived": false,
+      "sampleTimes": [
+        1468972800,
+        1469059200
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "ETC",
+      "metric": "transfers",
+      "unit": "\uac74 / \uc77c",
+      "sourceMetric": "TxTfrCnt",
+      "derived": false,
+      "sampleTimes": [
+        1468972800,
+        1469059200
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "ETC",
+      "metric": "supply",
+      "unit": "\uc790\uc0b0 \ub2e8\uc704",
+      "sourceMetric": "SplyCur",
+      "derived": false,
+      "sampleTimes": [
+        1468972800,
+        1469059200
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "ETC",
+      "metric": "market_cap",
+      "unit": "USD",
+      "sourceMetric": "CapMrktCurUSD",
+      "derived": false,
+      "sampleTimes": [
+        1469404800,
+        1469491200
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "ETC",
+      "metric": "fees_native",
+      "unit": "\uc790\uc0b0 \ub2e8\uc704 / \uc77c",
+      "sourceMetric": "FeeTotNtv",
+      "derived": false,
+      "sampleTimes": [
+        1468972800,
+        1469059200
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "ETC",
+      "metric": "hashrate",
+      "unit": "TH/s",
+      "sourceMetric": "HashRate",
+      "derived": false,
+      "sampleTimes": [
+        1468972800,
+        1469059200
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "ETC",
+      "metric": "blocks",
+      "unit": "\ube14\ub85d / \uc77c",
+      "sourceMetric": "BlkCnt",
+      "derived": false,
+      "sampleTimes": [
+        1468972800,
+        1469059200
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "ETC",
+      "metric": "issuance",
+      "unit": "\uc790\uc0b0 \ub2e8\uc704 / \uc77c",
+      "sourceMetric": "IssTotNtv",
+      "derived": false,
+      "sampleTimes": [
+        1468972800,
+        1469059200
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "ETC",
+      "metric": "realized_cap",
+      "unit": "USD",
+      "sourceMetric": null,
+      "derived": true,
+      "sampleTimes": [
+        1469404800,
+        1469491200
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "ETC",
+      "metric": "realized_price",
+      "unit": "USD",
+      "sourceMetric": null,
+      "derived": true,
+      "sampleTimes": [
+        1469404800,
+        1469491200
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "ETC",
+      "metric": "nupl",
+      "unit": "\ube44\uc728",
+      "sourceMetric": null,
+      "derived": true,
+      "sampleTimes": [
+        1469404800,
+        1469491200
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "ALGO",
+      "metric": "mvrv",
+      "unit": "\ubc30",
+      "sourceMetric": "CapMVRVCur",
+      "derived": false,
+      "sampleTimes": [
+        1561161600,
+        1561248000
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "ALGO",
+      "metric": "active_addresses",
+      "unit": "\uc8fc\uc18c / \uc77c",
+      "sourceMetric": "AdrActCnt",
+      "derived": false,
+      "sampleTimes": [
+        1560211200,
+        1560297600
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "ALGO",
+      "metric": "balance_addresses",
+      "unit": "\uc8fc\uc18c",
+      "sourceMetric": "AdrBalCnt",
+      "derived": false,
+      "sampleTimes": [
+        1560211200,
+        1560297600
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "ALGO",
+      "metric": "transactions",
+      "unit": "\uac74 / \uc77c",
+      "sourceMetric": "TxCnt",
+      "derived": false,
+      "sampleTimes": [
+        1560211200,
+        1560297600
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "ALGO",
+      "metric": "transfers",
+      "unit": "\uac74 / \uc77c",
+      "sourceMetric": "TxTfrCnt",
+      "derived": false,
+      "sampleTimes": [
+        1560211200,
+        1560297600
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "ALGO",
+      "metric": "supply",
+      "unit": "\uc790\uc0b0 \ub2e8\uc704",
+      "sourceMetric": "SplyCur",
+      "derived": false,
+      "sampleTimes": [
+        1560211200,
+        1560297600
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "ALGO",
+      "metric": "market_cap",
+      "unit": "USD",
+      "sourceMetric": "CapMrktCurUSD",
+      "derived": false,
+      "sampleTimes": [
+        1561161600,
+        1561248000
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "ALGO",
+      "metric": "fees_native",
+      "unit": "\uc790\uc0b0 \ub2e8\uc704 / \uc77c",
+      "sourceMetric": "FeeTotNtv",
+      "derived": false,
+      "sampleTimes": [
+        1560211200,
+        1560297600
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "ALGO",
+      "metric": "blocks",
+      "unit": "\ube14\ub85d / \uc77c",
+      "sourceMetric": "BlkCnt",
+      "derived": false,
+      "sampleTimes": [
+        1560211200,
+        1560297600
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "ALGO",
+      "metric": "issuance",
+      "unit": "\uc790\uc0b0 \ub2e8\uc704 / \uc77c",
+      "sourceMetric": "IssTotNtv",
+      "derived": false,
+      "sampleTimes": [
+        1560211200,
+        1560297600
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "ALGO",
+      "metric": "realized_cap",
+      "unit": "USD",
+      "sourceMetric": null,
+      "derived": true,
+      "sampleTimes": [
+        1561161600,
+        1561248000
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "ALGO",
+      "metric": "realized_price",
+      "unit": "USD",
+      "sourceMetric": null,
+      "derived": true,
+      "sampleTimes": [
+        1561161600,
+        1561248000
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "ALGO",
+      "metric": "nupl",
+      "unit": "\ube44\uc728",
+      "sourceMetric": null,
+      "derived": true,
+      "sampleTimes": [
+        1561161600,
+        1561248000
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "CRO",
+      "metric": "mvrv",
+      "unit": "\ubc30",
+      "sourceMetric": "CapMVRVCur",
+      "derived": false,
+      "sampleTimes": [
+        1553040000,
+        1553126400
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "CRO",
+      "metric": "active_addresses",
+      "unit": "\uc8fc\uc18c / \uc77c",
+      "sourceMetric": "AdrActCnt",
+      "derived": false,
+      "sampleTimes": [
+        1542153600,
+        1542240000
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "CRO",
+      "metric": "balance_addresses",
+      "unit": "\uc8fc\uc18c",
+      "sourceMetric": "AdrBalCnt",
+      "derived": false,
+      "sampleTimes": [
+        1542153600,
+        1542240000
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "CRO",
+      "metric": "transactions",
+      "unit": "\uac74 / \uc77c",
+      "sourceMetric": "TxCnt",
+      "derived": false,
+      "sampleTimes": [
+        1542153600,
+        1542240000
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "CRO",
+      "metric": "transfers",
+      "unit": "\uac74 / \uc77c",
+      "sourceMetric": "TxTfrCnt",
+      "derived": false,
+      "sampleTimes": [
+        1542153600,
+        1542240000
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "CRO",
+      "metric": "supply",
+      "unit": "\uc790\uc0b0 \ub2e8\uc704",
+      "sourceMetric": "SplyCur",
+      "derived": false,
+      "sampleTimes": [
+        1542153600,
+        1542240000
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "CRO",
+      "metric": "market_cap",
+      "unit": "USD",
+      "sourceMetric": "CapMrktCurUSD",
+      "derived": false,
+      "sampleTimes": [
+        1553040000,
+        1553126400
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "CRO",
+      "metric": "issuance",
+      "unit": "\uc790\uc0b0 \ub2e8\uc704 / \uc77c",
+      "sourceMetric": "IssTotNtv",
+      "derived": false,
+      "sampleTimes": [
+        1542153600,
+        1542240000
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "CRO",
+      "metric": "realized_cap",
+      "unit": "USD",
+      "sourceMetric": null,
+      "derived": true,
+      "sampleTimes": [
+        1553040000,
+        1553126400
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "CRO",
+      "metric": "realized_price",
+      "unit": "USD",
+      "sourceMetric": null,
+      "derived": true,
+      "sampleTimes": [
+        1553040000,
+        1553126400
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "CRO",
+      "metric": "nupl",
+      "unit": "\ube44\uc728",
+      "sourceMetric": null,
+      "derived": true,
+      "sampleTimes": [
+        1553040000,
+        1553126400
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "CRV",
+      "metric": "mvrv",
+      "unit": "\ubc30",
+      "sourceMetric": "CapMVRVCur",
+      "derived": false,
+      "sampleTimes": [
+        1597449600,
+        1597536000
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "CRV",
+      "metric": "active_addresses",
+      "unit": "\uc8fc\uc18c / \uc77c",
+      "sourceMetric": "AdrActCnt",
+      "derived": false,
+      "sampleTimes": [
+        1597190400,
+        1597276800
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "CRV",
+      "metric": "balance_addresses",
+      "unit": "\uc8fc\uc18c",
+      "sourceMetric": "AdrBalCnt",
+      "derived": false,
+      "sampleTimes": [
+        1597190400,
+        1597276800
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "CRV",
+      "metric": "transactions",
+      "unit": "\uac74 / \uc77c",
+      "sourceMetric": "TxCnt",
+      "derived": false,
+      "sampleTimes": [
+        1597190400,
+        1597276800
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "CRV",
+      "metric": "transfers",
+      "unit": "\uac74 / \uc77c",
+      "sourceMetric": "TxTfrCnt",
+      "derived": false,
+      "sampleTimes": [
+        1597190400,
+        1597276800
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "CRV",
+      "metric": "supply",
+      "unit": "\uc790\uc0b0 \ub2e8\uc704",
+      "sourceMetric": "SplyCur",
+      "derived": false,
+      "sampleTimes": [
+        1597190400,
+        1597276800
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "CRV",
+      "metric": "market_cap",
+      "unit": "USD",
+      "sourceMetric": "CapMrktCurUSD",
+      "derived": false,
+      "sampleTimes": [
+        1597449600,
+        1597536000
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "CRV",
+      "metric": "issuance",
+      "unit": "\uc790\uc0b0 \ub2e8\uc704 / \uc77c",
+      "sourceMetric": "IssTotNtv",
+      "derived": false,
+      "sampleTimes": [
+        1597190400,
+        1597276800
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "CRV",
+      "metric": "realized_cap",
+      "unit": "USD",
+      "sourceMetric": null,
+      "derived": true,
+      "sampleTimes": [
+        1597449600,
+        1597536000
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "CRV",
+      "metric": "realized_price",
+      "unit": "USD",
+      "sourceMetric": null,
+      "derived": true,
+      "sampleTimes": [
+        1597449600,
+        1597536000
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "CRV",
+      "metric": "nupl",
+      "unit": "\ube44\uc728",
+      "sourceMetric": null,
+      "derived": true,
+      "sampleTimes": [
+        1597449600,
+        1597536000
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "COMP",
+      "metric": "mvrv",
+      "unit": "\ubc30",
+      "sourceMetric": "CapMVRVCur",
+      "derived": false,
+      "sampleTimes": [
+        1592438400,
+        1592524800
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "COMP",
+      "metric": "active_addresses",
+      "unit": "\uc8fc\uc18c / \uc77c",
+      "sourceMetric": "AdrActCnt",
+      "derived": false,
+      "sampleTimes": [
+        1583280000,
+        1583366400
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "COMP",
+      "metric": "balance_addresses",
+      "unit": "\uc8fc\uc18c",
+      "sourceMetric": "AdrBalCnt",
+      "derived": false,
+      "sampleTimes": [
+        1583280000,
+        1583366400
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "COMP",
+      "metric": "transactions",
+      "unit": "\uac74 / \uc77c",
+      "sourceMetric": "TxCnt",
+      "derived": false,
+      "sampleTimes": [
+        1583280000,
+        1583366400
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "COMP",
+      "metric": "transfers",
+      "unit": "\uac74 / \uc77c",
+      "sourceMetric": "TxTfrCnt",
+      "derived": false,
+      "sampleTimes": [
+        1583280000,
+        1583366400
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "COMP",
+      "metric": "supply",
+      "unit": "\uc790\uc0b0 \ub2e8\uc704",
+      "sourceMetric": "SplyCur",
+      "derived": false,
+      "sampleTimes": [
+        1583280000,
+        1583366400
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "COMP",
+      "metric": "market_cap",
+      "unit": "USD",
+      "sourceMetric": "CapMrktCurUSD",
+      "derived": false,
+      "sampleTimes": [
+        1592438400,
+        1592524800
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "COMP",
+      "metric": "issuance",
+      "unit": "\uc790\uc0b0 \ub2e8\uc704 / \uc77c",
+      "sourceMetric": "IssTotNtv",
+      "derived": false,
+      "sampleTimes": [
+        1583280000,
+        1583366400
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "COMP",
+      "metric": "realized_cap",
+      "unit": "USD",
+      "sourceMetric": null,
+      "derived": true,
+      "sampleTimes": [
+        1592438400,
+        1592524800
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "COMP",
+      "metric": "realized_price",
+      "unit": "USD",
+      "sourceMetric": null,
+      "derived": true,
+      "sampleTimes": [
+        1592438400,
+        1592524800
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "COMP",
+      "metric": "nupl",
+      "unit": "\ube44\uc728",
+      "sourceMetric": null,
+      "derived": true,
+      "sampleTimes": [
+        1592438400,
+        1592524800
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "MANA",
+      "metric": "mvrv",
+      "unit": "\ubc30",
+      "sourceMetric": "CapMVRVCur",
+      "derived": false,
+      "sampleTimes": [
+        1504656000,
+        1504742400
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "MANA",
+      "metric": "active_addresses",
+      "unit": "\uc8fc\uc18c / \uc77c",
+      "sourceMetric": "AdrActCnt",
+      "derived": false,
+      "sampleTimes": [
+        1502755200,
+        1502841600
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "MANA",
+      "metric": "balance_addresses",
+      "unit": "\uc8fc\uc18c",
+      "sourceMetric": "AdrBalCnt",
+      "derived": false,
+      "sampleTimes": [
+        1502755200,
+        1502841600
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "MANA",
+      "metric": "transactions",
+      "unit": "\uac74 / \uc77c",
+      "sourceMetric": "TxCnt",
+      "derived": false,
+      "sampleTimes": [
+        1502755200,
+        1502841600
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "MANA",
+      "metric": "transfers",
+      "unit": "\uac74 / \uc77c",
+      "sourceMetric": "TxTfrCnt",
+      "derived": false,
+      "sampleTimes": [
+        1502755200,
+        1502841600
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "MANA",
+      "metric": "supply",
+      "unit": "\uc790\uc0b0 \ub2e8\uc704",
+      "sourceMetric": "SplyCur",
+      "derived": false,
+      "sampleTimes": [
+        1502755200,
+        1502841600
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "MANA",
+      "metric": "market_cap",
+      "unit": "USD",
+      "sourceMetric": "CapMrktCurUSD",
+      "derived": false,
+      "sampleTimes": [
+        1503619200,
+        1503705600
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "MANA",
+      "metric": "issuance",
+      "unit": "\uc790\uc0b0 \ub2e8\uc704 / \uc77c",
+      "sourceMetric": "IssTotNtv",
+      "derived": false,
+      "sampleTimes": [
+        1502755200,
+        1502841600
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "MANA",
+      "metric": "realized_cap",
+      "unit": "USD",
+      "sourceMetric": null,
+      "derived": true,
+      "sampleTimes": [
+        1504656000,
+        1504742400
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "MANA",
+      "metric": "realized_price",
+      "unit": "USD",
+      "sourceMetric": null,
+      "derived": true,
+      "sampleTimes": [
+        1504656000,
+        1504742400
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "MANA",
+      "metric": "nupl",
+      "unit": "\ube44\uc728",
+      "sourceMetric": null,
+      "derived": true,
+      "sampleTimes": [
+        1504656000,
+        1504742400
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "BAT",
+      "metric": "mvrv",
+      "unit": "\ubc30",
+      "sourceMetric": "CapMVRVCur",
+      "derived": false,
+      "sampleTimes": [
+        1507248000,
+        1507334400
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "BAT",
+      "metric": "active_addresses",
+      "unit": "\uc8fc\uc18c / \uc77c",
+      "sourceMetric": "AdrActCnt",
+      "derived": false,
+      "sampleTimes": [
+        1496016000,
+        1496102400
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "BAT",
+      "metric": "balance_addresses",
+      "unit": "\uc8fc\uc18c",
+      "sourceMetric": "AdrBalCnt",
+      "derived": false,
+      "sampleTimes": [
+        1496016000,
+        1496102400
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "BAT",
+      "metric": "transactions",
+      "unit": "\uac74 / \uc77c",
+      "sourceMetric": "TxCnt",
+      "derived": false,
+      "sampleTimes": [
+        1496016000,
+        1496102400
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "BAT",
+      "metric": "transfers",
+      "unit": "\uac74 / \uc77c",
+      "sourceMetric": "TxTfrCnt",
+      "derived": false,
+      "sampleTimes": [
+        1496016000,
+        1496102400
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "BAT",
+      "metric": "supply",
+      "unit": "\uc790\uc0b0 \ub2e8\uc704",
+      "sourceMetric": "SplyCur",
+      "derived": false,
+      "sampleTimes": [
+        1496016000,
+        1496102400
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "BAT",
+      "metric": "market_cap",
+      "unit": "USD",
+      "sourceMetric": "CapMrktCurUSD",
+      "derived": false,
+      "sampleTimes": [
+        1507248000,
+        1507334400
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "BAT",
+      "metric": "issuance",
+      "unit": "\uc790\uc0b0 \ub2e8\uc704 / \uc77c",
+      "sourceMetric": "IssTotNtv",
+      "derived": false,
+      "sampleTimes": [
+        1496016000,
+        1496102400
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "BAT",
+      "metric": "realized_cap",
+      "unit": "USD",
+      "sourceMetric": null,
+      "derived": true,
+      "sampleTimes": [
+        1507248000,
+        1507334400
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "BAT",
+      "metric": "realized_price",
+      "unit": "USD",
+      "sourceMetric": null,
+      "derived": true,
+      "sampleTimes": [
+        1507248000,
+        1507334400
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "BAT",
+      "metric": "nupl",
+      "unit": "\ube44\uc728",
+      "sourceMetric": null,
+      "derived": true,
+      "sampleTimes": [
+        1507248000,
+        1507334400
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "LPT",
+      "metric": "mvrv",
+      "unit": "\ubc30",
+      "sourceMetric": "CapMVRVCur",
+      "derived": false,
+      "sampleTimes": [
+        1545264000,
+        1545350400
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "LPT",
+      "metric": "active_addresses",
+      "unit": "\uc8fc\uc18c / \uc77c",
+      "sourceMetric": "AdrActCnt",
+      "derived": false,
+      "sampleTimes": [
+        1525046400,
+        1525132800
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "LPT",
+      "metric": "balance_addresses",
+      "unit": "\uc8fc\uc18c",
+      "sourceMetric": "AdrBalCnt",
+      "derived": false,
+      "sampleTimes": [
+        1525046400,
+        1525132800
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "LPT",
+      "metric": "transactions",
+      "unit": "\uac74 / \uc77c",
+      "sourceMetric": "TxCnt",
+      "derived": false,
+      "sampleTimes": [
+        1525046400,
+        1525132800
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "LPT",
+      "metric": "transfers",
+      "unit": "\uac74 / \uc77c",
+      "sourceMetric": "TxTfrCnt",
+      "derived": false,
+      "sampleTimes": [
+        1525046400,
+        1525132800
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "LPT",
+      "metric": "supply",
+      "unit": "\uc790\uc0b0 \ub2e8\uc704",
+      "sourceMetric": "SplyCur",
+      "derived": false,
+      "sampleTimes": [
+        1525046400,
+        1525132800
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "LPT",
+      "metric": "market_cap",
+      "unit": "USD",
+      "sourceMetric": "CapMrktCurUSD",
+      "derived": false,
+      "sampleTimes": [
+        1545264000,
+        1545350400
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "LPT",
+      "metric": "issuance",
+      "unit": "\uc790\uc0b0 \ub2e8\uc704 / \uc77c",
+      "sourceMetric": "IssTotNtv",
+      "derived": false,
+      "sampleTimes": [
+        1525046400,
+        1525132800
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "LPT",
+      "metric": "realized_cap",
+      "unit": "USD",
+      "sourceMetric": null,
+      "derived": true,
+      "sampleTimes": [
+        1545264000,
+        1545350400
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "LPT",
+      "metric": "realized_price",
+      "unit": "USD",
+      "sourceMetric": null,
+      "derived": true,
+      "sampleTimes": [
+        1545264000,
+        1545350400
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "LPT",
+      "metric": "nupl",
+      "unit": "\ube44\uc728",
+      "sourceMetric": null,
+      "derived": true,
+      "sampleTimes": [
+        1545264000,
+        1545350400
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "ZEC",
+      "metric": "mvrv",
+      "unit": "\ubc30",
+      "sourceMetric": "CapMVRVCur",
+      "derived": false,
+      "sampleTimes": [
+        1477699200,
+        1477785600
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "ZEC",
+      "metric": "active_addresses",
+      "unit": "\uc8fc\uc18c / \uc77c",
+      "sourceMetric": "AdrActCnt",
+      "derived": false,
+      "sampleTimes": [
+        1477612800,
+        1477699200
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "ZEC",
+      "metric": "balance_addresses",
+      "unit": "\uc8fc\uc18c",
+      "sourceMetric": "AdrBalCnt",
+      "derived": false,
+      "sampleTimes": [
+        1477612800,
+        1477699200
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "ZEC",
+      "metric": "transactions",
+      "unit": "\uac74 / \uc77c",
+      "sourceMetric": "TxCnt",
+      "derived": false,
+      "sampleTimes": [
+        1477612800,
+        1477699200
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "ZEC",
+      "metric": "transfers",
+      "unit": "\uac74 / \uc77c",
+      "sourceMetric": "TxTfrCnt",
+      "derived": false,
+      "sampleTimes": [
+        1477612800,
+        1477699200
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "ZEC",
+      "metric": "supply",
+      "unit": "\uc790\uc0b0 \ub2e8\uc704",
+      "sourceMetric": "SplyCur",
+      "derived": false,
+      "sampleTimes": [
+        1477612800,
+        1477699200
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "ZEC",
+      "metric": "market_cap",
+      "unit": "USD",
+      "sourceMetric": "CapMrktCurUSD",
+      "derived": false,
+      "sampleTimes": [
+        1477699200,
+        1477785600
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "ZEC",
+      "metric": "fees_native",
+      "unit": "\uc790\uc0b0 \ub2e8\uc704 / \uc77c",
+      "sourceMetric": "FeeTotNtv",
+      "derived": false,
+      "sampleTimes": [
+        1477612800,
+        1477699200
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "ZEC",
+      "metric": "hashrate",
+      "unit": "TH/s",
+      "sourceMetric": "HashRate",
+      "derived": false,
+      "sampleTimes": [
+        1477612800,
+        1477699200
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "ZEC",
+      "metric": "blocks",
+      "unit": "\ube14\ub85d / \uc77c",
+      "sourceMetric": "BlkCnt",
+      "derived": false,
+      "sampleTimes": [
+        1477612800,
+        1477699200
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "ZEC",
+      "metric": "issuance",
+      "unit": "\uc790\uc0b0 \ub2e8\uc704 / \uc77c",
+      "sourceMetric": "IssTotNtv",
+      "derived": false,
+      "sampleTimes": [
+        1477612800,
+        1477699200
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "ZEC",
+      "metric": "realized_cap",
+      "unit": "USD",
+      "sourceMetric": null,
+      "derived": true,
+      "sampleTimes": [
+        1477699200,
+        1477785600
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "ZEC",
+      "metric": "realized_price",
+      "unit": "USD",
+      "sourceMetric": null,
+      "derived": true,
+      "sampleTimes": [
+        1477699200,
+        1477785600
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "ZEC",
+      "metric": "nupl",
+      "unit": "\ube44\uc728",
+      "sourceMetric": null,
+      "derived": true,
+      "sampleTimes": [
+        1477699200,
+        1477785600
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "LTC",
+      "metric": "mvrv",
+      "unit": "\ubc30",
+      "sourceMetric": "CapMVRVCur",
+      "derived": false,
+      "sampleTimes": [
+        1364774400,
+        1364860800
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "LTC",
+      "metric": "active_addresses",
+      "unit": "\uc8fc\uc18c / \uc77c",
+      "sourceMetric": "AdrActCnt",
+      "derived": false,
+      "sampleTimes": [
+        1317945600,
+        1318032000
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "LTC",
+      "metric": "balance_addresses",
+      "unit": "\uc8fc\uc18c",
+      "sourceMetric": "AdrBalCnt",
+      "derived": false,
+      "sampleTimes": [
+        1317945600,
+        1318032000
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "LTC",
+      "metric": "transactions",
+      "unit": "\uac74 / \uc77c",
+      "sourceMetric": "TxCnt",
+      "derived": false,
+      "sampleTimes": [
+        1317945600,
+        1318032000
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "LTC",
+      "metric": "transfers",
+      "unit": "\uac74 / \uc77c",
+      "sourceMetric": "TxTfrCnt",
+      "derived": false,
+      "sampleTimes": [
+        1317945600,
+        1318032000
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "LTC",
+      "metric": "supply",
+      "unit": "\uc790\uc0b0 \ub2e8\uc704",
+      "sourceMetric": "SplyCur",
+      "derived": false,
+      "sampleTimes": [
+        1317945600,
+        1318032000
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "LTC",
+      "metric": "market_cap",
+      "unit": "USD",
+      "sourceMetric": "CapMrktCurUSD",
+      "derived": false,
+      "sampleTimes": [
+        1364774400,
+        1364860800
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "LTC",
+      "metric": "fees_native",
+      "unit": "\uc790\uc0b0 \ub2e8\uc704 / \uc77c",
+      "sourceMetric": "FeeTotNtv",
+      "derived": false,
+      "sampleTimes": [
+        1317945600,
+        1318032000
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "LTC",
+      "metric": "hashrate",
+      "unit": "TH/s",
+      "sourceMetric": "HashRate",
+      "derived": false,
+      "sampleTimes": [
+        1318032000,
+        1318377600
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 3
+    },
+    {
+      "asset": "LTC",
+      "metric": "blocks",
+      "unit": "\ube14\ub85d / \uc77c",
+      "sourceMetric": "BlkCnt",
+      "derived": false,
+      "sampleTimes": [
+        1317945600,
+        1318032000
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "LTC",
+      "metric": "issuance",
+      "unit": "\uc790\uc0b0 \ub2e8\uc704 / \uc77c",
+      "sourceMetric": "IssTotNtv",
+      "derived": false,
+      "sampleTimes": [
+        1318032000,
+        1318377600
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 3
+    },
+    {
+      "asset": "LTC",
+      "metric": "realized_cap",
+      "unit": "USD",
+      "sourceMetric": null,
+      "derived": true,
+      "sampleTimes": [
+        1364774400,
+        1364860800
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "LTC",
+      "metric": "realized_price",
+      "unit": "USD",
+      "sourceMetric": null,
+      "derived": true,
+      "sampleTimes": [
+        1364774400,
+        1364860800
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "LTC",
+      "metric": "nupl",
+      "unit": "\ube44\uc728",
+      "sourceMetric": null,
+      "derived": true,
+      "sampleTimes": [
+        1364774400,
+        1364860800
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "QNT",
+      "metric": "mvrv",
+      "unit": "\ubc30",
+      "sourceMetric": "CapMVRVCur",
+      "derived": false,
+      "sampleTimes": [
+        1552694400,
+        1552780800
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "QNT",
+      "metric": "active_addresses",
+      "unit": "\uc8fc\uc18c / \uc77c",
+      "sourceMetric": "AdrActCnt",
+      "derived": false,
+      "sampleTimes": [
+        1522972800,
+        1523059200
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "QNT",
+      "metric": "balance_addresses",
+      "unit": "\uc8fc\uc18c",
+      "sourceMetric": "AdrBalCnt",
+      "derived": false,
+      "sampleTimes": [
+        1522972800,
+        1523059200
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "QNT",
+      "metric": "transactions",
+      "unit": "\uac74 / \uc77c",
+      "sourceMetric": "TxCnt",
+      "derived": false,
+      "sampleTimes": [
+        1522972800,
+        1523059200
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "QNT",
+      "metric": "transfers",
+      "unit": "\uac74 / \uc77c",
+      "sourceMetric": "TxTfrCnt",
+      "derived": false,
+      "sampleTimes": [
+        1522972800,
+        1523059200
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "QNT",
+      "metric": "supply",
+      "unit": "\uc790\uc0b0 \ub2e8\uc704",
+      "sourceMetric": "SplyCur",
+      "derived": false,
+      "sampleTimes": [
+        1522972800,
+        1523059200
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "QNT",
+      "metric": "market_cap",
+      "unit": "USD",
+      "sourceMetric": "CapMrktCurUSD",
+      "derived": false,
+      "sampleTimes": [
+        1552694400,
+        1552780800
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "QNT",
+      "metric": "issuance",
+      "unit": "\uc790\uc0b0 \ub2e8\uc704 / \uc77c",
+      "sourceMetric": "IssTotNtv",
+      "derived": false,
+      "sampleTimes": [
+        1522972800,
+        1523059200
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "QNT",
+      "metric": "realized_cap",
+      "unit": "USD",
+      "sourceMetric": null,
+      "derived": true,
+      "sampleTimes": [
+        1552694400,
+        1552780800
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "QNT",
+      "metric": "realized_price",
+      "unit": "USD",
+      "sourceMetric": null,
+      "derived": true,
+      "sampleTimes": [
+        1552694400,
+        1552780800
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "QNT",
+      "metric": "nupl",
+      "unit": "\ube44\uc728",
+      "sourceMetric": null,
+      "derived": true,
+      "sampleTimes": [
+        1552694400,
+        1552780800
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "PAXG",
+      "metric": "mvrv",
+      "unit": "\ubc30",
+      "sourceMetric": "CapMVRVCur",
+      "derived": false,
+      "sampleTimes": [
+        1581724800,
+        1581811200
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "PAXG",
+      "metric": "active_addresses",
+      "unit": "\uc8fc\uc18c / \uc77c",
+      "sourceMetric": "AdrActCnt",
+      "derived": false,
+      "sampleTimes": [
+        1566777600,
+        1566864000
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "PAXG",
+      "metric": "balance_addresses",
+      "unit": "\uc8fc\uc18c",
+      "sourceMetric": "AdrBalCnt",
+      "derived": false,
+      "sampleTimes": [
+        1566777600,
+        1566864000
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "PAXG",
+      "metric": "transactions",
+      "unit": "\uac74 / \uc77c",
+      "sourceMetric": "TxCnt",
+      "derived": false,
+      "sampleTimes": [
+        1566777600,
+        1566864000
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "PAXG",
+      "metric": "transfers",
+      "unit": "\uac74 / \uc77c",
+      "sourceMetric": "TxTfrCnt",
+      "derived": false,
+      "sampleTimes": [
+        1566777600,
+        1566864000
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "PAXG",
+      "metric": "supply",
+      "unit": "\uc790\uc0b0 \ub2e8\uc704",
+      "sourceMetric": "SplyCur",
+      "derived": false,
+      "sampleTimes": [
+        1566777600,
+        1566864000
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "PAXG",
+      "metric": "market_cap",
+      "unit": "USD",
+      "sourceMetric": "CapMrktCurUSD",
+      "derived": false,
+      "sampleTimes": [
+        1581724800,
+        1581811200
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "PAXG",
+      "metric": "issuance",
+      "unit": "\uc790\uc0b0 \ub2e8\uc704 / \uc77c",
+      "sourceMetric": "IssTotNtv",
+      "derived": false,
+      "sampleTimes": [
+        1566777600,
+        1566864000
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "PAXG",
+      "metric": "realized_cap",
+      "unit": "USD",
+      "sourceMetric": null,
+      "derived": true,
+      "sampleTimes": [
+        1581724800,
+        1581811200
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "PAXG",
+      "metric": "realized_price",
+      "unit": "USD",
+      "sourceMetric": null,
+      "derived": true,
+      "sampleTimes": [
+        1581724800,
+        1581811200
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "PAXG",
+      "metric": "nupl",
+      "unit": "\ube44\uc728",
+      "sourceMetric": null,
+      "derived": true,
+      "sampleTimes": [
+        1581724800,
+        1581811200
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "DASH",
+      "metric": "mvrv",
+      "unit": "\ubc30",
+      "sourceMetric": "CapMVRVCur",
+      "derived": false,
+      "sampleTimes": [
+        1391817600,
+        1391904000
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "DASH",
+      "metric": "active_addresses",
+      "unit": "\uc8fc\uc18c / \uc77c",
+      "sourceMetric": "AdrActCnt",
+      "derived": false,
+      "sampleTimes": [
+        1390089600,
+        1390176000
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "DASH",
+      "metric": "balance_addresses",
+      "unit": "\uc8fc\uc18c",
+      "sourceMetric": "AdrBalCnt",
+      "derived": false,
+      "sampleTimes": [
+        1390089600,
+        1390176000
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "DASH",
+      "metric": "transactions",
+      "unit": "\uac74 / \uc77c",
+      "sourceMetric": "TxCnt",
+      "derived": false,
+      "sampleTimes": [
+        1390089600,
+        1390176000
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "DASH",
+      "metric": "transfers",
+      "unit": "\uac74 / \uc77c",
+      "sourceMetric": "TxTfrCnt",
+      "derived": false,
+      "sampleTimes": [
+        1390089600,
+        1390176000
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "DASH",
+      "metric": "supply",
+      "unit": "\uc790\uc0b0 \ub2e8\uc704",
+      "sourceMetric": "SplyCur",
+      "derived": false,
+      "sampleTimes": [
+        1390089600,
+        1390176000
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "DASH",
+      "metric": "market_cap",
+      "unit": "USD",
+      "sourceMetric": "CapMrktCurUSD",
+      "derived": false,
+      "sampleTimes": [
+        1391817600,
+        1391904000
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "DASH",
+      "metric": "hashrate",
+      "unit": "TH/s",
+      "sourceMetric": "HashRate",
+      "derived": false,
+      "sampleTimes": [
+        1390089600,
+        1390176000
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "DASH",
+      "metric": "blocks",
+      "unit": "\ube14\ub85d / \uc77c",
+      "sourceMetric": "BlkCnt",
+      "derived": false,
+      "sampleTimes": [
+        1390089600,
+        1390176000
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "DASH",
+      "metric": "issuance",
+      "unit": "\uc790\uc0b0 \ub2e8\uc704 / \uc77c",
+      "sourceMetric": "IssTotNtv",
+      "derived": false,
+      "sampleTimes": [
+        1390089600,
+        1390176000
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "DASH",
+      "metric": "realized_cap",
+      "unit": "USD",
+      "sourceMetric": null,
+      "derived": true,
+      "sampleTimes": [
+        1391817600,
+        1391904000
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "DASH",
+      "metric": "realized_price",
+      "unit": "USD",
+      "sourceMetric": null,
+      "derived": true,
+      "sampleTimes": [
+        1391817600,
+        1391904000
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "DASH",
+      "metric": "nupl",
+      "unit": "\ube44\uc728",
+      "sourceMetric": null,
+      "derived": true,
+      "sampleTimes": [
+        1391817600,
+        1391904000
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "LDO",
+      "metric": "mvrv",
+      "unit": "\ubc30",
+      "sourceMetric": "CapMVRVCur",
+      "derived": false,
+      "sampleTimes": [
+        1631318400,
+        1631404800
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "LDO",
+      "metric": "active_addresses",
+      "unit": "\uc8fc\uc18c / \uc77c",
+      "sourceMetric": "AdrActCnt",
+      "derived": false,
+      "sampleTimes": [
+        1608163200,
+        1608249600
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "LDO",
+      "metric": "balance_addresses",
+      "unit": "\uc8fc\uc18c",
+      "sourceMetric": "AdrBalCnt",
+      "derived": false,
+      "sampleTimes": [
+        1608163200,
+        1608249600
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "LDO",
+      "metric": "transactions",
+      "unit": "\uac74 / \uc77c",
+      "sourceMetric": "TxCnt",
+      "derived": false,
+      "sampleTimes": [
+        1608163200,
+        1608249600
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "LDO",
+      "metric": "transfers",
+      "unit": "\uac74 / \uc77c",
+      "sourceMetric": "TxTfrCnt",
+      "derived": false,
+      "sampleTimes": [
+        1608163200,
+        1608249600
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "LDO",
+      "metric": "supply",
+      "unit": "\uc790\uc0b0 \ub2e8\uc704",
+      "sourceMetric": "SplyCur",
+      "derived": false,
+      "sampleTimes": [
+        1608163200,
+        1608249600
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "LDO",
+      "metric": "market_cap",
+      "unit": "USD",
+      "sourceMetric": "CapMrktCurUSD",
+      "derived": false,
+      "sampleTimes": [
+        1631318400,
+        1631404800
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "LDO",
+      "metric": "issuance",
+      "unit": "\uc790\uc0b0 \ub2e8\uc704 / \uc77c",
+      "sourceMetric": "IssTotNtv",
+      "derived": false,
+      "sampleTimes": [
+        1608163200,
+        1608249600
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "LDO",
+      "metric": "realized_cap",
+      "unit": "USD",
+      "sourceMetric": null,
+      "derived": true,
+      "sampleTimes": [
+        1631318400,
+        1631404800
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "LDO",
+      "metric": "realized_price",
+      "unit": "USD",
+      "sourceMetric": null,
+      "derived": true,
+      "sampleTimes": [
+        1631318400,
+        1631404800
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "LDO",
+      "metric": "nupl",
+      "unit": "\ube44\uc728",
+      "sourceMetric": null,
+      "derived": true,
+      "sampleTimes": [
+        1631318400,
+        1631404800
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "GNO",
+      "metric": "mvrv",
+      "unit": "\ubc30",
+      "sourceMetric": "CapMVRVCur",
+      "derived": false,
+      "sampleTimes": [
+        1493683200,
+        1493769600
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "GNO",
+      "metric": "active_addresses",
+      "unit": "\uc8fc\uc18c / \uc77c",
+      "sourceMetric": "AdrActCnt",
+      "derived": false,
+      "sampleTimes": [
+        1492473600,
+        1492560000
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "GNO",
+      "metric": "balance_addresses",
+      "unit": "\uc8fc\uc18c",
+      "sourceMetric": "AdrBalCnt",
+      "derived": false,
+      "sampleTimes": [
+        1492473600,
+        1492560000
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "GNO",
+      "metric": "transactions",
+      "unit": "\uac74 / \uc77c",
+      "sourceMetric": "TxCnt",
+      "derived": false,
+      "sampleTimes": [
+        1492473600,
+        1492560000
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "GNO",
+      "metric": "transfers",
+      "unit": "\uac74 / \uc77c",
+      "sourceMetric": "TxTfrCnt",
+      "derived": false,
+      "sampleTimes": [
+        1492473600,
+        1492560000
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "GNO",
+      "metric": "supply",
+      "unit": "\uc790\uc0b0 \ub2e8\uc704",
+      "sourceMetric": "SplyCur",
+      "derived": false,
+      "sampleTimes": [
+        1492473600,
+        1492560000
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "GNO",
+      "metric": "market_cap",
+      "unit": "USD",
+      "sourceMetric": "CapMrktCurUSD",
+      "derived": false,
+      "sampleTimes": [
+        1493683200,
+        1493769600
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "GNO",
+      "metric": "issuance",
+      "unit": "\uc790\uc0b0 \ub2e8\uc704 / \uc77c",
+      "sourceMetric": "IssTotNtv",
+      "derived": false,
+      "sampleTimes": [
+        1492473600,
+        1492560000
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "GNO",
+      "metric": "realized_cap",
+      "unit": "USD",
+      "sourceMetric": null,
+      "derived": true,
+      "sampleTimes": [
+        1493683200,
+        1493769600
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "GNO",
+      "metric": "realized_price",
+      "unit": "USD",
+      "sourceMetric": null,
+      "derived": true,
+      "sampleTimes": [
+        1493683200,
+        1493769600
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "GNO",
+      "metric": "nupl",
+      "unit": "\ube44\uc728",
+      "sourceMetric": null,
+      "derived": true,
+      "sampleTimes": [
+        1493683200,
+        1493769600
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "DCR",
+      "metric": "mvrv",
+      "unit": "\ubc30",
+      "sourceMetric": "CapMVRVCur",
+      "derived": false,
+      "sampleTimes": [
+        1463443200,
+        1463529600
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "DCR",
+      "metric": "active_addresses",
+      "unit": "\uc8fc\uc18c / \uc77c",
+      "sourceMetric": "AdrActCnt",
+      "derived": false,
+      "sampleTimes": [
+        1454889600,
+        1454976000
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "DCR",
+      "metric": "balance_addresses",
+      "unit": "\uc8fc\uc18c",
+      "sourceMetric": "AdrBalCnt",
+      "derived": false,
+      "sampleTimes": [
+        1454889600,
+        1454976000
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "DCR",
+      "metric": "transactions",
+      "unit": "\uac74 / \uc77c",
+      "sourceMetric": "TxCnt",
+      "derived": false,
+      "sampleTimes": [
+        1454889600,
+        1454976000
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "DCR",
+      "metric": "transfers",
+      "unit": "\uac74 / \uc77c",
+      "sourceMetric": "TxTfrCnt",
+      "derived": false,
+      "sampleTimes": [
+        1454889600,
+        1454976000
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "DCR",
+      "metric": "supply",
+      "unit": "\uc790\uc0b0 \ub2e8\uc704",
+      "sourceMetric": "SplyCur",
+      "derived": false,
+      "sampleTimes": [
+        1454889600,
+        1454976000
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "DCR",
+      "metric": "market_cap",
+      "unit": "USD",
+      "sourceMetric": "CapMrktCurUSD",
+      "derived": false,
+      "sampleTimes": [
+        1463443200,
+        1463529600
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "DCR",
+      "metric": "blocks",
+      "unit": "\ube14\ub85d / \uc77c",
+      "sourceMetric": "BlkCnt",
+      "derived": false,
+      "sampleTimes": [
+        1454889600,
+        1454976000
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "DCR",
+      "metric": "realized_cap",
+      "unit": "USD",
+      "sourceMetric": null,
+      "derived": true,
+      "sampleTimes": [
+        1463443200,
+        1463529600
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "DCR",
+      "metric": "realized_price",
+      "unit": "USD",
+      "sourceMetric": null,
+      "derived": true,
+      "sampleTimes": [
+        1463443200,
+        1463529600
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "DCR",
+      "metric": "nupl",
+      "unit": "\ube44\uc728",
+      "sourceMetric": null,
+      "derived": true,
+      "sampleTimes": [
+        1463443200,
+        1463529600
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "FTT",
+      "metric": "mvrv",
+      "unit": "\ubc30",
+      "sourceMetric": "CapMVRVCur",
+      "derived": false,
+      "sampleTimes": [
+        1566259200,
+        1566345600
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "FTT",
+      "metric": "active_addresses",
+      "unit": "\uc8fc\uc18c / \uc77c",
+      "sourceMetric": "AdrActCnt",
+      "derived": false,
+      "sampleTimes": [
+        1555804800,
+        1555891200
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "FTT",
+      "metric": "balance_addresses",
+      "unit": "\uc8fc\uc18c",
+      "sourceMetric": "AdrBalCnt",
+      "derived": false,
+      "sampleTimes": [
+        1555804800,
+        1555891200
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "FTT",
+      "metric": "transactions",
+      "unit": "\uac74 / \uc77c",
+      "sourceMetric": "TxCnt",
+      "derived": false,
+      "sampleTimes": [
+        1555804800,
+        1555891200
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "FTT",
+      "metric": "transfers",
+      "unit": "\uac74 / \uc77c",
+      "sourceMetric": "TxTfrCnt",
+      "derived": false,
+      "sampleTimes": [
+        1555804800,
+        1555891200
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "FTT",
+      "metric": "supply",
+      "unit": "\uc790\uc0b0 \ub2e8\uc704",
+      "sourceMetric": "SplyCur",
+      "derived": false,
+      "sampleTimes": [
+        1555804800,
+        1555891200
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "FTT",
+      "metric": "market_cap",
+      "unit": "USD",
+      "sourceMetric": "CapMrktCurUSD",
+      "derived": false,
+      "sampleTimes": [
+        1566259200,
+        1566345600
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "FTT",
+      "metric": "issuance",
+      "unit": "\uc790\uc0b0 \ub2e8\uc704 / \uc77c",
+      "sourceMetric": "IssTotNtv",
+      "derived": false,
+      "sampleTimes": [
+        1555804800,
+        1555891200
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "FTT",
+      "metric": "realized_cap",
+      "unit": "USD",
+      "sourceMetric": null,
+      "derived": true,
+      "sampleTimes": [
+        1566259200,
+        1566345600
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "FTT",
+      "metric": "realized_price",
+      "unit": "USD",
+      "sourceMetric": null,
+      "derived": true,
+      "sampleTimes": [
+        1566259200,
+        1566345600
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "FTT",
+      "metric": "nupl",
+      "unit": "\ube44\uc728",
+      "sourceMetric": null,
+      "derived": true,
+      "sampleTimes": [
+        1566259200,
+        1566345600
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "SNX",
+      "metric": "mvrv",
+      "unit": "\ubc30",
+      "sourceMetric": "CapMVRVCur",
+      "derived": false,
+      "sampleTimes": [
+        1586390400,
+        1586476800
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "SNX",
+      "metric": "active_addresses",
+      "unit": "\uc8fc\uc18c / \uc77c",
+      "sourceMetric": "AdrActCnt",
+      "derived": false,
+      "sampleTimes": [
+        1520726400,
+        1520812800
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "SNX",
+      "metric": "balance_addresses",
+      "unit": "\uc8fc\uc18c",
+      "sourceMetric": "AdrBalCnt",
+      "derived": false,
+      "sampleTimes": [
+        1520726400,
+        1520812800
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "SNX",
+      "metric": "transactions",
+      "unit": "\uac74 / \uc77c",
+      "sourceMetric": "TxCnt",
+      "derived": false,
+      "sampleTimes": [
+        1520726400,
+        1520812800
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "SNX",
+      "metric": "transfers",
+      "unit": "\uac74 / \uc77c",
+      "sourceMetric": "TxTfrCnt",
+      "derived": false,
+      "sampleTimes": [
+        1520726400,
+        1520812800
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "SNX",
+      "metric": "supply",
+      "unit": "\uc790\uc0b0 \ub2e8\uc704",
+      "sourceMetric": "SplyCur",
+      "derived": false,
+      "sampleTimes": [
+        1520726400,
+        1520812800
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "SNX",
+      "metric": "market_cap",
+      "unit": "USD",
+      "sourceMetric": "CapMrktCurUSD",
+      "derived": false,
+      "sampleTimes": [
+        1586390400,
+        1586476800
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "SNX",
+      "metric": "issuance",
+      "unit": "\uc790\uc0b0 \ub2e8\uc704 / \uc77c",
+      "sourceMetric": "IssTotNtv",
+      "derived": false,
+      "sampleTimes": [
+        1520726400,
+        1520812800
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "SNX",
+      "metric": "realized_cap",
+      "unit": "USD",
+      "sourceMetric": null,
+      "derived": true,
+      "sampleTimes": [
+        1586390400,
+        1586476800
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "SNX",
+      "metric": "realized_price",
+      "unit": "USD",
+      "sourceMetric": null,
+      "derived": true,
+      "sampleTimes": [
+        1586390400,
+        1586476800
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "SNX",
+      "metric": "nupl",
+      "unit": "\ube44\uc728",
+      "sourceMetric": null,
+      "derived": true,
+      "sampleTimes": [
+        1586390400,
+        1586476800
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "YFI",
+      "metric": "mvrv",
+      "unit": "\ubc30",
+      "sourceMetric": "CapMVRVCur",
+      "derived": false,
+      "sampleTimes": [
+        1595635200,
+        1595721600
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "YFI",
+      "metric": "active_addresses",
+      "unit": "\uc8fc\uc18c / \uc77c",
+      "sourceMetric": "AdrActCnt",
+      "derived": false,
+      "sampleTimes": [
+        1594944000,
+        1595030400
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "YFI",
+      "metric": "balance_addresses",
+      "unit": "\uc8fc\uc18c",
+      "sourceMetric": "AdrBalCnt",
+      "derived": false,
+      "sampleTimes": [
+        1594944000,
+        1595030400
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "YFI",
+      "metric": "transactions",
+      "unit": "\uac74 / \uc77c",
+      "sourceMetric": "TxCnt",
+      "derived": false,
+      "sampleTimes": [
+        1594944000,
+        1595030400
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "YFI",
+      "metric": "transfers",
+      "unit": "\uac74 / \uc77c",
+      "sourceMetric": "TxTfrCnt",
+      "derived": false,
+      "sampleTimes": [
+        1594944000,
+        1595030400
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "YFI",
+      "metric": "supply",
+      "unit": "\uc790\uc0b0 \ub2e8\uc704",
+      "sourceMetric": "SplyCur",
+      "derived": false,
+      "sampleTimes": [
+        1594944000,
+        1595030400
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "YFI",
+      "metric": "market_cap",
+      "unit": "USD",
+      "sourceMetric": "CapMrktCurUSD",
+      "derived": false,
+      "sampleTimes": [
+        1595635200,
+        1595721600
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "YFI",
+      "metric": "issuance",
+      "unit": "\uc790\uc0b0 \ub2e8\uc704 / \uc77c",
+      "sourceMetric": "IssTotNtv",
+      "derived": false,
+      "sampleTimes": [
+        1594944000,
+        1595030400
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "YFI",
+      "metric": "realized_cap",
+      "unit": "USD",
+      "sourceMetric": null,
+      "derived": true,
+      "sampleTimes": [
+        1595635200,
+        1595721600
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "YFI",
+      "metric": "realized_price",
+      "unit": "USD",
+      "sourceMetric": null,
+      "derived": true,
+      "sampleTimes": [
+        1595635200,
+        1595721600
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "YFI",
+      "metric": "nupl",
+      "unit": "\ube44\uc728",
+      "sourceMetric": null,
+      "derived": true,
+      "sampleTimes": [
+        1595635200,
+        1595721600
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "DGB",
+      "metric": "mvrv",
+      "unit": "\ubc30",
+      "sourceMetric": "CapMVRVCur",
+      "derived": false,
+      "sampleTimes": [
+        1423526400,
+        1423612800
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "DGB",
+      "metric": "active_addresses",
+      "unit": "\uc8fc\uc18c / \uc77c",
+      "sourceMetric": "AdrActCnt",
+      "derived": false,
+      "sampleTimes": [
+        1389312000,
+        1389398400
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "DGB",
+      "metric": "balance_addresses",
+      "unit": "\uc8fc\uc18c",
+      "sourceMetric": "AdrBalCnt",
+      "derived": false,
+      "sampleTimes": [
+        1389312000,
+        1389398400
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "DGB",
+      "metric": "transactions",
+      "unit": "\uac74 / \uc77c",
+      "sourceMetric": "TxCnt",
+      "derived": false,
+      "sampleTimes": [
+        1389312000,
+        1389398400
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "DGB",
+      "metric": "transfers",
+      "unit": "\uac74 / \uc77c",
+      "sourceMetric": "TxTfrCnt",
+      "derived": false,
+      "sampleTimes": [
+        1389312000,
+        1389398400
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "DGB",
+      "metric": "supply",
+      "unit": "\uc790\uc0b0 \ub2e8\uc704",
+      "sourceMetric": "SplyCur",
+      "derived": false,
+      "sampleTimes": [
+        1389312000,
+        1389398400
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "DGB",
+      "metric": "market_cap",
+      "unit": "USD",
+      "sourceMetric": "CapMrktCurUSD",
+      "derived": false,
+      "sampleTimes": [
+        1423526400,
+        1423612800
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "DGB",
+      "metric": "fees_native",
+      "unit": "\uc790\uc0b0 \ub2e8\uc704 / \uc77c",
+      "sourceMetric": "FeeTotNtv",
+      "derived": false,
+      "sampleTimes": [
+        1389312000,
+        1389398400
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "DGB",
+      "metric": "blocks",
+      "unit": "\ube14\ub85d / \uc77c",
+      "sourceMetric": "BlkCnt",
+      "derived": false,
+      "sampleTimes": [
+        1389312000,
+        1389398400
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "DGB",
+      "metric": "issuance",
+      "unit": "\uc790\uc0b0 \ub2e8\uc704 / \uc77c",
+      "sourceMetric": "IssTotNtv",
+      "derived": false,
+      "sampleTimes": [
+        1389312000,
+        1389398400
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "DGB",
+      "metric": "realized_cap",
+      "unit": "USD",
+      "sourceMetric": null,
+      "derived": true,
+      "sampleTimes": [
+        1423526400,
+        1423612800
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "DGB",
+      "metric": "realized_price",
+      "unit": "USD",
+      "sourceMetric": null,
+      "derived": true,
+      "sampleTimes": [
+        1423526400,
+        1423612800
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    },
+    {
+      "asset": "DGB",
+      "metric": "nupl",
+      "unit": "\ube44\uc728",
+      "sourceMetric": null,
+      "derived": true,
+      "sampleTimes": [
+        1423526400,
+        1423612800
+      ],
+      "latestDataAsOf": 1791504000,
+      "gapCount": 0
+    }
+  ],
+  "sampleMode": "first two history values + latest coverage metadata",
+  "independentProviderComparison": false,
+  "directCollectionOrOverviewCalled": false
+}

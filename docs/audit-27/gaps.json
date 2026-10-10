@@ -1,0 +1,151 @@
+{
+  "observedAt": "2026-10-10T17:02:45.163711+00:00",
+  "rows": [
+    {
+      "asset": "ASTR",
+      "source": "Upbit",
+      "interval": "1h",
+      "missingStored": [
+        1791565200
+      ],
+      "alsoAbsentAtProvider": [
+        1791565200
+      ],
+      "providerHasMissing": [],
+      "providerOldest": 1790917200
+    },
+    {
+      "asset": "CFX",
+      "source": "Upbit",
+      "interval": "1h",
+      "missingStored": [
+        1791518400,
+        1791568800,
+        1791572400
+      ],
+      "alsoAbsentAtProvider": [
+        1791518400,
+        1791568800,
+        1791572400
+      ],
+      "providerHasMissing": [],
+      "providerOldest": 1790888400
+    },
+    {
+      "asset": "COW",
+      "source": "Upbit",
+      "interval": "1h",
+      "missingStored": [
+        1791446400,
+        1791500400,
+        1791561600,
+        1791572400,
+        1791579600,
+        1791615600
+      ],
+      "alsoAbsentAtProvider": [
+        1791446400,
+        1791500400,
+        1791561600,
+        1791572400,
+        1791579600,
+        1791615600
+      ],
+      "providerHasMissing": [],
+      "providerOldest": 1790881200
+    },
+    {
+      "asset": "GLM",
+      "source": "Upbit",
+      "interval": "1h",
+      "missingStored": [
+        1791536400
+      ],
+      "alsoAbsentAtProvider": [
+        1791536400
+      ],
+      "providerHasMissing": [],
+      "providerOldest": 1790910000
+    },
+    {
+      "asset": "KAVA",
+      "source": "Upbit",
+      "interval": "1h",
+      "missingStored": [
+        1791540000
+      ],
+      "alsoAbsentAtProvider": [
+        1791540000
+      ],
+      "providerHasMissing": [],
+      "providerOldest": 1790913600
+    },
+    {
+      "asset": "KMNO",
+      "source": "Upbit",
+      "interval": "1h",
+      "missingStored": [
+        1791572400
+      ],
+      "alsoAbsentAtProvider": [
+        1791572400
+      ],
+      "providerHasMissing": [],
+      "providerOldest": 1790924400
+    },
+    {
+      "asset": "SUPER",
+      "source": "Upbit",
+      "interval": "1h",
+      "missingStored": [
+        1791572400,
+        1791576000
+      ],
+      "alsoAbsentAtProvider": [
+        1791572400,
+        1791576000
+      ],
+      "providerHasMissing": [],
+      "providerOldest": 1790924400
+    },
+    {
+      "asset": "WIF",
+      "source": "Upbit",
+      "interval": "1h",
+      "missingStored": [
+        1791547200,
+        1791550800,
+        1791568800,
+        1791572400,
+        1791576000
+      ],
+      "alsoAbsentAtProvider": [
+        1791547200,
+        1791550800,
+        1791568800,
+        1791572400,
+        1791576000
+      ],
+      "providerHasMissing": [],
+      "providerOldest": 1790856000
+    },
+    {
+      "asset": "XCN",
+      "source": "Upbit",
+      "interval": "1h",
+      "missingStored": [
+        1791565200,
+        1791576000,
+        1791579600
+      ],
+      "alsoAbsentAtProvider": [
+        1791565200,
+        1791576000,
+        1791579600
+      ],
+      "providerHasMissing": [],
+      "providerOldest": 1790902800
+    }
+  ],
+  "collectionCalled": false
+}

@@ -1,0 +1,25 @@
+{
+  "collectedAt": 1791655368,
+  "shadowOnly": false,
+  "healthDegraded": true,
+  "progress": {
+    "successfulLaneRuns": {
+      "quotes": 3,
+      "background": 3,
+      "recent": 3,
+      "analysis": 3
+    },
+    "sixCoreQuotesAdvanced": true,
+    "derivativeConfirmationsAdvanced": 19,
+    "directCollectionOrOverviewCalled": false,
+    "otherVisitorsAbsentGuaranteed": false
+  },
+  "naturalProgressVerified": true,
+  "readApis": 29,
+  "httpStatusCounts": {
+    "200": 28,
+    "503": 1
+  },
+  "observedSeconds": 180,
+  "scope": "Read-only source/SQLite checks without overview or direct collection. Other visitors absence is not guaranteed."
+}
