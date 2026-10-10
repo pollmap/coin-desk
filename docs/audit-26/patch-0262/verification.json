@@ -1,6 +1,6 @@
 {
   "release": "0.26.2",
-  "checkedAt": "2026-10-10T11:27:05.125407+00:00",
+  "checkedAt": "2026-10-10T12:14:32.215254+00:00",
   "logoInventory": {
     "assets": 150,
     "distinctPngFiles": 150,
@@ -73,10 +73,108 @@
       "passed": 6,
       "retries": 0,
       "finding": "The CI failure also reproduces locally across both browsers. Added explicit dialog-closed, return-focus and chart-ready assertions; no sleep or assertion relaxation."
+    },
+    {
+      "run": "first post-deployment asset probe",
+      "finding": "Pages MarketNavigation chunk initially returned SPA HTML once. Later exact path and deployment URL both returned matching JS without another deployment. Cause not established. _headers is deployment configuration, not an HTTP asset; VPS JSON line endings and ZIP metadata were separately verified."
     }
   ],
-  "remoteCi": "pending",
-  "deployment": "pending",
+  "remoteCi": {
+    "pullRequest": "https://github.com/pollmap/coin-desk/pull/55",
+    "state": "MERGED",
+    "mergedAt": "2026-10-10T11:53:53Z",
+    "codeMain": "218d17278da1ee1af0b57bb44941b03bfd258b04",
+    "finalPrRun": {
+      "id": 38049381598,
+      "conclusion": "success"
+    },
+    "mainRun": {
+      "id": 38050027435,
+      "conclusion": "success",
+      "headSha": "218d17278da1ee1af0b57bb44941b03bfd258b04"
+    },
+    "unitTests": 680,
+    "nodeServerTests": 20,
+    "pythonVpsTests": 22,
+    "recoveryTests": 2,
+    "browserTestsPassed": 206,
+    "perBrowserPassed": 103,
+    "privateOptInSkipped": 2,
+    "browserRetries": 0,
+    "browsers": [
+      "Chromium",
+      "WebKit"
+    ],
+    "containerBuild": true,
+    "storybookBuild": true
+  },
+  "deployment": {
+    "pages": {
+      "url": "https://da028c67.coin-desk.pages.dev",
+      "production": "https://coin-desk.pages.dev",
+      "completed": true
+    },
+    "vps": {
+      "startedAt": 1791633907,
+      "release": "vps-2e723c9c0d776e8c",
+      "previousRelease": "vps-0e29bb07a9b0effd",
+      "mainSha": "218d17278da1ee1af0b57bb44941b03bfd258b04",
+      "backupVerifiedAt": 1791631665,
+      "schemaChanged": false,
+      "nginxChanged": false,
+      "dataDeleted": false,
+      "servicesChanged": [
+        "api"
+      ],
+      "promoted": true,
+      "unchangedContainerIdsVerified": [
+        "quotes",
+        "background",
+        "recent",
+        "analysis",
+        "backup",
+        "quote-hub"
+      ],
+      "services": {
+        "api": {
+          "image": "coin-desk:vps-2e723c9c0d776e8c",
+          "healthy": "healthy"
+        },
+        "quotes": {
+          "image": "coin-desk:vps-a1c06604282c8ca1",
+          "healthy": "healthy"
+        },
+        "background": {
+          "image": "coin-desk:vps-a1c06604282c8ca1",
+          "healthy": "healthy"
+        },
+        "recent": {
+          "image": "coin-desk:vps-a1c06604282c8ca1",
+          "healthy": "healthy"
+        },
+        "analysis": {
+          "image": "coin-desk:vps-29f6a85aaef183d4",
+          "healthy": "healthy"
+        },
+        "backup": {
+          "image": "coin-desk:vps-6270048e66efc7fa",
+          "healthy": "healthy"
+        },
+        "quote-hub": {
+          "image": "coin-desk:vps-29f6a85aaef183d4",
+          "healthy": "healthy"
+        }
+      },
+      "completedAt": 1791633928
+    },
+    "assetsVerified": true,
+    "httpFilesPerOrigin": 249,
+    "byteExceptions": [
+      "VPS sources.json: CRLF normalized to LF by source packaging; full normalized content match",
+      "VPS extension ZIP: archive metadata differs; every uncompressed member hash matches"
+    ],
+    "all150LogoBytesAndHeadersMatchBothOrigins": true
+  },
   "preserved": {
     "legacy8LogoPaths": true,
     "personalStorageKeys": true,
@@ -89,5 +187,16 @@
     "Apple Safari/VoiceOver on real device",
     "Human usability recruitment"
   ],
-  "scopeLimit": "Logo completion does not certify all current sources fresh, all history backfilled or prior LCP goal passed."
+  "scopeLimit": "Logo completion does not certify all current sources fresh, all history backfilled or prior LCP goal passed.",
+  "productionUserFlow": {
+    "passed": 6,
+    "widths": [
+      390,
+      1000,
+      1280
+    ],
+    "apiWrites": 0,
+    "axeViolations": 0,
+    "crossOriginBackupRestore": true
+  }
 }

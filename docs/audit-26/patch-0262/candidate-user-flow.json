@@ -1,0 +1,58 @@
+{
+  "checkedAt": "2026-10-10T11:30:31.093Z",
+  "fixture": false,
+  "browser": "153.0.8010.12",
+  "results": [
+    {
+      "origin": "http://127.0.0.1:5296",
+      "width": 390,
+      "flow": "market -> alias search -> PENGU RSI -> data panel -> pinned date -> save -> restore -> reload",
+      "chartLoadMs": 3488,
+      "chartBounds": {
+        "x": 16,
+        "y": 261,
+        "width": 358,
+        "height": 330
+      },
+      "initialMarketRequests": 1,
+      "axeViolations": 0,
+      "backupTransfer": false,
+      "apiWrites": 0,
+      "passed": true
+    },
+    {
+      "origin": "http://127.0.0.1:5296",
+      "width": 1000,
+      "flow": "market -> alias search -> PENGU RSI -> data panel -> pinned date -> save -> restore -> reload",
+      "chartLoadMs": 4508,
+      "chartBounds": {
+        "x": 28,
+        "y": 226,
+        "width": 944,
+        "height": 440
+      },
+      "initialMarketRequests": 1,
+      "axeViolations": 0,
+      "backupTransfer": false,
+      "apiWrites": 0,
+      "passed": true
+    },
+    {
+      "origin": "http://127.0.0.1:5296",
+      "width": 1280,
+      "flow": "market -> alias search -> PENGU RSI -> data panel -> pinned date -> save -> restore -> reload",
+      "chartLoadMs": 3470,
+      "chartBounds": {
+        "x": 28,
+        "y": 226,
+        "width": 1224,
+        "height": 440
+      },
+      "initialMarketRequests": 1,
+      "axeViolations": 0,
+      "backupTransfer": false,
+      "apiWrites": 0,
+      "passed": true
+    }
+  ]
+}

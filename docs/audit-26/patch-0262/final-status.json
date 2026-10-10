@@ -1,0 +1,141 @@
+{
+  "release": "0.26.2",
+  "recordedAt": "2026-10-10T12:14:32.215254+00:00",
+  "codeMain": "218d17278da1ee1af0b57bb44941b03bfd258b04",
+  "logoCompletion": {
+    "assetCount": 150,
+    "localOriginalPngCount": 150,
+    "allDecodedInBrowserTests": true,
+    "all150BytesAndHeadersMatchBothOrigins": true,
+    "fallbackAndDarkThemeVerified": true
+  },
+  "codeAndQaComplete": true,
+  "remoteCi": {
+    "pullRequest": "https://github.com/pollmap/coin-desk/pull/55",
+    "state": "MERGED",
+    "mergedAt": "2026-10-10T11:53:53Z",
+    "codeMain": "218d17278da1ee1af0b57bb44941b03bfd258b04",
+    "finalPrRun": {
+      "id": 38049381598,
+      "conclusion": "success"
+    },
+    "mainRun": {
+      "id": 38050027435,
+      "conclusion": "success",
+      "headSha": "218d17278da1ee1af0b57bb44941b03bfd258b04"
+    },
+    "unitTests": 680,
+    "nodeServerTests": 20,
+    "pythonVpsTests": 22,
+    "recoveryTests": 2,
+    "browserTestsPassed": 206,
+    "perBrowserPassed": 103,
+    "privateOptInSkipped": 2,
+    "browserRetries": 0,
+    "browsers": [
+      "Chromium",
+      "WebKit"
+    ],
+    "containerBuild": true,
+    "storybookBuild": true
+  },
+  "pagesAndVpsDeployed": true,
+  "productionUserFlowsPassed": 6,
+  "actualWindowsChromeChecked": true,
+  "currentData": {
+    "checkedAt": 1791634011,
+    "sources": [
+      {
+        "name": "pages",
+        "base": "https://coin-desk.pages.dev",
+        "runtimeRelease": "vps-2e723c9c0d776e8c",
+        "healthStatus": 503,
+        "active": 1585,
+        "counts": {
+          "ok": 1559,
+          "delayed": 26
+        },
+        "assetIdsVerified": 150,
+        "marketPairsVerified": [
+          {
+            "market": "upbit",
+            "currency": "KRW",
+            "rows": 103,
+            "counts": {
+              "ready": 84,
+              "delayed": 19
+            }
+          },
+          {
+            "market": "binance",
+            "currency": "USDT",
+            "rows": 138,
+            "counts": {
+              "ready": 138
+            }
+          }
+        ],
+        "backup": {
+          "ok": true,
+          "lastCompletedAt": 1791567688,
+          "verified": true
+        }
+      },
+      {
+        "name": "vps",
+        "base": "https://coin-desk.62.171.141.206.sslip.io",
+        "runtimeRelease": "vps-2e723c9c0d776e8c",
+        "healthStatus": 503,
+        "active": 1585,
+        "counts": {
+          "ok": 1557,
+          "delayed": 28
+        },
+        "assetIdsVerified": 150,
+        "marketPairsVerified": [
+          {
+            "market": "upbit",
+            "currency": "KRW",
+            "rows": 103,
+            "counts": {
+              "ready": 84,
+              "delayed": 19
+            }
+          },
+          {
+            "market": "binance",
+            "currency": "USDT",
+            "rows": 138,
+            "counts": {
+              "ready": 138
+            }
+          }
+        ],
+        "backup": {
+          "ok": true,
+          "lastCompletedAt": 1791567688,
+          "verified": true
+        }
+      }
+    ],
+    "allActiveSourcesFresh": false,
+    "health503NotHidden": true
+  },
+  "retainedLimits": [
+    "Historical backfill continues with existing daily 10000 derivative candidate budget",
+    "Previously measured cold LCP target not passed; this logo patch is not a new LCP benchmark",
+    "Some Upbit actual trades are stale; 300-second validity is unchanged",
+    "Apple Safari/VoiceOver and recruited human usability tests remain unverified"
+  ],
+  "notClaimed": [
+    "All 150 assets have MVRV",
+    "Every history backfill completed",
+    "All provider errors cleared",
+    "Entire product plan fully verified"
+  ],
+  "schema": "0009",
+  "collectorsAndBackupContainerIdsUnchanged": true,
+  "privateDataPreserved": true,
+  "untrackedUserProductPlanPreserved": true,
+  "no48HourWaitAdded": true
+}

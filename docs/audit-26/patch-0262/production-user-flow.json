@@ -1,0 +1,109 @@
+{
+  "checkedAt": "2026-10-10T12:07:44.142Z",
+  "fixture": false,
+  "browser": "153.0.8010.12",
+  "results": [
+    {
+      "origin": "https://coin-desk.pages.dev",
+      "width": 390,
+      "flow": "market -> alias search -> PENGU RSI -> data panel -> pinned date -> save -> restore -> reload",
+      "chartLoadMs": 1432,
+      "chartBounds": {
+        "x": 16,
+        "y": 261,
+        "width": 358,
+        "height": 330
+      },
+      "initialMarketRequests": 1,
+      "axeViolations": 0,
+      "backupTransfer": false,
+      "apiWrites": 0,
+      "passed": true
+    },
+    {
+      "origin": "https://coin-desk.pages.dev",
+      "width": 1000,
+      "flow": "market -> alias search -> PENGU RSI -> data panel -> pinned date -> save -> restore -> reload",
+      "chartLoadMs": 910,
+      "chartBounds": {
+        "x": 28,
+        "y": 226,
+        "width": 944,
+        "height": 440
+      },
+      "initialMarketRequests": 1,
+      "axeViolations": 0,
+      "backupTransfer": false,
+      "apiWrites": 0,
+      "passed": true
+    },
+    {
+      "origin": "https://coin-desk.pages.dev",
+      "width": 1280,
+      "flow": "market -> alias search -> PENGU RSI -> data panel -> pinned date -> save -> restore -> reload",
+      "chartLoadMs": 929,
+      "chartBounds": {
+        "x": 28,
+        "y": 226,
+        "width": 1224,
+        "height": 440
+      },
+      "initialMarketRequests": 1,
+      "axeViolations": 0,
+      "backupTransfer": true,
+      "apiWrites": 0,
+      "passed": true
+    },
+    {
+      "origin": "https://coin-desk.62.171.141.206.sslip.io",
+      "width": 390,
+      "flow": "market -> alias search -> PENGU RSI -> data panel -> pinned date -> save -> restore -> reload",
+      "chartLoadMs": 882,
+      "chartBounds": {
+        "x": 16,
+        "y": 261,
+        "width": 358,
+        "height": 330
+      },
+      "initialMarketRequests": 1,
+      "axeViolations": 0,
+      "backupTransfer": false,
+      "apiWrites": 0,
+      "passed": true
+    },
+    {
+      "origin": "https://coin-desk.62.171.141.206.sslip.io",
+      "width": 1000,
+      "flow": "market -> alias search -> PENGU RSI -> data panel -> pinned date -> save -> restore -> reload",
+      "chartLoadMs": 1401,
+      "chartBounds": {
+        "x": 28,
+        "y": 226,
+        "width": 944,
+        "height": 440
+      },
+      "initialMarketRequests": 1,
+      "axeViolations": 0,
+      "backupTransfer": false,
+      "apiWrites": 0,
+      "passed": true
+    },
+    {
+      "origin": "https://coin-desk.62.171.141.206.sslip.io",
+      "width": 1280,
+      "flow": "market -> alias search -> PENGU RSI -> data panel -> pinned date -> save -> restore -> reload",
+      "chartLoadMs": 2420,
+      "chartBounds": {
+        "x": 28,
+        "y": 226,
+        "width": 1224,
+        "height": 440
+      },
+      "initialMarketRequests": 1,
+      "axeViolations": 0,
+      "backupTransfer": false,
+      "apiWrites": 0,
+      "passed": true
+    }
+  ]
+}

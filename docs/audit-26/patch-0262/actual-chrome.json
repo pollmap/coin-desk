@@ -1,0 +1,32 @@
+{
+  "checkedAt": "2026-10-10T11:35:02.136810+00:00",
+  "browser": "actual Windows Chrome via browser extension",
+  "candidateOrigin": "http://127.0.0.1:5296",
+  "first16LogosDecoded": true,
+  "selectedAsset": "PENGU",
+  "aliasSearch": "펭귄",
+  "selectedIndicator": "RSI 14",
+  "mobileViewportWidth": 390,
+  "mobileLogoBounds": "27.998px square",
+  "darkLogoBackground": "rgb(255,255,255)",
+  "originalThemeRestored": true,
+  "viewportReset": true,
+  "writesToApi": false,
+  "notTested": [
+    "real Apple Safari and VoiceOver"
+  ],
+  "production": {
+    "recordedAt": "2026-10-10T12:14:32.215254+00:00",
+    "origin": "https://coin-desk.pages.dev",
+    "asset": "PENGU",
+    "aliasSearch": "펭귄",
+    "viewportWidth": 390,
+    "logoPath": "/coin-logos/v2/pengu-708fb7a39e0f.png",
+    "decoded": true,
+    "logoWidth": 32,
+    "logoHeight": 32,
+    "horizontalOverflow": false,
+    "savedDarkThemePreserved": true,
+    "apiWrites": false
+  }
+}
