@@ -6,6 +6,8 @@ import { ANALYSIS_LABELS, type AnalysisView } from './advanced-analysis';
 import { guideArticle, guideForMetric } from './learning-catalog';
 import { isRangePeriod } from './ranges';
 import type { Asset, Period } from './types';
+import { defaultIndicator } from './default-analysis';
+export { defaultIndicator } from './default-analysis';
 
 export const INDICATOR_GROUPS = ['가치·사이클', '온체인', '선물', '기술·성과'] as const;
 export type IndicatorGroup = (typeof INDICATOR_GROUPS)[number];
@@ -31,8 +33,6 @@ export interface IndicatorDefinition {
 }
 const all = ASSETS.map((a) => a.id);
 export const supportsReference = (asset: Asset) => referenceAssets.includes(asset);
-export const defaultIndicator = (asset: Asset) =>
-  NETWORK_METRICS.find((m) => m.id === 'mvrv')?.assets.includes(asset) ? 'net:mvrv' : 'rsi';
 export const validPriceBasis = (asset: Asset, basis: string | null) =>
   basis === 'upbit' || basis === 'binance'
     ? availableMarket(asset, basis)
