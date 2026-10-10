@@ -6,7 +6,6 @@ import { METRICS } from '../shared/catalog';
 import { DEFAULT_DESK, importDesk, normalizeDesk, workspaceUrl } from '../shared/workspace';
 import type { PersonalDesk, Workspace } from '../shared/workspace';
 import { annotationKey } from '../shared/annotations';
-import './desk.css';
 import { PERSONAL_DESK_KEY } from '../shared/personal-favorites';
 
 const KEY = PERSONAL_DESK_KEY;

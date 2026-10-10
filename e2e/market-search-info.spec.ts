@@ -1,6 +1,22 @@
 import { test, expect } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
 
+test('market has shared keyboard styles before analysis code is loaded', async ({
+  page,
+  browserName,
+}) => {
+  await page.goto('/');
+  await expect(page.locator('.market-table tbody tr')).toHaveCount(50);
+  const skip = page.getByRole('link', { name: '본문으로 바로가기', exact: true });
+  expect((await skip.boundingBox())!.y).toBeLessThan(0);
+  // WebKit's default keyboard mode uses Option/Alt+Tab to include links.
+  await page.keyboard.press(browserName === 'webkit' ? 'Alt+Tab' : 'Tab');
+  await expect(skip).toBeFocused();
+  expect((await skip.boundingBox())!.y).toBeGreaterThanOrEqual(0);
+  await page.keyboard.press('Enter');
+  await expect(page.locator('#main-content')).toBeFocused();
+});
+
 test('a ninth favorite survives reload without altering saved private analysis', async ({
   page,
 }) => {
