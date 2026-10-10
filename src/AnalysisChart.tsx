@@ -19,6 +19,9 @@ import { DateNavigator } from './DateNavigator';
 import { availableWindow, type DateWindow } from '../shared/date-navigation';
 import { ChartDrawings } from './ChartDrawings';
 import { BandPrimitive, type BandRow } from './BandPrimitive';
+import { SupertrendPrimitive } from './SupertrendPrimitive';
+import type { SupertrendRow } from '../shared/supertrend';
+import type { Interval } from '../shared/types';
 import type { Annotation, DrawingKind } from '../shared/annotations';
 import {
   adjacentObservation,
@@ -41,6 +44,7 @@ export interface AnalysisLine {
   step?: number;
   warning?: string;
   formula?: string;
+  supertrend?: { rows: SupertrendRow[]; interval: Interval };
 }
 export interface ChartObservation {
   time: number;
@@ -268,6 +272,7 @@ export const AnalysisChart = memo(function AnalysisChart({
           lastValueVisible: !line.id.startsWith('band:'),
           crosshairMarkerVisible: !line.id.startsWith('band:'),
           color: line.color,
+          lineVisible: !line.supertrend,
           lineWidth: 1,
           priceLineVisible: false,
           priceFormat: {
@@ -278,10 +283,15 @@ export const AnalysisChart = memo(function AnalysisChart({
         index,
       );
       series.setData(gapData(line.data, line.step ?? 86400));
+      const primitive = line.supertrend
+        ? new SupertrendPrimitive(line.supertrend.rows, line.supertrend.interval)
+        : undefined;
+      if (primitive) series.attachPrimitive(primitive);
       cursorSeries.push({
         id: line.id,
         series,
         values: new Map(line.data.map((p) => [p.time, p.value])),
+        ...(primitive ? { primitive } : {}),
       });
       for (const level of line.thresholds ??
         (line.unit === 'RSI'
@@ -398,6 +408,8 @@ export const AnalysisChart = memo(function AnalysisChart({
         const line = data.lines.find((l) => l.id === entry.id);
         entry.series.setData(gapData(line?.data ?? [], line?.step ?? 86400));
         entry.values = new Map((line?.data ?? []).map((p) => [p.time, p.value]));
+        if ('primitive' in entry)
+          (entry.primitive as SupertrendPrimitive).setRows(line?.supertrend?.rows ?? []);
       }
       bandPrimitive?.setRows(data.bands ?? []);
       const dates = new Set(data.points.map((p) => p.time));

@@ -35,6 +35,24 @@
 .indicator-date-tools {
   min-width: 0;
 }
+.supertrend-context {
+  margin: 6px 0;
+  color: var(--text);
+  font-size: 12px;
+}
+.supertrend-settings {
+  display: flex;
+  align-items: end;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.supertrend-settings label {
+  display: grid;
+  gap: 4px;
+}
+.supertrend-settings input {
+  width: 90px;
+}
 .knowledge-open {
   margin: 8px 0;
 }

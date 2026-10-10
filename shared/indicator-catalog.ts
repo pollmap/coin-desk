@@ -47,6 +47,19 @@ type IndicatorBase = Omit<
   'shortMeaning' | 'baselineMeaning' | 'observationCadence' | 'measurementScope'
 >;
 const definitions: IndicatorBase[] = [
+  {
+    id: 'view:supertrend',
+    title: '슈퍼트렌드',
+    group: '기술·성과',
+    assets: all,
+    unit: '가격',
+    source: '선택 가격 원천',
+    formula: 'HL2 ± 배수 × ATR(기간) · Wilder RMA · 이전 경계와 확정 종가로 방향 판정 · 기본 10·3',
+    defaultPeriod: 'all',
+    renderer: 'price',
+    guide: 'supertrend',
+    view: 'price',
+  },
   ...NETWORK_METRICS.map(
     (m) =>
       ({
@@ -224,6 +237,7 @@ const definitions: IndicatorBase[] = [
 ];
 // Concise selection copy. The full definition, formula and limits remain in the guide.
 const conciseMeanings: Record<string, string> = {
+  'view:supertrend': '변동 폭(ATR)을 반영한 추세 기준선',
   'view:rainbow': '앞선 730일 로그가격 분포에서의 위치',
   'view:btc_rainbow': '과거 가격의 로그회귀 대비 현재 위치',
   'view:relative': '두 코인의 수익률·가격 비율·상관 비교',
@@ -245,7 +259,7 @@ export const INDICATORS_CATALOG: IndicatorDefinition[] = definitions.map((d) => 
       ? '거래소 정산 주기'
       : d.id.startsWith('futures:') && !d.id.endsWith('_daily')
         ? '시간별'
-        : d.id === 'view:ribbon'
+        : ['view:ribbon', 'view:supertrend'].includes(d.id)
           ? '선택한 확정 봉'
           : '일별 확정 관측';
   return {
@@ -332,8 +346,12 @@ export function indicatorUrl(
   if (next === 'view:rainbow' && (switchingAsset || previous.get('metric') !== next))
     basis = longestPriceBasis(asset, basis);
   if (next === 'view:btc_rainbow' || next === 'view:powerlaw') basis = 'reference';
-  if ((next === 'view:vwap' || next === 'volume') && basis === 'reference')
+  if (['view:vwap', 'volume', 'view:supertrend'].includes(next) && basis === 'reference')
     basis = availableMarket(asset, 'binance');
+  if (next === 'view:supertrend' && previous.get('metric') !== next) {
+    p.set('interval', '1w');
+    p.set('log', '0');
+  }
   p.set('price_source', basis);
   if (basis === 'reference') p.delete('market');
   else p.set('market', basis);
