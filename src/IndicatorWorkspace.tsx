@@ -535,12 +535,7 @@ export function IndicatorWorkspace() {
   const waitingForCollection = response.errorCode === 'NO_DATA';
   const loading =
     !!supported && !error && (response.loading || (id === 'relative' && benchmark.loading));
-  const chartPoints =
-    d?.renderer === 'series'
-      ? primaryData
-      : bands
-        ? bandRows.map((p) => ({ time: p.time, value: p.price }))
-        : price;
+  const chartPoints = d?.renderer === 'series' ? primaryData : bands ? dailyPoints : price;
   const isStale = !!(
     response.data?.meta.stale || response.data?.meta.sourceStatus === 'backfilling'
   );
@@ -856,6 +851,12 @@ export function IndicatorWorkspace() {
                       </span>
                     </div>
                   )}
+                  {bands && !lastBand && !loading && (
+                    <p className="band-context" role="status">
+                      밴드 계산 전 · 표시일 이전 {id === 'view:btc_rainbow' ? '유효한' : '연속'}{' '}
+                      일별 가격 730개가 필요합니다.
+                    </p>
+                  )}
                 </>
               ) : (
                 <div className="indicator-empty" role="status">
@@ -947,6 +948,13 @@ export function IndicatorWorkspace() {
             <div className="indicator-provenance">
               {response.data?.meta.historyStart && (
                 <span>데이터 시작 {dateLabel(response.data.meta.historyStart)}</span>
+              )}
+              {bands && (
+                <span>
+                  {bandRows.length
+                    ? `밴드 시작 ${dateLabel(bandRows[0].time)} · 이전 730개 관측 이후`
+                    : '밴드 계산에 필요한 이전 730개 관측을 기다립니다.'}
+                </span>
               )}
               <span>
                 {primary?.source ??

@@ -1,0 +1,60 @@
+{
+  "checkedAt": "2026-10-10T19:08:39.443529+00:00",
+  "histories": [
+    {
+      "endpoint": "reference",
+      "selection": {
+        "asset": "DOGE"
+      },
+      "pages": 5,
+      "rows": 4643,
+      "first": "2014-01-23T00:00:00+00:00",
+      "last": "2026-10-09T00:00:00+00:00",
+      "declaredLatest": "2026-10-09T00:00:00+00:00",
+      "truncated": false,
+      "gapCount": 0,
+      "firstPageNextCursor": "2016-10-19T00:00:00+00:00",
+      "source": "Coin Metrics Community · PriceUSD",
+      "unit": "USD",
+      "sourceHistoryStart": "2014-01-23T00:00:00+00:00"
+    },
+    {
+      "endpoint": "candles",
+      "selection": {
+        "asset": "DOGE",
+        "market": "upbit",
+        "interval": "1d"
+      },
+      "pages": 3,
+      "rows": 2055,
+      "first": "2021-02-24T00:00:00+00:00",
+      "last": "2026-10-10T00:00:00+00:00",
+      "declaredLatest": "2026-10-10T00:00:00+00:00",
+      "truncated": false,
+      "gapCount": 0,
+      "firstPageNextCursor": "2023-11-21T00:00:00+00:00",
+      "source": "Upbit",
+      "unit": "KRW",
+      "sourceHistoryStart": "2021-02-24T00:00:00+00:00"
+    },
+    {
+      "endpoint": "candles",
+      "selection": {
+        "asset": "DOGE",
+        "market": "binance",
+        "interval": "1d"
+      },
+      "pages": 3,
+      "rows": 2655,
+      "first": "2019-07-05T00:00:00+00:00",
+      "last": "2026-10-10T00:00:00+00:00",
+      "declaredLatest": "2026-10-10T00:00:00+00:00",
+      "truncated": false,
+      "gapCount": 0,
+      "firstPageNextCursor": "2022-03-31T00:00:00+00:00",
+      "source": "Binance",
+      "unit": "USDT",
+      "sourceHistoryStart": "2019-07-05T00:00:00+00:00"
+    }
+  ]
+}

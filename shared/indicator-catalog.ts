@@ -7,6 +7,8 @@ import { guideArticle, guideForMetric } from './learning-catalog';
 import { isRangePeriod } from './ranges';
 import type { Asset, Period } from './types';
 import { defaultIndicator } from './default-analysis';
+import { longestPriceBasis } from './price-history';
+import type { PriceBasis } from './analysis-workspace';
 export { defaultIndicator } from './default-analysis';
 
 export const INDICATOR_GROUPS = ['가치·사이클', '온체인', '선물', '기술·성과'] as const;
@@ -33,7 +35,7 @@ export interface IndicatorDefinition {
 }
 const all = ASSETS.map((a) => a.id);
 export const supportsReference = (asset: Asset) => referenceAssets.includes(asset);
-export const validPriceBasis = (asset: Asset, basis: string | null) =>
+export const validPriceBasis = (asset: Asset, basis: string | null): PriceBasis =>
   basis === 'upbit' || basis === 'binance'
     ? availableMarket(asset, basis)
     : supportsReference(asset)
@@ -327,6 +329,8 @@ export function indicatorUrl(
   const next = supported ? id : defaultIndicator(asset);
   p.set('metric', next);
   let basis = validPriceBasis(asset, p.get('price_source') || p.get('market'));
+  if (next === 'view:rainbow' && (switchingAsset || previous.get('metric') !== next))
+    basis = longestPriceBasis(asset, basis);
   if (next === 'view:btc_rainbow' || next === 'view:powerlaw') basis = 'reference';
   if ((next === 'view:vwap' || next === 'volume') && basis === 'reference')
     basis = availableMarket(asset, 'binance');

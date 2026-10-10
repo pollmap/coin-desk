@@ -1,5 +1,6 @@
 """Read-only source/coverage audit. Never calls overview, refresh or collection endpoints."""
 import argparse, collections, datetime, json, pathlib, sqlite3, urllib.request
+from history_coverage import candle_coverage
 
 def main():
     p = argparse.ArgumentParser()
@@ -22,11 +23,7 @@ def main():
         db = sqlite3.connect(database.as_uri() + '?mode=ro', uri=True)
         db.row_factory = sqlite3.Row
         before = db.total_changes
-        report['candles'] = [dict(r) for r in db.execute('SELECT asset,market,interval,MIN(time) first,MAX(time) last,COUNT(*) observations FROM candles GROUP BY asset,market,interval')]
-        for r in report['candles']:
-            cadence = 3600 if r['interval'] == '1h' else 86400
-            r['missingSlots'] = max(0, (r['last'] - r['first']) // cadence + 1 - r['observations'])
-            r['unit'] = 'KRW' if r['market'] == 'upbit' else 'USDT'
+        report['candles'] = candle_coverage(db)
         report['networkCoverage'] = [dict(r) for r in db.execute('SELECT * FROM network_coverage ORDER BY asset,metric')]
         registry = json.loads(pathlib.Path(a.registry).read_text(encoding='utf-8'))['assets']
         coverage = {(r['asset'], r['metric']): r for r in report['networkCoverage']}

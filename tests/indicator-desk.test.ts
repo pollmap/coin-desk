@@ -9,6 +9,8 @@ import {
 } from '../shared/indicator-catalog';
 import { guideContext } from '../shared/learning-catalog';
 import { normalizeDesk, workspaceUrl } from '../shared/workspace';
+import { longestPriceBasis } from '../shared/price-history';
+import origins from '../shared/price-history-origins.json';
 const DAY = 86400,
   genesis = Date.UTC(2009, 0, 3) / 1000;
 const history = (n: number) =>
@@ -17,6 +19,47 @@ const history = (n: number) =>
     value: Math.exp(-3 + 1.8 * Math.log(i + 20) + 0.2 * Math.sin(i / 11)),
   }));
 describe('indicator entry and compatibility', () => {
+  it('opens new position bands on the oldest verified source for all 150 assets', () => {
+    expect(Object.keys(origins.assets)).toHaveLength(150);
+    for (const { id: asset } of ASSETS) {
+      const dates = (origins.assets as Record<string, Record<string, number>>)[asset];
+      const basis = longestPriceBasis(asset, 'upbit');
+      expect(dates[basis]).toBe(Math.min(...Object.values(dates)));
+      const url = new URL(
+        indicatorUrl(asset, 'view:rainbow', new URLSearchParams('metric=rsi&price_source=upbit')),
+        'https://test.invalid',
+      );
+      expect(url.searchParams.get('price_source')).toBe(basis);
+      expect(url.searchParams.get('period')).toBe('all');
+    }
+    expect(longestPriceBasis('DOGE', 'upbit')).toBe('reference');
+  });
+  it('preserves a previously explicit band source and date range when reopening saved analysis', () => {
+    const selection = new URLSearchParams(
+      'asset=DOGE&metric=view:rainbow&price_source=upbit&period=all&chart_from=1700000000&chart_to=1790000000',
+    );
+    expect(resolveIndicator('DOGE', '/coins/DOGE', selection)).toMatchObject({
+      id: 'view:rainbow',
+      supported: true,
+      period: 'all',
+    });
+    const desk = normalizeDesk({
+      version: 2,
+      workspaces: [
+        {
+          name: '원화 밴드',
+          asset: 'DOGE',
+          metric: 'view:rainbow',
+          priceSource: 'upbit',
+          period: 'all',
+          dateWindow: { from: 1700000000, to: 1790000000 },
+        },
+      ],
+    });
+    const url = new URL(workspaceUrl(desk.workspaces[0]), 'https://test.invalid');
+    expect(url.searchParams.get('price_source')).toBe('upbit');
+    expect(url.searchParams.get('chart_from')).toBe('1700000000');
+  });
   it('defaults to BTC MVRV and readable range without overriding explicit state', () => {
     expect(resolveIndicator('BTC', '/', new URLSearchParams())).toMatchObject({
       id: 'net:mvrv',
