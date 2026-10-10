@@ -11,7 +11,7 @@
 
 [운영 사이트](https://coin-desk.pages.dev) · [경쟁 기능 비교표](docs/RELEASE15.md#기능-비교) · [데이터 정의](docs/DATA.md)
 
-**백엔드 VPS 운영:** Node·SQLite·독립 수집·백업으로 이전했으며 기존 Pages는 VPS의 읽기 API를 사용합니다. 운영 D1은 보존하고 Cloudflare의 중복 수집은 중지했습니다. 네트워크·SSH·원격 CI·배포가 현재 작동합니다. [최신 검증·배포 기록](docs/audit-25/README.md). [구조·배포·복구](DEPLOYMENT.md) · [이전 검증](docs/audit-vps/README.md)
+**백엔드 VPS 운영:** Node·SQLite·독립 수집·백업으로 이전했으며 기존 Pages는 VPS의 읽기 API를 사용합니다. 운영 D1은 보존하고 Cloudflare의 중복 수집은 중지했습니다. 네트워크·SSH·원격 CI·배포가 현재 작동합니다. [최신 검증·배포 기록](docs/audit-26/patch-0261/README.md). [구조·배포·복구](DEPLOYMENT.md) · [이전 검증](docs/audit-vps/README.md)
 
 ## 새 사용 흐름
 
@@ -101,7 +101,7 @@ BTC 수집·검산 자료, 추가 자산 자료와 장기 참조가격을 분리
 | `python scripts/check_assets.py --base https://coin-desk.pages.dev` | 추가 자산 수집본과 공개 페이지별 OHLCV 전체 비교 |
 | `python scripts/backup_check.py` | 로컬 DB 백업→별도 파일 복구, 테이블 해시 비교 |
 
-새 온체인 지표를 포함해 재수집할 때는 `python scripts/bootstrap_network.py --assets BTC,DOGE,ETH` 뒤 `node scripts/import_network.mjs BTC,DOGE,ETH`를 실행합니다. 선물·BTC 네트워크 현황은 로컬 API의 정기 작업 또는 배포된 Cloudflare Cron이 **실제로 받은 값부터** 축적합니다. Bybit 미결제약정은 최근 30일을 먼저 적재하고 이후 서버에 축적하며, 더 오래된 값을 생성하지 않습니다.
+새 온체인 지표를 포함해 재수집할 때는 `python scripts/bootstrap_network.py --assets BTC,DOGE,ETH` 뒤 `node scripts/import_network.mjs BTC,DOGE,ETH`를 실행합니다. 선물·네트워크 현황은 VPS 독립 수집기가 **실제로 받은 값부터** 축적합니다. 최근 관측과 과거 이력은 별도 작업이며, Bybit가 제공하는 관측 구간만 가져옵니다. 원천에 없는 과거 값을 생성하지 않고 일일 과거 후보 10,000개 제한을 유지합니다. Cloudflare의 중복 예약 수집은 중지된 상태입니다.
 | `python scripts/package_release.py` | 인증·캐시·DB를 제외한 재현용 소스 ZIP 생성 |
 
 ## 현재 구조와 운영

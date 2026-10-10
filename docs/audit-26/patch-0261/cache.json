@@ -1,0 +1,43 @@
+{
+  "checkedAt": 1791627876,
+  "method": "GET",
+  "results": [
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "/assets/index-BD0qGYs5.js",
+      "status": 200,
+      "cacheControl": "public, max-age=31536000, immutable"
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "/",
+      "status": 200,
+      "cacheControl": "public, max-age=0, must-revalidate"
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "/api/v1/assets",
+      "status": 200,
+      "cacheControl": "public, max-age=300"
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "/assets/index-BD0qGYs5.js",
+      "status": 200,
+      "cacheControl": "public, max-age=31536000, immutable"
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "/",
+      "status": 200,
+      "cacheControl": "no-cache"
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "/api/v1/assets",
+      "status": 200,
+      "cacheControl": "public, max-age=300"
+    }
+  ],
+  "passed": true
+}

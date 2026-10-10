@@ -1,0 +1,50 @@
+{
+  "recordedAt": "2026-10-10T10:26:52.011963+00:00",
+  "unitTests": 680,
+  "nodeServerTests": 20,
+  "pythonVpsTests": 18,
+  "recoveryTests": 2,
+  "browserTestsPassed": 198,
+  "privatePathTestsSkipped": 2,
+  "browserRetries": 0,
+  "prCI": {
+    "id": 38043715736,
+    "conclusion": "success",
+    "head": "3295f32cdcf179ae91cd5f8b87151daa027bc3d9"
+  },
+  "mainCI": {
+    "id": 38044369665,
+    "conclusion": "success",
+    "head": "1a83b44cde17cf1ef34ac00033df198b3a9c41b8"
+  },
+  "focusedBrowserTestsPassed": 12,
+  "candidateLiveFlowsPassed": 3,
+  "productionLiveFlowsPassed": 6,
+  "axeViolations": 0,
+  "storybookBuildPassed": true,
+  "dockerBuildAndContainerSmokePassed": true,
+  "docsAndBrandChecksPassed": true,
+  "nativeWindowsChrome": {
+    "origin": "https://coin-desk.pages.dev",
+    "asset": "ADA",
+    "metric": "net:mvrv",
+    "value": 0.65,
+    "basisDate": "2026-10-09",
+    "provider": "Coin Metrics",
+    "priceSource": "Upbit KRW",
+    "searchEnterNavigationVerified": true,
+    "dataPanelOpened": true,
+    "dataPanelEscapeClosed": true
+  },
+  "earlierFailuresPreserved": [
+    "Delayed-module test first blocked only built URL, not the development module URL; corrected and rerun.",
+    "Unit-test helper initially lacked the type for preservation of unknown fields; corrected.",
+    "A candidate showed the skip link before common CSS loaded; CSS moved to the initial entry and focus styles checked.",
+    "Windows WebKit did not focus links with Tab or Alt+Tab. Final test checks explicitly focused link and Enter; actual Tab traversal remains a Chromium check. This is not Apple Safari verification.",
+    "Candidate audit first used the tunnel before readiness and had malformed date input; tools corrected, final flows passed.",
+    "The initial cache audit used HEAD on a GET-only API and received 503; final GET audit passed.",
+    "CI 38043612173 was canceled after the final code/test push; not a passing run."
+  ],
+  "actualAppleSafariVoiceOverVerified": false,
+  "humanUsabilityStudyVerified": false
+}

@@ -1,0 +1,40 @@
+{
+  "recordedAt": "2026-10-10T10:26:52.011963+00:00",
+  "version": "0.26.1",
+  "codeMain": "1a83b44cde17cf1ef34ac00033df198b3a9c41b8",
+  "codeMerged": true,
+  "webAndApiDeployed": true,
+  "mainCIConfirmed": true,
+  "productionUserFlowsPassed": 6,
+  "assets": 150,
+  "tradablePairs": 241,
+  "networkAssets": 34,
+  "mvrvAssets": 33,
+  "usdReferenceAssets": 143,
+  "bybitContracts": 136,
+  "activeSources": 1585,
+  "statusCheckedAt": 1791627772,
+  "activeStatuses": {
+    "ok": 1545,
+    "delayed": 40
+  },
+  "allSourcesHealthy": false,
+  "fullHistoricalCollectionComplete": false,
+  "latestIndependentSourceChecks": 34,
+  "allNetworkMetricsIndependentlyComparedThisPatch": false,
+  "coldLcpTargetMet": false,
+  "externalUnverified": [
+    "Actual Apple Safari/VoiceOver",
+    "Human usability study"
+  ],
+  "intentionalOrSourceLimits": [
+    "No manufactured recent trade for inactive markets; freshness criteria unchanged.",
+    "Some newly listed exchange histories remain too short for 730-day calculations.",
+    "Historical futures collection continues with the 10000-candidate daily budget.",
+    "Project relationships cover 13 assets, not all 150."
+  ],
+  "personalDataPreserved": true,
+  "unrelatedFilePreserved": "docs/BORI_CHART_PRODUCT_PLAN.md",
+  "fortyEightHourWaitRequired": false,
+  "evidenceDocsOnlyNoRedeploy": true
+}
