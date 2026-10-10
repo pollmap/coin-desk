@@ -49,6 +49,8 @@ import { dateLabel, save, saved, money } from './lib';
 import { SpotQuote } from './SpotQuote';
 import { IndicatorShortcuts } from './IndicatorShortcuts';
 import { RelativeControls } from './RelativeControls';
+import { supertrend, supertrendSettings, SUPERTREND_VERSION } from '../shared/supertrend';
+import { SupertrendControls } from './SupertrendControls';
 import './analysis-workspace.css';
 import './analysis-library.css';
 import './indicator-workspace.css';
@@ -110,13 +112,16 @@ export function IndicatorWorkspace() {
     d = active.definition,
     id = active.id;
   const rawBasis = params.get('price_source') || params.get('market');
-  const basis = validPriceBasis(asset, rawBasis) as PriceBasis,
+  const basis = validPriceBasis(
+      asset,
+      rawBasis ?? (id === 'view:supertrend' ? 'binance' : null),
+    ) as PriceBasis,
     unit = basisUnit(basis);
   const invalidBasis =
     ((rawBasis === 'upbit' || rawBasis === 'binance') && !supportsMarket(asset, rawBasis)) ||
     (rawBasis === 'reference' && !supportsReference(asset)) ||
     (['view:btc_rainbow', 'view:powerlaw'].includes(id) && basis !== 'reference') ||
-    (['volume', 'view:vwap'].includes(id) && basis === 'reference');
+    (['volume', 'view:vwap', 'view:supertrend'].includes(id) && basis === 'reference');
   const supported = active.supported && !invalidBasis;
   const period = active.period,
     compare = params.get('compare_price') === '1',
@@ -126,10 +131,15 @@ export function IndicatorWorkspace() {
       params.get('interval') || '',
     )
       ? params.get('interval')
-      : '1d'
+      : id === 'view:supertrend'
+        ? '1w'
+        : '1d'
   ) as Interval;
   const view = d?.view ?? 'price',
     local = ['rsi', 'drawdown', 'relative', 'volume'].includes(id);
+  const isSupertrend = id === 'view:supertrend';
+  const log = isSupertrend ? params.get('log') === '1' : params.get('log') !== '0';
+  const stSettings = supertrendSettings(params);
   const auxiliary = [...new Set((params.get('panels') ?? '').split(','))]
     .filter(
       (v) =>
@@ -235,6 +245,9 @@ export function IndicatorWorkspace() {
       !local &&
       !bands &&
       !lab &&
+      (!isSupertrend ||
+        auxiliary.some((v) => localIds.includes(v)) ||
+        /:(d|w)(,|$)/.test(params.get('indicators') ?? '')) &&
       view !== 'vwap' &&
       basis !== 'reference' &&
       interval !== '1d'
@@ -258,12 +271,19 @@ export function IndicatorWorkspace() {
         ? basis === 'reference'
           ? aggregateCloses((raw.data as SeriesResponse).data, interval)
           : (raw.data as CandleResponse).data
-              .filter((p) => p.closed)
+              .filter((p) => p.closed && p.closeTime <= Date.now() / 1000)
               .map((p) => ({ time: p.time, value: p.close }))
         : EMPTY,
     [raw.data, basis, interval],
   );
   const dailyPoints = daily?.data ?? EMPTY;
+  const stRows = useMemo(
+    () =>
+      isSupertrend && basis !== 'reference'
+        ? supertrend((raw.data as CandleResponse | undefined)?.data ?? [], interval, stSettings)
+        : [],
+    [isSupertrend, basis, raw.data, interval, stSettings.period, stSettings.multiplier],
+  );
   const benchmark = useData<SeriesResponse | CandleResponse>(
     supported && (id === 'relative' || auxiliary.includes('relative'))
       ? basis === 'reference'
@@ -439,6 +459,30 @@ export function IndicatorWorkspace() {
               step: 86400,
             })) ?? [])
           : [
+              ...(isSupertrend
+                ? [
+                    {
+                      id: 'supertrend',
+                      title: `슈퍼트렌드 ${stSettings.period}·${stSettings.multiplier}`,
+                      unit,
+                      source: basisName(basis),
+                      color: '#0f666b',
+                      overlay: true,
+                      data: stRows.map((p) => ({ time: p.time, value: p.value })),
+                      supertrend: { rows: stRows, interval },
+                      step:
+                        interval === '1w'
+                          ? 604800
+                          : interval === '1h'
+                            ? 3600
+                            : interval === '4h'
+                              ? 14400
+                              : interval === '1M'
+                                ? 32 * 86400
+                                : 86400,
+                    },
+                  ]
+                : []),
               ...workspaceIndicators(
                 price,
                 dailyPoints,
@@ -495,6 +539,10 @@ export function IndicatorWorkspace() {
       interval,
       view,
       vwap,
+      isSupertrend,
+      stRows,
+      stSettings.period,
+      stSettings.multiplier,
     ],
   );
   const patternIds = validPatterns((params.get('patterns') ?? '').split(',')),
@@ -530,6 +578,8 @@ export function IndicatorWorkspace() {
   context.set('price_source', basis);
   context.set('period', period);
   context.set('metric', id);
+  context.set('interval', interval);
+  context.set('log', log ? '1' : '0');
   const error = remote.error || raw.error || benchmark.error || extraDaily.error;
   const response = d?.renderer === 'series' && !local ? remote : raw;
   const waitingForCollection = response.errorCode === 'NO_DATA';
@@ -547,7 +597,8 @@ export function IndicatorWorkspace() {
         ? 'pending'
         : error && !chartPoints.length
           ? 'error'
-          : bands && !bandRows.length && dailyPoints.length
+          : (bands && !bandRows.length && dailyPoints.length) ||
+              (isSupertrend && !stRows.length && price.length)
             ? 'insufficient-history'
             : !chartPoints.length
               ? 'pending'
@@ -558,6 +609,8 @@ export function IndicatorWorkspace() {
                   : 'pending';
   const lastBand =
     readingDate === null ? bandRows.at(-1) : bandRows.find((p) => p.time === readingDate);
+  const lastSupertrend =
+    readingDate === null ? stRows.at(-1) : stRows.find((p) => p.time === readingDate);
   return (
     <div className="indicator-workspace" data-indicator={id} data-availability={availability}>
       <AssetHeader
@@ -704,10 +757,7 @@ export function IndicatorWorkspace() {
                 </label>
               )}
               {!primary && (
-                <button
-                  aria-pressed={params.get('log') !== '0'}
-                  onClick={() => change({ log: params.get('log') === '0' ? '1' : '0' })}
-                >
+                <button aria-pressed={log} onClick={() => change({ log: log ? '0' : '1' })}>
                   로그 축
                 </button>
               )}
@@ -715,6 +765,13 @@ export function IndicatorWorkspace() {
                 <RibbonControls
                   indicators={indicators}
                   onChange={(ids) => change({ indicators: ids.join(',') })}
+                />
+              )}
+              {isSupertrend && (
+                <SupertrendControls
+                  key={`${asset}:${stSettings.period}:${stSettings.multiplier}`}
+                  settings={stSettings}
+                  onChange={change}
                 />
               )}
               {d?.renderer === 'price' && basis !== 'reference' && (
@@ -746,7 +803,11 @@ export function IndicatorWorkspace() {
                   ? '이 지표와 가격 원천의 조합을 지원하지 않습니다.'
                   : `${asset}의 ${d?.title ?? id} 원천을 확보하지 못했습니다.`}
               </strong>
-              <p>확보되지 않은 데이터를 다른 코인의 값으로 대체하지 않습니다.</p>
+              <p>
+                {isSupertrend && basis === 'reference'
+                  ? '슈퍼트렌드는 실제 시가·고가·저가·종가가 필요합니다. USD 참조가격에는 종가만 있습니다.'
+                  : '확보되지 않은 데이터를 다른 코인의 값으로 대체하지 않습니다.'}
+              </p>
               <Link
                 to={indicatorUrl(asset, active.supported ? id : defaultIndicator(asset), context)}
               >
@@ -787,7 +848,7 @@ export function IndicatorWorkspace() {
                     lines={chartLines}
                     bands={bands ? bandRows : undefined}
                     period={period}
-                    log={d?.renderer === 'series' ? false : params.get('log') !== '0'}
+                    log={d?.renderer === 'series' ? false : log}
                     step={
                       primary?.step ??
                       (bands
@@ -804,7 +865,9 @@ export function IndicatorWorkspace() {
                     }
                     candles={
                       !primary && !bands && basis !== 'reference'
-                        ? (raw.data as CandleResponse).data.filter((c) => c.closed)
+                        ? (raw.data as CandleResponse).data.filter(
+                            (c) => c.closed && c.closeTime <= Date.now() / 1000,
+                          )
                         : undefined
                     }
                     signals={SIGNALS}
@@ -837,6 +900,23 @@ export function IndicatorWorkspace() {
                         : undefined
                     }
                   />
+                  {isSupertrend && (
+                    <p
+                      className="supertrend-context"
+                      role="status"
+                      data-direction={lastSupertrend?.direction ?? 'pending'}
+                    >
+                      {lastSupertrend
+                        ? `${lastSupertrend.direction === 'up' ? '상승 추세' : '하락 추세'} · ATR ${stSettings.period} · ${stSettings.multiplier}배 · ${interval}`
+                        : `계산 전 · 연속한 확정 ${interval} 봉 ${stSettings.period}개가 필요합니다.`}
+                      {!lastSupertrend && interval === '1w' && (
+                        <>
+                          {' '}
+                          <button onClick={() => change({ interval: '1d' })}>일봉으로 보기</button>
+                        </>
+                      )}
+                    </p>
+                  )}
                   {bands && lastBand && (
                     <div className="band-context">
                       <strong>
@@ -946,6 +1026,12 @@ export function IndicatorWorkspace() {
               </>
             )}
             <div className="indicator-provenance">
+              {isSupertrend && (
+                <span>
+                  실제 확정 {interval} OHLC · ATR {stSettings.period} · 배수 {stSettings.multiplier}{' '}
+                  · {SUPERTREND_VERSION} · {stRows.length}개 계산
+                </span>
+              )}
               {response.data?.meta.historyStart && (
                 <span>데이터 시작 {dateLabel(response.data.meta.historyStart)}</span>
               )}
@@ -965,7 +1051,9 @@ export function IndicatorWorkspace() {
                   ? '시간별'
                   : id === 'futures:funding'
                     ? '정산 시점별'
-                    : '일별'}
+                    : isSupertrend
+                      ? interval
+                      : '일별'}
               </span>
               {response.data?.meta.dataAsOf && (
                 <span>기준일 {dateLabel(response.data.meta.dataAsOf)}</span>
@@ -1068,7 +1156,7 @@ export function IndicatorWorkspace() {
                 interval,
                 period,
                 indicators,
-                log: params.get('log') !== '0',
+                log,
                 view: 'dashboard',
                 cards: [],
                 metric: id,
@@ -1095,6 +1183,8 @@ export function IndicatorWorkspace() {
                       'correlation_asset',
                       'benchmark_asset',
                       'comparison_layout',
+                      'st_period',
+                      'st_multiplier',
                     ].includes(k),
                   ),
                 ),

@@ -8,6 +8,7 @@ import { parseUtcDate, type DateWindow } from './date-navigation';
 import { validPatterns } from './candle-patterns';
 import { indicatorDefinition } from './indicator-catalog';
 import { validFavorites } from './personal-favorites';
+import { validSupertrendOption } from './supertrend';
 
 export interface ChartSettings {
   asset: Asset;
@@ -239,6 +240,7 @@ function validExtras(entry: Record<string, unknown>): Partial<Workspace> {
   return result;
 }
 export function validAnalysisOption(key: string, value: unknown) {
+  if (key === 'st_period' || key === 'st_multiplier') return validSupertrendOption(key, value);
   if (key === 'reading_date') return typeof value === 'string' && /^\d{9,10}$/.test(value);
   if (key === 'patterns')
     return (

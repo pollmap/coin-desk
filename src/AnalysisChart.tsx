@@ -13,12 +13,15 @@ import {
 import { createDeskChart } from './chart-theme';
 import type { Candle, Period, Point } from '../shared/types';
 import type { ObservationSignal } from '../shared/signals';
-import { money, numeric, periodStart } from './lib';
+import { money, numeric, periodStart, priceDigits } from './lib';
 import { ChartTools } from './ChartNavigator';
 import { DateNavigator } from './DateNavigator';
 import { availableWindow, type DateWindow } from '../shared/date-navigation';
 import { ChartDrawings } from './ChartDrawings';
 import { BandPrimitive, type BandRow } from './BandPrimitive';
+import { SupertrendPrimitive } from './SupertrendPrimitive';
+import type { SupertrendRow } from '../shared/supertrend';
+import type { Interval } from '../shared/types';
 import type { Annotation, DrawingKind } from '../shared/annotations';
 import {
   adjacentObservation,
@@ -41,6 +44,7 @@ export interface AnalysisLine {
   step?: number;
   warning?: string;
   formula?: string;
+  supertrend?: { rows: SupertrendRow[]; interval: Interval };
 }
 export interface ChartObservation {
   time: number;
@@ -174,6 +178,8 @@ export const AnalysisChart = memo(function AnalysisChart({
       ? '—'
       : new Date(t * 1000).toISOString().slice(0, 16).replace('T', ' ') + ' UTC';
   const metricNumber = (value: number | undefined) => numeric(value, readingDigits(value));
+  const lineNumber = (line: AnalysisLine, value: number | undefined) =>
+    numeric(value, line.supertrend ? priceDigits(value ?? 0, line.unit) : readingDigits(value));
   const fileName = (exportName ?? `${asset}-${unit}`).replace(/[\\/:*?"<>|]/g, '-');
   function explore(t: number | null, preserveRange = false) {
     // A layout change under the pointer must not immediately replace “latest”.
@@ -268,20 +274,26 @@ export const AnalysisChart = memo(function AnalysisChart({
           lastValueVisible: !line.id.startsWith('band:'),
           crosshairMarkerVisible: !line.id.startsWith('band:'),
           color: line.color,
+          lineVisible: !line.supertrend,
           lineWidth: 1,
           priceLineVisible: false,
           priceFormat: {
             type: 'custom',
-            formatter: (v: number) => numeric(v, readingDigits(v)),
+            formatter: (v: number) => lineNumber(line, v),
           },
         },
         index,
       );
       series.setData(gapData(line.data, line.step ?? 86400));
+      const primitive = line.supertrend
+        ? new SupertrendPrimitive(line.supertrend.rows, line.supertrend.interval)
+        : undefined;
+      if (primitive) series.attachPrimitive(primitive);
       cursorSeries.push({
         id: line.id,
         series,
         values: new Map(line.data.map((p) => [p.time, p.value])),
+        ...(primitive ? { primitive } : {}),
       });
       for (const level of line.thresholds ??
         (line.unit === 'RSI'
@@ -398,6 +410,8 @@ export const AnalysisChart = memo(function AnalysisChart({
         const line = data.lines.find((l) => l.id === entry.id);
         entry.series.setData(gapData(line?.data ?? [], line?.step ?? 86400));
         entry.values = new Map((line?.data ?? []).map((p) => [p.time, p.value]));
+        if ('primitive' in entry)
+          (entry.primitive as SupertrendPrimitive).setRows(line?.supertrend?.rows ?? []);
       }
       bandPrimitive?.setRows(data.bands ?? []);
       const dates = new Set(data.points.map((p) => p.time));
@@ -653,7 +667,8 @@ export const AnalysisChart = memo(function AnalysisChart({
               <i style={{ background: l.color }} />
               {l.legendTitle ?? l.title}{' '}
               <b>
-                {metricNumber(
+                {lineNumber(
+                  l,
                   selectedTime === null
                     ? l.data.at(-1)?.value
                     : time === undefined
@@ -728,7 +743,7 @@ export const AnalysisChart = memo(function AnalysisChart({
       {toolbarTarget ? createPortal(navigator, toolbarTarget) : navigator}
       <span className="sr-only" role="status">
         {selectedTime !== null
-          ? `${timestamp(time)} ${asset} ${display(priceValue)}. ${lines.map((l, i) => `${l.title} ${metricNumber(time === undefined ? undefined : readings.maps[i + 1].get(time))} ${l.unit}`).join('. ')}`
+          ? `${timestamp(time)} ${asset} ${display(priceValue)}. ${lines.map((l, i) => `${l.title} ${lineNumber(l, time === undefined ? undefined : readings.maps[i + 1].get(time))} ${l.unit}`).join('. ')}`
           : ''}
       </span>
       <details className="analysis-tools">
@@ -784,7 +799,7 @@ export const AnalysisChart = memo(function AnalysisChart({
                     <td>{timestamp(t)}</td>
                     <td>{display(readings.maps[0].get(t))}</td>
                     {lines.map((l, i) => (
-                      <td key={l.id}>{metricNumber(readings.maps[i + 1].get(t))}</td>
+                      <td key={l.id}>{lineNumber(l, readings.maps[i + 1].get(t))}</td>
                     ))}
                   </tr>
                 ))}

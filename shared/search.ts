@@ -5,7 +5,7 @@ import { GUIDE_ARTICLES } from './learning-catalog';
 import { assetKnowledge, KNOWLEDGE_VERSION } from './knowledge';
 import type { Asset } from './types';
 
-export const SEARCH_VERSION = '2.0.0';
+export const SEARCH_VERSION = '2.1.0';
 export type SearchKind = 'asset' | 'indicator' | 'guide' | 'relation';
 export interface SearchDocument {
   id: string;
@@ -48,6 +48,7 @@ export const normalizeSearch = (s: string) =>
     .toLowerCase()
     .replace(/[\s_\-/$]+/g, '');
 const purposes = [
+  { terms: ['슈퍼트렌드', '슈퍼 트렌드', 'supertrend', 'atr'], metric: 'supertrend' },
   { terms: ['고평가', '저평가', '가치평가', '실현가치', '비싸', '싼', 'mvrv'], metric: 'mvrv' },
   { terms: ['추세', '모멘텀', '과열', 'rsi'], metric: 'rsi' },
   { terms: ['레인보우', 'rainbow'], metric: 'rainbow' },
