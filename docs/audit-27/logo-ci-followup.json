@@ -162,5 +162,21 @@
   "localChromiumLogoSuite": {
     "passed": 4,
     "retries": 0
+  },
+  "followupPR": {
+    "number": 57,
+    "run": 38076002501,
+    "conclusion": "success",
+    "browserPassed": 216,
+    "optInExcluded": 2,
+    "retries": 0
+  },
+  "followupMain": {
+    "run": 38076864834,
+    "head": "668184c804af6aa1847223a3d4b36fd8d1bea221",
+    "conclusion": "success",
+    "browserPassed": 216,
+    "optInExcluded": 2,
+    "retries": 0
   }
 }

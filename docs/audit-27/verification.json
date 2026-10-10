@@ -1,6 +1,6 @@
 {
   "release": "0.27.0",
-  "updatedAt": "2026-10-10T18:29:34.975139+00:00",
+  "updatedAt": "2026-10-10T18:55:13.096477+00:00",
   "implemented": true,
   "deployed": true,
   "allQualityGoalsPassed": false,
@@ -26,7 +26,19 @@
     "rootCauseConfirmed": false
   },
   "followupCI": {
-    "pending": true,
+    "pending": false,
+    "pr": 57,
+    "prRun": 38076002501,
+    "prConclusion": "success",
+    "mainRun": 38076864834,
+    "mainConclusion": "success",
+    "unit": 686,
+    "server": 22,
+    "vps": 22,
+    "recovery": 2,
+    "browserPassed": 216,
+    "browserOptInExcluded": 2,
+    "retries": 0,
     "runtimeChanged": false,
     "deploymentRequired": false
   },
@@ -50,7 +62,11 @@
     "networkMetricCoverageRows": 442,
     "independentMvrvProviderMatches": 33,
     "networkStorageApiContractMatches": 408,
-    "storageContractsNotIndependentProviderChecks": true
+    "storageContractsNotIndependentProviderChecks": true,
+    "independentLatestNetworkMatches": 408,
+    "independentRawSourceMatches": 307,
+    "sameProviderDerivedArithmeticMatches": 101,
+    "latestOnlyNotAllHistoricalValues": true
   },
   "naturalRecovery": {
     "freshProviderCases": 6,
@@ -92,8 +108,10 @@
     "Apple Safari/VoiceOver",
     "Five recruited novice users",
     "Actual installed user Chrome extension reconnection",
-    "Independent provider requery for every network metric",
+    "Full historical observation-by-observation provider reconciliation",
     "Full UTC-day or disaster-recovery guarantee"
   ],
-  "no48HourGate": true
+  "no48HourGate": true,
+  "followupPR": 57,
+  "latestCodeMain": "668184c804af6aa1847223a3d4b36fd8d1bea221"
 }

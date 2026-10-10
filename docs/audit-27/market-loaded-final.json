@@ -1,0 +1,34 @@
+[
+  {
+    "origin": "pages",
+    "observedAt": "2026-10-10T18:36:20.886Z",
+    "width": 390,
+    "rows": 20,
+    "allVisiblePricesLoaded": true,
+    "initialMarketRequest": "/v1/market?market=upbit&spark_limit=0",
+    "currency": "KRW",
+    "sample": [
+      "비트코인BTC₩113,013,00024시간 +0.28%329.4억 원이력 대기가치평가 · MVRV ↗",
+      "도지코인DOGE₩11724시간 +2.61%100.3억 원이력 대기가치평가 · MVRV ↗",
+      "이더리움ETH₩3,417,00024시간 +0.71%195.5억 원이력 대기가치평가 · MVRV ↗"
+    ],
+    "pageErrors": [],
+    "firstRowY": 268.796875
+  },
+  {
+    "origin": "vps",
+    "observedAt": "2026-10-10T18:36:23.843Z",
+    "width": 390,
+    "rows": 20,
+    "allVisiblePricesLoaded": true,
+    "initialMarketRequest": "/v1/market?market=upbit&spark_limit=0",
+    "currency": "KRW",
+    "sample": [
+      "비트코인BTC₩113,013,00024시간 +0.28%329.4억 원이력 대기가치평가 · MVRV ↗",
+      "도지코인DOGE₩11724시간 +2.61%100.3억 원이력 대기가치평가 · MVRV ↗",
+      "이더리움ETH₩3,417,00024시간 +0.71%195.5억 원이력 대기가치평가 · MVRV ↗"
+    ],
+    "pageErrors": [],
+    "firstRowY": 268.796875
+  }
+]

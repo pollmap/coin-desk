@@ -1,11 +1,15 @@
 {
   "release": "0.27.0",
   "codeAndDeployment": "complete",
-  "followupCI": "pending",
+  "followupCI": "PR and main success, zero retries",
   "allGoals": "not-all-passed",
   "performanceGoalRemaining": "VPS LCP p95 2760ms versus goal 2500ms",
   "liveSourceHealth": "degraded for actual quote freshness; not falsely green",
   "vector": "disabled after zero percentage-point gain",
   "privacy": "preserved",
-  "evidence": "README.md"
+  "evidence": "README.md",
+  "networkProviderLatest": "408/408 same-date values; 307 raw and 101 derived arithmetic",
+  "mainCI": 38076864834,
+  "main": "668184c804af6aa1847223a3d4b36fd8d1bea221",
+  "runtimeUnchangedSinceVerifiedDeployment": true
 }
