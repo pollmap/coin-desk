@@ -622,6 +622,14 @@
 }
 .indicator-comparison .analysis-legend {
   margin: 4px 0;
+  font-size: 12px;
+}
+.indicator-comparison .analysis-reading-date {
+  font-size: 12px;
+}
+.indicator-comparison .analysis-reading-value {
+  font-size: 16px;
+  color: var(--text);
 }
 .indicator-comparison-results {
   overflow: auto;

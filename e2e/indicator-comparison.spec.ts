@@ -14,6 +14,12 @@ for (const width of [320, 390, 768, 1000, 1280, 1440, 1920])
     const chart = page.locator('[data-chart-kind=analysis]');
     await expect(chart).toHaveAttribute('data-range-ready', '1');
     await expect(page.getByRole('main')).toHaveCount(1);
+    const readingSizes = await page.locator('.analysis-legend').evaluate((element) => ({
+      value: parseFloat(getComputedStyle(element.querySelector('.analysis-reading-value')!).fontSize),
+      date: parseFloat(getComputedStyle(element.querySelector('.analysis-reading-date')!).fontSize),
+    }));
+    expect(readingSizes.value).toBeGreaterThanOrEqual(16);
+    expect(readingSizes.date).toBeGreaterThanOrEqual(12);
     expect(
       (
         await new AxeBuilder({ page })
