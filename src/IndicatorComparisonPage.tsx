@@ -166,7 +166,11 @@ export function IndicatorComparisonPage() {
   };
   const saveAsset = ASSETS.find((a) => a.id === assets.split(',')[0])?.id ?? 'BTC';
   return (
-    <main className="indicator-comparison" data-comparison-metric={metric}>
+    <section
+      aria-label="지표 비교"
+      className="indicator-comparison"
+      data-comparison-metric={metric}
+    >
       <header className="indicator-comparison-heading">
         <h1>코인 비교</h1>
         <ComparisonModes mode="indicator" />
@@ -213,6 +217,7 @@ export function IndicatorComparisonPage() {
           points={primary.data}
           lines={lines}
           primary={primary}
+          readingLabel={chartRows[0].asset}
           period="all"
           log={false}
           signals={noSignals}
@@ -269,17 +274,19 @@ export function IndicatorComparisonPage() {
                             result.unit
                           : '—'}
                       </td>
-                      <td>{dateLabel(point?.time)}</td>
+                      <td>{point ? dateLabel(point.time) : '—'}</td>
                       <td>
-                        {r.state === 'ready'
-                          ? '정상'
-                          : r.state === 'delayed'
-                            ? '갱신 지연'
-                            : r.state === 'unsupported'
-                              ? '미지원'
-                              : r.state === 'error'
-                                ? '조회 실패'
-                                : '관측 대기'}
+                        {date !== null && !point && ['ready', 'delayed'].includes(r.state)
+                          ? '관측 없음'
+                          : r.state === 'ready'
+                            ? '정상'
+                            : r.state === 'delayed'
+                              ? '갱신 지연'
+                              : r.state === 'unsupported'
+                                ? '미지원'
+                                : r.state === 'error'
+                                  ? '조회 실패'
+                                  : '관측 대기'}
                         {r.state !== 'ready' && <small>{r.reason}</small>}
                       </td>
                     </tr>
@@ -435,6 +442,6 @@ export function IndicatorComparisonPage() {
           })}
         />
       </DeskDialog>
-    </main>
+    </section>
   );
 }
