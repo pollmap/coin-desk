@@ -1,5 +1,8 @@
 import { rankSearch, SEARCH_CATALOG_VERSION } from '../shared/search';
 import { dailyTechnical } from '../shared/market-watch';
+import { indicatorComparison } from './indicator-comparison';
+import { comparisonSelection } from '../shared/indicator-comparison';
+import { datasetCoverage } from './dataset-coverage';
 import { marketSnapshot } from './market-snapshot';
 import { discoverAssets } from '../shared/asset-discovery';
 import { supportsMarket } from '../shared/asset-registry';
@@ -80,6 +83,8 @@ function canonicalRequest(request: Request) {
     search: ['q', 'asset', 'kind', 'limit'],
     'status/summary': [],
     'status/sources': ['q', 'state', 'kind', 'core', 'offset', 'limit'],
+    'indicator-comparison': ['assets', 'metric', 'source', 'period', 'from', 'to'],
+    coverage: ['asset'],
     status: [],
     health: [],
     research: [],
@@ -106,7 +111,9 @@ function canonicalRequest(request: Request) {
         ? endpoint === 'market' && key === 'market'
           ? 'binance'
           : undefined
-        : defaults[key]);
+        : endpoint === 'indicator-comparison'
+          ? undefined
+          : defaults[key]);
     if (value === undefined) continue; // Keep a missing "to" stable instead of adding the current second.
     if (key === 'asset') value = value.toUpperCase();
     if (key === 'cursor' && !/^\d{1,12}\|[A-Za-z0-9:_.-]{1,400}$/.test(value))
@@ -274,6 +281,15 @@ async function api(request: Request, env: Env): Promise<Response> {
   const { asset, market } = selection(q);
   if (request.method !== 'GET') return response({ error: 'Read-only API' }, 405);
   const endpoint = url.pathname.replace('/api/v1/', '');
+  if (endpoint === 'indicator-comparison') {
+    try {
+      comparisonSelection(q);
+    } catch (e) {
+      throw new RequestError((e as Error).message);
+    }
+    return response(await indicatorComparison(env, q));
+  }
+  if (endpoint === 'coverage') return response(await datasetCoverage(env, asset));
   if (endpoint === 'market-derivatives')
     return response(
       await marketDerivatives(
@@ -726,7 +742,7 @@ export default {
       // Quotes bypass edge caching so a newly committed scheduled snapshot is
       // visible immediately instead of waiting for an older response to expire.
       const liveStatus =
-        /\/(health|status(?:\/summary|\/sources)?|market|overview|dominance|research\/public)$/.test(
+        /\/(health|status(?:\/summary|\/sources)?|market|overview|dominance|research\/public|indicator-comparison|coverage)$/.test(
           url.pathname,
         );
       const cached = liveStatus ? undefined : await cache.match(canonical).catch(() => undefined);

@@ -7,6 +7,7 @@ import { Readable, Transform } from 'node:stream';
 import { schedulerState } from './runtime.mjs';
 import { searchResponse } from './search.mjs';
 import { staticResponder } from './static-response.mjs';
+import { revisionCache } from './revision-cache.mjs';
 const mime = {
   '.html': 'text/html; charset=utf-8',
   '.js': 'text/javascript; charset=utf-8',
@@ -64,6 +65,9 @@ export function createHttpServer({
     },
   };
   const root = resolve(staticRoot);
+  // Stream/static-only hosts and tests need no SQLite connection. Create the
+  // revision reader only when this server actually has a database.
+  const readRevision = database?.sqlite ? revisionCache(database.sqlite) : (_key, read) => read();
   const serveStatic = staticResponder();
   const server = createServer(async (req, res) => {
     const started = performance.now();
@@ -85,7 +89,10 @@ export function createHttpServer({
             (url.pathname === '/api/v1/search' &&
               !searchAllow(req.socket.remoteAddress ?? 'unknown')))
         ) {
-          out = json({ error: '요청이 많습니다. 잠시 후 다시 시도해 주세요.', code: 'RATE_LIMIT' }, 429);
+          out = json(
+            { error: '요청이 많습니다. 잠시 후 다시 시도해 주세요.', code: 'RATE_LIMIT' },
+            429,
+          );
           out.headers.set('Retry-After', '60');
         } else if (!['GET', 'HEAD'].includes(req.method))
           out = json({ error: 'Read-only API' }, 405);
@@ -167,6 +174,11 @@ export function createHttpServer({
                 ? json({ error: 'Search temporarily busy', code: 'SEARCH_BUSY' }, 503)
                 : json({ error: 'Invalid search request' }, 400);
           }
+        } else if (['/api/v1/indicator-comparison', '/api/v1/coverage'].includes(url.pathname)) {
+          url.searchParams.sort();
+          out = await readRevision(url.href, () =>
+            worker.fetch(new Request(url, { method: 'GET' }), env, ctx),
+          );
         } else if (url.pathname.startsWith('/api/')) {
           out = await worker.fetch(new Request(url, { method: 'GET' }), env, ctx);
           if (url.pathname === '/api/v1/market' && out.ok) {

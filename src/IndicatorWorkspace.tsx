@@ -39,6 +39,7 @@ import type { Asset, CandleResponse, Interval, Point, SeriesResponse } from '../
 import { useData } from './hooks';
 import { AssetHeader } from './AssetHeader';
 import { AnalysisChart, type AnalysisLine } from './AnalysisChart';
+import { indicatorComparisonUrl } from '../shared/indicator-comparison';
 import { PeriodPicker } from './PeriodPicker';
 import { WorkspaceBar } from './PersonalDesk';
 import { readAnnotations } from './ChartDrawings';
@@ -54,6 +55,9 @@ import { SupertrendControls } from './SupertrendControls';
 import './analysis-workspace.css';
 import './analysis-library.css';
 import './indicator-workspace.css';
+const DatasetCoveragePanel = lazy(() =>
+  import('./DatasetCoveragePanel').then((m) => ({ default: m.DatasetCoveragePanel })),
+);
 const AnalysisLab = lazy(() => import('./AnalysisLab').then((m) => ({ default: m.AnalysisLab })));
 const KnowledgePanel = lazy(() => import('./KnowledgePanel'));
 const IndicatorMethod = lazy(() => import('./IndicatorMethod'));
@@ -646,6 +650,15 @@ export function IndicatorWorkspace() {
               </h1>
             </div>
             <div className="indicator-heading-actions">
+              {d?.comparison && (
+                <Link
+                  className="indicator-compare"
+                  aria-label="같은 지표 비교"
+                  to={indicatorComparisonUrl(asset, id, context)}
+                >
+                  비교
+                </Link>
+              )}
               <button
                 className="indicator-save"
                 aria-label="분석 저장"
@@ -997,6 +1010,11 @@ export function IndicatorWorkspace() {
             returnFocus={infoButton}
             sheet
           >
+            {dataInfoOpen && (
+              <Suspense fallback={<p role="status">데이터 기간을 확인하는 중…</p>}>
+                <DatasetCoveragePanel key={asset} asset={asset} />
+              </Suspense>
+            )}
             {sources.length > 1 && (
               <label className="indicator-source">
                 원천{' '}

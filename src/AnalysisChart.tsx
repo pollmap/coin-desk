@@ -170,9 +170,11 @@ export const AnalysisChart = memo(function AnalysisChart({
   const selectedTime = selectionKey === key ? selected : null;
   const time = selectedTime ?? points.at(-1)?.time;
   const priceValue = time === undefined ? undefined : readings.maps[0].get(time);
+  const summaryTime = pinned && selectedTime !== null ? selectedTime : points.at(-1)?.time;
+  const summaryValue = summaryTime === undefined ? undefined : readings.maps[0].get(summaryTime);
   useEffect(() => {
-    onReadingDate?.(time ?? null, pinned && selectedTime !== null);
-  }, [time, pinned, selectedTime, onReadingDate]);
+    onReadingDate?.(summaryTime ?? null, pinned && selectedTime !== null);
+  }, [summaryTime, pinned, selectedTime, onReadingDate]);
   const timestamp = (t: number | undefined) =>
     t === undefined
       ? '—'
@@ -625,28 +627,22 @@ export const AnalysisChart = memo(function AnalysisChart({
           {asset} · {primary?.title ?? unit}
         </span>
         <span>
-          <span className="analysis-reading-date" title={timestamp(time)}>
-            <span className={selectedTime === null ? 'sr-only' : undefined}>
-              {selectedTime === null
-                ? primary
-                  ? '최근 확정값'
-                  : '최근 관측'
-                : pinned
-                  ? '날짜 고정'
-                  : '미리 보기'}
+          <span className="analysis-reading-date" title={timestamp(summaryTime)}>
+            <span className={!pinned ? 'sr-only' : undefined}>
+              {!pinned ? (primary ? '최근 확정값' : '최근 관측') : '날짜 고정'}
             </span>{' '}
-            {selectedTime === null
-              ? `${timestamp(time).slice(5, 10).replace('-', '.')} 기준`
-              : `· ${timestamp(time)}`}
+            {!pinned
+              ? `${timestamp(summaryTime).slice(5, 10).replace('-', '.')} 기준`
+              : `· ${timestamp(summaryTime)}`}
           </span>{' '}
           <b className="analysis-reading-value">
             {primary || !['USD', 'USDT', 'KRW'].includes(unit) ? (
               <>
-                <span>{metricNumber(priceValue)}</span>{' '}
+                <span>{metricNumber(summaryValue)}</span>{' '}
                 <small className="analysis-primary-unit">{unit}</small>
               </>
             ) : (
-              display(priceValue)
+              display(summaryValue)
             )}
           </b>
         </span>
@@ -686,6 +682,11 @@ export const AnalysisChart = memo(function AnalysisChart({
         )}
       </div>
       <div className={'analysis-surface' + (drawingKey ? ' with-drawings' : '')}>
+        {!pinned && selectedTime !== null && (
+          <span className="analysis-hover-reading" data-testid="chart-preview">
+            미리 보기 · {timestamp(time)} · {asset} {display(priceValue)}
+          </span>
+        )}
         <div
           ref={host}
           className="analysis-canvas"
@@ -693,6 +694,7 @@ export const AnalysisChart = memo(function AnalysisChart({
           data-chart-kind="analysis"
           data-asset={asset}
           data-primary-metric={primary?.id ?? 'price'}
+          data-panels={panelCount(lines)}
           onPointerMoveCapture={() => {
             if (!pinned) manualCursor.current = false;
           }}

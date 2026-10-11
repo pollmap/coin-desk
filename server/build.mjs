@@ -24,6 +24,7 @@ await build({
           ['providers', 'worker/providers.ts'],
           ['assets', 'shared/asset-registry.ts'],
           ['search', 'shared/search.ts'],
+          ['history-recovery', 'worker/history-recovery.ts'],
         ].map(([name, file]) => [name, resolve(file)]),
       ),
       output: { entryFileNames: '[name].mjs', chunkFileNames: 'chunks/[name]-[hash].mjs' },

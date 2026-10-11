@@ -206,11 +206,29 @@ export function workspaceUrl(workspace: Workspace): string {
   for (const [key, value] of Object.entries(workspace.comparisonWindows ?? {}))
     if (parseUtcDate(value) !== null) params.set('window_' + key, value);
   const path =
-    workspace.section === 'onchain' || workspace.section === 'futures'
-      ? '/' + workspace.section + '/' + config.asset
-      : workspace.view === 'chart'
-        ? '/chart/' + config.asset
-        : '/';
+    workspace.analysisOptions?.comparison_mode === 'indicator'
+      ? '/compare'
+      : workspace.section === 'onchain' || workspace.section === 'futures'
+        ? '/' + workspace.section + '/' + config.asset
+        : workspace.view === 'chart'
+          ? '/chart/' + config.asset
+          : '/';
+  if (path === '/compare') {
+    const options = workspace.analysisOptions!;
+    const comparison = new URLSearchParams({
+      mode: 'indicator',
+      assets: options.comparison_assets ?? 'BTC,ETH',
+      metric: workspace.metric ?? 'net:mvrv',
+      source: options.comparison_source ?? 'coinmetrics',
+      period: config.period,
+    });
+    for (const key of ['chart_from', 'chart_to', 'reading_date'])
+      if (params.has(key)) comparison.set(key, params.get(key)!);
+    for (const key of ['from', 'to'])
+      if (validAnalysisOption('comparison_' + key, options['comparison_' + key]))
+        comparison.set(key, options['comparison_' + key]);
+    return path + '?' + comparison;
+  }
   return path + '?' + params;
 }
 function validExtras(entry: Record<string, unknown>): Partial<Workspace> {
@@ -240,6 +258,18 @@ function validExtras(entry: Record<string, unknown>): Partial<Workspace> {
   return result;
 }
 export function validAnalysisOption(key: string, value: unknown) {
+  if (key === 'comparison_from' || key === 'comparison_to')
+    return typeof value === 'string' && /^\d{1,10}$/.test(value);
+  if (key === 'comparison_assets') {
+    if (typeof value !== 'string') return false;
+    const ids = value.split(',');
+    return (
+      ids.length >= 2 &&
+      ids.length <= 3 &&
+      new Set(ids).size === ids.length &&
+      ids.every((id) => ASSETS.some((a) => a.id === id))
+    );
+  }
   if (key === 'st_period' || key === 'st_multiplier') return validSupertrendOption(key, value);
   if (key === 'reading_date') return typeof value === 'string' && /^\d{9,10}$/.test(value);
   if (key === 'patterns')
@@ -257,6 +287,8 @@ export function validAnalysisOption(key: string, value: unknown) {
         seasonality_method: ['log'],
         seasonality_years: ['1'],
         comparison_layout: ['side'],
+        comparison_mode: ['indicator'],
+        comparison_source: ['coinmetrics', 'bybit', 'reference', 'upbit', 'binance'],
         pattern_trend: ['none', 'sma50', 'sma50-200'],
       } as Record<string, string[]>
     )[key]?.includes(value)

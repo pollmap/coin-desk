@@ -97,7 +97,8 @@ test('purpose search, pinned date, explanation and save preserve the chosen char
   await expect(picker).not.toBeVisible();
   const hoverRect = (await canvas.boundingBox())!;
   await page.mouse.move(hoverRect.x + hoverRect.width * 0.7, hoverRect.y + 100);
-  await expect(page.locator('.analysis-reading-date')).toContainText('미리 보기');
+  await expect(page.locator('.analysis-reading-date')).toContainText('최근 확정값');
+  await expect(page.getByTestId('chart-preview')).toContainText('미리 보기');
   await expect(page.getByRole('button', { name: '최근값 보기', exact: true })).not.toBeVisible();
   expect((await canvas.boundingBox())!.y).toBe(hoverRect.y);
   await canvas.focus();

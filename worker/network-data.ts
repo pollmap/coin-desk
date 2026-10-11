@@ -126,7 +126,7 @@ export function parseNetwork(
   return rows.sort((a, b) => a.time - b.time);
 }
 
-function decodeMonth(month: Month): NetworkDay[] {
+export function decodeMonth(month: Month): NetworkDay[] {
   const rows = JSON.parse(month.payload) as NetworkDay[];
   if (!Array.isArray(rows) || rows.length > 31) throw new Error('Invalid stored network month');
   let previous = -1;

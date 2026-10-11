@@ -1,0 +1,86 @@
+{
+  "startedAt": 1791715420,
+  "freeBeforeBytes": 9203515392,
+  "archives": [
+    {
+      "archive": "audit/reliability-026-r2/backups/20261009T204858385432Z/snapshot-files.tar.gz",
+      "originalBytes": 162839723,
+      "compressedBytes": 50716079,
+      "fileSha256": {
+        "manifest.json": "f4199dc43ffc29723443f597b9973b15ac2e9cc55c2352fb720737861c5d4743",
+        "snapshot.sqlite": "116e2287871a80cbb691ef58124e30f3eafd57def6cf479f6cb4aca33688c33c",
+        "snapshot.sqlite-shm": "fd4c9fda9cd3f9ae7c962b0ddf37232294d55580e1aa165aa06129b8549389eb",
+        "snapshot.sqlite-wal": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "fullContentRestoreVerified": true,
+      "resumedVerifiedArchive": true
+    },
+    {
+      "archive": "audit/reliability-026/backups/20261009T203033896103Z/snapshot-files.tar.gz",
+      "originalBytes": 162540715,
+      "compressedBytes": 50633661,
+      "fileSha256": {
+        "manifest.json": "14ccd6e79806a2f77a5739f6f94b89cfaa8c322f2f318d0ce01c5ce1cb495415",
+        "snapshot.sqlite": "d6875e0dada979e73f09f730ec4b73099d06d34af238f1be69646f554bbeb4e8",
+        "snapshot.sqlite-shm": "fd4c9fda9cd3f9ae7c962b0ddf37232294d55580e1aa165aa06129b8549389eb",
+        "snapshot.sqlite-wal": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "fullContentRestoreVerified": true,
+      "resumedVerifiedArchive": true
+    },
+    {
+      "archive": "audit/first-load-0261-r2/backups/20261010T100632153039Z/snapshot-files.tar.gz",
+      "originalBytes": 167509164,
+      "compressedBytes": 51919512,
+      "fileSha256": {
+        "manifest.json": "f3b1cb24d8457b133e20f340272e2ff189aa17e0782831b2b3bbf8578a863499",
+        "snapshot.sqlite": "a709f9090cbc845d65995977c884fc6f8b2b9a4aa2c2b6a23613ee67be6a8594",
+        "snapshot.sqlite-shm": "fd4c9fda9cd3f9ae7c962b0ddf37232294d55580e1aa165aa06129b8549389eb",
+        "snapshot.sqlite-wal": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "fullContentRestoreVerified": true,
+      "resumedVerifiedArchive": true
+    },
+    {
+      "archive": "audit/first-load-0261/backups/20261010T095310866297Z/snapshot-files.tar.gz",
+      "originalBytes": 167496876,
+      "compressedBytes": 51911833,
+      "fileSha256": {
+        "manifest.json": "313f023e9afd51ed1298167c975f15fee42505b00e802b5c741ca8f0d5e12cd6",
+        "snapshot.sqlite": "6b200563955be9d528b7e82ffca9dcfb5bc419cae57ed19784097dc4a082e052",
+        "snapshot.sqlite-shm": "fd4c9fda9cd3f9ae7c962b0ddf37232294d55580e1aa165aa06129b8549389eb",
+        "snapshot.sqlite-wal": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "fullContentRestoreVerified": true,
+      "resumedVerifiedArchive": true
+    },
+    {
+      "archive": "audit/logos-0262/backups/20261010T112732383885Z/snapshot-files.tar.gz",
+      "originalBytes": 167533740,
+      "compressedBytes": 51937073,
+      "fileSha256": {
+        "manifest.json": "a3f534f01dc1ed7d1becc4134caecb05c561c6cbda46c71779626c7a99ae71bb",
+        "snapshot.sqlite": "60e8748cb85cc79495ecbdef90f953498bb7b800c564bf025481c73930b2c092",
+        "snapshot.sqlite-shm": "fd4c9fda9cd3f9ae7c962b0ddf37232294d55580e1aa165aa06129b8549389eb",
+        "snapshot.sqlite-wal": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "fullContentRestoreVerified": true,
+      "resumedVerifiedArchive": true
+    },
+    {
+      "archive": "audit/registry-025/cutover-backups/20261009T173922743725Z/snapshot-files.tar.gz",
+      "originalBytes": 161623210,
+      "compressedBytes": 50386890,
+      "fileSha256": {
+        "manifest.json": "796f4701e1f60603810f68fce32eb1a5eef3969126273bf562a9201f99469d12",
+        "snapshot.sqlite": "73c678f8f1a6004ebc9a61a5aa2f0fcb5526bda7aa0acbe88fa8d5b07a9c9480",
+        "snapshot.sqlite-shm": "fd4c9fda9cd3f9ae7c962b0ddf37232294d55580e1aa165aa06129b8549389eb",
+        "snapshot.sqlite-wal": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "fullContentRestoreVerified": true
+    }
+  ],
+  "productionAndDailyBackupsUnchanged": true,
+  "completedAt": 1791715448,
+  "freeAfterBytes": 9314680832
+}
