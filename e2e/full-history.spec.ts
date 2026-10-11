@@ -17,7 +17,10 @@ test('DOGE band entry chooses the oldest source and includes pre-calculation pri
   await page.getByRole('button', { name: '데이터 정보', exact: true }).click();
   await expect(page.getByRole('dialog')).toContainText('밴드 시작');
   await page.keyboard.press('Escape');
+  await expect(page.getByRole('dialog')).toHaveCount(0);
+  await expect(page.getByRole('button', { name: '데이터 정보', exact: true })).toBeFocused();
   await chart.focus();
+  await expect(chart).toBeFocused();
   await page.keyboard.press('Home');
   await expect(page.locator('.band-context')).toContainText('밴드 계산 전');
   await expect(page.locator('.analysis-reading-value')).not.toContainText('—');
