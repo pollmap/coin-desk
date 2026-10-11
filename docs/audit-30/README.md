@@ -58,4 +58,6 @@ PR·main CI와 백업 복원을 확인한 뒤 변경된 API(웹 포함)와 Pages
 
 브라우저가 이벤트를 받은 뒤 화면에 반영한 시간의 p95는 pages 22.4ms, vps 53.2ms입니다. 위 상한은 서버 수신 시각부터 브라우저 전달까지의 구간과 시계 보정 오차를 포함합니다. 두 지표를 같은 구간으로 해석하지 않습니다.
 
+최종 상태 표본의 활성 원천은 1,585개 중 정상 1,555개·지연 30개입니다. 전체 카탈로그 1,635개와 구분합니다. 양 주소의 health는 HTTP 503이며 사유는 모두 시세 원천입니다. 실제 체결 시각뿐 아니라 DCR Binance의 시세 통계 기준 시각 지연도 포함합니다. [현재 원천 대조](source-health-latest.json)에 시각과 사유를 보존했습니다. 이 상태를 전체 정상으로 표현하지 않습니다.
+
 [비교 화면](https://coin-desk.pages.dev/compare) · [VPS 비교](https://coin-desk.62.171.141.206.sslip.io/compare). 상세 수치와 잔여 사항은 [최종 상태](final-status.json), [배포 파일](deployment-assets.json), [데이터 대조](coverage-after.json), [성능](performance-after.json)을 따릅니다.

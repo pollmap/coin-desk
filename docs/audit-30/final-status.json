@@ -25,7 +25,8 @@
     "Physical Apple Safari/VoiceOver unverified",
     "New-user task study unverified",
     "Whole-application CSS consolidation not completed",
-    "VPS receipt-to-browser-paint measurement exceeded 3-second goal; cause not confirmed"
+    "VPS receipt-to-browser-paint measurement exceeded 3-second goal; cause not confirmed",
+    "Source freshness delays remain: actual trades or source statistics; health is HTTP 503"
   ],
   "wait48hRequired": false
 }
