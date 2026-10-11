@@ -166,7 +166,11 @@ export function IndicatorComparisonPage() {
   };
   const saveAsset = ASSETS.find((a) => a.id === assets.split(',')[0])?.id ?? 'BTC';
   return (
-    <main className="indicator-comparison" data-comparison-metric={metric}>
+    <section
+      aria-label="지표 비교"
+      className="indicator-comparison"
+      data-comparison-metric={metric}
+    >
       <header className="indicator-comparison-heading">
         <h1>코인 비교</h1>
         <ComparisonModes mode="indicator" />
@@ -435,6 +439,6 @@ export function IndicatorComparisonPage() {
           })}
         />
       </DeskDialog>
-    </main>
+    </section>
   );
 }

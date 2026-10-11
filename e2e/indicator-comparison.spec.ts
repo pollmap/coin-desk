@@ -13,6 +13,14 @@ for (const width of [320, 390, 768, 1000, 1280, 1440, 1920])
     await page.goto('/compare');
     const chart = page.locator('[data-chart-kind=analysis]');
     await expect(chart).toHaveAttribute('data-range-ready', '1');
+    await expect(page.getByRole('main')).toHaveCount(1);
+    expect(
+      (
+        await new AxeBuilder({ page })
+          .withRules(['landmark-main-is-top-level', 'landmark-no-duplicate-main'])
+          .analyze()
+      ).violations,
+    ).toEqual([]);
     expect(initialRequests).toHaveLength(1);
     await expect(page.locator('.indicator-comparison-results tbody tr')).toHaveCount(2);
     const surface = page.locator('.analysis-surface');
