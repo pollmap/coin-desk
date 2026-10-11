@@ -78,23 +78,29 @@ export function IndicatorComparisonPage() {
       setResponse({ key: requestKey, loading: false, error: (e as Error).message });
       return () => controller.abort();
     }
-    json<IndicatorComparison>('/api/v1/indicator-comparison?' + requestKey, controller.signal)
-      .then((data) => {
+    const load = async () => {
+      // Skip a superseded mount before opening its network request. In development
+      // StrictMode mounts twice; immediate abort/reopen needlessly duplicates reads.
+      await Promise.resolve();
+      if (!active) return;
+      try {
+        const data = await json<IndicatorComparison>(
+          '/api/v1/indicator-comparison?' + requestKey,
+          controller.signal,
+        );
         if (active) setResponse({ key: requestKey, data, loading: false });
-      })
-      .catch((e) => {
-        if (active) setResponse({ key: requestKey, loading: false, error: e.message });
-      });
-    const timer = globalThis.setInterval(() => {
-      json<IndicatorComparison>('/api/v1/indicator-comparison?' + requestKey, controller.signal)
-        .then((data) => {
-          if (active) setResponse({ key: requestKey, data, loading: false });
-        })
-        .catch((e) => {
-          if (active)
-            setResponse((old) => ({ ...old, key: requestKey, error: e.message, loading: false }));
-        });
-    }, 60000);
+      } catch (e) {
+        if (active)
+          setResponse((old) => ({
+            ...old,
+            key: requestKey,
+            error: (e as Error).message,
+            loading: false,
+          }));
+      }
+    };
+    void load();
+    const timer = globalThis.setInterval(() => void load(), 60000);
     return () => {
       active = false;
       controller.abort();

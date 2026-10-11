@@ -5,10 +5,15 @@ for (const width of [320, 390, 768, 1000, 1280, 1440, 1920])
   test(`same indicator comparison layout, accessible settings and pinning ${width}px`, async ({
     page,
   }) => {
+    const initialRequests: string[] = [];
+    page.on('request', (r) => {
+      if (r.url().includes('/api/v1/indicator-comparison?')) initialRequests.push(r.url());
+    });
     await page.setViewportSize({ width, height: 900 });
     await page.goto('/compare');
     const chart = page.locator('[data-chart-kind=analysis]');
     await expect(chart).toHaveAttribute('data-range-ready', '1');
+    expect(initialRequests).toHaveLength(1);
     await expect(page.locator('.indicator-comparison-results tbody tr')).toHaveCount(2);
     const surface = page.locator('.analysis-surface');
     const box = (await surface.boundingBox())!;
