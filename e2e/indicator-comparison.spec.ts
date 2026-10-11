@@ -65,6 +65,19 @@ test('unsupported asset, provider changes, save and reopen keep the intended ind
     '미지원',
   );
   await expect(page.getByText('지표를 불러오는 중…')).toHaveCount(0);
+  await expect(page.locator('.analysis-reading-value')).toContainText('BTC');
+  await expect(
+    page.locator('.indicator-comparison-results tbody tr').first().locator('td').nth(2),
+  ).toHaveText('—');
+  await page.getByRole('link', { name: 'ONDO', exact: true }).click();
+  await expect(page.locator('[data-chart-kind=analysis]')).toHaveAttribute(
+    'data-primary-metric',
+    'rsi',
+  );
+  await page.goBack();
+  await expect(page.locator('.indicator-comparison-results tbody tr').first()).toContainText(
+    '미지원',
+  );
   await page.getByRole('button', { name: '비교 설정 변경' }).click();
   const dialog = page.getByRole('dialog', { name: '비교 설정' });
   await dialog.getByLabel('지표', { exact: true }).selectOption('rsi');
@@ -148,4 +161,28 @@ test('late responses cannot overwrite the new metric; settlement rates use separ
   await expect(chart).toHaveAttribute('data-panels', '1');
   await page.waitForTimeout(1700);
   await expect(chart).toHaveAttribute('data-primary-metric', 'futures:funding');
+});
+
+test('a pinned date without a peer observation is missing rather than normal', async ({ page }) => {
+  const response = await page.request.get(
+    '/api/v1/indicator-comparison?assets=BTC,ETH&metric=net%3Amvrv&source=coinmetrics&period=5y',
+  );
+  expect(response.ok()).toBe(true);
+  const result = await response.json();
+  const time = result.common.first;
+  expect(typeof time).toBe('number');
+  result.rows[1].data = result.rows[1].data.filter(
+    (point: { time: number }) => point.time !== time,
+  );
+  await page.route('**/api/v1/indicator-comparison?**', (route) => route.fulfill({ json: result }));
+  await page.goto(
+    '/compare?mode=indicator&assets=BTC,ETH&metric=net%3Amvrv&source=coinmetrics&period=5y&reading_date=' +
+      time,
+  );
+  await expect(page.locator('[data-chart-kind=analysis]')).toHaveAttribute('data-range-ready', '1');
+  await expect(page.locator('.analysis-reading-value')).toContainText('BTC');
+  const peer = page.locator('.indicator-comparison-results tbody tr').nth(1);
+  await expect(peer.locator('td').nth(1)).toHaveText('—');
+  await expect(peer.locator('td').nth(2)).toHaveText('—');
+  await expect(peer.locator('td').nth(3)).toHaveText('관측 없음');
 });

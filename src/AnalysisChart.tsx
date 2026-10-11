@@ -91,6 +91,7 @@ export const AnalysisChart = memo(function AnalysisChart({
   onReadingDate,
   initialReadingDate,
   exportName,
+  readingLabel,
   toolbarTarget,
 }: {
   asset: string;
@@ -119,6 +120,7 @@ export const AnalysisChart = memo(function AnalysisChart({
   onReadingDate?: (time: number | null, pinned?: boolean) => void;
   initialReadingDate?: number;
   exportName?: string;
+  readingLabel?: string;
   toolbarTarget?: HTMLElement | null;
 }) {
   const host = useRef<HTMLDivElement>(null),
@@ -636,6 +638,7 @@ export const AnalysisChart = memo(function AnalysisChart({
               : `· ${timestamp(summaryTime)}`}
           </span>{' '}
           <b className="analysis-reading-value">
+            {readingLabel && <span className="analysis-reading-asset">{readingLabel} </span>}
             {primary || !['USD', 'USDT', 'KRW'].includes(unit) ? (
               <>
                 <span>{metricNumber(summaryValue)}</span>{' '}
