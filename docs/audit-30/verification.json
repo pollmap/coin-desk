@@ -1,0 +1,31 @@
+{
+  "updatedAt": "2026-10-11T11:17:27.145435+00:00",
+  "unit": {
+    "passed": 712,
+    "files": 67
+  },
+  "serverNode": {
+    "passed": 26
+  },
+  "serverPython": {
+    "passed": 24
+  },
+  "recovery": {
+    "passed": 2
+  },
+  "focusedBrowser": {
+    "chromium": 10,
+    "webkitBeforeFinalGuideAndSaveTest": 9,
+    "retries": 0
+  },
+  "knownLocalFailures": [
+    "Earlier full browser run had multiple Chromium Target crashed errors and WebKit 320px wrapping; stopped for correction, not a passing full suite",
+    "Initial server cache incorrectly required SQLite for stream-only fixture; corrected and 26 tests passed",
+    "Intermediate test used wrong snapshots fixture column; corrected"
+  ],
+  "remoteCI": "pending",
+  "deployment": "pending",
+  "actualSafariVoiceOver": "unverified",
+  "humanUsability": "unverified",
+  "wait48hRequired": false
+}

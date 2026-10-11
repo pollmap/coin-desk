@@ -32,6 +32,7 @@ export interface IndicatorDefinition {
   guide: string;
   thresholds?: number[];
   view?: AnalysisView;
+  comparison?: { definitionKey: string; mode: 'shared-axis' | 'separate-panels'; source: string };
 }
 const all = ASSETS.map((a) => a.id);
 export const supportsReference = (asset: Asset) => referenceAssets.includes(asset);
@@ -264,6 +265,29 @@ export const INDICATORS_CATALOG: IndicatorDefinition[] = definitions.map((d) => 
           : '일별 확정 관측';
   return {
     ...d,
+    comparison:
+      d.id === 'net:mvrv'
+        ? {
+            definitionKey: 'coinmetrics:CapMVRVCur:1d',
+            mode: 'shared-axis' as const,
+            source: 'coinmetrics',
+          }
+        : d.id === 'futures:funding'
+          ? {
+              definitionKey: 'bybit:actual-settlement-percent',
+              mode: 'separate-panels' as const,
+              source: 'bybit',
+            }
+          : ['rsi', 'drawdown'].includes(d.id)
+            ? {
+                definitionKey:
+                  d.id === 'rsi'
+                    ? 'confirmed-close:wilder-rsi14:1d'
+                    : 'confirmed-close:expanding-peak:1d',
+                mode: 'shared-axis' as const,
+                source: 'price',
+              }
+            : undefined,
     title: d.id === 'view:btc_rainbow' ? 'BTC 레인보우' : d.title,
     guide: guide?.id ?? d.guide,
     formula: d.formula === '확정 가격 이력으로 계산' ? (guide?.formula ?? d.formula) : d.formula,

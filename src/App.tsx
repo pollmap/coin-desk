@@ -15,7 +15,9 @@ const ResearchLibrary = lazy(() =>
   import('./ResearchLibrary').then((m) => ({ default: m.ResearchLibrary })),
 );
 const LearnPage = lazy(() => import('./LearnPage').then((m) => ({ default: m.LearnPage })));
-const ComparePage = lazy(() => import('./ComparePage').then((m) => ({ default: m.ComparePage })));
+const ComparePage = lazy(() =>
+  import('./ComparisonWorkspace').then((m) => ({ default: m.ComparisonWorkspace })),
+);
 const MetricsExplorer = lazy(() =>
   import('./MetricsExplorer').then((m) => ({ default: m.MetricsExplorer })),
 );

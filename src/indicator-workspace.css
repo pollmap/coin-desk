@@ -35,6 +35,26 @@
 .indicator-date-tools {
   min-width: 0;
 }
+.indicator-compare {
+  display: inline-flex;
+  min-height: 40px;
+  align-items: center;
+  padding: 4px 8px;
+  color: var(--accent);
+}
+.dataset-coverage-table {
+  overflow: auto;
+}
+.dataset-coverage table {
+  font-size: 12px;
+}
+.dataset-coverage td small {
+  display: block;
+  color: var(--muted);
+}
+.dataset-coverage h3 {
+  margin-top: 0;
+}
 .supertrend-context {
   margin: 6px 0;
   color: var(--text);

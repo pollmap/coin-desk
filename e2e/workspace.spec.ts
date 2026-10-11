@@ -175,6 +175,8 @@ test('unsupported URLs do not request data or retry and ONDO help retains asset'
   await expect(chart(page)).toHaveAttribute('data-primary-metric', 'rsi');
   await page.getByRole('button', { name: '지표 설명', exact: true }).click();
   await page.getByRole('link', { name: '현재 분석 설명' }).click();
+  await expect(page).toHaveURL(/\/learn\/rsi/);
+  await expect(page.getByRole('heading', { name: /RSI/, level: 1 })).toBeVisible();
   expect(new URL(page.url()).searchParams.get('asset')).toBe('ONDO');
   await expect(page.locator('[data-chart-kind],canvas')).toHaveCount(0);
 });

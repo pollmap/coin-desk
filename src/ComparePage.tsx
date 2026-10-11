@@ -1,4 +1,5 @@
 import { useMarket } from './useMarket';
+import { ComparisonModes } from './ComparisonModes';
 import { MarketNavigation } from './MarketNavigation';
 import { ChartNavigator, ChartTools } from './ChartNavigator';
 import { createDeskChart as createChart } from './chart-theme';
@@ -454,6 +455,7 @@ export function ComparePage() {
       <div className="page-heading">
         <div>
           <h1>코인 성과 비교</h1>
+          <ComparisonModes mode="performance" />
         </div>
       </div>
       <details className="comparison-settings" open={!!draftError || !!parsed.error || undefined}>

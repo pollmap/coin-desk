@@ -785,3 +785,18 @@
     flex-shrink: 0;
   }
 }
+.analysis-surface {
+  position: relative;
+}
+.analysis-hover-reading {
+  position: absolute;
+  z-index: 2;
+  left: 12px;
+  top: 6px;
+  max-width: calc(100% - 100px);
+  padding: 3px 5px;
+  color: var(--text);
+  background: var(--surface, var(--bg));
+  font-size: 12px;
+  pointer-events: none;
+}
