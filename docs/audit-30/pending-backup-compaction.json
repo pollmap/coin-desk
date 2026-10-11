@@ -1,0 +1,20 @@
+{
+  "completedAt": 1791718754,
+  "input": "backups/.pending-y284rv_p",
+  "archive": "audit/indicator-030/repaired-pending-backup.tar.gz",
+  "originalBytes": 323243178,
+  "compressedBytes": 100771568,
+  "fileSha256": {
+    "manifest.json": "68e57e45cd4ccc7eb1b367c1493ec20304be4e541d1e3f1f77bfd803e7e37fe5",
+    "restored.sqlite": "0cfedbcbe2d256ef66a842a67a8438080f6698ba568e05185da2549a7eb6ce3c",
+    "restored.sqlite-shm": "fd4c9fda9cd3f9ae7c962b0ddf37232294d55580e1aa165aa06129b8549389eb",
+    "restored.sqlite-wal": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "snapshot.sqlite": "0cfedbcbe2d256ef66a842a67a8438080f6698ba568e05185da2549a7eb6ce3c",
+    "snapshot.sqlite-shm": "fd4c9fda9cd3f9ae7c962b0ddf37232294d55580e1aa165aa06129b8549389eb",
+    "snapshot.sqlite-wal": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "fullContentRestoreVerified": true,
+  "logicalDataPreserved": true,
+  "freeBeforeBytes": 8436948992,
+  "freeAfterBytes": 8174448640
+}

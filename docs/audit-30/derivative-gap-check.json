@@ -1,0 +1,185 @@
+{
+  "startedAt": "2026-10-11T11:33:14.814Z",
+  "apply": false,
+  "rows": [
+    {
+      "asset": "BTC",
+      "metric": "long_account_ratio_daily",
+      "from": 1629244800,
+      "to": 1629331200,
+      "checkedAt": 1791718394,
+      "outcome": "provider_no_observation_at_check",
+      "sourceObservations": 0,
+      "inserted": 0,
+      "remainingSlots": 1
+    },
+    {
+      "asset": "DOGE",
+      "metric": "long_account_ratio_daily",
+      "from": 1629244800,
+      "to": 1629331200,
+      "checkedAt": 1791718395,
+      "outcome": "provider_no_observation_at_check",
+      "sourceObservations": 0,
+      "inserted": 0,
+      "remainingSlots": 1
+    },
+    {
+      "asset": "ETH",
+      "metric": "long_account_ratio_daily",
+      "from": 1629244800,
+      "to": 1629331200,
+      "checkedAt": 1791718395,
+      "outcome": "provider_no_observation_at_check",
+      "sourceObservations": 0,
+      "inserted": 0,
+      "remainingSlots": 1
+    },
+    {
+      "asset": "SOL",
+      "metric": "open_interest",
+      "from": 1791342000,
+      "to": 1791367200,
+      "checkedAt": 1791718396,
+      "outcome": "recoverable",
+      "sourceObservations": 7,
+      "inserted": 0,
+      "remainingSlots": 7
+    },
+    {
+      "asset": "SOL",
+      "metric": "long_account_ratio",
+      "from": 1791342000,
+      "to": 1791367200,
+      "checkedAt": 1791718396,
+      "outcome": "recoverable",
+      "sourceObservations": 7,
+      "inserted": 0,
+      "remainingSlots": 7
+    },
+    {
+      "asset": "SOL",
+      "metric": "long_account_ratio_daily",
+      "from": 1629244800,
+      "to": 1629331200,
+      "checkedAt": 1791718397,
+      "outcome": "provider_no_observation_at_check",
+      "sourceObservations": 0,
+      "inserted": 0,
+      "remainingSlots": 1
+    },
+    {
+      "asset": "XRP",
+      "metric": "open_interest",
+      "from": 1791342000,
+      "to": 1791367200,
+      "checkedAt": 1791718397,
+      "outcome": "recoverable",
+      "sourceObservations": 7,
+      "inserted": 0,
+      "remainingSlots": 7
+    },
+    {
+      "asset": "XRP",
+      "metric": "long_account_ratio",
+      "from": 1791342000,
+      "to": 1791363600,
+      "checkedAt": 1791718398,
+      "outcome": "recoverable",
+      "sourceObservations": 6,
+      "inserted": 0,
+      "remainingSlots": 6
+    },
+    {
+      "asset": "XRP",
+      "metric": "long_account_ratio_daily",
+      "from": 1629244800,
+      "to": 1629331200,
+      "checkedAt": 1791718398,
+      "outcome": "provider_no_observation_at_check",
+      "sourceObservations": 0,
+      "inserted": 0,
+      "remainingSlots": 1
+    },
+    {
+      "asset": "LINK",
+      "metric": "open_interest",
+      "from": 1791342000,
+      "to": 1791363600,
+      "checkedAt": 1791718398,
+      "outcome": "recoverable",
+      "sourceObservations": 6,
+      "inserted": 0,
+      "remainingSlots": 6
+    },
+    {
+      "asset": "LINK",
+      "metric": "long_account_ratio",
+      "from": 1791342000,
+      "to": 1791363600,
+      "checkedAt": 1791718399,
+      "outcome": "recoverable",
+      "sourceObservations": 6,
+      "inserted": 0,
+      "remainingSlots": 6
+    },
+    {
+      "asset": "LINK",
+      "metric": "long_account_ratio_daily",
+      "from": 1629244800,
+      "to": 1629331200,
+      "checkedAt": 1791718399,
+      "outcome": "provider_no_observation_at_check",
+      "sourceObservations": 0,
+      "inserted": 0,
+      "remainingSlots": 1
+    },
+    {
+      "asset": "ONDO",
+      "metric": "open_interest",
+      "from": 1791342000,
+      "to": 1791367200,
+      "checkedAt": 1791718400,
+      "outcome": "recoverable",
+      "sourceObservations": 7,
+      "inserted": 0,
+      "remainingSlots": 7
+    },
+    {
+      "asset": "ONDO",
+      "metric": "long_account_ratio",
+      "from": 1791342000,
+      "to": 1791367200,
+      "checkedAt": 1791718400,
+      "outcome": "recoverable",
+      "sourceObservations": 7,
+      "inserted": 0,
+      "remainingSlots": 7
+    },
+    {
+      "asset": "PEPE",
+      "metric": "open_interest",
+      "from": 1791342000,
+      "to": 1791367200,
+      "checkedAt": 1791718401,
+      "outcome": "recoverable",
+      "sourceObservations": 7,
+      "inserted": 0,
+      "remainingSlots": 7
+    },
+    {
+      "asset": "PEPE",
+      "metric": "long_account_ratio",
+      "from": 1791342000,
+      "to": 1791367200,
+      "checkedAt": 1791718401,
+      "outcome": "recoverable",
+      "sourceObservations": 7,
+      "inserted": 0,
+      "remainingSlots": 7
+    }
+  ],
+  "errors": [],
+  "collectorStateWritePolicy": "This tool never writes recent success or historical cursors",
+  "completedAt": "2026-10-11T11:33:22.021Z"
+}

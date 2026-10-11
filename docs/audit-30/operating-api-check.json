@@ -1,0 +1,50 @@
+[
+  {
+    "origin": "pages",
+    "path": "/api/v1/runtime",
+    "httpStatus": 200,
+    "bytes": 930,
+    "release": "vps-335725ff7790b758",
+    "sourceTotals": null
+  },
+  {
+    "origin": "pages",
+    "path": "/api/v1/status/summary",
+    "httpStatus": 200,
+    "bytes": 10234,
+    "release": null,
+    "sourceTotals": null
+  },
+  {
+    "origin": "pages",
+    "path": "/api/v1/health",
+    "httpStatus": 503,
+    "bytes": 1061276,
+    "release": null,
+    "sourceTotals": null
+  },
+  {
+    "origin": "vps",
+    "path": "/healthz",
+    "httpStatus": 200,
+    "bytes": 79,
+    "release": "vps-335725ff7790b758",
+    "sourceTotals": null
+  },
+  {
+    "origin": "vps",
+    "path": "/api/v1/status/summary",
+    "httpStatus": 200,
+    "bytes": 10234,
+    "release": null,
+    "sourceTotals": null
+  },
+  {
+    "origin": "vps",
+    "path": "/api/v1/health",
+    "httpStatus": 503,
+    "bytes": 1061277,
+    "release": null,
+    "sourceTotals": null
+  }
+]

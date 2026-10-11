@@ -1,0 +1,7 @@
+{
+  "installedAt": 1791721024,
+  "properties": "Unit=coin-desk-gap-recovery-030.service\nNextElapseUSecRealtime=Mon 2026-10-12 02:00:10 CEST\nActiveState=active\n",
+  "onlyProjectTimerAdded": "coin-desk-gap-recovery-030.timer",
+  "existingTimersChanged": false,
+  "databaseRowsChangedBySetup": false
+}

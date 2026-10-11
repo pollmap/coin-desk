@@ -1,0 +1,45 @@
+{
+  "startedAt": 1791719347,
+  "freeBeforeBytes": 8620777472,
+  "archives": [
+    {
+      "archive": "audit/registry-025/cutover-backups/20261009T173736627422Z/snapshot-files.tar.gz",
+      "originalBytes": 40955042,
+      "compressedBytes": 10927206,
+      "fileSha256": {
+        "manifest.json": "7c2b3a8d7b24a090c0520139c421336f4e6fbc083c145571af312ec7d3051206",
+        "snapshot.sqlite": "056fb06dbcb8d07125608eaa852531c5fd497cf12fd55d778bc442a8598d662f",
+        "snapshot.sqlite-shm": "fd4c9fda9cd3f9ae7c962b0ddf37232294d55580e1aa165aa06129b8549389eb",
+        "snapshot.sqlite-wal": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "fullContentRestoreVerified": true
+    },
+    {
+      "archive": "audit/registry-025/rehearsal-backups/20261009T161533062552Z/snapshot-files.tar.gz",
+      "originalBytes": 40934562,
+      "compressedBytes": 10919069,
+      "fileSha256": {
+        "manifest.json": "351c03c701c30d3ab708b7fdcd378292c3597a5a27f00ef824a75c56bb87a3ac",
+        "snapshot.sqlite": "09ce00266cfbbf0bb3e206d4ed12e1901681d7303c692e6ab8d30a59cdf7ad72",
+        "snapshot.sqlite-shm": "fd4c9fda9cd3f9ae7c962b0ddf37232294d55580e1aa165aa06129b8549389eb",
+        "snapshot.sqlite-wal": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "fullContentRestoreVerified": true
+    },
+    {
+      "archive": "audit/registry-025/rehearsal-backups/20261009T155602832102Z/snapshot-files.tar.gz",
+      "originalBytes": 40926370,
+      "compressedBytes": 10919047,
+      "fileSha256": {
+        "manifest.json": "056d0a286da0ac46e4bcd88be3896c0c3a7b320b73df3924962186d9230b2761",
+        "snapshot.sqlite": "825960762f83da1baa756984ae735e1a4dda9d489ffff3be8fc5d520361d7e03",
+        "snapshot.sqlite-shm": "fd4c9fda9cd3f9ae7c962b0ddf37232294d55580e1aa165aa06129b8549389eb",
+        "snapshot.sqlite-wal": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "fullContentRestoreVerified": true
+    }
+  ],
+  "productionAndDailyBackupsUnchanged": true,
+  "completedAt": 1791719363,
+  "freeAfterBytes": 8699645952
+}

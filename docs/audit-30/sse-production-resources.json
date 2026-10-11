@@ -1,0 +1,191 @@
+[
+  {
+    "time": 1791729174.6628175,
+    "containers": [
+      {
+        "BlockIO": "178MB / 1.56MB",
+        "CPUPerc": "0.62%",
+        "Container": "coin-desk-api-1",
+        "ID": "e4fda7f254b2",
+        "MemPerc": "13.22%",
+        "MemUsage": "101.5MiB / 768MiB",
+        "Name": "coin-desk-api-1",
+        "NetIO": "2.29MB / 47.6MB",
+        "PIDs": "12"
+      },
+      {
+        "BlockIO": "98.1MB / 81.5MB",
+        "CPUPerc": "6.00%",
+        "Container": "coin-desk-quote-hub-1",
+        "ID": "67e08baec63b",
+        "MemPerc": "17.76%",
+        "MemUsage": "34.1MiB / 192MiB",
+        "Name": "coin-desk-quote-hub-1",
+        "NetIO": "2.39GB / 708MB",
+        "PIDs": "12"
+      }
+    ]
+  },
+  {
+    "time": 1791729182.7509048,
+    "containers": [
+      {
+        "BlockIO": "178MB / 1.56MB",
+        "CPUPerc": "60.02%",
+        "Container": "coin-desk-api-1",
+        "ID": "e4fda7f254b2",
+        "MemPerc": "13.77%",
+        "MemUsage": "105.8MiB / 768MiB",
+        "Name": "coin-desk-api-1",
+        "NetIO": "5.36MB / 50.8MB",
+        "PIDs": "12"
+      },
+      {
+        "BlockIO": "98.3MB / 81.5MB",
+        "CPUPerc": "17.25%",
+        "Container": "coin-desk-quote-hub-1",
+        "ID": "67e08baec63b",
+        "MemPerc": "17.94%",
+        "MemUsage": "34.44MiB / 192MiB",
+        "Name": "coin-desk-quote-hub-1",
+        "NetIO": "2.39GB / 710MB",
+        "PIDs": "12"
+      }
+    ]
+  },
+  {
+    "time": 1791729190.8230667,
+    "containers": [
+      {
+        "BlockIO": "178MB / 1.56MB",
+        "CPUPerc": "2.61%",
+        "Container": "coin-desk-api-1",
+        "ID": "e4fda7f254b2",
+        "MemPerc": "13.79%",
+        "MemUsage": "105.9MiB / 768MiB",
+        "Name": "coin-desk-api-1",
+        "NetIO": "7.06MB / 52.5MB",
+        "PIDs": "12"
+      },
+      {
+        "BlockIO": "98.4MB / 81.5MB",
+        "CPUPerc": "12.95%",
+        "Container": "coin-desk-quote-hub-1",
+        "ID": "67e08baec63b",
+        "MemPerc": "17.95%",
+        "MemUsage": "34.47MiB / 192MiB",
+        "Name": "coin-desk-quote-hub-1",
+        "NetIO": "2.39GB / 713MB",
+        "PIDs": "12"
+      }
+    ]
+  },
+  {
+    "time": 1791729198.8823385,
+    "containers": [
+      {
+        "BlockIO": "178MB / 1.56MB",
+        "CPUPerc": "2.33%",
+        "Container": "coin-desk-api-1",
+        "ID": "e4fda7f254b2",
+        "MemPerc": "14.00%",
+        "MemUsage": "107.5MiB / 768MiB",
+        "Name": "coin-desk-api-1",
+        "NetIO": "8.83MB / 54.3MB",
+        "PIDs": "12"
+      },
+      {
+        "BlockIO": "98.4MB / 81.5MB",
+        "CPUPerc": "7.60%",
+        "Container": "coin-desk-quote-hub-1",
+        "ID": "67e08baec63b",
+        "MemPerc": "17.95%",
+        "MemUsage": "34.47MiB / 192MiB",
+        "Name": "coin-desk-quote-hub-1",
+        "NetIO": "2.39GB / 714MB",
+        "PIDs": "12"
+      }
+    ]
+  },
+  {
+    "time": 1791729206.9364977,
+    "containers": [
+      {
+        "BlockIO": "178MB / 1.56MB",
+        "CPUPerc": "17.33%",
+        "Container": "coin-desk-api-1",
+        "ID": "e4fda7f254b2",
+        "MemPerc": "13.98%",
+        "MemUsage": "107.4MiB / 768MiB",
+        "Name": "coin-desk-api-1",
+        "NetIO": "10MB / 55.5MB",
+        "PIDs": "12"
+      },
+      {
+        "BlockIO": "98.4MB / 81.5MB",
+        "CPUPerc": "12.39%",
+        "Container": "coin-desk-quote-hub-1",
+        "ID": "67e08baec63b",
+        "MemPerc": "17.95%",
+        "MemUsage": "34.47MiB / 192MiB",
+        "Name": "coin-desk-quote-hub-1",
+        "NetIO": "2.39GB / 715MB",
+        "PIDs": "12"
+      }
+    ]
+  },
+  {
+    "time": 1791729214.9904263,
+    "containers": [
+      {
+        "BlockIO": "178MB / 1.56MB",
+        "CPUPerc": "53.19%",
+        "Container": "coin-desk-api-1",
+        "ID": "e4fda7f254b2",
+        "MemPerc": "13.94%",
+        "MemUsage": "107.1MiB / 768MiB",
+        "Name": "coin-desk-api-1",
+        "NetIO": "10.1MB / 55.6MB",
+        "PIDs": "12"
+      },
+      {
+        "BlockIO": "98.4MB / 81.5MB",
+        "CPUPerc": "7.67%",
+        "Container": "coin-desk-quote-hub-1",
+        "ID": "67e08baec63b",
+        "MemPerc": "17.88%",
+        "MemUsage": "34.32MiB / 192MiB",
+        "Name": "coin-desk-quote-hub-1",
+        "NetIO": "2.39GB / 715MB",
+        "PIDs": "12"
+      }
+    ]
+  },
+  {
+    "time": 1791729217.1223536,
+    "containers": [
+      {
+        "BlockIO": "178MB / 1.56MB",
+        "CPUPerc": "0.73%",
+        "Container": "coin-desk-api-1",
+        "ID": "e4fda7f254b2",
+        "MemPerc": "13.94%",
+        "MemUsage": "107.1MiB / 768MiB",
+        "Name": "coin-desk-api-1",
+        "NetIO": "10.1MB / 55.6MB",
+        "PIDs": "12"
+      },
+      {
+        "BlockIO": "98.4MB / 81.5MB",
+        "CPUPerc": "4.38%",
+        "Container": "coin-desk-quote-hub-1",
+        "ID": "67e08baec63b",
+        "MemPerc": "17.98%",
+        "MemUsage": "34.53MiB / 192MiB",
+        "Name": "coin-desk-quote-hub-1",
+        "NetIO": "2.39GB / 715MB",
+        "PIDs": "12"
+      }
+    ]
+  }
+]

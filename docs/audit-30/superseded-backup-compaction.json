@@ -1,0 +1,21 @@
+{
+  "startedAt": 1791719885,
+  "freeBeforeBytes": 8619294720,
+  "archives": [
+    {
+      "archive": "audit/indicator-030/backups/20261011T110724136297Z/snapshot-files.tar.gz",
+      "originalBytes": 170650796,
+      "compressedBytes": 52843923,
+      "fileSha256": {
+        "manifest.json": "970ff84b86c700c2a8a2242bb1fbf321e4a61fe8e68e061d1e62b5fbbc89133b",
+        "snapshot.sqlite": "1196dbfa182dc0f8d12f90ea97d6801cf0e91e1626fb10087bd0ca7a511090e0",
+        "snapshot.sqlite-shm": "fd4c9fda9cd3f9ae7c962b0ddf37232294d55580e1aa165aa06129b8549389eb",
+        "snapshot.sqlite-wal": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "fullContentRestoreVerified": true
+    }
+  ],
+  "productionAndDailyBackupsUnchanged": true,
+  "completedAt": 1791719905,
+  "freeAfterBytes": 8735989760
+}

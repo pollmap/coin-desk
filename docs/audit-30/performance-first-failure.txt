@@ -1,0 +1,11 @@
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+browserContext.newPage: Target crashed
+    at [workspace]\scripts\quality_performance.mjs:33:34 {
+  log: [],
+  name: 'Error'
+}
+
+Node.js v24.18.0

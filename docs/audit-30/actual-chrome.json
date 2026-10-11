@@ -1,0 +1,55 @@
+{
+  "observedAt": "2026-10-11T13:22:36.529350+00:00",
+  "browser": "Actual Windows Chrome",
+  "finalVpsRelease": "vps-8e2fd5e88c605bfe",
+  "mainLandmarks": 1,
+  "mvrvLatest": {
+    "BTC": 1.54,
+    "ETH": 1.08,
+    "date": "2026-10-10"
+  },
+  "unsupportedOndo": {
+    "value": "—",
+    "date": "—",
+    "state": "unsupported",
+    "representative": "BTC 1.54 배"
+  },
+  "fallbackOndo": {
+    "metric": "rsi",
+    "value": 57.63,
+    "price_source": "reference"
+  },
+  "physicalAppleValidation": false,
+  "pagesVerifiedAt": "2026-10-11T13:34:58.272933+00:00",
+  "pagesApiProxyRecovered": true,
+  "pagesAutoRetryRecoveredWithoutReload": true,
+  "pagesPinned": {
+    "date": "2021-10-11",
+    "BTC": 2.63,
+    "ETH": 1.79
+  },
+  "finalReadingRelease": "vps-335725ff7790b758",
+  "finalReadingVerifiedAt": "2026-10-11T14:14:33.268424+00:00",
+  "finalReadingActualWindowsChrome": {
+    "origins": [
+      "https://coin-desk.62.171.141.206.sslip.io",
+      "https://coin-desk.pages.dev"
+    ],
+    "valueFontPx": 16,
+    "dateFontPx": 12,
+    "mainLandmarks": 1,
+    "stylesheet": "/assets/comparison-CN7XSgb7.css",
+    "latest": {
+      "BTC": 1.54,
+      "ETH": 1.08,
+      "date": "2026-10-10"
+    },
+    "vpsKeyboardPinned": {
+      "date": "2021-10-11",
+      "BTC": 2.63,
+      "ETH": 1.79
+    },
+    "vpsLatestReturnVerified": true,
+    "pagesTheme": "saved dark"
+  }
+}

@@ -1,5 +1,7 @@
 {
-  "updatedAt": "2026-10-11T11:17:27.145435+00:00",
+  "updatedAt": "2026-10-11T14:42:29.493466+00:00",
+  "codeMain": "a7739889ddece0bf356f8cea66e9d2eb57803135",
+  "release": "vps-335725ff7790b758",
   "unit": {
     "passed": 712,
     "files": 67
@@ -13,19 +15,113 @@
   "recovery": {
     "passed": 2
   },
-  "focusedBrowser": {
-    "chromium": 10,
-    "webkitBeforeFinalGuideAndSaveTest": 9,
+  "browser": {
+    "chromium": 128,
+    "webkit": 128,
+    "skippedPrivateEach": 1,
     "retries": 0
   },
-  "knownLocalFailures": [
-    "Earlier full browser run had multiple Chromium Target crashed errors and WebKit 320px wrapping; stopped for correction, not a passing full suite",
-    "Initial server cache incorrectly required SQLite for stream-only fixture; corrected and 26 tests passed",
-    "Intermediate test used wrong snapshots fixture column; corrected"
-  ],
-  "remoteCI": "pending",
-  "deployment": "pending",
+  "remoteCI": {
+    "primaryPR": 38136835768,
+    "primaryMain": 38137572761,
+    "readabilityPR": 38144712520,
+    "readabilityMain": 38145439601,
+    "earlierFinalPR": 38141280664,
+    "earlierFinalMain": 38142143222,
+    "conclusion": "success"
+  },
+  "deployment": "verified",
+  "actualPublicBrowserFlow": "passed",
+  "actualWindowsChrome": "verified separately",
+  "apiRuntimeBytesIdenticalToPrimaryRelease": true,
+  "wait48hRequired": false,
   "actualSafariVoiceOver": "unverified",
   "humanUsability": "unverified",
-  "wait48hRequired": false
+  "lcpGoal2500Ms": {
+    "pages": {
+      "p95Ms": 2080,
+      "met": true
+    },
+    "vps": {
+      "p95Ms": 5972,
+      "met": false
+    }
+  },
+  "remainingSourcePresentGaps": 67,
+  "recoveryCheckpoint": {
+    "createdAt": 1791721020,
+    "complete": false,
+    "state": "paused_daily_budget",
+    "resumeAtUtc": "2026-10-12T00:00:10Z",
+    "sourcePresentObservations": 67,
+    "jobs": 10,
+    "dailyCandidateLimit": 10000,
+    "minimumFreeBytes": 8589934592,
+    "backupFreshnessMaximumSeconds": 86400,
+    "collectorCursorsChanged": false,
+    "completionCondition": "10 exact ranges have zero remaining slots; no invented values",
+    "lastAttemptAt": 1791721093,
+    "insertedLastAttempt": 0,
+    "backupVerifiedAt": 1791654199,
+    "stateConfirmedAt": 1791722820
+  },
+  "allHistoricalDataComplete": false,
+  "allSourcesHealthy": false,
+  "cssWholeApplicationConsolidation": "not completed; changed feature uses existing owning files",
+  "knownFailedExecutions": [
+    "PR38135053639 failed WebKit focus and lazy guide readiness",
+    "PR38135953582 failed WebKit loading; initial duplicate comparison requests removed; exact timeout cause unconfirmed",
+    "Earlier local full Chromium Target crashed failures",
+    "Local focused final followup WebKit 9 passed and 1 768px 45-second timeout; cause unconfirmed",
+    "Initial primary performance VPS newPage Target crashed; repeated VPS 20 contexts under same protocol",
+    "Local duplicate build cancelled while host commands were slow; cancelled execution is not a passing build",
+    "QA expect configuration and Windows default text decoding failures corrected before successful reruns",
+    "First final Pages upload omitted --cwd pages; API returned SPA HTML with HTTP 200. Actual Windows Chrome and final real-data QA caught failure. Redeployed with existing Pages Functions and binding; JSON/runtime/schema smoke required before rerun.",
+    "First reading-release performance execution crashed at browserContext.newPage before 20 samples completed; no result counted as passing. Repeated unchanged measurement protocol with new browser process; original failure log retained.",
+    "Reading-release 120-second natural collection sample advanced 6 derivative confirmations, below required 9; verification was false. Extended observation to 300 seconds without changing criteria or invoking collection/overview."
+  ],
+  "pricePaintGoal3000Ms": {
+    "pages": {
+      "upperMs": 1509,
+      "met": true
+    },
+    "vps": {
+      "upperMs": 9087,
+      "met": false
+    }
+  },
+  "correctedPagesApiSmoke": [
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "/api/v1/runtime",
+      "status": 200,
+      "jsonSchemaVerified": true,
+      "bytes": 926,
+      "sha256": "a92e9f8f90833609c2688c64db407f63441f05cd86ebdbd373af0c727b38ee12"
+    },
+    {
+      "base": "https://coin-desk.pages.dev",
+      "path": "/api/v1/indicator-comparison?assets=BTC,ETH&metric=net%3Amvrv&source=coinmetrics&period=5y",
+      "status": 200,
+      "jsonSchemaVerified": true,
+      "bytes": 163347,
+      "sha256": "428ab0e2dce68ffd8d6001c4a7cc4ae5bc63ba5ac3417b0ce4c5514a5d211183"
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "/api/v1/runtime",
+      "status": 200,
+      "jsonSchemaVerified": true,
+      "bytes": 926,
+      "sha256": "24edacfc2acf6531b5262648572e0840c8ef65af129793c9b62bebe20772914b"
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "path": "/api/v1/indicator-comparison?assets=BTC,ETH&metric=net%3Amvrv&source=coinmetrics&period=5y",
+      "status": 200,
+      "jsonSchemaVerified": true,
+      "bytes": 163347,
+      "sha256": "428ab0e2dce68ffd8d6001c4a7cc4ae5bc63ba5ac3417b0ce4c5514a5d211183"
+    }
+  ]
 }

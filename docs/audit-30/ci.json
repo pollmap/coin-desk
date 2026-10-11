@@ -1,0 +1,88 @@
+{
+  "pr": {
+    "headSha": "51670a8aac8882b56de963f464edf3a2ea40f1f7",
+    "url": "https://github.com/pollmap/coin-desk/actions/runs/38144712520",
+    "status": "completed",
+    "conclusion": "success",
+    "jobs": [
+      {
+        "name": "checks",
+        "status": "completed",
+        "conclusion": "success",
+        "startedAt": "2026-10-11T13:49:33Z",
+        "completedAt": "2026-10-11T13:50:37Z"
+      },
+      {
+        "name": "container",
+        "status": "completed",
+        "conclusion": "success",
+        "startedAt": "2026-10-11T13:49:33Z",
+        "completedAt": "2026-10-11T13:50:57Z"
+      },
+      {
+        "name": "browser (webkit)",
+        "status": "completed",
+        "conclusion": "success",
+        "startedAt": "2026-10-11T13:49:32Z",
+        "completedAt": "2026-10-11T13:59:32Z"
+      },
+      {
+        "name": "browser (chromium)",
+        "status": "completed",
+        "conclusion": "success",
+        "startedAt": "2026-10-11T13:49:32Z",
+        "completedAt": "2026-10-11T13:58:28Z"
+      },
+      {
+        "name": "verify",
+        "status": "completed",
+        "conclusion": "success",
+        "startedAt": "2026-10-11T13:59:34Z",
+        "completedAt": "2026-10-11T13:59:38Z"
+      }
+    ]
+  },
+  "main": {
+    "headSha": "a7739889ddece0bf356f8cea66e9d2eb57803135",
+    "url": "https://github.com/pollmap/coin-desk/actions/runs/38145439601",
+    "status": "completed",
+    "conclusion": "success",
+    "jobs": [
+      {
+        "name": "browser (webkit)",
+        "status": "completed",
+        "conclusion": "success",
+        "startedAt": "2026-10-11T14:00:37Z",
+        "completedAt": "2026-10-11T14:11:44Z"
+      },
+      {
+        "name": "browser (chromium)",
+        "status": "completed",
+        "conclusion": "success",
+        "startedAt": "2026-10-11T14:00:36Z",
+        "completedAt": "2026-10-11T14:09:06Z"
+      },
+      {
+        "name": "container",
+        "status": "completed",
+        "conclusion": "success",
+        "startedAt": "2026-10-11T14:00:36Z",
+        "completedAt": "2026-10-11T14:01:52Z"
+      },
+      {
+        "name": "checks",
+        "status": "completed",
+        "conclusion": "success",
+        "startedAt": "2026-10-11T14:00:37Z",
+        "completedAt": "2026-10-11T14:01:45Z"
+      },
+      {
+        "name": "verify",
+        "status": "completed",
+        "conclusion": "success",
+        "startedAt": "2026-10-11T14:11:46Z",
+        "completedAt": "2026-10-11T14:11:48Z"
+      }
+    ]
+  }
+}

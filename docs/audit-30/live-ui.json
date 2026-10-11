@@ -1,0 +1,120 @@
+[
+  {
+    "origin": "pages",
+    "base": "https://coin-desk.pages.dev",
+    "checkedAt": "2026-10-11T14:18:17.118Z",
+    "browser": "153.0.8010.12",
+    "passed": true,
+    "actualPublicData": true,
+    "physicalDevice": false,
+    "saveReopen": true,
+    "guideNoChart": true,
+    "hoverKeepsLatest": true,
+    "unsupportedIsolation": true,
+    "coverage": true,
+    "metrics": [
+      {
+        "metric": "rsi",
+        "panels": "0"
+      },
+      {
+        "metric": "drawdown",
+        "panels": "0"
+      },
+      {
+        "metric": "futures:funding",
+        "panels": "2"
+      }
+    ],
+    "screens": [
+      {
+        "width": 390,
+        "theme": "light",
+        "chartStart": 254,
+        "height": 330,
+        "axeViolations": 0
+      },
+      {
+        "width": 390,
+        "theme": "dark",
+        "chartStart": 254,
+        "height": 330,
+        "axeViolations": 0
+      },
+      {
+        "width": 1280,
+        "theme": "light",
+        "chartStart": 215,
+        "height": 440,
+        "axeViolations": 0
+      },
+      {
+        "width": 1280,
+        "theme": "dark",
+        "chartStart": 215,
+        "height": 440,
+        "axeViolations": 0
+      }
+    ],
+    "pageErrors": []
+  },
+  {
+    "origin": "vps",
+    "base": "https://coin-desk.62.171.141.206.sslip.io",
+    "checkedAt": "2026-10-11T14:19:04.748Z",
+    "browser": "153.0.8010.12",
+    "passed": true,
+    "actualPublicData": true,
+    "physicalDevice": false,
+    "saveReopen": true,
+    "guideNoChart": true,
+    "hoverKeepsLatest": true,
+    "unsupportedIsolation": true,
+    "coverage": true,
+    "metrics": [
+      {
+        "metric": "rsi",
+        "panels": "0"
+      },
+      {
+        "metric": "drawdown",
+        "panels": "0"
+      },
+      {
+        "metric": "futures:funding",
+        "panels": "2"
+      }
+    ],
+    "screens": [
+      {
+        "width": 390,
+        "theme": "light",
+        "chartStart": 254,
+        "height": 330,
+        "axeViolations": 0
+      },
+      {
+        "width": 390,
+        "theme": "dark",
+        "chartStart": 254,
+        "height": 330,
+        "axeViolations": 0
+      },
+      {
+        "width": 1280,
+        "theme": "light",
+        "chartStart": 215,
+        "height": 440,
+        "axeViolations": 0
+      },
+      {
+        "width": 1280,
+        "theme": "dark",
+        "chartStart": 215,
+        "height": 440,
+        "axeViolations": 0
+      }
+    ],
+    "pageErrors": []
+  }
+]

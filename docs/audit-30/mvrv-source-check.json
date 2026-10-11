@@ -1,0 +1,340 @@
+{
+  "checkedAt": 1791719647,
+  "sourceUrl": "https://community-api.coinmetrics.io/v4/timeseries/asset-metrics?assets=btc%2Cdoge%2Ceth%2Cxrp%2Clink%2Cada%2Cxlm%2Cbch%2Cuni%2Cshib_eth%2Caave%2Cicp%2Cxaut%2Cetc%2Calgo%2Ccro%2Ccrv%2Ccomp%2Cmana%2Cbat%2Clpt%2Czec%2Cltc%2Cqnt%2Cpaxg%2Cdash%2Cldo%2Cgno%2Cdcr%2Cftt%2Csnx%2Cyfi%2Cdgb&metrics=CapMVRVCur&frequency=1d&start_time=2026-10-10&end_time=2026-10-11&page_size=10000",
+  "sourceBodySha256": "a02e41eda3d426f8a669f822ef8e6f337d8d53c538d41d05cb3d250f059f61ac",
+  "assets": 33,
+  "rows": [
+    {
+      "asset": "BTC",
+      "providerAsset": "btc",
+      "time": 1791590400,
+      "stored": 1.5411273271466646,
+      "provider": 1.5411273271466646,
+      "matches": true,
+      "unit": "multiple",
+      "definition": "Coin Metrics CapMVRVCur"
+    },
+    {
+      "asset": "DOGE",
+      "providerAsset": "doge",
+      "time": 1791590400,
+      "stored": 0.7294654056788076,
+      "provider": 0.7294654056788076,
+      "matches": true,
+      "unit": "multiple",
+      "definition": "Coin Metrics CapMVRVCur"
+    },
+    {
+      "asset": "ETH",
+      "providerAsset": "eth",
+      "time": 1791590400,
+      "stored": 1.078681097213195,
+      "provider": 1.078681097213195,
+      "matches": true,
+      "unit": "multiple",
+      "definition": "Coin Metrics CapMVRVCur"
+    },
+    {
+      "asset": "XRP",
+      "providerAsset": "xrp",
+      "time": 1791590400,
+      "stored": 0.9374794414819421,
+      "provider": 0.9374794414819421,
+      "matches": true,
+      "unit": "multiple",
+      "definition": "Coin Metrics CapMVRVCur"
+    },
+    {
+      "asset": "LINK",
+      "providerAsset": "link",
+      "time": 1791590400,
+      "stored": 1.065068318707575,
+      "provider": 1.065068318707575,
+      "matches": true,
+      "unit": "multiple",
+      "definition": "Coin Metrics CapMVRVCur"
+    },
+    {
+      "asset": "ADA",
+      "providerAsset": "ada",
+      "time": 1791590400,
+      "stored": 0.6715826344053996,
+      "provider": 0.6715826344053996,
+      "matches": true,
+      "unit": "multiple",
+      "definition": "Coin Metrics CapMVRVCur"
+    },
+    {
+      "asset": "XLM",
+      "providerAsset": "xlm",
+      "time": 1791590400,
+      "stored": 1.502316438443475,
+      "provider": 1.502316438443475,
+      "matches": true,
+      "unit": "multiple",
+      "definition": "Coin Metrics CapMVRVCur"
+    },
+    {
+      "asset": "BCH",
+      "providerAsset": "bch",
+      "time": 1791590400,
+      "stored": 0.9126121435431745,
+      "provider": 0.9126121435431745,
+      "matches": true,
+      "unit": "multiple",
+      "definition": "Coin Metrics CapMVRVCur"
+    },
+    {
+      "asset": "UNI",
+      "providerAsset": "uni",
+      "time": 1791590400,
+      "stored": 0.884153927849641,
+      "provider": 0.884153927849641,
+      "matches": true,
+      "unit": "multiple",
+      "definition": "Coin Metrics CapMVRVCur"
+    },
+    {
+      "asset": "SHIB",
+      "providerAsset": "shib_eth",
+      "time": 1791590400,
+      "stored": 0.38154302572281645,
+      "provider": 0.38154302572281645,
+      "matches": true,
+      "unit": "multiple",
+      "definition": "Coin Metrics CapMVRVCur"
+    },
+    {
+      "asset": "AAVE",
+      "providerAsset": "aave",
+      "time": 1791590400,
+      "stored": 1.0229659599506316,
+      "provider": 1.0229659599506316,
+      "matches": true,
+      "unit": "multiple",
+      "definition": "Coin Metrics CapMVRVCur"
+    },
+    {
+      "asset": "ICP",
+      "providerAsset": "icp",
+      "time": 1791590400,
+      "stored": 0.4259774549322197,
+      "provider": 0.4259774549322197,
+      "matches": true,
+      "unit": "multiple",
+      "definition": "Coin Metrics CapMVRVCur"
+    },
+    {
+      "asset": "XAUT",
+      "providerAsset": "xaut",
+      "time": 1791590400,
+      "stored": 0.9947099057151102,
+      "provider": 0.9947099057151102,
+      "matches": true,
+      "unit": "multiple",
+      "definition": "Coin Metrics CapMVRVCur"
+    },
+    {
+      "asset": "ETC",
+      "providerAsset": "etc",
+      "time": 1791590400,
+      "stored": 0.7583981043322922,
+      "provider": 0.7583981043322922,
+      "matches": true,
+      "unit": "multiple",
+      "definition": "Coin Metrics CapMVRVCur"
+    },
+    {
+      "asset": "ALGO",
+      "providerAsset": "algo",
+      "time": 1791590400,
+      "stored": 0.706603719008328,
+      "provider": 0.706603719008328,
+      "matches": true,
+      "unit": "multiple",
+      "definition": "Coin Metrics CapMVRVCur"
+    },
+    {
+      "asset": "CRO",
+      "providerAsset": "cro",
+      "time": 1791590400,
+      "stored": 0.29107972170190183,
+      "provider": 0.29107972170190183,
+      "matches": true,
+      "unit": "multiple",
+      "definition": "Coin Metrics CapMVRVCur"
+    },
+    {
+      "asset": "CRV",
+      "providerAsset": "crv",
+      "time": 1791590400,
+      "stored": 0.8968577939229248,
+      "provider": 0.8968577939229248,
+      "matches": true,
+      "unit": "multiple",
+      "definition": "Coin Metrics CapMVRVCur"
+    },
+    {
+      "asset": "COMP",
+      "providerAsset": "comp",
+      "time": 1791590400,
+      "stored": 0.7737291426345074,
+      "provider": 0.7737291426345074,
+      "matches": true,
+      "unit": "multiple",
+      "definition": "Coin Metrics CapMVRVCur"
+    },
+    {
+      "asset": "MANA",
+      "providerAsset": "mana",
+      "time": 1791590400,
+      "stored": 0.4545463563832232,
+      "provider": 0.4545463563832232,
+      "matches": true,
+      "unit": "multiple",
+      "definition": "Coin Metrics CapMVRVCur"
+    },
+    {
+      "asset": "BAT",
+      "providerAsset": "bat",
+      "time": 1791590400,
+      "stored": 0.6436916965439305,
+      "provider": 0.6436916965439305,
+      "matches": true,
+      "unit": "multiple",
+      "definition": "Coin Metrics CapMVRVCur"
+    },
+    {
+      "asset": "LPT",
+      "providerAsset": "lpt",
+      "time": 1791590400,
+      "stored": 0.72531072839886,
+      "provider": 0.72531072839886,
+      "matches": true,
+      "unit": "multiple",
+      "definition": "Coin Metrics CapMVRVCur"
+    },
+    {
+      "asset": "ZEC",
+      "providerAsset": "zec",
+      "time": 1791590400,
+      "stored": 1.888702591502806,
+      "provider": 1.888702591502806,
+      "matches": true,
+      "unit": "multiple",
+      "definition": "Coin Metrics CapMVRVCur"
+    },
+    {
+      "asset": "LTC",
+      "providerAsset": "ltc",
+      "time": 1791590400,
+      "stored": 0.8269917800721864,
+      "provider": 0.8269917800721864,
+      "matches": true,
+      "unit": "multiple",
+      "definition": "Coin Metrics CapMVRVCur"
+    },
+    {
+      "asset": "QNT",
+      "providerAsset": "qnt",
+      "time": 1791590400,
+      "stored": 2.3637477927688098,
+      "provider": 2.3637477927688098,
+      "matches": true,
+      "unit": "multiple",
+      "definition": "Coin Metrics CapMVRVCur"
+    },
+    {
+      "asset": "PAXG",
+      "providerAsset": "paxg",
+      "time": 1791590400,
+      "stored": 1.0599117995427914,
+      "provider": 1.0599117995427914,
+      "matches": true,
+      "unit": "multiple",
+      "definition": "Coin Metrics CapMVRVCur"
+    },
+    {
+      "asset": "DASH",
+      "providerAsset": "dash",
+      "time": 1791590400,
+      "stored": 0.6593793718185463,
+      "provider": 0.6593793718185463,
+      "matches": true,
+      "unit": "multiple",
+      "definition": "Coin Metrics CapMVRVCur"
+    },
+    {
+      "asset": "LDO",
+      "providerAsset": "ldo",
+      "time": 1791590400,
+      "stored": 0.5365320115214689,
+      "provider": 0.5365320115214689,
+      "matches": true,
+      "unit": "multiple",
+      "definition": "Coin Metrics CapMVRVCur"
+    },
+    {
+      "asset": "GNO",
+      "providerAsset": "gno",
+      "time": 1791590400,
+      "stored": 0.7722338024601686,
+      "provider": 0.7722338024601686,
+      "matches": true,
+      "unit": "multiple",
+      "definition": "Coin Metrics CapMVRVCur"
+    },
+    {
+      "asset": "DCR",
+      "providerAsset": "dcr",
+      "time": 1791590400,
+      "stored": 0.8377995726052055,
+      "provider": 0.8377995726052055,
+      "matches": true,
+      "unit": "multiple",
+      "definition": "Coin Metrics CapMVRVCur"
+    },
+    {
+      "asset": "FTT",
+      "providerAsset": "ftt",
+      "time": 1791590400,
+      "stored": 0.16493810870468278,
+      "provider": 0.16493810870468278,
+      "matches": true,
+      "unit": "multiple",
+      "definition": "Coin Metrics CapMVRVCur"
+    },
+    {
+      "asset": "SNX",
+      "providerAsset": "snx",
+      "time": 1791590400,
+      "stored": 0.6716837133975349,
+      "provider": 0.6716837133975349,
+      "matches": true,
+      "unit": "multiple",
+      "definition": "Coin Metrics CapMVRVCur"
+    },
+    {
+      "asset": "YFI",
+      "providerAsset": "yfi",
+      "time": 1791590400,
+      "stored": 0.5277888375949245,
+      "provider": 0.5277888375949245,
+      "matches": true,
+      "unit": "multiple",
+      "definition": "Coin Metrics CapMVRVCur"
+    },
+    {
+      "asset": "DGB",
+      "providerAsset": "dgb",
+      "time": 1791590400,
+      "stored": 0.2771833362053971,
+      "provider": 0.2771833362053971,
+      "matches": true,
+      "unit": "multiple",
+      "definition": "Coin Metrics CapMVRVCur"
+    }
+  ],
+  "passed": true,
+  "readOnly": true
+}

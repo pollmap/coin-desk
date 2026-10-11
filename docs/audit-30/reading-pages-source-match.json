@@ -1,0 +1,14 @@
+{
+  "commit": "a7739889ddece0bf356f8cea66e9d2eb57803135",
+  "allMatch": true,
+  "files": [
+    {
+      "file": "pages/wrangler.jsonc",
+      "sha256": "372a77378f1ce89021c33cddd33da6f9913bc45774f8924ba7a2f473b2c4d0a4"
+    },
+    {
+      "file": "pages/functions/api/[[path]].ts",
+      "sha256": "b188921b25908cda18523779dbc374eed001646bc27c59bfb780a59881106b1a"
+    }
+  ]
+}

@@ -1,0 +1,31 @@
+{
+  "code": "verified and merged",
+  "webDeployment": "verified both addresses",
+  "liveData": "150 asset coverage audit and 33 MVRV source matches; partial gap recovery pending budget",
+  "recoveryComplete": false,
+  "performance": [
+    {
+      "origin": "pages",
+      "lcpP95Ms": 2080,
+      "lcpGoalMet": true,
+      "receiptToPaintUpperMs": 1509,
+      "receiptToPaintGoalMet": true
+    },
+    {
+      "origin": "vps",
+      "lcpP95Ms": 5972,
+      "lcpGoalMet": false,
+      "receiptToPaintUpperMs": 9087,
+      "receiptToPaintGoalMet": false
+    }
+  ],
+  "remaining": [
+    "67 source-present hourly derivative gaps queued for next daily budget",
+    "VPS initial loading target evaluated in performance-after.json",
+    "Physical Apple Safari/VoiceOver unverified",
+    "New-user task study unverified",
+    "Whole-application CSS consolidation not completed",
+    "VPS receipt-to-browser-paint measurement exceeded 3-second goal; cause not confirmed"
+  ],
+  "wait48hRequired": false
+}

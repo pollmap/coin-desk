@@ -1,0 +1,89 @@
+{
+  "startedAt": "2026-10-11T12:18:10.109Z",
+  "apply": true,
+  "rows": [
+    {
+      "asset": "SOL",
+      "metric": "open_interest",
+      "from": 1791342000,
+      "to": 1791367200,
+      "outcome": "paused_daily_budget",
+      "inserted": 0
+    },
+    {
+      "asset": "SOL",
+      "metric": "long_account_ratio",
+      "from": 1791342000,
+      "to": 1791367200,
+      "outcome": "paused_daily_budget",
+      "inserted": 0
+    },
+    {
+      "asset": "XRP",
+      "metric": "open_interest",
+      "from": 1791342000,
+      "to": 1791367200,
+      "outcome": "paused_daily_budget",
+      "inserted": 0
+    },
+    {
+      "asset": "XRP",
+      "metric": "long_account_ratio",
+      "from": 1791342000,
+      "to": 1791363600,
+      "outcome": "paused_daily_budget",
+      "inserted": 0
+    },
+    {
+      "asset": "LINK",
+      "metric": "open_interest",
+      "from": 1791342000,
+      "to": 1791363600,
+      "outcome": "paused_daily_budget",
+      "inserted": 0
+    },
+    {
+      "asset": "LINK",
+      "metric": "long_account_ratio",
+      "from": 1791342000,
+      "to": 1791363600,
+      "outcome": "paused_daily_budget",
+      "inserted": 0
+    },
+    {
+      "asset": "ONDO",
+      "metric": "open_interest",
+      "from": 1791342000,
+      "to": 1791367200,
+      "outcome": "paused_daily_budget",
+      "inserted": 0
+    },
+    {
+      "asset": "ONDO",
+      "metric": "long_account_ratio",
+      "from": 1791342000,
+      "to": 1791367200,
+      "outcome": "paused_daily_budget",
+      "inserted": 0
+    },
+    {
+      "asset": "PEPE",
+      "metric": "open_interest",
+      "from": 1791342000,
+      "to": 1791367200,
+      "outcome": "paused_daily_budget",
+      "inserted": 0
+    },
+    {
+      "asset": "PEPE",
+      "metric": "long_account_ratio",
+      "from": 1791342000,
+      "to": 1791367200,
+      "outcome": "paused_daily_budget",
+      "inserted": 0
+    }
+  ],
+  "errors": [],
+  "collectorStateWritePolicy": "This tool never writes recent success or historical cursors",
+  "completedAt": "2026-10-11T12:18:12.872Z"
+}
