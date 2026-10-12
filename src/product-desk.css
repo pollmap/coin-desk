@@ -1245,6 +1245,11 @@ body {
   .product-desk .indicator-workspace .analysis-legend > span:nth-child(2) > b {
     font-size: 28px;
   }
+  .product-desk .indicator-panel:has(.price-style-control) .analysis-reading-value {
+    font-size: 20px;
+    line-height: 24px;
+    white-space: nowrap;
+  }
   .product-desk .indicator-navigation nav a {
     padding: 12px 4px;
     min-height: 56px;
