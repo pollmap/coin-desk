@@ -489,9 +489,12 @@ export const AnalysisChart = memo(function AnalysisChart({
           .timeScale()
           .setVisibleRange({ from: ts(visible[0].time), to: ts(visible.at(-1)!.time) });
     };
-    if (prior?.key === key && userRange.current)
+    if (prior?.key === key && userRange.current) {
+      // setData runs again before the replacement chart's next frame. Keep the
+      // restored user window pending until LWC publishes those exact dates.
+      pendingRange.current = { from: prior.from, to: prior.to };
       chart.timeScale().setVisibleRange({ from: ts(prior.from), to: ts(prior.to) });
-    else if (visible.length)
+    } else if (visible.length)
       chart
         .timeScale()
         .setVisibleRange({ from: ts(visible[0].time), to: ts(visible.at(-1)!.time) });
