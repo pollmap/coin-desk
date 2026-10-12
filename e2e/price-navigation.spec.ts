@@ -77,6 +77,21 @@ test('USD reference prices remain close lines and do not borrow a KRW current pr
   await expect(page.getByRole('combobox', { name: '가격 차트 표시' })).toHaveCount(0);
 });
 
+test('Binance minute ticker does not become a verified trade reference line', async ({ page }) => {
+  await page.addInitScript(() => {
+    class Source extends EventTarget {
+      onerror = null;
+      close() {}
+    }
+    Object.assign(window, { EventSource: Source });
+  });
+  await page.goto('/coins/BTC?metric=view%3Aprice&price_source=binance&market=binance&period=1m');
+  const chart = page.locator('[data-chart-kind=analysis]');
+  await expect(chart).toHaveAttribute('data-range-ready', '1');
+  await expect(page.locator('.detail-quote')).toContainText('Binance · USDT');
+  await expect(chart).not.toHaveAttribute('data-live-price');
+});
+
 test('live reference price never replaces historical candles, recreates the canvas or accepts an old event', async ({
   page,
 }) => {

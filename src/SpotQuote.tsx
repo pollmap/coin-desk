@@ -25,7 +25,7 @@ export function SpotQuote({
     quote = feed.rows.find((r) => r.asset === asset);
   useEffect(() => {
     onQuote?.(
-      quote?.displayPrice && quote.displayTime
+      quote?.displayPrice && quote.displayTime && (market === 'upbit' || quote.live)
         ? {
             asset,
             market,
@@ -35,7 +35,7 @@ export function SpotQuote({
           }
         : null,
     );
-  }, [asset, market, onQuote, quote?.displayPrice, quote?.displayTime, quote?.stale]);
+  }, [asset, market, onQuote, quote?.displayPrice, quote?.displayTime, quote?.stale, quote?.live]);
   useEffect(() => () => onQuote?.(null), [asset, market, onQuote]);
   return (
     <div
