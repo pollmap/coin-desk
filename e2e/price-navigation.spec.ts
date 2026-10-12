@@ -172,6 +172,16 @@ for (const width of [320, 390, 768, 1280, 1440])
     const bounds = (await chart.boundingBox())!;
     expect(bounds.y).toBeLessThanOrEqual(width < 768 ? 280 : 240);
     expect(bounds.height).toBeGreaterThanOrEqual(width < 768 ? 320 : 420);
+    if (width < 768) {
+      // Element boxes can fit while nowrap text paints over the date column.
+      const textBounds = await page.locator('.analysis-reading-value').evaluate((element) => {
+        const range = document.createRange();
+        range.selectNodeContents(element);
+        return { right: range.getBoundingClientRect().right };
+      });
+      const dateBounds = (await page.locator('.analysis-reading-date').boundingBox())!;
+      expect(textBounds.right).toBeLessThanOrEqual(dateBounds.x - 4);
+    }
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(
       true,
     );
