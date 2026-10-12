@@ -45,7 +45,7 @@ test('market root requests one bounded snapshot, eight assets, and preserves sou
   await page.getByRole('link', { name: '비트코인 BTC', exact: true }).click();
   await expect(page.locator('[data-chart-kind="analysis"]')).toHaveAttribute(
     'data-primary-metric',
-    'net:mvrv',
+    'price',
   );
   expect(new URL(page.url()).pathname).toBe('/coins/BTC');
   expect(new URL(page.url()).searchParams.get('price_source')).toBe('binance');
@@ -72,7 +72,7 @@ test('legacy date links and unsupported coins remain explicit; keyboard search w
   await page.keyboard.press('Enter');
   await expect(page.locator('[data-chart-kind="analysis"]')).toHaveAttribute(
     'data-primary-metric',
-    'rsi',
+    'price',
   );
   await page.goto('/coins/ONDO?metric=net%3Amvrv&price_source=reference');
   await expect(page.locator('[data-availability]')).toHaveAttribute(

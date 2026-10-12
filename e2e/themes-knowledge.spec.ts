@@ -20,7 +20,7 @@ test('market only loads themes on demand and restores theme/exchange after analy
   await expect(page.locator('.theme-row')).toContainText('편집 분류');
   await page.locator('.theme-row').getByRole('link', { name: /온도/ }).click();
   await expect(page.locator('[data-chart-kind=analysis]')).toHaveAttribute('data-asset', 'ONDO');
-  await expect(page).toHaveURL(/metric=rsi/);
+  await expect(page).toHaveURL(/metric=view%3Aprice/);
   await page.goBack();
   await expect(page).toHaveURL(/theme=rwa/);
   await expect(page.getByRole('button', { name: 'Binance · USDT', exact: true })).toHaveAttribute(

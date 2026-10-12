@@ -1168,6 +1168,13 @@ body {
     gap: 4px;
     justify-self: end;
   }
+  .product-desk .indicator-heading:has(.price-style-control) .indicator-title-button {
+    font-size: 18px;
+    white-space: nowrap;
+  }
+  .product-desk .price-style-control {
+    width: 68px;
+  }
   .product-desk .indicator-heading-actions button {
     padding: 6px 8px;
     font-size: 12px;
@@ -1237,6 +1244,11 @@ body {
   }
   .product-desk .indicator-workspace .analysis-legend > span:nth-child(2) > b {
     font-size: 28px;
+  }
+  .product-desk .indicator-panel:has(.price-style-control) .analysis-reading-value {
+    font-size: 20px;
+    line-height: 24px;
+    white-space: nowrap;
   }
   .product-desk .indicator-navigation nav a {
     padding: 12px 4px;

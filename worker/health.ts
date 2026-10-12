@@ -1,5 +1,5 @@
 import { sourceLabel } from '../shared/source-label';
-import { assetDefinition } from '../shared/asset-registry';
+import { assetDefinition, supportsMarket } from '../shared/asset-registry';
 import { observeAutomation, type ObservationRun } from '../shared/automation-observation';
 import { ASSETS, isPrimaryAsset } from '../shared/catalog';
 import { DAY } from '../shared/math';
@@ -600,7 +600,13 @@ export async function operationStatus(env: Env) {
     coverage: {
       expectedSources: sources.filter((s) => s.active).length,
       healthySources: sources.filter((s) => s.active && s.status === 'ok').length,
-      priceMarkets: assets.length * 2,
+      priceMarkets: assets.reduce(
+        (n, asset) =>
+          n +
+          (['upbit', 'binance'] as const).filter((market) => supportsMarket(asset, market)).length,
+        0,
+      ),
+      priceMarketCombinations: assets.length * 2,
       histories: history.filter((h) => assets.includes(h.asset)).length,
     },
   };

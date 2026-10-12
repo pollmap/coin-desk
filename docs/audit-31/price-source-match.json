@@ -1,0 +1,87 @@
+{
+  "checkedAt": "2026-10-12T15:25:31.574932+00:00",
+  "noCollectionApiOrOverview": true,
+  "readOnly": true,
+  "rows": [
+    {
+      "asset": "BTC",
+      "market": "upbit",
+      "unit": "KRW",
+      "time": 1791676800,
+      "dateUtc": "2026-10-11",
+      "sourcePresent": true,
+      "storedPresent": true,
+      "storedClosed": true,
+      "allOhlcvMatch": true,
+      "fieldsMatch": {
+        "open": true,
+        "high": true,
+        "low": true,
+        "close": true,
+        "volume": true
+      },
+      "sourceUrl": "https://api.upbit.com/v1/candles/days?market=KRW-BTC&count=3",
+      "apiUrl": "/api/v1/candles?asset=BTC&market=upbit&interval=1d&from=1791676800&to=1791763200&limit=10"
+    },
+    {
+      "asset": "DOGE",
+      "market": "upbit",
+      "unit": "KRW",
+      "time": 1791676800,
+      "dateUtc": "2026-10-11",
+      "sourcePresent": true,
+      "storedPresent": true,
+      "storedClosed": true,
+      "allOhlcvMatch": true,
+      "fieldsMatch": {
+        "open": true,
+        "high": true,
+        "low": true,
+        "close": true,
+        "volume": true
+      },
+      "sourceUrl": "https://api.upbit.com/v1/candles/days?market=KRW-DOGE&count=3",
+      "apiUrl": "/api/v1/candles?asset=DOGE&market=upbit&interval=1d&from=1791676800&to=1791763200&limit=10"
+    },
+    {
+      "asset": "ONDO",
+      "market": "upbit",
+      "unit": "KRW",
+      "time": 1791676800,
+      "dateUtc": "2026-10-11",
+      "sourcePresent": true,
+      "storedPresent": true,
+      "storedClosed": true,
+      "allOhlcvMatch": true,
+      "fieldsMatch": {
+        "open": true,
+        "high": true,
+        "low": true,
+        "close": true,
+        "volume": true
+      },
+      "sourceUrl": "https://api.upbit.com/v1/candles/days?market=KRW-ONDO&count=3",
+      "apiUrl": "/api/v1/candles?asset=ONDO&market=upbit&interval=1d&from=1791676800&to=1791763200&limit=10"
+    },
+    {
+      "asset": "PEPE",
+      "market": "upbit",
+      "unit": "KRW",
+      "time": 1791676800,
+      "dateUtc": "2026-10-11",
+      "sourcePresent": true,
+      "storedPresent": true,
+      "storedClosed": true,
+      "allOhlcvMatch": true,
+      "fieldsMatch": {
+        "open": true,
+        "high": true,
+        "low": true,
+        "close": true,
+        "volume": true
+      },
+      "sourceUrl": "https://api.upbit.com/v1/candles/days?market=KRW-PEPE&count=3",
+      "apiUrl": "/api/v1/candles?asset=PEPE&market=upbit&interval=1d&from=1791676800&to=1791763200&limit=10"
+    }
+  ]
+}

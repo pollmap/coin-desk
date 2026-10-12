@@ -7,6 +7,25 @@ import {
   workspaceUrl,
 } from '../shared/workspace';
 describe('personal desk untrusted settings', () => {
+  it('backs up the chosen price rendering without accepting an arbitrary renderer', () => {
+    const config = {
+      name: '가격',
+      asset: 'BTC',
+      market: 'upbit',
+      priceSource: 'upbit',
+      metric: 'view:price',
+      period: '1m',
+      analysisOptions: { chart_style: 'line' },
+    };
+    const desk = normalizeDesk({ ...DEFAULT_DESK, workspaces: [config] });
+    const restored = importDesk(JSON.stringify(desk));
+    expect(workspaceUrl(restored.workspaces[0])).toContain('chart_style=line');
+    const invalid = normalizeDesk({
+      ...DEFAULT_DESK,
+      workspaces: [{ ...config, analysisOptions: { chart_style: 'javascript:bad' } }],
+    });
+    expect(workspaceUrl(invalid.workspaces[0])).not.toContain('chart_style');
+  });
   it('normalizes broken storage and never accepts navigation URLs', () => {
     expect(normalizeDesk(null)).toEqual(DEFAULT_DESK);
     expect(

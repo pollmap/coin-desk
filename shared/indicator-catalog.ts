@@ -190,7 +190,7 @@ const definitions: IndicatorBase[] = [
     (v) =>
       ({
         id: 'view:' + v,
-        title: v === 'bb' ? '볼린저밴드' : ANALYSIS_LABELS[v],
+        title: v === 'price' ? '가격 차트' : v === 'bb' ? '볼린저밴드' : ANALYSIS_LABELS[v],
         group: ['rainbow', 'btc_rainbow', 'cycles', 'powerlaw'].includes(v)
           ? '가치·사이클'
           : '기술·성과',
@@ -205,9 +205,12 @@ const definitions: IndicatorBase[] = [
               : v === 'bb'
                 ? '20개 확정 종가의 SMA ± 2 × 모집단 표준편차'
                 : '확정 가격 이력으로 계산',
-        defaultPeriod: ['rainbow', 'btc_rainbow', 'cycles', 'seasonality', 'powerlaw'].includes(v)
-          ? 'all'
-          : '1y',
+        defaultPeriod:
+          v === 'price'
+            ? '1m'
+            : ['rainbow', 'btc_rainbow', 'cycles', 'seasonality', 'powerlaw'].includes(v)
+              ? 'all'
+              : '1y',
         renderer: ['rainbow', 'btc_rainbow'].includes(v)
           ? 'bands'
           : ['relative', 'cycles', 'windows', 'seasonality'].includes(v)
@@ -342,6 +345,7 @@ export function resolveIndicator(asset: Asset, path: string, params: URLSearchPa
       id = 'view:price';
     else if (params.has('patterns') || params.has('draw_tool')) id = 'view:price';
     else if (params.get('panels')) id = params.get('panels')!.split(',')[0];
+    else if (path.startsWith('/coins/')) id = 'view:price';
   }
   id ||= defaultIndicator(asset);
   const definition = indicatorDefinition(id);
@@ -374,6 +378,10 @@ export function indicatorUrl(
     basis = availableMarket(asset, 'binance');
   if (next === 'view:supertrend' && previous.get('metric') !== next) {
     p.set('interval', '1w');
+    p.set('log', '0');
+  }
+  if (next === 'view:price' && previous.get('metric') !== next) {
+    p.set('interval', '1d');
     p.set('log', '0');
   }
   p.set('price_source', basis);

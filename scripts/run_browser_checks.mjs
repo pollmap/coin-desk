@@ -10,6 +10,9 @@ const port = process.env.COIN_DESK_TEST_PORT || '5190';
 if (!/^\d+$/.test(port) || Number(port) < 1024 || Number(port) > 65535)
   throw new Error('Invalid fixture port');
 const base = `http://127.0.0.1:${port}`;
+const startupMs = Number(process.env.COIN_DESK_FIXTURE_STARTUP_MS || 120000);
+if (!Number.isInteger(startupMs) || startupMs < 30000 || startupMs > 300000)
+  throw new Error('Fixture startup deadline must be 30000–300000ms');
 // Fail closed on an occupied port: never reuse another user's server as a fixture.
 const { createServer } = await import('node:net');
 const probe = createServer();
@@ -26,7 +29,8 @@ const fixtureExit = once(fixture, 'exit');
 let testProcess;
 try {
   let ready = false;
-  for (let attempt = 0; attempt < 120; attempt++) {
+  const startedAt = Date.now();
+  while (Date.now() - startedAt < startupMs) {
     if (fixture.exitCode !== null) throw new Error('Fixture exited before readiness');
     try {
       const response = await fetch(base, { signal: AbortSignal.timeout(500) });
@@ -35,7 +39,8 @@ try {
     if (ready) break;
     await delay(250);
   }
-  if (!ready) throw new Error('Isolated fixture did not become ready');
+  if (!ready) throw new Error(`Isolated fixture did not become ready within ${startupMs}ms`);
+  console.log(JSON.stringify({ event: 'fixture_ready', startupMs: Date.now() - startedAt }));
   // A second run must not clean another run's traces while its context is closing.
   const evidenceRoot = resolve('work/browser-checks', `${Date.now()}-${process.pid}`);
   mkdirSync(evidenceRoot, { recursive: true });

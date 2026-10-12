@@ -28,7 +28,7 @@ for (const width of [390, 1280])
     await row.locator('.market-coin-cell a').click();
     const chart = page.locator('[data-chart-kind=analysis]');
     await expect(chart).toHaveAttribute('data-asset', 'PENGU');
-    await expect(chart).toHaveAttribute('data-primary-metric', 'rsi');
+    await expect(chart).toHaveAttribute('data-primary-metric', 'price');
     await expect(chart).toHaveAttribute('data-range-ready', '1');
     const range = await chart.getAttribute('data-visible-from');
     await expect(page.locator('.indicator-provenance')).toHaveCount(0);

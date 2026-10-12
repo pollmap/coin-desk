@@ -12,10 +12,10 @@ for (const width of [320, 390, 430])
     await expect(page.locator('.market-table tbody tr')).toHaveCount(20);
     await page.getByRole('link', { name: '비트코인 BTC', exact: true }).click();
     const chart = page.locator('[data-chart-kind=analysis]');
-    await expect(chart).toHaveAttribute('data-primary-metric', 'net:mvrv');
+    await expect(chart).toHaveAttribute('data-primary-metric', 'price');
     await expect(chart).toHaveAttribute('data-range-ready', '1');
     await page.mouse.move(0, 0);
-    await expect(page.locator('.analysis-reading-date')).toContainText('최근 확정값');
+    await expect(page.locator('.analysis-reading-date')).toContainText('최근 확정 종가');
     expect(calls.filter((u) => /\/overview|\/themes|\/knowledge/.test(u))).toEqual([]);
     expect(calls.filter((u) => /\/market\?/.test(u))).toHaveLength(2);
     const geometry = (await chart.boundingBox())!;
@@ -50,6 +50,7 @@ for (const width of [320, 390, 430])
     await page.getByRole('button', { name: /지표 변경$/ }).click();
     const picker = page.getByRole('dialog', { name: '지표 선택' });
     await expect(picker.getByRole('group', { name: '확인하고 싶은 내용' })).toHaveCount(0);
+    await picker.getByRole('textbox', { name: '지표 검색' }).fill('MVRV');
     await expect(picker.getByRole('link', { name: 'MVRV 배', exact: true })).toBeVisible();
     await page.keyboard.press('Escape');
     await expect(page.getByRole('button', { name: /지표 변경$/ })).toBeFocused();
@@ -78,7 +79,7 @@ for (const width of [320, 390, 430])
       true,
     );
     await analysis.click();
-    await expect(chart).toHaveAttribute('data-primary-metric', 'net:mvrv');
+    await expect(chart).toHaveAttribute('data-primary-metric', 'price');
   });
 
 test('mobile coin, indicator, date, explanation, save and reopen keep the same analysis', async ({
@@ -93,9 +94,14 @@ test('mobile coin, indicator, date, explanation, save and reopen keep the same a
   await page.getByRole('button', { name: '코인 변경 · 비트코인 BTC' }).click();
   await page.getByRole('button', { name: '도지코인 DOGE', exact: true }).click();
   await expect(chart).toHaveAttribute('data-asset', 'DOGE');
-  await expect(chart).toHaveAttribute('data-primary-metric', 'net:mvrv');
+  await expect(chart).toHaveAttribute('data-primary-metric', 'price');
   await page.getByRole('button', { name: '코인 변경 · 도지코인 DOGE' }).click();
   await page.getByRole('button', { name: '온도파이낸스 ONDO', exact: true }).click();
+  await expect(chart).toHaveAttribute('data-primary-metric', 'price');
+  await page
+    .getByRole('navigation', { name: '자주 보는 지표' })
+    .getByRole('link', { name: 'RSI', exact: true })
+    .click();
   await expect(chart).toHaveAttribute('data-primary-metric', 'rsi');
   await expect(chart).toHaveAttribute('data-asset', 'ONDO');
   await expect(chart).toHaveAttribute('data-range-ready', '1');
@@ -185,7 +191,7 @@ test('USD indicator keeps its KRW quote and pinned date through save, share and 
   await expect(page.locator('.analysis-reading-date')).toContainText('2026-09-01');
   await page.getByRole('button', { name: '최근값 보기', exact: true }).click();
   await page.mouse.move(0, 0);
-  await expect(page.locator('.analysis-reading-date')).toContainText('최근 확정값');
+  await expect(page.locator('.analysis-reading-date')).toContainText('최근 확정 종가');
   await page.locator('details.analysis-tools > summary').click();
   await page.getByRole('button', { name: '링크 공유', exact: true }).click();
   expect(

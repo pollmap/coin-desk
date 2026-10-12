@@ -68,6 +68,17 @@ jobs:
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          fetch-depth: 2
+      - name: Identify deployment inputs
+        id: deploy-inputs
+        if: github.ref == 'refs/heads/main'
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+        run: |
+          if test "$EVENT_NAME" = workflow_dispatch || ! git diff --quiet HEAD^ HEAD -- src shared worker server scripts public extension deploy migrations Dockerfile package.json package-lock.json index.html tsconfig.json vite.config.ts .github/workflows/ci.yml; then
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          fi
       - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
         with:
           python-version: '3.13'
@@ -99,6 +110,16 @@ jobs:
           format: table
           exit-code: '1'
           severity: HIGH,CRITICAL
+      - name: Package verified Linux deployment
+        if: steps.deploy-inputs.outputs.changed == 'true'
+        run: python scripts/package_ci_deployment.py --commit "$GITHUB_SHA"
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: steps.deploy-inputs.outputs.changed == 'true'
+        with:
+          name: verified-linux-deployment
+          path: deployment-artifacts/verified-linux/
+          compression-level: 0
+          retention-days: 1
 
   verify:
     if: always()

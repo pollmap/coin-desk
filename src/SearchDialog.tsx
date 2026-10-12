@@ -4,7 +4,7 @@ import type { Asset } from '../shared/types';
 import type { SearchHit } from '../shared/search';
 import { availableMarket, supportsMarket, referenceAssets } from '../shared/asset-registry';
 import { ASSETS } from '../shared/catalog';
-import { defaultAnalysisUrl } from '../shared/default-analysis';
+import { defaultPriceUrl } from '../shared/default-analysis';
 import { DeskDialog } from './DeskDialog';
 import { AssetLogo } from './AssetLogo';
 import './search-dialog.css';
@@ -176,7 +176,7 @@ export default function SearchDialog({
               <Link
                 className="search-hit"
                 key={a.id}
-                to={defaultAnalysisUrl(a.id, 'upbit')}
+                to={defaultPriceUrl(a.id, 'upbit')}
                 onClick={close}
               >
                 <AssetLogo asset={a.id} size={24} />
