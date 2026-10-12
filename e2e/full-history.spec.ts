@@ -5,10 +5,10 @@ test('DOGE band entry chooses the oldest source and includes pre-calculation pri
 }) => {
   await page.goto('/coins/DOGE?metric=net:mvrv&price_source=upbit');
   await expect(page.locator('[data-chart-kind="analysis"]')).toBeVisible();
-  await page
-    .getByRole('navigation', { name: '자주 보는 지표' })
-    .getByRole('link', { name: '가격 위치', exact: true })
-    .click();
+  await page.getByRole('button', { name: /지표 변경$/ }).click();
+  const picker = page.getByRole('dialog', { name: '지표 선택' });
+  await picker.getByRole('textbox', { name: '지표 검색' }).fill('가격 위치');
+  await picker.getByRole('link', { name: /가격 위치/ }).click();
   await expect(page).toHaveURL(/price_source=reference/);
   const chart = page.locator('[data-chart-kind="analysis"]');
   await expect(chart).toHaveAttribute('data-range-ready', '1');

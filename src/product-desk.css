@@ -1168,6 +1168,13 @@ body {
     gap: 4px;
     justify-self: end;
   }
+  .product-desk .indicator-heading:has(.price-style-control) .indicator-title-button {
+    font-size: 18px;
+    white-space: nowrap;
+  }
+  .product-desk .price-style-control {
+    width: 68px;
+  }
   .product-desk .indicator-heading-actions button {
     padding: 6px 8px;
     font-size: 12px;
