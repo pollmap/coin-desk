@@ -50,6 +50,7 @@ for (const width of [320, 390, 430])
     await page.getByRole('button', { name: /지표 변경$/ }).click();
     const picker = page.getByRole('dialog', { name: '지표 선택' });
     await expect(picker.getByRole('group', { name: '확인하고 싶은 내용' })).toHaveCount(0);
+    await picker.getByRole('textbox', { name: '지표 검색' }).fill('MVRV');
     await expect(picker.getByRole('link', { name: 'MVRV 배', exact: true })).toBeVisible();
     await page.keyboard.press('Escape');
     await expect(page.getByRole('button', { name: /지표 변경$/ })).toBeFocused();
@@ -96,6 +97,11 @@ test('mobile coin, indicator, date, explanation, save and reopen keep the same a
   await expect(chart).toHaveAttribute('data-primary-metric', 'price');
   await page.getByRole('button', { name: '코인 변경 · 도지코인 DOGE' }).click();
   await page.getByRole('button', { name: '온도파이낸스 ONDO', exact: true }).click();
+  await expect(chart).toHaveAttribute('data-primary-metric', 'price');
+  await page
+    .getByRole('navigation', { name: '자주 보는 지표' })
+    .getByRole('link', { name: 'RSI', exact: true })
+    .click();
   await expect(chart).toHaveAttribute('data-primary-metric', 'rsi');
   await expect(chart).toHaveAttribute('data-asset', 'ONDO');
   await expect(chart).toHaveAttribute('data-range-ready', '1');

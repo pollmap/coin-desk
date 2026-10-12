@@ -539,7 +539,9 @@ export const AnalysisChart = memo(function AnalysisChart({
     });
     setDrawingApi({ chart, series: price });
     return () => {
-      const range = chart.timeScale().getVisibleRange();
+      // A style switch can arrive before LWC publishes a queued user zoom.
+      // Carry the requested dates into the replacement series, not its stale frame.
+      const range = pendingRange.current ?? chart.timeScale().getVisibleRange();
       if (range) previous.current = { key, from: Number(range.from), to: Number(range.to) };
       markers.detach();
       resize.disconnect();
