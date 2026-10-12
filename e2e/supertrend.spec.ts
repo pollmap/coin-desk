@@ -38,10 +38,10 @@ test('selects Supertrend from USD reference, opens actual DOGE weekly candles an
   const chart = page.locator('[data-chart-kind="analysis"]');
   await expect(chart).toHaveAttribute('data-range-ready', '1');
   await expect(page.locator('.supertrend-context')).toContainText('ATR 10 · 3배 · 1w');
-  await chart.focus();
-  await page.keyboard.press('Home');
+  await chart.press('Home');
+  await expect(page.locator('.analysis-reading-date')).toContainText('날짜 고정');
   await expect(page.locator('.supertrend-context')).toContainText('계산 전');
-  await page.keyboard.press('End');
+  await chart.press('End');
   const from = await chart.getAttribute('data-visible-from');
   await page.getByRole('button', { name: '지표 설명', exact: true }).click();
   await expect(page.getByRole('dialog')).toContainText('Wilder');
