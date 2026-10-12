@@ -76,7 +76,7 @@ jobs:
         env:
           EVENT_NAME: ${{ github.event_name }}
         run: |
-          if test "$EVENT_NAME" = workflow_dispatch || git diff --name-only HEAD^ HEAD -- src shared worker server scripts public extension deploy migrations Dockerfile package.json package-lock.json index.html tsconfig.json vite.config.ts .github/workflows/ci.yml | grep -q .; then
+          if test "$EVENT_NAME" = workflow_dispatch || ! git diff --quiet HEAD^ HEAD -- src shared worker server scripts public extension deploy migrations Dockerfile package.json package-lock.json index.html tsconfig.json vite.config.ts .github/workflows/ci.yml; then
             echo "changed=true" >> "$GITHUB_OUTPUT"
           fi
       - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
