@@ -11,11 +11,13 @@ export function IndicatorShortcuts({
   selected: string;
   params: URLSearchParams;
 }) {
-  const ids = ['net:mvrv', 'view:rainbow', 'view:btc_rainbow', 'rsi', 'futures:funding'];
+  const ids = ['view:price', 'net:mvrv', 'rsi', 'futures:funding'];
+  const definitions = navigationIndicators(asset, selected);
+  if (!ids.includes(selected) && definitions.some((d) => d.id === selected)) ids.push(selected);
   return (
     <nav className="indicator-shortcuts" aria-label="자주 보는 지표">
       {ids
-        .map((id) => navigationIndicators(asset, selected).find((d) => d.id === id))
+        .map((id) => definitions.find((d) => d.id === id))
         .filter((d) => !!d)
         .map((d) => (
           <Link
@@ -25,6 +27,7 @@ export function IndicatorShortcuts({
           >
             {(
               {
+                'view:price': '가격',
                 'net:mvrv': 'MVRV',
                 'view:rainbow': '가격 위치',
                 'view:btc_rainbow': '레인보우',

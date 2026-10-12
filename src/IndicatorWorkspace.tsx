@@ -48,6 +48,7 @@ import { PatternPicker, PatternObservations } from './PatternControls';
 import { IndicatorNavigation } from './IndicatorNavigation';
 import { dateLabel, save, saved, money } from './lib';
 import { SpotQuote } from './SpotQuote';
+import { eligibleChartPrice, type LiveChartPrice } from '../shared/live-chart-price';
 import { IndicatorShortcuts } from './IndicatorShortcuts';
 import { RelativeControls } from './RelativeControls';
 import { supertrend, supertrendSettings, SUPERTREND_VERSION } from '../shared/supertrend';
@@ -99,10 +100,6 @@ export function IndicatorWorkspace() {
     setLegacyNotice(true);
     navigate(`/coins/${pair.asset}?${next}`, { replace: true });
   }, [isRelative, pair.migrated, pair.asset, pair.benchmark, navigate, params]);
-  const quoteMarket = availableMarket(
-    asset,
-    (params.get('market') ?? params.get('price_source')) === 'binance' ? 'binance' : 'upbit',
-  );
   useEffect(() => {
     save(
       'recent-coins',
@@ -118,7 +115,12 @@ export function IndicatorWorkspace() {
   const rawBasis = params.get('price_source') || params.get('market');
   const basis = validPriceBasis(
       asset,
-      rawBasis ?? (id === 'view:supertrend' ? 'binance' : null),
+      rawBasis ??
+        (id === 'view:price'
+          ? availableMarket(asset, 'upbit')
+          : id === 'view:supertrend'
+            ? 'binance'
+            : null),
     ) as PriceBasis,
     unit = basisUnit(basis);
   const invalidBasis =
@@ -142,7 +144,45 @@ export function IndicatorWorkspace() {
   const view = d?.view ?? 'price',
     local = ['rsi', 'drawdown', 'relative', 'volume'].includes(id);
   const isSupertrend = id === 'view:supertrend';
-  const log = isSupertrend ? params.get('log') === '1' : params.get('log') !== '0';
+  const log =
+    isSupertrend || id === 'view:price' ? params.get('log') === '1' : params.get('log') !== '0';
+  const quoteMarket = availableMarket(
+    asset,
+    (id === 'view:price' ? basis : (params.get('market') ?? params.get('price_source'))) ===
+      'binance'
+      ? 'binance'
+      : 'upbit',
+  );
+  const [livePrice, setLivePrice] = useState<LiveChartPrice | null>(null);
+  const receiveQuote = useCallback(
+    (quote: LiveChartPrice | null) => {
+      setLivePrice((previous) => {
+        if (
+          !quote ||
+          id !== 'view:price' ||
+          quote.market !== basis ||
+          !eligibleChartPrice(quote, asset, unit)
+        )
+          return null;
+        if (
+          previous?.asset === quote.asset &&
+          previous.market === quote.market &&
+          previous.time > quote.time
+        )
+          return previous;
+        if (
+          previous?.asset === quote.asset &&
+          previous.market === quote.market &&
+          previous.time === quote.time &&
+          previous.price === quote.price &&
+          previous.stale === quote.stale
+        )
+          return previous;
+        return quote;
+      });
+    },
+    [asset, basis, id, unit],
+  );
   const stSettings = supertrendSettings(params);
   const auxiliary = [...new Set((params.get('panels') ?? '').split(','))]
     .filter(
@@ -615,6 +655,16 @@ export function IndicatorWorkspace() {
     readingDate === null ? bandRows.at(-1) : bandRows.find((p) => p.time === readingDate);
   const lastSupertrend =
     readingDate === null ? stRows.at(-1) : stRows.find((p) => p.time === readingDate);
+  const chartStyle = params.get('chart_style');
+  const chartCandles = useMemo(
+    () =>
+      !primary && !bands && basis !== 'reference' && !(id === 'view:price' && chartStyle === 'line')
+        ? (raw.data as CandleResponse | undefined)?.data.filter(
+            (c) => c.closed && c.closeTime <= Date.now() / 1000,
+          )
+        : undefined,
+    [primary, bands, basis, id, chartStyle, raw.data],
+  );
   return (
     <div className="indicator-workspace" data-indicator={id} data-availability={availability}>
       <AssetHeader
@@ -622,7 +672,21 @@ export function IndicatorWorkspace() {
         asset={asset}
         current=""
         subtitle=""
-        trailing={<SpotQuote asset={asset} market={quoteMarket} />}
+        trailing={
+          id === 'view:price' && basis === 'reference' ? (
+            <div className="detail-quote">
+              <strong>{money(price.at(-1)?.value, 'USD')}</strong>
+              <span>USD 참조 · 확정 종가</span>
+            </div>
+          ) : (
+            <SpotQuote
+              asset={asset}
+              market={quoteMarket}
+              syncPriceSource={id === 'view:price'}
+              onQuote={id === 'view:price' ? receiveQuote : undefined}
+            />
+          )
+        }
         href={(next) => indicatorUrl(next, id, context, true)}
       />
 
@@ -650,11 +714,39 @@ export function IndicatorWorkspace() {
               </h1>
             </div>
             <div className="indicator-heading-actions">
+              {id === 'view:price' && basis !== 'reference' && (
+                <select
+                  className="price-style-control"
+                  aria-label="가격 차트 표시"
+                  value={params.get('chart_style') === 'line' ? 'line' : 'candles'}
+                  onChange={(e) => change({ chart_style: e.target.value })}
+                >
+                  <option value="candles">캔들</option>
+                  <option value="line">종가선</option>
+                </select>
+              )}
               {d?.comparison && (
                 <Link
                   className="indicator-compare"
                   aria-label="같은 지표 비교"
                   to={indicatorComparisonUrl(asset, id, context)}
+                >
+                  비교
+                </Link>
+              )}
+              {id === 'view:price' && basis !== 'reference' && (
+                <Link
+                  className="indicator-compare"
+                  aria-label="가격 성과 비교"
+                  to={
+                    '/compare?' +
+                    new URLSearchParams({
+                      mode: 'performance',
+                      assets: `${asset},${asset === 'BTC' ? 'ETH' : 'BTC'}`,
+                      market: basis,
+                      period,
+                    })
+                  }
                 >
                   비교
                 </Link>
@@ -876,14 +968,12 @@ export function IndicatorWorkspace() {
                                 ? 2764800
                                 : 86400)
                     }
-                    candles={
-                      !primary && !bands && basis !== 'reference'
-                        ? (raw.data as CandleResponse).data.filter(
-                            (c) => c.closed && c.closeTime <= Date.now() / 1000,
-                          )
-                        : undefined
-                    }
+                    candles={chartCandles}
                     signals={SIGNALS}
+                    summaryLabel={id === 'view:price' ? '최근 확정 종가' : undefined}
+                    livePrice={
+                      id === 'view:price' && livePrice?.market === basis ? livePrice : null
+                    }
                     onSignal={() => {}}
                     onAll={() => {
                       change({ period: 'all', chart_from: null, chart_to: null });
@@ -1201,6 +1291,7 @@ export function IndicatorWorkspace() {
                       'correlation_asset',
                       'benchmark_asset',
                       'comparison_layout',
+                      'chart_style',
                       'st_period',
                       'st_multiplier',
                     ].includes(k),

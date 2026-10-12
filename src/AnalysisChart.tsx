@@ -7,10 +7,12 @@ import {
   createSeriesMarkers,
   type IChartApi,
   type ISeriesApi,
+  type IPriceLine,
   type SeriesType,
   type UTCTimestamp,
 } from 'lightweight-charts';
 import { createDeskChart } from './chart-theme';
+import { eligibleChartPrice, type LiveChartPrice } from '../shared/live-chart-price';
 import type { Candle, Period, Point } from '../shared/types';
 import type { ObservationSignal } from '../shared/signals';
 import { money, numeric, periodStart, priceDigits } from './lib';
@@ -93,6 +95,8 @@ export const AnalysisChart = memo(function AnalysisChart({
   exportName,
   readingLabel,
   toolbarTarget,
+  livePrice,
+  summaryLabel,
 }: {
   asset: string;
   unit: string;
@@ -122,9 +126,13 @@ export const AnalysisChart = memo(function AnalysisChart({
   exportName?: string;
   readingLabel?: string;
   toolbarTarget?: HTMLElement | null;
+  livePrice?: LiveChartPrice | null;
+  summaryLabel?: string;
 }) {
   const host = useRef<HTMLDivElement>(null),
     chartRef = useRef<IChartApi | null>(null);
+  const liveSeries = useRef<ISeriesApi<SeriesType> | null>(null);
+  const liveLine = useRef<IPriceLine | null>(null);
   const moveCursor = useRef<(time: number | null, preserveRange?: boolean) => void>(() => {});
   const manualCursor = useRef(false);
   const [pinned, setPinned] = useState(false);
@@ -242,6 +250,7 @@ export const AnalysisChart = memo(function AnalysisChart({
         });
     if (candles?.length) price.setData(candles.map((p) => ({ ...p, time: ts(p.time) })));
     else price.setData(gapData(points, step));
+    liveSeries.current = price;
     const bandPrimitive = bands ? new BandPrimitive(bands) : null;
     if (bandPrimitive) price.attachPrimitive(bandPrimitive);
     if (primary)
@@ -536,11 +545,32 @@ export const AnalysisChart = memo(function AnalysisChart({
       resize.disconnect();
       cancelAnimationFrame(frame);
       chart.remove();
+      liveSeries.current = null;
+      liveLine.current = null;
       chartRef.current = null;
       updateSeries.current = () => {};
       moveCursor.current = () => {};
     };
   }, [key, structure, ready, candleMode]);
+  useEffect(() => {
+    const series = liveSeries.current;
+    if (!series) return;
+    if (!eligibleChartPrice(livePrice, asset, unit)) {
+      if (liveLine.current) series.removePriceLine(liveLine.current);
+      liveLine.current = null;
+      return;
+    }
+    const options = {
+      price: livePrice.price,
+      color: '#0f666b',
+      lineWidth: 1 as const,
+      lineStyle: 2,
+      axisLabelVisible: true,
+      title: '현재가',
+    };
+    if (liveLine.current) liveLine.current.applyOptions(options);
+    else liveLine.current = series.createPriceLine(options);
+  }, [livePrice, asset, unit, key, structure, ready, candleMode]);
   useEffect(() => {
     updateSeries.current();
   }, [points, candles, lines, signals, observations, bands]);
@@ -631,7 +661,7 @@ export const AnalysisChart = memo(function AnalysisChart({
         <span>
           <span className="analysis-reading-date" title={timestamp(summaryTime)}>
             <span className={!pinned ? 'sr-only' : undefined}>
-              {!pinned ? (primary ? '최근 확정값' : '최근 관측') : '날짜 고정'}
+              {!pinned ? (primary ? '최근 확정값' : (summaryLabel ?? '최근 관측')) : '날짜 고정'}
             </span>{' '}
             {!pinned
               ? `${timestamp(summaryTime).slice(5, 10).replace('-', '.')} 기준`
@@ -697,6 +727,8 @@ export const AnalysisChart = memo(function AnalysisChart({
           data-chart-kind="analysis"
           data-asset={asset}
           data-primary-metric={primary?.id ?? 'price'}
+          data-price-style={candleMode ? 'candles' : 'line'}
+          data-live-price={eligibleChartPrice(livePrice, asset, unit) ? livePrice.price : undefined}
           data-panels={panelCount(lines)}
           onPointerMoveCapture={() => {
             if (!pinned) manualCursor.current = false;

@@ -287,6 +287,7 @@ export function validAnalysisOption(key: string, value: unknown) {
         seasonality_method: ['log'],
         seasonality_years: ['1'],
         comparison_layout: ['side'],
+        chart_style: ['candles', 'line'],
         comparison_mode: ['indicator'],
         comparison_source: ['coinmetrics', 'bybit', 'reference', 'upbit', 'binance'],
         pattern_trend: ['none', 'sma50', 'sma50-200'],

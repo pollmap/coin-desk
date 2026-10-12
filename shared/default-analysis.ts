@@ -5,6 +5,25 @@ import type { Asset, Market } from './types';
 export const defaultIndicator = (asset: Asset) =>
   hasNetworkField(asset, 'CapMVRVCur') ? 'net:mvrv' : 'rsi';
 
+/** Plain asset/price navigation is distinct from an explicit indicator entry. */
+export function defaultPriceUrl(asset: Asset, preferred: Market) {
+  const market = availableMarket(asset, preferred);
+  return (
+    '/coins/' +
+    asset +
+    '?' +
+    new URLSearchParams({
+      market,
+      price_source: market,
+      asset,
+      metric: 'view:price',
+      period: '1m',
+      interval: '1d',
+      log: '0',
+    })
+  );
+}
+
 export function defaultAnalysisUrl(asset: Asset, preferred: Market) {
   const market = availableMarket(asset, preferred),
     metric = defaultIndicator(asset);

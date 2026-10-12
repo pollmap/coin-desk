@@ -1,0 +1,1645 @@
+{
+  "fork": {
+    "repository": "https://github.com/pollmap/rea",
+    "commit": "6020a0b3683ce16e1441963473605f870c247e29",
+    "version": "6.1.0",
+    "license": "MIT",
+    "builtFromFork": true,
+    "node": "24.18.0",
+    "npm": "11.16.0",
+    "globalMcpConfigured": false
+  },
+  "generatedAt": "2026-10-12T15:38:41.807218+00:00",
+  "scope": "13 public pages; up to 3 JS URLs explicitly shipped by each; no source-map fetching, authentication, hidden endpoints, or target execution",
+  "sites": [
+    {
+      "site": "coingecko",
+      "pageUrl": "https://www.coingecko.com/",
+      "checkedAt": "2026-10-12T15:07:17.883953+00:00",
+      "captureState": "captured",
+      "files": [
+        {
+          "url": "https://challenges.cloudflare.com/turnstile/v0/g/4df4a60fa397/api.js",
+          "status": 200,
+          "mime": "application/javascript; charset=UTF-8",
+          "bytes": 86732,
+          "sha256": "894cac4eaf8912eb3a3b73107482a48fe05d4c31f19ea04439a57ab06ee7683e"
+        },
+        {
+          "url": "https://cdn.confiant-integrations.net/9LK8Exe2khR_0lJTo07N1DnGdH8/gpt_and_prebid/config.js",
+          "status": 200,
+          "mime": "text/javascript",
+          "bytes": 249209,
+          "sha256": "ba20567a40318cccff686ddfc52e6dab66331cdf481946a9ffe4c1af53bbbb23"
+        },
+        {
+          "url": "https://static.coingecko.com/packs/js/2692-81654be6416ac9452ce5.js",
+          "status": 200,
+          "mime": "application/javascript",
+          "bytes": 74029,
+          "sha256": "12bd70b16f960af1440610e91a7479fc2ba722fb157e8cd3ab9a000eefc0bb4c"
+        }
+      ],
+      "observations": [
+        {
+          "kind": "excluded-artifact",
+          "file": "chunk-1.js",
+          "reason": "security or advertising runtime, not product architecture evidence"
+        },
+        {
+          "kind": "excluded-artifact",
+          "file": "chunk-2.js",
+          "reason": "security or advertising runtime, not product architecture evidence"
+        },
+        {
+          "kind": "bundler-webpack",
+          "file": "chunk-3.js",
+          "sourceUrl": "https://static.coingecko.com/packs/js/2692-81654be6416ac9452ce5.js",
+          "sourceSha256": "12bd70b16f960af1440610e91a7479fc2ba722fb157e8cd3ab9a000eefc0bb4c",
+          "count": 2,
+          "firstOffset": 620,
+          "evidenceType": "literal byte marker; semantic behavior unverified",
+          "confidence": "candidate unless matched by REA/runtime evidence"
+        },
+        {
+          "kind": "comparison-feature-marker",
+          "file": "chunk-3.js",
+          "sourceUrl": "https://static.coingecko.com/packs/js/2692-81654be6416ac9452ce5.js",
+          "sourceSha256": "12bd70b16f960af1440610e91a7479fc2ba722fb157e8cd3ab9a000eefc0bb4c",
+          "count": 4,
+          "firstOffset": 13307,
+          "evidenceType": "literal byte marker; semantic behavior unverified",
+          "confidence": "candidate unless matched by REA/runtime evidence"
+        }
+      ],
+      "unknowns": [
+        "server-side database and deployment infrastructure",
+        "authenticated or paid functions",
+        "complete feature and route coverage",
+        "data procurement contracts and backend preprocessing"
+      ],
+      "rea": {
+        "state": "completed_static_evidence",
+        "evidenceId": "ev_98dbe0430796949920feffa2e5173a6e04afd56df32d8435675dedc8551782df",
+        "evidenceSha256": "df1cdbe64cd7feb6286e8c92394209ab7993742cfeaa508b13dea439c7c84ce3",
+        "bytes": 284641655,
+        "graphIds": [
+          "jag_fe45801ae3044131cd5ce49b920da3ec2a4dff524a3cde6f2bba0e94510eb29b",
+          "jsrg_a2ffbc01ec91164ede63368ff6ec645200a5d76bd6c5d0e6f1feb80bfad605b3"
+        ],
+        "graphKindCounts": {
+          "javascript-module": 223,
+          "javascript-asset": 3,
+          "endpoint": 11,
+          "storage": 2,
+          "electron-renderer": 1,
+          "javascript-chunk": 1,
+          "artifact": 3,
+          "expression": 25884,
+          "call-site": 3542,
+          "property-slot": 14960,
+          "literal": 7528,
+          "binding": 2469,
+          "parameter": 1595,
+          "return-site": 840,
+          "function": 950,
+          "boundary": 23,
+          "promise": 3,
+          "module": 3,
+          "timer": 4,
+          "request": 3
+        },
+        "normalizedKeys": [
+          "architecture",
+          "digest",
+          "format",
+          "graph",
+          "id",
+          "input_path",
+          "inventory_graph_sha256",
+          "inventory_manifest_id",
+          "limitations",
+          "local_path",
+          "name",
+          "root_artifact_sha256",
+          "semantic_graph",
+          "statistics",
+          "summary",
+          "version"
+        ],
+        "limitations": [
+          "CommonJS and ESM binding relationships were recovered from inert syntax and resolved only within the inventoried artifact container.",
+          "JavaScript and HTML were parsed as inert text; bundle bootstrap code was never executed.",
+          "Static imports, entrypoints, workers, endpoints, and storage relationships do not prove runtime execution.",
+          "Static paths and relationships may remain unresolved when expressions are dynamic or obfuscated.",
+          "Webpack/Rspack factories were recovered from AST literals; REA did not invoke push handlers or bundle bootstrap code."
+        ],
+        "runtimeExecuted": false,
+        "backendDbVerified": false
+      },
+      "run": {
+        "site": "coingecko",
+        "startedAt": "2026-10-12T15:12:49.530696+00:00",
+        "exitCode": 0,
+        "elapsedSeconds": 135.47525020001922,
+        "outputBytes": 284641655
+      }
+    },
+    {
+      "site": "coinmarketcap",
+      "pageUrl": "https://coinmarketcap.com/",
+      "checkedAt": "2026-10-12T15:07:17.938668+00:00",
+      "captureState": "captured",
+      "files": [
+        {
+          "url": "https://s2.coinmarketcap.com/v1/cmc/_next/static/chunks/51c52c66-22cea8cbc5526cda.js",
+          "status": 200,
+          "mime": "application/javascript",
+          "bytes": 115408,
+          "sha256": "ca7f510a0c5350c2c7ceb65aa321930501854cbc9f71837b73f5150cbfd52a06"
+        },
+        {
+          "url": "https://s2.coinmarketcap.com/v1/cmc/_next/static/chunks/72558-803b800dc112b1c3.js",
+          "status": 200,
+          "mime": "application/javascript",
+          "bytes": 19178,
+          "sha256": "4b116910d86b3c6baae35c2eeaeb23f1846ff23e5f6dd4338dcbf407a6af1059"
+        },
+        {
+          "url": "https://s2.coinmarketcap.com/v1/cmc/_next/static/chunks/91110-a7942406cd8842ec.js",
+          "status": 200,
+          "mime": "application/javascript",
+          "bytes": 55252,
+          "sha256": "717794e8d445ff43b48edf0648cf9259fca6e5e8d8df2e2560c448fbe873af2c"
+        }
+      ],
+      "observations": [
+        {
+          "kind": "delivery",
+          "fact": "Next-style public delivery markers",
+          "evidenceType": "literal HTML/script URL",
+          "confidence": "high for delivered marker; not backend architecture"
+        },
+        {
+          "kind": "bundler-webpack",
+          "file": "chunk-1.js",
+          "sourceUrl": "https://s2.coinmarketcap.com/v1/cmc/_next/static/chunks/51c52c66-22cea8cbc5526cda.js",
+          "sourceSha256": "ca7f510a0c5350c2c7ceb65aa321930501854cbc9f71837b73f5150cbfd52a06",
+          "count": 2,
+          "firstOffset": 361,
+          "evidenceType": "literal byte marker; semantic behavior unverified",
+          "confidence": "candidate unless matched by REA/runtime evidence"
+        },
+        {
+          "kind": "comparison-feature-marker",
+          "file": "chunk-1.js",
+          "sourceUrl": "https://s2.coinmarketcap.com/v1/cmc/_next/static/chunks/51c52c66-22cea8cbc5526cda.js",
+          "sourceSha256": "ca7f510a0c5350c2c7ceb65aa321930501854cbc9f71837b73f5150cbfd52a06",
+          "count": 1,
+          "firstOffset": 20485,
+          "evidenceType": "literal byte marker; semantic behavior unverified",
+          "confidence": "candidate unless matched by REA/runtime evidence"
+        },
+        {
+          "kind": "bundler-webpack",
+          "file": "chunk-2.js",
+          "sourceUrl": "https://s2.coinmarketcap.com/v1/cmc/_next/static/chunks/72558-803b800dc112b1c3.js",
+          "sourceSha256": "4b116910d86b3c6baae35c2eeaeb23f1846ff23e5f6dd4338dcbf407a6af1059",
+          "count": 2,
+          "firstOffset": 361,
+          "evidenceType": "literal byte marker; semantic behavior unverified",
+          "confidence": "candidate unless matched by REA/runtime evidence"
+        },
+        {
+          "kind": "comparison-feature-marker",
+          "file": "chunk-2.js",
+          "sourceUrl": "https://s2.coinmarketcap.com/v1/cmc/_next/static/chunks/72558-803b800dc112b1c3.js",
+          "sourceSha256": "4b116910d86b3c6baae35c2eeaeb23f1846ff23e5f6dd4338dcbf407a6af1059",
+          "count": 4,
+          "firstOffset": 11666,
+          "evidenceType": "literal byte marker; semantic behavior unverified",
+          "confidence": "candidate unless matched by REA/runtime evidence"
+        },
+        {
+          "kind": "bundler-webpack",
+          "file": "chunk-3.js",
+          "sourceUrl": "https://s2.coinmarketcap.com/v1/cmc/_next/static/chunks/91110-a7942406cd8842ec.js",
+          "sourceSha256": "717794e8d445ff43b48edf0648cf9259fca6e5e8d8df2e2560c448fbe873af2c",
+          "count": 2,
+          "firstOffset": 361,
+          "evidenceType": "literal byte marker; semantic behavior unverified",
+          "confidence": "candidate unless matched by REA/runtime evidence"
+        }
+      ],
+      "unknowns": [
+        "server-side database and deployment infrastructure",
+        "authenticated or paid functions",
+        "complete feature and route coverage",
+        "data procurement contracts and backend preprocessing"
+      ],
+      "rea": {
+        "state": "completed_static_evidence",
+        "evidenceId": "ev_1effe52f2d3336f962309103fc48fc0b15b4ead94e98202a19adf25eb983f1c9",
+        "evidenceSha256": "109c9d643e4bde608d3c44c4451912f1afbf5644b5e325fc08340ccdbd537ee6",
+        "bytes": 205996440,
+        "graphIds": [
+          "jag_eaef3effa320edaeb38deb4116abcad05277428a137fca580f5033877ad085f8",
+          "jsrg_de4e3402832cab3f8e225871a3e42f3c1d1ea56c26abd6f0ac8ccd12b57b51a1"
+        ],
+        "graphKindCounts": {
+          "javascript-module": 42,
+          "source-map": 3,
+          "javascript-chunk": 3,
+          "artifact": 3,
+          "javascript-asset": 3,
+          "electron-renderer": 1,
+          "expression": 25469,
+          "binding": 1833,
+          "return-site": 1012,
+          "property-slot": 2387,
+          "parameter": 1138,
+          "call-site": 3995,
+          "literal": 93,
+          "function": 1068,
+          "boundary": 21,
+          "promise": 31,
+          "task": 11,
+          "module": 3
+        },
+        "normalizedKeys": [
+          "architecture",
+          "digest",
+          "format",
+          "graph",
+          "id",
+          "input_path",
+          "inventory_graph_sha256",
+          "inventory_manifest_id",
+          "limitations",
+          "local_path",
+          "name",
+          "root_artifact_sha256",
+          "semantic_graph",
+          "statistics",
+          "summary",
+          "version"
+        ],
+        "limitations": [
+          "CommonJS and ESM binding relationships were recovered from inert syntax and resolved only within the inventoried artifact container.",
+          "JavaScript and HTML were parsed as inert text; bundle bootstrap code was never executed.",
+          "Static imports, entrypoints, workers, endpoints, and storage relationships do not prove runtime execution.",
+          "Static paths and relationships may remain unresolved when expressions are dynamic or obfuscated.",
+          "Webpack/Rspack factories were recovered from AST literals; REA did not invoke push handlers or bundle bootstrap code."
+        ],
+        "runtimeExecuted": false,
+        "backendDbVerified": false
+      },
+      "run": {
+        "site": "coinmarketcap",
+        "startedAt": "2026-10-12T15:12:49.508807+00:00",
+        "exitCode": 0,
+        "elapsedSeconds": 116.38787830004003,
+        "outputBytes": 205996440
+      }
+    },
+    {
+      "site": "coinglass",
+      "pageUrl": "https://www.coinglass.com/",
+      "checkedAt": "2026-10-12T15:07:18.018190+00:00",
+      "captureState": "captured",
+      "files": [
+        {
+          "url": "https://s3.coinglass.com/v1/cg/_next/static/chunks/main-55b8dab8061ff53d.js",
+          "status": 200,
+          "mime": "application/javascript",
+          "bytes": 112480,
+          "sha256": "54ec47c8506d3a6da95b0965c316739111824e5fc679385883223186379b18fe"
+        },
+        {
+          "url": "https://s3.coinglass.com/v1/cg/_next/static/chunks/pages/index-d4743028eebf7b2a.js",
+          "status": 200,
+          "mime": "application/javascript",
+          "bytes": 2903,
+          "sha256": "b49a6b2551623a9d3828573a8780acfb5f9d673836ae111481f995059991e93f"
+        },
+        {
+          "url": "https://s3.coinglass.com/v1/cg/_next/static/chunks/framework-92831d3be078016d.js",
+          "status": 200,
+          "mime": "application/javascript",
+          "bytes": 140018,
+          "sha256": "b8b0cb301e484f087bfa133e626f000285b14f6630e3470b731af40bc2257f12"
+        }
+      ],
+      "observations": [
+        {
+          "kind": "delivery",
+          "fact": "Next-style public delivery markers",
+          "evidenceType": "literal HTML/script URL",
+          "confidence": "high for delivered marker; not backend architecture"
+        },
+        {
+          "kind": "bundler-webpack",
+          "file": "chunk-1.js",
+          "sourceUrl": "https://s3.coinglass.com/v1/cg/_next/static/chunks/main-55b8dab8061ff53d.js",
+          "sourceSha256": "54ec47c8506d3a6da95b0965c316739111824e5fc679385883223186379b18fe",
+          "count": 2,
+          "firstOffset": 6,
+          "evidenceType": "literal byte marker; semantic behavior unverified",
+          "confidence": "candidate unless matched by REA/runtime evidence"
+        },
+        {
+          "kind": "public-request-candidate",
+          "file": "chunk-1.js",
+          "sourceUrl": "https://s3.coinglass.com/v1/cg/_next/static/chunks/main-55b8dab8061ff53d.js",
+          "sourceSha256": "54ec47c8506d3a6da95b0965c316739111824e5fc679385883223186379b18fe",
+          "count": 3,
+          "firstOffset": 3824,
+          "evidenceType": "literal byte marker; semantic behavior unverified",
+          "confidence": "candidate unless matched by REA/runtime evidence"
+        },
+        {
+          "kind": "comparison-feature-marker",
+          "file": "chunk-1.js",
+          "sourceUrl": "https://s3.coinglass.com/v1/cg/_next/static/chunks/main-55b8dab8061ff53d.js",
+          "sourceSha256": "54ec47c8506d3a6da95b0965c316739111824e5fc679385883223186379b18fe",
+          "count": 2,
+          "firstOffset": 71654,
+          "evidenceType": "literal byte marker; semantic behavior unverified",
+          "confidence": "candidate unless matched by REA/runtime evidence"
+        },
+        {
+          "kind": "bundler-webpack",
+          "file": "chunk-2.js",
+          "sourceUrl": "https://s3.coinglass.com/v1/cg/_next/static/chunks/pages/index-d4743028eebf7b2a.js",
+          "sourceSha256": "b49a6b2551623a9d3828573a8780acfb5f9d673836ae111481f995059991e93f",
+          "count": 2,
+          "firstOffset": 6,
+          "evidenceType": "literal byte marker; semantic behavior unverified",
+          "confidence": "candidate unless matched by REA/runtime evidence"
+        },
+        {
+          "kind": "bundler-webpack",
+          "file": "chunk-3.js",
+          "sourceUrl": "https://s3.coinglass.com/v1/cg/_next/static/chunks/framework-92831d3be078016d.js",
+          "sourceSha256": "b8b0cb301e484f087bfa133e626f000285b14f6630e3470b731af40bc2257f12",
+          "count": 2,
+          "firstOffset": 103,
+          "evidenceType": "literal byte marker; semantic behavior unverified",
+          "confidence": "candidate unless matched by REA/runtime evidence"
+        },
+        {
+          "kind": "react-marker",
+          "file": "chunk-3.js",
+          "sourceUrl": "https://s3.coinglass.com/v1/cg/_next/static/chunks/framework-92831d3be078016d.js",
+          "sourceSha256": "b8b0cb301e484f087bfa133e626f000285b14f6630e3470b731af40bc2257f12",
+          "count": 1,
+          "firstOffset": 125745,
+          "evidenceType": "literal byte marker; semantic behavior unverified",
+          "confidence": "candidate unless matched by REA/runtime evidence"
+        },
+        {
+          "kind": "comparison-feature-marker",
+          "file": "chunk-3.js",
+          "sourceUrl": "https://s3.coinglass.com/v1/cg/_next/static/chunks/framework-92831d3be078016d.js",
+          "sourceSha256": "b8b0cb301e484f087bfa133e626f000285b14f6630e3470b731af40bc2257f12",
+          "count": 5,
+          "firstOffset": 31827,
+          "evidenceType": "literal byte marker; semantic behavior unverified",
+          "confidence": "candidate unless matched by REA/runtime evidence"
+        }
+      ],
+      "unknowns": [
+        "server-side database and deployment infrastructure",
+        "authenticated or paid functions",
+        "complete feature and route coverage",
+        "data procurement contracts and backend preprocessing"
+      ],
+      "rea": {
+        "state": "completed_static_evidence",
+        "evidenceId": "ev_47403aec7feb67e1578ea52fba833854db1d718f5db61ffbc6f55be5882b17bc",
+        "evidenceSha256": "092527afa0014a6a43811905df933b20cdb10aca709563084616470bc3d86a32",
+        "bytes": 211622296,
+        "graphIds": [
+          "jag_db5732eab5c3dea5c9f8ed1b8cb8b3fc750db146e467199dd5fabe4f1a550e65",
+          "jsrg_27e6538f15366163620ccfc3cd257d30ed115c3bb3ea90db141bb7c4e211f28b"
+        ],
+        "graphKindCounts": {
+          "javascript-module": 148,
+          "javascript-chunk": 4,
+          "artifact": 3,
+          "javascript-asset": 3,
+          "electron-renderer": 1,
+          "endpoint": 4,
+          "expression": 27206,
+          "call-site": 4275,
+          "return-site": 1256,
+          "function": 1514,
+          "binding": 2762,
+          "parameter": 1866,
+          "property-slot": 1555,
+          "literal": 279,
+          "module": 3,
+          "promise": 1
+        },
+        "normalizedKeys": [
+          "architecture",
+          "digest",
+          "format",
+          "graph",
+          "id",
+          "input_path",
+          "inventory_graph_sha256",
+          "inventory_manifest_id",
+          "limitations",
+          "local_path",
+          "name",
+          "root_artifact_sha256",
+          "semantic_graph",
+          "statistics",
+          "summary",
+          "version"
+        ],
+        "limitations": [
+          "CommonJS and ESM binding relationships were recovered from inert syntax and resolved only within the inventoried artifact container.",
+          "Graph coverage is incomplete; unavailable facts remain explicit and must not be read as absence.",
+          "JavaScript and HTML were parsed as inert text; bundle bootstrap code was never executed.",
+          "Static imports, entrypoints, workers, endpoints, and storage relationships do not prove runtime execution.",
+          "Static paths and relationships may remain unresolved when expressions are dynamic or obfuscated.",
+          "Webpack/Rspack factories were recovered from AST literals; REA did not invoke push handlers or bundle bootstrap code."
+        ],
+        "runtimeExecuted": false,
+        "backendDbVerified": false
+      }
+    },
+    {
+      "site": "cryptoquant",
+      "pageUrl": "https://cryptoquant.com/asset/btc/overview",
+      "checkedAt": "2026-10-12T15:07:19.306361+00:00",
+      "captureState": "unverified_access",
+      "files": [],
+      "observations": [],
+      "unknowns": [
+        "server-side database and deployment infrastructure",
+        "authenticated or paid functions",
+        "complete feature and route coverage",
+        "data procurement contracts and backend preprocessing"
+      ],
+      "accessError": "HTTP Error 403: Forbidden",
+      "rea": {
+        "state": "not_analyzed_no_artifact"
+      }
+    },
+    {
+      "site": "glassnode",
+      "pageUrl": "https://studio.glassnode.com/",
+      "checkedAt": "2026-10-12T15:07:19.387601+00:00",
+      "captureState": "unverified_access",
+      "files": [],
+      "observations": [],
+      "unknowns": [
+        "server-side database and deployment infrastructure",
+        "authenticated or paid functions",
+        "complete feature and route coverage",
+        "data procurement contracts and backend preprocessing"
+      ],
+      "accessError": "HTTP Error 403: Forbidden",
+      "rea": {
+        "state": "not_analyzed_no_artifact"
+      }
+    },
+    {
+      "site": "tradingview",
+      "pageUrl": "https://www.tradingview.com/markets/cryptocurrencies/",
+      "checkedAt": "2026-10-12T15:07:19.406889+00:00",
+      "captureState": "captured",
+      "files": [
+        {
+          "url": "https://static.tradingview.com/static/bundles/market_cryptocurrencies_page_tab_overview.c5ad418b6502d557e72b.js",
+          "status": 200,
+          "mime": "application/javascript; charset=utf-8",
+          "bytes": 95623,
+          "sha256": "4b3f853be3197f88fde0c6d480233507381cdcaa519d1c773bb533cbc3ec4bc1"
+        },
+        {
+          "url": "https://static.tradingview.com/static/bundles/markets_category_page_header.96e07efd8af0dbc62922.js",
+          "status": 200,
+          "mime": "application/javascript; charset=utf-8",
+          "bytes": 12793,
+          "sha256": "7c1e50682030654df265304365fe94eed28b7078520e98dc11cecb564e1e4079"
+        },
+        {
+          "url": "https://static.tradingview.com/static/bundles/en.44530.5bc8faa6130b1760254f.js",
+          "status": 200,
+          "mime": "application/javascript; charset=utf-8",
+          "bytes": 3850,
+          "sha256": "03d7364a706d2cd440ebd3f78632c6a8f345827d3e88d05a9a051b969e7c3e78"
+        }
+      ],
+      "observations": [
+        {
+          "kind": "bundler-webpack",
+          "file": "chunk-1.js",
+          "sourceUrl": "https://static.tradingview.com/static/bundles/market_cryptocurrencies_page_tab_overview.c5ad418b6502d557e72b.js",
+          "sourceSha256": "4b3f853be3197f88fde0c6d480233507381cdcaa519d1c773bb533cbc3ec4bc1",
+          "count": 2,
+          "firstOffset": 6,
+          "evidenceType": "literal byte marker; semantic behavior unverified",
+          "confidence": "candidate unless matched by REA/runtime evidence"
+        },
+        {
+          "kind": "chart-echarts-marker",
+          "file": "chunk-1.js",
+          "sourceUrl": "https://static.tradingview.com/static/bundles/market_cryptocurrencies_page_tab_overview.c5ad418b6502d557e72b.js",
+          "sourceSha256": "4b3f853be3197f88fde0c6d480233507381cdcaa519d1c773bb533cbc3ec4bc1",
+          "count": 1,
+          "firstOffset": 14913,
+          "evidenceType": "literal byte marker; semantic behavior unverified",
+          "confidence": "candidate unless matched by REA/runtime evidence"
+        },
+        {
+          "kind": "chart-tradingview-marker",
+          "file": "chunk-1.js",
+          "sourceUrl": "https://static.tradingview.com/static/bundles/market_cryptocurrencies_page_tab_overview.c5ad418b6502d557e72b.js",
+          "sourceSha256": "4b3f853be3197f88fde0c6d480233507381cdcaa519d1c773bb533cbc3ec4bc1",
+          "count": 2,
+          "firstOffset": 18,
+          "evidenceType": "literal byte marker; semantic behavior unverified",
+          "confidence": "candidate unless matched by REA/runtime evidence"
+        },
+        {
+          "kind": "comparison-feature-marker",
+          "file": "chunk-1.js",
+          "sourceUrl": "https://static.tradingview.com/static/bundles/market_cryptocurrencies_page_tab_overview.c5ad418b6502d557e72b.js",
+          "sourceSha256": "4b3f853be3197f88fde0c6d480233507381cdcaa519d1c773bb533cbc3ec4bc1",
+          "count": 29,
+          "firstOffset": 14148,
+          "evidenceType": "literal byte marker; semantic behavior unverified",
+          "confidence": "candidate unless matched by REA/runtime evidence"
+        },
+        {
+          "kind": "bundler-webpack",
+          "file": "chunk-2.js",
+          "sourceUrl": "https://static.tradingview.com/static/bundles/markets_category_page_header.96e07efd8af0dbc62922.js",
+          "sourceSha256": "7c1e50682030654df265304365fe94eed28b7078520e98dc11cecb564e1e4079",
+          "count": 2,
+          "firstOffset": 19,
+          "evidenceType": "literal byte marker; semantic behavior unverified",
+          "confidence": "candidate unless matched by REA/runtime evidence"
+        },
+        {
+          "kind": "chart-tradingview-marker",
+          "file": "chunk-2.js",
+          "sourceUrl": "https://static.tradingview.com/static/bundles/markets_category_page_header.96e07efd8af0dbc62922.js",
+          "sourceSha256": "7c1e50682030654df265304365fe94eed28b7078520e98dc11cecb564e1e4079",
+          "count": 2,
+          "firstOffset": 31,
+          "evidenceType": "literal byte marker; semantic behavior unverified",
+          "confidence": "candidate unless matched by REA/runtime evidence"
+        },
+        {
+          "kind": "bundler-webpack",
+          "file": "chunk-3.js",
+          "sourceUrl": "https://static.tradingview.com/static/bundles/en.44530.5bc8faa6130b1760254f.js",
+          "sourceSha256": "03d7364a706d2cd440ebd3f78632c6a8f345827d3e88d05a9a051b969e7c3e78",
+          "count": 2,
+          "firstOffset": 6,
+          "evidenceType": "literal byte marker; semantic behavior unverified",
+          "confidence": "candidate unless matched by REA/runtime evidence"
+        },
+        {
+          "kind": "chart-tradingview-marker",
+          "file": "chunk-3.js",
+          "sourceUrl": "https://static.tradingview.com/static/bundles/en.44530.5bc8faa6130b1760254f.js",
+          "sourceSha256": "03d7364a706d2cd440ebd3f78632c6a8f345827d3e88d05a9a051b969e7c3e78",
+          "count": 6,
+          "firstOffset": 18,
+          "evidenceType": "literal byte marker; semantic behavior unverified",
+          "confidence": "candidate unless matched by REA/runtime evidence"
+        },
+        {
+          "kind": "comparison-feature-marker",
+          "file": "chunk-3.js",
+          "sourceUrl": "https://static.tradingview.com/static/bundles/en.44530.5bc8faa6130b1760254f.js",
+          "sourceSha256": "03d7364a706d2cd440ebd3f78632c6a8f345827d3e88d05a9a051b969e7c3e78",
+          "count": 1,
+          "firstOffset": 109,
+          "evidenceType": "literal byte marker; semantic behavior unverified",
+          "confidence": "candidate unless matched by REA/runtime evidence"
+        }
+      ],
+      "unknowns": [
+        "server-side database and deployment infrastructure",
+        "authenticated or paid functions",
+        "complete feature and route coverage",
+        "data procurement contracts and backend preprocessing"
+      ],
+      "rea": {
+        "state": "completed_projected_static_evidence",
+        "evidenceId": "ev_a2f08ad26801ab7e00d0c1af593932f2779310703ba30f6c7f0391e5a9168d74",
+        "evidenceSha256": "1cb501b071db242af0db6b66ead710cdcb1a93caa8d63ec263d3057227e98c44",
+        "rootArtifactSha256": "b7c6fe2b73e0d2668c16a20e86277a968734e0138f3bf6a6c0ecebedab25a6ac",
+        "inventoryGraphSha256": "7d4542b100cf3493cd6b2b52e5b21a71fe9feeed8198a39f8130df79aacd3975",
+        "graphIds": [
+          "jag_4450338448b6d71c64296080036e154ad0558892d86abef10921382057313fbb",
+          "jsrg_4afb69777ccf8a3a5be2008397e317e431e9d48ae06ea4b4bc9fc98b3e23eac1"
+        ],
+        "summary": {
+          "browser_windows": 0,
+          "explicit_web_preferences": 0,
+          "preload_entrypoints": 0,
+          "context_bridge_apis": 0,
+          "exposed_api_members": 0,
+          "ipc": {
+            "operations": 0,
+            "literal_channels": 0,
+            "dynamic_channel_operations": 0,
+            "renderer_transmissions": 0,
+            "renderer_listeners": 0,
+            "main_handlers": 0,
+            "paired_renderer_transmissions": 0,
+            "ambiguous_renderer_transmissions": 0,
+            "unpaired_literal_renderer_transmissions": 0
+          },
+          "sender_validation_observations": 0,
+          "utility_processes": 0,
+          "resolved_utility_entrypoints": 0,
+          "native_addon_bindings": 0,
+          "resolved_native_addon_bindings": 0
+        },
+        "statistics": {
+          "relevant_files": 5,
+          "nested_asar_containers": 0,
+          "text_bytes_read": 611336,
+          "invalid_utf8_files": 0,
+          "parsed_javascript_files": 3,
+          "visited_ast_nodes": 28802,
+          "findings": 641,
+          "modules": 180,
+          "parse_failures": 0,
+          "truncated_scopes": 0
+        },
+        "limitations": [
+          "CommonJS and ESM binding relationships were recovered from inert syntax and resolved only within the inventoried artifact container.",
+          "Graph coverage is incomplete; unavailable facts remain explicit and must not be read as absence.",
+          "JavaScript and HTML were parsed as inert text; bundle bootstrap code was never executed.",
+          "Static imports, entrypoints, workers, endpoints, and storage relationships do not prove runtime execution.",
+          "Static paths and relationships may remain unresolved when expressions are dynamic or obfuscated.",
+          "Webpack/Rspack factories were recovered from AST literals; REA did not invoke push handlers or bundle bootstrap code."
+        ],
+        "projectionOnly": true,
+        "completeGraphNodesRetained": false,
+        "runtimeExecuted": false,
+        "backendDbVerified": false
+      },
+      "run": {
+        "checkedAt": "2026-10-12T15:32:16.860289+00:00",
+        "reason": "Focused follow-up to retrieve Evidence identity and bounded summary after the first full graph-output run timed out. Complete graph nodes are not retained by this projection.",
+        "exitCode": 0,
+        "elapsedSeconds": 194.4432767999824
+      },
+      "initialRea": {
+        "state": "bounded_timeout_no_complete_evidence"
+      },
+      "initialRun": {
+        "site": "tradingview",
+        "startedAt": "2026-10-12T15:16:58.480248+00:00",
+        "state": "timeout",
+        "elapsedSeconds": 210.8848682999378
+      }
+    },
+    {
+      "site": "santiment",
+      "pageUrl": "https://app.santiment.net/",
+      "checkedAt": "2026-10-12T15:07:19.643617+00:00",
+      "captureState": "no_script_captured",
+      "files": [],
+      "observations": [],
+      "unknowns": [
+        "server-side database and deployment infrastructure",
+        "authenticated or paid functions",
+        "complete feature and route coverage",
+        "data procurement contracts and backend preprocessing"
+      ],
+      "rea": {
+        "state": "not_analyzed_no_artifact"
+      }
+    },
+    {
+      "site": "defillama",
+      "pageUrl": "https://defillama.com/",
+      "checkedAt": "2026-10-12T15:07:19.936539+00:00",
+      "captureState": "captured",
+      "files": [
+        {
+          "url": "https://defillama.com/_next/static/chunks/34uvi2nnu9cbk.js",
+          "status": 200,
+          "mime": "application/javascript; charset=UTF-8",
+          "bytes": 8917,
+          "sha256": "12e462145322400393c5d95a1290ace81e18af609b3b75fed9c684c21daf18ef"
+        },
+        {
+          "url": "https://defillama.com/_next/static/chunks/35am69586pvoc.js",
+          "status": 200,
+          "mime": "application/javascript; charset=UTF-8",
+          "bytes": 20362,
+          "sha256": "e2cfab2a7f459cd5611527cfd6e060a6ef6926a5bc621e4eaff328c0d39ae6a3"
+        },
+        {
+          "url": "https://defillama.com/_next/static/chunks/1zj-bqpolafrq.js",
+          "status": 200,
+          "mime": "application/javascript; charset=UTF-8",
+          "bytes": 26208,
+          "sha256": "b033993ee12311241d9ee9a08fe30c5aeedd824dddbc68de08b96a4d358862ec"
+        }
+      ],
+      "observations": [
+        {
+          "kind": "delivery",
+          "fact": "Next-style public delivery markers",
+          "evidenceType": "literal HTML/script URL",
+          "confidence": "high for delivered marker; not backend architecture"
+        },
+        {
+          "kind": "browser-storage-candidate",
+          "file": "chunk-1.js",
+          "sourceUrl": "https://defillama.com/_next/static/chunks/34uvi2nnu9cbk.js",
+          "sourceSha256": "12e462145322400393c5d95a1290ace81e18af609b3b75fed9c684c21daf18ef",
+          "count": 1,
+          "firstOffset": 8482,
+          "evidenceType": "literal byte marker; semantic behavior unverified",
+          "confidence": "candidate unless matched by REA/runtime evidence"
+        },
+        {
+          "kind": "comparison-feature-marker",
+          "file": "chunk-2.js",
+          "sourceUrl": "https://defillama.com/_next/static/chunks/35am69586pvoc.js",
+          "sourceSha256": "e2cfab2a7f459cd5611527cfd6e060a6ef6926a5bc621e4eaff328c0d39ae6a3",
+          "count": 1,
+          "firstOffset": 15605,
+          "evidenceType": "literal byte marker; semantic behavior unverified",
+          "confidence": "candidate unless matched by REA/runtime evidence"
+        },
+        {
+          "kind": "public-request-candidate",
+          "file": "chunk-3.js",
+          "sourceUrl": "https://defillama.com/_next/static/chunks/1zj-bqpolafrq.js",
+          "sourceSha256": "b033993ee12311241d9ee9a08fe30c5aeedd824dddbc68de08b96a4d358862ec",
+          "count": 1,
+          "firstOffset": 16937,
+          "evidenceType": "literal byte marker; semantic behavior unverified",
+          "confidence": "candidate unless matched by REA/runtime evidence"
+        },
+        {
+          "kind": "browser-storage-candidate",
+          "file": "chunk-3.js",
+          "sourceUrl": "https://defillama.com/_next/static/chunks/1zj-bqpolafrq.js",
+          "sourceSha256": "b033993ee12311241d9ee9a08fe30c5aeedd824dddbc68de08b96a4d358862ec",
+          "count": 7,
+          "firstOffset": 18588,
+          "evidenceType": "literal byte marker; semantic behavior unverified",
+          "confidence": "candidate unless matched by REA/runtime evidence"
+        },
+        {
+          "kind": "comparison-feature-marker",
+          "file": "chunk-3.js",
+          "sourceUrl": "https://defillama.com/_next/static/chunks/1zj-bqpolafrq.js",
+          "sourceSha256": "b033993ee12311241d9ee9a08fe30c5aeedd824dddbc68de08b96a4d358862ec",
+          "count": 1,
+          "firstOffset": 18255,
+          "evidenceType": "literal byte marker; semantic behavior unverified",
+          "confidence": "candidate unless matched by REA/runtime evidence"
+        }
+      ],
+      "unknowns": [
+        "server-side database and deployment infrastructure",
+        "authenticated or paid functions",
+        "complete feature and route coverage",
+        "data procurement contracts and backend preprocessing"
+      ],
+      "rea": {
+        "state": "completed_static_evidence",
+        "evidenceId": "ev_1f97882f50e1a8cdf5c69dbd6715702257648a444fd49a69da3cc6c19a2910ce",
+        "evidenceSha256": "d43699e64daa4d4bd31f604608c00b03a655b000ea0d56fcb206805d3291461f",
+        "bytes": 71186561,
+        "graphIds": [
+          "jag_2860beb465601769fd582b61372917a22164828ba5a7f7e77a3204a6ba2760ac",
+          "jsrg_f7c471c43fef79cbf3054adf10c85be804f4dcbdf102d8cb138e9750a78ecd91"
+        ],
+        "graphKindCounts": {
+          "javascript-asset": 3,
+          "storage": 5,
+          "javascript-module": 3,
+          "artifact": 3,
+          "endpoint": 1,
+          "electron-renderer": 1,
+          "return-site": 490,
+          "expression": 7785,
+          "property-slot": 991,
+          "call-site": 1118,
+          "literal": 193,
+          "binding": 715,
+          "function": 451,
+          "parameter": 485,
+          "module": 3,
+          "boundary": 20,
+          "promise": 6,
+          "task": 9,
+          "timer": 4,
+          "request": 1,
+          "response": 1
+        },
+        "normalizedKeys": [
+          "architecture",
+          "digest",
+          "format",
+          "graph",
+          "id",
+          "input_path",
+          "inventory_graph_sha256",
+          "inventory_manifest_id",
+          "limitations",
+          "local_path",
+          "name",
+          "root_artifact_sha256",
+          "semantic_graph",
+          "statistics",
+          "summary",
+          "version"
+        ],
+        "limitations": [
+          "CommonJS and ESM binding relationships were recovered from inert syntax and resolved only within the inventoried artifact container.",
+          "JavaScript and HTML were parsed as inert text; bundle bootstrap code was never executed.",
+          "Static imports, entrypoints, workers, endpoints, and storage relationships do not prove runtime execution.",
+          "Static paths and relationships may remain unresolved when expressions are dynamic or obfuscated.",
+          "Webpack/Rspack factories were recovered from AST literals; REA did not invoke push handlers or bundle bootstrap code."
+        ],
+        "runtimeExecuted": false,
+        "backendDbVerified": false
+      },
+      "run": {
+        "site": "defillama",
+        "startedAt": "2026-10-12T15:20:29.585380+00:00",
+        "exitCode": 0,
+        "elapsedSeconds": 161.7988754999824,
+        "outputBytes": 71186561
+      }
+    },
+    {
+      "site": "tokenterminal",
+      "pageUrl": "https://tokenterminal.com/",
+      "checkedAt": "2026-10-12T15:07:20.824004+00:00",
+      "captureState": "captured",
+      "files": [
+        {
+          "url": "https://tokenterminal.com/_next/static/immutable/chunks/152ll9dkfie9p.js",
+          "status": 200,
+          "mime": "application/javascript; charset=utf-8",
+          "bytes": 379,
+          "sha256": "b394380a3ff4424f89f779ec027dea2205f6b4b14e40be32ed715fdfc452290e"
+        },
+        {
+          "url": "https://tokenterminal.com/_next/static/immutable/chunks/40v0kenxd7e0y.js",
+          "status": 200,
+          "mime": "application/javascript; charset=utf-8",
+          "bytes": 33173,
+          "sha256": "300c7852a58af2c51eecc464c9612410275f11382783f42bbc8ec3d27aa834c7"
+        },
+        {
+          "url": "https://tokenterminal.com/_next/static/immutable/chunks/3d0irwnstox0h.js",
+          "status": 200,
+          "mime": "application/javascript; charset=utf-8",
+          "bytes": 47939,
+          "sha256": "c01024d2977fb2e4c0dfebcee8bff78c1e777915b56de1ec8e856dcafbc4e2c8"
+        }
+      ],
+      "observations": [
+        {
+          "kind": "delivery",
+          "fact": "Next-style public delivery markers",
+          "evidenceType": "literal HTML/script URL",
+          "confidence": "high for delivered marker; not backend architecture"
+        },
+        {
+          "kind": "browser-storage-candidate",
+          "file": "chunk-2.js",
+          "sourceUrl": "https://tokenterminal.com/_next/static/immutable/chunks/40v0kenxd7e0y.js",
+          "sourceSha256": "300c7852a58af2c51eecc464c9612410275f11382783f42bbc8ec3d27aa834c7",
+          "count": 5,
+          "firstOffset": 12922,
+          "evidenceType": "literal byte marker; semantic behavior unverified",
+          "confidence": "candidate unless matched by REA/runtime evidence"
+        },
+        {
+          "kind": "comparison-feature-marker",
+          "file": "chunk-2.js",
+          "sourceUrl": "https://tokenterminal.com/_next/static/immutable/chunks/40v0kenxd7e0y.js",
+          "sourceSha256": "300c7852a58af2c51eecc464c9612410275f11382783f42bbc8ec3d27aa834c7",
+          "count": 1,
+          "firstOffset": 31768,
+          "evidenceType": "literal byte marker; semantic behavior unverified",
+          "confidence": "candidate unless matched by REA/runtime evidence"
+        },
+        {
+          "kind": "public-request-candidate",
+          "file": "chunk-3.js",
+          "sourceUrl": "https://tokenterminal.com/_next/static/immutable/chunks/3d0irwnstox0h.js",
+          "sourceSha256": "c01024d2977fb2e4c0dfebcee8bff78c1e777915b56de1ec8e856dcafbc4e2c8",
+          "count": 3,
+          "firstOffset": 14042,
+          "evidenceType": "literal byte marker; semantic behavior unverified",
+          "confidence": "candidate unless matched by REA/runtime evidence"
+        }
+      ],
+      "unknowns": [
+        "server-side database and deployment infrastructure",
+        "authenticated or paid functions",
+        "complete feature and route coverage",
+        "data procurement contracts and backend preprocessing"
+      ],
+      "rea": {
+        "state": "completed_static_evidence",
+        "evidenceId": "ev_3cbecc059a8aca07a5b5e18716131242a30e00ff87effec7a8543e5460f358c6",
+        "evidenceSha256": "3b3f269d2657819c3adecc1ea7968a21bb4c7746b40ba4296d5daf05f320e868",
+        "bytes": 79098866,
+        "graphIds": [
+          "jag_fa7216d7283160db56c64e90d93d86b6758956839934d99b55d974b53141fef4",
+          "jsrg_197d935c3e9f769de60aa54a4365ae93483cf61a9440c6cecf16ca29889fd746"
+        ],
+        "graphKindCounts": {
+          "artifact": 3,
+          "source-map": 3,
+          "javascript-asset": 3,
+          "javascript-module": 3,
+          "electron-renderer": 1,
+          "endpoint": 1,
+          "expression": 9719,
+          "function": 638,
+          "binding": 832,
+          "parameter": 569,
+          "call-site": 1316,
+          "property-slot": 1026,
+          "return-site": 444,
+          "literal": 68,
+          "promise": 53,
+          "event": 1,
+          "task": 19,
+          "boundary": 7,
+          "timer": 5,
+          "module": 3
+        },
+        "normalizedKeys": [
+          "architecture",
+          "digest",
+          "format",
+          "graph",
+          "id",
+          "input_path",
+          "inventory_graph_sha256",
+          "inventory_manifest_id",
+          "limitations",
+          "local_path",
+          "name",
+          "root_artifact_sha256",
+          "semantic_graph",
+          "statistics",
+          "summary",
+          "version"
+        ],
+        "limitations": [
+          "CommonJS and ESM binding relationships were recovered from inert syntax and resolved only within the inventoried artifact container.",
+          "JavaScript and HTML were parsed as inert text; bundle bootstrap code was never executed.",
+          "Static imports, entrypoints, workers, endpoints, and storage relationships do not prove runtime execution.",
+          "Static paths and relationships may remain unresolved when expressions are dynamic or obfuscated.",
+          "Webpack/Rspack factories were recovered from AST literals; REA did not invoke push handlers or bundle bootstrap code."
+        ],
+        "runtimeExecuted": false,
+        "backendDbVerified": false
+      },
+      "run": {
+        "site": "tokenterminal",
+        "startedAt": "2026-10-12T15:23:11.430038+00:00",
+        "exitCode": 0,
+        "elapsedSeconds": 51.38720930006821,
+        "outputBytes": 79098866
+      }
+    },
+    {
+      "site": "tokenomist",
+      "pageUrl": "https://tokenomist.ai/",
+      "checkedAt": "2026-10-12T15:07:20.889750+00:00",
+      "captureState": "captured",
+      "files": [
+        {
+          "url": "https://space.tokenomist.ai/bucket/f571417/_next/static/chunks/275jjadr23yjp.js",
+          "status": 200,
+          "mime": "text/javascript;charset=utf-8",
+          "bytes": 33009,
+          "sha256": "fdef070053e85fa35f6098a5aa3e44f25601af97b35e187c2683454dddf01c9a"
+        },
+        {
+          "url": "https://space.tokenomist.ai/bucket/f571417/_next/static/chunks/1_jwsce4zvk9f.js",
+          "status": 200,
+          "mime": "text/javascript;charset=utf-8",
+          "bytes": 27110,
+          "sha256": "2b05d3a85b70bb4e24df9b835dc61130934fc5f1e925556ec47971f8266cc3f1"
+        },
+        {
+          "url": "https://space.tokenomist.ai/bucket/f571417/_next/static/chunks/0y72as1-5svq4.js",
+          "status": 200,
+          "mime": "text/javascript;charset=utf-8",
+          "bytes": 502865,
+          "sha256": "4d59d260150e00519f6cd5d7331d8ec0cdd9fd63a8d8f928f936a57954d1b93b"
+        }
+      ],
+      "observations": [
+        {
+          "kind": "delivery",
+          "fact": "Next-style public delivery markers",
+          "evidenceType": "literal HTML/script URL",
+          "confidence": "high for delivered marker; not backend architecture"
+        },
+        {
+          "kind": "comparison-feature-marker",
+          "file": "chunk-1.js",
+          "sourceUrl": "https://space.tokenomist.ai/bucket/f571417/_next/static/chunks/275jjadr23yjp.js",
+          "sourceSha256": "fdef070053e85fa35f6098a5aa3e44f25601af97b35e187c2683454dddf01c9a",
+          "count": 1,
+          "firstOffset": 28282,
+          "evidenceType": "literal byte marker; semantic behavior unverified",
+          "confidence": "candidate unless matched by REA/runtime evidence"
+        },
+        {
+          "kind": "react-marker",
+          "file": "chunk-3.js",
+          "sourceUrl": "https://space.tokenomist.ai/bucket/f571417/_next/static/chunks/0y72as1-5svq4.js",
+          "sourceSha256": "4d59d260150e00519f6cd5d7331d8ec0cdd9fd63a8d8f928f936a57954d1b93b",
+          "count": 1,
+          "firstOffset": 229896,
+          "evidenceType": "literal byte marker; semantic behavior unverified",
+          "confidence": "candidate unless matched by REA/runtime evidence"
+        },
+        {
+          "kind": "comparison-feature-marker",
+          "file": "chunk-3.js",
+          "sourceUrl": "https://space.tokenomist.ai/bucket/f571417/_next/static/chunks/0y72as1-5svq4.js",
+          "sourceSha256": "4d59d260150e00519f6cd5d7331d8ec0cdd9fd63a8d8f928f936a57954d1b93b",
+          "count": 19,
+          "firstOffset": 102216,
+          "evidenceType": "literal byte marker; semantic behavior unverified",
+          "confidence": "candidate unless matched by REA/runtime evidence"
+        }
+      ],
+      "unknowns": [
+        "server-side database and deployment infrastructure",
+        "authenticated or paid functions",
+        "complete feature and route coverage",
+        "data procurement contracts and backend preprocessing"
+      ],
+      "rea": {
+        "state": "completed_static_evidence",
+        "evidenceId": "ev_4ddda71683f55921bf3046610da410d9474dd3fa4ec6a5919d565c524a6e3f15",
+        "evidenceSha256": "649e56a889f7c8a777bd31af28a360fa11dcef96f9d9296d51e05b707ff59963",
+        "bytes": 195780136,
+        "graphIds": [
+          "jag_1fa3eb12c080f27806b0deffc3a3943e2255c47dde4653b9af3597cdc2e6de37",
+          "jsrg_e4c0e0d494242d0ba50ce8aebecdeb192ccdd4b627e5ec4c987c5cd6b7cd1450"
+        ],
+        "graphKindCounts": {
+          "javascript-module": 3,
+          "artifact": 3,
+          "storage": 5,
+          "electron-renderer": 1,
+          "endpoint": 4,
+          "javascript-asset": 3,
+          "worker": 1,
+          "return-site": 2541,
+          "parameter": 3763,
+          "expression": 9013,
+          "binding": 5707,
+          "call-site": 8035,
+          "property-slot": 902,
+          "function": 2766,
+          "promise": 37,
+          "literal": 37,
+          "boundary": 13,
+          "timer": 2,
+          "module": 3,
+          "event": 1
+        },
+        "normalizedKeys": [
+          "architecture",
+          "digest",
+          "format",
+          "graph",
+          "id",
+          "input_path",
+          "inventory_graph_sha256",
+          "inventory_manifest_id",
+          "limitations",
+          "local_path",
+          "name",
+          "root_artifact_sha256",
+          "semantic_graph",
+          "statistics",
+          "summary",
+          "version"
+        ],
+        "limitations": [
+          "CommonJS and ESM binding relationships were recovered from inert syntax and resolved only within the inventoried artifact container.",
+          "JavaScript and HTML were parsed as inert text; bundle bootstrap code was never executed.",
+          "Static imports, entrypoints, workers, endpoints, and storage relationships do not prove runtime execution.",
+          "Static paths and relationships may remain unresolved when expressions are dynamic or obfuscated.",
+          "Webpack/Rspack factories were recovered from AST literals; REA did not invoke push handlers or bundle bootstrap code."
+        ],
+        "runtimeExecuted": false,
+        "backendDbVerified": false
+      },
+      "run": {
+        "site": "tokenomist",
+        "startedAt": "2026-10-12T15:24:02.864754+00:00",
+        "exitCode": 0,
+        "elapsedSeconds": 59.824355800054036,
+        "outputBytes": 195780136
+      }
+    },
+    {
+      "site": "cryptorank",
+      "pageUrl": "https://cryptorank.io/",
+      "checkedAt": "2026-10-12T15:07:21.054535+00:00",
+      "captureState": "captured",
+      "files": [
+        {
+          "url": "https://static.cryptorank.io/34c6f239/_next/static/chunks/main-61a3821483df749d.js",
+          "status": 200,
+          "mime": "text/javascript",
+          "bytes": 151071,
+          "sha256": "fd46a5d66050f21bf4db59799773831737fa4d17238554fcb8aacc2ddf3091dc"
+        },
+        {
+          "url": "https://static.cryptorank.io/34c6f239/_next/static/chunks/pages/index-742d33f652901e4e.js",
+          "status": 200,
+          "mime": "text/javascript",
+          "bytes": 480,
+          "sha256": "da8e4c951a73e4ae1cc547159d134e7d21d4143fcb86f30fa04b0230bf93782b"
+        },
+        {
+          "url": "https://static.cryptorank.io/34c6f239/_next/static/chunks/81973.0967daa9bcf787ad.js",
+          "status": 200,
+          "mime": "text/javascript",
+          "bytes": 27262,
+          "sha256": "e164c40f17b359df9df42fd6242c5a36b56e28da46e9ca091a44013b89170c7e"
+        }
+      ],
+      "observations": [
+        {
+          "kind": "delivery",
+          "fact": "Next-style public delivery markers",
+          "evidenceType": "literal HTML/script URL",
+          "confidence": "high for delivered marker; not backend architecture"
+        },
+        {
+          "kind": "bundler-webpack",
+          "file": "chunk-1.js",
+          "sourceUrl": "https://static.cryptorank.io/34c6f239/_next/static/chunks/main-61a3821483df749d.js",
+          "sourceSha256": "fd46a5d66050f21bf4db59799773831737fa4d17238554fcb8aacc2ddf3091dc",
+          "count": 2,
+          "firstOffset": 6,
+          "evidenceType": "literal byte marker; semantic behavior unverified",
+          "confidence": "candidate unless matched by REA/runtime evidence"
+        },
+        {
+          "kind": "public-request-candidate",
+          "file": "chunk-1.js",
+          "sourceUrl": "https://static.cryptorank.io/34c6f239/_next/static/chunks/main-61a3821483df749d.js",
+          "sourceSha256": "fd46a5d66050f21bf4db59799773831737fa4d17238554fcb8aacc2ddf3091dc",
+          "count": 2,
+          "firstOffset": 27052,
+          "evidenceType": "literal byte marker; semantic behavior unverified",
+          "confidence": "candidate unless matched by REA/runtime evidence"
+        },
+        {
+          "kind": "comparison-feature-marker",
+          "file": "chunk-1.js",
+          "sourceUrl": "https://static.cryptorank.io/34c6f239/_next/static/chunks/main-61a3821483df749d.js",
+          "sourceSha256": "fd46a5d66050f21bf4db59799773831737fa4d17238554fcb8aacc2ddf3091dc",
+          "count": 4,
+          "firstOffset": 41062,
+          "evidenceType": "literal byte marker; semantic behavior unverified",
+          "confidence": "candidate unless matched by REA/runtime evidence"
+        },
+        {
+          "kind": "bundler-webpack",
+          "file": "chunk-2.js",
+          "sourceUrl": "https://static.cryptorank.io/34c6f239/_next/static/chunks/pages/index-742d33f652901e4e.js",
+          "sourceSha256": "da8e4c951a73e4ae1cc547159d134e7d21d4143fcb86f30fa04b0230bf93782b",
+          "count": 2,
+          "firstOffset": 6,
+          "evidenceType": "literal byte marker; semantic behavior unverified",
+          "confidence": "candidate unless matched by REA/runtime evidence"
+        },
+        {
+          "kind": "bundler-webpack",
+          "file": "chunk-3.js",
+          "sourceUrl": "https://static.cryptorank.io/34c6f239/_next/static/chunks/81973.0967daa9bcf787ad.js",
+          "sourceSha256": "e164c40f17b359df9df42fd6242c5a36b56e28da46e9ca091a44013b89170c7e",
+          "count": 2,
+          "firstOffset": 6,
+          "evidenceType": "literal byte marker; semantic behavior unverified",
+          "confidence": "candidate unless matched by REA/runtime evidence"
+        }
+      ],
+      "unknowns": [
+        "server-side database and deployment infrastructure",
+        "authenticated or paid functions",
+        "complete feature and route coverage",
+        "data procurement contracts and backend preprocessing"
+      ],
+      "rea": {
+        "state": "completed_static_evidence",
+        "evidenceId": "ev_6e58053ce5fa803663cfb428be7b54ed1eca8f1438733ec1e97cab12d1bf673a",
+        "evidenceSha256": "040c22cf6751edaf1e6d71bf7784aa855cd36fd825b9d70d32ca13411d7bf238",
+        "bytes": 120826676,
+        "graphIds": [
+          "jag_bf3be3d928aa37326203690463f8fb929aaa96b1ef3348968a5d6a11018a2a22",
+          "jsrg_e0d3d6774c105de4ddef4eed59beb0ac8718cd956b893899d2a6f1782b833b20"
+        ],
+        "graphKindCounts": {
+          "javascript-module": 191,
+          "javascript-chunk": 5,
+          "javascript-asset": 3,
+          "endpoint": 4,
+          "electron-renderer": 1,
+          "artifact": 3,
+          "call-site": 3056,
+          "expression": 13957,
+          "binding": 1825,
+          "function": 1180,
+          "property-slot": 1192,
+          "return-site": 996,
+          "parameter": 1103,
+          "literal": 464,
+          "promise": 3,
+          "module": 3
+        },
+        "normalizedKeys": [
+          "architecture",
+          "digest",
+          "format",
+          "graph",
+          "id",
+          "input_path",
+          "inventory_graph_sha256",
+          "inventory_manifest_id",
+          "limitations",
+          "local_path",
+          "name",
+          "root_artifact_sha256",
+          "semantic_graph",
+          "statistics",
+          "summary",
+          "version"
+        ],
+        "limitations": [
+          "CommonJS and ESM binding relationships were recovered from inert syntax and resolved only within the inventoried artifact container.",
+          "Graph coverage is incomplete; unavailable facts remain explicit and must not be read as absence.",
+          "JavaScript and HTML were parsed as inert text; bundle bootstrap code was never executed.",
+          "Static imports, entrypoints, workers, endpoints, and storage relationships do not prove runtime execution.",
+          "Static paths and relationships may remain unresolved when expressions are dynamic or obfuscated.",
+          "Webpack/Rspack factories were recovered from AST literals; REA did not invoke push handlers or bundle bootstrap code."
+        ],
+        "runtimeExecuted": false,
+        "backendDbVerified": false
+      },
+      "run": {
+        "site": "cryptorank",
+        "startedAt": "2026-10-12T15:25:02.853259+00:00",
+        "exitCode": 0,
+        "elapsedSeconds": 61.38527389999945,
+        "outputBytes": 120826676
+      }
+    },
+    {
+      "site": "upbit-datalab",
+      "pageUrl": "https://datalab.upbit.com/",
+      "checkedAt": "2026-10-12T15:07:23.023791+00:00",
+      "captureState": "captured",
+      "files": [
+        {
+          "url": "https://datalab.upbit.com/_next/static/chunks/main-app-eda615ce181eca84.js",
+          "status": 200,
+          "mime": "application/javascript; charset=UTF-8",
+          "bytes": 7747,
+          "sha256": "87710bbb78f8b039aac6de2d35b6fcae931e9a8db6cdba2c35a81de53bf4ab72"
+        },
+        {
+          "url": "https://datalab.upbit.com/_next/static/chunks/app/(datalab)/(home)/page-90d091ad19aa5662.js",
+          "status": 200,
+          "mime": "application/javascript; charset=UTF-8",
+          "bytes": 134271,
+          "sha256": "d506dbf8d1c748da04e0123d0594ccc97a55d28c3d937622dc93cd47037c955e"
+        },
+        {
+          "url": "https://datalab.upbit.com/_next/static/chunks/afabe961-e562a44a08956048.js",
+          "status": 200,
+          "mime": "application/javascript; charset=UTF-8",
+          "bytes": 121023,
+          "sha256": "3474d6aacbf7b979f1100ee0056f33ab077135e074f879afe9f7a43a6a013d4e"
+        }
+      ],
+      "observations": [
+        {
+          "kind": "delivery",
+          "fact": "Next-style public delivery markers",
+          "evidenceType": "literal HTML/script URL",
+          "confidence": "high for delivered marker; not backend architecture"
+        },
+        {
+          "kind": "bundler-webpack",
+          "file": "chunk-1.js",
+          "sourceUrl": "https://datalab.upbit.com/_next/static/chunks/main-app-eda615ce181eca84.js",
+          "sourceSha256": "87710bbb78f8b039aac6de2d35b6fcae931e9a8db6cdba2c35a81de53bf4ab72",
+          "count": 2,
+          "firstOffset": 390,
+          "evidenceType": "literal byte marker; semantic behavior unverified",
+          "confidence": "candidate unless matched by REA/runtime evidence"
+        },
+        {
+          "kind": "comparison-feature-marker",
+          "file": "chunk-1.js",
+          "sourceUrl": "https://datalab.upbit.com/_next/static/chunks/main-app-eda615ce181eca84.js",
+          "sourceSha256": "87710bbb78f8b039aac6de2d35b6fcae931e9a8db6cdba2c35a81de53bf4ab72",
+          "count": 11,
+          "firstOffset": 5722,
+          "evidenceType": "literal byte marker; semantic behavior unverified",
+          "confidence": "candidate unless matched by REA/runtime evidence"
+        },
+        {
+          "kind": "candle-feature-marker",
+          "file": "chunk-1.js",
+          "sourceUrl": "https://datalab.upbit.com/_next/static/chunks/main-app-eda615ce181eca84.js",
+          "sourceSha256": "87710bbb78f8b039aac6de2d35b6fcae931e9a8db6cdba2c35a81de53bf4ab72",
+          "count": 1,
+          "firstOffset": 5688,
+          "evidenceType": "literal byte marker; semantic behavior unverified",
+          "confidence": "candidate unless matched by REA/runtime evidence"
+        },
+        {
+          "kind": "bundler-webpack",
+          "file": "chunk-2.js",
+          "sourceUrl": "https://datalab.upbit.com/_next/static/chunks/app/(datalab)/(home)/page-90d091ad19aa5662.js",
+          "sourceSha256": "d506dbf8d1c748da04e0123d0594ccc97a55d28c3d937622dc93cd47037c955e",
+          "count": 2,
+          "firstOffset": 390,
+          "evidenceType": "literal byte marker; semantic behavior unverified",
+          "confidence": "candidate unless matched by REA/runtime evidence"
+        },
+        {
+          "kind": "bundler-webpack",
+          "file": "chunk-3.js",
+          "sourceUrl": "https://datalab.upbit.com/_next/static/chunks/afabe961-e562a44a08956048.js",
+          "sourceSha256": "3474d6aacbf7b979f1100ee0056f33ab077135e074f879afe9f7a43a6a013d4e",
+          "count": 2,
+          "firstOffset": 403,
+          "evidenceType": "literal byte marker; semantic behavior unverified",
+          "confidence": "candidate unless matched by REA/runtime evidence"
+        }
+      ],
+      "unknowns": [
+        "server-side database and deployment infrastructure",
+        "authenticated or paid functions",
+        "complete feature and route coverage",
+        "data procurement contracts and backend preprocessing"
+      ],
+      "rea": {
+        "state": "completed_static_evidence",
+        "evidenceId": "ev_b00eee35caa9fd179b26a9c8cde5d8a7c6209f160f7900375fa5ecae7fc69860",
+        "evidenceSha256": "7a288e7be3c74a662313a0eef3cb1c100c24c40b39b68c2f1f2077fbab0be6eb",
+        "bytes": 213891530,
+        "graphIds": [
+          "jag_8301ab8441f45c736f8ffe255e9fd4533c5695c0fa0ef0eb8d09923897ffb26d",
+          "jsrg_263e96c02d434c9488e5fc3a6ba60236c518ae21ed177914144684ee46b98556"
+        ],
+        "graphKindCounts": {
+          "javascript-module": 287,
+          "javascript-asset": 3,
+          "javascript-chunk": 3,
+          "electron-renderer": 1,
+          "artifact": 3,
+          "storage": 3,
+          "worker": 1,
+          "expression": 26426,
+          "parameter": 1464,
+          "function": 1343,
+          "return-site": 1120,
+          "call-site": 4045,
+          "property-slot": 2017,
+          "binding": 2273,
+          "promise": 471,
+          "literal": 44,
+          "module": 3,
+          "timer": 1
+        },
+        "normalizedKeys": [
+          "architecture",
+          "digest",
+          "format",
+          "graph",
+          "id",
+          "input_path",
+          "inventory_graph_sha256",
+          "inventory_manifest_id",
+          "limitations",
+          "local_path",
+          "name",
+          "root_artifact_sha256",
+          "semantic_graph",
+          "statistics",
+          "summary",
+          "version"
+        ],
+        "limitations": [
+          "CommonJS and ESM binding relationships were recovered from inert syntax and resolved only within the inventoried artifact container.",
+          "Graph coverage is incomplete; unavailable facts remain explicit and must not be read as absence.",
+          "JavaScript and HTML were parsed as inert text; bundle bootstrap code was never executed.",
+          "Static imports, entrypoints, workers, endpoints, and storage relationships do not prove runtime execution.",
+          "Static paths and relationships may remain unresolved when expressions are dynamic or obfuscated.",
+          "Webpack/Rspack factories were recovered from AST literals; REA did not invoke push handlers or bundle bootstrap code."
+        ],
+        "runtimeExecuted": false,
+        "backendDbVerified": false
+      },
+      "run": {
+        "site": "upbit-datalab",
+        "startedAt": "2026-10-12T15:26:04.259044+00:00",
+        "exitCode": 0,
+        "elapsedSeconds": 126.91479129996151,
+        "outputBytes": 213891530
+      }
+    },
+    {
+      "site": "tossinvest",
+      "pageUrl": "https://www.tossinvest.com/",
+      "checkedAt": "2026-10-12T15:07:23.979070+00:00",
+      "captureState": "captured",
+      "files": [
+        {
+          "url": "https://www.tossinvest.com/assets/v2/_next/static/chunks/main-6d58ff623114b664.js",
+          "status": 200,
+          "mime": "application/javascript",
+          "bytes": 123819,
+          "sha256": "00dcdfe82bb8e20e8018671a1da700cd6682e651b431616f0f0f18125017368b"
+        },
+        {
+          "url": "https://www.tossinvest.com/assets/v2/_next/static/chunks/pages/index-9e43e4068869c788.js",
+          "status": 200,
+          "mime": "application/javascript",
+          "bytes": 16206,
+          "sha256": "e13d57e55c10fc018bbe7f78ac578638e029bdb776f81485ea2a1d5bd75bd24b"
+        },
+        {
+          "url": "https://www.tossinvest.com/assets/v2/_next/static/chunks/1491.01d476f3eee0e874.js",
+          "status": 200,
+          "mime": "application/javascript",
+          "bytes": 3379,
+          "sha256": "0b047a01889c2b5bb7e5cdd4a48a881694d57ef98da9db5fe162e466980692f3"
+        }
+      ],
+      "observations": [
+        {
+          "kind": "delivery",
+          "fact": "Next-style public delivery markers",
+          "evidenceType": "literal HTML/script URL",
+          "confidence": "high for delivered marker; not backend architecture"
+        }
+      ],
+      "unknowns": [
+        "server-side database and deployment infrastructure",
+        "authenticated or paid functions",
+        "complete feature and route coverage",
+        "data procurement contracts and backend preprocessing",
+        "original JS response bytes were gzip-compressed; REA UTF8 input therefore unavailable. No new REA analysis was run against decoded views."
+      ],
+      "rea": {
+        "state": "completed_evidence_javascript_unavailable",
+        "evidenceId": "ev_30af97b16db0f97996bb373623de3dae913fd596e85c53d0056bf688c9188204",
+        "evidenceSha256": "c7b14e5085c7d97f072bee4fd90494eccfdf7bccc64397296a981ffb0c274f1b",
+        "bytes": 130404,
+        "graphIds": [
+          "jag_bd44e18a79ee0565ee7a3eb0526e221a62141c33a80ff45788f297666210a5a0",
+          "jsrg_938b2b833ff48a6742d24a568add5402904c2bf73e6eec6cd8dd6a1ae5bf48ba"
+        ],
+        "graphKindCounts": {
+          "javascript-asset": 3,
+          "artifact": 3,
+          "unknown": 3,
+          "electron-renderer": 1,
+          "module": 1
+        },
+        "normalizedKeys": [
+          "architecture",
+          "digest",
+          "format",
+          "graph",
+          "id",
+          "input_path",
+          "inventory_graph_sha256",
+          "inventory_manifest_id",
+          "limitations",
+          "local_path",
+          "name",
+          "root_artifact_sha256",
+          "semantic_graph",
+          "statistics",
+          "summary",
+          "version"
+        ],
+        "limitations": [
+          "CommonJS and ESM binding relationships were recovered from inert syntax and resolved only within the inventoried artifact container.",
+          "Graph coverage is incomplete; unavailable facts remain explicit and must not be read as absence.",
+          "JavaScript and HTML were parsed as inert text; bundle bootstrap code was never executed.",
+          "Static imports, entrypoints, workers, endpoints, and storage relationships do not prove runtime execution.",
+          "Static paths and relationships may remain unresolved when expressions are dynamic or obfuscated.",
+          "Webpack/Rspack factories were recovered from AST literals; REA did not invoke push handlers or bundle bootstrap code."
+        ],
+        "runtimeExecuted": false,
+        "backendDbVerified": false,
+        "statistics": {
+          "relevant_files": 5,
+          "nested_asar_containers": 0,
+          "text_bytes_read": 224018,
+          "invalid_utf8_files": 3,
+          "parsed_javascript_files": 0,
+          "visited_ast_nodes": 0,
+          "findings": 27,
+          "modules": 0,
+          "parse_failures": 0,
+          "truncated_scopes": 0
+        }
+      },
+      "run": {
+        "site": "tossinvest",
+        "startedAt": "2026-10-12T15:28:11.423846+00:00",
+        "exitCode": 0,
+        "elapsedSeconds": 107.49087510001846,
+        "outputBytes": 130404
+      },
+      "decodedViews": [
+        {
+          "originalUrl": "https://www.tossinvest.com/assets/v2/_next/static/chunks/main-6d58ff623114b664.js",
+          "originalSha256": "00dcdfe82bb8e20e8018671a1da700cd6682e651b431616f0f0f18125017368b",
+          "transform": "gzip decompression; magic 1f8b; transport Content-Encoding header was not retained",
+          "decodedBytes": 367928,
+          "decodedSha256": "fb8ed6106eebffc781d394e4c3da62b82d9d3a8a7c6983d09cf63cc602483c3b",
+          "reaAnalyzed": false
+        },
+        {
+          "originalUrl": "https://www.tossinvest.com/assets/v2/_next/static/chunks/pages/index-9e43e4068869c788.js",
+          "originalSha256": "e13d57e55c10fc018bbe7f78ac578638e029bdb776f81485ea2a1d5bd75bd24b",
+          "transform": "gzip decompression; magic 1f8b; transport Content-Encoding header was not retained",
+          "decodedBytes": 47132,
+          "decodedSha256": "50c3a36d058625561280b8b4c0ff783ff0ffed09a979010ad1179aa8ee43ff46",
+          "reaAnalyzed": false
+        },
+        {
+          "originalUrl": "https://www.tossinvest.com/assets/v2/_next/static/chunks/1491.01d476f3eee0e874.js",
+          "originalSha256": "0b047a01889c2b5bb7e5cdd4a48a881694d57ef98da9db5fe162e466980692f3",
+          "transform": "gzip decompression; magic 1f8b; transport Content-Encoding header was not retained",
+          "decodedBytes": 7902,
+          "decodedSha256": "9f9c0abafda8ab900a92e87455e6ffba034382c7553eb5c7706976c6952519e9",
+          "reaAnalyzed": false
+        }
+      ]
+    }
+  ],
+  "completion": {
+    "sitesAttempted": 13,
+    "publicHtmlAndScriptSites": 10,
+    "reaCliEvidenceReturned": 10,
+    "completeGraphFilesRetained": 9,
+    "projectedGraphIdentityOnly": 1,
+    "javascriptUnavailableDueToTransportEncodingSites": 1,
+    "http403Sites": 2,
+    "noExternalScriptSites": 1,
+    "allFunctionsOrDbVerified": false,
+    "activeReaProcesses": 0,
+    "furtherAnalysisStarted": false
+  },
+  "applicationRecommendations": [
+    {
+      "decision": "가격·지표를 같은 상세 화면의 선택 방식으로 제공",
+      "basis": "사용자 요청과 root의 별도 공개 UI 관찰; 정적 DB 추정이 아님"
+    },
+    {
+      "decision": "실제 OHLC 가격 차트와 종가 참조선을 구분",
+      "basis": "보리차트 기존 데이터 의미를 보존하는 자체 설계"
+    },
+    {
+      "decision": "기간·날짜·비교·저장 도구를 일관되게 유지",
+      "basis": "공개 UI의 사용 패턴을 참고하는 자체 설계"
+    },
+    {
+      "decision": "거래소·통화·확정 봉·최신 체결 시각을 유지",
+      "basis": "기존 정확성 조건을 보존하는 자체 설계"
+    }
+  ]
+}

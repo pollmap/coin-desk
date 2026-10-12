@@ -1,22 +1,49 @@
 import type { Asset, Market } from '../shared/types';
 import { useQuoteFeed } from './useQuoteFeed';
 import { money, dateLabel } from './lib';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import type { LiveChartPrice } from '../shared/live-chart-price';
 import { useSearchParams } from 'react-router-dom';
 import { supportsMarket } from '../shared/asset-registry';
 import { DeskDialog } from './DeskDialog';
 /** Isolate one-second updates from expensive historical chart calculations. */
-export function SpotQuote({ asset, market }: { asset: Asset; market: Market }) {
+export function SpotQuote({
+  asset,
+  market,
+  syncPriceSource = false,
+  onQuote,
+}: {
+  asset: Asset;
+  market: Market;
+  syncPriceSource?: boolean;
+  onQuote?: (quote: LiveChartPrice | null) => void;
+}) {
   const [open, setOpen] = useState(false);
   const button = useRef<HTMLButtonElement>(null);
   const [, setParams] = useSearchParams();
   const feed = useQuoteFeed(market, { assets: [asset], snapshotAssets: [asset], sparkLimit: 0 }),
     quote = feed.rows.find((r) => r.asset === asset);
+  useEffect(() => {
+    onQuote?.(
+      quote?.displayPrice && quote.displayTime
+        ? {
+            asset,
+            market,
+            price: quote.displayPrice,
+            time: quote.displayTime,
+            stale: quote.stale,
+          }
+        : null,
+    );
+  }, [asset, market, onQuote, quote?.displayPrice, quote?.displayTime, quote?.stale]);
+  useEffect(() => () => onQuote?.(null), [asset, market, onQuote]);
   return (
     <div
       className="detail-quote"
       title={
-        quote?.displayTime ? `실제 체결 ${dateLabel(quote.displayTime, true)}` : '시세 수집 대기'
+        quote?.displayTime
+          ? `${market === 'binance' && !quote.live ? '시세 기준' : '실제 체결'} ${dateLabel(quote.displayTime, true)}`
+          : '시세 수집 대기'
       }
     >
       <strong>{money(quote?.displayPrice, market === 'upbit' ? 'KRW' : 'USDT')}</strong>
@@ -40,6 +67,10 @@ export function SpotQuote({ asset, market }: { asset: Asset; market: Market }) {
               setParams((previous) => {
                 const next = new URLSearchParams(previous);
                 next.set('market', value);
+                if (syncPriceSource) {
+                  next.set('price_source', value);
+                  for (const key of ['reading_date', 'chart_from', 'chart_to']) next.delete(key);
+                }
                 return next;
               });
             }}
@@ -54,7 +85,7 @@ export function SpotQuote({ asset, market }: { asset: Asset; market: Market }) {
         </label>
         <p>
           {quote?.displayTime
-            ? `실제 체결 ${dateLabel(quote.displayTime, true)}`
+            ? `${market === 'binance' && !quote.live ? '시세 기준' : '실제 체결'} ${dateLabel(quote.displayTime, true)}`
             : '시세 수집 대기'}
         </p>
         <p>
