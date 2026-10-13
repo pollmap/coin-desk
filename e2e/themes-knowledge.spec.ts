@@ -108,7 +108,7 @@ test('purpose search, pinned date, explanation and save preserve the chosen char
   const rect = (await canvas.boundingBox())!;
   await page.mouse.move(rect.x + rect.width * 0.7, rect.y + 100);
   await expect(page.locator('.analysis-reading-date')).toHaveText(fixed);
-  await page.getByRole('button', { name: '지표 설명', exact: true }).click();
+  await page.getByRole('button', { name: /^지표 설명/ }).click();
   await expect(page.locator('.indicator-selected-context')).toContainText(
     fixed
       .match(/\d{4}-\d{2}-\d{2}/)![0]

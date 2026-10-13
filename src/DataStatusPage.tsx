@@ -331,6 +331,7 @@ export function DataStatusPage() {
                           {(
                             {
                               TRADE_STALE: '최근 체결 없음',
+                              TRADE_TIME_UNKNOWN: '실제 체결 시각 미확인',
                               QUOTE_WINDOW_STALE: '통계 기준 시각 지연',
                               COLLECTOR_LATE: '예약 수집 지연',
                               OBSERVATION_LATE: '기준일 확인 필요',

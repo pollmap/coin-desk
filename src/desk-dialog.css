@@ -38,6 +38,118 @@
   font-size: 20px;
   margin: 0;
 }
+.desk-dialog :is(button, select, input) {
+  font: inherit;
+  color: var(--text);
+  min-height: 40px;
+}
+.desk-dialog button {
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 8px 12px;
+  background: var(--panel);
+  transition:
+    background-color 150ms,
+    border-color 150ms,
+    color 150ms;
+}
+.desk-dialog button:hover {
+  color: var(--text);
+  background: var(--hover);
+  border-color: var(--accent);
+  transform: none;
+}
+.desk-dialog button:active {
+  transform: none;
+}
+.desk-dialog :is(button, select, input, a, summary):focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+.desk-dialog .indicator-picker-search {
+  display: block;
+}
+.desk-dialog .indicator-picker-search input {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--bg);
+}
+.desk-dialog .indicator-purpose-filter {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 12px 0 8px;
+  font-size: 13px;
+  color: var(--muted);
+}
+.desk-dialog .indicator-purpose-filter select {
+  width: auto;
+  max-width: 68%;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--panel);
+  padding: 8px 10px;
+}
+.desk-dialog .indicator-picker-results {
+  max-height: min(460px, calc(80dvh - 180px));
+  overflow: auto;
+  overscroll-behavior: contain;
+  scrollbar-gutter: stable;
+}
+.desk-dialog .indicator-picker-results a {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 4px;
+  min-height: 60px;
+  border-bottom: 1px solid var(--border);
+  border-radius: 0;
+  font-size: 14px;
+  line-height: 1.45;
+}
+.desk-dialog .indicator-picker-results a > span:first-child {
+  min-width: 0;
+  display: grid;
+  gap: 4px;
+}
+.desk-dialog .indicator-picker-results a:hover,
+.desk-dialog .indicator-picker-results a.active {
+  color: var(--text);
+  background: var(--hover);
+  box-shadow: none;
+}
+.desk-dialog .indicator-picker-results small {
+  color: var(--muted);
+  font-size: 12px;
+  overflow-wrap: anywhere;
+}
+.desk-dialog .indicator-picker-description {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+}
+.desk-dialog .indicator-picker-meta {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+  max-width: 90px;
+  text-align: right;
+  color: var(--accent);
+}
+.desk-dialog .indicator-no-results {
+  padding: 16px 4px;
+  font-size: 14px;
+  line-height: 1.6;
+}
+.desk-dialog .indicator-no-results button {
+  margin-top: 12px;
+}
 .desk-dialog .nav-utilities {
   display: none;
 }
@@ -54,12 +166,25 @@
 }
 @media (prefers-reduced-motion: reduce) {
   .desk-dialog,
-  .desk-dialog-backdrop {
+  .desk-dialog-backdrop,
+  .desk-dialog button {
     transition: none;
   }
 }
 
 @media (max-width: 767px) {
+  .desk-dialog {
+    padding: 16px;
+  }
+  .desk-dialog :is(button, select, input) {
+    min-height: 44px;
+  }
+  .desk-dialog-heading {
+    margin-bottom: 12px;
+  }
+  .desk-dialog-heading h2 {
+    font-size: 18px;
+  }
   .desk-dialog-sheet {
     inset: auto 0 0;
     width: 100%;

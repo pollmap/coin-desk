@@ -80,13 +80,23 @@ it('one Binance batch request maps symbols exactly and isolates an outdated peer
     highPrice: '110',
     lowPrice: '90',
     closeTime: Date.now() - age * 1000,
+    lastId: symbol === 'BTCUSDT' ? 1 : 2,
   });
   const mock = socket({
     id: 'btc-desk',
     status: 200,
     result: [ticker('DOGEUSDT', 400), ticker('BTCUSDT')],
   });
-  const result = await getQuotes(['BTC', 'DOGE'], 'binance');
+  const result = await getQuotes(['BTC', 'DOGE'], 'binance', {
+    QUOTE_TRADES: async () =>
+      ['BTC', 'DOGE'].map((asset, i) => ({
+        asset: asset as 'BTC' | 'DOGE',
+        market: 'binance' as const,
+        price: 100,
+        tradedAt: Math.floor(Date.now() / 1000) - (i ? 400 : 0),
+        lastTradeId: i + 1,
+      })),
+  });
   expect(mock.calls).toHaveLength(1);
   expect(mock.calls[0]).toMatchObject({
     method: 'ticker.24hr',

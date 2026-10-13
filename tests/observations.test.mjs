@@ -241,6 +241,53 @@ it('paginates every signal even when several share the same timestamp', async ()
   expect(ids).toHaveLength(3);
   expect(new Set(ids).size).toBe(3);
 });
+it('reads an exact corrected or withdrawn signal by id and asset without writes or pagination fallback', async () => {
+  await reconcileSignals(
+    env,
+    'BTC',
+    'coinmetrics',
+    'mvrv',
+    [
+      { time: base, value: 0.9 },
+      { time: base + DAY, value: 1.1 },
+    ],
+    base + 2 * DAY,
+  );
+  const first = (await signalsFeed(env, 'BTC', base + 3 * DAY)).data[0];
+  DB.sqlite
+    .prepare("UPDATE observation_signals SET status='corrected',revision=2 WHERE id=?")
+    .run(first.id);
+  expect((await signalsFeed(env, 'BTC', 0, 1, undefined, first.id)).data[0]).toMatchObject({
+    id: first.id,
+    status: 'corrected',
+    revision: 2,
+  });
+  DB.sqlite
+    .prepare("UPDATE observation_signals SET status='withdrawn',revision=3 WHERE id=?")
+    .run(first.id);
+  const writes = DB.sqlite.prepare('SELECT total_changes() n').get().n;
+  const out = await worker.fetch(
+    new Request('https://desk.test/api/v1/signals?asset=BTC&id=' + encodeURIComponent(first.id)),
+    env,
+    { waitUntil() {} },
+  );
+  const body = await out.json();
+  expect(out.status).toBe(200);
+  expect(body.data).toHaveLength(1);
+  expect(body.data[0]).toMatchObject({ id: first.id, status: 'withdrawn', revision: 3 });
+  expect(body.nextCursor).toBeNull();
+  expect((await signalsFeed(env, 'DOGE', undefined, 1, undefined, first.id)).data).toEqual([]);
+  expect((await signalsFeed(env, 'BTC', 0, 1, undefined, 'missing')).data).toEqual([]);
+  for (const id of ['', 'x'.repeat(401), 'a/../b', '<script>']) {
+    const denied = await worker.fetch(
+      new Request('https://desk.test/api/v1/signals?asset=BTC&id=' + encodeURIComponent(id)),
+      env,
+      { waitUntil() {} },
+    );
+    expect(denied.status).toBe(400);
+  }
+  expect(DB.sqlite.prepare('SELECT total_changes() n').get().n).toBe(writes);
+});
 it('updates state in place and skips identical writes', async () => {
   const { putState } = await import('../worker/storage');
   await putState(DB, 'test', { value: 1 });

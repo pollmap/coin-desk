@@ -258,6 +258,10 @@ function validExtras(entry: Record<string, unknown>): Partial<Workspace> {
   return result;
 }
 export function validAnalysisOption(key: string, value: unknown) {
+  if (key === 'rainbow_origin')
+    return typeof value === 'string' && /^\d{9,10}$/.test(value) && Number(value) % 86400 === 0;
+  if (['rainbow_anchor', 'rainbow_model', 'rainbow_revision'].includes(key))
+    return typeof value === 'string' && /^[A-Za-z0-9:_.-]{1,128}$/.test(value);
   if (key === 'comparison_from' || key === 'comparison_to')
     return typeof value === 'string' && /^\d{1,10}$/.test(value);
   if (key === 'comparison_assets') {
@@ -288,6 +292,9 @@ export function validAnalysisOption(key: string, value: unknown) {
         seasonality_years: ['1'],
         comparison_layout: ['side'],
         chart_style: ['candles', 'line'],
+        signal_overlay: ['0', '1'],
+        rainbow_source: ['reference', 'upbit', 'binance'],
+        rainbow_unit: ['USD', 'USDT', 'KRW'],
         comparison_mode: ['indicator'],
         comparison_source: ['coinmetrics', 'bybit', 'reference', 'upbit', 'binance'],
         pattern_trend: ['none', 'sma50', 'sma50-200'],

@@ -11,6 +11,7 @@ import { decodeMonth } from './network-data';
 import { derivativeAsset, DERIVATIVE_METRICS } from './derivatives';
 import { epoch, type Env } from './storage';
 import { failureCode } from './health';
+import { actualQuoteTime, quoteTradeFresh } from '../shared/quote-freshness';
 import { annotateCoverageGaps } from './coverage-evidence';
 
 export async function datasetCoverage(env: Env, asset: Asset): Promise<DatasetCoverage> {
@@ -166,16 +167,22 @@ export async function datasetCoverage(env: Env, asset: Asset): Promise<DatasetCo
     }
     quoteStates.push({
       source: market,
-      tradedAt: quote?.time ?? null,
+      tradedAt: actualQuoteTime(quote, market),
       checkedAt: state?.last_success ?? null,
       condition:
-        invalidSnapshot || (state?.error && failureCode(state.error) !== 'TRADE_STALE')
-          ? 'collection-error'
-          : !quote
-            ? 'pending'
-            : now - quote.time > 300
-              ? 'old-trade'
-              : 'recent-trade',
+        state?.error && failureCode(state.error) === 'TRADE_TIME_UNKNOWN'
+          ? 'unknown-trade-time'
+          : invalidSnapshot ||
+              (state?.error &&
+                !['TRADE_STALE', 'TRADE_TIME_UNKNOWN'].includes(failureCode(state.error) ?? ''))
+            ? 'collection-error'
+            : !quote
+              ? 'pending'
+              : actualQuoteTime(quote, market) === null
+                ? 'unknown-trade-time'
+                : !quoteTradeFresh(quote, market, now)
+                  ? 'old-trade'
+                  : 'recent-trade',
     });
   }
   return {

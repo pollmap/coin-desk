@@ -43,7 +43,11 @@ test('selects Supertrend from USD reference, opens actual DOGE weekly candles an
   await expect(page.locator('.supertrend-context')).toContainText('계산 전');
   await chart.press('End');
   const from = await chart.getAttribute('data-visible-from');
-  await page.getByRole('button', { name: '지표 설명', exact: true }).click();
+  await page.getByRole('button', { name: /^지표 설명/ }).click();
+  await page
+    .getByRole('dialog', { name: '지표 설명', exact: true })
+    .getByText('계산식·기호', { exact: true })
+    .click();
   await expect(page.getByRole('dialog')).toContainText('Wilder');
   await expect(page.getByRole('dialog')).toContainText('109.6');
   await page.keyboard.press('Escape');

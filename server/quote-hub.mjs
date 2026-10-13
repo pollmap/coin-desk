@@ -29,7 +29,16 @@ export function parseTick(market, message, now = Date.now() / 1000) {
     tradedAt > now + 60
   )
     return null;
-  return { asset, market, price, tradedAt, receivedAt: now };
+  const lastTradeId =
+    market === 'binance' && Number.isSafeInteger(data.l) && data.l >= 0 ? data.l : undefined;
+  return {
+    asset,
+    market,
+    price,
+    tradedAt,
+    receivedAt: now,
+    ...(lastTradeId !== undefined ? { lastTradeId } : {}),
+  };
 }
 
 export function createQuoteHub({ clock = () => Date.now() / 1000, maxClients = 200 } = {}) {
@@ -38,12 +47,26 @@ export function createQuoteHub({ clock = () => Date.now() / 1000, maxClients = 2
     ['upbit', 'binance'].map((m) => [m, { connected: false, quotes: new Map(), sequence: 0 }]),
   );
   const clients = new Map();
+  // Tiny, bounded proof cache for minute ticker validation; never written to SQLite.
+  const tradeProofs = new Map();
   function ingest(market, message) {
     const tick = parseTick(market, message, clock());
     if (!tick) return false;
     const previous = markets[market].quotes.get(tick.asset);
-    if (previous && tick.tradedAt <= previous.tradedAt) return false;
+    if (
+      previous &&
+      (tick.tradedAt < previous.tradedAt ||
+        (tick.tradedAt === previous.tradedAt &&
+          !(tick.lastTradeId !== undefined && tick.lastTradeId > (previous.lastTradeId ?? -1))))
+    )
+      return false;
     markets[market].quotes.set(tick.asset, tick);
+    if (market === 'binance' && tick.lastTradeId !== undefined) {
+      const proofs = tradeProofs.get(tick.asset) ?? [];
+      proofs.push(tick);
+      if (proofs.length > 64) proofs.splice(0, proofs.length - 64);
+      tradeProofs.set(tick.asset, proofs);
+    }
     return true;
   }
   function snapshot(market) {
@@ -67,9 +90,17 @@ export function createQuoteHub({ clock = () => Date.now() / 1000, maxClients = 2
     );
     const delta = client.assets !== null;
     const changed = delta
-      ? quotes.filter((q) => q.tradedAt > (client.sent.get(q.asset) ?? 0))
+      ? quotes.filter((q) => {
+          const old = client.sent.get(q.asset);
+          return (
+            !old ||
+            q.tradedAt > old.time ||
+            (q.tradedAt === old.time && (q.lastTradeId ?? -1) > old.id)
+          );
+        })
       : quotes;
-    for (const q of changed) client.sent.set(q.asset, q.tradedAt);
+    for (const q of changed)
+      client.sent.set(q.asset, { time: q.tradedAt, id: q.lastTradeId ?? -1 });
     res.write(`event: quotes\ndata: ${JSON.stringify({ ...payload, delta, quotes: changed })}\n\n`);
   }
   const server = createServer((req, res) => {
@@ -94,7 +125,7 @@ export function createQuoteHub({ clock = () => Date.now() / 1000, maxClients = 2
     }
     const market = url.searchParams.get('market');
     if (
-      url.pathname !== '/stream' ||
+      !['/stream', '/snapshot'].includes(url.pathname) ||
       !['upbit', 'binance'].includes(market) ||
       [...url.searchParams.keys()].some((k) => !['market', 'assets'].includes(k)) ||
       url.searchParams.getAll('market').length !== 1 ||
@@ -113,6 +144,28 @@ export function createQuoteHub({ clock = () => Date.now() / 1000, maxClients = 2
         requested.some((a) => !assets.includes(a)))
     ) {
       res.writeHead(400).end();
+      return;
+    }
+    if (url.pathname === '/snapshot') {
+      if (
+        market !== 'binance' ||
+        !requested ||
+        !requested.length ||
+        requested.length > 8 ||
+        requested.some((asset) => !ASSET_REGISTRY.find((a) => a.id === asset)?.markets.binance)
+      ) {
+        res.writeHead(400).end();
+        return;
+      }
+      res
+        .writeHead(200, { 'content-type': 'application/json', 'cache-control': 'no-store' })
+        .end(
+          JSON.stringify({
+            market,
+            connected: markets[market].connected,
+            trades: requested.flatMap((asset) => tradeProofs.get(asset) ?? []),
+          }),
+        );
       return;
     }
     if (clients.size >= maxClients) {

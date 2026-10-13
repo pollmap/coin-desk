@@ -1,5 +1,6 @@
 import { rankSearch, SEARCH_CATALOG_VERSION } from '../shared/search';
 import { dailyTechnical } from '../shared/market-watch';
+import { quoteTradeFresh, describeStoredQuote } from '../shared/quote-freshness';
 import { indicatorComparison } from './indicator-comparison';
 import { comparisonSelection } from '../shared/indicator-comparison';
 import { datasetCoverage } from './dataset-coverage';
@@ -40,7 +41,7 @@ import { candleHistory } from './candle-history';
 import { getDominance, DOMINANCE_VERSION } from './dominance';
 import { REFERENCE_ASSETS, REFERENCE_SOURCE, REFERENCE_VERSION } from './reference-price';
 import { operationStatus, recentOperationStatus, statusSummary, sourcePage } from './health';
-import { NETWORK_ASSETS, NETWORK_METRICS, networkMetric } from '../shared/network-catalog';
+import { NETWORK_ASSETS, networkMetrics, networkMetric } from '../shared/network-catalog';
 import { readNetworkSeries } from './network-data';
 import { derivativeAsset, derivativeMetric, readDerivativeSeries } from './derivatives';
 import { signalsFeed, refreshObservations, refreshBriefing } from './observations';
@@ -77,7 +78,7 @@ function canonicalRequest(request: Request) {
     'network-live': ['asset'],
     'network-catalog': ['asset'],
     metrics: ['asset'],
-    signals: ['asset', 'before', 'limit', 'cursor'],
+    signals: ['asset', 'before', 'limit', 'cursor', 'id'],
     briefings: ['before', 'limit'],
     'chain-context': ['asset', 'metric'],
     search: ['q', 'asset', 'kind', 'limit'],
@@ -118,6 +119,8 @@ function canonicalRequest(request: Request) {
     if (key === 'asset') value = value.toUpperCase();
     if (key === 'cursor' && !/^\d{1,12}\|[A-Za-z0-9:_.-]{1,400}$/.test(value))
       throw new RequestError('Invalid cursor');
+    if (key === 'id' && !/^[A-Za-z0-9:_.-]{1,400}$/.test(value))
+      throw new RequestError('Invalid signal id');
     if (['from', 'to', 'limit'].includes(key)) {
       const parsed = number(
         new URLSearchParams([[key, value]]),
@@ -262,10 +265,10 @@ async function overview(env: Env, asset: Asset, market: Market): Promise<Overvie
       );
   }
   return {
-    quote,
+    quote: describeStoredQuote(quote, market),
     meta: {
       ...meta(market, quote?.time ?? null, saved?.fetched_at ?? null),
-      stale: !saved || !quote || epoch() - quote.time > 300,
+      stale: !saved || !quoteTradeFresh(quote, market, epoch()),
       warning,
     },
     metrics: latest ? JSON.parse(latest.data) : {},
@@ -306,6 +309,7 @@ async function api(request: Request, env: Env): Promise<Response> {
         number(q, 'before', epoch() + 1),
         Math.max(1, Math.min(100, number(q, 'limit', 100, 1000))),
         q.get('cursor'),
+        q.get('id'),
       ),
     );
   if (endpoint === 'briefings') {
@@ -421,7 +425,7 @@ async function api(request: Request, env: Env): Promise<Response> {
     return response({
       asset,
       assets: NETWORK_ASSETS,
-      data: NETWORK_METRICS.filter((metric) => networkMetric(asset, metric.id)).map((metric) => {
+      data: networkMetrics(asset).map((metric) => {
         const c = coverage.find((r) => r.metric === metric.id);
         const spark = latestMonths
           .filter((r) => Number.isFinite(r.values[metric.id]))

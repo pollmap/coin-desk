@@ -104,6 +104,7 @@ export function AssetHeader({
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               onKeyDown={(e) => {
+                if (e.nativeEvent.isComposing || e.keyCode === 229) return;
                 if (e.key === 'ArrowDown') {
                   e.preventDefault();
                   picker.current

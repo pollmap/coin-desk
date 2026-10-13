@@ -37,6 +37,9 @@ const quote = (asset) => ({
   high24h: 110,
   low24h: 90,
   time: Math.floor(Date.now() / 1000),
+  timestampKind: 'trade',
+  actualTradeAt: Math.floor(Date.now() / 1000),
+  sourceEventTime: Math.floor(Date.now() / 1000),
 });
 function source(key, at = now, asOf = at) {
   DB.sqlite
@@ -809,14 +812,14 @@ it('slow quote groups resume at the next coins rather than restart with BTC each
   expect(new Set(calls.flat()).size).toBe(16);
 });
 
-it('diagnosis distinguishes statistics windows from actual trades and pages preserve the same verdict', async () => {
+it('diagnosis distinguishes verified Binance trades from legacy windows and pages preserve the same verdict', async () => {
   ready();
   env.RUNTIME_KIND = 'vps';
   source('quote:BTC:binance', now, now - 301);
   source('quote:DOGE:upbit', now, now - 301);
   const report = await operationStatus(env);
   expect(report.sources.find((s) => s.key === 'quote:BTC:binance')).toMatchObject({
-    diagnosis: 'QUOTE_WINDOW_STALE',
+    diagnosis: 'TRADE_STALE',
     liveStale: true,
   });
   expect(report.sources.find((s) => s.key === 'quote:DOGE:upbit')).toMatchObject({
@@ -827,4 +830,46 @@ it('diagnosis distinguishes statistics windows from actual trades and pages pres
   expect(statusSummary(report).sources).toEqual([]);
   expect(sourcePage(report, new URLSearchParams('limit=2')).rows).toHaveLength(2);
   expect(() => sourcePage(report, new URLSearchParams('limit=101'))).toThrow();
+  const legacy = quote('BTC');
+  delete legacy.timestampKind;
+  delete legacy.actualTradeAt;
+  delete legacy.sourceEventTime;
+  DB.sqlite
+    .prepare('UPDATE snapshots SET data=? WHERE key=?')
+    .run(JSON.stringify(legacy), 'quote:BTC:binance');
+  source('quote:BTC:binance', now, now);
+  const unconfirmed = await operationStatus(env);
+  expect(unconfirmed.sources.find((s) => s.key === 'quote:BTC:binance')).toMatchObject({
+    diagnosis: 'TRADE_TIME_UNKNOWN',
+    status: 'delayed',
+    liveStale: true,
+    errorCode: 'TRADE_TIME_UNKNOWN',
+  });
+  DB.sqlite
+    .prepare('UPDATE snapshots SET data=? WHERE key=?')
+    .run(JSON.stringify(quote('BTC')), 'quote:BTC:binance');
+  DB.sqlite
+    .prepare('UPDATE ingestion SET error=? WHERE key=?')
+    .run('StaleQuoteError: QUOTE_STALE: last trade exceeds 300 seconds', 'quote:BTC:binance');
+  expect(
+    (await operationStatus(env)).sources.find((s) => s.key === 'quote:BTC:binance'),
+  ).toMatchObject({
+    diagnosis: 'TRADE_STALE',
+    status: 'delayed',
+    errorCode: 'TRADE_STALE',
+  });
+  DB.sqlite
+    .prepare('UPDATE ingestion SET error=? WHERE key=?')
+    .run('QUOTE_WINDOW_STALE: statistics window outdated', 'quote:BTC:binance');
+  expect(
+    (await operationStatus(env)).sources.find((s) => s.key === 'quote:BTC:binance'),
+  ).toMatchObject({
+    diagnosis: 'QUOTE_WINDOW_STALE',
+    status: 'delayed',
+    errorCode: 'QUOTE_WINDOW_STALE',
+  });
+  source('derivatives:BTC:funding', now, now - 10 * DAY);
+  expect(
+    (await operationStatus(env)).sources.find((s) => s.key === 'derivatives:BTC:funding'),
+  ).toMatchObject({ diagnosis: 'OBSERVATION_LATE', liveStale: false });
 });

@@ -4,6 +4,7 @@ import { matchesCoin } from '../shared/coin-search';
 import type { MarketSnapshot, MarketRow } from '../shared/market-snapshot';
 import type { Market, Quote } from '../shared/types';
 import { epoch, type Env } from './storage';
+import { quoteTradeFresh, describeStoredQuote } from '../shared/quote-freshness';
 
 /** Bounded reads only. Spark histories share one indexed query for the visible page. */
 export async function marketSnapshot(
@@ -60,7 +61,7 @@ export async function marketSnapshot(
           (q.change24h !== null && (!Number.isFinite(q.change24h) || q.change24h <= -100))
         )
           throw new Error('Invalid quote');
-        quote = q;
+        quote = describeStoredQuote(q, market);
       } catch {
         invalid = true;
       }
@@ -72,13 +73,16 @@ export async function marketSnapshot(
       spark: [],
       status: !supported
         ? 'unsupported'
-        : !invalid && failed.get(`quote:${id}:${market}`)?.includes('QUOTE_STALE:')
+        : !invalid &&
+            ['QUOTE_STALE:', 'QUOTE_TRADE_TIME_UNKNOWN:'].some((code) =>
+              failed.get(`quote:${id}:${market}`)?.includes(code),
+            )
           ? 'delayed'
           : invalid || failed.has(`quote:${id}:${market}`)
             ? 'error'
             : !quote
               ? 'pending'
-              : now - quote.time > 300 || now - stored!.fetched_at > 300
+              : !quoteTradeFresh(quote, market, now) || now - stored!.fetched_at > 300
                 ? 'delayed'
                 : 'ready',
     };

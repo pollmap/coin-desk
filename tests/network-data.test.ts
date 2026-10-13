@@ -51,6 +51,14 @@ describe('free network metric definitions and normalization', () => {
     expect(networkMetrics('SOL')).toEqual([]);
     expect(networkUnit('DOGE', 'fees_native')).toBe('DOGE / 일');
     expect(networkUnit('BTC', 'hashrate')).toBe('TH/s');
+    expect(networkUnit('DASH', 'hashrate')).toBe('GH/s');
+    expect(networkUnit('ZEC', 'hashrate')).toBe('GH/s');
+    expect(networkMetrics('DASH').find((m) => m.id === 'hashrate')?.formula).toContain('10⁹');
+    expect(networkMetrics('ZEC').find((m) => m.id === 'hashrate')?.formula).toContain('75초');
+    expect(
+      parseNetwork({ data: [raw(now - DAY, 'ZEC', { HashRate: '12345' })] }, 'ZEC', now)[0].values
+        .hashrate,
+    ).toBe(12345);
     expect(networkMetrics('LINK').find((item) => item.id === 'fees_native')).toBeUndefined();
     expect(
       networkMetrics('DOGE')

@@ -29,6 +29,7 @@ export interface LiveQuote {
   price: number;
   tradedAt: number;
   receivedAt: number;
+  lastTradeId?: number;
 }
 export interface QuoteStream {
   delta?: boolean;

@@ -346,7 +346,10 @@ export async function updateQuoteBatch(
       env.DB,
       'quote:' + problem.asset + ':' + market,
       problem.error,
-      problem.error instanceof Error && problem.error.name === 'StaleQuoteError' ? 60 : undefined,
+      problem.error instanceof Error &&
+        ['StaleQuoteError', 'UnknownTradeTimestampError'].includes(problem.error.name)
+        ? 60
+        : undefined,
     );
   return {
     attempted: selected.length,

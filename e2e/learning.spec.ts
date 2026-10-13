@@ -78,6 +78,12 @@ test('confirmed patterns navigate their chart, survive save/share and clear sele
   const focusedFrom = await chart(page).getAttribute('data-visible-from');
   await page.setViewportSize({ width: 1000, height: 800 });
   await expect(chart(page)).toHaveAttribute('data-visible-from', focusedFrom!);
+  if (
+    (await page
+      .getByRole('button', { name: '더보기', exact: true })
+      .getAttribute('aria-expanded')) !== 'true'
+  )
+    await page.getByRole('button', { name: '더보기', exact: true }).click();
   await page.locator('.analysis-tools > summary').click();
   await page.getByRole('button', { name: '링크 공유', exact: true }).click();
   const url = await page.getByRole('textbox', { name: '공유 주소', exact: true }).inputValue();
@@ -109,7 +115,11 @@ test('onchain guides open the corresponding primary metric and unsupported coins
   await page.locator('.guide-primary').click();
   await expect(chart(page)).toHaveAttribute('data-asset', 'ETH');
   await expect(chart(page)).toHaveAttribute('data-primary-metric', 'net:mvrv');
-  await page.getByRole('button', { name: '지표 설명', exact: true }).click();
+  await page.getByRole('button', { name: /^지표 설명/ }).click();
+  await page
+    .getByRole('dialog', { name: '지표 설명', exact: true })
+    .getByText('출처·한계', { exact: true })
+    .click();
   await page.getByRole('link', { name: '현재 분석 설명', exact: true }).click();
   await expect(page.locator('.guide-title')).toContainText('MVRV');
   await openApply(page);
@@ -156,7 +166,11 @@ test('a guide activates a real drawing tool and Help follows the selected analys
     .getByRole('navigation', { name: '지표 목록', exact: true })
     .getByRole('link', { name: /^가격 위치 밴드/ })
     .click();
-  await page.getByRole('button', { name: '지표 설명', exact: true }).click();
+  await page.getByRole('button', { name: /^지표 설명/ }).click();
+  await page
+    .getByRole('dialog', { name: '지표 설명', exact: true })
+    .getByText('출처·한계', { exact: true })
+    .click();
   await page.getByRole('link', { name: '현재 분석 설명', exact: true }).click();
   await expect(page.locator('.guide-title')).toContainText('가격 위치 밴드');
 });

@@ -76,9 +76,16 @@ services:
       retries: 3
   quotes:
     <<: *service
+    image: ${COIN_DESK_QUOTES_IMAGE:-${COIN_DESK_IMAGE}}
     profiles: [collectors]
     command: [node, server/scheduler.mjs]
-    environment: { <<: *environment, COIN_DESK_LANE: quotes }
+    environment:
+      {
+        <<: *environment,
+        COIN_DESK_RELEASE: '${COIN_DESK_QUOTES_RELEASE:-${COIN_DESK_RELEASE}}',
+        COIN_DESK_LANE: quotes,
+        COIN_DESK_QUOTE_HUB: 'http://quote-hub:8091',
+      }
     healthcheck: &collector-health
       test: [CMD, node, server/healthcheck.mjs, quotes]
       interval: 30s
@@ -90,7 +97,12 @@ services:
     image: ${COIN_DESK_BACKGROUND_IMAGE:-${COIN_DESK_IMAGE}}
     profiles: [collectors]
     command: [node, server/scheduler.mjs]
-    environment: { <<: *environment, COIN_DESK_LANE: background }
+    environment:
+      {
+        <<: *environment,
+        COIN_DESK_RELEASE: '${COIN_DESK_BACKGROUND_RELEASE:-${COIN_DESK_RELEASE}}',
+        COIN_DESK_LANE: background,
+      }
     healthcheck: { <<: *collector-health, test: [CMD, node, server/healthcheck.mjs, background] }
   recent:
     <<: *service

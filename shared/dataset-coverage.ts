@@ -28,7 +28,7 @@ export interface DatasetCoverage {
   sources: DatasetCoverageRow[];
   quoteStates: {
     source: string;
-    condition: 'recent-trade' | 'old-trade' | 'collection-error' | 'pending';
+    condition: 'recent-trade' | 'old-trade' | 'unknown-trade-time' | 'collection-error' | 'pending';
     tradedAt: number | null;
     checkedAt: number | null;
   }[];

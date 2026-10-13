@@ -48,6 +48,48 @@ test('Old and duplicate trades cannot overwrite the latest quote, and restarts h
   await hub.close();
   await other.close();
 });
+test('private minute proofs retain only 64 exact trades per selected registered asset', async () => {
+  const now = 1800000000;
+  const hub = createQuoteHub({ clock: () => now + 10 });
+  await new Promise((r) => hub.server.listen(0, '127.0.0.1', r));
+  const base = 'http://127.0.0.1:' + hub.server.address().port;
+  try {
+    for (let id = 1; id <= 70; id++)
+      assert.equal(
+        hub.ingest('binance', {
+          e: 'aggTrade',
+          s: 'BTCUSDT',
+          p: String(100 + id),
+          T: now * 1000 + id,
+          l: id,
+        }),
+        true,
+      );
+    assert.equal(
+      hub.ingest('binance', { e: 'aggTrade', s: 'BTCUSDT', p: '171', T: now * 1000 + 70, l: 71 }),
+      true,
+    );
+    const response = await fetch(base + '/snapshot?market=binance&assets=BTC');
+    const proof = await response.json();
+    assert.equal(response.status, 200);
+    assert.equal(proof.trades.length, 64);
+    assert.equal(proof.trades[0].lastTradeId, 8);
+    assert.equal(proof.trades.at(-1).lastTradeId, 71);
+    assert.equal(proof.trades.at(-1).price, 171);
+    assert.equal(proof.trades.at(-1).tradedAt, now + 0.07);
+    assert.ok(proof.trades.every((t) => t.asset === 'BTC'));
+    for (const path of [
+      '/snapshot?market=binance',
+      '/snapshot?market=binance&assets=BTC,BTC',
+      '/snapshot?market=upbit&assets=BTC',
+      '/snapshot?market=binance&assets=UNKNOWN',
+      '/snapshot?market=binance&assets=BTC,DOGE,ETH,SOL,XRP,LINK,ONDO,PEPE,PENGU',
+    ])
+      assert.equal((await fetch(base + path)).status, 400);
+  } finally {
+    await hub.close();
+  }
+});
 test('100 local SSE clients receive coalesced ticks and invalid markets fail closed', async () => {
   const hub = createQuoteHub();
   await new Promise((r) => hub.server.listen(0, '127.0.0.1', r));

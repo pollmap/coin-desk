@@ -15,8 +15,10 @@ import { guideLesson } from '../shared/guide-lessons';
 import { PATTERNS, trendFilter } from '../shared/candle-patterns';
 import { ASSETS } from '../shared/catalog';
 import { validPriceBasis } from '../shared/indicator-catalog';
+import { networkMetric } from '../shared/network-catalog';
 import { priceBasis, basisName, type PriceBasis } from '../shared/analysis-workspace';
 import { AssetLogo } from './AssetLogo';
+import { IndicatorConcept } from './IndicatorConcept';
 import { saved, save } from './lib';
 import { useData } from './hooks';
 import type { Asset } from '../shared/types';
@@ -224,8 +226,27 @@ export function LearnPage() {
       ? v.filter((x): x is string => typeof x === 'string' && !!guideArticle(x))
       : [];
   });
-  const article = guideArticle(id ?? '');
-  const lesson = article ? guideLesson(article) : null;
+  const article = useMemo(() => {
+    const original = guideArticle(id ?? '');
+    const definition = id === 'net-hashrate' ? networkMetric(asset, 'hashrate') : undefined;
+    return original && definition
+      ? { ...original, unit: definition.unit, formula: definition.formula }
+      : original;
+  }, [id, asset]);
+  const lesson = useMemo(() => {
+    if (!article) return null;
+    const original = guideLesson(article);
+    const definition = id === 'net-hashrate' ? networkMetric(asset, 'hashrate') : undefined;
+    if (!definition) return original;
+    const scale = definition.unit === 'GH/s' ? '10⁹' : '10¹²';
+    return {
+      ...original,
+      method: [definition.formula, `1 ${definition.unit} = 초당 ${scale} 해시`],
+      example: [`2 ${definition.unit}는 초당 2 × ${scale}회의 해시 계산을 뜻합니다.`],
+      conclusion:
+        '선택 네트워크의 채굴 연산량 추정치입니다. 해시 함수가 다른 코인의 수치 크기나 보안을 직접 비교하지 않습니다.',
+    };
+  }, [article, id, asset]);
   const results = useMemo(
     () =>
       searchGuides(query).filter(
@@ -320,12 +341,15 @@ export function LearnPage() {
               </div>
               {article.english && <p className="guide-english">{article.english}</p>}
               <p className="guide-intro">
-                {INDICATORS_CATALOG.find((d) => d.guide === article.id)?.shortMeaning ??
-                  article.summary}
+                {article.id === 'net-hashrate'
+                  ? '작업증명 네트워크의 하루 평균 채굴 연산량'
+                  : (INDICATORS_CATALOG.find((d) => d.guide === article.id)?.shortMeaning ??
+                    article.summary)}
               </p>
               <section id="meaning" tabIndex={-1}>
                 <h2>{lesson.question}</h2>
                 <p>{article.read}</p>
+                <IndicatorConcept metric={article.id} />
                 {article.action.kind === 'pattern' && <PatternExample id={article.action.id} />}
                 {lesson.reading.length > 0 && article.id !== 'rainbow' && (
                   <table className="guide-reading">
@@ -401,7 +425,21 @@ export function LearnPage() {
                 <dl className="guide-terms">
                   <div>
                     <dt>지원 코인</dt>
-                    <dd>{article.assets.filter((a) => PRIMARY_ASSETS.includes(a)).join(' · ')}</dd>
+                    <dd>
+                      {article.assets.includes(asset) ? `${asset}에 적용 가능` : `${asset} 미지원`}
+                      <details className="guide-supported-assets">
+                        <summary>전체 지원 코인</summary>
+                        <ul>
+                          {article.assets
+                            .filter((a) => PRIMARY_ASSETS.includes(a))
+                            .map((a) => (
+                              <li key={a}>
+                                {ASSETS.find((entry) => entry.id === a)?.name} · {a}
+                              </li>
+                            ))}
+                        </ul>
+                      </details>
+                    </dd>
                   </div>
                   {article.unit && (
                     <div>
@@ -548,14 +586,9 @@ export function LearnPage() {
                           <span className="learn-row-meta">
                             <span>{g.category}</span>
                             <small>
-                              {g.assets.filter((a) => PRIMARY_ASSETS.includes(a)).join(' · ')}
-                              {g.basis
-                                ? ' · ' +
-                                  g.basis
-                                    .map((b) => (b === 'reference' ? 'USD' : '거래소'))
-                                    .filter((v, i, a) => a.indexOf(v) === i)
-                                    .join('/')
-                                : ' '}
+                              {g.assets.includes(asset)
+                                ? `${asset}에 적용 가능`
+                                : `${asset} 미지원`}
                             </small>
                           </span>
                           <ArrowRight size={16} />

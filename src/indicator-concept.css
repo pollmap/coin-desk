@@ -1,0 +1,80 @@
+.indicator-concept {
+  margin: 16px 0;
+  color: var(--text);
+}
+.indicator-concept svg {
+  display: block;
+  width: 100%;
+  max-width: 440px;
+  height: auto;
+  margin: auto;
+  overflow: visible;
+}
+.indicator-concept text {
+  fill: currentColor;
+  font-size: 14px;
+  font-variant-numeric: tabular-nums;
+}
+.indicator-concept .concept-axis {
+  stroke: var(--border);
+}
+.indicator-concept .concept-fill,
+.indicator-concept .concept-point {
+  fill: var(--accent);
+}
+.indicator-concept .concept-muted-fill {
+  fill: var(--muted);
+  opacity: 0.65;
+}
+.indicator-concept .concept-value {
+  fill: var(--accent);
+  font-size: 25px;
+  font-weight: 700;
+}
+.indicator-concept .concept-caption {
+  fill: var(--muted);
+}
+.indicator-concept .concept-line,
+.indicator-concept .concept-price,
+.indicator-concept .concept-boundaries {
+  fill: none;
+  stroke-width: 2;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+}
+.indicator-concept .concept-line {
+  stroke: var(--accent);
+}
+.indicator-concept .concept-price {
+  stroke: var(--text);
+}
+.indicator-concept .concept-upper {
+  stroke: #b44449;
+}
+.indicator-concept .concept-range {
+  fill: var(--accent);
+  opacity: 0.08;
+}
+.indicator-concept .concept-boundaries {
+  stroke: var(--muted);
+  stroke-width: 1;
+}
+.indicator-concept .concept-dashed {
+  stroke-dasharray: 5 4;
+}
+.indicator-concept .concept-ribbon-25 {
+  stroke: #4b76b2;
+}
+.indicator-concept .concept-ribbon-50 {
+  stroke: #9b6840;
+}
+.indicator-concept .concept-ribbon-100 {
+  stroke: #8465a2;
+}
+.indicator-concept figcaption {
+  font-size: 12px;
+  color: var(--muted);
+  text-align: center;
+  margin-top: 6px;
+  line-height: 1.5;
+}

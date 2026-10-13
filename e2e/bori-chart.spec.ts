@@ -31,6 +31,12 @@ test('all eight relative views use the selected pair, unit, and export name', as
   await page.reload();
   await page.getByLabel('비교 설정', { exact: true }).click();
   await expect(page.getByRole('combobox', { name: '비교 코인', exact: true })).toHaveValue('LINK');
+  if (
+    (await page
+      .getByRole('button', { name: '더보기', exact: true })
+      .getAttribute('aria-expanded')) !== 'true'
+  )
+    await page.getByRole('button', { name: '더보기', exact: true }).click();
   await page.locator('.analysis-tools > summary').click();
   const downloaded = page.waitForEvent('download');
   await page.getByRole('button', { name: '지표 CSV', exact: true }).click();
@@ -91,9 +97,9 @@ test('brand, market timestamps and core layouts meet the compact white design', 
     await expect(page.getByRole('heading', { name: '시장', exact: true })).toBeVisible();
     await expect(page.locator('.market-leaders')).toHaveCount(0);
     await expect(page.locator('.market-table tbody tr')).toHaveCount(width < 768 ? 20 : 50);
-    await expect(page.locator('.market-table a').filter({ hasText: /MVRV|RSI 14/ })).toHaveCount(
-      width < 768 ? 20 : 50,
-    );
+    await expect(
+      page.locator('.market-table a').filter({ hasText: /MVRV|슈퍼트렌드/ }),
+    ).toHaveCount(width < 768 ? 20 : 50);
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(
       true,
     );
@@ -224,7 +230,11 @@ test('relative settings preserve chart position, focus, and guide context', asyn
         .evaluate((el) => el.scrollWidth <= el.clientWidth + 1),
     ).toBe(true);
   }
-  await page.getByRole('button', { name: '지표 설명', exact: true }).click();
+  await page.getByRole('button', { name: /^지표 설명/ }).click();
+  await page
+    .getByRole('dialog', { name: '지표 설명', exact: true })
+    .getByText('출처·한계', { exact: true })
+    .click();
   await page.getByRole('link', { name: '현재 분석 설명', exact: true }).click();
   await expect(page).toHaveURL(/benchmark_asset=LINK/);
   await expect(page).toHaveURL(/normalization=ratio/);
