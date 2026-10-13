@@ -50,6 +50,11 @@ async function focusedOnly(page: Page) {
 async function accessibleLayout(page: Page, width: number) {
   const chart = page.locator('[data-chart-kind="analysis"]');
   const box = (await chart.boundingBox())!;
+  if (width < 768) {
+    const quoteBox = (await page.locator('.quote-source-button').boundingBox())!;
+    expect(quoteBox.height).toBeGreaterThanOrEqual(44);
+    expect(quoteBox.height).toBeLessThanOrEqual(46);
+  }
   expect(box.y).toBeLessThanOrEqual(width < 768 ? 280 : 240);
   if (width >= 768) expect(box.height).toBeGreaterThanOrEqual(420);
   expect(await page.evaluate(() => document.documentElement.scrollWidth > innerWidth + 1)).toBe(
@@ -112,6 +117,36 @@ for (const width of [320, 390, 1280]) {
           await chart.getAttribute('data-visible-to'),
         ];
         const geometry = [];
+        await testInfo.attach('hash-header-layout.json', {
+          body: Buffer.from(
+            JSON.stringify(
+              await page.evaluate(() =>
+                [
+                  '.asset-header',
+                  '.coin-context',
+                  '.quote-source-button',
+                  '.quote-source-label',
+                ].map((selector) => {
+                  const element = document.querySelector(selector)!,
+                    box = element.getBoundingClientRect(),
+                    css = getComputedStyle(element);
+                  return {
+                    selector,
+                    x: box.x,
+                    y: box.y,
+                    width: box.width,
+                    height: box.height,
+                    fontSize: css.fontSize,
+                    lineHeight: css.lineHeight,
+                    minHeight: css.minHeight,
+                    whiteSpace: css.whiteSpace,
+                  };
+                }),
+              ),
+            ),
+          ),
+          contentType: 'application/json',
+        });
         for (const theme of ['light', 'dark']) {
           await page.evaluate((value) => {
             document.documentElement.dataset.theme = value;

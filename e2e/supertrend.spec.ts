@@ -214,11 +214,32 @@ test('keeps the weekly chart compact and accessible in both themes', async ({ pa
         label: element.getAttribute('aria-label') ?? element.textContent?.trim(),
         height: box.height,
       })),
+    header: ['.asset-header', '.coin-context', '.quote-source-button', '.quote-source-label'].map(
+      (selector) => {
+        const element = document.querySelector(selector)!,
+          box = element.getBoundingClientRect(),
+          css = getComputedStyle(element);
+        return {
+          selector,
+          height: box.height,
+          width: box.width,
+          fontSize: css.fontSize,
+          lineHeight: css.lineHeight,
+          minHeight: css.minHeight,
+          whiteSpace: css.whiteSpace,
+        };
+      },
+    ),
   }));
   await testInfo.attach('supertrend-mobile-layout', {
     body: JSON.stringify(mobileLayout, null, 2),
     contentType: 'application/json',
   });
+  const quoteHeight = mobileLayout.header.find(
+    (row) => row.selector === '.quote-source-button',
+  )!.height;
+  expect(quoteHeight).toBeGreaterThanOrEqual(44);
+  expect(quoteHeight).toBeLessThanOrEqual(46);
   expect((await chart.boundingBox())!.y).toBeLessThanOrEqual(280);
   expect(mobileLayout.documentWidth).toBeLessThanOrEqual(mobileLayout.viewport);
   for (const control of mobileLayout.toolbar) expect(control.height).toBeGreaterThanOrEqual(44);

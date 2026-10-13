@@ -186,7 +186,43 @@ test('source selection contains only the necessary choice and failures expose no
 
 test('missing current price distinguishes loading, failed lookup and unavailable values without diagnostics', async ({
   page,
-}) => {
+}, testInfo) => {
+  await page.setViewportSize({ width: 320, height: 844 });
+  const captureHeader = async (phase: string) => {
+    const layout = await page.evaluate(() => {
+      const rows = ['.asset-header', '.quote-source-button', '.quote-source-label'].map(
+        (selector) => {
+          const element = document.querySelector(selector)!,
+            box = element.getBoundingClientRect(),
+            css = getComputedStyle(element);
+          return {
+            selector,
+            height: box.height,
+            width: box.width,
+            fontSize: css.fontSize,
+            lineHeight: css.lineHeight,
+            minHeight: css.minHeight,
+            whiteSpace: css.whiteSpace,
+          };
+        },
+      );
+      return {
+        rows,
+        chartY: document.querySelector('[data-chart-kind="analysis"]')!.getBoundingClientRect().y,
+        documentWidth: document.documentElement.scrollWidth,
+        viewport: innerWidth,
+      };
+    });
+    await testInfo.attach('missing-price-header-' + phase + '.json', {
+      body: Buffer.from(JSON.stringify(layout)),
+      contentType: 'application/json',
+    });
+    const quoteHeight = layout.rows.find((row) => row.selector === '.quote-source-button')!.height;
+    expect(quoteHeight).toBeGreaterThanOrEqual(44);
+    expect(quoteHeight).toBeLessThanOrEqual(46);
+    expect(layout.chartY).toBeLessThanOrEqual(280);
+    expect(layout.documentWidth).toBeLessThanOrEqual(layout.viewport);
+  };
   await page.addInitScript(() => {
     class UnavailableSource extends EventTarget {
       onerror: (() => void) | null = null;
@@ -221,17 +257,20 @@ test('missing current price distinguishes loading, failed lookup and unavailable
   await page.goto('/coins/BTC?metric=view:price&price_source=upbit&period=1m');
   await expect(chart(page)).toHaveAttribute('data-range-ready', '1');
   const quote = page.locator('.detail-quote');
-  await expect(quote).toContainText('불러오는 중');
+  await expect(quote).toContainText('확인 중');
+  await captureHeader('loading');
   release();
-  await expect(quote).toContainText('가격 확인 불가');
-  await expect(quote).not.toContainText(/연결 중|불러오는 중|PRIVATE_FAKE/);
+  await expect(quote).toContainText('확인 불가');
+  await expect(quote).not.toContainText(/연결 중|확인 중|PRIVATE_FAKE/);
   await expect(quote.locator('strong')).toHaveText('—');
+  await captureHeader('failed');
   unavailable = true;
   await page.reload();
   await expect(chart(page)).toHaveAttribute('data-range-ready', '1');
-  await expect(quote).toContainText('가격 확인 불가');
-  await expect(quote).not.toContainText(/연결 중|불러오는 중/);
+  await expect(quote).toContainText('확인 불가');
+  await expect(quote).not.toContainText(/연결 중|확인 중/);
   await expect(quote.locator('strong')).toHaveText('—');
+  await captureHeader('unavailable');
 });
 
 test('performance comparison retains results without date inputs, source diagnostics or export actions', async ({

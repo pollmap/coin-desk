@@ -63,10 +63,10 @@ export function SpotQuote({
           {market === 'upbit' ? 'Upbit · KRW' : 'Binance · USDT'}
           {!quote?.displayPrice
             ? feed.loading && !feed.error
-              ? ' · 불러오는 중'
-              : ' · 가격 확인 불가'
+              ? ' · 확인 중'
+              : ' · 확인 불가'
             : quote.stale
-              ? ' · 가격 확인 지연'
+              ? ' · 지연'
               : ''}{' '}
           ▾
         </span>
