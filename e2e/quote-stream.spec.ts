@@ -69,11 +69,79 @@ test('live prices preserve the historical canvas, reject old events and retain t
   expect(await canvas!.evaluate((el) => el.isConnected)).toBe(true);
   await emit(3, 86000000, now + 1, false);
   await expect(page.locator('.detail-quote')).toContainText('₩86,000,000');
-  await expect(page.locator('.detail-quote')).toContainText('갱신 지연');
+  await expect(page.locator('.detail-quote')).toContainText('확인 지연');
   await emit(4, 87000000, now + 2);
   await expect(page.locator('.detail-quote')).toContainText('₩87,000,000');
-  await expect(page.locator('.detail-quote')).not.toContainText('갱신 지연');
+  await expect(page.locator('.detail-quote')).not.toContainText('확인 지연');
   expect(await canvas!.evaluate((el) => el.isConnected)).toBe(true);
+});
+
+test('legacy Binance window time stays unverified until a real trade arrives and still expires after 300 seconds', async ({
+  page,
+}) => {
+  await page.clock.install();
+  await page.addInitScript(() => {
+    const sources: EventTarget[] = [];
+    class FixtureSource extends EventTarget {
+      onerror: (() => void) | null = null;
+      closed = false;
+      constructor(readonly url: string) {
+        super();
+        sources.push(this);
+      }
+      close() {
+        this.closed = true;
+      }
+    }
+    Object.assign(window, {
+      EventSource: FixtureSource,
+      emitVerifiedTrade() {
+        for (const source of sources as FixtureSource[])
+          if (!source.closed)
+            source.dispatchEvent(
+              new MessageEvent('quotes', {
+                data: JSON.stringify({
+                  epoch: 'verified-binance-proof',
+                  sequence: 1,
+                  market: 'binance',
+                  connected: true,
+                  quotes: [
+                    {
+                      asset: 'BTC',
+                      market: 'binance',
+                      price: 65000,
+                      tradedAt: Date.now() / 1000,
+                      receivedAt: Date.now() / 1000,
+                      lastTradeId: 123456789,
+                    },
+                  ],
+                }),
+              }),
+            );
+      },
+    });
+  });
+  // The isolated server deliberately retains the pre-proof Binance snapshot.
+  // Its recent ticker-window time must not become a real trade reference.
+  await page.goto('/coins/BTC?metric=view%3Aprice&price_source=binance&market=binance&period=1m');
+  const chart = page.locator('[data-chart-kind="analysis"]');
+  const quote = page.locator('.detail-quote');
+  await expect(chart).toHaveAttribute('data-range-ready', '1');
+  await expect(quote).toContainText('시각 미확인');
+  await expect(quote).toHaveAttribute('title', /^시세 기준 · 체결 시각 미확인 /);
+  await expect(chart).not.toHaveAttribute('data-live-price');
+  const canvas = await chart.locator('canvas').first().elementHandle();
+  await page.evaluate(() => {
+    (window as unknown as { emitVerifiedTrade: () => void }).emitVerifiedTrade();
+  });
+  await expect(quote).toContainText('65,000');
+  await expect(quote).not.toContainText('시각 미확인');
+  await expect(quote).toHaveAttribute('title', /^실제 체결 /);
+  await expect(chart).toHaveAttribute('data-live-price', '65000');
+  await page.clock.fastForward(301000);
+  await expect(quote).toContainText('체결 지연');
+  await expect(quote).toContainText('65,000');
+  expect(await canvas!.evaluate((element) => element.isConnected)).toBe(true);
 });
 
 test('silent stream reconnects after ten seconds without recreating the chart', async ({
@@ -123,13 +191,11 @@ test('silent stream reconnects after ten seconds without recreating the chart', 
       .at(-1)
       .dispatchEvent(new MessageEvent('quotes', { data: JSON.stringify(data) }));
     // Queued events from the closed generation must not change the connection state.
-    (window as any).sources
-      .at(-2)
-      .dispatchEvent(
-        new MessageEvent('quotes', {
-          data: JSON.stringify({ ...data, epoch: 'closed', connected: false }),
-        }),
-      );
+    (window as any).sources.at(-2).dispatchEvent(
+      new MessageEvent('quotes', {
+        data: JSON.stringify({ ...data, epoch: 'closed', connected: false }),
+      }),
+    );
   });
   await expect(page.locator('.detail-quote')).toContainText('₩88,000,000');
   expect(await canvas!.evaluate((el) => el.isConnected)).toBe(true);

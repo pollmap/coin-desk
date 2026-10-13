@@ -1039,7 +1039,7 @@ body {
 
 @media (max-width: 767px) {
   .product-desk #main-content:has(.indicator-workspace) {
-    padding: 2px 16px;
+    padding: 0 16px;
   }
   .product-desk .indicator-workspace .compact-coins {
     margin-bottom: 0;
@@ -1118,10 +1118,15 @@ body {
   }
   .product-desk .indicator-workspace .detail-quote {
     margin-left: auto;
-    max-width: 160px;
+    max-width: 190px;
     min-width: 0;
     flex: 0 1 auto;
     text-align: right;
+  }
+  .product-desk .indicator-workspace .quote-source-button {
+    max-width: 100%;
+    white-space: normal;
+    overflow-wrap: anywhere;
   }
   .product-desk .indicator-workspace .detail-quote strong {
     font-size: 14px;
@@ -1131,7 +1136,7 @@ body {
     grid-template-columns: minmax(0, 1fr) auto;
     gap: 2px 8px;
     min-height: 0;
-    margin: 0 0 2px;
+    margin: 0;
   }
   .product-desk .indicator-heading > div:first-child {
     display: contents;

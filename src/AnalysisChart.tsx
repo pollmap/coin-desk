@@ -125,7 +125,7 @@ export const AnalysisChart = memo(function AnalysisChart({
   initialTool?: DrawingKind;
   bands?: BandRow[];
   onReadingDate?: (time: number | null, pinned?: boolean) => void;
-  onDateSelect?: (time: number | null) => void;
+  onDateSelect?: (time: number | null, range?: DateWindow) => void;
   initialReadingDate?: number;
   exportName?: string;
   readingLabel?: string;
@@ -209,7 +209,13 @@ export const AnalysisChart = memo(function AnalysisChart({
     setSelectionKey(key);
     setSelected(t);
     moveCursor.current(t, preserveRange);
-    if (!preserveRange) dateSelect.current?.(t);
+    if (!preserveRange) {
+      const range = pendingRange.current ?? chartRef.current?.timeScale().getVisibleRange();
+      dateSelect.current?.(
+        t,
+        range ? { from: Number(range.from), to: Number(range.to) } : undefined,
+      );
+    }
   }
   function exportReadings() {
     const visible = chartRef.current?.timeScale().getVisibleRange();
@@ -391,7 +397,11 @@ export const AnalysisChart = memo(function AnalysisChart({
         manualCursor.current = true;
         setPinned(true);
         setSelectionKey(key);
-        dateSelect.current?.(Number(e.time));
+        const range = pendingRange.current ?? chart.timeScale().getVisibleRange();
+        dateSelect.current?.(
+          Number(e.time),
+          range ? { from: Number(range.from), to: Number(range.to) } : undefined,
+        );
         setSelected(e.time);
       }
     });
@@ -416,7 +426,11 @@ export const AnalysisChart = memo(function AnalysisChart({
         // ResizeObserver and data refresh, even without a prior drag/zoom.
         userRange.current = true;
         const width = Number(range.to) - Number(range.from);
-        chart.timeScale().setVisibleRange({ from: ts(time - width / 2), to: ts(time + width / 2) });
+        pendingRange.current = { from: time - width / 2, to: time + width / 2 };
+        chart.timeScale().setVisibleRange({
+          from: ts(pendingRange.current.from),
+          to: ts(pendingRange.current.to),
+        });
       }
       chart.setCrosshairPosition(target.values.get(time)!, ts(time), target.series);
     };
@@ -594,7 +608,20 @@ export const AnalysisChart = memo(function AnalysisChart({
       ?.priceScale('right', 0)
       .applyOptions({ mode: log ? PriceScaleMode.Logarithmic : PriceScaleMode.Normal });
   }, [log]);
+  const appliedRange = useRef<string | null>(null);
   useEffect(() => {
+    const token = `${key}:${period}:${rangeRevision}`;
+    const incoming = availableWindow(readings.times, initialWindow);
+    const current = pendingRange.current ?? chartRef.current?.timeScale().getVisibleRange();
+    if (
+      appliedRange.current === token &&
+      incoming &&
+      current &&
+      incoming.from === Number(current.from) &&
+      incoming.to === Number(current.to)
+    )
+      return;
+    appliedRange.current = token;
     userRange.current = false;
     pendingRange.current = null;
     appliedFocus.current = null;
@@ -616,15 +643,21 @@ export const AnalysisChart = memo(function AnalysisChart({
     // Only an exact observation can be pinned; unknown dates never fabricate a value.
     if (initialReadingDate && readings.times.includes(initialReadingDate))
       explore(initialReadingDate, true);
-  }, [
-    period,
-    key,
-    ready,
-    rangeRevision,
-    initialWindow?.from,
-    initialWindow?.to,
-    initialReadingDate,
-  ]);
+  }, [period, key, ready, rangeRevision, initialWindow?.from, initialWindow?.to]);
+  // Pinning a date is independent of the time-scale range. A keyboard step or
+  // URL date change must not reapply the old range after an imperative zoom.
+  useEffect(() => {
+    if (!ready || !chartRef.current) return;
+    if (initialReadingDate && readings.times.includes(initialReadingDate)) {
+      explore(initialReadingDate, true);
+    } else if (initialReadingDate === undefined) {
+      manualCursor.current = true;
+      setPinned(false);
+      setSelectionKey(key);
+      setSelected(null);
+      chartRef.current.clearCrosshairPosition();
+    }
+  }, [key, ready, rangeRevision, initialReadingDate]);
   useEffect(() => {
     if (!focus) {
       appliedFocus.current = null;
@@ -658,6 +691,20 @@ export const AnalysisChart = memo(function AnalysisChart({
         chartRef.current?.timeScale().setVisibleRange({ from: ts(range.from), to: ts(range.to) });
       }}
       onSelect={explore}
+      onNavigate={(date, range) => {
+        if (range) {
+          pendingRange.current = range;
+          userRange.current = true;
+          chartRef.current?.timeScale().setVisibleRange({ from: ts(range.from), to: ts(range.to) });
+        }
+        if (date !== undefined) explore(date, true);
+        const desired =
+          range ?? pendingRange.current ?? chartRef.current?.timeScale().getVisibleRange();
+        dateSelect.current?.(
+          date ?? (pinned ? selectedTime : null),
+          desired ? { from: Number(desired.from), to: Number(desired.to) } : undefined,
+        );
+      }}
       onReset={() => {
         explore(null);
         userRange.current = false;

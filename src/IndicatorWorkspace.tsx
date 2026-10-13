@@ -1271,11 +1271,14 @@ export function IndicatorWorkspace() {
                       visible.current = range;
                     }}
                     onReadingDate={readingChange}
-                    onDateSelect={(time) =>
+                    onDateSelect={(time, range) =>
                       change({
                         reading_date: time === null ? null : String(time),
                         signal: null,
                         pattern_focus: null,
+                        ...(range
+                          ? { chart_from: String(range.from), chart_to: String(range.to) }
+                          : {}),
                       })
                     }
                     initialReadingDate={initialReadingDate}
@@ -1348,11 +1351,14 @@ export function IndicatorWorkspace() {
                       visible.current = range;
                     }}
                     onReadingDate={readingChange}
-                    onDateSelect={(time) =>
+                    onDateSelect={(time, range) =>
                       change({
                         reading_date: time === null ? null : String(time),
                         signal: null,
                         pattern_focus: null,
+                        ...(range
+                          ? { chart_from: String(range.from), chart_to: String(range.to) }
+                          : {}),
                       })
                     }
                     initialReadingDate={initialReadingDate}

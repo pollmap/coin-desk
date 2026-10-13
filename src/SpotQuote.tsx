@@ -66,9 +66,9 @@ export function SpotQuote({
           ? ' · 시세 대기'
           : quote.stale
             ? quote.displayTimestampKind !== 'trade'
-              ? ' · 체결 시각 미확인'
+              ? ' · 시각 미확인'
               : Date.now() / 1000 - (quote.displayTime ?? 0) > 300
-                ? ' · 최근 거래 오래됨'
+                ? ' · 체결 지연'
                 : ' · 확인 지연'
             : ''}{' '}
         ▾

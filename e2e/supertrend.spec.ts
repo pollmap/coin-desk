@@ -124,7 +124,42 @@ test('keeps the weekly chart compact and accessible in both themes', async ({ pa
   await page.goto('/coins/DOGE?metric=view:supertrend&price_source=binance&interval=1w');
   const chart = page.locator('[data-chart-kind="analysis"]');
   await expect(chart).toHaveAttribute('data-range-ready', '1');
+  const mobileLayout = await page.evaluate(() => ({
+    viewport: innerWidth,
+    documentWidth: document.documentElement.scrollWidth,
+    overflow: [...document.querySelectorAll('main *')]
+      .map((element) => ({ element, box: element.getBoundingClientRect() }))
+      .filter(
+        ({ element, box }) =>
+          box.width > 0 &&
+          box.height > 0 &&
+          box.right > innerWidth + 1 &&
+          getComputedStyle(element).visibility !== 'hidden',
+      )
+      .map(({ element, box }) => ({
+        tag: element.tagName,
+        className: element.className.toString(),
+        text: element.textContent?.trim().slice(0, 120),
+        x: box.x,
+        right: box.right,
+        width: box.width,
+      }))
+      .slice(0, 20),
+    toolbar: [...document.querySelectorAll('.indicator-toolbar button,.indicator-toolbar select')]
+      .map((element) => ({ element, box: element.getBoundingClientRect() }))
+      .filter(({ box }) => box.width > 0 && box.height > 0)
+      .map(({ element, box }) => ({
+        label: element.getAttribute('aria-label') ?? element.textContent?.trim(),
+        height: box.height,
+      })),
+  }));
+  await testInfo.attach('supertrend-mobile-layout', {
+    body: JSON.stringify(mobileLayout, null, 2),
+    contentType: 'application/json',
+  });
   expect((await chart.boundingBox())!.y).toBeLessThanOrEqual(280);
+  expect(mobileLayout.documentWidth).toBeLessThanOrEqual(mobileLayout.viewport);
+  for (const control of mobileLayout.toolbar) expect(control.height).toBeGreaterThanOrEqual(44);
   await page.screenshot({ path: testInfo.outputPath('supertrend-mobile.png'), fullPage: true });
   await page.setViewportSize({ width: 1280, height: 800 });
   await expect.poll(async () => (await chart.boundingBox())!.height).toBeGreaterThanOrEqual(420);

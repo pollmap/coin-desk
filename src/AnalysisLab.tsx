@@ -418,7 +418,7 @@ function RelativeView({
   toolbarTarget?: HTMLElement | null;
   onVisibleRange?: (range: DateWindow) => void;
   onReadingDate?: (time: number | null, pinned?: boolean) => void;
-  onDateSelect?: (time: number | null) => void;
+  onDateSelect?: (time: number | null, range?: DateWindow) => void;
   initialReadingDate?: number;
 }) {
   const pair = relativePair(asset, params);
@@ -592,7 +592,7 @@ export function AnalysisLab({
   toolbarTarget?: HTMLElement | null;
   onVisibleRange?: (range: DateWindow) => void;
   onReadingDate?: (time: number | null, pinned?: boolean) => void;
-  onDateSelect?: (time: number | null) => void;
+  onDateSelect?: (time: number | null, range?: DateWindow) => void;
   initialReadingDate?: number;
 }) {
   const scoped = useMemo(
