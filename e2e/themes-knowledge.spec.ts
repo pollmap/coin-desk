@@ -104,10 +104,17 @@ test('purpose search, pinned date, explanation and save preserve the chosen char
   await canvas.focus();
   await page.keyboard.press('Home');
   await expect(page.locator('.analysis-reading-date')).toContainText('날짜 고정');
-  const fixed = await page.locator('.analysis-reading-date').innerText();
+  await expect(page).toHaveURL(/reading_date=\d+/);
+  const selectedTime = Number(new URL(page.url()).searchParams.get('reading_date'));
+  expect(Number.isSafeInteger(selectedTime)).toBe(true);
+  const selectedIso = new Date(selectedTime * 1000).toISOString();
+  const fixed = selectedIso.slice(0, 16).replace('T', ' ') + ' UTC';
   const rect = (await canvas.boundingBox())!;
   await page.mouse.move(rect.x + rect.width * 0.7, rect.y + 100);
-  await expect(page.locator('.analysis-reading-date')).toHaveText(fixed);
+  await expect(page).toHaveURL(new RegExp(`reading_date=${selectedTime}(?:&|$)`));
+  await expect(page.locator('.analysis-reading-full-date')).toHaveText(['날짜 고정', `· ${fixed}`]);
+  await expect(page.locator('.analysis-reading-date')).toHaveAttribute('datetime', selectedIso);
+  await expect(page.locator('.analysis-reading-date')).toHaveAttribute('title', fixed);
   await page.getByRole('button', { name: /^지표 설명/ }).click();
   await expect(page.locator('.indicator-selected-context')).toContainText(
     fixed
