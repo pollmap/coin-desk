@@ -405,6 +405,7 @@ function RelativeView({
   toolbarTarget,
   onVisibleRange,
   onReadingDate,
+  onDateSelect,
   initialReadingDate,
 }: {
   asset: Asset;
@@ -417,6 +418,7 @@ function RelativeView({
   toolbarTarget?: HTMLElement | null;
   onVisibleRange?: (range: DateWindow) => void;
   onReadingDate?: (time: number | null, pinned?: boolean) => void;
+  onDateSelect?: (time: number | null) => void;
   initialReadingDate?: number;
 }) {
   const pair = relativePair(asset, params);
@@ -509,6 +511,7 @@ function RelativeView({
             toolbarTarget={toolbarTarget}
             onVisibleRange={onVisibleRange}
             onReadingDate={onReadingDate}
+            onDateSelect={onDateSelect}
             initialReadingDate={initialReadingDate}
             asset={pair.asset}
             exportName={`${pair.asset}-${pair.benchmark}-${mode}`}
@@ -574,6 +577,7 @@ export function AnalysisLab({
   toolbarTarget,
   onVisibleRange,
   onReadingDate,
+  onDateSelect,
   initialReadingDate,
 }: {
   view: AnalysisView;
@@ -588,6 +592,7 @@ export function AnalysisLab({
   toolbarTarget?: HTMLElement | null;
   onVisibleRange?: (range: DateWindow) => void;
   onReadingDate?: (time: number | null, pinned?: boolean) => void;
+  onDateSelect?: (time: number | null) => void;
   initialReadingDate?: number;
 }) {
   const scoped = useMemo(
@@ -621,6 +626,7 @@ export function AnalysisLab({
       toolbarTarget={toolbarTarget}
       onVisibleRange={onVisibleRange}
       onReadingDate={onReadingDate}
+      onDateSelect={onDateSelect}
       initialReadingDate={initialReadingDate}
       asset={asset}
       basis={basis}
