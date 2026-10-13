@@ -26,7 +26,7 @@ test('market prices, explicit indicators and performance comparison are distinct
     .getByRole('link', { name: '가격', exact: true })
     .click();
   await expect(chart).toHaveAttribute('data-primary-metric', 'price');
-  await page.getByRole('button', { name: '가격 거래소와 체결 시각', exact: true }).click();
+  await page.getByRole('button', { name: '가격 거래소 선택', exact: true }).click();
   await page
     .getByRole('combobox', { name: '현재 가격 거래소', exact: true })
     .selectOption('binance');
@@ -41,12 +41,17 @@ test('market prices, explicit indicators and performance comparison are distinct
 test('line/candle selection preserves the user window and survives save and restore', async ({
   page,
 }) => {
-  await page.goto('/coins/BTC?metric=view%3Aprice&price_source=upbit&period=1y&log=0');
+  const end = Math.floor(Date.now() / 86400000) * 86400 - 90 * 86400;
+  await page.goto(
+    '/coins/BTC?metric=view%3Aprice&price_source=upbit&period=1y&log=0&chart_from=' +
+      (end - 90 * 86400) +
+      '&chart_to=' +
+      end,
+  );
   const chart = page.locator('[data-chart-kind=analysis]');
   await expect(chart).toHaveAttribute('data-range-ready', '1');
-  await page.getByRole('button', { name: '구간·확대', exact: true }).click();
-  await page.getByRole('button', { name: '차트 확대', exact: true }).click();
-  await page.keyboard.press('Escape');
+  await expect(page.getByRole('button', { name: '날짜로 이동', exact: true })).toHaveCount(0);
+  await expect(page.locator('.analysis-tools')).toHaveCount(0);
   const from = await chart.getAttribute('data-visible-from');
   const to = await chart.getAttribute('data-visible-to');
   await page.getByRole('combobox', { name: '가격 차트 표시', exact: true }).selectOption('line');
@@ -73,7 +78,7 @@ test('USD reference prices remain close lines and do not borrow a KRW current pr
     'data-price-style',
     'line',
   );
-  await expect(page.locator('.detail-quote')).toContainText('USD 참조 · 확정 종가');
+  await expect(page.locator('.detail-quote')).toContainText('USD');
   await expect(page.getByRole('combobox', { name: '가격 차트 표시' })).toHaveCount(0);
 });
 
@@ -173,14 +178,13 @@ for (const width of [320, 390, 768, 1280, 1440])
     expect(bounds.y).toBeLessThanOrEqual(width < 768 ? 280 : 240);
     expect(bounds.height).toBeGreaterThanOrEqual(width < 768 ? 320 : 420);
     if (width < 768) {
-      // Element boxes can fit while nowrap text paints over the date column.
       const textBounds = await page.locator('.analysis-reading-value').evaluate((element) => {
         const range = document.createRange();
         range.selectNodeContents(element);
         return { right: range.getBoundingClientRect().right };
       });
-      const dateBounds = (await page.locator('.analysis-reading-date').boundingBox())!;
-      expect(textBounds.right).toBeLessThanOrEqual(dateBounds.x - 4);
+      expect(textBounds.right).toBeLessThanOrEqual(width);
+      await expect(page.locator('.analysis-reading-date')).toHaveCount(0);
     }
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(
       true,

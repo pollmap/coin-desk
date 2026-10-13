@@ -17,6 +17,30 @@ test('market has shared keyboard styles before analysis code is loaded', async (
   expect((await skip.boundingBox())!.y).toBeGreaterThanOrEqual(0);
   await page.keyboard.press('Enter');
   await expect(page.locator('#main-content')).toBeFocused();
+  await expect(page.locator('.topbar .product-search')).toHaveCount(0);
+  const search = page.getByRole('button', { name: '시장 코인 검색', exact: true });
+  await expect(search).toHaveCount(1);
+  await search.focus();
+  await page.keyboard.press('/');
+  const dialog = page.getByRole('dialog', { name: '코인·지표 검색', exact: true });
+  await expect(dialog).toHaveCount(1);
+  const input = dialog.getByRole('searchbox', { name: '코인·지표 검색', exact: true });
+  await expect(input).toBeFocused();
+  await input.fill('비트코인');
+  await expect(dialog.locator('.search-hit').first()).toContainText('BTC');
+  await page.keyboard.press('Escape');
+  await expect(dialog).not.toBeVisible();
+  await expect(search).toBeFocused();
+  await page.goto('/coins?market=binance&sort=volume');
+  await expect(page.locator('.topbar .product-search')).toHaveCount(0);
+  await filterMarket(page, '펭귄');
+  const filtered = new URL(page.url());
+  expect(filtered.pathname).toBe('/coins');
+  expect(filtered.searchParams.get('market')).toBe('binance');
+  expect(filtered.searchParams.get('sort')).toBe('volume');
+  expect(filtered.searchParams.get('q')).toBe('펭귄');
+  await expect(page.locator('.market-table tbody tr')).toHaveCount(1);
+  await expect(page.locator('.market-table tbody tr')).toContainText('PENGU');
 });
 
 test('a ninth favorite survives reload without altering saved private analysis', async ({
@@ -71,7 +95,7 @@ test('market defers indicator code and Enter survives slow first-time indicator 
       await route.continue();
     },
   );
-  await page.getByRole('button', { name: '코인·지표 검색 열기' }).click();
+  await page.getByRole('button', { name: '시장 코인 검색', exact: true }).click();
   const input = page.getByRole('searchbox', { name: '코인·지표 검색', exact: true });
   await input.fill('MVRV');
   await expect.poll(() => delayed).toBe(1);
@@ -101,7 +125,7 @@ test('late indicator search does not navigate after the query is cleared', async
       await route.continue();
     },
   );
-  await page.getByRole('button', { name: '코인·지표 검색 열기' }).click();
+  await page.getByRole('button', { name: '시장 코인 검색', exact: true }).click();
   const input = page.getByRole('searchbox', { name: '코인·지표 검색', exact: true });
   await input.fill('MVRV');
   await expect.poll(() => requested).toBe(true);
@@ -127,7 +151,7 @@ test('market exact search filters, clears and opens a coin through the same sear
   );
   await page.getByRole('button', { name: '시장 검색 지우기', exact: true }).click();
   await expect(page.locator('.market-table tbody tr')).toHaveCount(50);
-  await page.getByRole('button', { name: '코인·지표 검색 열기' }).click();
+  await page.getByRole('button', { name: '시장 코인 검색', exact: true }).click();
   const input = page.getByRole('searchbox', { name: '코인·지표 검색', exact: true });
   await input.fill('펭귄');
   await expect(page.locator('.search-hit').first()).toContainText('PENGU');
@@ -135,36 +159,91 @@ test('market exact search filters, clears and opens a coin through the same sear
   await expect(page).toHaveURL(/\/coins\/PENGU/);
 });
 
-test('a delayed quote opens accessible timing details and returns keyboard focus without changing the list', async ({
+test('a delayed quote keeps its price and a noninteractive warning without timing metadata', async ({
   page,
-}) => {
+}, testInfo) => {
   await page.setViewportSize({ width: 390, height: 844 });
+  // Explicit unavailable-stream fixture: no real new trade may overwrite the
+  // old snapshot while testing its unchanged 300-second freshness policy.
+  await page.addInitScript(() => {
+    class UnavailableSource extends EventTarget {
+      onerror: (() => void) | null = null;
+      constructor(readonly url: string) {
+        super();
+        queueMicrotask(() => this.onerror?.());
+      }
+      close() {}
+    }
+    Object.assign(window, { EventSource: UnavailableSource });
+  });
   await page.route('**/api/v1/market?*', async (route) => {
     const response = await route.fetch();
     const data = await response.json();
     for (const row of data.rows) {
-      if (row.quote) row.quote.time = Math.floor(Date.now() / 1000) - 900;
+      if (row.quote) {
+        row.quote.time = Math.floor(Date.now() / 1000) - 900;
+        if (row.quote.timestampKind === 'trade') row.quote.actualTradeAt = row.quote.time;
+      }
       if (row.asset === 'BTC') row.status = 'delayed';
     }
     await route.fulfill({ response, json: data });
   });
   await page.goto('/');
-  const button = page.getByRole('button', { name: '비트코인 시세 정보', exact: true });
-  await expect(button).toBeVisible();
-  expect(
-    (await page.locator('.market-table tbody tr').first().boundingBox())!.height,
-  ).toBeLessThanOrEqual(76);
-  await button.click();
-  const dialog = page.getByRole('dialog', { name: 'BTC 시세 정보' });
-  await expect(dialog).toBeVisible();
-  await expect(dialog).toContainText('마지막 체결');
-  await expect(dialog).toContainText('실제 거래가 있어야');
+  const row = page
+    .locator('.market-table tbody tr')
+    .filter({ has: page.getByRole('link', { name: '비트코인 BTC', exact: true }) });
+  await expect(row.locator('.market-quote-status')).toHaveText('지연');
+  await expect(row.locator('.market-price-cell')).toContainText('₩84,000,000');
+  await testInfo.attach('delayed-row-boxes.json', {
+    body: Buffer.from(
+      JSON.stringify(
+        await row.evaluate((element) =>
+          [
+            element,
+            ...element.querySelectorAll(
+              '.market-price-cell,.market-price-cell > a,.market-quote-status,.market-change-cell',
+            ),
+          ].map((node) => {
+            const box = node.getBoundingClientRect(),
+              css = getComputedStyle(node);
+            return {
+              tag: node.tagName,
+              class: node.className,
+              x: box.x,
+              y: box.y,
+              width: box.width,
+              height: box.height,
+              display: css.display,
+              minHeight: css.minHeight,
+              lineHeight: css.lineHeight,
+              fontSize: css.fontSize,
+              paddingBlock: css.paddingBlock,
+              marginTop: css.marginTop,
+              gap: css.gap,
+              cursor: css.cursor,
+            };
+          }),
+        ),
+      ),
+    ),
+    contentType: 'application/json',
+  });
+  await expect(row.locator('.market-price-cell > a')).toHaveCSS('display', 'block');
+  await expect(row.locator('.market-quote-status')).toHaveCSS('margin-top', '0px');
+  expect((await row.boundingBox())!.height).toBeLessThanOrEqual(76);
+  await expect(page.getByRole('button', { name: '비트코인 시세 정보', exact: true })).toHaveCount(
+    0,
+  );
+  await expect(page.getByRole('dialog', { name: 'BTC 시세 정보' })).toHaveCount(0);
+  await expect(row.locator('.market-quote-status')).not.toHaveAttribute('tabindex');
+  await expect(row.locator('.market-quote-status')).toHaveCSS('cursor', 'default');
+  await expect(row.locator('.market-quote-status')).toHaveCSS('text-decoration-line', 'none');
+  await expect(
+    page.locator('.market-feed-state,.market-runtime-notice,.market-data-note'),
+  ).toHaveCount(0);
   expect(
     (await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa']).analyze()).violations,
   ).toEqual([]);
-  await page.keyboard.press('Escape');
-  await expect(dialog).toHaveCount(0);
-  await expect(button).toBeFocused();
   await expect(page).toHaveURL(/\/$/);
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
 });

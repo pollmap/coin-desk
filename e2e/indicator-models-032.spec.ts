@@ -1,13 +1,16 @@
 import { test, expect } from '@playwright/test';
 import type { Page } from '@playwright/test';
-import { DAY } from '../shared/math';
+import { DAY, rsi } from '../shared/math';
 import {
   assetRainbowOrigin,
+  assetRainbowContext,
+  assetRainbowDiagnostics,
   ASSET_RAINBOW_VERSION,
   ASSET_RAINBOW_ANCHOR_VERSION,
 } from '../shared/asset-rainbow';
-import type { Point } from '../shared/types';
+import type { Candle, Point } from '../shared/types';
 import type { ObservationSignal } from '../shared/signals';
+import { hashRibbons, hashrateTrend } from '../shared/hash-ribbons';
 
 // Explicit synthetic observations in an isolated browser fixture. These tests do not
 // query providers or certify production coverage, provider freshness or trading signals.
@@ -96,18 +99,56 @@ function chart(page: Page) {
   return page.locator('[data-chart-kind="analysis"]');
 }
 
-test('asset rainbow uses a full-source fit while period changes only the visible range', async ({
+function positionLabel(z: number): string {
+  return z < -1.3
+    ? '깊은 하단'
+    : z < -0.55
+      ? '하단'
+      : z <= 0.55
+        ? '중앙'
+        : z <= 1.3
+          ? '상단'
+          : '높은 상단';
+}
+async function focusedOnly(page: Page) {
+  await expect(
+    page.locator(
+      '.analysis-reading-date,.indicator-provenance,.indicator-transition-list,.chart-readings-table',
+    ),
+  ).toHaveCount(0);
+  await expect(page.getByRole('button', { name: '데이터 정보', exact: true })).toHaveCount(0);
+  await expect(page.getByRole('button', { name: /CSV|내보내기|공유/ })).toHaveCount(0);
+}
+async function latestStays(page: Page) {
+  const summary = page.locator('.analysis-reading-value');
+  const value = await summary.innerText();
+  const before = new URL(page.url()).searchParams.get('reading_date');
+  const box = (await chart(page).boundingBox())!;
+  await page.mouse.move(box.x + box.width * 0.5, box.y + box.height * 0.4);
+  await expect(page.getByTestId('chart-tooltip')).toBeVisible();
+  await expect(page.getByTestId('chart-tooltip')).not.toHaveText(/\d{4}-\d{2}-\d{2}/);
+  await chart(page).click({ position: { x: box.width * 0.5, y: box.height * 0.4 } });
+  await chart(page).press('ArrowLeft');
+  await expect(summary).toHaveText(value);
+  expect(new URL(page.url()).searchParams.get('reading_date')).toBe(before);
+  await focusedOnly(page);
+}
+
+test('asset rainbow preserves independent full-source regression while periods change only the window', async ({
   page,
 }) => {
   const state = { points: rainbowPrices() };
   const requests = await referenceFixture(page, state);
   await page.goto('/coins/DOGE?metric=view:asset_rainbow&price_source=reference&period=all');
   await expect(chart(page)).toHaveAttribute('data-range-ready', '1');
-  const z = independentLastPosition(state.points, assetRainbowOrigin('DOGE', 'reference')!);
-  await expect(page.locator('.band-context')).toContainText(z.toFixed(2) + 'σ');
-  await expect(page).toHaveURL(new RegExp(`rainbow_model=${ASSET_RAINBOW_VERSION}`));
+  const origin = assetRainbowOrigin('DOGE', 'reference')!;
+  const z = independentLastPosition(state.points, origin);
+  expect(assetRainbowDiagnostics(state.points, origin).rows.at(-1)!.z).toBeCloseTo(z, 7);
+  await expect(page.locator('.band-context')).toHaveText(positionLabel(z));
+  await expect(chart(page)).toHaveAttribute('data-observations', '850');
+  await expect(page).toHaveURL(new RegExp('rainbow_model=' + ASSET_RAINBOW_VERSION));
   const before = new URL(page.url()).searchParams;
-  expect(before.get('rainbow_origin')).toBe(String(assetRainbowOrigin('DOGE', 'reference')));
+  expect(before.get('rainbow_origin')).toBe(String(origin));
   expect(before.get('rainbow_anchor')).toBe(ASSET_RAINBOW_ANCHOR_VERSION);
   expect(before.get('rainbow_source')).toBe('reference');
   expect(before.get('rainbow_unit')).toBe('USD');
@@ -122,19 +163,19 @@ test('asset rainbow uses a full-source fit while period changes only the visible
     page.locator('.period-picker .segments').getByRole('button', { name: '1년', exact: true }),
   ).toHaveAttribute('aria-pressed', 'true');
   await expect(chart(page)).not.toHaveAttribute('data-visible-from', originalFrom!);
-  await expect(page.locator('.band-context')).toContainText(z.toFixed(2) + 'σ');
+  await expect(page.locator('.band-context')).toHaveText(positionLabel(z));
   expect(requests).toHaveLength(requestCount);
   expect(new URL(page.url()).searchParams.get('rainbow_revision')).toBe(
     before.get('rainbow_revision'),
   );
-  await page.getByRole('button', { name: '데이터 정보', exact: true }).click();
-  const info = page.getByRole('dialog', { name: '데이터 정보', exact: true });
-  await expect(info).toContainText('850개 확정 관측');
-  await expect(info).toContainText(ASSET_RAINBOW_ANCHOR_VERSION);
-  await expect(info).toContainText(ASSET_RAINBOW_VERSION);
+  await latestStays(page);
+  await expect(page.locator('.indicator-workspace')).not.toContainText(
+    ASSET_RAINBOW_ANCHOR_VERSION,
+  );
+  await expect(page.locator('.indicator-workspace')).not.toContainText(ASSET_RAINBOW_VERSION);
 });
 
-test('saved rainbow restores its model context and discloses later source revisions', async ({
+test('saved rainbow restores frozen model context while corrected observations are actually recalculated', async ({
   page,
 }) => {
   const state = { points: rainbowPrices() };
@@ -151,6 +192,8 @@ test('saved rainbow restores its model context and discloses later source revisi
   state.points = state.points.map((point, index) =>
     index === 740 ? { ...point, value: point.value * 1.2 } : point,
   );
+  const current = assetRainbowContext('DOGE', 'reference', state.points);
+  expect(current.dataRevision).not.toBe(saved.get('rainbow_revision'));
   await page.getByRole('link', { name: /원천별 레인보우 검증/ }).click();
   await expect(chart(page)).toHaveAttribute('data-range-ready', '1');
   const restored = new URL(page.url()).searchParams;
@@ -163,10 +206,10 @@ test('saved rainbow restores its model context and discloses later source revisi
     'rainbow_revision',
   ])
     expect(restored.get(key)).toBe(saved.get(key));
-  await page.getByRole('button', { name: '데이터 정보', exact: true }).click();
-  const info = page.getByRole('dialog', { name: '데이터 정보', exact: true });
-  await expect(info).toContainText('저장 이후 관측이 변경됐습니다.');
-  await expect(info).toContainText('모형 설정은 유지하고 최신 수정 관측으로 계산합니다.');
+  const z = independentLastPosition(state.points, current.origin!);
+  expect(assetRainbowDiagnostics(state.points, current.origin!).rows.at(-1)!.z).toBeCloseTo(z, 7);
+  await expect(page.locator('.band-context')).toHaveText(positionLabel(z));
+  await focusedOnly(page);
 });
 
 for (const [key, value] of [
@@ -176,88 +219,105 @@ for (const [key, value] of [
   ['rainbow_source', 'upbit'],
   ['rainbow_unit', 'KRW'],
 ]) {
-  test(`unverified ${key} blocks history and requires an explicit current-model reset`, async ({
-    page,
-  }) => {
-    const requests = await referenceFixture(page, { points: rainbowPrices() });
-    await page.goto(
-      `/coins/DOGE?metric=view:asset_rainbow&price_source=reference&period=all&${key}=${value}`,
-    );
-    await expect(
-      page.getByText('저장한 레인보우 모델의 기준을 확인할 수 없습니다.', { exact: true }),
-    ).toBeVisible();
-    await expect(page.locator('.indicator-workspace')).toHaveAttribute(
-      'data-availability',
-      'unsupported',
-    );
-    await expect(chart(page)).toHaveCount(0);
-    expect(requests).toHaveLength(0);
-    await page.getByRole('button', { name: '현재 모델로 열기', exact: true }).click();
-    await expect(chart(page)).toHaveAttribute('data-range-ready', '1');
-    await expect(page).toHaveURL(new RegExp(`rainbow_anchor=${ASSET_RAINBOW_ANCHOR_VERSION}`));
-    expect(requests).toHaveLength(1);
-  });
+  test(
+    'unverified ' + key + ' blocks history and requires an explicit model reset',
+    async ({ page }) => {
+      const requests = await referenceFixture(page, { points: rainbowPrices() });
+      await page.goto(
+        '/coins/DOGE?metric=view:asset_rainbow&price_source=reference&period=all&' +
+          key +
+          '=' +
+          value,
+      );
+      await expect(
+        page.getByText('저장한 분석 설정을 적용할 수 없습니다.', { exact: true }),
+      ).toBeVisible();
+      await expect(page.locator('.indicator-workspace')).toHaveAttribute(
+        'data-availability',
+        'unsupported',
+      );
+      await expect(chart(page)).toHaveCount(0);
+      expect(requests).toHaveLength(0);
+      await page.getByRole('button', { name: '현재 모델로 열기', exact: true }).click();
+      await expect(chart(page)).toHaveAttribute('data-range-ready', '1');
+      await expect(page).toHaveURL(new RegExp('rainbow_anchor=' + ASSET_RAINBOW_ANCHOR_VERSION));
+      expect(requests).toHaveLength(1);
+      await focusedOnly(page);
+    },
+  );
 }
 
-test('BTC hash ribbons show actual calculated means and one event per recovery condition', async ({
+test('BTC hash ribbons preserve exact latest means and one event per recovery cycle without public event lists', async ({
   page,
 }) => {
   const fixture = await hashFixture(page);
   await page.goto('/coins/BTC?metric=view:hash_ribbons&period=all&price_source=reference');
   await expect(chart(page)).toHaveAttribute('data-primary-metric', 'view:hash_ribbons');
   await expect(chart(page)).toHaveAttribute('data-range-ready', '1');
-  await expect(page.locator('.analysis-legend')).toContainText('60일 평균');
+  const calculated = hashRibbons(fixture.hash, fixture.price);
+  const events = calculated.flatMap((row) =>
+    row.events.map((event) => ({ event, time: row.time })),
+  );
+  expect(events.filter((event) => event.event === 'decrease')).toHaveLength(2);
+  expect(events.filter((event) => event.event === 'recovery')).toHaveLength(2);
+  expect(
+    events.filter((event) => event.event === 'price-confirmed').map((event) => event.time),
+  ).toEqual([fixture.hash[160].time, fixture.hash[320].time]);
+  const mean30 = fixture.hash.slice(-30).reduce((sum, point) => sum + point.value, 0) / 30;
+  const mean60 = fixture.hash.slice(-60).reduce((sum, point) => sum + point.value, 0) / 60;
+  expect(
+    Number(
+      (await page.locator('.analysis-reading-value > span').first().innerText()).replace(/,/g, ''),
+    ),
+  ).toBeCloseTo(mean30, 2);
+  const secondary = page.locator('.analysis-secondary-readings .analysis-secondary-reading');
+  await expect(secondary).toHaveCount(1);
+  await expect(secondary).toContainText('60일 평균');
+  expect(Number((await secondary.locator('b').innerText()).replace(/,/g, ''))).toBeCloseTo(
+    mean60,
+    2,
+  );
   await expect(page.locator('.analysis-legend')).toContainText('TH/s');
-  const transitions = page.locator('.indicator-transition-list');
-  await expect(transitions.locator('summary')).toContainText('6개');
-  await transitions.locator('summary').click();
-  await expect(transitions.getByRole('button', { name: /해시레이트 감소 교차/ })).toHaveCount(2);
-  await expect(transitions.getByRole('button', { name: /해시레이트 회복 교차/ })).toHaveCount(2);
-  await expect(transitions.getByRole('button', { name: /회복 후 가격 조건 충족/ })).toHaveCount(2);
   expect(fixture.requestedAssets).toEqual(['BTC']);
   expect(fixture.priceRequests()).toBe(1);
-  const selected = fixture.hash[320].time;
-  await transitions
-    .getByRole('button', { name: /회복 후 가격 조건 충족/ })
-    .first()
-    .click();
-  await expect(page).toHaveURL(new RegExp(`reading_date=${selected}`));
-  await expect(page.locator('.analysis-reading-date')).toContainText('날짜 고정');
-  await expect(page.locator('.analysis-reading-date')).toContainText(
-    new Date(selected * 1000).toISOString().slice(0, 10),
-  );
+  await latestStays(page);
 });
 
-test('short hash histories explain the sixty-day preparation condition precisely', async ({
+test('short hash history keeps the sixty-day preparation contract without displaying diagnostics', async ({
   page,
 }) => {
-  await hashFixture(page, 30);
+  const fixture = await hashFixture(page, 30);
   await page.goto('/coins/BTC?metric=view:hash_ribbons&price_source=reference&period=all');
   await expect(page.locator('.indicator-workspace')).toHaveAttribute(
     'data-availability',
     'insufficient-history',
   );
-  await expect(page.getByText(/연속한 확정 해시레이트 60일이 필요합니다\./)).toBeVisible();
-  await expect(page.getByText(/현재 30개 일별 관측이 있습니다/)).toBeVisible();
+  expect(fixture.hash).toHaveLength(30);
+  expect(hashRibbons(fixture.hash, fixture.price)).toEqual([]);
+  expect(fixture.requestedAssets).toEqual(['BTC']);
+  expect(fixture.priceRequests()).toBe(1);
+  await expect(page.getByText('아직 이 지표를 표시할 수 없습니다.', { exact: true })).toBeVisible();
   await expect(chart(page)).toHaveCount(0);
-  await expect(page.getByText('아직 수집된 관측이 없습니다.', { exact: true })).toHaveCount(0);
+  await expect(page.locator('.indicator-workspace')).not.toContainText('60일이 필요');
+  await expect(page.getByRole('link', { name: '가격 차트 보기', exact: true })).toBeVisible();
 });
 
-test('missing BTC price conditions preserve hash lines without fabricating confirmations', async ({
+test('missing BTC price conditions preserve hash means without fabricating price confirmations', async ({
   page,
 }) => {
-  await hashFixture(page, 400, false);
+  const fixture = await hashFixture(page, 400, false);
   await page.goto('/coins/BTC?metric=view:hash_ribbons&price_source=reference&period=all');
   await expect(chart(page)).toHaveAttribute('data-range-ready', '1');
-  await expect(page.getByText(/USD 가격 이력이 없어 가격 조건은 표시하지 않습니다/)).toBeVisible();
-  const transitions = page.locator('.indicator-transition-list');
-  await expect(transitions.locator('summary')).toContainText('4개');
-  await transitions.locator('summary').click();
-  await expect(transitions.getByRole('button', { name: /회복 후 가격 조건 충족/ })).toHaveCount(0);
-  await expect(page.locator('.analysis-legend')).toContainText('60일 평균');
+  await expect(page.getByText('가격 조건을 표시할 수 없습니다.', { exact: true })).toBeVisible();
+  const calculated = hashRibbons(fixture.hash, []);
+  expect(calculated.flatMap((row) => row.events)).toHaveLength(4);
+  expect(calculated.some((row) => row.events.includes('price-confirmed'))).toBe(false);
+  await expect(page.locator('.analysis-secondary-readings')).toContainText('60일 평균');
+  expect(fixture.priceRequests()).toBe(1);
+  await focusedOnly(page);
 });
 
-test('PoW hash trend preserves source units and cannot become ETH mining or BTC confirmation', async ({
+test('PoW hash trends keep GH/s units and cannot become ETH mining or BTC price confirmations', async ({
   page,
 }) => {
   const fixture = await hashFixture(page);
@@ -265,19 +325,20 @@ test('PoW hash trend preserves source units and cannot become ETH mining or BTC 
   await expect(chart(page)).toHaveAttribute('data-range-ready', '1');
   await expect(page.locator('.analysis-legend')).toContainText('GH/s');
   await expect(page.locator('.analysis-legend')).not.toContainText('TH/s');
-  const transitions = page.locator('.indicator-transition-list');
-  await transitions.locator('summary').click();
-  await expect(transitions.getByRole('button', { name: /회복 후 가격 조건 충족/ })).toHaveCount(0);
+  expect(hashrateTrend(fixture.hash).some((row) => row.events.includes('price-confirmed'))).toBe(
+    false,
+  );
   expect(fixture.priceRequests()).toBe(0);
+  await focusedOnly(page);
   await page.goto('/coins/ETH?metric=view:hash_ribbons&period=all');
   await expect(page.locator('.indicator-workspace')).toHaveAttribute(
     'data-availability',
     'unsupported',
   );
   await expect(chart(page)).toHaveCount(0);
-  await expect(
-    page.getByText('확보되지 않은 데이터를 다른 코인의 값으로 대체하지 않습니다.', { exact: true }),
-  ).toBeVisible();
+  await expect(page.locator('.indicator-empty')).toContainText('ETH');
+  await expect(page.locator('.indicator-empty')).toContainText('사용할 수 없습니다.');
+  await expect(page.getByRole('link', { name: '사용 가능한 분석 열기' })).toBeVisible();
   expect(fixture.requestedAssets).toEqual(['DASH']);
   expect(fixture.priceRequests()).toBe(0);
 });
@@ -292,7 +353,7 @@ async function legacyFixture(
   const rule = options.rule ?? 'mvrv1';
   const source = options.source ?? 'coinmetrics';
   const signal: ObservationSignal = {
-    id: `BTC:${source}:${rule}:${time}:up:observations-v1`,
+    id: 'BTC:' + source + ':' + rule + ':' + time + ':up:observations-v1',
     asset: 'BTC',
     source,
     rule,
@@ -302,12 +363,17 @@ async function legacyFixture(
     current: rule === 'rsi30' ? 35 : 1.25,
     threshold: rule === 'rsi30' ? 30 : 1,
     direction: 'up',
-    condition: `Explicit fixture ${rule} crossing`,
+    condition: 'Explicit fixture ' + rule + ' crossing',
     unit: rule === 'rsi30' ? '지수' : '배',
     version: 'observations-v1',
     bar: '1d',
     status: status === 'missing' ? 'active' : status,
   };
+  const requestedSignals: string[] = [];
+  const signalResponse = page.waitForResponse((response) => {
+    const url = new URL(response.url());
+    return url.pathname === '/api/v1/signals' && url.searchParams.get('id') === signal.id;
+  });
   await page.route('**/api/v1/network?*', async (route) => {
     const url = new URL(route.request().url());
     if (url.searchParams.get('asset') !== 'BTC' || url.searchParams.get('metric') !== 'mvrv')
@@ -315,56 +381,90 @@ async function legacyFixture(
     await route.fulfill({ json: series(observations, '배', 'BTC') });
   });
   await page.route('**/api/v1/signals?*', async (route) => {
+    requestedSignals.push(new URL(route.request().url()).searchParams.get('id')!);
     await route.fulfill({ json: { data: status === 'missing' ? [] : [signal] } });
   });
-  return signal;
+  return { ...signal, requestedSignals, signalResponse };
 }
 
 for (const status of ['corrected', 'withdrawn', 'missing'] as const) {
-  test(`legacy observation link handles ${status} without manufacturing a selected date`, async ({
-    page,
-  }) => {
-    const signal = await legacyFixture(page, status);
-    await page.goto(
-      '/coins/BTC?' +
-        new URLSearchParams({
-          metric: 'net:mvrv',
-          price_source: 'reference',
-          period: 'all',
-          signal: signal.id,
-        }),
-    );
-    await expect(chart(page)).toHaveAttribute('data-range-ready', '1');
-    if (status === 'corrected') {
-      await expect(
-        page.getByText('원천 수정이 반영된 전환입니다. 현재 관측값으로 표시합니다.', {
-          exact: true,
-        }),
-      ).toBeVisible();
-      await expect(page).toHaveURL(new RegExp(`reading_date=${signal.time}`));
-      await expect(page.locator('.analysis-reading-date')).toContainText(
-        new Date(signal.time * 1000).toISOString().slice(0, 10),
+  test(
+    'legacy observation ' +
+      status +
+      ' preserves exact internal date semantics with a latest-only summary',
+    async ({ page }) => {
+      const signal = await legacyFixture(page, status);
+      await page.goto(
+        '/coins/BTC?' +
+          new URLSearchParams({
+            metric: 'net:mvrv',
+            price_source: 'reference',
+            period: 'all',
+            signal: signal.id,
+          }),
       );
-      await expect(page.locator('.analysis-reading-date')).toContainText('날짜 고정');
-    } else {
-      await expect(
-        page.getByText(
-          status === 'withdrawn'
-            ? /선택한 전환은 원천 수정으로 철회됐습니다/
-            : /선택한 전환을 찾을 수 없습니다/,
-        ),
-      ).toBeVisible();
-      expect(new URL(page.url()).searchParams.has('reading_date')).toBe(false);
-      await expect(page.locator('.analysis-reading-date')).toContainText('최근 확정값');
-      await page.getByRole('button', { name: '최근값 보기', exact: true }).click();
-      expect(new URL(page.url()).searchParams.has('signal')).toBe(false);
+      const response = await signal.signalResponse;
+      expect(await response.json()).toEqual({
+        data:
+          status === 'missing'
+            ? []
+            : [
+                Object.fromEntries(
+                  Object.entries(signal).filter(
+                    ([key]) => !['requestedSignals', 'signalResponse'].includes(key),
+                  ),
+                ),
+              ],
+      });
       await expect(chart(page)).toHaveAttribute('data-range-ready', '1');
-    }
-  });
+      expect(signal.requestedSignals).toEqual([signal.id]);
+      if (status === 'corrected') {
+        await expect(page).toHaveURL(new RegExp('reading_date=' + signal.time));
+        await expect(page.locator('.analysis-reading-value')).toContainText('1.25');
+        await latestStays(page);
+      } else {
+        // Hidden legacy links remain compatible without restoring removed public
+        // observation notices or a date-clear control.
+        await page.evaluate(
+          () =>
+            new Promise<void>((resolve) =>
+              requestAnimationFrame(() => requestAnimationFrame(() => resolve())),
+            ),
+        );
+        expect(new URL(page.url()).searchParams.has('reading_date')).toBe(false);
+        expect(new URL(page.url()).searchParams.get('signal')).toBe(signal.id);
+        await expect(page.locator('.analysis-reading-value')).toContainText('1.25');
+        await expect(page.getByText(/선택한 전환을/)).toHaveCount(0);
+        await expect(page.getByRole('button', { name: '최근값 보기', exact: true })).toHaveCount(0);
+        await latestStays(page);
+        await page.reload();
+        await expect(chart(page)).toHaveAttribute('data-range-ready', '1');
+        await expect.poll(() => signal.requestedSignals).toEqual([signal.id, signal.id]);
+        expect(new URL(page.url()).searchParams.has('reading_date')).toBe(false);
+        expect(new URL(page.url()).searchParams.get('signal')).toBe(signal.id);
+        await expect(page.locator('.analysis-reading-value')).toContainText('1.25');
+      }
+      await focusedOnly(page);
+    },
+  );
 }
 
-test('legacy reference RSI observations do not pin an Upbit RSI chart', async ({ page }) => {
+test('legacy reference RSI observations cannot pin an Upbit RSI chart or mix source values', async ({
+  page,
+}) => {
   const signal = await legacyFixture(page, 'active', { rule: 'rsi30', source: 'reference' });
+  const upbitCandles = new Map<number, Candle>();
+  const candleRequests: string[] = [];
+  await page.route('**/api/v1/candles?*', async (route) => {
+    const url = new URL(route.request().url());
+    if (url.searchParams.get('asset') !== 'BTC' || url.searchParams.get('market') !== 'upbit')
+      return route.continue();
+    candleRequests.push(url.toString());
+    const response = await route.fetch();
+    const body = await response.json();
+    for (const candle of body.data as Candle[]) upbitCandles.set(candle.time, candle);
+    await route.fulfill({ response, json: body });
+  });
   await page.goto(
     '/coins/BTC?' +
       new URLSearchParams({
@@ -374,22 +474,36 @@ test('legacy reference RSI observations do not pin an Upbit RSI chart', async ({
         signal: signal.id,
       }),
   );
+  const response = await signal.signalResponse;
+  expect((await response.json()).data[0].source).toBe('reference');
   await expect(chart(page)).toHaveAttribute('data-range-ready', '1');
   await expect(chart(page)).toHaveAttribute('data-primary-metric', 'rsi');
-  await expect(page.getByText(/선택한 전환은 다른 지표 또는 가격 원천의 관측입니다/)).toBeVisible();
   expect(new URL(page.url()).searchParams.get('price_source')).toBe('upbit');
   expect(new URL(page.url()).searchParams.has('reading_date')).toBe(false);
-  await expect(page.locator('.analysis-reading-date')).toContainText('최근 확정값');
-  await page.getByRole('button', { name: '데이터 정보', exact: true }).click();
-  await expect(page.getByRole('dialog', { name: '데이터 정보', exact: true })).toContainText(
-    'Upbit',
-  );
-  await page.keyboard.press('Escape');
+  expect(new URL(page.url()).searchParams.get('signal')).toBe(signal.id);
+  expect(signal.requestedSignals).toEqual([signal.id]);
+  expect(candleRequests.length).toBeGreaterThan(0);
+  expect(
+    candleRequests.every((request) => new URL(request).searchParams.get('interval') === '1d'),
+  ).toBe(true);
+  const actualSource = [...upbitCandles.values()]
+    .filter((candle) => candle.closed && candle.closeTime <= Date.now() / 1000)
+    .sort((a, b) => a.time - b.time)
+    .map((candle) => ({ time: candle.time, value: candle.close }));
+  const sourceRsi = rsi(actualSource, 14).at(-1)!;
+  expect(sourceRsi).toBeDefined();
+  await expect(page.locator('.analysis-primary-unit')).toHaveText('RSI');
+  const displayedNumber = await page
+    .locator('.analysis-reading-value > span:not(.analysis-reading-asset)')
+    .innerText();
+  expect(Number(displayedNumber.replace(/,/g, ''))).toBeCloseTo(sourceRsi.value, 2);
+  await expect(page.getByText(/선택한 전환을/)).toHaveCount(0);
+  await expect(page.getByRole('button', { name: '전환 선택 해제', exact: true })).toHaveCount(0);
+  await latestStays(page);
   expect(new URL(page.url()).searchParams.has('reading_date')).toBe(false);
-  await expect(page.locator('.analysis-reading-date')).toContainText('최근 확정값');
 });
 
-test('an explicit reading date takes precedence over a corrected signal and latest stays unpinned', async ({
+test('an explicit legacy date wins over corrected signals while public summary and URL settings stay stable', async ({
   page,
 }) => {
   const signal = await legacyFixture(page, 'corrected');
@@ -405,24 +519,14 @@ test('an explicit reading date takes precedence over a corrected signal and late
       }),
   );
   await expect(chart(page)).toHaveAttribute('data-range-ready', '1');
-  await expect(
-    page.getByText('원천 수정이 반영된 전환입니다. 현재 관측값으로 표시합니다.', { exact: true }),
-  ).toBeVisible();
+  expect(signal.requestedSignals).toEqual([signal.id]);
   expect(new URL(page.url()).searchParams.get('reading_date')).toBe(String(explicit));
-  await expect(page.locator('.analysis-reading-date')).toContainText(
-    new Date(explicit * 1000).toISOString().slice(0, 10),
-  );
-  await expect(page.locator('.analysis-reading-date')).toContainText('날짜 고정');
-  await page.getByRole('button', { name: '최근값 보기', exact: true }).click();
-  await expect(page.locator('.analysis-reading-date')).toContainText('최근 확정값');
-  expect(new URL(page.url()).searchParams.has('reading_date')).toBe(false);
-  await page.getByRole('button', { name: '데이터 정보', exact: true }).click();
-  await expect(page.getByRole('dialog', { name: '데이터 정보', exact: true })).toBeVisible();
-  await page.keyboard.press('Escape');
-  await expect(page.locator('.analysis-reading-date')).toContainText('최근 확정값');
-  expect(new URL(page.url()).searchParams.has('reading_date')).toBe(false);
-  expect(new URL(page.url()).searchParams.has('signal')).toBe(false);
+  // This legacy date has a 0.9 historical observation; the public headline must show latest 1.25.
+  await expect(page.locator('.analysis-reading-value')).toContainText('1.25');
+  await latestStays(page);
   await page.reload();
   await expect(chart(page)).toHaveAttribute('data-range-ready', '1');
-  await expect(page.locator('.analysis-reading-date')).toContainText('최근 확정값');
+  expect(new URL(page.url()).searchParams.get('reading_date')).toBe(String(explicit));
+  await expect(page.locator('.analysis-reading-value')).toContainText('1.25');
+  await focusedOnly(page);
 });

@@ -2,8 +2,9 @@ import { ASSET_REGISTRY_REVIEWED, assetDefinition } from './asset-registry';
 import { ASSETS } from './catalog';
 import { defaultIndicator, indicatorDefinition } from './indicator-catalog';
 import type { Asset } from './types';
+import { CLASSIFIED_THEMES } from './theme-catalog';
 
-export const KNOWLEDGE_VERSION = '1.1.0';
+export const KNOWLEDGE_VERSION = '1.2.0';
 export const KNOWLEDGE_REVIEWED = '2026-10-09';
 export interface Evidence {
   url: string;
@@ -202,7 +203,7 @@ const theme = (
     ),
   })),
 });
-export const THEMES: ThemeDefinition[] = [
+const legacyThemes: ThemeDefinition[] = [
   theme('payments', '통화·결제', '네트워크에서 가치를 전송하는 자산', ['BTC', 'DOGE', 'XRP']),
   theme('platforms', '스마트계약 플랫폼', '앱 실행과 네트워크 수수료에 사용하는 자산', [
     'ETH',
@@ -220,6 +221,13 @@ export const THEMES: ThemeDefinition[] = [
   theme('rwa', 'RWA 관련', '실물자산 토큰화 프로젝트와 관련된 거버넌스 토큰', ['ONDO']),
   theme('defi', '디파이', '블록체인 금융 프로토콜과 관련된 토큰', ['AAVE']),
 ];
+/** Preserve reviewed legacy connections without inventing new project/network facts. */
+export const THEMES: ThemeDefinition[] = CLASSIFIED_THEMES.map((definition) => {
+  const members = new Map(definition.members.map((member) => [member.asset, member]));
+  for (const member of legacyThemes.find((theme) => theme.id === definition.id)?.members ?? [])
+    if (!members.has(member.asset)) members.set(member.asset, member);
+  return { ...definition, members: [...members.values()] };
+});
 export const themesResponse = () => ({
   version: KNOWLEDGE_VERSION,
   scope: '보리차트 추적 종목 기준',

@@ -1,0 +1,28 @@
+{
+  "mainCI": 38406758530,
+  "codeCommit": "7363f80a30a5f6e98a0f18b566bec455645ab255",
+  "reportSha256": "8971c7bf82c544dd5f29ac920dde5f897f21d0531c218a96ba10236e73186c7c",
+  "packageFindings": 64,
+  "uniqueCVEs": 18,
+  "severityCounts": {
+    "HIGH": 62,
+    "CRITICAL": 2
+  },
+  "withFixedVersion": 0,
+  "blockingScanIgnoreUnfixed": true,
+  "allVulnerabilitiesResolved": false,
+  "reportGate": "container scan passed; full main CI is separate",
+  "previousReleaseReview": {
+    "mainCI": 38394216098,
+    "reportSha256": "fbcdd7dc127287d4ff920cecbe94ac61b1df8477386853d0a3101fc6ec981d95",
+    "packageFindings": 66,
+    "uniqueCVEs": 20,
+    "severityCounts": {
+      "HIGH": 64,
+      "CRITICAL": 2
+    },
+    "withFixedVersion": 0,
+    "blockingScanIgnoreUnfixed": true,
+    "allVulnerabilitiesResolved": false
+  }
+}

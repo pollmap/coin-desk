@@ -31,6 +31,9 @@ test('primary shortcuts are price, MVRV and Supertrend, and navigate in the same
     );
   }
   expect(page.context().pages()).toHaveLength(1);
+  await expect(page.locator('.analysis-reading-date,.indicator-provenance')).toHaveCount(0);
+  await expect(page.getByRole('button', { name: '데이터 정보', exact: true })).toHaveCount(0);
+  await expect(page.getByRole('button', { name: /CSV|내보내기|공유/ })).toHaveCount(0);
   await expect(page.getByRole('button', { name: /^관측 신호/ })).toHaveCount(0);
   await page.goto('/coins/ONDO?metric=rsi&price_source=upbit');
   await expect(shortcuts.getByRole('link')).toHaveText(['가격', '슈퍼트렌드']);
@@ -134,10 +137,17 @@ test('dictionary rows are concise and illustrations are distinct from real data'
     await expect(concept.locator('figcaption')).toBeVisible();
     await concept.screenshot({ path: test.info().outputPath(`concept-${kind}.png`) });
     await expect(page.locator('[data-chart-kind="analysis"]')).toHaveCount(0);
-    const support = page.locator('.guide-supported-assets');
-    await expect(support).not.toHaveAttribute('open', '');
-    await support.getByText('전체 지원 코인', { exact: true }).click();
-    await expect(support.locator('li').filter({ hasText: '도지코인 · DOGE' })).toBeVisible();
+    await expect(page.locator('.guide-supported-assets')).toHaveCount(0);
+    await expect(page.getByRole('heading', { name: '데이터·지원 범위' })).toHaveCount(0);
+    expect(
+      await page
+        .locator('.guide-toc a')
+        .evaluateAll((links) => links.map((link) => link.getAttribute('href'))),
+    ).toEqual(['#meaning', '#method', '#example', '#limits']);
+    expect(new URL(page.url()).searchParams.get('asset')).toBe('DOGE');
+    expect(new URL(page.url()).searchParams.get('price_source')).toBe('upbit');
+    await expect(page.locator('.guide-method li').first()).toBeVisible();
+    await expect(page.locator('.guide-example li').first()).toBeVisible();
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(
       true,
     );
@@ -178,5 +188,9 @@ test('hashrate picker and dictionary keep the selected network units and formula
     await expect(page.locator('.guide-method')).toContainText('10⁹');
     await expect(page.locator('.guide-method')).not.toContainText('1 TH/s');
     await expect(page.locator('.guide-example')).toContainText('2 GH/s');
+    await page.locator('.guide-use > summary').click();
+    await expect(page.getByLabel('사전 코인', { exact: true })).toHaveValue(asset);
+    expect(new URL(page.url()).searchParams.get('asset')).toBe(asset);
+    await expect(page.locator('.guide-primary')).toContainText(asset);
   }
 });

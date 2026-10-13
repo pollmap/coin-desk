@@ -15,12 +15,10 @@ import { useQuoteFeed } from './useQuoteFeed';
 import { useMarket } from './useMarket';
 import { useFavorites } from './useFavorites';
 import { money, numeric, saved, save, turnover } from './lib';
-import type { QuoteInfo } from './MarketQuoteInfo';
 const ThemeExplorer = lazy(() => import('./ThemeExplorer'));
-const MarketQuoteInfo = lazy(() => import('./MarketQuoteInfo'));
 
 function Spark({ points }: { points: Point[] }) {
-  if (points.length < 2) return <span className="muted">이력 대기</span>;
+  if (points.length < 2) return <span className="muted">—</span>;
   const values = points.map((p) => p.value),
     min = Math.min(...values),
     span = Math.max(...values) - min || 1;
@@ -44,8 +42,6 @@ const changeText = (value: number | null | undefined) =>
 export function MarketHome() {
   const navigate = useNavigate();
   const [saveError, setSaveError] = useState('');
-  const [quoteInfo, setQuoteInfo] = useState<QuoteInfo | null>(null);
-  const quoteTrigger = useRef<HTMLElement | null>(null);
 
   const { market, changeMarket } = useMarket();
   const [pageSize] = useState(() => (window.matchMedia('(max-width: 767px)').matches ? 20 : 50));
@@ -138,13 +134,6 @@ export function MarketHome() {
       <div className="market-body">
         <div className="market-heading">
           <h1>시장</h1>
-          <span className="market-feed-state">
-            {feed.rows.some((row) => row.live)
-              ? '실시간 가격'
-              : feed.rows.length && feed.rows.every((row) => row.stale)
-                ? '시세 갱신 지연'
-                : '1분마다 갱신'}
-          </span>
         </div>
         <div className="market-search">
           <button
@@ -203,14 +192,6 @@ export function MarketHome() {
             </button>
           ))}
         </div>
-        {feed.data?.collection && !feed.data.collection.healthy && (
-          <p className="market-runtime-notice" role="status">
-            {['no_execution_ledger', 'not_started'].includes(feed.data.collection.reason || '')
-              ? '시세 갱신을 확인하고 있습니다.'
-              : '시세 갱신이 지연되고 있습니다.'}{' '}
-            <Link to="/status">데이터 상태</Link>
-          </p>
-        )}
         <div className="market-controls">
           <div role="group" aria-label="시세 거래소">
             <button aria-pressed={market === 'upbit'} onClick={() => changeMarket('upbit')}>
@@ -267,6 +248,7 @@ export function MarketHome() {
                 })
               }
               href={href}
+              market={market}
             />
           </Suspense>
         ) : (
@@ -328,22 +310,13 @@ export function MarketHome() {
                           : money(r?.displayPrice, unit)}
                       </Link>
                       {r?.displayTime && (r.stale || r.status === 'error') ? (
-                        <button
-                          className="market-quote-status stale-label"
-                          aria-label={`${name} 시세 정보`}
-                          onClick={(event) => {
-                            quoteTrigger.current = event.currentTarget;
-                            setQuoteInfo(r);
-                          }}
-                        >
-                          {r.status === 'error' ? '확인 실패' : '체결 지연'}
-                        </button>
+                        <small className="market-quote-status stale-label">
+                          {r.status === 'error' ? '—' : '지연'}
+                        </small>
                       ) : (
                         !r?.displayTime &&
                         r?.status !== 'unsupported' && (
-                          <small>
-                            {feed.error ? '확인 필요' : feed.loading ? '불러오는 중' : '수집 대기'}
-                          </small>
+                          <small>{feed.loading ? '불러오는 중' : '—'}</small>
                         )
                       )}
                     </td>
@@ -392,13 +365,6 @@ export function MarketHome() {
             )}
           </div>
         )}
-        <details className="market-data-note">
-          <summary>시세 기준</summary>
-          <p>
-            변동률·거래대금은 1분마다 확인합니다. 최근 30일은 확정 일봉입니다. 선택한 거래소의
-            시세만 표시합니다.
-          </p>
-        </details>
       </div>
       <aside className="market-rail" aria-label="내 관심 코인">
         <h2>관심 코인</h2>
@@ -433,16 +399,6 @@ export function MarketHome() {
           </>
         )}
       </aside>
-      {quoteInfo && (
-        <Suspense fallback={null}>
-          <MarketQuoteInfo
-            row={quoteInfo}
-            market={market}
-            returnFocus={quoteTrigger}
-            onClose={() => setQuoteInfo(null)}
-          />
-        </Suspense>
-      )}
     </div>
   );
 }

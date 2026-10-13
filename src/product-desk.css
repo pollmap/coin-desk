@@ -123,6 +123,9 @@ body {
 .product-help {
   position: relative;
 }
+.product-desk .topbar:not(:has(.product-search)) .product-help {
+  margin-left: auto;
+}
 .product-help summary {
   display: flex;
   padding: 6px;
@@ -166,17 +169,18 @@ body {
   outline: 2px solid var(--accent);
   outline-offset: 3px;
 }
-.product-desk :is(button, [role='button'], summary) {
+/* SVG transforms place chart observations; they are not button motion. */
+.product-desk :is(button, [role='button']:where(:not(svg *)), summary) {
   animation: none;
   transform: none;
   /* Theme text and surfaces must change together, including off-screen controls. */
   transition: border-color 150ms;
 }
-.product-desk :is(button, [role='button'], summary):hover {
+.product-desk :is(button, [role='button']:where(:not(svg *)), summary):hover {
   background-color: var(--hover);
   color: var(--text);
 }
-.product-desk :is(button, [role='button'], summary):active {
+.product-desk :is(button, [role='button']:where(:not(svg *)), summary):active {
   transform: none;
 }
 .product-desk .up {
@@ -196,8 +200,7 @@ body {
 .market-body {
   min-width: 0;
 }
-.market-view-tabs,
-.theme-tabs {
+.market-view-tabs {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
@@ -219,68 +222,181 @@ body {
   border-bottom-color: var(--accent);
   font-weight: 600;
 }
-.theme-tabs [aria-pressed='true'] {
-  background: var(--accent-bg);
-  color: var(--accent);
-}
-.theme-explorer > p {
-  font-size: 12px;
+.theme-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
   margin-top: 12px;
 }
-.theme-row {
-  display: grid;
-  grid-template-columns: minmax(180px, 1fr) minmax(0, 2fr);
-  padding: 22px 0;
-  border-bottom: 1px solid var(--border);
-  gap: 16px;
-}
-.theme-row h2 {
-  font-size: 18px;
+.theme-heading h2 {
   margin: 0;
+  font-size: 17px;
 }
-.theme-row h2 small {
+.theme-heading small,
+.theme-count {
   color: var(--muted);
-  font-weight: 400;
+  font-size: 12px;
 }
-.theme-row p {
+.theme-heading button {
+  min-height: 44px;
+}
+.theme-map {
+  margin: 12px 0;
+  width: 100%;
+}
+.theme-map-pages {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
   margin: 8px 0;
+  font-size: 13px;
+}
+.theme-map-pages button {
+  min-width: 52px;
+  min-height: 44px;
+}
+.theme-map svg {
+  width: 100%;
+  display: block;
+  overflow: visible;
+}
+.theme-map-axis {
+  fill: var(--muted);
+  font-size: 12px;
+}
+.theme-map-zone {
+  fill: var(--muted);
+  font-size: 12px;
+}
+.theme-map-grid {
+  stroke: var(--border);
+  stroke-opacity: 0.45;
+}
+.theme-map-baseline {
+  stroke: var(--muted);
+  stroke-width: 1;
+  stroke-dasharray: 3 4;
+}
+.theme-map-point {
+  cursor: pointer;
+  outline: none;
+}
+.theme-map-point circle {
+  fill: var(--muted);
+  stroke: var(--bg);
+  stroke-width: 2px;
+}
+.theme-map-point.up-volume-up circle {
+  fill: var(--up);
+}
+.theme-map-point.down-volume-up circle {
+  fill: var(--down);
+}
+.theme-map-point.selected circle {
+  stroke: var(--accent);
+  stroke-width: 3px;
+}
+.theme-map-point:focus-visible rect {
+  stroke: var(--accent);
+  stroke-width: 2px;
+}
+.theme-map-caption {
+  fill: var(--text);
+  font-size: 12px;
+}
+.theme-map-caption-line {
+  stroke: var(--muted);
+  stroke-width: 1px;
+  stroke-opacity: 0.25;
+}
+.theme-search {
+  display: block;
+  margin: 12px 0;
+}
+.theme-search input {
+  width: 100%;
+  min-height: 44px;
+}
+.theme-row {
+  border-bottom: 1px solid var(--border);
+}
+.theme-select {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 56px;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  padding: 12px 8px;
+  text-align: left;
+}
+.theme-select:hover,
+.theme-select[aria-pressed='true'] {
+  background: var(--surface);
+}
+.theme-select strong {
   font-size: 14px;
-  line-height: 1.6;
 }
-.theme-row ul {
-  list-style: none;
+.theme-state {
+  font-size: 12px;
+  color: var(--muted);
+}
+.theme-summary {
+  display: inline-flex;
+  gap: 16px;
+  margin-left: auto;
+  font-variant-numeric: tabular-nums;
+}
+.theme-summary > span {
+  min-width: 48px;
+  text-align: right;
+  color: var(--muted);
+}
+.theme-members {
   margin: 0;
-  padding: 0;
+  padding: 0 8px 8px;
+  list-style: none;
 }
-.theme-row li {
-  padding: 8px 0;
+.theme-members li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
 }
-.theme-row li > a {
+.theme-members a {
   display: flex;
   align-items: center;
   gap: 8px;
+  min-height: 52px;
   color: var(--text);
-  width: fit-content;
-  min-height: 32px;
 }
-.theme-row details {
-  margin-left: 32px;
-  font-size: 12px;
+.theme-members small {
+  display: block;
   color: var(--muted);
+  font-size: 12px;
 }
-.theme-row summary {
-  cursor: pointer;
-  padding: 4px 0;
-  width: fit-content;
+.theme-member-change {
+  font-variant-numeric: tabular-nums;
+  font-size: 13px;
 }
 @media (max-width: 600px) {
-  .theme-row {
-    grid-template-columns: 1fr;
+  .theme-select {
     gap: 8px;
+    flex-wrap: wrap;
+  }
+  .theme-summary {
+    gap: 8px;
+  }
+  .theme-state {
+    font-size: 12px;
   }
 }
 @media (prefers-reduced-motion: reduce) {
-  .product-desk :is(button, [role='button'], summary) {
+  .product-desk :is(button, [role='button']:where(:not(svg *)), summary) {
     transition: none;
   }
 }
@@ -352,7 +468,7 @@ body {
   font-size: 12px;
   color: var(--muted);
 }
-.market-table td:nth-child(3) > a {
+.market-table .market-price-cell > a {
   display: inline-block;
   min-height: 24px;
 }
@@ -408,9 +524,8 @@ body {
   background: transparent;
   font: inherit;
   font-size: 12px;
-  text-decoration: underline dotted;
-  text-underline-offset: 3px;
-  cursor: pointer;
+  text-decoration: none;
+  cursor: default;
 }
 .market-quote-status:focus-visible {
   outline: 2px solid var(--accent);
@@ -581,6 +696,7 @@ body {
 }
 .detail-quote strong {
   font-size: 18px;
+  color: var(--text);
 }
 .detail-quote span {
   font-size: 12px;
@@ -727,12 +843,16 @@ body {
   gap: 2px;
 }
 .product-desk .quote-source-button {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
   font-size: 12px;
   color: var(--muted);
   background: transparent;
   border: 0;
   padding: 2px 0;
-  min-height: 24px;
+  min-height: 44px;
   white-space: nowrap;
 }
 .product-desk .quote-source-button:hover {
@@ -963,6 +1083,9 @@ body {
     font-size: 15px;
     line-height: 1.3;
   }
+  .market-table .market-price-cell > a {
+    display: block;
+  }
   .market-table .market-price-cell > small {
     line-height: 1.25;
     margin-top: 1px;
@@ -970,7 +1093,7 @@ body {
   .market-table tbody tr:has(.market-quote-status) {
     padding-block: 4px;
   }
-  .market-table .market-quote-status {
+  .market-table .market-price-cell > .market-quote-status {
     min-height: 24px;
     line-height: 1.2;
     margin-top: 0;
@@ -1124,12 +1247,17 @@ body {
     text-align: right;
   }
   .product-desk .indicator-workspace .quote-source-button {
+    align-items: flex-end;
     max-width: 100%;
     white-space: normal;
     overflow-wrap: anywhere;
   }
   .product-desk .indicator-workspace .detail-quote strong {
     font-size: 14px;
+    line-height: 20px;
+  }
+  .product-desk .indicator-workspace .quote-source-label {
+    line-height: 18px;
   }
   .product-desk.app .indicator-workspace .indicator-heading {
     display: grid;
@@ -1188,6 +1316,8 @@ body {
   }
   .product-desk .price-style-control {
     width: 68px;
+    height: 44px;
+    line-height: 18px;
   }
   .product-desk .indicator-heading-actions button {
     padding: 6px 8px;

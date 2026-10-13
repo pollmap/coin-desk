@@ -1,7 +1,7 @@
 import type { Asset, Market } from '../shared/types';
 import { useQuoteFeed } from './useQuoteFeed';
-import { money, dateLabel } from './lib';
-import { useEffect, useRef, useState } from 'react';
+import { money } from './lib';
+import { useEffect, useId, useRef, useState } from 'react';
 import type { LiveChartPrice } from '../shared/live-chart-price';
 import { useSearchParams } from 'react-router-dom';
 import { supportsMarket } from '../shared/asset-registry';
@@ -20,6 +20,8 @@ export function SpotQuote({
 }) {
   const [open, setOpen] = useState(false);
   const button = useRef<HTMLButtonElement>(null);
+  const priceDescription = useId();
+  const sourceDescription = useId();
   const [, setParams] = useSearchParams();
   const feed = useQuoteFeed(market, { assets: [asset], snapshotAssets: [asset], sparkLimit: 0 }),
     quote = feed.rows.find((r) => r.asset === asset);
@@ -46,34 +48,30 @@ export function SpotQuote({
   ]);
   useEffect(() => () => onQuote?.(null), [asset, market, onQuote]);
   return (
-    <div
-      className="detail-quote"
-      title={
-        quote?.displayTime
-          ? `${quote.displayTimestampKind === 'trade' ? '실제 체결' : '시세 기준 · 체결 시각 미확인'} ${dateLabel(quote.displayTime, true)}`
-          : '시세 수집 대기'
-      }
-    >
-      <strong>{money(quote?.displayPrice, market === 'upbit' ? 'KRW' : 'USDT')}</strong>
+    <div className="detail-quote">
       <button
         className="quote-source-button"
         ref={button}
         onClick={() => setOpen(true)}
-        aria-label="가격 거래소와 체결 시각"
+        aria-label="가격 거래소 선택"
+        aria-describedby={`${priceDescription} ${sourceDescription}`}
       >
-        {market === 'upbit' ? 'Upbit · KRW' : 'Binance · USDT'}
-        {!quote?.displayPrice
-          ? ' · 시세 대기'
-          : quote.stale
-            ? quote.displayTimestampKind !== 'trade'
-              ? ' · 시각 미확인'
-              : Date.now() / 1000 - (quote.displayTime ?? 0) > 300
-                ? ' · 체결 지연'
-                : ' · 확인 지연'
-            : ''}{' '}
-        ▾
+        <strong id={priceDescription}>
+          {money(quote?.displayPrice, market === 'upbit' ? 'KRW' : 'USDT')}
+        </strong>
+        <span className="quote-source-label" id={sourceDescription}>
+          {market === 'upbit' ? 'Upbit · KRW' : 'Binance · USDT'}
+          {!quote?.displayPrice
+            ? feed.loading && !feed.error
+              ? ' · 확인 중'
+              : ' · 확인 불가'
+            : quote.stale
+              ? ' · 지연'
+              : ''}{' '}
+          ▾
+        </span>
       </button>
-      <DeskDialog open={open} onOpenChange={setOpen} title="현재 가격" returnFocus={button} sheet>
+      <DeskDialog open={open} onOpenChange={setOpen} title="가격 선택" returnFocus={button} sheet>
         <label>
           거래소·통화{' '}
           <select
@@ -100,22 +98,6 @@ export function SpotQuote({
             </option>
           </select>
         </label>
-        <p>
-          {quote?.displayTime
-            ? `${quote.displayTimestampKind === 'trade' ? '실제 체결' : '시세 기준 · 체결 시각 미확인'} ${dateLabel(quote.displayTime, true)}`
-            : '시세 수집 대기'}
-        </p>
-        <p>
-          {quote?.stale
-            ? quote.displayTimestampKind !== 'trade'
-              ? '가격은 보존했지만 실제 체결 시각을 확인하지 못했습니다.'
-              : Date.now() / 1000 - (quote.displayTime ?? 0) > 300
-                ? '마지막 거래가 5분 이상 지났습니다.'
-                : '시세 확인이 지연되고 있습니다.'
-            : quote?.live
-              ? '거래소 스트림으로 받은 가격입니다.'
-              : '분 단위로 확인한 가격입니다.'}
-        </p>
       </DeskDialog>
     </div>
   );

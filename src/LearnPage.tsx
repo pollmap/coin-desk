@@ -144,18 +144,16 @@ function ApplyGuide({
       <div className="guide-context">
         <AssetLogo asset={useAsset} size={25} />
         <strong>{useAsset}</strong>
-        <span>{article.unit ?? '선택 원천의 단위'}</span>
+        {article.unit && <span>{article.unit}</span>}
       </div>
       {!supported && <p>{asset}에는 제공하지 않습니다. 지원 코인으로 열 수 있습니다.</p>}
       {article.basis && !article.basis.includes(basis) && (
-        <p>{basisName(basis)}에는 필요한 데이터가 없습니다. 사용할 원천을 선택하세요.</p>
+        <p>이 가격 기준에는 표시할 수 없습니다. 다른 가격 기준을 선택해 주세요.</p>
       )}
       {catalogUrl && catalog.loading ? (
-        <p role="status">실제 관측 범위를 확인하고 있습니다…</p>
+        <p role="status">불러오는 중…</p>
       ) : unavailable ? (
-        <p role="status">
-          이 코인의 실제 관측이 아직 없습니다. <Link to="/status">데이터 상태</Link>
-        </p>
+        <p role="status">이 지표를 표시할 수 없습니다. 다른 지표를 선택해 주세요.</p>
       ) : (
         sources.map((source) => {
           const to = guideChartLink(article, useAsset, source, params);
@@ -168,18 +166,14 @@ function ApplyGuide({
           );
         })
       )}
-      {catalog.error && (
-        <small role="status">
-          지원 범위를 확인하지 못했습니다. 차트에서 수집 상태를 확인할 수 있습니다.
-        </small>
-      )}
-      <small>코인·원천·날짜 범위를 이어서 엽니다.</small>
+      {catalog.error && <small role="status">차트를 열지 못했습니다. 다시 시도해 주세요.</small>}
     </div>
   );
 }
 function OptionalApply(props: Parameters<typeof ApplyGuide>[0]) {
   const [open, setOpen] = useState(false);
   const action = props.article.action;
+  if (action.kind === 'link' && action.path === '/status') return null;
   const destination =
     action.kind === 'link'
       ? {
@@ -319,7 +313,6 @@ export function LearnPage() {
               <a href="#meaning">무엇을 보나요</a>
               <a href="#method">{lesson.procedural ? '사용 방법' : '계산식·조건'}</a>
               <a href="#example">{lesson.procedural ? '사용 예시' : '숫자로 읽어보기'}</a>
-              <a href="#data">데이터·지원 범위</a>
               <a href="#limits">해석할 때 주의할 점</a>
             </nav>
             <article className="guide-article">
@@ -420,54 +413,6 @@ export function LearnPage() {
                 </ol>
                 <p className="guide-conclusion">{lesson.conclusion}</p>
               </section>
-              <section id="data" tabIndex={-1}>
-                <h2>데이터·지원 범위</h2>
-                <dl className="guide-terms">
-                  <div>
-                    <dt>지원 코인</dt>
-                    <dd>
-                      {article.assets.includes(asset) ? `${asset}에 적용 가능` : `${asset} 미지원`}
-                      <details className="guide-supported-assets">
-                        <summary>전체 지원 코인</summary>
-                        <ul>
-                          {article.assets
-                            .filter((a) => PRIMARY_ASSETS.includes(a))
-                            .map((a) => (
-                              <li key={a}>
-                                {ASSETS.find((entry) => entry.id === a)?.name} · {a}
-                              </li>
-                            ))}
-                        </ul>
-                      </details>
-                    </dd>
-                  </div>
-                  {article.unit && (
-                    <div>
-                      <dt>표시 단위</dt>
-                      <dd>{article.unit}</dd>
-                    </div>
-                  )}
-                  {article.basis && (
-                    <div>
-                      <dt>가격 원천</dt>
-                      <dd>{article.basis.map(basisName).join(' · ')}</dd>
-                    </div>
-                  )}
-                </dl>
-                {lesson.data.map((line) => (
-                  <p key={line}>{line}</p>
-                ))}
-                {article.source && (
-                  <a
-                    className="guide-source"
-                    href={article.source}
-                    target="_blank"
-                    rel="noreferrer"
-                  >
-                    원천 정의·참고 문서 <ArrowUpRight size={14} />
-                  </a>
-                )}
-              </section>
               <section id="limits" className="guide-caution" tabIndex={-1}>
                 <h2>해석할 때 주의할 점</h2>
                 <p>{article.caution}</p>
@@ -567,7 +512,7 @@ export function LearnPage() {
           </div>
           <div className="learn-result-heading">
             <span role="status">{results.length}개 설명</span>
-            <small>뜻 · 계산식 · 예시 · 데이터 기준</small>
+            <small>뜻 · 계산식 · 예시</small>
           </div>
           <div className="learn-list">
             {GUIDE_CATEGORIES.map((group) => {

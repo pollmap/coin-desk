@@ -343,10 +343,7 @@ function Detail({ item, onUpdate }: { item: ResearchItem; onUpdate: (i: Research
             </Link>
           </div>
         )}
-        <small>
-          선택 원천으로 재계산합니다. 원문의 거래소·통화·산식과 다를 수 있습니다. 게시일 전 구간은
-          현재 확보한 이력으로 봅니다.
-        </small>
+        <small>원문의 거래소·통화·산식과 다를 수 있습니다.</small>
       </fieldset>
       <details>
         <summary>수집 경로·변경 이력</summary>
@@ -1138,24 +1135,6 @@ export function ResearchLibrary() {
           </div>
         )}
       </div>
-      <details className="import-audit">
-        <summary>확보·검토 현황</summary>
-        <p>
-          본문 확인 {summary.text}/{items.length} · 이미지 검토 {summary.images}/
-          {summary.imageCount} · 방법 검증 {summary.method}/{items.length}. 가져오기 완료는 전수
-          내용 검토나 X 전체 이력 확보를 의미하지 않습니다.
-        </p>
-        {batches
-          .slice(-12)
-          .reverse()
-          .map((b) => (
-            <p key={b.id}>
-              {b.startedAt.slice(0, 16)} · {b.checkpoint.source} · {b.read}건 ·{' '}
-              {b.checkpoint.status}
-              {b.checkpoint.reason ? ' · ' + b.checkpoint.reason : ''}
-            </p>
-          ))}
-      </details>
     </div>
   );
 }

@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
-import { Bookmark, SlidersHorizontal, Share2 } from 'lucide-react';
+import { Bookmark, SlidersHorizontal } from 'lucide-react';
 import { ASSETS } from '../shared/catalog';
 import { indicatorDefinition, indicatorUrl } from '../shared/indicator-catalog';
 import {
@@ -16,7 +16,7 @@ import { AnalysisChart, type AnalysisLine } from './AnalysisChart';
 import { ComparisonModes } from './ComparisonModes';
 import { DeskDialog } from './DeskDialog';
 import { WorkspaceBar } from './PersonalDesk';
-import { dateLabel, json, numeric } from './lib';
+import { json, numeric } from './lib';
 import './comparison.css';
 
 const colors = ['#b56e13', '#3868ad', '#9b4f97'];
@@ -45,12 +45,11 @@ export function IndicatorComparisonPage() {
   const [settings, setSettings] = useState(false),
     [saving, setSaving] = useState(false),
     [notice, setNotice] = useState('');
+  const [draftMetric, setDraftMetric] = useState(metric);
   const settingsButton = useRef<HTMLButtonElement>(null),
     saveButton = useRef<HTMLButtonElement>(null);
   const visible = useRef<DateWindow | null>(null),
     pinned = useRef<number | null>(null);
-  const [date, setDate] = useState<number | null>(null);
-  const [chartTools, setChartTools] = useState<HTMLDivElement | null>(null);
   const initialDate = /^\d{9,10}$/.test(params.get('reading_date') ?? '')
     ? Number(params.get('reading_date'))
     : undefined;
@@ -63,12 +62,10 @@ export function IndicatorComparisonPage() {
   }, [params.get('chart_from'), params.get('chart_to')]);
   const onReading = useCallback((time: number | null, fixed = false) => {
     pinned.current = fixed ? time : null;
-    setDate(fixed ? time : null);
   }, []);
   useEffect(() => {
     const controller = new AbortController();
     let active = true;
-    setDate(null);
     pinned.current = null;
     visible.current = null;
     setResponse({ key: requestKey, loading: true });
@@ -150,20 +147,6 @@ export function IndicatorComparisonPage() {
     setParams(next);
     setNotice('');
   };
-  const share = async () => {
-    const next = new URLSearchParams({ mode: 'indicator', ...Object.fromEntries(query) });
-    if (pinned.current !== null) next.set('reading_date', String(pinned.current));
-    if (visible.current) {
-      next.set('chart_from', String(visible.current.from));
-      next.set('chart_to', String(visible.current.to));
-    }
-    try {
-      await navigator.clipboard.writeText(location.origin + '/compare?' + next);
-      setNotice('공유 링크를 복사했습니다.');
-    } catch {
-      setNotice('링크를 복사하지 못했습니다. 브라우저 주소를 공유해 주세요.');
-    }
-  };
   const saveAsset = ASSETS.find((a) => a.id === assets.split(',')[0])?.id ?? 'BTC';
   return (
     <section
@@ -176,7 +159,14 @@ export function IndicatorComparisonPage() {
         <ComparisonModes mode="indicator" />
       </header>
       <div className="indicator-comparison-toolbar">
-        <button ref={settingsButton} onClick={() => setSettings(true)} aria-label="비교 설정 변경">
+        <button
+          ref={settingsButton}
+          onClick={() => {
+            setDraftMetric(metric);
+            setSettings(true);
+          }}
+          aria-label="비교 설정 변경"
+        >
           <SlidersHorizontal size={16} aria-hidden="true" />
           {assets.replaceAll(',', ' · ')} · {definition?.title ?? metric}
         </button>
@@ -191,12 +181,8 @@ export function IndicatorComparisonPage() {
             </option>
           ))}
         </select>
-        <div ref={setChartTools} className="indicator-date-tools" />
         <button aria-label="비교 분석 저장" ref={saveButton} onClick={() => setSaving(true)}>
           <Bookmark size={18} aria-hidden="true" />
-        </button>
-        <button aria-label="비교 링크 복사" onClick={share}>
-          <Share2 size={18} aria-hidden="true" />
         </button>
       </div>
       {notice && <p role="status">{notice}</p>}
@@ -204,9 +190,8 @@ export function IndicatorComparisonPage() {
         <p role="status">지표를 불러오는 중…</p>
       ) : current.error && !result ? (
         <div role="alert">
-          <p>{current.error}</p>
+          <p>비교 차트를 불러오지 못했습니다.</p>
           <button onClick={() => setRevision((r) => r + 1)}>다시 시도</button>
-          <Link to="/compare">기본 비교로 열기</Link>
         </div>
       ) : null}
       {primary && (
@@ -224,14 +209,14 @@ export function IndicatorComparisonPage() {
           onSignal={() => {}}
           onAll={() => update({ period: 'all', from: null, to: null })}
           step={metric === 'futures:funding' ? 3600 : 86400}
-          toolbarTarget={chartTools}
+          publicFocus
+          advancedTools={false}
           initialWindow={window}
           initialReadingDate={initialDate}
           onReadingDate={onReading}
           onVisibleRange={(range) => {
             visible.current = range;
           }}
-          exportName={`보리차트-${assets}-${metric.replace(':', '-')}`}
         />
       )}
       {result && (
@@ -241,14 +226,12 @@ export function IndicatorComparisonPage() {
               <thead>
                 <tr>
                   <th>코인</th>
-                  <th>{date === null ? '최근 확정값' : '선택 날짜 값'}</th>
-                  <th>기준일</th>
-                  <th>상태</th>
+                  <th>지표값</th>
                 </tr>
               </thead>
               <tbody>
                 {result.rows.map((r) => {
-                  const point = date === null ? r.data.at(-1) : r.data.find((p) => p.time === date);
+                  const point = r.data.at(-1);
                   return (
                     <tr key={r.asset}>
                       <td>
@@ -272,22 +255,12 @@ export function IndicatorComparisonPage() {
                           ? numeric(point.value, metric === 'futures:funding' ? 5 : 2) +
                             ' ' +
                             result.unit
-                          : '—'}
-                      </td>
-                      <td>{point ? dateLabel(point.time) : '—'}</td>
-                      <td>
-                        {date !== null && !point && ['ready', 'delayed'].includes(r.state)
-                          ? '관측 없음'
-                          : r.state === 'ready'
-                            ? '정상'
-                            : r.state === 'delayed'
-                              ? '갱신 지연'
-                              : r.state === 'unsupported'
-                                ? '미지원'
-                                : r.state === 'error'
-                                  ? '조회 실패'
-                                  : '관측 대기'}
-                        {r.state !== 'ready' && <small>{r.reason}</small>}
+                          : r.state === 'unsupported'
+                            ? '미지원'
+                            : r.state === 'error'
+                              ? '연결 실패'
+                              : '—'}
+                        {point && r.state === 'delayed' && <small>값 확인 지연</small>}
                       </td>
                     </tr>
                   );
@@ -295,16 +268,10 @@ export function IndicatorComparisonPage() {
               </tbody>
             </table>
           </div>
-          {current.error && (
-            <p role="status">갱신에 실패했습니다. 마지막 정상 결과를 표시합니다.</p>
-          )}
+          {current.error && <p role="status">일부 값을 확인하지 못했습니다.</p>}
           <details className="indicator-comparison-info">
-            <summary>비교 기준과 데이터</summary>
-            <p>{result.warning}</p>
-            <p>
-              원천 {result.source} · 공통 관측 {result.common.observations}개 ·{' '}
-              {dateLabel(result.common.first)}–{dateLabel(result.common.last)}
-            </p>
+            <summary>읽는 법</summary>
+            {result.mode === 'separate-panels' && <p>계산 방식이 달라 따로 표시합니다.</p>}
             <p>{definition?.formula}</p>
             <Link
               to={guideHref(
@@ -346,7 +313,10 @@ export function IndicatorComparisonPage() {
               metric: selectedMetric,
               source:
                 def.comparison!.source === 'price'
-                  ? String(form.get('source'))
+                  ? String(
+                      form.get('source') ??
+                        (['upbit', 'binance', 'reference'].includes(source) ? source : 'binance'),
+                    )
                   : def.comparison!.source,
               period: selectedMetric === metric ? period : def.defaultPeriod,
               from: null,
@@ -360,8 +330,8 @@ export function IndicatorComparisonPage() {
               );
               update(patch);
               setSettings(false);
-            } catch (error) {
-              setNotice((error as Error).message);
+            } catch {
+              setNotice('코인과 지표 선택을 확인해 주세요.');
             }
           }}
         >
@@ -385,7 +355,12 @@ export function IndicatorComparisonPage() {
           ))}
           <label>
             지표
-            <select name="metric" aria-label="지표" defaultValue={metric}>
+            <select
+              name="metric"
+              aria-label="지표"
+              defaultValue={metric}
+              onChange={(event) => setDraftMetric(event.target.value)}
+            >
               {COMPARISON_METRICS.map((id) => (
                 <option key={id} value={id}>
                   {indicatorDefinition(id)!.title}
@@ -393,19 +368,22 @@ export function IndicatorComparisonPage() {
               ))}
             </select>
           </label>
-          <label>
-            가격 지표 원천
-            <select
-              name="source"
-              aria-label="가격 지표 원천"
-              defaultValue={['binance', 'upbit', 'reference'].includes(source) ? source : 'binance'}
-            >
-              <option value="binance">Binance USDT</option>
-              <option value="upbit">Upbit KRW</option>
-              <option value="reference">USD 참조</option>
-            </select>
-          </label>
-          <small>MVRV는 Coin Metrics, 펀딩률은 Bybit를 사용합니다.</small>
+          {indicatorDefinition(draftMetric)?.comparison?.source === 'price' && (
+            <label>
+              거래소·통화
+              <select
+                name="source"
+                aria-label="비교 거래소·통화"
+                defaultValue={
+                  ['binance', 'upbit', 'reference'].includes(source) ? source : 'binance'
+                }
+              >
+                <option value="binance">Binance USDT</option>
+                <option value="upbit">Upbit KRW</option>
+                <option value="reference">USD 참조</option>
+              </select>
+            </label>
+          )}
           {notice && <p role="alert">{notice}</p>}
           <button type="submit">적용</button>
         </form>
@@ -437,7 +415,9 @@ export function IndicatorComparisonPage() {
             dateWindow: visible.current ?? undefined,
             analysisOptions: {
               ...c.analysisOptions,
-              ...(pinned.current === null ? {} : { reading_date: String(pinned.current) }),
+              ...(initialDate !== undefined
+                ? { reading_date: String(initialDate) }
+                : pinned.current === null ? {} : { reading_date: String(pinned.current) }),
             },
           })}
         />

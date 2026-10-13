@@ -139,7 +139,6 @@ export function IndicatorNavigation({ onNavigate }: { onNavigate: () => void }) 
       </nav>
       <nav className="nav-utilities">
         <Link to={'/learn?' + p}>분석 사전</Link>
-        <Link to="/status">데이터 · 자동 갱신</Link>
         <Link to="/workspace/library">개인 자료함</Link>
       </nav>
     </div>

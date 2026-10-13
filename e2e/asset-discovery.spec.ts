@@ -1,7 +1,9 @@
 import { test, expect } from '@playwright/test';
 
 for (const width of [390, 1280])
-  test(`150 asset discovery, aliases, watchlist and data panels ${width}`, async ({ page }) => {
+  test(`150 asset discovery, aliases and watchlist without data panels ${width}`, async ({
+    page,
+  }) => {
     await page.setViewportSize({ width, height: 900 });
     const calls: string[] = [];
     page.on('request', (request) => {
@@ -32,9 +34,8 @@ for (const width of [390, 1280])
     await expect(chart).toHaveAttribute('data-range-ready', '1');
     const range = await chart.getAttribute('data-visible-from');
     await expect(page.locator('.indicator-provenance')).toHaveCount(0);
-    await page.getByRole('button', { name: '데이터 정보', exact: true }).click();
-    await expect(page.getByRole('dialog', { name: '데이터 정보' })).toBeVisible();
-    await page.keyboard.press('Escape');
+    await expect(page.getByRole('button', { name: '데이터 정보', exact: true })).toHaveCount(0);
+    await expect(page.getByRole('dialog', { name: '데이터 정보' })).toHaveCount(0);
     await expect(chart).toHaveAttribute('data-visible-from', range!);
     await page.goBack();
     await expect(page.getByRole('button', { name: '시장 코인 검색' })).toContainText('펭귄');
@@ -44,7 +45,7 @@ for (const width of [390, 1280])
     await row.locator('.market-coin-cell a').click();
     await expect(chart).toHaveAttribute('data-asset', 'BNB');
     expect(new URL(page.url()).searchParams.get('price_source')).toBe('binance');
-    await page.getByRole('button', { name: '가격 거래소와 체결 시각' }).click();
+    await page.getByRole('button', { name: '가격 거래소 선택' }).click();
     await expect(page.getByRole('combobox', { name: '현재 가격 거래소' })).toHaveValue('binance');
     await page.keyboard.press('Escape');
     await page.screenshot({ path: test.info().outputPath(`discovery-${width}.png`) });

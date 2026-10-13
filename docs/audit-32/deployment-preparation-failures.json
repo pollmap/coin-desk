@@ -1,0 +1,39 @@
+{
+  "commit": "af4953fc30c0d1b5f41592c530eb3ff2a9f32db8",
+  "release": "vps-fc82c194ded504a9",
+  "productionReleaseRetained": "vps-63b8b1d4ea587ca8",
+  "failures": [
+    {
+      "phase": "prepare config validation after verified image load",
+      "message": "Previous config differs from live image: analysis",
+      "cause": "Helper incorrectly required protected historical analysis/backup images to equal current Compose base",
+      "sourceFilesVerified": 540,
+      "backupCreated": false,
+      "productServicesChanged": false,
+      "resolution": "Changed-service image equality only; protected config and original identity remain strict"
+    },
+    {
+      "phase": "resumed candidate read verification after online backup and independent restore",
+      "message": "Candidate hashrate unit mismatch",
+      "cause": "Helper read top-level unit although network API contract stores unit in meta.unit",
+      "readApisVerifiedBeforeUnitCheck": 29,
+      "candidateProcessHealthy": true,
+      "candidateReportKeys": [
+        "data",
+        "price",
+        "nextCursor",
+        "meta",
+        "range",
+        "_verificationHttpStatus"
+      ],
+      "backupFileSha256": "0a9c8619cf0ecb890a43fd8dea2a5ef61e66faf605def940dc913772917dc713",
+      "canonicalDistSha256": "7952ab6626dc82ce8a77e2efb4a0b585d4a7e077cf9e5f6f0fb5f347e3d0af15",
+      "candidateContainersAndNetworkCleaned": true,
+      "productServicesChanged": false,
+      "resolution": "Read authoritative meta.unit; add contract regression and guarded rehearsal-only resume"
+    }
+  ],
+  "fullPrepareBlindRerunPerformed": false,
+  "activateOrPromotePerformed": false,
+  "credentialsEnvironmentHeadersOrPersonalDataIncluded": false
+}

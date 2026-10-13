@@ -1,5 +1,7 @@
 import { test, expect } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
+import { supertrend } from '../shared/supertrend';
+import type { Candle } from '../shared/types';
 
 test('retains fractional price precision in Supertrend readings', async ({ page }) => {
   await page.route('**/api/v1/candles?**', async (route) => {
@@ -20,13 +22,23 @@ test('retains fractional price precision in Supertrend readings', async ({ page 
     '1',
   );
   await expect(
-    page.locator('.analysis-legend > span').filter({ hasText: '슈퍼트렌드 10·3' }).locator('b'),
+    page
+      .locator('.analysis-secondary-readings > span')
+      .filter({ hasText: '슈퍼트렌드 10·3' })
+      .locator('b'),
   ).toHaveText(/\d+\.\d{5,}/);
 });
 
-test('selects Supertrend from USD reference, opens actual DOGE weekly candles and keeps dates while reading help', async ({
+test('selects Supertrend from USD reference, opens actual DOGE weekly candles and preserves latest readings and zoom while reading help', async ({
   page,
 }) => {
+  let inputs: Candle[] = [];
+  await page.route('**/api/v1/candles?*', async (route) => {
+    const response = await route.fetch();
+    const body = await response.json();
+    if (new URL(route.request().url()).searchParams.get('interval') === '1w') inputs = body.data;
+    await route.fulfill({ response, json: body });
+  });
   await page.goto('/coins/DOGE?metric=net:mvrv&price_source=reference');
   await page.getByRole('button', { name: /지표 변경$/ }).click();
   const picker = page.getByRole('dialog', { name: '지표 선택' });
@@ -37,11 +49,23 @@ test('selects Supertrend from USD reference, opens actual DOGE weekly candles an
   await expect(page).toHaveURL(/interval=1w/);
   const chart = page.locator('[data-chart-kind="analysis"]');
   await expect(chart).toHaveAttribute('data-range-ready', '1');
-  await expect(page.locator('.supertrend-context')).toContainText('ATR 10 · 3배 · 1w');
-  await chart.press('Home');
-  await expect(page.locator('.analysis-reading-date')).toContainText('날짜 고정');
-  await expect(page.locator('.supertrend-context')).toContainText('계산 전');
-  await chart.press('End');
+  const expected = supertrend(inputs, '1w').at(-1)!;
+  await expect(page.locator('.supertrend-context')).toHaveAttribute(
+    'data-direction',
+    expected.direction,
+  );
+  const actual = page
+    .locator('.analysis-secondary-readings > span')
+    .filter({ hasText: '슈퍼트렌드 10·3' })
+    .locator('b');
+  expect(Number((await actual.innerText()).replace(/,/g, ''))).toBeCloseTo(expected.value, 4);
+  const latest = await page.locator('.analysis-reading-value').innerText();
+  const box = (await chart.boundingBox())!;
+  await page.mouse.move(box.x + box.width * 0.5, box.y + box.height * 0.4);
+  await page.mouse.click(box.x + box.width * 0.5, box.y + box.height * 0.4);
+  await expect(page.locator('.analysis-reading-value')).toHaveText(latest);
+  expect(new URL(page.url()).searchParams.has('reading_date')).toBe(false);
+  await expect(page.locator('.analysis-reading-date,.indicator-provenance')).toHaveCount(0);
   const from = await chart.getAttribute('data-visible-from');
   await page.getByRole('button', { name: /^지표 설명/ }).click();
   await page
@@ -68,9 +92,13 @@ test('rejects a closing-only source without loading another coin and offers a va
   );
   await expect(page.locator('[data-chart-kind="analysis"]')).toHaveCount(0);
   expect(requests).toEqual([]);
-  await page.getByRole('link', { name: '지원되는 원천·분석으로 열기' }).click();
+  await page.getByRole('link', { name: '사용 가능한 분석 열기' }).click();
   await expect(page.locator('[data-chart-kind="analysis"]')).toHaveAttribute('data-asset', 'ONDO');
-  await expect(page.locator('.supertrend-context')).toContainText('ATR 10');
+  await expect(page.locator('.supertrend-context')).not.toHaveAttribute(
+    'data-direction',
+    'pending',
+  );
+  await expect(page.locator('.analysis-secondary-readings')).toContainText('슈퍼트렌드 10·3');
 });
 
 test('saves and restores source, weekly interval and custom Supertrend settings', async ({
@@ -84,7 +112,7 @@ test('saves and restores source, weekly interval and custom Supertrend settings'
   await page.getByRole('spinbutton', { name: '슈퍼트렌드 ATR 기간' }).fill('7');
   await page.getByRole('spinbutton', { name: '슈퍼트렌드 배수' }).fill('2.5');
   await page.getByRole('button', { name: '설정 적용', exact: true }).click();
-  await expect(page.locator('.supertrend-context')).toContainText('ATR 7 · 2.5배');
+  await expect(page.locator('.analysis-secondary-readings')).toContainText('슈퍼트렌드 7·2.5');
   await expect(chart).toHaveAttribute('data-visible-from', before!);
   await page.getByRole('button', { name: '분석 저장', exact: true }).click();
   const save = page.getByRole('dialog', { name: '분석 저장' });
@@ -95,7 +123,8 @@ test('saves and restores source, weekly interval and custom Supertrend settings'
   await page.getByRole('link', { name: /DOGE 주봉 추세/ }).click();
   await expect(page).toHaveURL(/st_period=7/);
   await expect(page).toHaveURL(/st_multiplier=2.5/);
-  await expect(page.locator('.supertrend-context')).toContainText('ATR 7 · 2.5배 · 1w');
+  expect(new URL(page.url()).searchParams.get('interval')).toBe('1w');
+  await expect(page.locator('.analysis-secondary-readings')).toContainText('슈퍼트렌드 7·2.5');
   await expect(page.locator('.analysis-reading-value')).toContainText('₩');
 });
 
@@ -111,12 +140,45 @@ test('uses the selected coin across supported markets and direct default entry',
   ]) {
     await page.goto(`/coins/${asset}?metric=view:supertrend&price_source=${source}&interval=1d`);
     await expect(page.locator('[data-chart-kind="analysis"]')).toHaveAttribute('data-asset', asset);
-    await expect(page.locator('.supertrend-context')).toContainText('ATR 10 · 3배 · 1d');
-    await expect(page.locator('.supertrend-context')).not.toContainText('계산 전');
+    expect(new URL(page.url()).searchParams.get('interval')).toBe('1d');
+    await expect(page.locator('.supertrend-context')).not.toHaveAttribute(
+      'data-direction',
+      'pending',
+    );
+    await expect(page.locator('.analysis-secondary-readings')).toContainText('슈퍼트렌드 10·3');
+    await expect(page.locator('.analysis-reading-date,.indicator-provenance')).toHaveCount(0);
   }
+  const defaultResponse = page.waitForResponse((response) => {
+    const url = new URL(response.url());
+    return (
+      url.pathname === '/api/v1/candles' &&
+      url.searchParams.get('asset') === 'DOGE' &&
+      url.searchParams.get('market') === 'binance'
+    );
+  });
   await page.goto('/coins/DOGE?metric=view:supertrend');
+  const response = await defaultResponse;
+  expect(new URL(response.url()).searchParams.get('interval')).toBe('1w');
+  const data = (await response.json()).data as Candle[];
+  const expected = supertrend(data, '1w').at(-1)!;
+  expect(expected).toBeDefined();
   await expect(page.locator('[data-chart-kind="analysis"]')).toHaveAttribute('data-asset', 'DOGE');
-  await expect(page.locator('.supertrend-context')).toContainText('1w');
+  await expect(page.locator('[data-chart-kind="analysis"]')).toHaveAttribute(
+    'data-range-ready',
+    '1',
+  );
+  // Omitting the default from the URL is valid; actual source and computation
+  // must still use confirmed DOGE Binance weekly OHLC.
+  await expect(page.locator('.supertrend-context')).toHaveAttribute(
+    'data-direction',
+    expected.direction,
+  );
+  await expect(page.locator('.analysis-secondary-readings')).toContainText('슈퍼트렌드 10·3');
+  const value = page
+    .locator('.analysis-secondary-readings > span')
+    .filter({ hasText: '슈퍼트렌드 10·3' })
+    .locator('b');
+  expect(Number((await value.innerText()).replace(/,/g, ''))).toBeCloseTo(expected.value, 4);
 });
 
 test('keeps the weekly chart compact and accessible in both themes', async ({ page }, testInfo) => {
@@ -152,11 +214,32 @@ test('keeps the weekly chart compact and accessible in both themes', async ({ pa
         label: element.getAttribute('aria-label') ?? element.textContent?.trim(),
         height: box.height,
       })),
+    header: ['.asset-header', '.coin-context', '.quote-source-button', '.quote-source-label'].map(
+      (selector) => {
+        const element = document.querySelector(selector)!,
+          box = element.getBoundingClientRect(),
+          css = getComputedStyle(element);
+        return {
+          selector,
+          height: box.height,
+          width: box.width,
+          fontSize: css.fontSize,
+          lineHeight: css.lineHeight,
+          minHeight: css.minHeight,
+          whiteSpace: css.whiteSpace,
+        };
+      },
+    ),
   }));
   await testInfo.attach('supertrend-mobile-layout', {
     body: JSON.stringify(mobileLayout, null, 2),
     contentType: 'application/json',
   });
+  const quoteHeight = mobileLayout.header.find(
+    (row) => row.selector === '.quote-source-button',
+  )!.height;
+  expect(quoteHeight).toBeGreaterThanOrEqual(44);
+  expect(quoteHeight).toBeLessThanOrEqual(46);
   expect((await chart.boundingBox())!.y).toBeLessThanOrEqual(280);
   expect(mobileLayout.documentWidth).toBeLessThanOrEqual(mobileLayout.viewport);
   for (const control of mobileLayout.toolbar) expect(control.height).toBeGreaterThanOrEqual(44);

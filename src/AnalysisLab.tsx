@@ -147,7 +147,6 @@ export function PathPlot({
         )}
       </svg>
       <div className="path-legend" aria-live="polite">
-        {cursor !== null && <strong>{label(cursor)}</strong>}
         {paths.map((p, i) => (
           <span key={p.name}>
             <i style={{ background: p.color ?? COLORS[i % COLORS.length] }} />
@@ -156,38 +155,6 @@ export function PathPlot({
           </span>
         ))}
       </div>
-      <details>
-        <summary>표로 확인</summary>
-        <div className="analysis-table">
-          <table>
-            <caption>
-              {calendar ? '달력 날짜' : '경과일'} · {unit}
-            </caption>
-            <thead>
-              <tr>
-                <th>날짜</th>
-                {paths.map((p) => (
-                  <th key={p.name}>{p.name}</th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              {Array.from(new Set(all.map((p) => p.time)))
-                .sort((a, b) => a - b)
-                .map((t) => (
-                  <tr key={t}>
-                    <td>{label(t)}</td>
-                    {paths.map((p) => (
-                      <td key={p.name}>
-                        {p.data.find((v) => v.time === t)?.value.toFixed(2) ?? '—'}
-                      </td>
-                    ))}
-                  </tr>
-                ))}
-            </tbody>
-          </table>
-        </div>
-      </details>
     </div>
   );
 }
@@ -272,12 +239,10 @@ function SeasonalityView({
           }
         />
       ) : (
-        <p role="status">
-          결측 없는 완전한 연도가 3개 이상 필요합니다. 현재 {result.years.length}개입니다.
-        </p>
+        <p role="status">아직 계절성을 표시할 수 없습니다.</p>
       )}
       <details>
-        <summary>계산 기준 · {source}</summary>
+        <summary>계산 방식</summary>
         <p>
           전년 12월 31일 대비 일별 종가 누적수익률입니다. 기본 두 선은 같은 연도 표본의
           중앙값·단순평균, 음영은 25–75% 범위입니다. 현재 연도와 누락일이 있는 연도는 과거 집계에서
@@ -339,16 +304,6 @@ function CyclesView({
       </div>
       {windows && (
         <div className="lab-controls">
-          {values.map((v, i) => (
-            <label key={names[i]}>
-              {['A 시작', 'A 종료', 'B 시작', 'B 종료'][i]}
-              <input
-                type="date"
-                value={v}
-                onChange={(e) => change({ ['window_' + names[i]]: e.target.value })}
-              />
-            </label>
-          ))}
           <label>
             <input type="checkbox" checked={side} onChange={(e) => setSide(e.target.checked)} />
             나란히 보기
@@ -356,7 +311,7 @@ function CyclesView({
         </div>
       )}
       {!valid && windows ? (
-        <p role="alert">각 구간의 시작일을 종료일 이전으로 정해 주세요.</p>
+        <p role="alert">저장한 비교 구간을 적용할 수 없습니다.</p>
       ) : side ? (
         <div className="side-paths">
           {paths.map((p) => (
@@ -366,13 +321,6 @@ function CyclesView({
       ) : (
         <PathPlot paths={paths.map((p) => ({ name: p.name, data: p.points }))} unit="" />
       )}
-      <div className="path-legend">
-        {paths.map((p) => (
-          <span key={p.name}>
-            {p.name} · 기준 {utcDate(p.anchor)} / 첫 관측 {utcDate(p.first)}
-          </span>
-        ))}
-      </div>
       <details>
         <summary>비교 기준</summary>
         <p>
@@ -490,8 +438,7 @@ function RelativeView({
       {!controlsInToolbar && <RelativeControls asset={asset} params={params} change={change} />}
       {!supported ? (
         <p role="status">
-          {pair.asset}·{pair.benchmark}의 공통 USD 참조 원천이 없습니다. 더보기에서 공통 거래소
-          원천을 선택하세요.
+          이 가격 기준으로 {pair.asset}·{pair.benchmark}를 비교할 수 없습니다.
         </p>
       ) : error ? (
         <p role="alert">
@@ -508,13 +455,13 @@ function RelativeView({
       ) : aligned[1]?.data.length ? (
         <>
           <AnalysisChart
-            toolbarTarget={toolbarTarget}
+            publicFocus
+            advancedTools={false}
             onVisibleRange={onVisibleRange}
             onReadingDate={onReadingDate}
             onDateSelect={onDateSelect}
             initialReadingDate={initialReadingDate}
             asset={pair.asset}
-            exportName={`${pair.asset}-${pair.benchmark}-${mode}`}
             primary={{
               id: `relative:${pair.asset}:${pair.benchmark}:${mode}`,
               title: `${pair.asset}/${pair.benchmark} ${mode === 'ratio' ? '가격 비율' : mode === 'percent' ? '수익률' : '시작값 100'}`,
@@ -539,17 +486,11 @@ function RelativeView({
               1 {pair.asset}의 가격을 {pair.benchmark} 수량으로 표시합니다.
             </p>
           )}
-          {!corr.length && (
-            <p className="muted">
-              {window}일 상관에는 연속 {window + 1}개 공통 일별 종가와 변동이 필요합니다.
-            </p>
-          )}
+          {!corr.length && <p className="muted">아직 상관을 표시할 수 없습니다.</p>}
         </>
       ) : (
         <p role="status">
-          {loading
-            ? '두 코인의 공통 이력을 불러오는 중…'
-            : '선택 원천에서 두 코인의 공통 확정 이력이 없습니다.'}
+          {loading ? '두 코인의 공통 이력을 불러오는 중…' : '아직 두 코인을 비교할 수 없습니다.'}
         </p>
       )}
       <details>

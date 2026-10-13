@@ -28,8 +28,8 @@ test('loading a band does not prematurely claim zero observations or insufficien
   });
   try {
     await page.goto('/?asset=BTC&metric=view%3Abtc_rainbow&period=all&price_source=reference');
-    await expect(page.getByText('지표 이력을 불러오고 있습니다…')).toBeVisible();
-    await expect(page.locator('.indicator-empty p')).toHaveCount(0);
+    await expect(page.getByText('차트를 불러오는 중…')).toBeVisible();
+    await expect(page.locator('.indicator-empty p')).toHaveCount(1);
     await expect(page.getByText('밴드 계산에 필요한 이력이 부족합니다.')).toHaveCount(0);
     release();
     await expect(chart(page)).toBeVisible();
@@ -85,11 +85,14 @@ test('BTC detail defaults to MVRV; eight coins use supported metrics and sources
     }
   }
 });
-test('market deep link, one-click selection and source survive back/reload/share', async ({
+test('market deep link, one-click selection and source survive back and reload without share controls', async ({
   page,
 }) => {
   await page.goto('/coins?market=upbit&view=derivatives');
-  await page.getByRole('link', { name: '도지코인 미결제약정 차트', exact: true }).click();
+  await page.getByRole('link', { name: '도지코인 DOGE', exact: true }).click();
+  await expect(chart(page)).toHaveAttribute('data-asset', 'DOGE');
+  await expect(chart(page)).toHaveAttribute('data-primary-metric', 'price');
+  await pick(page, '미결제약정 · 시간별');
   await expect(chart(page)).toHaveAttribute('data-primary-metric', 'futures:open_interest');
   await pick(page, 'MVRV');
   await expect(chart(page)).toHaveAttribute('data-primary-metric', 'net:mvrv');
@@ -106,10 +109,10 @@ test('market deep link, one-click selection and source survive back/reload/share
       .getAttribute('aria-expanded')) !== 'true'
   )
     await page.getByRole('button', { name: '더보기', exact: true }).click();
-  await page.locator('details.analysis-tools > summary').click();
-  await page.getByRole('button', { name: '링크 공유', exact: true }).click();
-  const shared = await page.getByLabel('공유 주소', { exact: true }).inputValue();
-  await page.goto(shared);
+  await expect(page.locator('details.analysis-tools')).toHaveCount(0);
+  await expect(page.getByRole('button', { name: '링크 공유', exact: true })).toHaveCount(0);
+  const existingLink = page.url();
+  await page.goto(existingLink);
   await expect(chart(page)).toHaveAttribute('data-asset', 'DOGE');
   expect(new URL(page.url()).searchParams.get('price_source')).toBe('upbit');
 });
@@ -136,7 +139,7 @@ test('legacy metric URLs use the same indicator workspace without automatic pric
     'MVRV',
   );
   await page.keyboard.press('Escape');
-  await page.getByRole('link', { name: '지원되는 원천·분석으로 열기' }).click();
+  await page.getByRole('link', { name: '사용 가능한 분석 열기' }).click();
   await expect(chart(page)).toHaveAttribute('data-asset', 'ONDO');
   await expect(chart(page)).toHaveAttribute('data-primary-metric', 'price');
 });
@@ -151,8 +154,10 @@ test('initial collection is pending and waits for the normal refresh interval be
   });
   await page.goto('/metrics/mvrv');
   await expect(page.locator('[data-availability]')).toHaveAttribute('data-availability', 'pending');
-  await expect(page.getByText('아직 수집된 관측이 없습니다.')).toBeVisible();
-  await expect(page.getByText(/불러오고 있습니다|불러오지 못했습니다/)).toHaveCount(0);
+  await expect(page.getByText('아직 이 지표를 표시할 수 없습니다.')).toBeVisible();
+  await expect(page.getByRole('link', { name: '가격 차트 보기', exact: true })).toBeVisible();
+  await expect(page.getByRole('button', { name: '다시 시도', exact: true })).toHaveCount(0);
+  await expect(page.getByText(/차트를 불러오는 중|차트를 불러오지 못했습니다/)).toHaveCount(0);
   const initialCalls = calls;
   await page.clock.fastForward(60000);
   expect(calls).toBe(initialCalls);
@@ -174,15 +179,15 @@ test('unsupported URLs do not request data or retry and ONDO help retains asset'
     'unsupported',
   );
   await expect(chart(page)).toHaveCount(0);
-  await expect(page.getByText(/불러오고 있습니다/)).toHaveCount(0);
+  await expect(page.getByText(/차트를 불러오는 중/)).toHaveCount(0);
   expect(requests).toEqual([]);
   await page.keyboard.press('Escape');
-  await page.getByRole('link', { name: '지원되는 원천·분석으로 열기' }).click();
+  await page.getByRole('link', { name: '사용 가능한 분석 열기' }).click();
   await expect(chart(page)).toHaveAttribute('data-primary-metric', 'price');
   await page.getByRole('button', { name: /^지표 설명/ }).click();
   await page
     .getByRole('dialog', { name: '지표 설명', exact: true })
-    .getByText('출처·한계', { exact: true })
+    .getByText('주의할 점', { exact: true })
     .click();
   await page.getByRole('link', { name: '현재 분석 설명' }).click();
   await expect(page).toHaveURL(/\/learn\/candles/);
@@ -213,10 +218,13 @@ test('slow failures, logos and stale data never contaminate another asset', asyn
   });
   await page.goto('/?asset=ETH');
   await expect(chart(page)).toBeVisible();
-  await expect(page.locator('.indicator-notice')).toContainText('갱신 지연');
+  await expect(page.locator('.indicator-notice')).toContainText(
+    '값을 확인하는 데 시간이 걸리고 있습니다.',
+  );
+  await expect(page.locator('main')).not.toContainText('fixture stale observation');
   await page.goto('/?asset=BTC');
-  await expect(page.getByText('이력을 불러오지 못했습니다.')).toBeVisible();
-  await expect(page.getByText(/불러오고 있습니다/)).toHaveCount(0);
+  await expect(page.getByText('차트를 불러오지 못했습니다.')).toBeVisible();
+  await expect(page.getByText(/차트를 불러오는 중/)).toHaveCount(0);
 });
 for (const width of [320, 390, 768, 1000, 1280, 1440])
   test('indicator charts reflow and pass axe ' + width + 'px both themes', async ({ page }) => {
@@ -267,19 +275,17 @@ test('mobile search Escape focus and 200 percent keyboard reflow', async ({ page
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1)).toBe(
     true,
   );
+  const legend = page.locator('.analysis-legend');
+  const latest = await legend.innerText();
   await chart(page).focus();
   await page.keyboard.press('Home');
-  const legend = page.locator('.analysis-legend');
-  await expect(legend).toContainText('날짜 고정');
-  await expect(page).toHaveURL(/reading_date=\d+/);
-  const first = await legend.innerText();
-  const firstDate = new URL(page.url()).searchParams.get('reading_date');
   await page.keyboard.press('End');
-  // Keyboard navigation updates the URL before React commits the legend.
-  // Assert the user-visible result, rather than sampling that intermediate frame.
-  await expect.poll(() => new URL(page.url()).searchParams.get('reading_date')).not.toBe(firstDate);
-  await expect(legend).not.toHaveText(first);
-  await expect(legend).toContainText('날짜 고정');
+  await expect(page).not.toHaveURL(/reading_date=/);
+  await expect(legend).toHaveText(latest, { useInnerText: true });
+  await expect(page.locator('.analysis-reading-date,.analysis-reading-reset')).toHaveCount(0);
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1)).toBe(
+    true,
+  );
 });
 for (const asset of ['BTC', 'DOGE', 'ETH', 'XRP', 'LINK', 'SOL', 'ONDO', 'PEPE'])
   test(asset + ' selected onchain and futures do not request prices', async ({ page }) => {
@@ -296,69 +302,61 @@ for (const asset of ['BTC', 'DOGE', 'ETH', 'XRP', 'LINK', 'SOL', 'ONDO', 'PEPE']
     expect(requests).toEqual([]);
   });
 for (const metric of ['view:price', 'view:rainbow', 'view:btc_rainbow', 'net:mvrv'])
-  test(metric + ' date zoom share save restoration', async ({ page }) => {
-    await page.goto('/?asset=BTC&period=all&metric=' + metric);
-    const surface = chart(page);
-    await expect(surface).toHaveAttribute('data-range-ready', '1');
-    const first = Number(await surface.getAttribute('data-visible-from')),
-      last = Number(await surface.getAttribute('data-visible-to')),
-      target = first + 30 * 86400,
-      date = (t: number) => new Date(t * 1000).toISOString().slice(0, 10);
-    const nav = page;
-    await nav.getByRole('button', { name: '날짜로 이동', exact: true }).click();
-    const dialog = page.getByRole('dialog', { name: '차트 날짜 탐색', exact: true });
-    await dialog.getByRole('button', { name: '기간 선택', exact: true }).click();
-    await dialog.getByLabel('시작일 (UTC)').fill(date(target));
-    await dialog.getByLabel('종료일 (UTC)').fill(date(target + 30 * 86400));
-    await dialog.getByRole('button', { name: '기간 적용', exact: true }).click();
-    await expect(surface).toHaveAttribute('data-visible-from', String(target));
-    const toggle = page.getByRole('checkbox', { name: '가격 비교' });
-    if (await toggle.isVisible()) {
-      await toggle.click();
-      await expect(toggle).toBeChecked();
-    }
-    await expect(surface).toHaveAttribute('data-visible-from', String(target));
-    if (
-      (await page
-        .getByRole('button', { name: '더보기', exact: true })
-        .getAttribute('aria-expanded')) !== 'true'
-    )
+  test(
+    metric + ' legacy date range, zoom and save restoration retain latest public values',
+    async ({ page }) => {
+      await page.goto('/?asset=BTC&period=all&metric=' + metric);
+      const surface = chart(page);
+      await expect(surface).toHaveAttribute('data-range-ready', '1');
+      const first = Number(await surface.getAttribute('data-visible-from')),
+        last = Number(await surface.getAttribute('data-visible-to')),
+        target = first + 30 * 86400;
+      const latestValue = await page.locator('.analysis-reading-value').innerText();
+      const legacy = new URL(page.url());
+      legacy.searchParams.set('chart_from', String(target));
+      legacy.searchParams.set('chart_to', String(target + 30 * 86400));
+      legacy.searchParams.set('reading_date', String(target));
+      await page.goto(legacy.href);
+      await expect(surface).toHaveAttribute('data-visible-from', String(target));
+      await expect(surface).toHaveAttribute('data-visible-to', String(target + 30 * 86400));
+      await expect(page.locator('.analysis-reading-value')).toHaveText(latestValue);
+      await expect(
+        page.locator('.analysis-reading-date,.analysis-reading-reset,details.analysis-tools'),
+      ).toHaveCount(0);
       await page.getByRole('button', { name: '더보기', exact: true }).click();
-    await page.locator('details.analysis-tools > summary').click();
-    await page.getByRole('button', { name: '링크 공유', exact: true }).click();
-    const shared = await page.getByLabel('공유 주소', { exact: true }).inputValue();
-    expect(new URL(shared).searchParams.get('chart_from')).toBe(String(target));
-    await page.goto(shared);
-    await expect(surface).toHaveAttribute('data-visible-from', String(target));
-    await expect(surface).toHaveAttribute('data-visible-to', String(target + 30 * 86400));
-    await page.getByRole('button', { name: '분석 저장' }).click();
-    await page.getByLabel('작업공간 이름', { exact: true }).fill('구간 보존');
-    await page.getByRole('button', { name: '현재 구성 저장', exact: true }).click();
-    await page.getByRole('link', { name: /구간 보존/ }).click();
-    await expect(surface).toHaveAttribute('data-visible-from', String(target));
-    await page.getByRole('button', { name: '구간·확대', exact: true }).click();
-    await nav.getByRole('button', { name: '전체 보기', exact: true }).click();
-    await page.keyboard.press('Escape');
-    await expect(surface).toHaveAttribute('data-visible-to', String(last));
-    await surface.focus();
-    await page.keyboard.press('Home');
-    await page.keyboard.press('Escape');
-    await nav.getByRole('button', { name: '날짜로 이동', exact: true }).click();
-    await page.keyboard.press('Escape');
-    await expect(dialog).not.toBeVisible();
-    await expect(nav.locator('.date-jump')).toBeFocused();
-  });
+      const toggle = page.getByRole('checkbox', { name: '가격 비교 추가', exact: true });
+      if ((await toggle.isVisible()) && (await toggle.isEnabled())) {
+        await toggle.click();
+        await expect(toggle).toBeChecked();
+      }
+      await expect(surface).toHaveAttribute('data-visible-from', String(target));
+      await expect(page.getByRole('button', { name: '링크 공유', exact: true })).toHaveCount(0);
+      await page.getByRole('button', { name: '분석 저장' }).click();
+      await page.getByLabel('작업공간 이름', { exact: true }).fill('구간 보존');
+      await page.getByRole('button', { name: '현재 구성 저장', exact: true }).click();
+      await page.getByRole('link', { name: /구간 보존/ }).click();
+      await expect(surface).toHaveAttribute('data-visible-from', String(target));
+      await expect(surface).toHaveAttribute('data-visible-to', String(target + 30 * 86400));
+      await expect(page.locator('.analysis-reading-value')).toHaveText(latestValue);
+      await expect(page.locator('.analysis-reading-date')).toHaveCount(0);
+      const allButton = page.getByRole('button', { name: '전체', exact: true });
+      await allButton.click();
+      await expect(surface).toHaveAttribute('data-visible-to', String(last));
+      await expect(page).not.toHaveURL(/reading_date=|chart_from=|chart_to=/);
+    },
+  );
 
 test('source selection stays separate and automatic refresh preserves the canvas and chosen range', async ({
   page,
 }) => {
   await page.clock.install();
   let requests = 0;
+  let changed = false;
   await page.route('**/api/v1/network?asset=BTC**', async (route) => {
     requests++;
     const response = await route.fetch(),
       body = await response.json();
-    if (requests > 2)
+    if (changed)
       body.data = body.data.map((p: { time: number; value: number }) => ({
         ...p,
         value: p.value + 1,
@@ -368,32 +366,29 @@ test('source selection stays separate and automatic refresh preserves the canvas
   await page.goto('/?asset=BTC&metric=net:mvrv&period=all');
   const surface = chart(page);
   await expect(surface).toHaveAttribute('data-range-ready', '1');
-  const initialRequests = requests;
-  const canvas = await surface.locator('canvas').first().elementHandle();
   const first = Number(await surface.getAttribute('data-visible-from')),
     target = first + 30 * 86400;
-  const nav = page;
-  await nav.getByRole('button', { name: '날짜로 이동', exact: true }).click();
-  const dialog = page.getByRole('dialog', { name: '차트 날짜 탐색', exact: true });
-  await dialog.getByRole('button', { name: '기간 선택', exact: true }).click();
-  await dialog.getByLabel('시작일 (UTC)').fill(new Date(target * 1000).toISOString().slice(0, 10));
-  await dialog
-    .getByLabel('종료일 (UTC)')
-    .fill(new Date((target + 30 * 86400) * 1000).toISOString().slice(0, 10));
-  await dialog.getByRole('button', { name: '기간 적용', exact: true }).click();
+  const rangeUrl = new URL(page.url());
+  rangeUrl.searchParams.set('chart_from', String(target));
+  rangeUrl.searchParams.set('chart_to', String(target + 30 * 86400));
+  await page.goto(rangeUrl.href);
+  await expect(surface).toHaveAttribute('data-visible-from', String(target));
+  const initialRequests = requests;
+  const canvas = await surface.locator('canvas').first().elementHandle();
   const before = await page.locator('.analysis-legend').innerText();
+  await expect(page.locator('.analysis-reading-value')).toHaveText('1.41 배');
+  changed = true;
   await page.clock.fastForward(300001);
   await expect.poll(() => requests).toBeGreaterThan(initialRequests);
-  await expect(page.locator('.analysis-legend')).not.toHaveText(before);
-  expect(await canvas!.evaluate((el) => el.isConnected)).toBe(true);
+  await expect(page.locator('.analysis-legend')).not.toHaveText(before, { useInnerText: true });
+  await expect(page.locator('.analysis-reading-value')).toHaveText('2.41 배');
+  expect(await canvas!.evaluate((element) => element.isConnected)).toBe(true);
   await expect(surface).toHaveAttribute('data-visible-from', String(target));
-  await page.getByRole('button', { name: '데이터 정보', exact: true }).click();
-  await page.getByLabel('지표 원천', { exact: true }).selectOption('btc:mvrv');
-  await page.keyboard.press('Escape');
+  // The older source-specific URL is still supported without a public provenance selector.
+  rangeUrl.searchParams.set('metric', 'btc:mvrv');
+  await page.goto(rangeUrl.href);
   await expect(surface).toHaveAttribute('data-primary-metric', 'btc:mvrv');
-  await page.getByRole('button', { name: '데이터 정보', exact: true }).click();
-  await expect(page.getByRole('dialog', { name: '데이터 정보' })).toContainText('Bitview');
-  await page.keyboard.press('Escape');
+  await expect(page.getByRole('button', { name: '데이터 정보', exact: true })).toHaveCount(0);
   await page.getByRole('button', { name: /지표 변경$/ }).click();
   const navLinks = page.getByRole('navigation', { name: '지표 목록', exact: true });
   await expect(navLinks.locator('a[aria-current=page]')).toHaveCount(1);

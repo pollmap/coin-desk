@@ -1,15 +1,31 @@
 import { test, expect } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
 
-test('stale cache never claims live or minute collection when no collector has run', async ({
+test('stale prices remain visibly delayed without exposing collection metadata', async ({
   page,
 }) => {
+  // Explicit unavailable stream preserves the old actual trade timestamp; this
+  // fixture does not forge a live trade or weaken the 300-second policy.
+  await page.addInitScript(() => {
+    class UnavailableSource extends EventTarget {
+      onerror: (() => void) | null = null;
+      constructor(readonly url: string) {
+        super();
+        queueMicrotask(() => this.onerror?.());
+      }
+      close() {}
+    }
+    Object.assign(window, { EventSource: UnavailableSource });
+  });
   await page.route('**/api/v1/market?*', async (route) => {
     const response = await route.fetch();
     const data = await response.json();
     data.collection = { healthy: false, reason: 'no_execution_ledger' };
     for (const row of data.rows) {
-      if (row.quote) row.quote.time = Math.floor(Date.now() / 1000) - 600;
+      if (row.quote) {
+        row.quote.time = Math.floor(Date.now() / 1000) - 600;
+        if (row.quote.timestampKind === 'trade') row.quote.actualTradeAt = row.quote.time;
+      }
       row.status = 'delayed';
     }
     await route.fulfill({ response, json: data });
@@ -18,11 +34,17 @@ test('stale cache never claims live or minute collection when no collector has r
   await expect(page.locator('.market-table tbody tr')).toHaveCount(50);
   await expect(page.locator('html')).toHaveAttribute('data-theme', 'light');
   await expect(page.locator('body')).toHaveCSS('background-color', 'rgb(255, 255, 255)');
-  await expect(page.locator('.market-feed-state')).toContainText('시세 갱신 지연');
-  await expect(page.locator('.market-runtime-notice')).toContainText(
-    '시세 갱신을 확인하고 있습니다',
+  await expect(
+    page.locator('.market-feed-state,.market-runtime-notice,.market-data-note'),
+  ).toHaveCount(0);
+  const bitcoin = page
+    .locator('.market-table tbody tr')
+    .filter({ has: page.getByRole('link', { name: '비트코인 BTC', exact: true }) });
+  await expect(bitcoin.locator('.market-price-cell')).toContainText('₩84,000,000');
+  await expect(bitcoin.locator('.market-quote-status')).toHaveText('지연');
+  await expect(page.locator('main')).not.toContainText(
+    /초 단위|분 단위|시세 갱신을 확인|수집 시각/,
   );
-  await expect(page.locator('.market-feed-state')).not.toContainText('초 단위');
 });
 
 test('market root requests one bounded snapshot, eight assets, and preserves source through detail/back', async ({
@@ -79,7 +101,7 @@ test('legacy date links and unsupported coins remain explicit; keyboard search w
     'data-availability',
     'unsupported',
   );
-  await expect(page.getByText('지표 이력을 불러오고 있습니다…')).toHaveCount(0);
+  await expect(page.getByText('차트를 불러오는 중…')).toHaveCount(0);
 });
 for (const width of [1280, 1440, 1920])
   test(`PC layout and accessibility ${width}`, async ({ page }) => {

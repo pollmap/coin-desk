@@ -1,5 +1,6 @@
 import { memo, useEffect, useMemo, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
+import { RotateCcw } from 'lucide-react';
 import {
   CandlestickSeries,
   LineSeries,
@@ -100,6 +101,7 @@ export const AnalysisChart = memo(function AnalysisChart({
   summaryLabel,
   advancedTools = true,
   toolsTarget,
+  publicFocus = true,
 }: {
   asset: string;
   unit: string;
@@ -134,6 +136,8 @@ export const AnalysisChart = memo(function AnalysisChart({
   summaryLabel?: string;
   advancedTools?: boolean;
   toolsTarget?: HTMLElement | null;
+  /** Public charts show the latest value and keep legacy exploration state internal. */
+  publicFocus?: boolean;
 }) {
   const host = useRef<HTMLDivElement>(null),
     chartRef = useRef<IChartApi | null>(null);
@@ -141,6 +145,8 @@ export const AnalysisChart = memo(function AnalysisChart({
   const liveLine = useRef<IPriceLine | null>(null);
   const moveCursor = useRef<(time: number | null, preserveRange?: boolean) => void>(() => {});
   const manualCursor = useRef(false);
+  const publicMode = useRef(publicFocus);
+  publicMode.current = publicFocus;
   const [pinned, setPinned] = useState(false);
   const click = useRef(onSignal);
   click.current = onSignal;
@@ -190,6 +196,12 @@ export const AnalysisChart = memo(function AnalysisChart({
   const priceValue = time === undefined ? undefined : readings.maps[0].get(time);
   const summaryTime = pinned && selectedTime !== null ? selectedTime : points.at(-1)?.time;
   const summaryValue = summaryTime === undefined ? undefined : readings.maps[0].get(summaryTime);
+  const visibleSummaryTime = publicFocus ? points.at(-1)?.time : summaryTime;
+  const visibleSummaryValue = publicFocus
+    ? visibleSummaryTime === undefined
+      ? undefined
+      : readings.maps[0].get(visibleSummaryTime)
+    : summaryValue;
   useEffect(() => {
     onReadingDate?.(summaryTime ?? null, pinned && selectedTime !== null);
   }, [summaryTime, pinned, selectedTime, onReadingDate]);
@@ -197,6 +209,10 @@ export const AnalysisChart = memo(function AnalysisChart({
     t === undefined
       ? '—'
       : new Date(t * 1000).toISOString().slice(0, 16).replace('T', ' ') + ' UTC';
+  const showReadingTime = useMemo(
+    () => step < 86400 || points.some((point) => point.time % 86400 !== 0),
+    [points, step],
+  );
   const metricNumber = (value: number | undefined) => numeric(value, readingDigits(value));
   const lineNumber = (line: AnalysisLine, value: number | undefined) =>
     numeric(value, line.supertrend ? priceDigits(value ?? 0, line.unit) : readingDigits(value));
@@ -382,6 +398,7 @@ export const AnalysisChart = memo(function AnalysisChart({
       ].sort((a, b) => Number(a.time) - Number(b.time)),
     );
     chart.subscribeClick((e) => {
+      if (publicMode.current) return;
       const observation = latest.current.observations.find(
         (o) => o.id && o.id === e.hoveredObjectId,
       );
@@ -406,7 +423,7 @@ export const AnalysisChart = memo(function AnalysisChart({
       }
     });
     chart.subscribeCrosshairMove((e) => {
-      if (manualCursor.current) return;
+      if (!publicMode.current && manualCursor.current) return;
       setSelectionKey(key);
       setSelected(e.time === undefined ? null : Number(e.time));
     });
@@ -678,7 +695,7 @@ export const AnalysisChart = memo(function AnalysisChart({
       appliedFocus.current = token;
     }
   }, [focus, points, key, period, rangeRevision, initialWindow?.from, initialWindow?.to]);
-  const navigator = (
+  const navigator = !publicFocus ? (
     <DateNavigator
       key={key}
       compact={!!toolbarTarget}
@@ -713,137 +730,169 @@ export const AnalysisChart = memo(function AnalysisChart({
         onAll();
       }}
     />
-  );
-  const extraTools = advancedTools ? (
-    <details className="analysis-tools">
-      <summary>내보내기 · 공유 · 날짜별 수치</summary>
-      <ChartTools
-        chart={chartRef}
-        shareVisibleRange
-        readingDate={pinned ? selectedTime : null}
-        rows={points}
-        label={asset}
-        unit={unit}
-        source={source}
-        onReset={onAll}
-        onExport={exportReadings}
-        exportLabel={primary ? '지표 CSV' : '가격·지표 CSV'}
-      />
-      <button
-        onClick={() => {
-          const canvas = chartRef.current?.takeScreenshot();
-          if (!canvas) return;
-          const a = document.createElement('a');
-          a.href = canvas.toDataURL('image/png');
-          a.download = `borichart-${fileName}.png`;
-          a.click();
-        }}
-      >
-        차트 이미지 저장
-      </button>
-      <div className="analysis-table">
-        <table>
-          <caption>
-            {asset} {primary?.title ?? '가격·지표'} · 날짜별 관측 (최근순)
-          </caption>
-          <thead>
-            <tr>
-              <th>UTC 날짜</th>
-              <th>
-                {primary?.title ?? '가격'} · {unit}
-              </th>
-              {lines.map((l) => (
-                <th key={l.id}>
-                  {l.title} · {l.unit}
-                </th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            {readings.times
-              .slice(-tableCount)
-              .reverse()
-              .map((t) => (
-                <tr key={t}>
-                  <td>{timestamp(t)}</td>
-                  <td>{display(readings.maps[0].get(t))}</td>
-                  {lines.map((l, i) => (
-                    <td key={l.id}>{lineNumber(l, readings.maps[i + 1].get(t))}</td>
-                  ))}
-                </tr>
-              ))}
-          </tbody>
-        </table>
-      </div>
-      {tableCount < readings.times.length && (
-        <button onClick={() => setTableCount((n) => n + 100)}>이전 100개 표시</button>
-      )}
-    </details>
   ) : null;
+  const extraTools =
+    advancedTools && !publicFocus ? (
+      <details className="analysis-tools">
+        <summary>내보내기 · 공유 · 날짜별 수치</summary>
+        <ChartTools
+          chart={chartRef}
+          shareVisibleRange
+          readingDate={pinned ? selectedTime : null}
+          rows={points}
+          label={asset}
+          unit={unit}
+          source={source}
+          onReset={onAll}
+          onExport={exportReadings}
+          exportLabel={primary ? '지표 CSV' : '가격·지표 CSV'}
+        />
+        <button
+          onClick={() => {
+            const canvas = chartRef.current?.takeScreenshot();
+            if (!canvas) return;
+            const a = document.createElement('a');
+            a.href = canvas.toDataURL('image/png');
+            a.download = `borichart-${fileName}.png`;
+            a.click();
+          }}
+        >
+          차트 이미지 저장
+        </button>
+        <div className="analysis-table">
+          <table>
+            <caption>
+              {asset} {primary?.title ?? '가격·지표'} · 날짜별 관측 (최근순)
+            </caption>
+            <thead>
+              <tr>
+                <th>UTC 날짜</th>
+                <th>
+                  {primary?.title ?? '가격'} · {unit}
+                </th>
+                {lines.map((l) => (
+                  <th key={l.id}>
+                    {l.title} · {l.unit}
+                  </th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {readings.times
+                .slice(-tableCount)
+                .reverse()
+                .map((t) => (
+                  <tr key={t}>
+                    <td>{timestamp(t)}</td>
+                    <td>{display(readings.maps[0].get(t))}</td>
+                    {lines.map((l, i) => (
+                      <td key={l.id}>{lineNumber(l, readings.maps[i + 1].get(t))}</td>
+                    ))}
+                  </tr>
+                ))}
+            </tbody>
+          </table>
+        </div>
+        {tableCount < readings.times.length && (
+          <button onClick={() => setTableCount((n) => n + 100)}>이전 100개 표시</button>
+        )}
+      </details>
+    ) : null;
+  const secondaryReadings = lines.map((l, i) =>
+    l.id.startsWith('band:') ? null : (
+      <span
+        key={l.id}
+        className="analysis-secondary-reading"
+        title={publicFocus ? undefined : `${l.title} · ${l.source}`}
+      >
+        <i style={{ background: l.color }} />
+        {l.legendTitle ?? l.title}{' '}
+        <b>
+          {lineNumber(
+            l,
+            publicFocus || selectedTime === null
+              ? l.data.at(-1)?.value
+              : time === undefined
+                ? undefined
+                : readings.maps[i + 1].get(time),
+          )}
+        </b>{' '}
+        {l.unit}
+        {!publicFocus && l.warning && <small role="status"> · {l.warning}</small>}
+        {!publicFocus && selectedTime === null && l.data.at(-1)?.time !== time && (
+          <small> · {timestamp(l.data.at(-1)?.time).slice(0, 10)}</small>
+        )}
+      </span>
+    ),
+  );
+  const secondaryBelowChart =
+    ['view:hash_ribbons', 'view:hashrate_trend'].includes(primary?.id ?? '') ||
+    lines.some((line) => line.supertrend !== undefined);
   return (
     <>
-      <div className="analysis-legend">
+      <div className={'analysis-legend' + (publicFocus ? ' analysis-legend-focused' : '')}>
         <span>
           {asset} · {primary?.title ?? unit}
         </span>
         <span>
-          <span className="analysis-reading-date" title={timestamp(summaryTime)}>
-            <span className={!pinned ? 'sr-only' : undefined}>
-              {!pinned ? (primary ? '최근 확정값' : (summaryLabel ?? '최근 관측')) : '날짜 고정'}
-            </span>{' '}
-            {!pinned
-              ? `${timestamp(summaryTime).slice(5, 10).replace('-', '.')} 기준`
-              : `· ${timestamp(summaryTime)}`}
-          </span>{' '}
+          {!publicFocus && (
+            <time
+              className="analysis-reading-date"
+              dateTime={
+                summaryTime === undefined ? undefined : new Date(summaryTime * 1000).toISOString()
+              }
+              title={timestamp(summaryTime)}
+            >
+              <span className={!pinned ? 'sr-only' : 'analysis-reading-full-date'}>
+                {!pinned ? (primary ? '최근 확정값' : (summaryLabel ?? '최근 관측')) : '날짜 고정'}
+              </span>{' '}
+              {!pinned ? (
+                `${timestamp(summaryTime).slice(5, 10).replace('-', '.')} 기준`
+              ) : (
+                <>
+                  <span className="analysis-reading-full-date">· {timestamp(summaryTime)}</span>
+                  <span className="analysis-reading-compact-date" aria-hidden="true">
+                    {timestamp(summaryTime).slice(0, showReadingTime ? 16 : 10)}
+                  </span>
+                </>
+              )}
+            </time>
+          )}{' '}
           <b className="analysis-reading-value">
             {readingLabel && <span className="analysis-reading-asset">{readingLabel} </span>}
             {primary || !['USD', 'USDT', 'KRW'].includes(unit) ? (
               <>
-                <span>{metricNumber(summaryValue)}</span>{' '}
+                <span>{metricNumber(visibleSummaryValue)}</span>{' '}
                 <small className="analysis-primary-unit">{unit}</small>
               </>
             ) : (
-              display(summaryValue)
+              display(visibleSummaryValue)
             )}
           </b>
         </span>
-        {pinned && selectedTime !== null && (
+        {!publicFocus && pinned && selectedTime !== null && (
           <button
             className="analysis-reading-reset"
+            aria-label="최근값 보기"
+            title="최근값 보기"
             onClick={() => {
               explore(null);
               host.current?.focus({ preventScroll: true });
             }}
           >
-            최근값 보기
+            <RotateCcw size={16} aria-hidden="true" />
+            <span>최근값 보기</span>
           </button>
         )}
-        {lines.map((l, i) =>
-          l.id.startsWith('band:') ? null : (
-            <span key={l.id} title={`${l.title} · ${l.source}`}>
-              <i style={{ background: l.color }} />
-              {l.legendTitle ?? l.title}{' '}
-              <b>
-                {lineNumber(
-                  l,
-                  selectedTime === null
-                    ? l.data.at(-1)?.value
-                    : time === undefined
-                      ? undefined
-                      : readings.maps[i + 1].get(time),
-                )}
-              </b>{' '}
-              {l.unit}
-              {l.warning && <small role="status"> · {l.warning}</small>}
-              {selectedTime === null && l.data.at(-1)?.time !== time && (
-                <small> · {timestamp(l.data.at(-1)?.time).slice(0, 10)}</small>
-              )}
-            </span>
-          ),
-        )}
+        {!secondaryBelowChart && secondaryReadings}
       </div>
       <div className={'analysis-surface' + (drawingKey ? ' with-drawings' : '')}>
-        {!pinned && selectedTime !== null && (
+        {publicFocus && selectedTime !== null && priceValue !== undefined && (
+          <span className="analysis-hover-reading" data-testid="chart-tooltip">
+            {asset} {display(priceValue)}
+          </span>
+        )}
+        {!publicFocus && !pinned && selectedTime !== null && (
           <span className="analysis-hover-reading" data-testid="chart-preview">
             미리 보기 · {timestamp(time)} · {asset} {display(priceValue)}
           </span>
@@ -859,7 +908,7 @@ export const AnalysisChart = memo(function AnalysisChart({
           data-live-price={eligibleChartPrice(livePrice, asset, unit) ? livePrice.price : undefined}
           data-panels={panelCount(lines)}
           onPointerMoveCapture={() => {
-            if (!pinned) manualCursor.current = false;
+            if (publicFocus || !pinned) manualCursor.current = false;
           }}
           onPointerDown={() => {
             pendingRange.current = null;
@@ -871,8 +920,9 @@ export const AnalysisChart = memo(function AnalysisChart({
           }}
           tabIndex={0}
           role="group"
-          aria-label={`${asset} ${unit} ${primary?.title ?? '가격과 비교 지표'}. 좌우 방향키로 관측 탐색`}
+          aria-label={`${asset} ${unit} ${primary?.title ?? '가격과 비교 지표'}${publicFocus ? '' : '. 좌우 방향키로 관측 탐색'}`}
           onKeyDown={(e) => {
+            if (publicFocus) return;
             if (
               e.target !== e.currentTarget ||
               !['ArrowLeft', 'ArrowRight', 'Home', 'End', 'Escape'].includes(e.key)
@@ -905,13 +955,20 @@ export const AnalysisChart = memo(function AnalysisChart({
           />
         )}
       </div>
+      {secondaryBelowChart && (
+        <div className="analysis-secondary-readings">{secondaryReadings}</div>
+      )}
       {toolbarTarget ? createPortal(navigator, toolbarTarget) : navigator}
-      <span className="sr-only" role="status">
-        {selectedTime !== null
-          ? `${timestamp(time)} ${asset} ${display(priceValue)}. ${lines.map((l, i) => `${l.title} ${lineNumber(l, time === undefined ? undefined : readings.maps[i + 1].get(time))} ${l.unit}`).join('. ')}`
-          : ''}
-      </span>
-      {advancedTools && (toolsTarget ? createPortal(extraTools, toolsTarget) : extraTools)}
+      {!publicFocus && (
+        <span className="sr-only" role="status">
+          {selectedTime !== null
+            ? `${timestamp(time)} ${asset} ${display(priceValue)}. ${lines.map((l, i) => `${l.title} ${lineNumber(l, time === undefined ? undefined : readings.maps[i + 1].get(time))} ${l.unit}`).join('. ')}`
+            : ''}
+        </span>
+      )}
+      {advancedTools &&
+        !publicFocus &&
+        (toolsTarget ? createPortal(extraTools, toolsTarget) : extraTools)}
     </>
   );
 });

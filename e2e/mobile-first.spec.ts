@@ -1,8 +1,16 @@
-import { test, expect } from '@playwright/test';
+import { test, expect, type Page } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
 
+async function focused(page: Page) {
+  await expect(
+    page.locator('.analysis-reading-date,.analysis-tools,.indicator-data-info'),
+  ).toHaveCount(0);
+  await expect(page.getByRole('button', { name: '날짜로 이동', exact: true })).toHaveCount(0);
+  await expect(page.getByRole('button', { name: '데이터 정보', exact: true })).toHaveCount(0);
+}
+
 for (const width of [320, 390, 430])
-  test(`mobile first-use chart, unobstructed controls and market ${width}`, async ({ page }) => {
+  test('mobile first-use chart, unobstructed controls and market ' + width, async ({ page }) => {
     await page.setViewportSize({ width, height: 844 });
     const calls: string[] = [];
     page.on('request', (r) => {
@@ -14,14 +22,12 @@ for (const width of [320, 390, 430])
     const chart = page.locator('[data-chart-kind=analysis]');
     await expect(chart).toHaveAttribute('data-primary-metric', 'price');
     await expect(chart).toHaveAttribute('data-range-ready', '1');
-    await page.mouse.move(0, 0);
-    await expect(page.locator('.analysis-reading-date')).toContainText('최근 확정 종가');
+    await focused(page);
     expect(calls.filter((u) => /\/overview|\/themes|\/knowledge/.test(u))).toEqual([]);
     expect(calls.filter((u) => /\/market\?/.test(u))).toHaveLength(2);
     const geometry = (await chart.boundingBox())!;
     expect(geometry.y).toBeLessThanOrEqual(280);
     expect(geometry.height).toBeGreaterThanOrEqual(320);
-    // A control fitting the viewport is insufficient: it must also not overlap another control.
     const controls = await page
       .locator('.indicator-toolbar :is(button,select,input)')
       .evaluateAll((nodes) =>
@@ -41,20 +47,13 @@ for (const width of [320, 390, 430])
         ).toBe(false);
     }
     const originalRange = await chart.getAttribute('data-visible-from');
-    await page.getByRole('button', { name: '날짜로 이동', exact: true }).click();
-    await expect(page.getByRole('dialog', { name: '차트 날짜 탐색' })).toBeVisible();
-    await page.keyboard.press('Escape');
-    await expect(page.getByRole('dialog', { name: '차트 날짜 탐색' })).not.toBeVisible();
-    await expect(page.locator('.date-jump')).toBeFocused();
-    await expect(chart).toHaveAttribute('data-visible-from', originalRange!);
     await page.getByRole('button', { name: /지표 변경$/ }).click();
     const picker = page.getByRole('dialog', { name: '지표 선택' });
-    await expect(picker.getByRole('group', { name: '확인하고 싶은 내용' })).toHaveCount(0);
     await picker.getByRole('textbox', { name: '지표 검색' }).fill('MVRV');
     await expect(picker.getByRole('link', { name: 'MVRV 배', exact: true })).toBeVisible();
     await page.keyboard.press('Escape');
     await expect(page.getByRole('button', { name: /지표 변경$/ })).toBeFocused();
-    await page.screenshot({ path: test.info().outputPath(`mobile-entry-${width}.png`) });
+    await expect(chart).toHaveAttribute('data-visible-from', originalRange!);
     for (const dark of [false, true]) {
       if (dark) await page.getByRole('button', { name: '어두운 테마로 변경' }).click();
       expect(
@@ -65,29 +64,27 @@ for (const width of [320, 390, 430])
         ).violations,
       ).toEqual([]);
     }
+    await page.screenshot({ path: test.info().outputPath('mobile-entry-' + width + '.png') });
     await page.getByRole('link', { name: '시장', exact: true }).click();
     await expect(page.locator('.market-table tbody tr')).toHaveCount(20);
-    // Desktop cell heights must not double the mobile two-line row height.
     for (const row of await page.locator('.market-table tbody tr').all())
       expect((await row.boundingBox())!.height).toBeLessThanOrEqual(76);
-    const analysis = page.getByRole('link', { name: '비트코인 BTC', exact: true });
-    const entry = (await analysis.boundingBox())!;
+    const entry = (await page
+      .getByRole('link', { name: '비트코인 BTC', exact: true })
+      .boundingBox())!;
     expect(entry.x).toBeGreaterThanOrEqual(0);
     expect(entry.x + entry.width).toBeLessThanOrEqual(width);
     expect(entry.y).toBeLessThan(440);
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(
       true,
     );
-    await analysis.click();
-    await expect(chart).toHaveAttribute('data-primary-metric', 'price');
   });
 
-test('mobile coin, indicator, date, explanation, save and reopen keep the same analysis', async ({
+test('mobile coin, indicator, explanation, save and reopen preserve the latest analysis', async ({
   page,
 }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto('/');
-  await expect(page.locator('.market-table tbody tr')).toHaveCount(20);
   await page.getByRole('link', { name: '비트코인 BTC', exact: true }).click();
   const chart = page.locator('[data-chart-kind=analysis]');
   await expect(chart).toHaveAttribute('data-range-ready', '1');
@@ -105,11 +102,12 @@ test('mobile coin, indicator, date, explanation, save and reopen keep the same a
   await expect(chart).toHaveAttribute('data-primary-metric', 'rsi');
   await expect(chart).toHaveAttribute('data-asset', 'ONDO');
   await expect(chart).toHaveAttribute('data-range-ready', '1');
-  await page.getByRole('button', { name: '날짜로 이동', exact: true }).click();
-  await page.getByLabel('이동할 날짜 (UTC)', { exact: true }).fill('2026-09-01');
-  await page.getByRole('button', { name: '이동', exact: true }).click();
-  await expect(page.locator('.analysis-reading-date')).toContainText('날짜 고정');
   const from = await chart.getAttribute('data-visible-from');
+  const latest = await page.locator('.analysis-reading-value').innerText();
+  await chart.focus();
+  await page.keyboard.press('ArrowLeft');
+  await expect(page.locator('.analysis-reading-value')).toHaveText(latest);
+  await expect(page).not.toHaveURL(/reading_date=/);
   await page.getByRole('button', { name: /^지표 설명/ }).click();
   await expect(page.locator('.indicator-explanation')).toContainText('기준선을 읽는 법');
   await expect(chart).toHaveAttribute('data-visible-from', from!);
@@ -124,13 +122,11 @@ test('mobile coin, indicator, date, explanation, save and reopen keep the same a
   await expect(chart).toHaveAttribute('data-asset', 'ONDO');
   await expect(chart).toHaveAttribute('data-primary-metric', 'rsi');
   await expect(chart).toHaveAttribute('data-visible-from', from!);
-  await expect(page.locator('.analysis-reading-date')).toContainText('날짜 고정');
-  await expect(page.locator('.analysis-reading-date')).toContainText('2026-09-01');
-  await page.reload();
-  await expect(page.locator('.analysis-reading-date')).toContainText('날짜 고정');
+  await expect(page.locator('.analysis-reading-value')).toHaveText(latest);
+  await focused(page);
 });
 
-test('mobile explicit legacy links, market bookmarks and search retain their intent', async ({
+test('mobile legacy links, theme bookmarks and keyboard search retain their target', async ({
   page,
 }) => {
   await page.setViewportSize({ width: 390, height: 844 });
@@ -155,21 +151,19 @@ test('mobile explicit legacy links, market bookmarks and search retain their int
   await expect(page.getByRole('button', { name: '코인·지표 검색 열기' })).toBeFocused();
 });
 
-test('USD indicator keeps its KRW quote and pinned date through save, share and refresh', async ({
+test('USD indicator retains KRW quote and latest value through legacy dates, save and refresh', async ({
   page,
 }) => {
   await page.setViewportSize({ width: 390, height: 844 });
-  await page.goto('/');
-  await expect(page.locator('.market-table tbody tr')).toHaveCount(20);
-  await page.getByRole('link', { name: '비트코인 BTC', exact: true }).click();
+  await page.goto(
+    '/coins/BTC?metric=net:mvrv&price_source=reference&market=upbit&period=5y&reading_date=1788220800',
+  );
   const chart = page.locator('[data-chart-kind=analysis]');
   await expect(chart).toHaveAttribute('data-range-ready', '1');
   await expect(page.locator('.detail-quote')).toContainText('Upbit · KRW');
-  await page.getByRole('button', { name: '날짜로 이동', exact: true }).click();
-  await page.getByLabel('이동할 날짜 (UTC)', { exact: true }).fill('2026-09-01');
-  await page.getByRole('button', { name: '이동', exact: true }).click();
-  await expect(page.locator('.analysis-reading-date')).toContainText('날짜 고정');
-  const selectedValue = await page.locator('.analysis-reading-value').innerText();
+  const latest = await page.locator('.analysis-reading-value').innerText();
+  await expect(page.locator('.analysis-reading-value')).toContainText('배');
+  await focused(page);
   await page.getByRole('button', { name: '분석 저장', exact: true }).click();
   await page.getByLabel('작업공간 이름', { exact: true }).fill('BTC USD + KRW');
   await page.getByRole('button', { name: '현재 구성 저장', exact: true }).click();
@@ -177,38 +171,10 @@ test('USD indicator keeps its KRW quote and pinned date through save, share and 
   await page.getByRole('link', { name: '내 저장', exact: true }).click();
   await page.locator('.saved-workspaces a').filter({ hasText: 'BTC USD + KRW' }).click();
   await expect(page.locator('.detail-quote')).toContainText('Upbit · KRW');
-  await expect(page.locator('.analysis-reading-date')).toContainText('2026-09-01');
-  await expect(page.locator('.analysis-reading-value')).toHaveText(selectedValue);
-  if (
-    (await page
-      .getByRole('button', { name: '더보기', exact: true })
-      .getAttribute('aria-expanded')) !== 'true'
-  )
-    await page.getByRole('button', { name: '더보기', exact: true }).click();
-  await page.locator('details.analysis-tools > summary').click();
-  await page.getByRole('button', { name: '링크 공유', exact: true }).click();
-  const shared = await page.getByLabel('공유 주소', { exact: true }).inputValue();
-  expect(new URL(shared).searchParams.get('reading_date')).toBe('1788220800');
-  await page.goto(shared);
-  await expect(page.locator('.analysis-reading-date')).toContainText('날짜 고정');
-  await expect(page.locator('.analysis-reading-value')).toHaveText(selectedValue);
+  await expect(page.locator('.analysis-reading-value')).toHaveText(latest);
+  expect(new URL(page.url()).searchParams.get('price_source')).toBe('reference');
+  await focused(page);
   await page.reload();
-  await expect(page.locator('.detail-quote')).toContainText('Upbit · KRW');
-  await expect(page.locator('.analysis-reading-date')).toContainText('2026-09-01');
-  await page.getByRole('button', { name: '최근값 보기', exact: true }).click();
-  await page.mouse.move(0, 0);
-  await expect(page.locator('.analysis-reading-date')).toContainText('최근 확정 종가');
-  if (
-    (await page
-      .getByRole('button', { name: '더보기', exact: true })
-      .getAttribute('aria-expanded')) !== 'true'
-  )
-    await page.getByRole('button', { name: '더보기', exact: true }).click();
-  await page.locator('details.analysis-tools > summary').click();
-  await page.getByRole('button', { name: '링크 공유', exact: true }).click();
-  expect(
-    new URL(await page.getByLabel('공유 주소', { exact: true }).inputValue()).searchParams.has(
-      'reading_date',
-    ),
-  ).toBe(false);
+  await expect(page.locator('.analysis-reading-value')).toHaveText(latest);
+  await focused(page);
 });

@@ -186,7 +186,7 @@ test('seasonality waits for the price history before reporting sample availabili
     await route.continue();
   });
   await page.goto('/?asset=BTC&price_source=reference&period=all&visual=seasonality');
-  await expect(page.getByText('지표 이력을 불러오고 있습니다…')).toBeVisible();
+  await expect(page.getByText('차트를 불러오는 중…', { exact: true })).toBeVisible();
   await expect(page.getByText(/현재 0개입니다/)).toHaveCount(0);
   release();
   await expect(page.getByRole('heading', { name: 'BTC 계절성' })).toBeVisible();
