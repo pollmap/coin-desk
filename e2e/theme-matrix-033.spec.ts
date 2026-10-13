@@ -99,6 +99,41 @@ for (const width of [320, 390, 768, 1000, 1280, 1440, 1920])
     }
     for (const dark of [false, true]) {
       if (dark) await page.getByRole('button', { name: '어두운 테마로 변경' }).click();
+      // Assert rendered geometry, not only SVG attributes: global button CSS
+      // must never replace the observation's coordinate transform.
+      const positions = await points.evaluateAll((nodes) =>
+        nodes.map((node) => {
+          const group = node as SVGGElement;
+          const [x, y] = group
+            .getAttribute('transform')!
+            .match(/[\d.-]+/g)!
+            .map(Number);
+          const expected = new DOMPoint(x, y).matrixTransform(
+            group.ownerSVGElement!.getScreenCTM()!,
+          );
+          const actual = group.querySelector('circle')!.getBoundingClientRect();
+          return {
+            dx: Math.abs(actual.x + actual.width / 2 - expected.x),
+            dy: Math.abs(actual.y + actual.height / 2 - expected.y),
+          };
+        }),
+      );
+      for (const position of positions) {
+        expect(position.dx).toBeLessThanOrEqual(1);
+        expect(position.dy).toBeLessThanOrEqual(1);
+      }
+      const firstPointTop = Math.min(
+        ...(await map
+          .locator('.theme-map-point circle')
+          .evaluateAll((nodes) => nodes.map((node) => node.getBoundingClientRect().top))),
+      );
+      for (const zone of await map
+        .locator('.theme-map-zone')
+        .all()
+        .then((nodes) => nodes.slice(0, 2))) {
+        const box = (await zone.boundingBox())!;
+        expect(box.y + box.height).toBeLessThanOrEqual(firstPointTop);
+      }
       expect(
         (
           await new AxeBuilder({ page })

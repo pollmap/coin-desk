@@ -169,17 +169,18 @@ body {
   outline: 2px solid var(--accent);
   outline-offset: 3px;
 }
-.product-desk :is(button, [role='button'], summary) {
+/* SVG transforms place chart observations; they are not button motion. */
+.product-desk :is(button, [role='button']:where(:not(svg *)), summary) {
   animation: none;
   transform: none;
   /* Theme text and surfaces must change together, including off-screen controls. */
   transition: border-color 150ms;
 }
-.product-desk :is(button, [role='button'], summary):hover {
+.product-desk :is(button, [role='button']:where(:not(svg *)), summary):hover {
   background-color: var(--hover);
   color: var(--text);
 }
-.product-desk :is(button, [role='button'], summary):active {
+.product-desk :is(button, [role='button']:where(:not(svg *)), summary):active {
   transform: none;
 }
 .product-desk .up {
@@ -395,7 +396,7 @@ body {
   }
 }
 @media (prefers-reduced-motion: reduce) {
-  .product-desk :is(button, [role='button'], summary) {
+  .product-desk :is(button, [role='button']:where(:not(svg *)), summary) {
     transition: none;
   }
 }

@@ -100,10 +100,10 @@ function ThemeMap({
         <text x={left} y="18" className="theme-map-axis">
           거래량 배수
         </text>
-        <text x={left + 6} y={top + 12} className="theme-map-zone">
+        <text x={left + 6} y={top - 9} className="theme-map-zone">
           조정 · 거래량 증가
         </text>
-        <text x={right - 6} y={top + 12} textAnchor="end" className="theme-map-zone">
+        <text x={right - 6} y={top - 9} textAnchor="end" className="theme-map-zone">
           상승 · 거래량 증가
         </text>
         <text x={cx} y={bottom - 8} textAnchor="middle" className="theme-map-zone">
