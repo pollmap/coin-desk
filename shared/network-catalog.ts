@@ -245,8 +245,33 @@ export const NETWORK_METRICS: readonly NetworkMetric[] = definitions.map((m) => 
 export const isNetworkAsset = (asset: string): asset is NetworkAsset =>
   NETWORK_ASSETS.some((item) => item === asset);
 export const getNetworkMetric = (id: string) => NETWORK_METRICS.find((item) => item.id === id);
+/** Provider values are already expressed in these units; never rescale a chain implicitly. */
+const HASHRATE_UNITS: Partial<Record<Asset, string>> = { DASH: 'GH/s', ZEC: 'GH/s' };
+const HASHRATE_FORMULAS: Partial<Record<Asset, string>> = {
+  BTC: '(BlkCnt / 144) × DiffMean × (2³² / 10¹² / 600)',
+  BCH: '(BlkCnt / 144) × DiffMean × (2³² / 10¹² / 600)',
+  DOGE: '(BlkCnt / 1440) × DiffMean × (2³² / 10¹² / 60)',
+  LTC: '(BlkCnt / 576) × DiffMean × (2³² / 10¹² / 150)',
+  ETC: 'DiffMean / BlkIntMean / 10¹²',
+  DASH: 'UTC 하루 chainwork / 86,400 / 10⁹',
+  ZEC: '(DiffMean / 블록 간격) × 8192 / 10⁹ · Blossom 전 150초, 이후 75초',
+};
 export const networkMetrics = (asset: Asset) =>
-  NETWORK_METRICS.filter((item) => item.assets.includes(asset));
+  NETWORK_METRICS.filter((item) => item.assets.includes(asset)).map((item) =>
+    item.id === 'hashrate'
+      ? {
+          ...item,
+          unit: HASHRATE_UNITS[asset] ?? 'TH/s',
+          formula: HASHRATE_FORMULAS[asset] ?? item.formula,
+          description:
+            item.description +
+            ` ${asset} 원천 단위는 ${HASHRATE_UNITS[asset] ?? 'TH/s'}입니다. ` +
+            (HASHRATE_UNITS[asset]
+              ? '1 GH/s는 초당 10⁹ 해시입니다.'
+              : '1 TH/s는 초당 10¹² 해시입니다.'),
+        }
+      : item,
+  );
 export const networkMetric = (asset: Asset, id: string) =>
   networkMetrics(asset).find((item) => item.id === id);
 export const NETWORK_GROUPS = [

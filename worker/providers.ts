@@ -1,7 +1,13 @@
 import type { Asset, Candle, Market, Quote } from '../shared/types';
 import { BASE_SERIES } from '../shared/catalog';
 import { DAY, validCandle } from '../shared/math';
-import { feedRequest, type FeedConfig } from './feed-client';
+import { feedRequest, type FeedConfig, type QuoteTradeEvidence } from './feed-client';
+export class UnknownTradeTimestampError extends Error {
+  constructor() {
+    super('QUOTE_TRADE_TIME_UNKNOWN: ticker window does not prove last trade time');
+    this.name = 'UnknownTradeTimestampError';
+  }
+}
 export class StaleQuoteError extends Error {
   constructor() {
     super('QUOTE_STALE: last trade exceeds 300 seconds');
@@ -27,6 +33,15 @@ export function validateQuote(q: Quote): Quote {
     q.time > now + 60
   )
     throw new Error('Invalid or outdated quote');
+  if (q.timestampKind === 'ticker-window') throw new UnknownTradeTimestampError();
+  if (
+    q.timestampKind === 'trade' &&
+    (q.actualTradeAt !== q.time ||
+      !Number.isSafeInteger(q.sourceEventTime) ||
+      q.sourceEventTime! < q.time ||
+      q.sourceEventTime! > now + 60)
+  )
+    throw new Error('Invalid quote timestamp evidence');
   // A valid HTTP response with an old trade is not a failed request. Keep the
   // freshness requirement, but let the collector check again next minute.
   if (now - q.time > 300) throw new StaleQuoteError();
@@ -56,9 +71,14 @@ export async function getQuote(asset: Asset, market: Market, feed?: FeedConfig):
   if (market === 'binance') {
     const d = (await binanceRequest('ticker.24hr', { symbol: asset + 'USDT' }, feed)) as Record<
       string,
-      string | number
+      unknown
     >;
-    return binanceQuote(asset, d);
+    const trades = await hubTrades([asset], feed);
+    return binanceQuote(
+      asset,
+      d,
+      await confirmBinanceTrade(asset, d, trades, Date.now() + 4000, feed),
+    );
   }
   const d = (
     (await upstream('https://api.upbit.com/v1/ticker?markets=KRW-' + asset)) as Record<
@@ -68,7 +88,20 @@ export async function getQuote(asset: Asset, market: Market, feed?: FeedConfig):
   )[0];
   return upbitQuote(asset, d);
 }
-function binanceQuote(asset: Asset, d: Record<string, unknown>): Quote {
+/** Match the ticker's exact price and raw last trade ID, not its rolling window closeTime. */
+function evidenceMatches(d: Record<string, unknown>, trade: QuoteTradeEvidence) {
+  return (
+    trade.lastTradeId === Number(d.lastId) &&
+    trade.price === Number(d.lastPrice) &&
+    Number.isFinite(trade.tradedAt) &&
+    trade.tradedAt > 0 &&
+    // Hub API uses seconds; restore integer milliseconds before comparing the window edge.
+    Math.round(trade.tradedAt * 1000) <= Number(d.closeTime)
+  );
+}
+function binanceQuote(asset: Asset, d: Record<string, unknown>, trade: QuoteTradeEvidence): Quote {
+  if (!evidenceMatches(d, trade)) throw new UnknownTradeTimestampError();
+  const time = Math.floor(trade.tradedAt);
   return validateQuote({
     asset,
     price: Number(d.lastPrice),
@@ -76,10 +109,80 @@ function binanceQuote(asset: Asset, d: Record<string, unknown>): Quote {
     volume24h: Number(d.quoteVolume),
     high24h: Number(d.highPrice),
     low24h: Number(d.lowPrice),
-    time: Math.floor(Number(d.closeTime) / 1000),
+    time,
+    timestampKind: 'trade',
+    actualTradeAt: time,
+    sourceEventTime: Math.floor(Number(d.closeTime) / 1000),
+    lastTradeId: Number(d.lastId),
     changeBasis: 'rolling24h',
     rangeBasis: 'rolling24h',
   });
+}
+async function hubTrades(assets: Asset[], feed?: FeedConfig): Promise<QuoteTradeEvidence[]> {
+  if (!feed?.QUOTE_TRADES) return [];
+  let timer: ReturnType<typeof setTimeout> | undefined;
+  try {
+    const rows = await Promise.race([
+      feed.QUOTE_TRADES(assets),
+      new Promise<never>((_, reject) => {
+        timer = setTimeout(() => reject(new UnknownTradeTimestampError()), 600);
+      }),
+    ]);
+    return Array.isArray(rows) ? rows.slice(0, assets.length * 64) : [];
+  } catch {
+    return [];
+  } finally {
+    clearTimeout(timer);
+  }
+}
+async function confirmBinanceTrade(
+  asset: Asset,
+  d: Record<string, unknown>,
+  trades: QuoteTradeEvidence[],
+  deadline: number,
+  feed?: FeedConfig,
+): Promise<QuoteTradeEvidence> {
+  if (
+    !Number.isSafeInteger(Number(d.lastId)) ||
+    Number(d.lastId) < 0 ||
+    !Number.isSafeInteger(Number(d.closeTime)) ||
+    Number(d.closeTime) <= 0
+  )
+    throw new UnknownTradeTimestampError();
+  const cached = trades.find(
+    (t) => t.asset === asset && t.market === 'binance' && evidenceMatches(d, t),
+  );
+  if (cached) return cached;
+  const remaining = deadline - Date.now();
+  if (remaining <= 0) throw new UnknownTradeTimestampError();
+  try {
+    // At most one 4-weight public request per missing asset. No historical pagination.
+    const rows = await binanceRequest(
+      'trades.aggregate',
+      {
+        symbol: asset + 'USDT',
+        endTime: Number(d.closeTime),
+        limit: 1,
+      },
+      feed,
+      Math.min(1500, remaining),
+    );
+    if (!Array.isArray(rows) || rows.length !== 1) throw new UnknownTradeTimestampError();
+    const r = rows[0] as Record<string, unknown>;
+    const trade: QuoteTradeEvidence = {
+      asset,
+      market: 'binance',
+      price: Number(r.p),
+      tradedAt: Number(r.T) / 1000,
+      lastTradeId: Number(r.l),
+    };
+    if (!evidenceMatches(d, trade)) throw new UnknownTradeTimestampError();
+    return trade;
+  } catch (error) {
+    // An auxiliary timestamp failure is individual, never an exchange-wide ticker outage.
+    if (error instanceof StaleQuoteError) throw error;
+    throw new UnknownTradeTimestampError();
+  }
 }
 async function upbitQuote(asset: Asset, d: Record<string, number>): Promise<Quote> {
   if (
@@ -101,6 +204,9 @@ async function upbitQuote(asset: Asset, d: Record<string, number>): Promise<Quot
     high24h: d.high_price,
     low24h: d.low_price,
     time: Math.floor(d.trade_timestamp / 1000),
+    timestampKind: 'trade',
+    actualTradeAt: Math.floor(d.trade_timestamp / 1000),
+    sourceEventTime: Math.floor(d.timestamp / 1000),
     changeBasis: 'rolling24h-minute',
     rangeBasis: 'utc-day',
     referenceAt: null,
@@ -161,20 +267,32 @@ export async function getQuotes(assets: Asset[], market: Market, feed?: FeedConf
       requestFailed: true,
     };
   }
-  const results = await Promise.all(
-    assets.map(async (asset) => {
-      try {
-        const matches = rows.filter((row) =>
-          market === 'binance' ? row.symbol === asset + 'USDT' : row.market === 'KRW-' + asset,
-        );
-        if (matches.length !== 1) throw new Error('Missing or duplicate batch ticker');
-        const quote =
-          market === 'binance'
-            ? binanceQuote(asset, matches[0])
-            : await upbitQuote(asset, matches[0] as Record<string, number>);
-        return { quote };
-      } catch (error) {
-        return { asset, error };
+  const trades = market === 'binance' ? await hubTrades(assets, feed) : [];
+  const deadline = Date.now() + 4000;
+  const results: Array<{ quote?: Quote; asset?: Asset; error?: unknown }> = [];
+  let next = 0;
+  await Promise.all(
+    Array.from({ length: market === 'binance' ? 2 : assets.length }, async () => {
+      while (next < assets.length) {
+        const index = next++,
+          asset = assets[index];
+        try {
+          const matches = rows.filter((row) =>
+            market === 'binance' ? row.symbol === asset + 'USDT' : row.market === 'KRW-' + asset,
+          );
+          if (matches.length !== 1) throw new Error('Missing or duplicate batch ticker');
+          const quote =
+            market === 'binance'
+              ? binanceQuote(
+                  asset,
+                  matches[0],
+                  await confirmBinanceTrade(asset, matches[0], trades, deadline, feed),
+                )
+              : await upbitQuote(asset, matches[0] as Record<string, number>);
+          results[index] = { quote };
+        } catch (error) {
+          results[index] = { asset, error };
+        }
       }
     }),
   );
@@ -261,15 +379,18 @@ export async function getRecentCandles(
 }
 // Keep the supported WebSocket transport. Public REST returned 403 on the deployed host.
 export function binanceRequest(
-  method: 'ticker.24hr' | 'klines',
+  method: 'ticker.24hr' | 'klines' | 'trades.aggregate',
   params: Record<string, string | number | string[]>,
   feed?: FeedConfig,
+  timeoutMs = 12000,
 ): Promise<unknown> {
+  if (feed?.BINANCE_REQUEST) return feed.BINANCE_REQUEST(method, params, timeoutMs);
   if (feed?.FEED_SERVICE || (feed?.FEED_URL && feed.FEED_TOKEN))
     return feedRequest(
       feed,
       '/binance',
       new URLSearchParams({ method, params: JSON.stringify(params) }),
+      timeoutMs,
     );
   return new Promise((resolve, reject) => {
     const socket = new WebSocket('wss://ws-api.binance.com:443/ws-api/v3');
@@ -286,7 +407,7 @@ export function binanceRequest(
       if (error) reject(error);
       else resolve(value);
     };
-    const timer = setTimeout(() => finish(new Error('Binance WebSocket timeout')), 12000);
+    const timer = setTimeout(() => finish(new Error('Binance WebSocket timeout')), timeoutMs);
     socket.addEventListener('open', () =>
       socket.send(JSON.stringify({ id: 'btc-desk', method, params })),
     );

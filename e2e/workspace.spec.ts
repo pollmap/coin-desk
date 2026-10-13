@@ -81,7 +81,7 @@ test('BTC detail defaults to MVRV; eight coins use supported metrics and sources
     await expect(chart(page)).toHaveAttribute('data-asset', asset);
     if (['ONDO', 'SOL', 'PEPE'].includes(asset)) {
       expect(new URL(page.url()).searchParams.get('price_source')).toBe('reference');
-      await expect(chart(page)).toHaveAttribute('data-primary-metric', 'rsi');
+      await expect(chart(page)).toHaveAttribute('data-primary-metric', 'price');
     }
   }
 });
@@ -100,6 +100,12 @@ test('market deep link, one-click selection and source survive back/reload/share
   await expect(chart(page)).toHaveAttribute('data-primary-metric', 'net:mvrv');
   await page.reload();
   await expect(chart(page)).toHaveAttribute('data-primary-metric', 'net:mvrv');
+  if (
+    (await page
+      .getByRole('button', { name: '더보기', exact: true })
+      .getAttribute('aria-expanded')) !== 'true'
+  )
+    await page.getByRole('button', { name: '더보기', exact: true }).click();
   await page.locator('details.analysis-tools > summary').click();
   await page.getByRole('button', { name: '링크 공유', exact: true }).click();
   const shared = await page.getByLabel('공유 주소', { exact: true }).inputValue();
@@ -132,7 +138,7 @@ test('legacy metric URLs use the same indicator workspace without automatic pric
   await page.keyboard.press('Escape');
   await page.getByRole('link', { name: '지원되는 원천·분석으로 열기' }).click();
   await expect(chart(page)).toHaveAttribute('data-asset', 'ONDO');
-  await expect(chart(page)).toHaveAttribute('data-primary-metric', 'rsi');
+  await expect(chart(page)).toHaveAttribute('data-primary-metric', 'price');
 });
 test('initial collection is pending and waits for the normal refresh interval before retrying', async ({
   page,
@@ -172,11 +178,15 @@ test('unsupported URLs do not request data or retry and ONDO help retains asset'
   expect(requests).toEqual([]);
   await page.keyboard.press('Escape');
   await page.getByRole('link', { name: '지원되는 원천·분석으로 열기' }).click();
-  await expect(chart(page)).toHaveAttribute('data-primary-metric', 'rsi');
-  await page.getByRole('button', { name: '지표 설명', exact: true }).click();
+  await expect(chart(page)).toHaveAttribute('data-primary-metric', 'price');
+  await page.getByRole('button', { name: /^지표 설명/ }).click();
+  await page
+    .getByRole('dialog', { name: '지표 설명', exact: true })
+    .getByText('출처·한계', { exact: true })
+    .click();
   await page.getByRole('link', { name: '현재 분석 설명' }).click();
-  await expect(page).toHaveURL(/\/learn\/rsi/);
-  await expect(page.getByRole('heading', { name: /RSI/, level: 1 })).toBeVisible();
+  await expect(page).toHaveURL(/\/learn\/candles/);
+  await expect(page.getByRole('heading', { name: /캔들/, level: 1 })).toBeVisible();
   expect(new URL(page.url()).searchParams.get('asset')).toBe('ONDO');
   await expect(page.locator('[data-chart-kind],canvas')).toHaveCount(0);
 });
@@ -259,9 +269,17 @@ test('mobile search Escape focus and 200 percent keyboard reflow', async ({ page
   );
   await chart(page).focus();
   await page.keyboard.press('Home');
-  const first = await page.locator('.analysis-legend').innerText();
+  const legend = page.locator('.analysis-legend');
+  await expect(legend).toContainText('날짜 고정');
+  await expect(page).toHaveURL(/reading_date=\d+/);
+  const first = await legend.innerText();
+  const firstDate = new URL(page.url()).searchParams.get('reading_date');
   await page.keyboard.press('End');
-  expect(await page.locator('.analysis-legend').innerText()).not.toBe(first);
+  // Keyboard navigation updates the URL before React commits the legend.
+  // Assert the user-visible result, rather than sampling that intermediate frame.
+  await expect.poll(() => new URL(page.url()).searchParams.get('reading_date')).not.toBe(firstDate);
+  await expect(legend).not.toHaveText(first);
+  await expect(legend).toContainText('날짜 고정');
 });
 for (const asset of ['BTC', 'DOGE', 'ETH', 'XRP', 'LINK', 'SOL', 'ONDO', 'PEPE'])
   test(asset + ' selected onchain and futures do not request prices', async ({ page }) => {
@@ -300,6 +318,12 @@ for (const metric of ['view:price', 'view:rainbow', 'view:btc_rainbow', 'net:mvr
       await expect(toggle).toBeChecked();
     }
     await expect(surface).toHaveAttribute('data-visible-from', String(target));
+    if (
+      (await page
+        .getByRole('button', { name: '더보기', exact: true })
+        .getAttribute('aria-expanded')) !== 'true'
+    )
+      await page.getByRole('button', { name: '더보기', exact: true }).click();
     await page.locator('details.analysis-tools > summary').click();
     await page.getByRole('button', { name: '링크 공유', exact: true }).click();
     const shared = await page.getByLabel('공유 주소', { exact: true }).inputValue();

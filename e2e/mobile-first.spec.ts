@@ -98,10 +98,10 @@ test('mobile coin, indicator, date, explanation, save and reopen keep the same a
   await page.getByRole('button', { name: '코인 변경 · 도지코인 DOGE' }).click();
   await page.getByRole('button', { name: '온도파이낸스 ONDO', exact: true }).click();
   await expect(chart).toHaveAttribute('data-primary-metric', 'price');
-  await page
-    .getByRole('navigation', { name: '자주 보는 지표' })
-    .getByRole('link', { name: 'RSI', exact: true })
-    .click();
+  await page.getByRole('button', { name: /지표 변경$/ }).click();
+  const picker = page.getByRole('dialog', { name: '지표 선택', exact: true });
+  await picker.getByRole('textbox', { name: '지표 검색' }).fill('RSI');
+  await picker.getByRole('link', { name: 'RSI 14 RSI', exact: true }).click();
   await expect(chart).toHaveAttribute('data-primary-metric', 'rsi');
   await expect(chart).toHaveAttribute('data-asset', 'ONDO');
   await expect(chart).toHaveAttribute('data-range-ready', '1');
@@ -110,7 +110,7 @@ test('mobile coin, indicator, date, explanation, save and reopen keep the same a
   await page.getByRole('button', { name: '이동', exact: true }).click();
   await expect(page.locator('.analysis-reading-date')).toContainText('날짜 고정');
   const from = await chart.getAttribute('data-visible-from');
-  await page.getByRole('button', { name: '지표 설명', exact: true }).click();
+  await page.getByRole('button', { name: /^지표 설명/ }).click();
   await expect(page.locator('.indicator-explanation')).toContainText('기준선을 읽는 법');
   await expect(chart).toHaveAttribute('data-visible-from', from!);
   await page.keyboard.press('Escape');
@@ -179,6 +179,12 @@ test('USD indicator keeps its KRW quote and pinned date through save, share and 
   await expect(page.locator('.detail-quote')).toContainText('Upbit · KRW');
   await expect(page.locator('.analysis-reading-date')).toContainText('2026-09-01');
   await expect(page.locator('.analysis-reading-value')).toHaveText(selectedValue);
+  if (
+    (await page
+      .getByRole('button', { name: '더보기', exact: true })
+      .getAttribute('aria-expanded')) !== 'true'
+  )
+    await page.getByRole('button', { name: '더보기', exact: true }).click();
   await page.locator('details.analysis-tools > summary').click();
   await page.getByRole('button', { name: '링크 공유', exact: true }).click();
   const shared = await page.getByLabel('공유 주소', { exact: true }).inputValue();
@@ -192,6 +198,12 @@ test('USD indicator keeps its KRW quote and pinned date through save, share and 
   await page.getByRole('button', { name: '최근값 보기', exact: true }).click();
   await page.mouse.move(0, 0);
   await expect(page.locator('.analysis-reading-date')).toContainText('최근 확정 종가');
+  if (
+    (await page
+      .getByRole('button', { name: '더보기', exact: true })
+      .getAttribute('aria-expanded')) !== 'true'
+  )
+    await page.getByRole('button', { name: '더보기', exact: true }).click();
   await page.locator('details.analysis-tools > summary').click();
   await page.getByRole('button', { name: '링크 공유', exact: true }).click();
   expect(

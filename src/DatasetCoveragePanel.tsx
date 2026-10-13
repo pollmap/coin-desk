@@ -83,10 +83,12 @@ export function DatasetCoveragePanel({ asset }: { asset: Asset }) {
             ? '최근 거래가 오래됨'
             : s.condition === 'collection-error'
               ? '최근 시세 확인 실패'
-              : s.condition === 'pending'
-                ? '시세 수집 대기'
-                : '최근 거래 확인'}{' '}
-          · 실제 체결 {dateLabel(s.tradedAt, true)}
+              : s.condition === 'unknown-trade-time'
+                ? '체결 시각 미확인'
+                : s.condition === 'pending'
+                  ? '시세 수집 대기'
+                  : '최근 거래 확인'}{' '}
+          {s.tradedAt ? ` · 실제 체결 ${dateLabel(s.tradedAt, true)}` : ''}
         </p>
       ))}
     </section>

@@ -54,6 +54,8 @@ export function failureCode(error: unknown): string | null {
   if (!error) return null;
   const message = String(error);
   if (message.includes('QUOTE_STALE:')) return 'TRADE_STALE';
+  if (message.includes('QUOTE_TRADE_TIME_UNKNOWN:')) return 'TRADE_TIME_UNKNOWN';
+  if (message.includes('QUOTE_WINDOW_STALE:')) return 'QUOTE_WINDOW_STALE';
   if (/SQLITE_FULL|database or disk is full|no space left/i.test(message)) return 'STORAGE_FULL';
   if (/SQLITE_BUSY|database is locked/i.test(message)) return 'STORAGE_BUSY';
   if (/rollback.*no transaction/i.test(message)) return 'STORAGE_TRANSACTION';
@@ -66,6 +68,8 @@ export const cleanError = (error: unknown) => {
   const code = failureCode(error);
   if (!code) return null;
   if (code === 'TRADE_STALE') return '최근 체결 지연 · 다음 분에 다시 확인합니다';
+  if (code === 'TRADE_TIME_UNKNOWN') return '실제 체결 시각 미확인 · 다음 분에 다시 확인합니다';
+  if (code === 'QUOTE_WINDOW_STALE') return '시세 통계 기준 시각 지연 · 다음 분에 다시 확인합니다';
   if (code.startsWith('STORAGE_')) return '저장 처리 오류 · 마지막 정상 관측을 표시합니다';
   if (code === 'SOURCE_REVISION') return '원천 관측 수정 · 이력 재검증 필요';
   return String(error).match(/(?:HTTP|API)\s+\d{3}/)?.[0] || '원천 연결 또는 데이터 검증 오류';
@@ -252,9 +256,18 @@ export async function operationStatus(env: Env) {
       .bind(now - 72 * 3600)
       .all<ObservationRun>(),
     env.DB.prepare('SELECT value FROM state WHERE key=?').bind('onchain_build').first(),
-    env.DB.prepare("SELECT key,fetched_at FROM snapshots WHERE key LIKE 'quote:%'").all<{
+    env.DB.prepare(
+      `SELECT key,fetched_at,
+      json_extract(CASE WHEN json_valid(data) THEN data ELSE '{}' END,'$.timestampKind') AS timestamp_kind,
+      json_extract(CASE WHEN json_valid(data) THEN data ELSE '{}' END,'$.actualTradeAt') AS actual_trade_at,
+      json_extract(CASE WHEN json_valid(data) THEN data ELSE '{}' END,'$.time') AS quote_time
+      FROM snapshots WHERE key LIKE 'quote:%'`,
+    ).all<{
       key: string;
       fetched_at: number;
+      timestamp_kind: string | null;
+      actual_trade_at: number | null;
+      quote_time: number | null;
     }>(),
     env.DB.prepare(
       "SELECT time FROM onchain WHERE generation=(SELECT json_extract(value,'$') FROM state WHERE key='onchain_generation') ORDER BY time DESC LIMIT 1",
@@ -290,6 +303,7 @@ export async function operationStatus(env: Env) {
           assets: [asset],
         });
   const ingestionByKey = new Map(ingestion.results.map((s) => [s.key, s]));
+  const snapshotByKey = new Map(snapshots.results.map((s) => [s.key, s]));
   const networkByKey = new Map(networks.results.map((s) => ['network:' + s.asset, s]));
   const referenceByKey = new Map(references.results.map((s) => ['reference:' + s.asset, s]));
   const historyByKey = new Map(
@@ -300,12 +314,38 @@ export async function operationStatus(env: Env) {
     const row = ingestionByKey.get(key);
     const policy = expected.get(key);
     const active = !!policy;
+    const snapshot = snapshotByKey.get(key);
+    const unknownTradeTime =
+      key.startsWith('quote:') &&
+      key.endsWith(':binance') &&
+      !!snapshot &&
+      !(
+        snapshot.timestamp_kind === 'trade' &&
+        Number.isSafeInteger(snapshot.quote_time) &&
+        snapshot.quote_time! > 0 &&
+        snapshot.quote_time! <= now + 60 &&
+        snapshot.actual_trade_at === snapshot.quote_time
+      );
+    const sourceErrorCode = failureCode(row?.error);
+    const errorCode =
+      unknownTradeTime && (!sourceErrorCode || sourceErrorCode === 'TRADE_STALE')
+        ? 'TRADE_TIME_UNKNOWN'
+        : sourceErrorCode;
     const network = key.startsWith('network:') ? networkByKey.get(key) : null;
     const expectedMetrics =
       policy?.kind === 'network' ? networkMetrics(policy.assets![0]).length : 0;
     const collectorAgeSeconds = row?.last_success ? Math.max(0, now - row.last_success) : null;
     const dataAgeSeconds = row?.data_as_of
-      ? Math.max(0, now - Math.min(row.data_as_of, network?.oldest ?? row.data_as_of))
+      ? Math.max(
+          0,
+          now - Math.min(row.data_as_of, network?.oldest ?? row.data_as_of),
+          snapshot &&
+            !unknownTradeTime &&
+            key.endsWith(':binance') &&
+            snapshot.timestamp_kind === 'trade'
+            ? now - snapshot.quote_time!
+            : 0,
+        )
       : null;
     const collectorLimit =
       policy?.kind === 'quote-batch' ? 600 : Math.max(7200, (policy?.every || 3600) + 3600);
@@ -316,12 +356,14 @@ export async function operationStatus(env: Env) {
           (expectedMetrics > 0 && (network?.metrics ?? 0) < expectedMetrics)
         ? 'missing'
         : row.error
-          ? failureCode(row.error) === 'TRADE_STALE'
+          ? ['TRADE_STALE', 'TRADE_TIME_UNKNOWN', 'QUOTE_WINDOW_STALE'].includes(errorCode ?? '')
             ? 'delayed'
             : 'error'
-          : collectorAgeSeconds! > collectorLimit || dataAgeSeconds! > policy.maxLag
+          : unknownTradeTime
             ? 'delayed'
-            : 'ok';
+            : collectorAgeSeconds! > collectorLimit || dataAgeSeconds! > policy.maxLag
+              ? 'delayed'
+              : 'ok';
     const coverage = key.startsWith('network:')
       ? network
       : key.startsWith('reference:')
@@ -337,7 +379,7 @@ export async function operationStatus(env: Env) {
       failures: row?.failures ?? 0,
       active,
       error: cleanError(row?.error),
-      errorCode: failureCode(row?.error),
+      errorCode,
       status,
       diagnosis:
         status === 'ok'
@@ -345,21 +387,21 @@ export async function operationStatus(env: Env) {
           : !active
             ? 'INACTIVE'
             : row?.error
-              ? failureCode(row.error) === 'TRADE_STALE' && key.endsWith(':binance')
-                ? 'QUOTE_WINDOW_STALE'
-                : failureCode(row.error)
+              ? errorCode
               : status === 'missing'
                 ? 'PENDING'
-                : collectorAgeSeconds! > collectorLimit
-                  ? 'COLLECTOR_LATE'
-                  : key.startsWith('quote:')
-                    ? key.endsWith(':binance')
-                      ? 'QUOTE_WINDOW_STALE'
-                      : 'TRADE_STALE'
-                    : 'OBSERVATION_LATE',
+                : unknownTradeTime
+                  ? 'TRADE_TIME_UNKNOWN'
+                  : collectorAgeSeconds! > collectorLimit
+                    ? 'COLLECTOR_LATE'
+                    : key.startsWith('quote:')
+                      ? 'TRADE_STALE'
+                      : 'OBSERVATION_LATE',
       collectorAgeSeconds,
       dataAgeSeconds,
-      liveStale: key.startsWith('quote:') && (dataAgeSeconds === null || dataAgeSeconds > 300),
+      liveStale:
+        key.startsWith('quote:') &&
+        (unknownTradeTime || dataAgeSeconds === null || dataAgeSeconds > 300),
       expectedCadenceSeconds: policy?.every ?? null,
       dataFreshnessLimitSeconds: policy?.maxLag ?? null,
       nextDueAt: policy ? dueAt(policy, ingestion.results, now) : null,
@@ -413,11 +455,13 @@ export async function operationStatus(env: Env) {
               ? '원천 연결 또는 데이터 검증 오류로 재시도합니다.'
               : source.diagnosis === 'TRADE_STALE'
                 ? '최근 체결 시각이 지났습니다. 새 체결을 기다립니다.'
-                : source.diagnosis === 'QUOTE_WINDOW_STALE'
-                  ? '시세 통계 기준 시각이 지났습니다. 원천의 새 통계를 기다립니다.'
-                  : source.diagnosis === 'COLLECTOR_LATE'
-                    ? '예약 수집 확인이 늦어지고 있습니다.'
-                    : '원천값의 기준일이 오래됐습니다. 원천과 대조가 필요합니다.',
+                : source.diagnosis === 'TRADE_TIME_UNKNOWN'
+                  ? '실제 체결 시각을 확인하지 못했습니다. 다음 확인을 기다립니다.'
+                  : source.diagnosis === 'QUOTE_WINDOW_STALE'
+                    ? '시세 통계 기준 시각이 지났습니다. 원천의 새 통계를 기다립니다.'
+                    : source.diagnosis === 'COLLECTOR_LATE'
+                      ? '예약 수집 확인이 늦어지고 있습니다.'
+                      : '원천값의 기준일이 오래됐습니다. 원천과 대조가 필요합니다.',
       });
   for (const policy of expected.values()) {
     if (

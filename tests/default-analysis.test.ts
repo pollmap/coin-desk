@@ -1,11 +1,34 @@
 import { describe, it, expect } from 'vitest';
 import { ASSETS } from '../shared/catalog';
-import { defaultAnalysisUrl, defaultIndicator, defaultPriceUrl } from '../shared/default-analysis';
+import {
+  defaultAnalysisUrl,
+  defaultCoreAnalysisUrl,
+  defaultIndicator,
+  defaultPriceUrl,
+} from '../shared/default-analysis';
 import { availableMarket } from '../shared/asset-registry';
 import { resolveIndicator } from '../shared/indicator-catalog';
 import { indicatorUrl, INDICATORS_CATALOG } from '../shared/indicator-catalog';
 
 describe('light market links preserve analysis defaults', () => {
+  it('core market entries match canonical MVRV/Supertrend links without changing legacy defaults', () => {
+    for (const asset of ASSETS)
+      for (const market of ['upbit', 'binance'] as const) {
+        const id = defaultIndicator(asset.id) === 'net:mvrv' ? 'net:mvrv' : 'view:supertrend';
+        const actual = new URL(defaultCoreAnalysisUrl(asset.id, market), 'https://test.invalid');
+        const full = new URL(
+          indicatorUrl(asset.id, id, new URLSearchParams({ market, price_source: market })),
+          'https://test.invalid',
+        );
+        expect(actual.pathname).toBe(full.pathname);
+        expect(Object.fromEntries(actual.searchParams)).toEqual(
+          Object.fromEntries(full.searchParams),
+        );
+        expect(resolveIndicator(asset.id, actual.pathname, actual.searchParams).supported).toBe(
+          true,
+        );
+      }
+  });
   it('opens actual market prices for all 150 assets without changing explicit analysis links', () => {
     for (const asset of ASSETS)
       for (const preferred of ['upbit', 'binance'] as const) {

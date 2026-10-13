@@ -43,16 +43,23 @@ test('historical readings can return to latest without changing the chart window
   await expect(page.locator('.analysis-reading-date')).toContainText('최근 확정값');
   await expect(chart).toHaveAttribute('data-visible-from', window!);
   await expect(page.locator('.indicator-method')).toHaveCount(0);
-  await page.getByRole('button', { name: '지표 설명', exact: true }).click();
-  await expect(page.locator('.indicator-method')).toContainText('실현시가총액');
-  await expect(page.locator('.indicator-method')).toContainText('150 / 실현시가총액 100 = 1.5배');
-  await expect(page.locator('.indicator-method')).toContainText(
+  await page.getByRole('button', { name: /^지표 설명/ }).click();
+  const explanation = page.getByRole('dialog', { name: '지표 설명', exact: true });
+  await expect(explanation.locator('.indicator-method').first()).toContainText(
+    '150 / 실현시가총액 100 = 1.5배',
+  );
+  await explanation.getByText('계산식·기호', { exact: true }).click();
+  await expect(
+    explanation.locator('details').filter({ has: page.getByText('계산식·기호', { exact: true }) }),
+  ).toContainText('실현시가총액');
+  await expect(explanation.locator('.indicator-method').last()).toContainText(
     '실제 매수한 금액의 합계는 아닙니다',
   );
   await page.screenshot({ path: test.info().outputPath('mvrv-method.png'), fullPage: true });
+  await explanation.getByText('출처·한계', { exact: true }).click();
   await page.getByRole('link', { name: '현재 분석 설명', exact: true }).click();
   await expect(page.getByRole('heading', { name: 'MVRV', exact: true })).toBeVisible();
-  await expect(page.getByText('실현시가총액', { exact: true })).toBeVisible();
+  await expect(page.locator('.guide-terms dt').filter({ hasText: /^실현시가총액$/ })).toBeVisible();
   expect(new URL(page.url()).searchParams.get('price_source')).toBe('upbit');
 });
 
@@ -73,23 +80,20 @@ test('keyboard panning before a manual zoom survives a chart resize', async ({ p
   await expect(chart).toHaveAttribute('data-visible-from', window!);
 });
 
-test('coin changes open the active indicator group and empty categories offer an alternative', async ({
+test('coin changes open the active purpose and empty purposes offer an alternative', async ({
   page,
 }) => {
   await page.goto('/coins/BTC?metric=net%3Amvrv&price_source=upbit');
   await expect(page.locator('[data-chart-kind="analysis"]')).toBeVisible();
   await page.getByRole('button', { name: '코인 변경 · 비트코인 BTC' }).click();
   await page.getByRole('button', { name: '온도파이낸스 ONDO', exact: true }).click();
-  await expect(page.locator('[data-primary-metric="rsi"]')).toBeVisible();
+  await expect(page.locator('[data-primary-metric="price"]')).toBeVisible();
   await page.getByRole('button', { name: /지표 변경$/ }).click();
   const picker = page.getByRole('dialog', { name: '지표 선택' });
-  await expect(picker.getByRole('button', { name: '기술·성과', exact: true })).toHaveAttribute(
-    'aria-pressed',
-    'true',
-  );
-  await picker.getByRole('button', { name: '온체인', exact: true }).click();
+  await expect(picker.getByRole('combobox', { name: '지표 목적' })).toHaveValue('가격과 추세');
+  await picker.getByRole('combobox', { name: '지표 목적' }).selectOption('네트워크 활동');
   await expect(picker.getByRole('status')).toContainText(
-    'ONDO의 온체인 지표는 현재 확보한 원천이 없습니다',
+    'ONDO에 제공하는 네트워크 활동 지표가 없습니다',
   );
   await page.screenshot({ path: test.info().outputPath('unsupported-onchain.png') });
   await picker.getByRole('button', { name: '가격으로 계산하는 지표 보기' }).click();

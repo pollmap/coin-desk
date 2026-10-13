@@ -36,14 +36,21 @@ export function ProductTopbar() {
                   : '보리차트') + ' | 보리차트';
   }, [location.pathname, location.search]);
   useEffect(() => {
+    const modalIsOpen = () =>
+      !!document.querySelector('dialog[open], [role="dialog"]:not([aria-hidden="true"])');
     const openSearch = (e: Event) => {
+      if (modalIsOpen()) return;
       const detail = (e as CustomEvent<{ query: string; trigger: HTMLElement }>).detail;
       setQuery(detail?.query ?? '');
       searchReturn.current = detail?.trigger ?? searchButton.current;
       setSearchOpen(true);
     };
     const keyboard = (e: KeyboardEvent) => {
-      if (e.key === '/' && !/INPUT|TEXTAREA|SELECT/.test((e.target as HTMLElement).tagName)) {
+      if (
+        e.key === '/' &&
+        !modalIsOpen() &&
+        !/INPUT|TEXTAREA|SELECT/.test((e.target as HTMLElement).tagName)
+      ) {
         e.preventDefault();
         searchReturn.current = document.activeElement as HTMLElement;
         setQuery('');

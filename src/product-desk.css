@@ -617,6 +617,13 @@ body {
   align-items: center;
   flex-shrink: 0;
 }
+.indicator-title-short {
+  display: none;
+}
+.product-desk .indicator-title-button :is(.indicator-title-full, .indicator-title-short) {
+  font: inherit;
+  color: inherit;
+}
 .indicator-heading > div:first-child {
   min-width: 0;
 }
@@ -1029,28 +1036,13 @@ body {
   flex-shrink: 0;
   margin: 0;
 }
-.indicator-group-tabs {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-  margin: 12px 0;
-}
-.indicator-group-tabs button {
-  padding: 8px 10px;
-  font-size: 13px;
-  border: 1px solid var(--border);
-  border-radius: 6px;
-  background: transparent;
-  color: var(--muted);
-}
-.indicator-group-tabs button[aria-pressed='true'] {
-  background: var(--hover);
-  color: var(--text);
-}
 
 @media (max-width: 767px) {
   .product-desk #main-content:has(.indicator-workspace) {
-    padding: 8px 16px;
+    padding: 0 16px;
+  }
+  .product-desk .indicator-workspace .compact-coins {
+    margin-bottom: 0;
   }
   .product-desk .indicator-shortcuts {
     display: flex;
@@ -1063,7 +1055,7 @@ body {
   .product-desk .indicator-shortcuts a {
     flex: 1 0 auto;
     text-align: center;
-    min-height: 36px;
+    min-height: 44px;
     padding: 8px 6px;
     border-radius: 0;
     font-size: 12px;
@@ -1126,10 +1118,15 @@ body {
   }
   .product-desk .indicator-workspace .detail-quote {
     margin-left: auto;
-    max-width: 160px;
+    max-width: 190px;
     min-width: 0;
     flex: 0 1 auto;
     text-align: right;
+  }
+  .product-desk .indicator-workspace .quote-source-button {
+    max-width: 100%;
+    white-space: normal;
+    overflow-wrap: anywhere;
   }
   .product-desk .indicator-workspace .detail-quote strong {
     font-size: 14px;
@@ -1139,7 +1136,7 @@ body {
     grid-template-columns: minmax(0, 1fr) auto;
     gap: 2px 8px;
     min-height: 0;
-    margin: 0 0 4px;
+    margin: 0;
   }
   .product-desk .indicator-heading > div:first-child {
     display: contents;
@@ -1154,7 +1151,7 @@ body {
   .product-desk .indicator-heading .indicator-meaning {
     grid-column: 1 / -1;
     grid-row: 2;
-    display: block;
+    display: none;
     white-space: normal;
     font-size: 13px;
     line-height: 18px;
@@ -1168,6 +1165,23 @@ body {
     gap: 4px;
     justify-self: end;
   }
+  .product-desk .indicator-title-full {
+    display: none;
+  }
+  .product-desk .indicator-title-short {
+    display: inline;
+  }
+  .product-desk .indicator-title-button,
+  .product-desk .indicator-heading-actions :is(a, select) {
+    min-height: 44px;
+  }
+  .product-desk .indicator-heading-actions a {
+    display: inline-flex;
+    align-items: center;
+    padding: 4px;
+    font-size: 12px;
+    white-space: nowrap;
+  }
   .product-desk .indicator-heading:has(.price-style-control) .indicator-title-button {
     font-size: 18px;
     white-space: nowrap;
@@ -1178,7 +1192,7 @@ body {
   .product-desk .indicator-heading-actions button {
     padding: 6px 8px;
     font-size: 12px;
-    min-height: 36px;
+    min-height: 44px;
     white-space: nowrap;
   }
   .product-desk .indicator-save {
@@ -1199,7 +1213,7 @@ body {
     flex-wrap: wrap;
     gap: 4px;
     min-height: 36px;
-    margin-bottom: 4px;
+    margin-bottom: 2px;
   }
   .product-desk .indicator-toolbar .period-picker {
     flex: 0 0 58px;
@@ -1211,11 +1225,11 @@ body {
     width: 58px;
     min-width: 0;
     padding: 4px;
-    min-height: 36px;
+    min-height: 44px;
   }
   .product-desk .indicator-toolbar button {
     padding: 6px;
-    min-height: 36px;
+    min-height: 44px;
     white-space: nowrap;
     font-size: 12px;
   }
@@ -1240,7 +1254,7 @@ body {
     overflow: auto;
   }
   .product-desk .indicator-more :is(button, select) {
-    min-height: 40px;
+    min-height: 44px;
   }
   .product-desk .indicator-workspace .analysis-legend > span:nth-child(2) > b {
     font-size: 28px;
@@ -1264,16 +1278,6 @@ body {
   }
   .product-desk .indicator-navigation nav a small {
     line-height: 1.5;
-  }
-  .product-desk .indicator-group-tabs {
-    display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 4px;
-  }
-  .product-desk .indicator-group-tabs button {
-    padding: 8px 2px;
-    font-size: 12px;
-    min-height: 40px;
   }
   .product-desk .indicator-navigation .sidebar-label {
     display: none;

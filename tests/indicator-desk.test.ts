@@ -97,11 +97,13 @@ describe('indicator entry and compatibility', () => {
         'https://test.invalid',
       ).searchParams;
       expect(p.get('asset')).toBe(asset);
-      expect(p.get('metric')).toBe(defaultIndicator(asset));
+      expect(p.get('metric')).toBe(
+        indicatorDefinition('net:mvrv')!.assets.includes(asset) ? 'net:mvrv' : 'view:price',
+      );
       if (['SOL', 'ONDO', 'PEPE'].includes(asset)) {
         expect(p.get('price_source')).toBe('reference');
         expect(p.has('market')).toBe(false);
-        expect(p.get('period')).toBe('1y');
+        expect(p.get('period')).toBe('1m');
         expect(p.get('transition')).toBe('net:mvrv');
       }
     }

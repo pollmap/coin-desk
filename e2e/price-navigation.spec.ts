@@ -11,7 +11,7 @@ test('market prices, explicit indicators and performance comparison are distinct
   await expect(chart).toHaveAttribute('data-price-style', 'candles');
   await expect(chart).toHaveAttribute('data-range-ready', '1');
   expect(new URL(page.url()).searchParams.get('price_source')).toBe('upbit');
-  await page.getByRole('link', { name: '가격 성과 비교', exact: true }).click();
+  await page.getByRole('link', { name: /^가격 성과 비교/ }).click();
   expect(new URL(page.url()).searchParams.get('mode')).toBe('performance');
   expect(new URL(page.url()).searchParams.get('assets')).toBe('BTC,ETH');
   expect(new URL(page.url()).searchParams.get('market')).toBe('upbit');

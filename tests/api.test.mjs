@@ -6,6 +6,18 @@ import { success, failure } from '../worker/storage.ts';
 import { pages } from '../src/lib.ts';
 let DB, env, waiting;
 function mockSocket(status, result) {
+  if (result && !Array.isArray(result) && result.lastPrice !== undefined) {
+    result = { ...result, lastId: 7 };
+    env.QUOTE_TRADES = async () => [
+      {
+        asset: 'BTC',
+        market: 'binance',
+        price: Number(result.lastPrice),
+        tradedAt: Math.floor(result.closeTime / 1000) - 1,
+        lastTradeId: 7,
+      },
+    ];
+  }
   const send = vi.fn();
   class Socket {
     listeners = {};
@@ -104,7 +116,14 @@ it('refreshes a quote after one minute and shares that refresh with subsequent r
 });
 it('overview bypasses stale edge responses after the server updates its snapshot', async () => {
   const now = Math.floor(Date.now() / 1000);
-  const quote = { asset: 'BTC', price: 120, time: now };
+  const quote = {
+    asset: 'BTC',
+    price: 120,
+    time: now,
+    timestampKind: 'trade',
+    actualTradeAt: now,
+    sourceEventTime: now,
+  };
   DB.sqlite
     .prepare('INSERT INTO snapshots VALUES(?,?,?)')
     .run('quote:BTC:binance', JSON.stringify(quote), now);
@@ -118,6 +137,31 @@ it('overview bypasses stale edge responses after the server updates its snapshot
   expect(out.data.quote.price).toBe(120);
   expect(out.data.meta.stale).toBe(false);
   expect(match).not.toHaveBeenCalled();
+});
+it('keeps a legacy Binance snapshot visible but labels its time as an unverified ticker window', async () => {
+  const now = Math.floor(Date.now() / 1000);
+  const stored = { asset: 'BTC', price: 120, time: now, volume24h: 1000, change24h: 1 };
+  DB.sqlite
+    .prepare('INSERT INTO snapshots VALUES(?,?,?)')
+    .run('quote:BTC:binance', JSON.stringify(stored), now);
+  env.READ_ONLY_API = true;
+  const before = DB.sqlite.prepare('SELECT total_changes() n').get().n;
+  const view = await call('overview');
+  expect(view.data.quote).toMatchObject({
+    price: 120,
+    time: now,
+    timestampKind: 'ticker-window',
+    sourceEventTime: now,
+    actualTradeAt: null,
+  });
+  expect(view.data.meta.stale).toBe(true);
+  const market = await call('market?market=binance&assets=BTC&spark_limit=0');
+  expect(market.data.rows[0]).toMatchObject({
+    status: 'delayed',
+    quote: { timestampKind: 'ticker-window', actualTradeAt: null },
+  });
+  expect(JSON.parse(DB.sqlite.prepare('SELECT data FROM snapshots').get().data)).toEqual(stored);
+  expect(DB.sqlite.prepare('SELECT total_changes() n').get().n).toBe(before);
 });
 
 it('exhausted D1 writes keep stored prices readable and explicitly delayed', async () => {
@@ -210,9 +254,17 @@ it('a collector winning the refresh lease is re-read before returning the quote'
   vi.spyOn(DB, 'prepare').mockImplementation((sql) => {
     if (!advanced && sql.startsWith('INSERT INTO state(key,value) VALUES (?,?) ON CONFLICT')) {
       advanced = true;
-      DB.sqlite
-        .prepare('UPDATE snapshots SET data=?,fetched_at=?')
-        .run(JSON.stringify({ asset: 'BTC', price: 120, time: now }), now);
+      DB.sqlite.prepare('UPDATE snapshots SET data=?,fetched_at=?').run(
+        JSON.stringify({
+          asset: 'BTC',
+          price: 120,
+          time: now,
+          timestampKind: 'trade',
+          actualTradeAt: now,
+          sourceEventTime: now,
+        }),
+        now,
+      );
     }
     return prepare(sql);
   });

@@ -56,6 +56,12 @@ export interface Quote {
   high24h: number;
   low24h: number;
   time: number;
+  /** Legacy time stays Unix seconds; new quotes prove this is the actual last trade. */
+  timestampKind?: 'trade' | 'ticker-window';
+  actualTradeAt?: number | null;
+  /** Provider event/window timestamp; never a substitute for actualTradeAt. */
+  sourceEventTime?: number;
+  lastTradeId?: number;
   changeBasis?: 'rolling24h' | 'rolling24h-minute';
   referenceAt?: number | null;
   rangeBasis?: 'rolling24h' | 'utc-day';

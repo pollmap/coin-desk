@@ -8,6 +8,16 @@ const spotSymbols = new Set(
   ASSET_REGISTRY.flatMap((a) => (a.markets.binance ? [a.markets.binance] : [])),
 );
 export function validSpotRequest(method: string, params: Record<string, unknown>) {
+  if (method === 'trades.aggregate')
+    return (
+      Object.keys(params).length === 3 &&
+      typeof params.symbol === 'string' &&
+      spotSymbols.has(params.symbol) &&
+      params.limit === 1 &&
+      Number.isSafeInteger(params.endTime) &&
+      Number(params.endTime) > 0 &&
+      Number(params.endTime) <= Date.now() + 60000
+    );
   if (method === 'ticker.24hr') {
     const symbols = params.symbol ? [params.symbol] : params.symbols;
     return (
@@ -80,9 +90,17 @@ export default {
           !validSpotRequest(method, params)
         )
           return Response.json({ error: 'Invalid feed request' }, { status: 400 });
-        return Response.json(await binanceRequest(method as 'ticker.24hr' | 'klines', params), {
-          headers: { 'Cache-Control': 'no-store' },
-        });
+        return Response.json(
+          await binanceRequest(
+            method as 'ticker.24hr' | 'klines' | 'trades.aggregate',
+            params,
+            undefined,
+            method === 'trades.aggregate' ? 1500 : 12000,
+          ),
+          {
+            headers: { 'Cache-Control': 'no-store' },
+          },
+        );
       } catch (error) {
         return Response.json(
           {

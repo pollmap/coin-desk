@@ -91,12 +91,15 @@ export const AnalysisChart = memo(function AnalysisChart({
   initialTool,
   bands,
   onReadingDate,
+  onDateSelect,
   initialReadingDate,
   exportName,
   readingLabel,
   toolbarTarget,
   livePrice,
   summaryLabel,
+  advancedTools = true,
+  toolsTarget,
 }: {
   asset: string;
   unit: string;
@@ -122,12 +125,15 @@ export const AnalysisChart = memo(function AnalysisChart({
   initialTool?: DrawingKind;
   bands?: BandRow[];
   onReadingDate?: (time: number | null, pinned?: boolean) => void;
+  onDateSelect?: (time: number | null, range?: DateWindow) => void;
   initialReadingDate?: number;
   exportName?: string;
   readingLabel?: string;
   toolbarTarget?: HTMLElement | null;
   livePrice?: LiveChartPrice | null;
   summaryLabel?: string;
+  advancedTools?: boolean;
+  toolsTarget?: HTMLElement | null;
 }) {
   const host = useRef<HTMLDivElement>(null),
     chartRef = useRef<IChartApi | null>(null);
@@ -140,6 +146,8 @@ export const AnalysisChart = memo(function AnalysisChart({
   click.current = onSignal;
   const observationClick = useRef(onObservation);
   observationClick.current = onObservation;
+  const dateSelect = useRef(onDateSelect);
+  dateSelect.current = onDateSelect;
   const settings = useRef({ period, log });
   settings.current = { period, log };
   const previous = useRef<{ key: string; from: number; to: number } | null>(null);
@@ -201,6 +209,13 @@ export const AnalysisChart = memo(function AnalysisChart({
     setSelectionKey(key);
     setSelected(t);
     moveCursor.current(t, preserveRange);
+    if (!preserveRange) {
+      const range = pendingRange.current ?? chartRef.current?.timeScale().getVisibleRange();
+      dateSelect.current?.(
+        t,
+        range ? { from: Number(range.from), to: Number(range.to) } : undefined,
+      );
+    }
   }
   function exportReadings() {
     const visible = chartRef.current?.timeScale().getVisibleRange();
@@ -382,6 +397,11 @@ export const AnalysisChart = memo(function AnalysisChart({
         manualCursor.current = true;
         setPinned(true);
         setSelectionKey(key);
+        const range = pendingRange.current ?? chart.timeScale().getVisibleRange();
+        dateSelect.current?.(
+          Number(e.time),
+          range ? { from: Number(range.from), to: Number(range.to) } : undefined,
+        );
         setSelected(e.time);
       }
     });
@@ -406,7 +426,11 @@ export const AnalysisChart = memo(function AnalysisChart({
         // ResizeObserver and data refresh, even without a prior drag/zoom.
         userRange.current = true;
         const width = Number(range.to) - Number(range.from);
-        chart.timeScale().setVisibleRange({ from: ts(time - width / 2), to: ts(time + width / 2) });
+        pendingRange.current = { from: time - width / 2, to: time + width / 2 };
+        chart.timeScale().setVisibleRange({
+          from: ts(pendingRange.current.from),
+          to: ts(pendingRange.current.to),
+        });
       }
       chart.setCrosshairPosition(target.values.get(time)!, ts(time), target.series);
     };
@@ -584,7 +608,20 @@ export const AnalysisChart = memo(function AnalysisChart({
       ?.priceScale('right', 0)
       .applyOptions({ mode: log ? PriceScaleMode.Logarithmic : PriceScaleMode.Normal });
   }, [log]);
+  const appliedRange = useRef<string | null>(null);
   useEffect(() => {
+    const token = `${key}:${period}:${rangeRevision}`;
+    const incoming = availableWindow(readings.times, initialWindow);
+    const current = pendingRange.current ?? chartRef.current?.timeScale().getVisibleRange();
+    if (
+      appliedRange.current === token &&
+      incoming &&
+      current &&
+      incoming.from === Number(current.from) &&
+      incoming.to === Number(current.to)
+    )
+      return;
+    appliedRange.current = token;
     userRange.current = false;
     pendingRange.current = null;
     appliedFocus.current = null;
@@ -606,15 +643,21 @@ export const AnalysisChart = memo(function AnalysisChart({
     // Only an exact observation can be pinned; unknown dates never fabricate a value.
     if (initialReadingDate && readings.times.includes(initialReadingDate))
       explore(initialReadingDate, true);
-  }, [
-    period,
-    key,
-    ready,
-    rangeRevision,
-    initialWindow?.from,
-    initialWindow?.to,
-    initialReadingDate,
-  ]);
+  }, [period, key, ready, rangeRevision, initialWindow?.from, initialWindow?.to]);
+  // Pinning a date is independent of the time-scale range. A keyboard step or
+  // URL date change must not reapply the old range after an imperative zoom.
+  useEffect(() => {
+    if (!ready || !chartRef.current) return;
+    if (initialReadingDate && readings.times.includes(initialReadingDate)) {
+      explore(initialReadingDate, true);
+    } else if (initialReadingDate === undefined) {
+      manualCursor.current = true;
+      setPinned(false);
+      setSelectionKey(key);
+      setSelected(null);
+      chartRef.current.clearCrosshairPosition();
+    }
+  }, [key, ready, rangeRevision, initialReadingDate]);
   useEffect(() => {
     if (!focus) {
       appliedFocus.current = null;
@@ -648,6 +691,20 @@ export const AnalysisChart = memo(function AnalysisChart({
         chartRef.current?.timeScale().setVisibleRange({ from: ts(range.from), to: ts(range.to) });
       }}
       onSelect={explore}
+      onNavigate={(date, range) => {
+        if (range) {
+          pendingRange.current = range;
+          userRange.current = true;
+          chartRef.current?.timeScale().setVisibleRange({ from: ts(range.from), to: ts(range.to) });
+        }
+        if (date !== undefined) explore(date, true);
+        const desired =
+          range ?? pendingRange.current ?? chartRef.current?.timeScale().getVisibleRange();
+        dateSelect.current?.(
+          date ?? (pinned ? selectedTime : null),
+          desired ? { from: Number(desired.from), to: Number(desired.to) } : undefined,
+        );
+      }}
       onReset={() => {
         explore(null);
         userRange.current = false;
@@ -657,6 +714,72 @@ export const AnalysisChart = memo(function AnalysisChart({
       }}
     />
   );
+  const extraTools = advancedTools ? (
+    <details className="analysis-tools">
+      <summary>내보내기 · 공유 · 날짜별 수치</summary>
+      <ChartTools
+        chart={chartRef}
+        shareVisibleRange
+        readingDate={pinned ? selectedTime : null}
+        rows={points}
+        label={asset}
+        unit={unit}
+        source={source}
+        onReset={onAll}
+        onExport={exportReadings}
+        exportLabel={primary ? '지표 CSV' : '가격·지표 CSV'}
+      />
+      <button
+        onClick={() => {
+          const canvas = chartRef.current?.takeScreenshot();
+          if (!canvas) return;
+          const a = document.createElement('a');
+          a.href = canvas.toDataURL('image/png');
+          a.download = `borichart-${fileName}.png`;
+          a.click();
+        }}
+      >
+        차트 이미지 저장
+      </button>
+      <div className="analysis-table">
+        <table>
+          <caption>
+            {asset} {primary?.title ?? '가격·지표'} · 날짜별 관측 (최근순)
+          </caption>
+          <thead>
+            <tr>
+              <th>UTC 날짜</th>
+              <th>
+                {primary?.title ?? '가격'} · {unit}
+              </th>
+              {lines.map((l) => (
+                <th key={l.id}>
+                  {l.title} · {l.unit}
+                </th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {readings.times
+              .slice(-tableCount)
+              .reverse()
+              .map((t) => (
+                <tr key={t}>
+                  <td>{timestamp(t)}</td>
+                  <td>{display(readings.maps[0].get(t))}</td>
+                  {lines.map((l, i) => (
+                    <td key={l.id}>{lineNumber(l, readings.maps[i + 1].get(t))}</td>
+                  ))}
+                </tr>
+              ))}
+          </tbody>
+        </table>
+      </div>
+      {tableCount < readings.times.length && (
+        <button onClick={() => setTableCount((n) => n + 100)}>이전 100개 표시</button>
+      )}
+    </details>
+  ) : null;
   return (
     <>
       <div className="analysis-legend">
@@ -788,70 +911,7 @@ export const AnalysisChart = memo(function AnalysisChart({
           ? `${timestamp(time)} ${asset} ${display(priceValue)}. ${lines.map((l, i) => `${l.title} ${lineNumber(l, time === undefined ? undefined : readings.maps[i + 1].get(time))} ${l.unit}`).join('. ')}`
           : ''}
       </span>
-      <details className="analysis-tools">
-        <summary>내보내기 · 공유 · 날짜별 수치</summary>
-        <ChartTools
-          chart={chartRef}
-          shareVisibleRange
-          readingDate={pinned ? selectedTime : null}
-          rows={points}
-          label={asset}
-          unit={unit}
-          source={source}
-          onReset={onAll}
-          onExport={exportReadings}
-          exportLabel={primary ? '지표 CSV' : '가격·지표 CSV'}
-        />
-        <button
-          onClick={() => {
-            const canvas = chartRef.current?.takeScreenshot();
-            if (!canvas) return;
-            const a = document.createElement('a');
-            a.href = canvas.toDataURL('image/png');
-            a.download = `borichart-${fileName}.png`;
-            a.click();
-          }}
-        >
-          차트 이미지 저장
-        </button>
-        <div className="analysis-table">
-          <table>
-            <caption>
-              {asset} {primary?.title ?? '가격·지표'} · 날짜별 관측 (최근순)
-            </caption>
-            <thead>
-              <tr>
-                <th>UTC 날짜</th>
-                <th>
-                  {primary?.title ?? '가격'} · {unit}
-                </th>
-                {lines.map((l) => (
-                  <th key={l.id}>
-                    {l.title} · {l.unit}
-                  </th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              {readings.times
-                .slice(-tableCount)
-                .reverse()
-                .map((t) => (
-                  <tr key={t}>
-                    <td>{timestamp(t)}</td>
-                    <td>{display(readings.maps[0].get(t))}</td>
-                    {lines.map((l, i) => (
-                      <td key={l.id}>{lineNumber(l, readings.maps[i + 1].get(t))}</td>
-                    ))}
-                  </tr>
-                ))}
-            </tbody>
-          </table>
-        </div>
-        {tableCount < readings.times.length && (
-          <button onClick={() => setTableCount((n) => n + 100)}>이전 100개 표시</button>
-        )}
-      </details>
+      {advancedTools && (toolsTarget ? createPortal(extraTools, toolsTarget) : extraTools)}
     </>
   );
 });

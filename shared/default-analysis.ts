@@ -40,3 +40,22 @@ export function defaultAnalysisUrl(asset: Asset, preferred: Market) {
     })
   );
 }
+
+/** Lightweight market entry; the complete guide/chart catalog stays lazy. */
+export function defaultCoreAnalysisUrl(asset: Asset, preferred: Market) {
+  const market = availableMarket(asset, preferred);
+  const metric = defaultIndicator(asset) === 'net:mvrv' ? 'net:mvrv' : 'view:supertrend';
+  return (
+    '/coins/' +
+    asset +
+    '?' +
+    new URLSearchParams({
+      asset,
+      metric,
+      price_source: market,
+      market,
+      period: metric === 'net:mvrv' ? '5y' : 'all',
+      ...(metric === 'view:supertrend' ? { interval: '1w', log: '0' } : {}),
+    })
+  );
+}

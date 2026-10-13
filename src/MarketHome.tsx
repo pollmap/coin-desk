@@ -4,7 +4,11 @@ import { Star, Search, X } from 'lucide-react';
 import { ASSETS } from '../shared/catalog';
 import { matchesCoin, exactCoin } from '../shared/coin-search';
 import { assetDefinition, availableMarket } from '../shared/asset-registry';
-import { defaultIndicator, defaultAnalysisUrl, defaultPriceUrl } from '../shared/default-analysis';
+import {
+  defaultCoreAnalysisUrl,
+  defaultIndicator,
+  defaultPriceUrl,
+} from '../shared/default-analysis';
 import type { Asset, Point } from '../shared/types';
 import { AssetLogo } from './AssetLogo';
 import { useQuoteFeed } from './useQuoteFeed';
@@ -357,10 +361,10 @@ export function MarketHome() {
                     </td>
                     <td className="market-analysis-cell">
                       <Link
-                        to={defaultAnalysisUrl(id, market)}
-                        aria-label={`${name} ${defaultIndicator(id) === 'rsi' ? 'RSI 14' : 'MVRV'} 분석`}
+                        to={defaultCoreAnalysisUrl(id, market)}
+                        aria-label={`${name} ${defaultIndicator(id) === 'rsi' ? '슈퍼트렌드' : 'MVRV'} 분석`}
                       >
-                        {defaultIndicator(id) === 'rsi' ? '추세 · RSI 14' : '가치평가 · MVRV'} ↗
+                        {defaultIndicator(id) === 'rsi' ? '추세 · 슈퍼트렌드' : '가치평가 · MVRV'} ↗
                       </Link>
                     </td>
                   </tr>

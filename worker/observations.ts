@@ -109,7 +109,10 @@ export async function signalsFeed(
   before = epoch() + 1,
   limit = 100,
   cursor?: string | null,
+  id?: string | null,
 ) {
+  if (id !== undefined && id !== null && !/^[A-Za-z0-9:_.-]{1,400}$/.test(id))
+    throw new Error('Invalid signal id');
   const boundary = cursor?.indexOf('|') ?? -1;
   const cursorTime = boundary > 0 ? Number(cursor!.slice(0, boundary)) : before;
   const cursorId = boundary > 0 ? cursor!.slice(boundary + 1) : '';
@@ -120,19 +123,21 @@ export async function signalsFeed(
   )
     throw new Error('Invalid signal cursor');
   const rows = (
-    await env.DB.prepare(
-      'SELECT * FROM observation_signals WHERE asset=? AND (time<? OR (time=? AND id>?)) ORDER BY time DESC,id LIMIT ?',
-    )
-      .bind(asset, cursorTime, cursorId ? cursorTime : -1, cursorId, limit + 1)
-      .all<{
-        payload: string;
-        created_at: number;
-        revision: number;
-        status: ObservationSignal['status'];
-        notify: number;
-        time: number;
-        id: string;
-      }>()
+    await (
+      id
+        ? env.DB.prepare('SELECT * FROM observation_signals WHERE asset=? AND id=?').bind(asset, id)
+        : env.DB.prepare(
+            'SELECT * FROM observation_signals WHERE asset=? AND (time<? OR (time=? AND id>?)) ORDER BY time DESC,id LIMIT ?',
+          ).bind(asset, cursorTime, cursorId ? cursorTime : -1, cursorId, limit + 1)
+    ).all<{
+      payload: string;
+      created_at: number;
+      revision: number;
+      status: ObservationSignal['status'];
+      notify: number;
+      time: number;
+      id: string;
+    }>()
   ).results;
   const page = rows.slice(0, limit);
   return {
@@ -143,7 +148,7 @@ export async function signalsFeed(
       status: r.status,
       notify: !!r.notify,
     })),
-    nextCursor: rows.length > limit ? `${page.at(-1)!.time}|${page.at(-1)!.id}` : null,
+    nextCursor: !id && rows.length > limit ? `${page.at(-1)!.time}|${page.at(-1)!.id}` : null,
     source: 'Coin Desk · 확정 관측 규칙',
     automatic: true,
   };

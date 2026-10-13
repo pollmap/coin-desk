@@ -12,6 +12,8 @@ export interface Env {
   FEED_URL?: string;
   FEED_TOKEN?: string;
   FEED_SERVICE?: Fetcher;
+  QUOTE_TRADES?: import('./feed-client').FeedConfig['QUOTE_TRADES'];
+  BINANCE_REQUEST?: import('./feed-client').FeedConfig['BINANCE_REQUEST'];
   BACKGROUND_COLLECTOR?: Fetcher;
   ANALYSIS_COLLECTOR?: Fetcher;
   BITVIEW_BASE_URL: string;

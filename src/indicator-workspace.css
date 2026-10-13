@@ -415,6 +415,46 @@
 }
 .indicator-info-actions button {
   min-height: 36px;
+  display: inline-flex;
+  gap: 6px;
+  align-items: center;
+  border: 1px solid var(--border);
+  padding: 7px 10px;
+  border-radius: 6px;
+  background: var(--panel);
+}
+.indicator-info-actions button:hover {
+  background: var(--hover);
+}
+.indicator-info-actions button:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+.indicator-advanced-tools {
+  flex-basis: 100%;
+  min-width: 0;
+}
+.indicator-transition-list {
+  margin-top: 10px;
+  font-size: 13px;
+}
+.indicator-transition-list ul {
+  list-style: none;
+  margin: 8px 0;
+  padding: 0;
+  max-height: 250px;
+  overflow: auto;
+}
+.indicator-transition-list button {
+  width: 100%;
+  text-align: left;
+  min-height: 36px;
+}
+@media (max-width: 767px) {
+  .indicator-info-actions button,
+  .indicator-transition-list button {
+    min-height: 44px;
+  }
 }
 .indicator-provenance {
   display: flex;

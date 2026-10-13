@@ -1,7 +1,7 @@
 import { referenceAssets, availableMarket } from './asset-registry';
 import { DERIVATIVE_ASSETS } from './derivative-contracts';
 import { ASSETS, METRICS } from './catalog';
-import { NETWORK_METRICS, NETWORK_ASSETS } from './network-catalog';
+import { NETWORK_METRICS, NETWORK_ASSETS, networkUnit } from './network-catalog';
 import { ANALYSIS_LABELS, type AnalysisView } from './advanced-analysis';
 import { guideArticle, guideForMetric } from './learning-catalog';
 import { isRangePeriod } from './ranges';
@@ -13,6 +13,14 @@ export { defaultIndicator } from './default-analysis';
 
 export const INDICATOR_GROUPS = ['가치·사이클', '온체인', '선물', '기술·성과'] as const;
 export type IndicatorGroup = (typeof INDICATOR_GROUPS)[number];
+export const INDICATOR_PURPOSES = [
+  '가격과 추세',
+  '가치와 사이클',
+  'BTC와 비교',
+  '네트워크 활동',
+  '선물 시장',
+] as const;
+export type IndicatorPurpose = (typeof INDICATOR_PURPOSES)[number];
 export type IndicatorAvailability =
   'ready' | 'delayed' | 'unsupported' | 'insufficient-history' | 'pending' | 'loading' | 'error';
 export interface IndicatorDefinition {
@@ -27,6 +35,16 @@ export interface IndicatorDefinition {
   baselineMeaning: string;
   observationCadence: string;
   measurementScope: string;
+  purpose: IndicatorPurpose;
+  requirements?: {
+    kind:
+      | 'price-observations'
+      | 'consecutive-days'
+      | 'confirmed-bars'
+      | 'complete-years'
+      | 'hashrate-days';
+    minimum: number;
+  };
   defaultPeriod: Period;
   renderer: 'series' | 'price' | 'bands' | 'lab';
   guide: string;
@@ -45,9 +63,50 @@ export const validPriceBasis = (asset: Asset, basis: string | null): PriceBasis 
 const valueMetrics = new Set(['mvrv', 'realized_price', 'realized_cap']);
 type IndicatorBase = Omit<
   IndicatorDefinition,
-  'shortMeaning' | 'baselineMeaning' | 'observationCadence' | 'measurementScope'
+  'shortMeaning' | 'baselineMeaning' | 'observationCadence' | 'measurementScope' | 'purpose'
 >;
 const definitions: IndicatorBase[] = [
+  {
+    id: 'view:asset_rainbow',
+    title: '레인보우 · 자체 회귀',
+    group: '가치·사이클',
+    assets: all,
+    unit: '가격',
+    source: '선택 가격 원천',
+    formula:
+      'ln(P)=a+b×ln(1+원천 기준일 이후 경과일) · 표시일 이전 730개 이상 관측 · 잔차 σ의 9구간',
+    defaultPeriod: 'all',
+    renderer: 'bands',
+    guide: 'asset-rainbow',
+    view: 'rainbow',
+    requirements: { kind: 'price-observations', minimum: 730 },
+  },
+  {
+    id: 'view:hash_ribbons',
+    title: 'BTC 해시 리본',
+    group: '온체인',
+    assets: ['BTC'],
+    unit: 'TH/s',
+    source: 'Coin Metrics',
+    formula: '해시레이트 SMA30·SMA60 · 회복 후 PriceUSD SMA10>SMA20을 한 번 확인',
+    defaultPeriod: '5y',
+    renderer: 'series',
+    guide: 'hash-ribbons',
+    requirements: { kind: 'hashrate-days', minimum: 60 },
+  },
+  {
+    id: 'view:hashrate_trend',
+    title: '해시레이트 추세 30·60일',
+    group: '온체인',
+    assets: NETWORK_METRICS.find((m) => m.id === 'hashrate')?.assets ?? [],
+    unit: '해시/초',
+    source: 'Coin Metrics',
+    formula: '일별 해시레이트 SMA30·SMA60 · 감소와 회복 교차',
+    defaultPeriod: '5y',
+    renderer: 'series',
+    guide: 'hashrate-trend',
+    requirements: { kind: 'hashrate-days', minimum: 60 },
+  },
   {
     id: 'view:supertrend',
     title: '슈퍼트렌드',
@@ -241,6 +300,9 @@ const definitions: IndicatorBase[] = [
 ];
 // Concise selection copy. The full definition, formula and limits remain in the guide.
 const conciseMeanings: Record<string, string> = {
+  'view:asset_rainbow': '이 코인의 과거 로그회귀 대비 가격 위치 · 실험 모형',
+  'view:hash_ribbons': 'BTC 해시레이트의 회복과 가격 조건을 함께 확인',
+  'view:hashrate_trend': '30일·60일 평균으로 채굴 연산량의 변화를 확인',
   'view:supertrend': '변동 폭(ATR)을 반영한 추세 기준선',
   'view:rainbow': '앞선 730일 로그가격 분포에서의 위치',
   'view:btc_rainbow': '과거 가격의 로그회귀 대비 현재 위치',
@@ -268,6 +330,27 @@ export const INDICATORS_CATALOG: IndicatorDefinition[] = definitions.map((d) => 
           : '일별 확정 관측';
   return {
     ...d,
+    purpose:
+      d.group === '선물'
+        ? '선물 시장'
+        : ['relative', 'view:relative', 'view:windows'].includes(d.id)
+          ? 'BTC와 비교'
+          : d.group === '온체인'
+            ? '네트워크 활동'
+            : d.group === '가치·사이클' || d.id === 'view:seasonality'
+              ? '가치와 사이클'
+              : '가격과 추세',
+    requirements:
+      d.requirements ??
+      (d.id === 'view:rainbow'
+        ? { kind: 'consecutive-days', minimum: 730 }
+        : d.id === 'view:btc_rainbow'
+          ? { kind: 'price-observations', minimum: 730 }
+          : d.id === 'view:seasonality'
+            ? { kind: 'complete-years', minimum: 3 }
+            : d.id === 'view:supertrend'
+              ? { kind: 'confirmed-bars', minimum: 10 }
+              : undefined),
     comparison:
       d.id === 'net:mvrv'
         ? {
@@ -312,6 +395,10 @@ export const INDICATORS_CATALOG: IndicatorDefinition[] = definitions.map((d) => 
   };
 });
 export const indicatorDefinition = (id: string) => INDICATORS_CATALOG.find((d) => d.id === id);
+export const indicatorUnit = (asset: Asset, id: string) =>
+  ['net:hashrate', 'view:hash_ribbons', 'view:hashrate_trend'].includes(id)
+    ? networkUnit(asset, 'hashrate')
+    : (indicatorDefinition(id)?.unit.replace('자산 단위', asset).replace('자산', asset) ?? '');
 // Identical concepts from different sources stay separate series, but share one navigation entry.
 export const indicatorFamily = (id: string) => id.replace(/^(net|btc):/, 'onchain:');
 export const indicatorSources = (asset: Asset, id: string) =>
@@ -368,10 +455,14 @@ export function indicatorUrl(
     requested = indicatorDefinition(id);
   p.set('asset', asset);
   const supported = requested?.assets.includes(asset);
-  const next = supported ? id : defaultIndicator(asset);
+  const next = supported ? id : switchingAsset ? 'view:price' : defaultIndicator(asset);
   p.set('metric', next);
   let basis = validPriceBasis(asset, p.get('price_source') || p.get('market'));
-  if (next === 'view:rainbow' && (switchingAsset || previous.get('metric') !== next))
+  if (
+    ['view:rainbow', 'view:asset_rainbow'].includes(next) &&
+    (switchingAsset || previous.get('metric') !== next) &&
+    !previous.has('rainbow_origin')
+  )
     basis = longestPriceBasis(asset, basis);
   if (next === 'view:btc_rainbow' || next === 'view:powerlaw') basis = 'reference';
   if (['view:vwap', 'volume', 'view:supertrend'].includes(next) && basis === 'reference')
@@ -397,6 +488,8 @@ export function indicatorUrl(
     'guide',
     'transition',
     'draw_tool',
+    'knowledge',
+    'related',
   ])
     p.delete(key);
   if (!supported) p.set('transition', id);
@@ -409,6 +502,17 @@ export function indicatorUrl(
     p.delete('indicators');
     p.delete('patterns');
     p.delete('compare_price');
+  }
+  if (switchingAsset || next !== 'view:asset_rainbow') {
+    for (const key of [
+      'rainbow_origin',
+      'rainbow_anchor',
+      'rainbow_model',
+      'rainbow_revision',
+      'rainbow_source',
+      'rainbow_unit',
+    ])
+      p.delete(key);
   }
   return '/coins/' + asset + '?' + p;
 }

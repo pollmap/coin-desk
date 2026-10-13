@@ -16,6 +16,7 @@ export function DateNavigator({
   selected,
   onRange,
   onSelect,
+  onNavigate,
   onReset,
   compact = false,
 }: {
@@ -25,6 +26,7 @@ export function DateNavigator({
   selected?: number;
   onRange: (range: DateWindow) => void;
   onSelect: (time: number) => void;
+  onNavigate?: (selected: number | undefined, range: DateWindow | undefined) => void;
   onReset: () => void;
 }) {
   const opener = useRef<HTMLButtonElement>(null);
@@ -53,8 +55,12 @@ export function DateNavigator({
   function navigate(action: Parameters<typeof navigateWindow>[2]) {
     if (!current) return;
     const next = navigateWindow(times, current, action);
-    if (action === 'latest') onSelect(times[times.length - 1]);
-    if (next) onRange(next);
+    const selected = action === 'latest' ? times[times.length - 1] : undefined;
+    if (onNavigate) onNavigate(selected, next ?? undefined);
+    else {
+      if (selected !== undefined) onSelect(selected);
+      if (next) onRange(next);
+    }
     setNotice('');
   }
   useEffect(() => {
@@ -89,8 +95,11 @@ export function DateNavigator({
             setError(result.error);
             return;
           }
-          if (result.selected !== undefined) onSelect(result.selected);
-          if (result.range) onRange(result.range);
+          if (onNavigate) onNavigate(result.selected, result.range ?? undefined);
+          else {
+            if (result.selected !== undefined) onSelect(result.selected);
+            if (result.range) onRange(result.range);
+          }
           setNotice(mode === 'date' ? `${utcDate(result.selected!)} 관측 선택` : '선택 기간 표시');
           close();
         }}

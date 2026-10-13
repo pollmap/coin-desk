@@ -34,6 +34,18 @@ afterEach(async () => {
 const call = (path, host = 'unit.test') =>
   worker.fetch(new Request('https://' + host + path), env, { waitUntil: (p) => waiting.push(p) });
 function mockSocket(result) {
+  if (result && !Array.isArray(result) && result.lastPrice !== undefined) {
+    result = { ...result, lastId: 7 };
+    env.QUOTE_TRADES = async () => [
+      {
+        asset: 'BTC',
+        market: 'binance',
+        price: Number(result.lastPrice),
+        tradedAt: Math.floor(result.closeTime / 1000) - 1,
+        lastTradeId: 7,
+      },
+    ];
+  }
   let calls = 0;
   class Socket {
     listeners = {};

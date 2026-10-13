@@ -25,7 +25,7 @@ export function SpotQuote({
     quote = feed.rows.find((r) => r.asset === asset);
   useEffect(() => {
     onQuote?.(
-      quote?.displayPrice && quote.displayTime && (market === 'upbit' || quote.live)
+      quote?.displayPrice && quote.displayTime && quote.displayTimestampKind === 'trade'
         ? {
             asset,
             market,
@@ -35,14 +35,22 @@ export function SpotQuote({
           }
         : null,
     );
-  }, [asset, market, onQuote, quote?.displayPrice, quote?.displayTime, quote?.stale, quote?.live]);
+  }, [
+    asset,
+    market,
+    onQuote,
+    quote?.displayPrice,
+    quote?.displayTime,
+    quote?.stale,
+    quote?.displayTimestampKind,
+  ]);
   useEffect(() => () => onQuote?.(null), [asset, market, onQuote]);
   return (
     <div
       className="detail-quote"
       title={
         quote?.displayTime
-          ? `${market === 'binance' && !quote.live ? '시세 기준' : '실제 체결'} ${dateLabel(quote.displayTime, true)}`
+          ? `${quote.displayTimestampKind === 'trade' ? '실제 체결' : '시세 기준 · 체결 시각 미확인'} ${dateLabel(quote.displayTime, true)}`
           : '시세 수집 대기'
       }
     >
@@ -54,7 +62,16 @@ export function SpotQuote({
         aria-label="가격 거래소와 체결 시각"
       >
         {market === 'upbit' ? 'Upbit · KRW' : 'Binance · USDT'}
-        {!quote?.displayPrice ? ' · 시세 대기' : quote.stale ? ' · 갱신 지연' : ''} ▾
+        {!quote?.displayPrice
+          ? ' · 시세 대기'
+          : quote.stale
+            ? quote.displayTimestampKind !== 'trade'
+              ? ' · 시각 미확인'
+              : Date.now() / 1000 - (quote.displayTime ?? 0) > 300
+                ? ' · 체결 지연'
+                : ' · 확인 지연'
+            : ''}{' '}
+        ▾
       </button>
       <DeskDialog open={open} onOpenChange={setOpen} title="현재 가격" returnFocus={button} sheet>
         <label>
@@ -85,12 +102,16 @@ export function SpotQuote({
         </label>
         <p>
           {quote?.displayTime
-            ? `${market === 'binance' && !quote.live ? '시세 기준' : '실제 체결'} ${dateLabel(quote.displayTime, true)}`
+            ? `${quote.displayTimestampKind === 'trade' ? '실제 체결' : '시세 기준 · 체결 시각 미확인'} ${dateLabel(quote.displayTime, true)}`
             : '시세 수집 대기'}
         </p>
         <p>
           {quote?.stale
-            ? '갱신이 지연되고 있습니다.'
+            ? quote.displayTimestampKind !== 'trade'
+              ? '가격은 보존했지만 실제 체결 시각을 확인하지 못했습니다.'
+              : Date.now() / 1000 - (quote.displayTime ?? 0) > 300
+                ? '마지막 거래가 5분 이상 지났습니다.'
+                : '시세 확인이 지연되고 있습니다.'
             : quote?.live
               ? '거래소 스트림으로 받은 가격입니다.'
               : '분 단위로 확인한 가격입니다.'}

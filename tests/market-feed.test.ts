@@ -8,6 +8,20 @@ it('limits spot requests to known symbols, public methods and bounded candles', 
   expect(validSpotRequest('ticker.24hr', { symbol: 'BTCUSDT', symbols: ['ETHUSDT'] })).toBe(false);
   expect(validSpotRequest('ticker.24hr', { symbols: ['BTCUSDT', 'BTCUSDT'] })).toBe(false);
   expect(validSpotRequest('order.place', { symbol: 'BTCUSDT' })).toBe(false);
+  expect(
+    validSpotRequest('trades.aggregate', { symbol: 'BTCUSDT', endTime: Date.now(), limit: 1 }),
+  ).toBe(true);
+  expect(
+    validSpotRequest('trades.aggregate', { symbol: 'BTCUSDT', endTime: Date.now(), limit: 1000 }),
+  ).toBe(false);
+  expect(
+    validSpotRequest('trades.aggregate', {
+      symbol: 'BTCUSDT',
+      endTime: Date.now(),
+      limit: 1,
+      fromId: 1,
+    }),
+  ).toBe(false);
   expect(validSpotRequest('klines', { symbol: 'DOGEUSDT', interval: '1d', limit: 32 })).toBe(true);
   expect(validSpotRequest('klines', { symbol: 'DOGEUSDT', interval: '1m', limit: 32 })).toBe(false);
   expect(validSpotRequest('klines', { symbol: 'UNKNOWN', interval: '1d', limit: 8 })).toBe(false);
@@ -26,6 +40,7 @@ it('authenticates the regional adapter and validates every returned quote again'
         priceChangePercent: '1',
         quoteVolume: '1000',
         closeTime: Date.now(),
+        lastId: 2,
       },
       {
         symbol: 'BTCUSDT',
@@ -35,6 +50,7 @@ it('authenticates the regional adapter and validates every returned quote again'
         priceChangePercent: '1',
         quoteVolume: '1000',
         closeTime: Date.now(),
+        lastId: 1,
       },
     ]),
   );
@@ -42,6 +58,22 @@ it('authenticates the regional adapter and validates every returned quote again'
   const result = await getQuotes(['BTC', 'DOGE'], 'binance', {
     FEED_URL: 'https://feed.test',
     FEED_TOKEN: 'unit-token',
+    QUOTE_TRADES: async () => [
+      {
+        asset: 'DOGE',
+        market: 'binance',
+        price: 0.1,
+        tradedAt: Math.floor(Date.now() / 1000),
+        lastTradeId: 2,
+      },
+      {
+        asset: 'BTC',
+        market: 'binance',
+        price: 0,
+        tradedAt: Math.floor(Date.now() / 1000),
+        lastTradeId: 1,
+      },
+    ],
   });
   expect(result.quotes.map((quote) => quote.asset)).toEqual(['DOGE']);
   expect(result.errors.map((error) => error.asset)).toEqual(['BTC']);

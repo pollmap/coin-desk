@@ -23,7 +23,10 @@ export type GuideCategory = (typeof GUIDE_CATEGORIES)[number];
 export type GuideAction =
   | { kind: 'indicator'; id: string }
   | { kind: 'panel'; id: string; section: 'onchain' | 'futures' | 'price' }
-  | { kind: 'view'; id: AnalysisView | 'supertrend' }
+  | {
+      kind: 'view';
+      id: AnalysisView | 'supertrend' | 'asset_rainbow' | 'hash_ribbons' | 'hashrate_trend';
+    }
   | { kind: 'pattern'; id: PatternId }
   | { kind: 'drawing'; id: DrawingKind }
   | { kind: 'link'; path: string };
@@ -586,6 +589,54 @@ const basics: GuideArticle[] = [
 ];
 export const GUIDE_ARTICLES: readonly GuideArticle[] = [
   entry(
+    'asset-rainbow',
+    '레인보우 · 자체 회귀',
+    '사이클·비교',
+    '선택 코인의 가격이 같은 원천의 과거 로그회귀에서 얼마나 떨어져 있는지 봅니다.',
+    '가운데 선은 과거 회귀의 중심입니다. 아래·위 색 구간은 잔차 표준편차에 따른 위치이며 매수·매도 구간이 아닙니다.',
+    'x=ln(1+원천 고정 기준일 이후 경과일), y=ln(P). 표시일 이전의 유효 관측 730개 이상으로 최소제곱 회귀. 경계 exp(a+bx+kσ), k=−2.25부터 +2.25까지 0.5 간격. 경계 10개·구간 9개.',
+    '자체 실험 모형입니다. 연속 730일 가격 위치 밴드 및 BTC 제네시스 기준 레인보우와 다릅니다. 원천·통화·고정 기준·데이터 수정에 따라 결과가 달라집니다. 결측 보간·미래 연장은 하지 않습니다.',
+    { kind: 'view', id: 'asset_rainbow' },
+    {
+      related: ['rainbow', 'btc-rainbow'],
+      aliases: '레인보우 rainbow 로그회귀 가치 위치',
+      source: 'https://www.blockchaincenter.net/bitcoin-rainbow-chart/',
+    },
+  ),
+  entry(
+    'hash-ribbons',
+    'BTC 해시 리본',
+    '온체인',
+    'BTC 해시레이트의 30일·60일 평균으로 감소와 회복을 확인합니다.',
+    '30일 평균이 60일 평균 아래면 감소 구간입니다. 상향 교차는 회복 교차이며, 이후 가격 10일 평균이 20일 평균보다 높아진 첫 날짜를 별도로 표시합니다.',
+    'H30=SMA30(HashRate), H60=SMA60(HashRate). 회복 교차 후 PriceUSD의 SMA10>SMA20을 회복 구간마다 한 번 확인합니다.',
+    'Capriole 공개 설명을 참고한 보리차트 계산입니다. 해시레이트는 추정값이며 채굴 감소가 매도를 증명하지 않습니다. 60일 연속 확정 관측부터 계산하고 결측에서 상태를 초기화합니다. 매수·바닥 확정 신호가 아닙니다.',
+    { kind: 'view', id: 'hash_ribbons' },
+    {
+      assets: ['BTC'],
+      source: 'https://capriole.com/hash-ribbons-bitcoin-bottoms',
+      related: ['net-hashrate'],
+      aliases: '해시리본 해시 리본 hash ribbons 채굴 감소 회복',
+      unit: 'TH/s',
+    },
+  ),
+  entry(
+    'hashrate-trend',
+    '해시레이트 추세 30·60일',
+    '온체인',
+    '같은 네트워크의 채굴 연산량 추세를 30일·60일 평균으로 비교합니다.',
+    '30일 평균의 하향·상향 교차를 각각 감소·회복 교차로 표시합니다. 다른 해시 함수의 수치 크기로 네트워크 보안을 비교하지 않습니다.',
+    '일별 HashRate의 SMA30과 SMA60. 연속 60일 확정 관측부터 표시하며 결측 뒤 계산창을 다시 쌓습니다.',
+    'BTC 해시 리본의 가격 조건이나 수익률 검증을 일반화한 모형이 아닙니다. DOGE·LTC는 병합 채굴하며 해시레이트만으로 코인별 생산비를 계산할 수 없습니다. DASH·ZEC 원천 단위는 GH/s입니다.',
+    { kind: 'view', id: 'hashrate_trend' },
+    {
+      assets: NETWORK_METRICS.find((m) => m.id === 'hashrate')?.assets ?? [],
+      source: 'https://docs.coinmetrics.io/network-data/network-data-overview/mining/hash-rate',
+      aliases: '해시레이트 리본 채굴 해시 hash trend',
+      related: ['hash-ribbons', 'net-hashrate'],
+    },
+  ),
+  entry(
     'btc-rainbow',
     'BTC 레인보우 · 보리차트 로그회귀',
     '사이클·비교',
@@ -634,8 +685,20 @@ export const GUIDE_ARTICLES: readonly GuideArticle[] = [
   ...tools,
 ];
 export const guideArticle = (id: string) =>
-  GUIDE_ARTICLES.find((g) => g.id === (id === 'btc_rainbow' ? 'btc-rainbow' : id));
+  GUIDE_ARTICLES.find(
+    (g) =>
+      g.id ===
+        (
+          {
+            btc_rainbow: 'btc-rainbow',
+            asset_rainbow: 'asset-rainbow',
+            hash_ribbons: 'hash-ribbons',
+            hashrate_trend: 'hashrate-trend',
+          } as Record<string, string>
+        )[id] || g.id === id,
+  );
 export function guideForMetric(id: string) {
+  if (id.startsWith('view:')) return guideArticle(id.slice(5));
   const remote = id.match(/^(net|btc|futures|chain):([a-z_0-9]+)/);
   if (remote) return guideArticle(remote[1] + '-' + remote[2]);
   return guideArticle(
@@ -702,6 +765,18 @@ export function guideContext(params: URLSearchParams) {
     next.set('interval', params.get('interval')!);
   for (const key of ['st_period', 'st_multiplier'])
     if (validSupertrendOption(key, params.get(key))) next.set(key, params.get(key)!);
+  for (const key of [
+    'rainbow_origin',
+    'rainbow_anchor',
+    'rainbow_model',
+    'rainbow_revision',
+    'rainbow_source',
+    'rainbow_unit',
+    'signal_overlay',
+  ]) {
+    const value = params.get(key);
+    if (value && /^[A-Za-z0-9:_.-]{1,128}$/.test(value)) next.set(key, value);
+  }
   const range = readDateWindow(params);
   if (range) {
     next.set('chart_from', String(range.from));

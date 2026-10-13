@@ -1,6 +1,7 @@
 import { ASSETS } from './catalog';
 import type { Market } from './types';
 import type { QuoteStream, LiveQuote, MarketRow } from './market-snapshot';
+import { actualQuoteTime, quoteTradeFresh } from './quote-freshness';
 
 /** Keep the last known trade visible without promoting an old trade to live. */
 export function quoteRowView(
@@ -20,7 +21,10 @@ export function quoteRowView(
     Number.isFinite(tick.price) &&
     tick.price > 0 &&
     tick.tradedAt <= now + 60 &&
-    tick.tradedAt >= (row.quote?.time ?? 0);
+    (market !== 'binance' ||
+      row.quote?.lastTradeId === undefined ||
+      (tick.lastTradeId !== undefined && tick.lastTradeId >= row.quote.lastTradeId)) &&
+    tick.tradedAt >= (actualQuoteTime(row.quote, market) ?? 0);
   const live =
     preferred && transport === 'live' && stream?.connected === true && now - tick.tradedAt <= 300;
   return {
@@ -28,7 +32,11 @@ export function quoteRowView(
     live,
     displayPrice: preferred ? tick.price : row.quote?.price,
     displayTime: preferred ? tick.tradedAt : row.quote?.time,
-    stale: !live && (!row.quote || now - row.quote.time > 300 || now - (row.fetchedAt ?? 0) > 300),
+    displayTimestampKind:
+      preferred || actualQuoteTime(row.quote, market) !== null
+        ? ('trade' as const)
+        : ('ticker-window' as const),
+    stale: !live && (!quoteTradeFresh(row.quote, market, now) || now - (row.fetchedAt ?? 0) > 300),
   };
 }
 
@@ -67,10 +75,18 @@ export function mergeQuoteStream(
       q.tradedAt > now + 60 ||
       !Number.isFinite(q.receivedAt) ||
       q.receivedAt <= 0 ||
-      q.receivedAt > now + 60
+      q.receivedAt > now + 60 ||
+      (q.lastTradeId !== undefined && (!Number.isSafeInteger(q.lastTradeId) || q.lastTradeId < 0))
     )
       continue;
-    if (q.tradedAt > (quotes.get(q.asset)?.tradedAt ?? 0)) quotes.set(q.asset, q);
+    const oldQuote = quotes.get(q.asset);
+    if (
+      q.tradedAt > (oldQuote?.tradedAt ?? 0) ||
+      (oldQuote &&
+        q.tradedAt === oldQuote.tradedAt &&
+        (q.lastTradeId ?? -1) > (oldQuote.lastTradeId ?? -1))
+    )
+      quotes.set(q.asset, q);
   }
   return {
     epoch: next.epoch,

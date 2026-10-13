@@ -1,7 +1,6 @@
 import { lazy, Suspense, useEffect, useRef, useState } from 'react';
 import { Link, Navigate, Route, Routes, useLocation, useSearchParams } from 'react-router-dom';
 import { Database, Clock3 } from 'lucide-react';
-import { NotificationInbox } from './NotificationInbox';
 import { ProductTopbar } from './ProductTopbar';
 import { MarketHome as WatchlistPage } from './MarketHome';
 import './analysis-ux.css';
@@ -121,7 +120,6 @@ export default function App() {
       <div className="main-shell">
         <header className="topbar">
           <ProductTopbar />
-          <NotificationInbox />
           <button
             className="source-button"
             onClick={() => setSources(true)}
