@@ -1622,14 +1622,12 @@ export function IndicatorWorkspace() {
                 {primary?.source ??
                   (d?.source === '선택 가격 원천' ? basisName(basis) : d?.source) ??
                   basisName(basis)}{' '}
-                · 확정 관측 ·{' '}
-                {primary?.step === 3600
-                  ? '시간별'
-                  : id === 'futures:funding'
-                    ? '정산 시점별'
-                    : isSupertrend
-                      ? interval
-                      : '일별'}
+                · {d?.observationCadence === '선택한 확정 봉' ? '표시·계산 주기' : '관측 주기'} ·{' '}
+                {d?.observationCadence === '선택한 확정 봉'
+                  ? basis === 'reference'
+                    ? `${interval} 종가 집계 · 원천은 일별 확정 USD 종가`
+                    : `${interval} 확정 봉`
+                  : (d?.observationCadence ?? '관측 주기 미확인')}
               </span>
               {response.data?.meta.dataAsOf && (
                 <span>기준일 {dateLabel(response.data.meta.dataAsOf)}</span>

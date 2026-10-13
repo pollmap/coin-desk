@@ -310,7 +310,7 @@ const conciseMeanings: Record<string, string> = {
   'view:ribbon': '서로 다른 기간의 이동평균 비교',
   'view:bb': '20개 종가 평균과 변동 범위',
   'view:price': '선택 원천의 확정 가격 흐름',
-  rsi: '최근 14일 상승폭과 하락폭의 상대적 크기',
+  rsi: '확정 일봉의 상승·하락 강도 · Wilder 14',
   drawdown: '그날까지의 최고 종가 대비 하락률',
   'futures:funding': '무기한 선물의 실제 정산 펀딩 비율',
   'net:realized_cap': '시가총액과 MVRV로 역산한 실현가치',
@@ -325,7 +325,7 @@ export const INDICATORS_CATALOG: IndicatorDefinition[] = definitions.map((d) => 
       ? '거래소 정산 주기'
       : d.id.startsWith('futures:') && !d.id.endsWith('_daily')
         ? '시간별'
-        : ['view:ribbon', 'view:supertrend'].includes(d.id)
+        : ['view:price', 'view:bb', 'view:ribbon', 'view:supertrend'].includes(d.id)
           ? '선택한 확정 봉'
           : '일별 확정 관측';
   return {
