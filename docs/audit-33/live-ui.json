@@ -1,0 +1,576 @@
+{
+  "schemaVersion": 1,
+  "language": "ko-KR",
+  "assembledAtUtc": "2026-10-13T19:41:19.797374Z",
+  "sourceCommit": "5ff8c230c72554b0e72305aa945a6216df566aa9",
+  "applicationVersion": "0.33.0",
+  "release": "vps-6b9d614aaf49d74e",
+  "scope": "완료된 실화면 결과를 로컬에서 집계했습니다. 실제 사용자 평가·실기기 인증·성능 측정으로 확대 해석하지 않습니다.",
+  "initialExecution": {
+    "startedAtUtc": "2026-10-13T19:19:12.684Z",
+    "completedAtUtc": "2026-10-13T19:22:44.541Z",
+    "overallPassed": false,
+    "contexts": 8,
+    "flows": 64,
+    "passed": 60,
+    "failed": 4,
+    "automaticCaseRetries": 0,
+    "failureDetails": [
+      {
+        "origin": "pages",
+        "width": 1280,
+        "theme": "light",
+        "stage": "market-search-pengu-price",
+        "classification": "QA 도구가 모바일 시장 280px 상한을 PC에도 잘못 적용한 조건 오류",
+        "actualMarketFirstRowPx": 346.09375,
+        "originalFailurePreserved": true
+      },
+      {
+        "origin": "pages",
+        "width": 1280,
+        "theme": "dark",
+        "stage": "market-search-pengu-price",
+        "classification": "QA 도구가 모바일 시장 280px 상한을 PC에도 잘못 적용한 조건 오류",
+        "actualMarketFirstRowPx": 346.09375,
+        "originalFailurePreserved": true
+      },
+      {
+        "origin": "vps",
+        "width": 1280,
+        "theme": "light",
+        "stage": "market-search-pengu-price",
+        "classification": "QA 도구가 모바일 시장 280px 상한을 PC에도 잘못 적용한 조건 오류",
+        "actualMarketFirstRowPx": 346.09375,
+        "originalFailurePreserved": true
+      },
+      {
+        "origin": "vps",
+        "width": 1280,
+        "theme": "dark",
+        "stage": "market-search-pengu-price",
+        "classification": "QA 도구가 모바일 시장 280px 상한을 PC에도 잘못 적용한 조건 오류",
+        "actualMarketFirstRowPx": 346.09375,
+        "originalFailurePreserved": true
+      }
+    ],
+    "originalEvidencePreserved": true
+  },
+  "criterionFollowup": {
+    "startedAtUtc": "2026-10-13T19:23:47.995Z",
+    "completedAtUtc": "2026-10-13T19:25:50.669Z",
+    "overallPassed": true,
+    "explicitFollowupRuns": 1,
+    "pcContexts": 4,
+    "flows": 32,
+    "passed": 32,
+    "automaticCaseRetries": 0,
+    "onlyQaCriterionChanged": true,
+    "productChangedForFollowup": false,
+    "note": "기획에 PC 시장 첫 행의 280px 상한은 없습니다. 모바일 상한을 PC에도 적용한 도구 조건만 고쳤으며 axe·범위·지원 상태·값·단위·SVG 위치 검사는 유지했습니다. PC 시장 첫 행은 실제 346.09375px 그대로 기록합니다."
+  },
+  "deduplicatedFinal": {
+    "contexts": 8,
+    "mobileContextsFromInitial": 4,
+    "pcContextsFromFollowup": 4,
+    "flows": 64,
+    "passed": 64,
+    "failed": 0,
+    "automaticCaseRetries": 0,
+    "selection": "최초 모바일 4개 환경 32흐름과 후속 PC 4개 환경 32흐름을 한 번씩 사용했습니다. PC 중복 실행을 새로운 고유 검사로 합산하지 않았습니다.",
+    "cases": [
+      {
+        "origin": "pages",
+        "width": 390,
+        "height": 900,
+        "theme": "light",
+        "completedAtUtc": "2026-10-13T19:19:38.174Z",
+        "passedFlows": 8,
+        "pageErrors": 0,
+        "failedResponses": 0,
+        "forbiddenRequests": 0,
+        "axeViolations": 0,
+        "measuredGeometry": {
+          "market-search-pengu-price": {
+            "x": 16,
+            "y": 263.796875,
+            "width": 358,
+            "height": 75.890625
+          },
+          "btc-price-minimal-controls": {
+            "x": 16,
+            "y": 270,
+            "width": 358,
+            "height": 330
+          },
+          "btc-mvrv-definition-hover-save": {
+            "x": 16,
+            "y": 270,
+            "width": 358,
+            "height": 330
+          },
+          "btc-supertrend-same-page": {
+            "x": 16,
+            "y": 270,
+            "width": 358,
+            "height": 330
+          },
+          "same-indicator-compare-save": {
+            "x": 16,
+            "y": 258,
+            "width": 358,
+            "height": 330
+          },
+          "actual-themes-matrix-navigation": {
+            "x": 16,
+            "y": 325.796875,
+            "width": 358,
+            "height": 340
+          }
+        }
+      },
+      {
+        "origin": "pages",
+        "width": 390,
+        "height": 900,
+        "theme": "dark",
+        "completedAtUtc": "2026-10-13T19:19:58.134Z",
+        "passedFlows": 8,
+        "pageErrors": 0,
+        "failedResponses": 0,
+        "forbiddenRequests": 0,
+        "axeViolations": 0,
+        "measuredGeometry": {
+          "market-search-pengu-price": {
+            "x": 16,
+            "y": 263.796875,
+            "width": 358,
+            "height": 75.890625
+          },
+          "btc-price-minimal-controls": {
+            "x": 16,
+            "y": 270,
+            "width": 358,
+            "height": 330
+          },
+          "btc-mvrv-definition-hover-save": {
+            "x": 16,
+            "y": 270,
+            "width": 358,
+            "height": 330
+          },
+          "btc-supertrend-same-page": {
+            "x": 16,
+            "y": 270,
+            "width": 358,
+            "height": 330
+          },
+          "same-indicator-compare-save": {
+            "x": 16,
+            "y": 258,
+            "width": 358,
+            "height": 330
+          },
+          "actual-themes-matrix-navigation": {
+            "x": 16,
+            "y": 325.796875,
+            "width": 358,
+            "height": 340
+          }
+        }
+      },
+      {
+        "origin": "vps",
+        "width": 390,
+        "height": 900,
+        "theme": "light",
+        "completedAtUtc": "2026-10-13T19:21:07.578Z",
+        "passedFlows": 8,
+        "pageErrors": 0,
+        "failedResponses": 0,
+        "forbiddenRequests": 0,
+        "axeViolations": 0,
+        "measuredGeometry": {
+          "market-search-pengu-price": {
+            "x": 16,
+            "y": 263.796875,
+            "width": 358,
+            "height": 75.890625
+          },
+          "btc-price-minimal-controls": {
+            "x": 16,
+            "y": 270,
+            "width": 358,
+            "height": 330
+          },
+          "btc-mvrv-definition-hover-save": {
+            "x": 16,
+            "y": 270,
+            "width": 358,
+            "height": 330
+          },
+          "btc-supertrend-same-page": {
+            "x": 16,
+            "y": 270,
+            "width": 358,
+            "height": 330
+          },
+          "same-indicator-compare-save": {
+            "x": 16,
+            "y": 258,
+            "width": 358,
+            "height": 330
+          },
+          "actual-themes-matrix-navigation": {
+            "x": 16,
+            "y": 325.796875,
+            "width": 358,
+            "height": 340
+          }
+        }
+      },
+      {
+        "origin": "vps",
+        "width": 390,
+        "height": 900,
+        "theme": "dark",
+        "completedAtUtc": "2026-10-13T19:21:40.742Z",
+        "passedFlows": 8,
+        "pageErrors": 0,
+        "failedResponses": 0,
+        "forbiddenRequests": 0,
+        "axeViolations": 0,
+        "measuredGeometry": {
+          "market-search-pengu-price": {
+            "x": 16,
+            "y": 263.796875,
+            "width": 358,
+            "height": 75.890625
+          },
+          "btc-price-minimal-controls": {
+            "x": 16,
+            "y": 270,
+            "width": 358,
+            "height": 330
+          },
+          "btc-mvrv-definition-hover-save": {
+            "x": 16,
+            "y": 270,
+            "width": 358,
+            "height": 330
+          },
+          "btc-supertrend-same-page": {
+            "x": 16,
+            "y": 270,
+            "width": 358,
+            "height": 330
+          },
+          "same-indicator-compare-save": {
+            "x": 16,
+            "y": 258,
+            "width": 358,
+            "height": 330
+          },
+          "actual-themes-matrix-navigation": {
+            "x": 16,
+            "y": 325.796875,
+            "width": 358,
+            "height": 340
+          }
+        }
+      },
+      {
+        "origin": "pages",
+        "width": 1280,
+        "height": 900,
+        "theme": "light",
+        "completedAtUtc": "2026-10-13T19:24:13.951Z",
+        "passedFlows": 8,
+        "pageErrors": 0,
+        "failedResponses": 0,
+        "forbiddenRequests": 0,
+        "axeViolations": 0,
+        "measuredGeometry": {
+          "market-search-pengu-price": {
+            "x": 28,
+            "y": 346.09375,
+            "width": 1224,
+            "height": 66
+          },
+          "btc-price-minimal-controls": {
+            "x": 28,
+            "y": 229,
+            "width": 1224,
+            "height": 440
+          },
+          "btc-mvrv-definition-hover-save": {
+            "x": 28,
+            "y": 229,
+            "width": 1224,
+            "height": 440
+          },
+          "btc-supertrend-same-page": {
+            "x": 28,
+            "y": 229,
+            "width": 1224,
+            "height": 440
+          },
+          "same-indicator-compare-save": {
+            "x": 28,
+            "y": 215,
+            "width": 1224,
+            "height": 440
+          },
+          "actual-themes-matrix-navigation": {
+            "x": 28,
+            "y": 351.59375,
+            "width": 1224,
+            "height": 390
+          }
+        }
+      },
+      {
+        "origin": "pages",
+        "width": 1280,
+        "height": 900,
+        "theme": "dark",
+        "completedAtUtc": "2026-10-13T19:24:33.700Z",
+        "passedFlows": 8,
+        "pageErrors": 0,
+        "failedResponses": 0,
+        "forbiddenRequests": 0,
+        "axeViolations": 0,
+        "measuredGeometry": {
+          "market-search-pengu-price": {
+            "x": 28,
+            "y": 346.09375,
+            "width": 1224,
+            "height": 66
+          },
+          "btc-price-minimal-controls": {
+            "x": 28,
+            "y": 229,
+            "width": 1224,
+            "height": 440
+          },
+          "btc-mvrv-definition-hover-save": {
+            "x": 28,
+            "y": 229,
+            "width": 1224,
+            "height": 440
+          },
+          "btc-supertrend-same-page": {
+            "x": 28,
+            "y": 229,
+            "width": 1224,
+            "height": 440
+          },
+          "same-indicator-compare-save": {
+            "x": 28,
+            "y": 215,
+            "width": 1224,
+            "height": 440
+          },
+          "actual-themes-matrix-navigation": {
+            "x": 28,
+            "y": 351.59375,
+            "width": 1224,
+            "height": 390
+          }
+        }
+      },
+      {
+        "origin": "vps",
+        "width": 1280,
+        "height": 900,
+        "theme": "light",
+        "completedAtUtc": "2026-10-13T19:25:09.533Z",
+        "passedFlows": 8,
+        "pageErrors": 0,
+        "failedResponses": 0,
+        "forbiddenRequests": 0,
+        "axeViolations": 0,
+        "measuredGeometry": {
+          "market-search-pengu-price": {
+            "x": 28,
+            "y": 346.09375,
+            "width": 1224,
+            "height": 66
+          },
+          "btc-price-minimal-controls": {
+            "x": 28,
+            "y": 229,
+            "width": 1224,
+            "height": 440
+          },
+          "btc-mvrv-definition-hover-save": {
+            "x": 28,
+            "y": 229,
+            "width": 1224,
+            "height": 440
+          },
+          "btc-supertrend-same-page": {
+            "x": 28,
+            "y": 229,
+            "width": 1224,
+            "height": 440
+          },
+          "same-indicator-compare-save": {
+            "x": 28,
+            "y": 215,
+            "width": 1224,
+            "height": 440
+          },
+          "actual-themes-matrix-navigation": {
+            "x": 28,
+            "y": 351.59375,
+            "width": 1224,
+            "height": 390
+          }
+        }
+      },
+      {
+        "origin": "vps",
+        "width": 1280,
+        "height": 900,
+        "theme": "dark",
+        "completedAtUtc": "2026-10-13T19:25:50.532Z",
+        "passedFlows": 8,
+        "pageErrors": 0,
+        "failedResponses": 0,
+        "forbiddenRequests": 0,
+        "axeViolations": 0,
+        "measuredGeometry": {
+          "market-search-pengu-price": {
+            "x": 28,
+            "y": 346.09375,
+            "width": 1224,
+            "height": 66
+          },
+          "btc-price-minimal-controls": {
+            "x": 28,
+            "y": 229,
+            "width": 1224,
+            "height": 440
+          },
+          "btc-mvrv-definition-hover-save": {
+            "x": 28,
+            "y": 229,
+            "width": 1224,
+            "height": 440
+          },
+          "btc-supertrend-same-page": {
+            "x": 28,
+            "y": 229,
+            "width": 1224,
+            "height": 440
+          },
+          "same-indicator-compare-save": {
+            "x": 28,
+            "y": 215,
+            "width": 1224,
+            "height": 440
+          },
+          "actual-themes-matrix-navigation": {
+            "x": 28,
+            "y": 351.59375,
+            "width": 1224,
+            "height": 390
+          }
+        }
+      }
+    ]
+  },
+  "criteria": {
+    "mobileMarketFirstRowMaxPx": 280,
+    "pcMarketFirstRowMaxPx": null,
+    "pcMarketFirstRowMeasuredPx": 346.09375,
+    "mobileDetailChartStartMaxPx": 280,
+    "pcDetailChartStartMaxPx": 240,
+    "pcDetailChartMinHeightPx": 420
+  },
+  "coverage": {
+    "origins": [
+      "pages",
+      "vps"
+    ],
+    "widths": [
+      390,
+      1280
+    ],
+    "themes": [
+      "light",
+      "dark"
+    ],
+    "freshIsolatedContexts": true,
+    "realPublicData": true,
+    "fixturesUsed": false,
+    "responseSubstitution": false,
+    "representativeUnchangedDuringHoverClickAndKeys": true,
+    "svgScreenPositionChecksMaintained": true,
+    "saveRangeAndReopenChecksMaintained": true,
+    "alternateVenueDisclosureChecksMaintained": true,
+    "actualMvrvAndComparisonValuesChecked": true,
+    "rawHeadersOrPrivateDataPublished": false
+  },
+  "independentEightDayMatrixSamples": [
+    {
+      "origin": "pages",
+      "market": "upbit",
+      "asset": "BTC",
+      "basisDay": 1791763200,
+      "observations": 8,
+      "x": -4.42680046207693,
+      "y": 1.308449692806976,
+      "passed": true
+    },
+    {
+      "origin": "vps",
+      "market": "upbit",
+      "asset": "BTC",
+      "basisDay": 1791763200,
+      "observations": 8,
+      "x": -4.42680046207693,
+      "y": 1.308449692806976,
+      "passed": true
+    }
+  ],
+  "windowsChrome": {
+    "sourceCommit": "5ff8c230c72554b0e72305aa945a6216df566aa9",
+    "release": "vps-6b9d614aaf49d74e",
+    "browser": "Windows Chrome",
+    "actualCssViewport": {
+      "width": 1440,
+      "height": 731,
+      "devicePixelRatio": 2
+    },
+    "existingThemePreserved": "dark",
+    "themeCatalogObserved": 31,
+    "initialGraphPointsObserved": 12,
+    "selectedTheme": "rwa",
+    "selectedGraphPointsObserved": 1,
+    "selectedThemeCoinLink": "ONDO",
+    "priceAndSupertrendSamePage": true,
+    "automaticDialogOnIndicatorChange": false,
+    "readingDialogEscapeHidden": true,
+    "focusReturnedToReadingButton": true,
+    "chartRangePreservedAfterDialog": true,
+    "forbiddenButtonsObserved": [],
+    "horizontalOverflow": false,
+    "screenshotStoredLocallyOnly": true,
+    "screenshotContainsExistingPersonalWatchlistNotPublished": true,
+    "physicalSafariVoiceOver": false,
+    "peopleUsabilityStudy": false
+  },
+  "chromeScreenshotPolicy": "기존 개인 관심목록이 포함된 Chrome 스크린샷은 로컬에만 보관합니다. 파일·경로·이미지·관심목록 내용을 공개하지 않습니다.",
+  "limits": {
+    "allHistoricalDataVerified": false,
+    "performanceMeasurementStateAtAggregation": "최초 집계 당시 진행 중이었으며, 완료된 별도 결과는 performance.json과 performance.md에 보존했습니다.",
+    "observation48HourWaitRequired": false,
+    "physicalSafariVoiceOverVerified": false,
+    "fivePersonUsabilityStudyVerified": false
+  },
+  "evidenceSha256": {
+    "live-final-033/live-ui.json": "ec97b49bd441951adb1d7a3f41a8be5b9211724daecb6c33cf44ed712cc909b6",
+    "live-pc-criterion-followup-033/live-ui.json": "47b48faa173a530aaa82a5483ad9dbe54e9cf3f0f1fd6410c74db9c1f7005991"
+  }
+}

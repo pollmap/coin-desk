@@ -1,0 +1,528 @@
+{
+  "schema": "bori-audit-performance-033-v1",
+  "release": {
+    "version": "0.33.0",
+    "sourceCommit": "5ff8c230c72554b0e72305aa945a6216df566aa9",
+    "vpsRelease": "vps-6b9d614aaf49d74e",
+    "pagesDeployment": "43657e5b"
+  },
+  "state": "measured_with_vps_loading_target_missed",
+  "aggregation": {
+    "method": "기존 로컬 측정 증거의 작은 집계",
+    "newNetworkRequests": 0,
+    "newBrowserRuns": 0,
+    "newLoadRuns": 0,
+    "productChanges": 0,
+    "automaticRetries": 0,
+    "criteriaRelaxations": 0
+  },
+  "browser": {
+    "startedAtUtc": "2026-10-13T19:26:30.645Z",
+    "completedAtUtc": "2026-10-13T19:33:26.228Z",
+    "environment": {
+      "platform": "Windows",
+      "logicalCpus": 16,
+      "totalMemoryMiB": 32042,
+      "cpuModel": "AMD Ryzen AI 7 350 w/ Radeon 860M",
+      "nodeVersion": "v24.18.0"
+    },
+    "conditions": {
+      "viewport": "1280x800",
+      "rounds": 20,
+      "downlinkMbps": 10,
+      "uplinkMbps": 5,
+      "addedLatencyMs": 0,
+      "cpuThrottlingRate": 1,
+      "browserCacheDisabled": true,
+      "serviceWorkers": "blocked",
+      "sharedBrowserProcessWithinOrigin": true,
+      "browserProcessSeparatedBetweenOrigins": true,
+      "cdnAndOsDnsTlsCachesNotPurged": true,
+      "screenshotOptional": false,
+      "observationWindowAfterFirstValueMs": 8000
+    },
+    "results": [
+      {
+        "origin": "pages",
+        "rounds": 20,
+        "browserVersion": "153.0.8010.12",
+        "lcpMs": {
+          "count": 20,
+          "min": 328,
+          "median": 356,
+          "p95": 456,
+          "max": 516
+        },
+        "firstNumericPriceMs": {
+          "count": 20,
+          "min": 1039,
+          "median": 1091,
+          "p95": 1616.5,
+          "max": 1727
+        },
+        "clientReceiptToDomMs": {
+          "count": 38,
+          "min": 11.1,
+          "median": 25.3,
+          "p95": 35.3,
+          "max": 35.3
+        },
+        "hubReceiptToDomMs": {
+          "count": 38,
+          "min": 392.5,
+          "median": 975.5,
+          "p95": 1329.5,
+          "max": 1337.5
+        },
+        "hubToDomP95WithClockErrorUpperMs": 1705,
+        "clock": {
+          "valid": true,
+          "samples": 8,
+          "offsetMs": 1028.5,
+          "errorBoundMs": 375.5
+        },
+        "lcp2500MsGoalPassed": true,
+        "hubToDom3000MsGoalPassed": true,
+        "changedVisibleTickDomSamples": 38,
+        "supersededTicks": 0,
+        "domUpdateTimeouts": 0,
+        "allTwentyLcpAndFirstPricesObserved": true,
+        "errorCount": 0
+      },
+      {
+        "origin": "vps",
+        "rounds": 20,
+        "browserVersion": "153.0.8010.12",
+        "lcpMs": {
+          "count": 20,
+          "min": 2124,
+          "median": 2204,
+          "p95": 2928,
+          "max": 3196
+        },
+        "firstNumericPriceMs": {
+          "count": 20,
+          "min": 2505.8,
+          "median": 2568.9,
+          "p95": 3379.6,
+          "max": 3567.8
+        },
+        "clientReceiptToDomMs": {
+          "count": 58,
+          "min": 14.7,
+          "median": 26.9,
+          "p95": 34.2,
+          "max": 35.6
+        },
+        "hubReceiptToDomMs": {
+          "count": 58,
+          "min": 359,
+          "median": 865,
+          "p95": 1272,
+          "max": 1397
+        },
+        "hubToDomP95WithClockErrorUpperMs": 1602,
+        "clock": {
+          "valid": true,
+          "samples": 8,
+          "offsetMs": 991,
+          "errorBoundMs": 330
+        },
+        "lcp2500MsGoalPassed": false,
+        "hubToDom3000MsGoalPassed": true,
+        "changedVisibleTickDomSamples": 58,
+        "supersededTicks": 0,
+        "domUpdateTimeouts": 0,
+        "allTwentyLcpAndFirstPricesObserved": true,
+        "errorCount": 0
+      }
+    ],
+    "previousVersionComparison": {
+      "previousVersion": "0.32",
+      "currentVersion": "0.33.0",
+      "priorMeasurementUtc": "2026-10-13 14시 UTC",
+      "currentMeasurementUtc": "2026-10-13 19시 UTC",
+      "identicalBrowserAndThrottleSettings": true,
+      "sameTimeOrSharedEnvironment": false,
+      "pagesLcpMedianMs": {
+        "previous": 504,
+        "current": 356
+      },
+      "pagesLcpP95Ms": {
+        "previous": 736,
+        "current": 456
+      },
+      "vpsLcpMedianMs": {
+        "previous": 2340,
+        "current": 2204
+      },
+      "vpsLcpP95Ms": {
+        "previous": 2580,
+        "current": 2928
+      },
+      "vpsLcpP95ChangeMs": 348,
+      "vpsLcpP95ChangePercent": 13.49,
+      "vpsFirstResponseMs": {
+        "previousMedian": 855,
+        "currentMedian": 870,
+        "previousP95": 878,
+        "currentP95": 1178
+      },
+      "vpsDomContentLoadedMs": {
+        "previousMedian": 2092,
+        "currentMedian": 2094,
+        "previousP95": 2334,
+        "currentP95": 2825
+      },
+      "vpsMedianTransferBytes": {
+        "previous": 1057968,
+        "current": 1057511
+      },
+      "diagnosis": "중앙값 개선과 느린 꼬리 악화를 함께 관측했습니다. 원인은 확정하지 않았습니다."
+    }
+  },
+  "sse": {
+    "initial": {
+      "cohort": "initial_100_connections",
+      "startedAtUtc": "2026-10-13T19:34:16.119Z",
+      "completedAtUtc": "2026-10-13T19:35:48.864Z",
+      "mainConnections": 100,
+      "maxSimultaneouslyOpen": 100,
+      "mainSessionsWithConnectedFrames": 100,
+      "mainSessionsWithAtLeastTwoFrames": 100,
+      "successfulReconnects": 10,
+      "reconnectsChangedSubscription": 10,
+      "http200Sessions": 110,
+      "normalCompletionSessions": 110,
+      "steadyConnections": 100,
+      "steadyStateSeconds": 60.01,
+      "steadyStateStartedAtClientUtc": "2026-10-13T19:34:35.320Z",
+      "subscribedAssetCount": 150,
+      "subscribedSupportedMarketPairCount": 241,
+      "all150AssetsSubscribed": true,
+      "all241SupportedPairsSubscribed": true,
+      "clock": {
+        "valid": true,
+        "samples": 8,
+        "offsetMs": 1015,
+        "errorBoundMs": 380
+      },
+      "hubReceiptToClientMs": {
+        "count": 19416,
+        "min": 299,
+        "median": 806,
+        "p95": 1282,
+        "max": 2492
+      },
+      "steadyHundredHubReceiptToClientMs": {
+        "count": 17747,
+        "min": 302,
+        "median": 806,
+        "p95": 1270,
+        "max": 2492
+      },
+      "hubToClientP95WithClockErrorUpperMs": 1662,
+      "steadyHubToClientP95WithClockErrorUpperMs": 1650,
+      "handshakeMs": {
+        "count": 100,
+        "min": 386,
+        "median": 855,
+        "p95": 1014,
+        "max": 2687
+      },
+      "reconnectHandshakeMs": {
+        "count": 10,
+        "min": 845,
+        "median": 849,
+        "p95": 2142,
+        "max": 2142
+      },
+      "uniqueActualNewTradesObserved": 1177,
+      "deliverySamplesCanRepeatTradeAcrossClients": true,
+      "errorCount": 0,
+      "disconnectedFrames": 0,
+      "automaticRetries": 0,
+      "exchangeConnectionsCreatedByProbe": false,
+      "physicalPaintMeasured": false,
+      "screenLatencyMeasured": false,
+      "directApiServerWritesByProbe": 0
+    },
+    "resourceOverlapFollowup": {
+      "cohort": "separate_resource_overlap_100_connections",
+      "startedAtUtc": "2026-10-13T19:40:42.916Z",
+      "completedAtUtc": "2026-10-13T19:42:14.303Z",
+      "mainConnections": 100,
+      "maxSimultaneouslyOpen": 100,
+      "mainSessionsWithConnectedFrames": 100,
+      "mainSessionsWithAtLeastTwoFrames": 100,
+      "successfulReconnects": 10,
+      "reconnectsChangedSubscription": 10,
+      "http200Sessions": 110,
+      "normalCompletionSessions": 110,
+      "steadyConnections": 100,
+      "steadyStateSeconds": 60.002,
+      "steadyStateStartedAtClientUtc": "2026-10-13T19:41:00.781Z",
+      "subscribedAssetCount": 150,
+      "subscribedSupportedMarketPairCount": 241,
+      "all150AssetsSubscribed": true,
+      "all241SupportedPairsSubscribed": true,
+      "clock": {
+        "valid": true,
+        "samples": 8,
+        "offsetMs": 906,
+        "errorBoundMs": 398
+      },
+      "hubReceiptToClientMs": {
+        "count": 22242,
+        "min": 200,
+        "median": 609,
+        "p95": 1148,
+        "max": 1861
+      },
+      "steadyHundredHubReceiptToClientMs": {
+        "count": 20120,
+        "min": 200,
+        "median": 618,
+        "p95": 1149,
+        "max": 1861
+      },
+      "hubToClientP95WithClockErrorUpperMs": 1546,
+      "steadyHubToClientP95WithClockErrorUpperMs": 1547,
+      "handshakeMs": {
+        "count": 100,
+        "min": 288,
+        "median": 848,
+        "p95": 873,
+        "max": 1845
+      },
+      "reconnectHandshakeMs": {
+        "count": 10,
+        "min": 836,
+        "median": 848,
+        "p95": 937,
+        "max": 937
+      },
+      "uniqueActualNewTradesObserved": 1356,
+      "deliverySamplesCanRepeatTradeAcrossClients": true,
+      "errorCount": 0,
+      "disconnectedFrames": 0,
+      "automaticRetries": 0,
+      "exchangeConnectionsCreatedByProbe": false,
+      "physicalPaintMeasured": false,
+      "screenLatencyMeasured": false,
+      "directApiServerWritesByProbe": 0
+    },
+    "crossCohortTradesOrLatencySamplesCombined": false,
+    "followupPurpose": "첫 SSE 시험에서 빠진 서버 자원 관측을 보완한 별도 집단입니다. 첫 시험에 소급하지 않습니다."
+  },
+  "resources": {
+    "state": "complete",
+    "sampleCount": 13,
+    "elapsedSeconds": 182.258,
+    "sampleIntervalSeconds": 15,
+    "sshConnections": 1,
+    "writesToServices": 0,
+    "containerIdsUnchanged": true,
+    "wholeWindow": [
+      {
+        "role": "api",
+        "samples": 13,
+        "cpuPercent": {
+          "first": 1.98,
+          "last": 0.66,
+          "min": 0.62,
+          "max": 62.04,
+          "median": 0.9
+        },
+        "containerMemoryBytes": {
+          "first": 124256256,
+          "last": 123731968,
+          "min": 123731968,
+          "max": 124256256,
+          "median": 123731968
+        },
+        "nodeRssBytes": {
+          "first": 173494272,
+          "last": 173494272,
+          "min": 173494272,
+          "max": 173494272,
+          "median": 173494272
+        },
+        "nodeProcessCountStable": true
+      },
+      {
+        "role": "quote-hub",
+        "samples": 13,
+        "cpuPercent": {
+          "first": 4.12,
+          "last": 6.58,
+          "min": 1.89,
+          "max": 17.08,
+          "median": 4.97
+        },
+        "containerMemoryBytes": {
+          "first": 40170947,
+          "last": 40852521,
+          "min": 40024146,
+          "max": 55165583,
+          "median": 40821064
+        },
+        "nodeRssBytes": {
+          "first": 77312000,
+          "last": 78114816,
+          "min": 77312000,
+          "max": 78114816,
+          "median": 78069760
+        },
+        "nodeProcessCountStable": true
+      }
+    ],
+    "overlapWithSecondSteadyHundred": {
+      "clockOffsetConvention": "VPS 시각 − 측정 PC 시각",
+      "offsetMs": 906,
+      "errorBoundMs": 398,
+      "clientIntervalUtc": {
+        "start": "2026-10-13T19:41:00.781Z",
+        "end": "2026-10-13T19:42:00.783Z"
+      },
+      "certainServerIntervalUtc": {
+        "start": "2026-10-13T19:41:02.085Z",
+        "end": "2026-10-13T19:42:01.291Z"
+      },
+      "possibleServerIntervalUtc": {
+        "start": "2026-10-13T19:41:01.289Z",
+        "end": "2026-10-13T19:42:02.087Z"
+      },
+      "certainlyOverlappingSamples": 2,
+      "possiblyOverlappingSamples": 2,
+      "certainlyOverlappingObservedUtc": [
+        "2026-10-13T19:41:40.070Z",
+        "2026-10-13T19:41:55.159Z"
+      ],
+      "services": [
+        {
+          "role": "api",
+          "samples": 2,
+          "cpuPercent": {
+            "first": 1.98,
+            "last": 3.49,
+            "min": 1.98,
+            "max": 3.49,
+            "median": 2.735
+          },
+          "containerMemoryBytes": {
+            "first": 124256256,
+            "last": 124256256,
+            "min": 124256256,
+            "max": 124256256,
+            "median": 124256256.0
+          },
+          "nodeRssBytes": {
+            "first": 173494272,
+            "last": 173494272,
+            "min": 173494272,
+            "max": 173494272,
+            "median": 173494272.0
+          },
+          "nodeProcessCountStable": true
+        },
+        {
+          "role": "quote-hub",
+          "samples": 2,
+          "cpuPercent": {
+            "first": 4.12,
+            "last": 12.71,
+            "min": 4.12,
+            "max": 12.71,
+            "median": 8.415
+          },
+          "containerMemoryBytes": {
+            "first": 40170947,
+            "last": 40170947,
+            "min": 40170947,
+            "max": 40170947,
+            "median": 40170947.0
+          },
+          "nodeRssBytes": {
+            "first": 77312000,
+            "last": 77312000,
+            "min": 77312000,
+            "max": 77312000,
+            "median": 77312000.0
+          },
+          "nodeProcessCountStable": true
+        }
+      ]
+    },
+    "earlierToolFailures": {
+      "count": 3,
+      "originalFailuresPreserved": true,
+      "automaticRetries": 0,
+      "reasons": [
+        "필수 서비스 이름 인수 누락",
+        "로컬 Docker 실행 파일 ENOENT",
+        "원격 comm=node 필터 NODE_PROCESS_NOT_FOUND"
+      ],
+      "correction": "실행 파일로 Node를 식별하고 프로세스 시작 시각·cgroup 보호 조건을 적용했습니다.",
+      "identificationGuardTestsPassed": 6,
+      "productCodeChanged": false
+    },
+    "limitations": [
+      "컨테이너 메모리와 Node RSS는 서로 다른 지표입니다.",
+      "전체 13개 자원 표본 중 두 번째 steady 100명 구간과 확실히 겹친 것은 2개입니다.",
+      "첫 SSE 100명 시험 및 초기 로딩 시험의 동시 서버 자원 측정이 아닙니다.",
+      "182.258초 표본으로 장기 메모리 누수 없음이나 해결을 입증하지 않습니다.",
+      "공유 호스트와 Nginx CPU, 외부 방문자 부재는 측정하지 않았습니다."
+    ]
+  },
+  "interpretation": {
+    "lcpGoalMs": 2500,
+    "vpsLcpGoalPassed": false,
+    "priceDeliveryGoalMs": 3000,
+    "observedHubToDomConservativeUpperPassed": true,
+    "exchangeEventToScreenGoalVerified": false,
+    "physicalCompositorPaintMeasured": false,
+    "firstNumericPriceProvesFreshness": false,
+    "actualTradeFreshnessLimitSeconds": 300,
+    "actualTradeFreshnessCriteriaRelaxed": false,
+    "clockCalibration": "VPS HTTP Date의 초 단위 경계와 왕복 지연으로 오차 상한을 추정했습니다. 거래소 시계는 보정하지 않았습니다.",
+    "deliveredSampleScope": "실제로 새 가격이 관측되고 표시 숫자가 바뀐 허브→DOM 또는 허브→클라이언트 표본만 집계했습니다. 전달 표본 수와 고유 체결 수를 구분합니다."
+  },
+  "remaining": {
+    "vpsLcpP95TargetMissed": true,
+    "vpsLoadingCauseConfirmed": false,
+    "fullHistoryVerified": false,
+    "physicalSafariVoiceOverVerified": false,
+    "fivePersonUsabilityVerified": false,
+    "waiting48HoursRequired": false
+  },
+  "evidence": [
+    {
+      "file": "performance-browser-final-033.json",
+      "sha256": "4e8ca1a1d9434cc27fe582fa23481f252da2d23d9b76a0de183a06a22fd1f5eb"
+    },
+    {
+      "file": "performance-sse-final-033.json",
+      "sha256": "a1fbfac7a0b8b366e66bd47d19e15be9c5fb25dfdecc08b50767f6422fc2b847"
+    },
+    {
+      "file": "performance-sse-resource-overlap-033.json",
+      "sha256": "07794e7620ad5f8e4914a63827cb426581ab704e2149cd23817fc9dcf705a5ce"
+    },
+    {
+      "file": "performance-resources-node-exe-033.json",
+      "sha256": "d43d3828eb985aa8aff145f3af2564e6467ad94b007d40fda53b4dface31a6e0"
+    },
+    {
+      "file": "performance-loading-review-033.md",
+      "sha256": "f8593a6330a4f501d4965ac14160743b7594530dc49b1b837c75350e8f0126a8"
+    }
+  ],
+  "privacy": {
+    "rawRoundsPublished": false,
+    "rawLogsPublished": false,
+    "headersPublished": false,
+    "internalPathsPublished": false,
+    "personalDataPublished": false
+  }
+}

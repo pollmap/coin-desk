@@ -1,0 +1,343 @@
+{
+  "schemaVersion": 1,
+  "collectedAtUtc": "2026-10-13T18:57:19.014744+00:00",
+  "repository": "pollmap/coin-desk",
+  "pr": 67,
+  "expectedMain": "5ff8c230c72554b0e72305aa945a6216df566aa9",
+  "scope": "GitHub Actions 로그·보안 산출물의 읽기 전용 대조입니다. 제품·VPS·성능 검사는 실행하지 않았습니다.",
+  "retryConfiguration": {
+    "path": "playwright.config.ts",
+    "commit": "5ff8c230c72554b0e72305aa945a6216df566aa9",
+    "retries": 0,
+    "sha256": "a076d0006b348019709cdaa9120ab5276dd06af83f430811b55adfa7b3e13c13"
+  },
+  "runs": [
+    {
+      "status": "completed",
+      "conclusion": "success",
+      "headSha": "6356387dc19271f8f39230dc1cf8e0c916b8e63b",
+      "event": "pull_request",
+      "url": "https://github.com/pollmap/coin-desk/actions/runs/38447078487",
+      "label": "pr",
+      "run": 38447078487,
+      "runAttempt": 1,
+      "complete": true,
+      "allGatesPassed": true,
+      "jobs": [
+        {
+          "name": "container",
+          "status": "completed",
+          "conclusion": "success",
+          "startedAt": "2026-10-13T18:28:53Z",
+          "completedAt": "2026-10-13T18:30:17Z",
+          "url": "https://github.com/pollmap/coin-desk/actions/runs/38447078487/job/115468151925",
+          "id": 115468151925,
+          "logSha256": "c77d91785f102d05136a46032f2e5b430ae21f45e8217a5cb5591aa1b8f027e7",
+          "securityGates": {
+            "fixableHighCritical": "success",
+            "configurationHighCritical": "success",
+            "blockingVulnerabilityScanIgnoreUnfixed": true,
+            "fullHighCriticalReportIncludesUnfixed": true,
+            "fixtureSmoke": "passed"
+          },
+          "proofLines": [
+            "2026-10-13T18:29:20.4479440Z #10 9.051 found 0 vulnerabilities"
+          ]
+        },
+        {
+          "name": "browser (webkit)",
+          "status": "completed",
+          "conclusion": "success",
+          "startedAt": "2026-10-13T18:28:52Z",
+          "completedAt": "2026-10-13T18:40:01Z",
+          "url": "https://github.com/pollmap/coin-desk/actions/runs/38447078487/job/115468152182",
+          "id": 115468152182,
+          "logSha256": "b3e3767997c3e6c14ef4423fb9a91fd3d6ae0193ee0c001f9fcbfd0e62f5730d",
+          "counts": {
+            "scheduled": 197,
+            "passed": 196,
+            "skipped": 1,
+            "failed": 0,
+            "flaky": 0,
+            "loggedRetryAttempts": 0,
+            "configuredTestRetries": 0
+          },
+          "skipReasons": [
+            "-  129 [webkit] › e2e/private-archive.spec.ts:4:1 › local archive folder imports full metadata and image references without publishing them"
+          ],
+          "proofLines": [
+            "2026-10-13T18:29:02.3335802Z found 0 vulnerabilities",
+            "2026-10-13T18:39:53.1736168Z   1 skipped",
+            "2026-10-13T18:39:53.1736409Z   196 passed (9.8m)"
+          ]
+        },
+        {
+          "name": "checks",
+          "status": "completed",
+          "conclusion": "success",
+          "startedAt": "2026-10-13T18:28:52Z",
+          "completedAt": "2026-10-13T18:29:43Z",
+          "url": "https://github.com/pollmap/coin-desk/actions/runs/38447078487/job/115468152304",
+          "id": 115468152304,
+          "logSha256": "76cc1b5ba0c5059e83ca2b9e4d7016db06a0aaeb925012f8e28d0378922795ab",
+          "counts": {
+            "vitestFilesPassed": 75,
+            "vitestUnitCalculationApiPassed": 796,
+            "pythonRecoveryPassed": 2,
+            "pythonVpsPassed": 27,
+            "nodeServerTests": 31,
+            "nodeServerPassed": 31,
+            "nodeServerFailed": 0,
+            "nodeServerSkipped": 0,
+            "pythonOkSummaries": 2
+          },
+          "npmAudit": {
+            "knownDependencyFindings": 0,
+            "highSeverityGatePassed": true,
+            "scope": "npm 의존성 감사이며 Debian OS 패키지 취약점은 포함하지 않습니다."
+          },
+          "proofLines": [
+            "2026-10-13T18:29:03.0841087Z found 0 vulnerabilities",
+            "2026-10-13T18:29:03.6717525Z found 0 vulnerabilities",
+            "2026-10-13T18:29:16.7757299Z  Test Files  75 passed (75)",
+            "2026-10-13T18:29:16.7761589Z       Tests  796 passed (796)",
+            "2026-10-13T18:29:17.1911903Z Ran 2 tests in 0.145s",
+            "2026-10-13T18:29:22.7484050Z ℹ tests 31",
+            "2026-10-13T18:29:22.7484395Z ℹ pass 31",
+            "2026-10-13T18:29:22.7484542Z ℹ fail 0",
+            "2026-10-13T18:29:22.7484808Z ℹ skipped 0",
+            "2026-10-13T18:29:23.6618645Z Ran 27 tests in 0.717s"
+          ]
+        },
+        {
+          "name": "browser (chromium)",
+          "status": "completed",
+          "conclusion": "success",
+          "startedAt": "2026-10-13T18:28:53Z",
+          "completedAt": "2026-10-13T18:39:04Z",
+          "url": "https://github.com/pollmap/coin-desk/actions/runs/38447078487/job/115468152306",
+          "id": 115468152306,
+          "logSha256": "403a3ef4fa57388d44b4ad4e562b69f24e27555ed0b9ffe38cc2b74b54b70fdc",
+          "counts": {
+            "scheduled": 197,
+            "passed": 196,
+            "skipped": 1,
+            "failed": 0,
+            "flaky": 0,
+            "loggedRetryAttempts": 0,
+            "configuredTestRetries": 0
+          },
+          "skipReasons": [
+            "-  129 [chromium] › e2e/private-archive.spec.ts:4:1 › local archive folder imports full metadata and image references without publishing them"
+          ],
+          "proofLines": [
+            "2026-10-13T18:29:07.8763587Z found 0 vulnerabilities",
+            "2026-10-13T18:38:55.5377901Z   1 skipped",
+            "2026-10-13T18:38:55.5378600Z   196 passed (9.1m)"
+          ]
+        },
+        {
+          "name": "verify",
+          "status": "completed",
+          "conclusion": "success",
+          "startedAt": "2026-10-13T18:40:03Z",
+          "completedAt": "2026-10-13T18:40:09Z",
+          "url": "https://github.com/pollmap/coin-desk/actions/runs/38447078487/job/115473366054",
+          "id": 115473366054,
+          "logSha256": "bf0c3a82b48981ba630f94a8f2a90f59263eb945e1a53d38fb8cea24147de04f",
+          "proofLines": []
+        }
+      ],
+      "containerAllFindings": {
+        "reportSha256": "d012fc32b428f7f78fd88fbdd07982321221d61a7539f4d5133db99f45fabf44",
+        "packageFindings": 64,
+        "severityCounts": {
+          "CRITICAL": 2,
+          "HIGH": 62
+        },
+        "uniqueCves": 18,
+        "uniquePackages": 26,
+        "findingsWithFixedVersion": 0,
+        "critical": [
+          [
+            "CVE-2023-45853",
+            "zlib1g"
+          ],
+          [
+            "CVE-2025-7458",
+            "libsqlite3-0"
+          ]
+        ],
+        "scope": "미수정 항목을 포함한 Trivy HIGH/CRITICAL입니다. 패키지 행 수와 고유 CVE 수는 다릅니다.",
+        "doesNotMeanZeroVulnerabilities": true
+      }
+    },
+    {
+      "status": "completed",
+      "conclusion": "success",
+      "headSha": "5ff8c230c72554b0e72305aa945a6216df566aa9",
+      "event": "push",
+      "url": "https://github.com/pollmap/coin-desk/actions/runs/38448689332",
+      "label": "main",
+      "run": 38448689332,
+      "runAttempt": 1,
+      "complete": true,
+      "allGatesPassed": true,
+      "jobs": [
+        {
+          "name": "checks",
+          "status": "completed",
+          "conclusion": "success",
+          "startedAt": "2026-10-13T18:40:46Z",
+          "completedAt": "2026-10-13T18:41:53Z",
+          "url": "https://github.com/pollmap/coin-desk/actions/runs/38448689332/job/115473693256",
+          "id": 115473693256,
+          "logSha256": "787e6913f6554923121170ca2ecd4819752692e3d6db079e5188c1b70bb268cf",
+          "counts": {
+            "vitestFilesPassed": 75,
+            "vitestUnitCalculationApiPassed": 796,
+            "pythonRecoveryPassed": 2,
+            "pythonVpsPassed": 27,
+            "nodeServerTests": 31,
+            "nodeServerPassed": 31,
+            "nodeServerFailed": 0,
+            "nodeServerSkipped": 0,
+            "pythonOkSummaries": 2
+          },
+          "npmAudit": {
+            "knownDependencyFindings": 0,
+            "highSeverityGatePassed": true,
+            "scope": "npm 의존성 감사이며 Debian OS 패키지 취약점은 포함하지 않습니다."
+          },
+          "proofLines": [
+            "2026-10-13T18:41:04.0870176Z found 0 vulnerabilities",
+            "2026-10-13T18:41:04.6386761Z found 0 vulnerabilities",
+            "2026-10-13T18:41:22.1744361Z  Test Files  75 passed (75)",
+            "2026-10-13T18:41:22.1749254Z       Tests  796 passed (796)",
+            "2026-10-13T18:41:23.0073716Z Ran 2 tests in 0.127s",
+            "2026-10-13T18:41:27.8038147Z ℹ tests 31",
+            "2026-10-13T18:41:27.8038711Z ℹ pass 31",
+            "2026-10-13T18:41:27.8039026Z ℹ fail 0",
+            "2026-10-13T18:41:27.8039761Z ℹ skipped 0",
+            "2026-10-13T18:41:29.7578792Z Ran 27 tests in 1.137s"
+          ]
+        },
+        {
+          "name": "container",
+          "status": "completed",
+          "conclusion": "success",
+          "startedAt": "2026-10-13T18:40:46Z",
+          "completedAt": "2026-10-13T18:42:11Z",
+          "url": "https://github.com/pollmap/coin-desk/actions/runs/38448689332/job/115473693346",
+          "id": 115473693346,
+          "logSha256": "e6ee50f070f180a358eecbb48c9a7b64e9547afaee6093ab2aa1c12f2e2400c7",
+          "securityGates": {
+            "fixableHighCritical": "success",
+            "configurationHighCritical": "success",
+            "blockingVulnerabilityScanIgnoreUnfixed": true,
+            "fullHighCriticalReportIncludesUnfixed": true,
+            "fixtureSmoke": "passed"
+          },
+          "proofLines": [
+            "2026-10-13T18:41:11.1316056Z #9 9.216 found 0 vulnerabilities"
+          ]
+        },
+        {
+          "name": "browser (chromium)",
+          "status": "completed",
+          "conclusion": "success",
+          "startedAt": "2026-10-13T18:40:46Z",
+          "completedAt": "2026-10-13T18:50:33Z",
+          "url": "https://github.com/pollmap/coin-desk/actions/runs/38448689332/job/115473693420",
+          "id": 115473693420,
+          "logSha256": "8d1c07657e5be4952c1c871c696551cb31933183a51f5846b117fc21f8a56a47",
+          "counts": {
+            "scheduled": 197,
+            "passed": 196,
+            "skipped": 1,
+            "failed": 0,
+            "flaky": 0,
+            "loggedRetryAttempts": 0,
+            "configuredTestRetries": 0
+          },
+          "skipReasons": [
+            "-  129 [chromium] › e2e/private-archive.spec.ts:4:1 › local archive folder imports full metadata and image references without publishing them"
+          ],
+          "proofLines": [
+            "2026-10-13T18:40:59.5599076Z found 0 vulnerabilities",
+            "2026-10-13T18:50:26.2821677Z   1 skipped",
+            "2026-10-13T18:50:26.2821967Z   196 passed (8.7m)"
+          ]
+        },
+        {
+          "name": "browser (webkit)",
+          "status": "completed",
+          "conclusion": "success",
+          "startedAt": "2026-10-13T18:40:46Z",
+          "completedAt": "2026-10-13T18:54:19Z",
+          "url": "https://github.com/pollmap/coin-desk/actions/runs/38448689332/job/115473693548",
+          "id": 115473693548,
+          "logSha256": "a3a1b57d79d26ff03a39b42993ebd70f9d5e44331beed2d0347bfd5d8e0ed4cd",
+          "counts": {
+            "scheduled": 197,
+            "passed": 196,
+            "skipped": 1,
+            "failed": 0,
+            "flaky": 0,
+            "loggedRetryAttempts": 0,
+            "configuredTestRetries": 0
+          },
+          "skipReasons": [
+            "-  129 [webkit] › e2e/private-archive.spec.ts:4:1 › local archive folder imports full metadata and image references without publishing them"
+          ],
+          "proofLines": [
+            "2026-10-13T18:40:58.7922139Z found 0 vulnerabilities",
+            "2026-10-13T18:54:11.5338175Z   1 skipped",
+            "2026-10-13T18:54:11.5338592Z   196 passed (12.2m)"
+          ]
+        },
+        {
+          "name": "verify",
+          "status": "completed",
+          "conclusion": "success",
+          "startedAt": "2026-10-13T18:54:21Z",
+          "completedAt": "2026-10-13T18:54:24Z",
+          "url": "https://github.com/pollmap/coin-desk/actions/runs/38448689332/job/115479946213",
+          "id": 115479946213,
+          "logSha256": "6c7ce763ca584d2ab5454ed370b33ed09c70fc3d3665723b16d0098c05795baa",
+          "proofLines": []
+        }
+      ],
+      "containerAllFindings": {
+        "reportSha256": "8ef734873d5334de84591dde5109f7f4895c5075ca7825df33d282ab160a640f",
+        "packageFindings": 64,
+        "severityCounts": {
+          "CRITICAL": 2,
+          "HIGH": 62
+        },
+        "uniqueCves": 18,
+        "uniquePackages": 26,
+        "findingsWithFixedVersion": 0,
+        "critical": [
+          [
+            "CVE-2023-45853",
+            "zlib1g"
+          ],
+          [
+            "CVE-2025-7458",
+            "libsqlite3-0"
+          ]
+        ],
+        "scope": "미수정 항목을 포함한 Trivy HIGH/CRITICAL입니다. 패키지 행 수와 고유 CVE 수는 다릅니다.",
+        "doesNotMeanZeroVulnerabilities": true
+      }
+    }
+  ],
+  "notes": [
+    "Vitest에는 단위·계산·API 검사가 함께 포함됩니다. Node 서버와 Python VPS·복구 검사는 별도입니다.",
+    "개인 원본 opt-in 검사 1개가 엔진마다 제외됐습니다. CI에서 실제 개인 원본을 읽지 않았습니다.",
+    "Playwright 설정·로그의 재시도 횟수와 GitHub 워크플로 run_attempt를 별도로 기록했습니다.",
+    "npm 의존성 취약점 0건과 컨테이너 검사 통과는 미수정 OS 취약점이 없다는 뜻이 아닙니다.",
+    "최종 main WebKit과 verify의 완료를 확인했습니다. 두 실행의 통과 수를 고유 검사로 합산하지 않습니다."
+  ]
+}

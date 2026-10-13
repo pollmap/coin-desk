@@ -1,0 +1,175 @@
+{
+  "schemaVersion": 1,
+  "language": "ko-KR",
+  "assembledAtUtc": "2026-10-13T19:41:19.797374Z",
+  "sourceCommit": "5ff8c230c72554b0e72305aa945a6216df566aa9",
+  "applicationVersion": "0.33.0",
+  "release": "vps-6b9d614aaf49d74e",
+  "scope": "직접 수집·overview 호출 없는 예약 갱신 표본과 이후 DOGE 회복을 별도로 보존했습니다. 짧은 표본을 하루 전체나 모든 원천의 지속 정상으로 해석하지 않습니다.",
+  "initialReadOnlyWindow": {
+    "elapsedSeconds": 382.394,
+    "readOnlyDatabaseChanges": 0,
+    "registryAssets": 150,
+    "registryQuotePairs": 241,
+    "storedQuotePairs": 241,
+    "pairSetsMatch": true,
+    "sixCoreConfirmationsAdvancedCount": 5,
+    "sixCoreActualTradesAdvancedCount": 5,
+    "sixCoreAdvancedKeys": [
+      "quote:BTC:binance",
+      "quote:BTC:upbit",
+      "quote:DOGE:binance",
+      "quote:ETH:binance",
+      "quote:ETH:upbit"
+    ],
+    "allQuoteConfirmationsAdvancedCount": 217,
+    "allQuoteDataAsOfAdvancedCount": 200,
+    "derivativeConfirmationsAdvancedCount": 9,
+    "networkConfirmationsAdvancedCount": 0,
+    "completedRunGroups": [
+      {
+        "lane": "analysis",
+        "outcome": "ok",
+        "runs": 6,
+        "firstStart": 1791918960,
+        "lastCompletion": 1791919260
+      },
+      {
+        "lane": "background",
+        "outcome": "ok",
+        "runs": 6,
+        "firstStart": 1791918960,
+        "lastCompletion": 1791919268
+      },
+      {
+        "lane": "quotes",
+        "outcome": "ok",
+        "runs": 7,
+        "firstStart": 1791918900,
+        "lastCompletion": 1791919290
+      },
+      {
+        "lane": "recent",
+        "outcome": "ok",
+        "runs": 6,
+        "firstStart": 1791918960,
+        "lastCompletion": 1791919260
+      }
+    ],
+    "completedRunCount": 25,
+    "dogeUpbitAtInitialEnd": {
+      "key": "quote:DOGE:upbit",
+      "actualTradeAtUtc": "2026-10-13T19:10:00Z",
+      "lastSuccessAtUtc": "2026-10-13T19:14:30Z",
+      "failures": 4,
+      "nextAttemptAtUtc": "2026-10-13T19:22:30Z",
+      "diagnosis": "TRADE_STALE",
+      "advancedDuringThisWindow": false
+    },
+    "directCollectionOrOverviewCalled": false,
+    "otherVisitorsAbsentGuaranteed": false,
+    "note": "최초 표본에서는 6개 핵심 시세 중 5개만 실제 체결·성공 시각이 증가했습니다. DOGE Upbit는 오래된 체결로 실패 4회를 보존했습니다. 이후 회복을 이 창의 6/6 성공으로 소급하지 않습니다."
+  },
+  "officialDogeReadLater": {
+    "observedAtUtc": "2026-10-13T19:23:45.358573+00:00",
+    "httpStatus": 200,
+    "source": "Upbit 공개 KRW-DOGE ticker",
+    "requestCount": 1,
+    "automaticRetryPerformed": false,
+    "actualTradeAtUtc": "2026-10-13T19:22:04.284000+00:00",
+    "actualTradeAgeAtReceiptSeconds": 101.075,
+    "newerThanStoredTradeSeconds": 724.284,
+    "freshUnderUnchanged300SecondRule": true,
+    "collectionTriggered": false,
+    "storedRecoveryVerifiedByThisOfficialSampleAlone": false,
+    "note": "공식 새 체결 한 건은 확인했지만 이 조회만으로 저장 수집 회복을 확정하지 않았습니다."
+  },
+  "scheduledDogeRecoveryFollowup": {
+    "checkedAtUtc": "2026-10-13T19:24:38Z",
+    "key": "quote:DOGE:upbit",
+    "lastSuccessAtUtc": "2026-10-13T19:23:39Z",
+    "actualTradeAtUtc": "2026-10-13T19:22:04Z",
+    "failures": 0,
+    "nextAttempt": 0,
+    "readOnlyDatabaseChanges": 0,
+    "successTimestampAdvanced": true,
+    "actualTradeTimestampAdvanced": true,
+    "storedTradeMatchesOfficialTradeSeconds": true,
+    "recoveryVerified": true,
+    "collectorBugCauseConfirmed": false,
+    "globalHealthRecoveryVerified": false,
+    "note": "후속 읽기 전용 저장 조회에서 새 실제 체결·예약 수집 성공·실패 0·재시도 해제를 별도로 확인했습니다. 직접 수집을 실행하지 않았고 체결 시각을 수신 시각으로 대체하지 않았습니다."
+  },
+  "statusAtInitialWindowEnd": {
+    "httpStatus": 200,
+    "sourceCounts": {
+      "ok": 1505,
+      "delayed": 80
+    },
+    "totalSourceRowsIncludingInactive": 1635,
+    "activeSourceCountsSum": 1585,
+    "attentionTotal": 80,
+    "attentionDiagnoses": {
+      "OBSERVATION_LATE": 5,
+      "TRADE_STALE": 75
+    },
+    "note": "비활성 원천은 정상 개수에 포함하지 않았습니다. 후속 전체 상태를 새로 조회하지 않았습니다."
+  },
+  "postDeployHealthSamples": [
+    {
+      "origin": "pages",
+      "httpStatus": 503,
+      "ok": false,
+      "activeDiagnoses": {
+        "CURRENT": 1512,
+        "OBSERVATION_LATE": 5,
+        "TRADE_STALE": 68
+      },
+      "checkedAtUtc": "2026-10-13T19:16:56Z"
+    },
+    {
+      "origin": "vps",
+      "httpStatus": 503,
+      "ok": false,
+      "activeDiagnoses": {
+        "CURRENT": 1511,
+        "OBSERVATION_LATE": 5,
+        "TRADE_STALE": 69
+      },
+      "checkedAtUtc": "2026-10-13T19:17:01Z"
+    }
+  ],
+  "historyAndCapacity": {
+    "historyCollection": "paused_low_space",
+    "freeDiskBytes": 5776592896,
+    "guardBytes": 8589934592,
+    "diskBelowHistoryGuard": true,
+    "reservedHistoryKeysBefore": 641,
+    "reservedHistoryKeysAfter": 641,
+    "absentKeysDoNotProveLoss": true,
+    "allHistoricalDataVerified": false,
+    "backfillAllowed": false,
+    "productionDataDeletedToMakeSpace": false
+  },
+  "limits": {
+    "allHistoricalDataVerified": false,
+    "performanceMeasurementStateAtAggregation": "최초 집계 당시 진행 중이었으며, 완료된 별도 결과는 performance.json과 performance.md에 보존했습니다.",
+    "observation48HourWaitRequired": false,
+    "physicalSafariVoiceOverVerified": false,
+    "fivePersonUsabilityStudyVerified": false,
+    "fullUtcDayVerifiedByThisSample": false,
+    "allSourcesContinuouslyHealthyVerified": false
+  },
+  "privacy": {
+    "rawLogsPublished": false,
+    "rawHeadersPublished": false,
+    "credentialsPublished": false,
+    "privateOriginalsPublished": false,
+    "internalPathsPublished": false
+  },
+  "evidenceSha256": {
+    "natural-final-033.comparison.json": "6c84e507de9ca634cfb61f1105c16f447b1f2b4521b21aef38c3cb94cc789dc7",
+    "doge-upbit-one-sample-20261013T192345Z.json": "f916151bf60e6befb79c6430ccc007c0a6f126004daae618abacb2f7f297bcdd",
+    "doge-upbit-natural-followup.json": "92061fca5b06a18b4580a6ddd242bfe1cdfa277a13eab745a0f6a0249552623c"
+  }
+}

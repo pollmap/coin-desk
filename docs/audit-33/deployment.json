@@ -1,0 +1,208 @@
+{
+  "schemaVersion": 1,
+  "language": "ko-KR",
+  "assembledAtUtc": "2026-10-13T19:41:19.797374Z",
+  "sourceCommit": "5ff8c230c72554b0e72305aa945a6216df566aa9",
+  "applicationVersion": "0.33.0",
+  "release": "vps-6b9d614aaf49d74e",
+  "scope": "기존 로컬 배포 근거만 집계했습니다. 네트워크·VPS·브라우저·빌드·테스트·성능 작업을 실행하지 않았습니다.",
+  "deployed": true,
+  "origins": {
+    "pages": "https://coin-desk.pages.dev",
+    "pagesDeployment": "https://43657e5b.coin-desk.pages.dev",
+    "vps": "https://coin-desk.62.171.141.206.sslip.io"
+  },
+  "artifact": {
+    "runId": 38448689332,
+    "commit": "5ff8c230c72554b0e72305aa945a6216df566aa9",
+    "artifactId": 11840075984,
+    "bytes": 117807353,
+    "release": "vps-6b9d614aaf49d74e",
+    "zipSha256": "7669510c74ac673332accc6fd8477b9133a3f94dc0feffde1da39bc14a85c2e9",
+    "githubDigestVerified": true,
+    "crcVerified": true,
+    "prefetchOnly": true,
+    "allFiveJobsVerified": false
+  },
+  "artifactDownloadNote": "다운로드는 CI 완료 전 읽기 전용 사전 확보였습니다. 원격 변경 전 5개 작업 성공을 다시 확인했습니다.",
+  "mainCiReverifiedBeforeRemoteChange": {
+    "runId": 38448689332,
+    "jobs": 5,
+    "conclusion": "success",
+    "atUtc": "2026-10-13T19:07:11Z"
+  },
+  "preparation": {
+    "initialProtectionStop": {
+      "atUtc": "2026-10-13T18:55:33Z",
+      "stage": "RAM 마운트 단계의 보호 검사에서 중단",
+      "automaticRetry": false,
+      "activationAttempted": false,
+      "originalFailurePreserved": true
+    },
+    "explicitResumeCount": 1,
+    "automaticRetry": false,
+    "tmpfsLimitBytes": 671088640,
+    "tmpfsLimitMiB": 640,
+    "diskReserveBytes": 2147483648,
+    "memoryReserveBytes": 1610612736,
+    "historyGuardBytes": 8589934592,
+    "protectionThresholdsRelaxed": false,
+    "existingLocalProtectionChecksPassed": 45,
+    "protectionChecksRerunByThisAggregation": false,
+    "candidateReadApisVerified": true,
+    "candidateActivatedDuringPrepare": false,
+    "note": "초기 768MiB 계획의 RAM 보호 실패를 보존하고 640MiB 한도로 바꾼 뒤 한 차례 명시적으로 재개했습니다. 디스크 2GiB·메모리 1.5GiB·과거 이력 8GiB 보호 기준을 유지했습니다."
+  },
+  "databaseBackup": {
+    "gzipSha256": "d5a49a0a1f97c9009cc86c9856c9cd44ef384221e6c90dd66a1a3249c5627312",
+    "rawSha256": "fd828715a19dced9aff9a7db94feb23d0396f526891e21501d3e5f2091591df2",
+    "cloneSha256": "32b3d2bdd8b2653ee0bfb2374b1b1af3afe5661b0b142beb60888beae58f0e7b",
+    "rawBytes": 176054272,
+    "gzipBytes": 54590453,
+    "format": "coin-desk-audit-gzip-snapshot-v1",
+    "independentMemoryRestoreVerified": true,
+    "independentCloneVerified": true,
+    "logicalUserTableCount": 21,
+    "schemaSha256": "9242fcb6b2d233d89f48e4e111d4e7c00890ec5fc7a2c6ca449701faf3daaf2f",
+    "rawAndCloneBytesAreNotClaimedIdentical": true
+  },
+  "activation": {
+    "previousRelease": "vps-c7a1074bf44ddf04",
+    "servicesChanged": [
+      "api"
+    ],
+    "promoted": true,
+    "completedAtUtc": "2026-10-13T19:14:00Z",
+    "protectedServicesUnchanged": 7,
+    "schemaChanged": false,
+    "collectorsOrHubReplaced": false
+  },
+  "cleanup": {
+    "completedAtUtc": "2026-10-13T19:14:35Z",
+    "durableBackupRetained": true,
+    "productionDataDeleted": false,
+    "freeDiskBytes": 5770596352,
+    "availableMemoryBytes": 4534566912
+  },
+  "apiReadGuard": {
+    "releaseVerified": "vps-6b9d614aaf49d74e",
+    "assetCount": 150,
+    "markets": {
+      "upbit": {
+        "currency": "KRW",
+        "rows": 3,
+        "quotesPresent": 3,
+        "states": {
+          "ready": 3
+        }
+      },
+      "binance": {
+        "currency": "USDT",
+        "rows": 3,
+        "quotesPresent": 3,
+        "states": {
+          "ready": 3
+        }
+      }
+    },
+    "themeCount": 31,
+    "matrices": {
+      "upbit": {
+        "currency": "KRW",
+        "basisDay": 1791763200,
+        "assetPoints": 101,
+        "excludedAssets": 2,
+        "themePoints": 23,
+        "excludedThemes": 8,
+        "currentQuoteNotUsed": true
+      },
+      "binance": {
+        "currency": "USDT",
+        "basisDay": 1791763200,
+        "assetPoints": 138,
+        "excludedAssets": 0,
+        "themePoints": 31,
+        "excludedThemes": 0,
+        "currentQuoteNotUsed": true
+      }
+    },
+    "providerFreshnessNotOverridden": true,
+    "collectionApisCalled": false
+  },
+  "staticAssetIntegrity": {
+    "canonicalDistSha256": "16537ae5bf7ad1793f6a228e4c912684985683c049638b3cddfa4a9fe439269b",
+    "firstVerificationPassed": false,
+    "firstVerificationPreserved": true,
+    "origins": [
+      {
+        "origin": "pages",
+        "expectedFiles": 224,
+        "initialMatched": 221,
+        "initialTimeouts": 3,
+        "finalMatched": 224,
+        "indexHttpStatus": 200
+      },
+      {
+        "origin": "vps",
+        "expectedFiles": 224,
+        "initialMatched": 224,
+        "initialTimeouts": 0,
+        "finalMatched": 224,
+        "indexHttpStatus": 200
+      }
+    ],
+    "targetedFollowupReads": 3,
+    "followupAttemptsPerFailedPath": 1,
+    "onlyInitialTimeoutsRequeried": true,
+    "finalAllBytesMatched": true,
+    "combinedDistinctFiles": 448,
+    "note": "최초 Pages 221/224·VPS224/224를 보존했습니다. Pages 시간 초과 3개만 한 번씩 목적 재조회해 전체 일치를 확인했습니다. 최초 동시 검사에서 모두 통과한 것으로 소급하지 않습니다."
+  },
+  "postDeployHealthSamples": [
+    {
+      "origin": "pages",
+      "httpStatus": 503,
+      "ok": false,
+      "activeDiagnoses": {
+        "CURRENT": 1512,
+        "OBSERVATION_LATE": 5,
+        "TRADE_STALE": 68
+      },
+      "checkedAtUtc": "2026-10-13T19:16:56Z"
+    },
+    {
+      "origin": "vps",
+      "httpStatus": 503,
+      "ok": false,
+      "activeDiagnoses": {
+        "CURRENT": 1511,
+        "OBSERVATION_LATE": 5,
+        "TRADE_STALE": 69
+      },
+      "checkedAtUtc": "2026-10-13T19:17:01Z"
+    }
+  ],
+  "limits": {
+    "allHistoricalDataVerified": false,
+    "performanceMeasurementStateAtAggregation": "최초 배포 집계 당시 진행 중이었으며, 완료된 별도 결과는 performance.json과 performance.md에 보존했습니다.",
+    "observation48HourWaitRequired": false,
+    "physicalSafariVoiceOverVerified": false,
+    "fivePersonUsabilityStudyVerified": false,
+    "historyCollection": "paused_low_space",
+    "diskBelowHistoryGuard": true
+  },
+  "privacy": {
+    "rawLogsPublished": false,
+    "rawHeadersPublished": false,
+    "credentialsPublished": false,
+    "privateOriginalsPublished": false,
+    "internalPathsPublished": false
+  },
+  "evidenceSha256": {
+    "artifact-download.json": "7848b12165c51f9f948c966570f220cbb56216a51bf02ba205a37ef61f94603c",
+    "prepared-ram-result.json": "ac9fa01f3f4324f19cd142105e2e0e55c01916ff5a9bbe51c9f4da76e2560227",
+    "activation-cleanup-result.json": "9de803b7d15bc5b65897100cbc21a178f8b65d0ee08474f61e4cc01db59b96f7",
+    "deployment-public-final.json": "95550ec0cbb6b7bd71323954f1ba6fcf3dc846b8da6b56800ea1971df2169adf",
+    "deployment-public-timeout-followup.json": "8109d1cb8accf85a631db51463dbb9902f17c3a0e4170d1d3b90fe8fbb3edff2"
+  }
+}
