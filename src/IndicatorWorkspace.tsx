@@ -1,7 +1,5 @@
-import { ChevronDown, Bookmark, BookOpen, Info } from 'lucide-react';
+import { ChevronDown, Bookmark, BookOpen } from 'lucide-react';
 import { DeskDialog } from './DeskDialog';
-import { IndicatorState } from './IndicatorState';
-import { ASSET_REFERENCES } from '../shared/asset-references';
 import { relativePair } from '../shared/relative-pair';
 import { lazy, Suspense, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Link, useLocation, useNavigate, useParams, useSearchParams } from 'react-router-dom';
@@ -10,7 +8,6 @@ import { availableMarket, supportsMarket } from '../shared/asset-registry';
 import {
   INDICATORS_CATALOG,
   indicatorDefinition,
-  indicatorSources,
   indicatorUrl,
   resolveIndicator,
   supportsReference,
@@ -27,13 +24,13 @@ import {
 } from '../shared/analysis-workspace';
 import { aggregateCloses, powerLaw, rollingVwap, vwapReclaims } from '../shared/advanced-analysis';
 import { historyBands, bandPosition } from '../shared/history-bands';
-import { btcRainbow, RAINBOW_VERSION } from '../shared/btc-rainbow';
+import { btcRainbow } from '../shared/btc-rainbow';
 import {
   assetRainbowDiagnostics,
   assetRainbowContext,
   ASSET_RAINBOW_VERSION,
 } from '../shared/asset-rainbow';
-import { hashRibbons, hashrateTrend, HASH_RIBBONS_VERSION } from '../shared/hash-ribbons';
+import { hashRibbons, hashrateTrend } from '../shared/hash-ribbons';
 import { networkUnit } from '../shared/network-catalog';
 import {
   indicatorTransitions,
@@ -57,23 +54,19 @@ import { PeriodPicker } from './PeriodPicker';
 import { WorkspaceBar } from './PersonalDesk';
 import { readAnnotations } from './ChartDrawings';
 import { RibbonControls } from './RibbonControls';
-import { PatternPicker, PatternObservations } from './PatternControls';
+import { PatternPicker } from './PatternControls';
 import { IndicatorNavigation } from './IndicatorNavigation';
-import { dateLabel, save, saved, money } from './lib';
+import { save, saved, money } from './lib';
 import { SpotQuote } from './SpotQuote';
 import { eligibleChartPrice, type LiveChartPrice } from '../shared/live-chart-price';
 import { IndicatorShortcuts } from './IndicatorShortcuts';
 import { RelativeControls } from './RelativeControls';
-import { supertrend, supertrendSettings, SUPERTREND_VERSION } from '../shared/supertrend';
+import { supertrend, supertrendSettings } from '../shared/supertrend';
 import { SupertrendControls } from './SupertrendControls';
 import './analysis-workspace.css';
 import './analysis-library.css';
 import './indicator-workspace.css';
-const DatasetCoveragePanel = lazy(() =>
-  import('./DatasetCoveragePanel').then((m) => ({ default: m.DatasetCoveragePanel })),
-);
 const AnalysisLab = lazy(() => import('./AnalysisLab').then((m) => ({ default: m.AnalysisLab })));
-const KnowledgePanel = lazy(() => import('./KnowledgePanel'));
 const IndicatorMethod = lazy(() => import('./IndicatorMethod'));
 const RelatedLibrary = lazy(() =>
   import('./ResearchLibrary').then((m) => ({ default: m.RelatedLibrary })),
@@ -105,14 +98,12 @@ export function IndicatorWorkspace() {
     (!params.has('metric') && params.get('visual') === 'relative');
   const pair = relativePair(routeAsset, params);
   const asset = isRelative ? pair.asset : routeAsset;
-  const [legacyNotice, setLegacyNotice] = useState(false);
   useEffect(() => {
     if (!isRelative || !pair.migrated) return;
     const next = new URLSearchParams(params);
     next.set('asset', pair.asset);
     next.set('benchmark_asset', pair.benchmark);
     next.delete('correlation_asset');
-    setLegacyNotice(true);
     navigate(`/coins/${pair.asset}?${next}`, { replace: true });
   }, [isRelative, pair.migrated, pair.asset, pair.benchmark, navigate, params]);
   useEffect(() => {
@@ -229,14 +220,8 @@ export function IndicatorWorkspace() {
     [related, setRelated] = useState(params.get('related') === '1');
   const [saving, setSaving] = useState(false);
   const knowledgeRequested = params.get('knowledge') === '1';
-  const [knowledge, setKnowledge] = useState(knowledgeRequested);
   useEffect(() => {
     if (!knowledgeRequested) return;
-    setPicker(false);
-    setSaving(false);
-    setExplanationOpen(false);
-    setDataInfoOpen(false);
-    setKnowledge(true);
     setParams(
       (p) => {
         const next = new URLSearchParams(p);
@@ -246,22 +231,15 @@ export function IndicatorWorkspace() {
       { replace: true },
     );
   }, [asset, knowledgeRequested, setParams]);
-  const [chartTools, setChartTools] = useState<HTMLDivElement | null>(null);
-  const [advancedToolsTarget, setAdvancedToolsTarget] = useState<HTMLDivElement | null>(null);
   const saveButton = useRef<HTMLButtonElement>(null);
-  const knowledgeButton = useRef<HTMLButtonElement>(null);
-  const [readingDate, setReadingDate] = useState<number | null>(null);
   const pinnedDate = useRef<number | null>(null);
   const readingChange = useCallback((time: number | null, pinned = false) => {
-    setReadingDate(time);
     pinnedDate.current = pinned ? time : null;
   }, []);
   const initialReadingDate = /^\d{9,10}$/.test(params.get('reading_date') ?? '')
     ? Number(params.get('reading_date'))
     : undefined;
   const [explanationOpen, setExplanationOpen] = useState(false);
-  const [dataInfoOpen, setDataInfoOpen] = useState(false);
-  const infoButton = useRef<HTMLButtonElement>(null);
   const explanationButton = useRef<HTMLButtonElement>(null);
   const previousAnalysis = useRef(`${asset}:${id}:${basis}`);
   useEffect(() => {
@@ -273,19 +251,14 @@ export function IndicatorWorkspace() {
     setPicker(false);
     setSaving(false);
     setExplanationOpen(false);
-    setDataInfoOpen(false);
-    setKnowledge(knowledgeRequested);
     if (analysisChanged) setMore(params.has('draw_tool'));
     setRelated(false);
   }, [asset, id, basis, params]);
-  function openDialog(kind: 'picker' | 'save' | 'explanation' | 'info' | 'knowledge') {
+  function openDialog(kind: 'picker' | 'save' | 'explanation') {
     setPicker(kind === 'picker');
     setSaving(kind === 'save');
     setExplanationOpen(kind === 'explanation');
-    setDataInfoOpen(kind === 'info');
-    setKnowledge(kind === 'knowledge');
   }
-  const sources = indicatorSources(asset, id);
   const [revision, setRevision] = useState(0),
     [annotations, setAnnotations] = useState<Annotation[]>([]);
   const area = useRef<HTMLDivElement>(null),
@@ -861,10 +834,6 @@ export function IndicatorWorkspace() {
     signalFeed.data,
   ]);
   const article = guideForMetric(id) ?? guideArticle(d?.guide ?? '');
-  const modelChanged =
-    isAssetRainbow &&
-    params.has('rainbow_revision') &&
-    params.get('rainbow_revision') !== rainbowModel?.dataRevision;
   const context = new URLSearchParams(params);
   context.set('asset', asset);
   context.set('price_source', basis);
@@ -901,10 +870,8 @@ export function IndicatorWorkspace() {
                   : chartPoints.length
                     ? 'ready'
                     : 'pending';
-  const lastBand =
-    readingDate === null ? bandRows.at(-1) : bandRows.find((p) => p.time === readingDate);
-  const lastSupertrend =
-    readingDate === null ? stRows.at(-1) : stRows.find((p) => p.time === readingDate);
+  const lastBand = bandRows.at(-1);
+  const lastSupertrend = stRows.at(-1);
   const chartStyle = params.get('chart_style');
   const chartCandles = useMemo(
     () =>
@@ -926,7 +893,7 @@ export function IndicatorWorkspace() {
           id === 'view:price' && basis === 'reference' ? (
             <div className="detail-quote">
               <strong>{money(price.at(-1)?.value, 'USD')}</strong>
-              <span>USD 참조 · 확정 종가</span>
+              <span>USD 종가</span>
             </div>
           ) : (
             <SpotQuote
@@ -940,12 +907,6 @@ export function IndicatorWorkspace() {
         href={(next) => indicatorUrl(next, id, context, true)}
       />
 
-      {legacyNotice && (
-        <p role="status" className="indicator-notice">
-          이전 링크의 비교 대상에 맞춰 {asset}·{pair.benchmark}를 열었습니다.{' '}
-          <button onClick={() => setLegacyNotice(false)}>닫기</button>
-        </p>
-      )}
       <IndicatorShortcuts asset={asset} selected={id} params={context} />
       <div className="indicator-body">
         <section className="panel indicator-panel" ref={area}>
@@ -1042,7 +1003,6 @@ export function IndicatorWorkspace() {
                 setRevision((r) => r + 1);
               }}
             />
-            {(!lab || isRelative) && <div ref={setChartTools} className="indicator-date-tools" />}
             {isRelative && <RelativeControls asset={asset} params={context} change={change} />}
             <button
               aria-expanded={more}
@@ -1109,14 +1069,14 @@ export function IndicatorWorkspace() {
                           !(v.id === 'volume' && basis === 'reference'),
                       ).map((v) => (
                         <option key={v.id} value={v.id}>
-                          {v.title} · {v.source}
+                          {v.title}
                         </option>
                       ))}
                     </select>
                   </label>
                 ))}
               <label>
-                가격 기준
+                거래소·통화
                 <select
                   aria-label="가격 기준"
                   value={basis}
@@ -1184,65 +1144,22 @@ export function IndicatorWorkspace() {
               <button aria-expanded={related} onClick={() => setRelated(!related)}>
                 관련 자료
               </button>
-              <Link to={`/technical/${asset}?${context}`}>고급 기술 설정</Link>
-              <div ref={setAdvancedToolsTarget} className="indicator-advanced-tools" />
             </div>
-          )}
-          {params.get('transition') && (
-            <p role="status" className="indicator-notice">
-              {asset}는 {indicatorDefinition(params.get('transition')!)?.title ?? '이 지표'} 원천이
-              없어 {d?.title}로 전환했습니다.
-            </p>
-          )}
-          {legacySignalId &&
-            (signalFeed.error ||
-              (!signalFeed.loading && !selectedSignal) ||
-              selectedSignal?.status === 'withdrawn') && (
-              <p className="indicator-notice" role="status">
-                {selectedSignal?.status === 'withdrawn'
-                  ? '선택한 전환은 원천 수정으로 철회됐습니다.'
-                  : signalFeed.error
-                    ? '선택한 전환을 확인하지 못했습니다.'
-                    : '선택한 전환을 찾을 수 없습니다.'}{' '}
-                <button
-                  onClick={() => change({ signal: null, signal_overlay: null, reading_date: null })}
-                >
-                  최근값 보기
-                </button>
-              </p>
-            )}
-          {selectedSignal && selectedSignal.status !== 'withdrawn' && !signalCompatible && (
-            <p className="indicator-notice" role="status">
-              선택한 전환은 다른 지표 또는 가격 원천의 관측입니다. 현재 차트에 적용하지 않습니다.{' '}
-              <button onClick={() => change({ signal: null, signal_overlay: null })}>
-                전환 선택 해제
-              </button>
-            </p>
-          )}
-          {signalCompatible && selectedSignal?.status === 'corrected' && (
-            <p className="indicator-notice" role="status">
-              원천 수정이 반영된 전환입니다. 현재 관측값으로 표시합니다.
-            </p>
           )}
           {!supported || invalidModel ? (
             <div className="indicator-empty" role="status">
               <strong>
                 {invalidModel
-                  ? '저장한 레인보우 모델의 기준을 확인할 수 없습니다.'
+                  ? '저장한 분석 설정을 적용할 수 없습니다.'
                   : invalidBasis
-                    ? '이 지표와 가격 원천의 조합을 지원하지 않습니다.'
-                    : `${asset}의 ${d?.title ?? id} 원천을 확보하지 못했습니다.`}
+                    ? '이 가격 기준에서는 사용할 수 없는 지표입니다.'
+                    : `${asset}에서는 이 지표를 사용할 수 없습니다.`}
               </strong>
-              <p>
-                {invalidModel
-                  ? '원천·통화·고정 기준일을 바꾸어 이전 모형처럼 표시하지 않습니다.'
-                  : isSupertrend && basis === 'reference'
-                    ? '슈퍼트렌드는 실제 시가·고가·저가·종가가 필요합니다. USD 참조가격에는 종가만 있습니다.'
-                    : '확보되지 않은 데이터를 다른 코인의 값으로 대체하지 않습니다.'}
-              </p>
-              <Link to={indicatorUrl(asset, active.supported ? id : 'view:price', context)}>
-                지원되는 원천·분석으로 열기
-              </Link>
+              {!invalidModel && (
+                <Link to={indicatorUrl(asset, active.supported ? id : 'view:price', context)}>
+                  사용 가능한 분석 열기
+                </Link>
+              )}
               {invalidModel && (
                 <button
                   onClick={() =>
@@ -1266,7 +1183,6 @@ export function IndicatorWorkspace() {
                 <Suspense fallback={<p role="status">분석 도구를 여는 중…</p>}>
                   <AnalysisLab
                     controlsInToolbar={isRelative}
-                    toolbarTarget={chartTools}
                     onVisibleRange={(range) => {
                       visible.current = range;
                     }}
@@ -1295,7 +1211,6 @@ export function IndicatorWorkspace() {
               ) : chartPoints.length ? (
                 <>
                   <AnalysisChart
-                    toolbarTarget={chartTools}
                     asset={asset}
                     unit={primary?.unit ?? unit}
                     source={primary?.source ?? daily?.meta.source ?? basisName(basis)}
@@ -1332,8 +1247,8 @@ export function IndicatorWorkspace() {
                       id === 'view:price' && livePrice?.market === basis ? livePrice : null
                     }
                     onSignal={() => {}}
-                    advancedTools={more}
-                    toolsTarget={advancedToolsTarget}
+                    publicFocus
+                    advancedTools={false}
                     onAll={() => {
                       change({
                         period: 'all',
@@ -1395,8 +1310,10 @@ export function IndicatorWorkspace() {
                       data-direction={lastSupertrend?.direction ?? 'pending'}
                     >
                       {lastSupertrend
-                        ? `${lastSupertrend.direction === 'up' ? '상승 추세' : '하락 추세'} · ATR ${stSettings.period} · ${stSettings.multiplier}배 · ${interval}`
-                        : `계산 전 · 연속한 확정 ${interval} 봉 ${stSettings.period}개가 필요합니다.`}
+                        ? lastSupertrend.direction === 'up'
+                          ? '상승 추세'
+                          : '하락 추세'
+                        : '아직 추세를 표시할 수 없습니다.'}
                       {!lastSupertrend && interval === '1w' && (
                         <>
                           {' '}
@@ -1407,23 +1324,12 @@ export function IndicatorWorkspace() {
                   )}
                   {bands && lastBand && (
                     <div className="band-context">
-                      <strong>
-                        {bandPosition(lastBand.z)} · 위치{' '}
-                        {lastBand.z === null ? '계산 불가' : lastBand.z.toFixed(2) + 'σ'}
-                      </strong>
-                      <span>
-                        {id === 'view:btc_rainbow' || isAssetRainbow
-                          ? '이전 관측의 로그회귀'
-                          : '이전 연속 730일의 가격 분포'}{' '}
-                        · 실제 가격은 밴드 밖에서도 표시됩니다.
-                      </span>
+                      <strong>{bandPosition(lastBand.z)}</strong>
                     </div>
                   )}
                   {bands && !lastBand && !loading && (
                     <p className="band-context" role="status">
-                      밴드 계산 전 · 표시일 이전{' '}
-                      {id === 'view:btc_rainbow' || isAssetRainbow ? '유효한' : '연속'} 일별 가격
-                      730개가 필요합니다.
+                      아직 밴드를 표시할 수 없습니다.
                     </p>
                   )}
                   {isHash &&
@@ -1432,64 +1338,20 @@ export function IndicatorWorkspace() {
                       <p className="indicator-notice" role="status">
                         {hashPrice.loading
                           ? '가격 조건을 확인하는 중입니다.'
-                          : 'USD 가격 이력이 없어 가격 조건은 표시하지 않습니다.'}{' '}
-                        해시레이트 평균은 별도로 표시합니다.
+                          : '가격 조건을 표시할 수 없습니다.'}
                       </p>
                     )}
-                  {showTransitions && markers.length > 0 && (
-                    <details className="indicator-transition-list">
-                      <summary>전환 날짜 · {markers.length}개</summary>
-                      <ul>
-                        {markers
-                          .slice(-100)
-                          .reverse()
-                          .map((event, i) => (
-                            <li key={event.id ?? `${event.time}:${i}`}>
-                              <button
-                                onClick={() =>
-                                  change({ reading_date: String(event.time), pattern_focus: null })
-                                }
-                              >
-                                {dateLabel(event.time)} · {event.label}
-                              </button>
-                            </li>
-                          ))}
-                      </ul>
-                      {markers.length > 100 && (
-                        <p>최근 100개를 표시합니다. 차트에서는 전체 전환을 확인할 수 있습니다.</p>
-                      )}
-                    </details>
-                  )}
                 </>
               ) : (
                 <div className="indicator-empty" role="status">
-                  <IndicatorState
-                    state={availability}
-                    detail={
-                      loading
-                        ? '지표 이력을 불러오고 있습니다…'
-                        : availability === 'pending'
-                          ? '아직 수집된 관측이 없습니다.'
-                          : error
-                            ? '이력을 불러오지 못했습니다.'
-                            : isHash
-                              ? '연속한 확정 해시레이트 60일이 필요합니다.'
-                              : bands
-                                ? '밴드 계산에 필요한 이력이 부족합니다.'
-                                : '아직 데이터가 없습니다.'
-                    }
-                  />
-                  {!loading && (
-                    <p>
-                      {error ||
-                        (isHash
-                          ? `현재 ${remote.data?.data.length ?? 0}개 일별 관측이 있습니다. 결측 이후에는 60일을 다시 쌓습니다.`
-                          : bands
-                            ? `표시일 이전 ${id === 'view:btc_rainbow' || isAssetRainbow ? '유효한' : '연속'} 일별 가격 730개와 표시일 가격이 필요합니다. 현재 ${dailyPoints.length}개${dailyPoints.length ? ` · ${dateLabel(dailyPoints[0].time)}–${dateLabel(dailyPoints.at(-1)!.time)}` : ''}. 결측을 보간하지 않습니다.`
-                            : '수집 대기 상태입니다. 다른 코인의 자료를 표시하지 않습니다.')}
-                    </p>
-                  )}
-                  {error && (
+                  <p role={availability === 'error' ? 'alert' : 'status'}>
+                    {loading
+                      ? '차트를 불러오는 중…'
+                      : availability === 'error'
+                        ? '차트를 불러오지 못했습니다.'
+                        : '아직 이 지표를 표시할 수 없습니다.'}
+                  </p>
+                  {availability === 'error' && (
                     <button
                       onClick={() => {
                         remote.reload();
@@ -1500,13 +1362,16 @@ export function IndicatorWorkspace() {
                       다시 시도
                     </button>
                   )}
+                  {!loading && availability !== 'error' && (
+                    <Link to={indicatorUrl(asset, 'view:price', context)}>가격 차트 보기</Link>
+                  )}
                 </div>
               )}
             </>
           )}
           {availability === 'delayed' && (
             <p className="indicator-notice" role="status">
-              갱신 지연 · 마지막 정상 관측을 표시합니다. {error || response.data?.meta.warning}
+              값을 확인하는 데 시간이 걸리고 있습니다.
             </p>
           )}
           <div className="indicator-info-actions">
@@ -1521,133 +1386,7 @@ export function IndicatorWorkspace() {
               <BookOpen size={16} aria-hidden="true" /> 읽는 법{' '}
               <ChevronDown size={14} aria-hidden="true" />
             </button>
-            <button ref={infoButton} aria-haspopup="dialog" onClick={() => openDialog('info')}>
-              <Info size={15} aria-hidden="true" /> 데이터 정보
-            </button>
           </div>
-          <DeskDialog
-            open={dataInfoOpen}
-            onOpenChange={setDataInfoOpen}
-            title="데이터 정보"
-            returnFocus={infoButton}
-            sheet
-          >
-            {rainbowModel && (
-              <div className="indicator-provenance">
-                <span>자체 실험 모형 · {rainbowModel.modelVersion}</span>
-                <span>
-                  {rainbowModel.origin === null
-                    ? '이 원천의 고정 기준일은 미확인입니다.'
-                    : `고정 기준일 ${dateLabel(rainbowModel.origin)} · ${rainbowModel.anchorVersion}`}
-                </span>
-                <span>
-                  {rainbowModel.asset} · {basisName(rainbowModel.basis)} · {rainbowModel.unit} ·{' '}
-                  {rainbowModel.observations}개 확정 관측
-                </span>
-                <span>관측 변경 식별자 {rainbowModel.dataRevision}</span>
-                {rainbowFit?.rejectedFits ? (
-                  <span role="status">
-                    수치 범위를 벗어난 회귀 {rainbowFit.rejectedFits}개는 표시하지 않습니다.
-                  </span>
-                ) : null}
-                {modelChanged && (
-                  <span role="status">
-                    저장 이후 관측이 변경됐습니다. 모형 설정은 유지하고 최신 수정 관측으로
-                    계산합니다.
-                  </span>
-                )}
-              </div>
-            )}
-            {dataInfoOpen && (
-              <Suspense fallback={<p role="status">데이터 기간을 확인하는 중…</p>}>
-                <DatasetCoveragePanel key={asset} asset={asset} />
-              </Suspense>
-            )}
-            {sources.length > 1 && (
-              <label className="indicator-source">
-                원천{' '}
-                <select
-                  aria-label="지표 원천"
-                  value={id}
-                  onChange={(e) => change({ metric: e.target.value })}
-                >
-                  {sources.map((s) => (
-                    <option key={s.id} value={s.id}>
-                      {s.source} · {s.unit.replace('자산 단위', asset)}
-                    </option>
-                  ))}
-                </select>
-              </label>
-            )}
-            {bands && lastBand && (
-              <>
-                {' '}
-                {'a' in lastBand && (
-                  <span>
-                    회귀 a={lastBand.a.toFixed(6)}, b={lastBand.b.toFixed(6)} ·{' '}
-                    {lastBand.observations}개 · {dateLabel(lastBand.first)}–
-                    {dateLabel(lastBand.last)} ·{' '}
-                    {isAssetRainbow ? ASSET_RAINBOW_VERSION : RAINBOW_VERSION}
-                  </span>
-                )}
-              </>
-            )}
-            <div className="indicator-provenance">
-              {isSupertrend && (
-                <span>
-                  실제 확정 {interval} OHLC · ATR {stSettings.period} · 배수 {stSettings.multiplier}{' '}
-                  · {SUPERTREND_VERSION} · {stRows.length}개 계산
-                </span>
-              )}
-              {isHash && (
-                <span>
-                  Coin Metrics HashRate · {networkUnit(asset, 'hashrate')} ·{' '}
-                  {id === 'view:hash_ribbons' ? HASH_RIBBONS_VERSION : '해시레이트 추세 30·60일'}
-                  {id === 'view:hash_ribbons'
-                    ? ' · 가격 조건은 Coin Metrics BTC PriceUSD 사용'
-                    : ''}
-                </span>
-              )}
-              {response.data?.meta.historyStart && (
-                <span>데이터 시작 {dateLabel(response.data.meta.historyStart)}</span>
-              )}
-              {bands && (
-                <span>
-                  {bandRows.length
-                    ? `밴드 시작 ${dateLabel(bandRows[0].time)} · 이전 730개 관측 이후`
-                    : '밴드 계산에 필요한 이전 730개 관측을 기다립니다.'}
-                </span>
-              )}
-              <span>
-                {primary?.source ??
-                  (d?.source === '선택 가격 원천' ? basisName(basis) : d?.source) ??
-                  basisName(basis)}{' '}
-                · {d?.observationCadence === '선택한 확정 봉' ? '표시·계산 주기' : '관측 주기'} ·{' '}
-                {d?.observationCadence === '선택한 확정 봉'
-                  ? basis === 'reference'
-                    ? `${interval} 종가 집계 · 원천은 일별 확정 USD 종가`
-                    : `${interval} 확정 봉`
-                  : (d?.observationCadence ?? '관측 주기 미확인')}
-              </span>
-              {response.data?.meta.dataAsOf && (
-                <span>기준일 {dateLabel(response.data.meta.dataAsOf)}</span>
-              )}
-              {chartPoints.at(-1) && chartPoints.at(-1)!.time !== response.data?.meta.dataAsOf && (
-                <span>최근 데이터 {dateLabel(chartPoints.at(-1)!.time)}</span>
-              )}
-            </div>
-          </DeskDialog>
-          {patternIds.length > 0 && (
-            <PatternObservations
-              hits={hits}
-              selection={params.get('pattern_focus')}
-              onSelect={(focus) => change({ pattern_focus: focus })}
-              params={context}
-              asset={asset}
-              basis={basis}
-              loading={loading}
-            />
-          )}
           <DeskDialog
             open={explanationOpen}
             onOpenChange={setExplanationOpen}
@@ -1659,15 +1398,6 @@ export function IndicatorWorkspace() {
               <p>{d?.shortMeaning ?? article?.summary ?? d?.title}</p>
               <IndicatorConcept metric={id} />
               <h2>기준선을 읽는 법</h2>
-              {readingDate !== null && chartPoints.some((p) => p.time === readingDate) && (
-                <p className="indicator-selected-context">
-                  현재 확인 중: {dateLabel(readingDate)} ·{' '}
-                  {chartPoints
-                    .find((p) => p.time === readingDate)
-                    ?.value.toLocaleString('ko-KR', { maximumFractionDigits: 4 })}{' '}
-                  {primary?.unit ?? unit}
-                </p>
-              )}
               <p>
                 {d?.baselineMeaning ??
                   article?.read ??
@@ -1694,55 +1424,15 @@ export function IndicatorWorkspace() {
                 )}
               </details>
               <details>
-                <summary>출처·한계</summary>
-                <p>
-                  {d?.observationCadence} · {d?.measurementScope}
-                </p>
+                <summary>주의할 점</summary>
                 <p>
                   {article?.caution ??
                     '결측은 보간하지 않고 미래 데이터를 사용하지 않습니다. 관측 이력이 짧으면 계산 결과가 없습니다.'}
                 </p>
-                {article?.source && (
-                  <p>
-                    <a href={article.source} target="_blank" rel="noreferrer">
-                      지표 원문 ↗
-                    </a>
-                  </p>
-                )}
-                {isHash && asset === 'BTC' && (
-                  <p>
-                    <a
-                      href="https://capriole.com/bitcoins-production-cost"
-                      target="_blank"
-                      rel="noreferrer"
-                    >
-                      Capriole · 전력·생산비 설명 ↗
-                    </a>{' '}
-                    · 실제 전력량·장비효율 이력이 없어 비용선은 제공하지 않습니다.
-                  </p>
-                )}
                 {article && (
                   <Link aria-label="현재 분석 설명" to={guideHref(article.id, context)}>
                     상세 설명 읽기
                   </Link>
-                )}
-                {!!ASSET_REFERENCES[asset]?.length && (
-                  <>
-                    <h2>프로젝트·공급 참고</h2>
-                    <ul>
-                      {(ASSET_REFERENCES[asset] ?? []).map((link) => (
-                        <li key={link.url}>
-                          <a href={link.url} target="_blank" rel="noreferrer">
-                            {link.provider} · {link.purpose} ↗
-                          </a>
-                        </li>
-                      ))}
-                    </ul>
-                    <p>
-                      프로젝트 측 원문입니다. 독립적인 위험 평가나 언락 일정의 실시간 확인은
-                      아닙니다.
-                    </p>
-                  </>
                 )}
               </details>
             </div>
@@ -1815,39 +1505,16 @@ export function IndicatorWorkspace() {
                         rainbow_unit: rainbowModel.unit,
                       }
                     : {}),
-                  ...(pinnedDate.current !== null
-                    ? { reading_date: String(pinnedDate.current) }
-                    : {}),
+                  ...(initialReadingDate !== undefined
+                    ? { reading_date: String(initialReadingDate) }
+                    : pinnedDate.current !== null
+                      ? { reading_date: String(pinnedDate.current) }
+                      : {}),
                 },
                 ...(visible.current ? { dateWindow: visible.current } : {}),
                 annotations: readAnnotations(drawingKey),
               })}
             />
-          </DeskDialog>
-          <button
-            className="knowledge-open"
-            ref={knowledgeButton}
-            onClick={() => openDialog('knowledge')}
-          >
-            코인·프로젝트 관계 보기
-          </button>
-          <DeskDialog
-            open={knowledge}
-            onOpenChange={setKnowledge}
-            title={asset + ' 관계와 근거'}
-            returnFocus={knowledgeButton}
-            wide
-          >
-            {knowledge && (
-              <Suspense fallback={<p role="status">관계를 여는 중…</p>}>
-                <KnowledgePanel
-                  key={asset}
-                  asset={asset}
-                  params={context}
-                  onNavigate={() => setKnowledge(false)}
-                />
-              </Suspense>
-            )}
           </DeskDialog>
           {related && (
             <div className="analysis-evidence">

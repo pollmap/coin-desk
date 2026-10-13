@@ -1,5 +1,6 @@
 import { it, expect, vi } from 'vitest';
 import worker from '../worker/index';
+import { ASSET_REGISTRY } from '../shared/asset-registry';
 import { openDatabase, memoryCache } from '../scripts/local-db.mjs';
 it('themes and relationships are read-only, asset isolated and reject unsupported input', async () => {
   const DB = openDatabase(':memory:');
@@ -14,7 +15,22 @@ it('themes and relationships are read-only, asset isolated and reject unsupporte
   try {
     const before = DB.sqlite.prepare('SELECT total_changes() n').get().n;
     const themes = await (await call('themes')).json();
-    expect(themes.themes).toHaveLength(6);
+    expect(themes.version).toBe('1.2.0');
+    expect(themes.editorial).toBe(true);
+    expect(themes.themes).toHaveLength(31);
+    expect(
+      new Set(themes.themes.flatMap((theme) => theme.members.map((member) => member.asset))),
+    ).toEqual(new Set(ASSET_REGISTRY.map((asset) => asset.id)));
+    expect(
+      themes.themes
+        .find((theme) => theme.id === 'nft-gaming')
+        .members.some((member) => member.asset === 'BEAM'),
+    ).toBe(true);
+    expect(
+      themes.themes
+        .find((theme) => theme.id === 'privacy')
+        .members.some((member) => member.asset === 'BEAM'),
+    ).toBe(false);
     const ondo = await (await call('knowledge?asset=ONDO')).json();
     const btc = await (await call('knowledge?asset=BTC')).json();
     expect(ondo.asset).toBe('ONDO');

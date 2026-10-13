@@ -26,6 +26,7 @@ export default function SearchDialog({
     input = useRef<HTMLInputElement>(null),
     enterQuery = useRef<string | null>(null),
     scrollPosition = useRef({ x: window.scrollX, y: window.scrollY, href: window.location.href });
+  const marketRoute = location.pathname === '/' || location.pathname === '/coins';
   const [query, setQuery] = useState(initialQuery),
     [retry, setRetry] = useState(0);
   const [result, setResult] = useState<{ query: string; hits: SearchHit[]; error?: string }>();
@@ -150,11 +151,12 @@ export default function SearchDialog({
             setQuery(e.target.value);
           }}
         />
-        {location.pathname === '/' && hits.some((hit) => hit.kind === 'asset') && (
+        {marketRoute && hits.some((hit) => hit.kind === 'asset') && (
           <Link
             className="search-filter-link"
             to={
-              '/?' +
+              location.pathname +
+              '?' +
               new URLSearchParams({
                 ...Object.fromEntries(new URLSearchParams(location.search)),
                 q: query.trim(),

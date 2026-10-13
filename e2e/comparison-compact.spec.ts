@@ -40,11 +40,13 @@ test('compact comparison keeps the chart first and settings preserve its range',
   await expect(page.locator('.comparison-selection')).toHaveAttribute('open', '');
   await page.locator('.comparison-selection summary').click();
   await expect(chart).toHaveAttribute('data-visible-from', range!);
-  await expect(page.locator('.comparison-coverage')).not.toHaveAttribute('open', '');
-  await page.getByText('비교 기간과 코인별 수집 이력', { exact: true }).click();
-  await expect(page.getByText('실제로 비교하는 기간', { exact: true })).toBeVisible();
-  await expect(page.getByRole('button', { name: '비교 CSV', exact: true })).toHaveCount(1);
-  await expect(page.getByRole('button', { name: 'CSV 내려받기', exact: true })).toHaveCount(0);
+  await expect(
+    page.locator('.comparison-coverage,.comparison-share,.comparison-share-result'),
+  ).toHaveCount(0);
+  await expect(
+    page.getByRole('button', { name: /비교 CSV|CSV 내려받기|비교 링크 복사/ }),
+  ).toHaveCount(0);
+  await expect(page.locator('input[type="date"]')).toHaveCount(0);
   for (const theme of ['light', 'dark']) {
     if (theme === 'dark') await page.getByRole('button', { name: '어두운 테마로 변경' }).click();
     expect(
@@ -59,7 +61,7 @@ test('compact comparison keeps the chart first and settings preserve its range',
   await page.screenshot({ path: test.info().outputPath('comparison-compact.png'), fullPage: true });
 });
 
-test('narrow period selector and custom dates retain exchange and share context', async ({
+test('narrow period selection and legacy date URLs preserve the exchange without public date or share widgets', async ({
   page,
 }) => {
   await page.setViewportSize({ width: 390, height: 900 });
@@ -69,26 +71,27 @@ test('narrow period selector and custom dates retain exchange and share context'
   await page.getByRole('combobox', { name: '비교 기간', exact: true }).selectOption('3m');
   await expect(page).toHaveURL(/period=3m/);
   expect(new URL(page.url()).searchParams.get('market')).toBe('binance');
-  await page.getByText('날짜 직접 선택', { exact: true }).click();
+  await expect(page.locator('input[type="date"]')).toHaveCount(0);
+  await expect(page.getByRole('button', { name: '비교 링크 복사', exact: true })).toHaveCount(0);
   const day = 86400000,
     today = Math.floor(Date.now() / day) * day;
   const start = new Date(today - 90 * day).toISOString().slice(0, 10);
   const end = new Date(today - 30 * day).toISOString().slice(0, 10);
-  await page.getByLabel('시작일 (UTC)').fill(start);
-  await page.getByLabel('종료일 (UTC)').fill(end);
-  await page.getByRole('button', { name: '직접 기간 적용', exact: true }).click();
-  await expect(page).toHaveURL(new RegExp('from=' + start));
-  await expect(page.locator('.comparison-result .panel-title')).toContainText(start);
-  await page.getByRole('button', { name: '비교 링크 복사', exact: true }).click();
-  await expect(page.getByRole('textbox', { name: '비교 화면 공유 주소' })).toHaveValue(
-    new RegExp('from=' + start),
-  );
+  await page.goto(`/compare?assets=BTC,DOGE,ETH&market=binance&period=3m&from=${start}&to=${end}`);
+  const chart = page.locator('.comparison-chart');
+  await expect(chart).toHaveAttribute('data-render-ready', '1');
+  await expect(chart).toHaveAttribute('data-expected-from', String(Date.parse(start) / 1000));
+  await expect(chart).toHaveAttribute('data-expected-to', String(Date.parse(end) / 1000));
   await page.reload();
+  await expect(chart).toHaveAttribute('data-render-ready', '1');
+  await expect(chart).toHaveAttribute('data-expected-from', String(Date.parse(start) / 1000));
   await page.locator('.comparison-settings > summary').click();
-  await expect(page.getByLabel('시작일 (UTC)')).toHaveValue(start);
   await expect(page.getByRole('combobox', { name: '비교 기간', exact: true })).toHaveValue(
     'custom',
   );
-  await page.getByRole('button', { name: '직접 기간 해제', exact: true }).click();
+  await expect(page.locator('input[type="date"]')).toHaveCount(0);
+  await page.getByRole('combobox', { name: '비교 기간', exact: true }).selectOption('3m');
+  await expect(page).not.toHaveURL(/from=|to=/);
+  expect(new URL(page.url()).searchParams.get('market')).toBe('binance');
   await expect(page.getByRole('combobox', { name: '비교 기간', exact: true })).toHaveValue('3m');
 });

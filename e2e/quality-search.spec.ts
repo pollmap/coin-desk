@@ -40,23 +40,24 @@ test('search preserves explicit viewing context and pending request cannot cross
   await expect(page.locator('[data-chart-kind=analysis]')).toHaveAttribute('data-asset', 'PENGU');
 });
 
-test('status loads a small summary before bounded source pages', async ({ page }) => {
+test('old status links return to the market without requesting operational summaries', async ({
+  page,
+}) => {
   const calls: string[] = [];
-  page.on('request', (r) => {
-    if (r.url().includes('/api/v1/status')) calls.push(r.url());
+  page.on('request', (request) => {
+    if (/\/api\/v1\/(status|health|runtime)/.test(request.url())) calls.push(request.url());
   });
   await page.goto('/status');
-  await expect(page.locator('.automation-summary')).toContainText('데이터 원천 상태');
-  await expect.poll(() => calls.some((u) => u.includes('/status/summary'))).toBe(true);
-  expect(calls.some((u) => u.includes('/status/sources'))).toBe(false);
-  expect(calls.some((u) => new URL(u).pathname === '/api/v1/status')).toBe(false);
-  await page.getByRole('button', { name: '원천별 상태 보기' }).click();
-  await expect.poll(() => calls.some((u) => u.includes('/status/sources'))).toBe(true);
-  await expect(page.locator('.status-table tbody tr')).not.toHaveCount(0);
-  expect(await page.locator('.status-table tbody tr').count()).toBeLessThanOrEqual(50);
+  await expect(page).toHaveURL(/\/$/);
+  await expect(page.locator('.market-table tbody tr')).toHaveCount(50);
+  await expect(page.locator('.automation-summary,.status-table')).toHaveCount(0);
+  await expect(page.getByRole('button', { name: '원천별 상태 보기' })).toHaveCount(0);
+  expect(calls).toEqual([]);
 });
 
-test('search explanations preserve context and relation links open their evidence', async ({ page }) => {
+test('search explanations preserve context and legacy relation links do not reopen metadata', async ({
+  page,
+}) => {
   await page.goto('/coins/DOGE?metric=rsi&price_source=upbit&period=1y');
   await page.getByRole('button', { name: '코인·지표 검색 열기' }).click();
   await page.getByRole('searchbox', { name: '코인·지표 검색' }).fill('MVRV');
@@ -68,10 +69,14 @@ test('search explanations preserve context and relation links open their evidenc
   expect(href.searchParams.get('price_source')).toBe('upbit');
   await page.keyboard.press('Escape');
   await page.goto('/coins/AAVE?metric=rsi&knowledge=1');
-  await expect(page.getByRole('dialog', { name: 'AAVE 관계와 근거' })).toBeVisible();
-  await expect(page.getByRole('dialog')).toContainText('발행 네트워크');
-  await page.keyboard.press('Escape');
-  await expect(page.getByRole('dialog')).not.toBeVisible();
+  await expect(page.locator('[data-chart-kind=analysis]')).toHaveAttribute('data-asset', 'AAVE');
+  await expect(page.locator('[data-chart-kind=analysis]')).toHaveAttribute(
+    'data-primary-metric',
+    'rsi',
+  );
+  await expect(page).not.toHaveURL(/knowledge=1/);
+  await expect(page.getByRole('dialog', { name: 'AAVE 관계와 근거' })).toHaveCount(0);
+  await expect(page.locator('.knowledge-list,.react-flow')).toHaveCount(0);
 });
 
 test('search sheet supports dark/light contrast, keyboard and reduced motion', async ({ page }) => {
@@ -80,7 +85,7 @@ test('search sheet supports dark/light contrast, keyboard and reduced motion', a
   for (const theme of ['light', 'dark']) {
     if (theme === 'dark') await page.getByRole('button', { name: '어두운 테마로 변경' }).click();
     await page.emulateMedia({ reducedMotion: 'reduce' });
-    await page.getByRole('button', { name: '코인·지표 검색 열기' }).click();
+    await page.getByRole('button', { name: '시장 코인 검색', exact: true }).click();
     await page.getByRole('searchbox', { name: '코인·지표 검색' }).fill('MVRV');
     await expect(page.locator('.search-hit').first()).toBeVisible();
     expect(

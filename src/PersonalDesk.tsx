@@ -325,7 +325,7 @@ export function WorkspaceBar({
                 }}
               >
                 <Download size={15} />
-                저장한 설정 내보내기
+                설정 백업
               </button>
               <label>
                 설정 JSON

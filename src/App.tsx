@@ -1,14 +1,10 @@
 import { lazy, Suspense, useEffect, useRef, useState } from 'react';
-import { Link, Navigate, Route, Routes, useLocation, useSearchParams } from 'react-router-dom';
-import { Database, Clock3 } from 'lucide-react';
+import { Link, Navigate, Route, Routes, useLocation } from 'react-router-dom';
 import { ProductTopbar } from './ProductTopbar';
 import { MarketHome as WatchlistPage } from './MarketHome';
 import './analysis-ux.css';
 const AnalysisWorkspace = lazy(() =>
   import('./IndicatorWorkspace').then((m) => ({ default: m.IndicatorWorkspace })),
-);
-const LegacyWatchlist = lazy(() =>
-  import('./WatchlistPage').then((m) => ({ default: m.WatchlistPage })),
 );
 const ResearchLibrary = lazy(() =>
   import('./ResearchLibrary').then((m) => ({ default: m.ResearchLibrary })),
@@ -17,21 +13,11 @@ const LearnPage = lazy(() => import('./LearnPage').then((m) => ({ default: m.Lea
 const ComparePage = lazy(() =>
   import('./ComparisonWorkspace').then((m) => ({ default: m.ComparisonWorkspace })),
 );
-const MetricsExplorer = lazy(() =>
-  import('./MetricsExplorer').then((m) => ({ default: m.MetricsExplorer })),
-);
 const DominancePage = lazy(() =>
   import('./DominancePanel').then((m) => ({ default: m.DominancePage })),
 );
-const DataStatusPage = lazy(() =>
-  import('./DataStatusPage').then((m) => ({ default: m.DataStatusPage })),
-);
 const BrandPage = lazy(() => import('./BrandPage').then((m) => ({ default: m.BrandPage })));
-const PricePage = lazy(() => import('./LegacyPages').then((m) => ({ default: m.PricePage })));
-const WorkspacePage = lazy(() =>
-  import('./LegacyPages').then((m) => ({ default: m.WorkspacePage })),
-);
-const SourceDialog = lazy(() => import('./LegacyPages').then((m) => ({ default: m.SourceDialog })));
+const WorkspacePage = lazy(() => import('./SavedPage'));
 const LegacyIndicatorRoute = lazy(() => import('./IndicatorRedirect'));
 function EntryRoute() {
   const location = useLocation(),
@@ -45,11 +31,7 @@ function EntryRoute() {
   }
   return <WatchlistPage />;
 }
-function MarketRoute() {
-  const [params] = useSearchParams();
-  return params.get('view') === 'derivatives' ? <LegacyWatchlist /> : <WatchlistPage />;
-}
-function Loading({ message = '실제 데이터를 불러오고 있습니다…' }: { message?: string }) {
+function Loading({ message = '불러오는 중…' }: { message?: string }) {
   return (
     <div className="loading" role="status" aria-live="polite">
       <span className="loading-line" />
@@ -72,14 +54,6 @@ export default function App() {
       window.removeEventListener('offline', connectivity);
       window.removeEventListener('coin-desk-storage-error', storage);
     };
-  }, []);
-  const [sources, setSources] = useState(false);
-  useEffect(() => {
-    const escape = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') setSources(false);
-    };
-    window.addEventListener('keydown', escape);
-    return () => window.removeEventListener('keydown', escape);
   }, []);
   const pageKey =
     location.pathname +
@@ -120,18 +94,10 @@ export default function App() {
       <div className="main-shell">
         <header className="topbar">
           <ProductTopbar />
-          <button
-            className="source-button"
-            onClick={() => setSources(true)}
-            aria-label="데이터 출처"
-          >
-            <Database size={15} />
-            <span>출처</span>
-          </button>
         </header>
         {!online ? (
           <div className="connection-banner" role="status">
-            인터넷 연결이 끊겼습니다. 보관된 값은 최신 시세가 아닐 수 있습니다.
+            인터넷 연결을 확인해 주세요.
           </div>
         ) : null}
         {storageError ? (
@@ -146,17 +112,17 @@ export default function App() {
               <Route path="/" element={<EntryRoute />} />
               <Route path="/coins/:asset" element={<AnalysisWorkspace />} />
               <Route path="/chart/:asset" element={<LegacyIndicatorRoute />} />
-              <Route path="/technical/:asset" element={<PricePage workspace />} />
+              <Route path="/technical/:asset" element={<LegacyIndicatorRoute />} />
               <Route path="/metrics/:metric" element={<LegacyIndicatorRoute />} />
-              <Route path="/coins" element={<MarketRoute />} />
+              <Route path="/coins" element={<WatchlistPage />} />
               <Route path="/workspace" element={<WorkspacePage />} />
               <Route path="/workspace/library" element={<ResearchLibrary />} />
               <Route path="/learn" element={<LearnPage />} />
               <Route path="/learn/:id" element={<LearnPage />} />
               <Route path="/compare" element={<ComparePage />} />
-              <Route path="/explore" element={<MetricsExplorer />} />
+              <Route path="/explore" element={<Navigate to="/learn" replace />} />
               <Route path="/dominance" element={<DominancePage />} />
-              <Route path="/status" element={<DataStatusPage />} />
+              <Route path="/status" element={<Navigate to="/" replace />} />
               <Route path="/onchain/:asset" element={<LegacyIndicatorRoute />} />
               <Route path="/futures/:asset" element={<LegacyIndicatorRoute />} />
               <Route
@@ -180,20 +146,14 @@ export default function App() {
           </Suspense>
         </main>
         <footer>
-          <span>
-            <Clock3 size={12} />
-            시각 표시 KST · 일별 기준 UTC
-          </span>
           <a href="https://www.tradingview.com/" target="_blank" rel="noreferrer">
             TradingView Lightweight Charts™ · Copyright (с) 2025 TradingView, Inc.
           </a>
+          <a href="https://coinmetrics.io/community-network-data/" target="_blank" rel="noreferrer">
+            Coin Metrics · CC BY-NC 4.0
+          </a>
         </footer>
       </div>
-      {sources ? (
-        <Suspense fallback={null}>
-          <SourceDialog onClose={() => setSources(false)} />
-        </Suspense>
-      ) : null}
     </div>
   );
 }

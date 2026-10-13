@@ -1,0 +1,63 @@
+{
+  "codeVersion": "0.32.0",
+  "codeCommit": "af4953fc30c0d1b5f41592c530eb3ff2a9f32db8",
+  "pullRequest": "https://github.com/pollmap/coin-desk/pull/65",
+  "prCI": {
+    "id": 38392664136,
+    "conclusion": "success"
+  },
+  "mainCI": {
+    "id": 38394216098,
+    "conclusion": "success",
+    "jobs": [
+      {
+        "conclusion": "success",
+        "name": "checks",
+        "status": "completed"
+      },
+      {
+        "conclusion": "success",
+        "name": "browser (chromium)",
+        "status": "completed"
+      },
+      {
+        "conclusion": "success",
+        "name": "browser (webkit)",
+        "status": "completed"
+      },
+      {
+        "conclusion": "success",
+        "name": "container",
+        "status": "completed"
+      },
+      {
+        "conclusion": "success",
+        "name": "verify",
+        "status": "completed"
+      }
+    ]
+  },
+  "tests": {
+    "unit": 761,
+    "nodeServer": 31,
+    "vpsTools": 27,
+    "recovery": 2,
+    "browserPassed": 324,
+    "browserPrivatePathSkipped": 2,
+    "browserRetries": 0
+  },
+  "priorFailedCI": [
+    38386413550,
+    38390514968
+  ],
+  "deploymentVerified": false,
+  "actualDataVerified": false,
+  "performanceVerified": false,
+  "physicalSafariVoiceOver": false,
+  "peopleUsabilityStudy": false,
+  "observation48hRequired": false,
+  "preservedStorageVersions": [
+    1,
+    2
+  ]
+}

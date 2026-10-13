@@ -1,7 +1,9 @@
 import { test, expect } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
 
-test('all eight relative views use the selected pair, unit, and export name', async ({ page }) => {
+test('all eight relative views use the selected pair and unit without export actions', async ({
+  page,
+}) => {
   test.setTimeout(90000);
   for (const asset of ['BTC', 'DOGE', 'ETH', 'SOL', 'XRP', 'LINK', 'ONDO', 'PEPE']) {
     const benchmark = asset === 'BTC' ? 'ETH' : 'BTC';
@@ -31,23 +33,12 @@ test('all eight relative views use the selected pair, unit, and export name', as
   await page.reload();
   await page.getByLabel('비교 설정', { exact: true }).click();
   await expect(page.getByRole('combobox', { name: '비교 코인', exact: true })).toHaveValue('LINK');
-  if (
-    (await page
-      .getByRole('button', { name: '더보기', exact: true })
-      .getAttribute('aria-expanded')) !== 'true'
-  )
-    await page.getByRole('button', { name: '더보기', exact: true }).click();
-  await page.locator('.analysis-tools > summary').click();
-  const downloaded = page.waitForEvent('download');
-  await page.getByRole('button', { name: '지표 CSV', exact: true }).click();
-  const file = await downloaded;
-  expect(file.suggestedFilename()).toBe('borichart-PEPE-LINK-ratio-indicators.csv');
-  const stream = await file.createReadStream();
-  let csv = '';
-  for await (const chunk of stream!) csv += chunk.toString();
-  expect(csv).toContain('PEPE/LINK');
-  expect(csv).toContain('LINK/PEPE');
-  expect(csv).toContain('Binance');
+  await expect(page.getByRole('button', { name: /CSV|공유|내보내기/ })).toHaveCount(0);
+  await expect(page.locator('.analysis-tools,.analysis-reading-date')).toHaveCount(0);
+  await expect(page.locator('[data-relative-asset]')).toHaveAttribute(
+    'data-relative-benchmark',
+    'LINK',
+  );
 });
 
 test('legacy target migrates explicitly; saved pair, overwrite cancel, delete undo remain intact', async ({
@@ -55,9 +46,7 @@ test('legacy target migrates explicitly; saved pair, overwrite cancel, delete un
 }) => {
   await page.goto('/coins/ONDO?metric=view:relative&price_source=binance&correlation_asset=DOGE');
   await expect(page).toHaveURL(/coins\/DOGE\?/);
-  await expect(page.locator('.indicator-notice').filter({ hasText: '이전 링크' })).toContainText(
-    'DOGE·BTC',
-  );
+  await expect(page).toHaveURL(/benchmark_asset=BTC/);
   await expect(page.locator('[data-relative-asset]')).toHaveAttribute(
     'data-relative-asset',
     'DOGE',
@@ -87,7 +76,7 @@ test('legacy target migrates explicitly; saved pair, overwrite cancel, delete un
   await expect(page.getByRole('combobox', { name: '비교 코인', exact: true })).toHaveValue('LINK');
 });
 
-test('brand, market timestamps and core layouts meet the compact white design', async ({
+test('brand and core layouts meet the compact white design without operational metadata', async ({
   page,
 }) => {
   test.setTimeout(120000);
@@ -106,10 +95,11 @@ test('brand, market timestamps and core layouts meet the compact white design', 
     await page.goto('/coins/BTC?metric=net:mvrv&price_source=upbit');
     const chart = page.locator('[data-chart-kind="analysis"]');
     await expect(chart).toHaveAttribute('data-range-ready', '1');
+    await expect(page.locator('.analysis-reading-date')).toHaveCount(0);
     expect(
       await page
-        .locator('.analysis-reading-date')
-        .evaluate((el) => el.scrollWidth <= el.clientWidth + 1),
+        .locator('.analysis-reading-value')
+        .evaluate((el) => el.getBoundingClientRect().right <= innerWidth),
     ).toBe(true);
     console.log(
       'geometry',
@@ -147,6 +137,11 @@ test('brand, market timestamps and core layouts meet the compact white design', 
 test('comparison refresh keeps the actual canvas and zoom; narrow chart starts by 320px', async ({
   page,
 }) => {
+  await page.clock.install();
+  let calls = 0;
+  page.on('request', (r) => {
+    if (r.url().includes('/api/v1/candles?')) calls++;
+  });
   await page.goto('/compare?assets=BTC,DOGE,ETH&market=upbit&period=1y');
   const chart = page.locator('.comparison-chart');
   await expect(chart).toHaveAttribute('data-render-ready', '1');
@@ -161,8 +156,10 @@ test('comparison refresh keeps the actual canvas and zoom; narrow chart starts b
     document.querySelector('.comparison-chart canvas')!.setAttribute('data-identity', 'kept');
   });
   const before = await chart.getAttribute('data-visible-from');
-  await page.getByRole('button', { name: '데이터 다시 확인', exact: true }).click();
-  await expect(page.getByRole('button', { name: '잠시 후 갱신 가능', exact: true })).toBeDisabled();
+  const originalCalls = calls;
+  await page.clock.fastForward(15 * 60000 + 1000);
+  await expect.poll(() => calls).toBeGreaterThan(originalCalls);
+  await expect(page.locator('.comparison-chart')).toHaveAttribute('data-render-ready', '1');
   await expect(page.getByText(/확정 일봉을 불러오고 있습니다/)).toHaveCount(0);
   await expect(chart.locator('canvas').first()).toHaveAttribute('data-identity', 'kept');
   await expect(chart).toHaveAttribute('data-visible-from', before!);
@@ -172,9 +169,7 @@ test('comparison refresh keeps the actual canvas and zoom; narrow chart starts b
 test('relative settings preserve chart position, focus, and guide context', async ({ page }) => {
   test.setTimeout(90000);
   await page.goto('/coins/ONDO?metric=view:relative&price_source=binance&benchmark_asset=LINK');
-  await expect(
-    page.locator('.indicator-toolbar').getByRole('button', { name: '날짜로 이동' }),
-  ).toBeVisible();
+  await expect(page.getByRole('button', { name: '날짜로 이동', exact: true })).toHaveCount(0);
   const chart = page.locator('[data-chart-kind="analysis"]');
   await expect(chart).toHaveAttribute('data-range-ready', '1');
   for (const width of [320, 390, 768, 1000, 1280, 1440]) {
@@ -224,16 +219,17 @@ test('relative settings preserve chart position, focus, and guide context', asyn
   for (const width of [320, 390]) {
     await page.setViewportSize({ width, height: 900 });
     expect((await chart.boundingBox())!.y).toBeLessThanOrEqual(300);
+    await expect(page.locator('.analysis-reading-date')).toHaveCount(0);
     expect(
       await page
-        .locator('.analysis-reading-date')
-        .evaluate((el) => el.scrollWidth <= el.clientWidth + 1),
+        .locator('.analysis-reading-value')
+        .evaluate((el) => el.getBoundingClientRect().right <= innerWidth),
     ).toBe(true);
   }
   await page.getByRole('button', { name: /^지표 설명/ }).click();
   await page
     .getByRole('dialog', { name: '지표 설명', exact: true })
-    .getByText('출처·한계', { exact: true })
+    .getByText('주의할 점', { exact: true })
     .click();
   await page.getByRole('link', { name: '현재 분석 설명', exact: true }).click();
   await expect(page).toHaveURL(/benchmark_asset=LINK/);

@@ -1,5 +1,3 @@
-import { ChartNavigator, ChartTools } from './ChartNavigator';
-import { ChartRangeControl } from './ChartRangeControl';
 import { createDeskChart as createChart } from './chart-theme';
 import { useEffect, useMemo, useRef } from 'react';
 import { AssetHeader } from './AssetHeader';
@@ -38,14 +36,7 @@ export function DominancePanel({ compact = false }: { compact?: boolean }) {
             (c) => !compact || ['BTC', 'DOGE', 'ETH', 'STABLE', 'USDT', 'USDC'].includes(c.id),
           )
           .map((c) => (
-            <div
-              className="dominance-item"
-              key={c.id}
-              title={
-                (c.timeBasis === 'retrieved' ? '조회 시각 ' : '일별 기준 ') +
-                dateLabel(c.asOf, true)
-              }
-            >
+            <div className="dominance-item" key={c.id}>
               <span>
                 <i style={{ background: colors[c.id] }} />
                 {c.id === 'STABLE' ? '스테이블코인 전체 ≈' : c.id + '.D'}
@@ -62,26 +53,11 @@ export function DominancePanel({ compact = false }: { compact?: boolean }) {
       </div>
       {result.error || result.data?.warning ? (
         <p role="alert" className="amber">
-          {result.error || result.data?.warning} <button onClick={result.reload}>다시 시도</button>
+          값을 표시하지 못했습니다. <button onClick={result.reload}>다시 시도</button>
         </p>
       ) : !result.data ? (
         <p className="muted">시장 시가총액을 불러오는 중…</p>
       ) : null}
-      {result.data?.coins.find((c) => c.id === 'STABLE') ? (
-        <p className="dominance-basis">
-          스테이블 전체 ≈ · DefiLlama 일별 USD 시가총액 / CoinLore 전체 시가총액 ·{' '}
-          {dateLabel(result.data.coins.find((c) => c.id === 'STABLE')?.asOf)} 기준
-        </p>
-      ) : null}
-      <div className="source-line">
-        <a href="https://www.coinlore.com/cryptocurrency-data-api" target="_blank" rel="noreferrer">
-          CoinLore · 전체 시가총액 대비 비중
-        </a>
-        <span className={result.data?.stale ? 'amber' : ''}>
-          {result.data?.stale ? '갱신 지연 · ' : ''}
-          조회 {dateLabel(result.data?.asOf, true)}
-        </span>
-      </div>
     </section>
   );
 }
@@ -229,10 +205,7 @@ export function DominancePage() {
         </div>
         {snapshot.data?.stale || snapshot.data?.warning || snapshot.error || history.error ? (
           <p role="status" className="refresh-notice">
-            {snapshot.data?.warning ||
-              snapshot.error ||
-              history.error ||
-              '갱신이 지연되어 마지막 정상 관측을 표시합니다.'}
+            값을 표시하지 못했습니다.
             <button
               onClick={() => {
                 snapshot.reload();
@@ -243,78 +216,15 @@ export function DominancePage() {
             </button>
           </p>
         ) : null}
-        {latest ? (
-          <p className="dominance-basis">
-            {selectedLabel} 최신 관측 {numeric(latest.value, latest.value < 1 ? 3 : 2)}% ·{' '}
-            {dateLabel(latest.time, true)} · {points.length.toLocaleString()}회 관측{' '}
-            {previous
-              ? ` · 직전 관측 대비 ${numeric(latest.value - previous.value, 3)}%p (${dateLabel(previous.time, true)})`
-              : ''}
-          </p>
-        ) : null}
         {points.length >= 2 ? (
           <div ref={ref} role="img" aria-label={selected + ' 도미넌스 이력'} />
         ) : (
-          <div className="empty-state">
-            {selectedLabel}의 실제 관측은 현재 {points.length}개입니다. 해당 자산의 두 번째 관측부터
-            차트가 표시됩니다.
-          </div>
+          <div className="empty-state">표시할 차트가 없습니다.</div>
         )}
-        {points.length >= 2 ? (
-          <>
-            <ChartNavigator rows={points} chart={apiRef} label={selectedLabel} />
-            <ChartTools
-              rows={points}
-              chart={apiRef}
-              label={selectedLabel}
-              unit="percent"
-              source={selected === 'STABLE' ? 'DefiLlama / CoinLore (approximate)' : 'CoinLore'}
-            />
-            <ChartRangeControl
-              rows={points}
-              resetKey={selected}
-              onApply={(r) =>
-                apiRef.current
-                  ?.timeScale()
-                  .setVisibleRange({ from: r.from as UTCTimestamp, to: r.to as UTCTimestamp })
-              }
-              onReset={() => apiRef.current?.timeScale().fitContent()}
-            />
-          </>
-        ) : null}
-        <div className="source-line">
-          표시 이력 시작 {dateLabel(points[0]?.time, true)} · 실제 수집한 전체 관측 · 시간축 KST ·
-          매시간 갱신
-        </div>
       </section>
       <details className="research-source">
         <summary>다른 코인 비중</summary>
         <DominancePanel />
-      </details>
-      <details className="research-source">
-        <summary>비중 산정 기준 · 출처</summary>
-        <div>
-          <h2>비중을 읽는 기준</h2>
-          <p>
-            코인별 비중과 USDT.D·USDC.D는 각 코인의 시가총액 ÷ CoinLore 전체 암호자산 시가총액 ×
-            100입니다. CoinLore는 개별 값의 기준 시각을 제공하지 않으므로 화면에는 조회 시각을
-            표시합니다.
-          </p>
-          <p>
-            스테이블코인 전체 ≈는 DefiLlama가 집계한 모든 스테이블코인의 일별 USD 시가총액 ÷
-            CoinLore 전체 시가총액입니다. 서로 다른 원천·갱신 주기를 사용하는 근사 비교이며,
-            CoinGlass·TradingView 값과 동일한 지수가 아닙니다. USDT와 USDC를 포함하므로 세 값을
-            더하지 않습니다.
-          </p>
-          <p>
-            스테이블코인 원천:{' '}
-            <a href="https://defillama.com/stablecoins" target="_blank" rel="noreferrer">
-              DefiLlama Stablecoins
-            </a>
-            . 날짜는 각 카드에 표시합니다. 이력은 서비스에서 실제로 수집한 시점부터 쌓으며 다른
-            산식의 과거 값과 연결하지 않습니다.
-          </p>
-        </div>
       </details>
     </>
   );

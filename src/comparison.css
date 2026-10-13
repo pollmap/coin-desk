@@ -335,6 +335,21 @@
   height: 390px;
   width: 100%;
 }
+.comparison-chart-surface {
+  position: relative;
+}
+.comparison-hover-reading {
+  position: absolute;
+  top: 8px;
+  left: 12px;
+  z-index: 2;
+  padding: 4px 8px;
+  background: var(--panel);
+  color: var(--text);
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+  pointer-events: none;
+}
 .comparison-caption {
   padding: 12px 18px;
   color: var(--muted);
@@ -675,7 +690,7 @@
   }
   .indicator-comparison-toolbar {
     display: grid;
-    grid-template-columns: minmax(56px, 1fr) auto 40px 40px;
+    grid-template-columns: minmax(56px, 1fr) 44px;
     gap: 4px;
   }
   .indicator-comparison-toolbar > select {
@@ -685,6 +700,8 @@
   }
   .indicator-comparison-toolbar button {
     padding: 8px;
+    min-height: 44px;
+    min-width: 44px;
     white-space: nowrap;
   }
   .indicator-comparison-results :is(td, th) {

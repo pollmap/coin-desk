@@ -8,6 +8,7 @@ const SearchDialog = lazy(() => import('./SearchDialog'));
 export function ProductTopbar() {
   const location = useLocation(),
     p = new URLSearchParams(location.search);
+  const marketRoute = location.pathname === '/' || location.pathname === '/coins';
   const asset =
     ASSETS.find((a) => a.id === (location.pathname.split('/')[2] || p.get('asset')))?.id ?? 'BTC';
   const [query, setQuery] = useState(''),
@@ -31,9 +32,7 @@ export function ProductTopbar() {
               ? '내 저장'
               : location.pathname === '/compare'
                 ? '코인 비교'
-                : location.pathname === '/status'
-                  ? '데이터 상태'
-                  : '보리차트') + ' | 보리차트';
+                : '보리차트') + ' | 보리차트';
   }, [location.pathname, location.search]);
   useEffect(() => {
     const modalIsOpen = () =>
@@ -95,21 +94,23 @@ export function ProductTopbar() {
           <Bookmark size={20} aria-hidden="true" />내 저장
         </NavLink>
       </nav>
-      <button
-        ref={searchButton}
-        className="product-search search-trigger"
-        aria-label="코인·지표 검색 열기"
-        aria-expanded={searchOpen}
-        onClick={() => {
-          searchReturn.current = searchButton.current;
-          setQuery('');
-          setSearchOpen(true);
-        }}
-      >
-        <Search size={18} aria-hidden="true" />
-        <span>코인·지표 검색</span>
-        <kbd>/</kbd>
-      </button>
+      {!marketRoute && (
+        <button
+          ref={searchButton}
+          className="product-search search-trigger"
+          aria-label="코인·지표 검색 열기"
+          aria-expanded={searchOpen}
+          onClick={() => {
+            searchReturn.current = searchButton.current;
+            setQuery('');
+            setSearchOpen(true);
+          }}
+        >
+          <Search size={18} aria-hidden="true" />
+          <span>코인·지표 검색</span>
+          <kbd>/</kbd>
+        </button>
+      )}
       {searchOpen && (
         <Suspense fallback={null}>
           <SearchDialog
@@ -138,7 +139,6 @@ export function ProductTopbar() {
           <Link to={'/learn?' + new URLSearchParams({ ...Object.fromEntries(p), asset })}>
             지표 사전
           </Link>
-          <Link to="/status">데이터 상태</Link>
           <Link to="/workspace/library">개인 자료함</Link>
           <Link to="/brand">브랜드</Link>
         </nav>

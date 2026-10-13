@@ -1,0 +1,2623 @@
+{
+  "version": "2.0.0",
+  "reviewedAt": "2026-10-14",
+  "scope": "150 frozen registry assets; provider taxonomy and bounded official project descriptions; editorial relationships, not investment classifications",
+  "records": [
+    {
+      "asset": "BTC",
+      "themes": ["infrastructure", "payments"],
+      "evidence": {
+        "url": "https://datalab.upbit.com/assets/BTC/summary",
+        "provider": "Upbit DataLab",
+        "checkedAt": "2026-10-14",
+        "review": "reviewed",
+        "basis": "editorial",
+        "note": "업비트 제공 분류를 대조한 보리차트의 편집 연결입니다. 토큰의 권리·가격 원인·전체 시장 순위를 뜻하지 않습니다."
+      },
+      "providerClassification": {
+        "level1Code": "SCTIDXA",
+        "level1Name": "인프라",
+        "level2Code": "SCTIDXA01",
+        "level2Name": "지급결제 인프라",
+        "level3Code": "SCTIDXA01-01",
+        "level3Name": "지급결제 인프라"
+      }
+    },
+    {
+      "asset": "DOGE",
+      "themes": ["memes"],
+      "evidence": {
+        "url": "https://datalab.upbit.com/assets/DOGE/summary",
+        "provider": "Upbit DataLab",
+        "checkedAt": "2026-10-14",
+        "review": "reviewed",
+        "basis": "editorial",
+        "note": "업비트 제공 분류를 대조한 보리차트의 편집 연결입니다. 토큰의 권리·가격 원인·전체 시장 순위를 뜻하지 않습니다."
+      },
+      "providerClassification": {
+        "level1Code": "SCTIDXE",
+        "level1Name": "밈",
+        "level2Code": "SCTIDXE01",
+        "level2Name": "밈",
+        "level3Code": "SCTIDXE01-01",
+        "level3Name": "밈"
+      }
+    },
+    {
+      "asset": "ETH",
+      "themes": ["platforms"],
+      "evidence": {
+        "url": "https://datalab.upbit.com/assets/ETH/summary",
+        "provider": "Upbit DataLab",
+        "checkedAt": "2026-10-14",
+        "review": "reviewed",
+        "basis": "editorial",
+        "note": "업비트 제공 분류를 대조한 보리차트의 편집 연결입니다. 토큰의 권리·가격 원인·전체 시장 순위를 뜻하지 않습니다."
+      },
+      "providerClassification": {
+        "level1Code": "SCTIDXB",
+        "level1Name": "스마트 컨트랙트 플랫폼",
+        "level2Code": "SCTIDXB02",
+        "level2Name": "모듈러 블록체인",
+        "level3Code": "SCTIDXB02-01",
+        "level3Name": "모듈러 블록체인"
+      }
+    },
+    {
+      "asset": "SOL",
+      "themes": ["platforms"],
+      "evidence": {
+        "url": "https://datalab.upbit.com/assets/SOL/summary",
+        "provider": "Upbit DataLab",
+        "checkedAt": "2026-10-14",
+        "review": "reviewed",
+        "basis": "editorial",
+        "note": "업비트 제공 분류를 대조한 보리차트의 편집 연결입니다. 토큰의 권리·가격 원인·전체 시장 순위를 뜻하지 않습니다."
+      },
+      "providerClassification": {
+        "level1Code": "SCTIDXB",
+        "level1Name": "스마트 컨트랙트 플랫폼",
+        "level2Code": "SCTIDXB01",
+        "level2Name": "모놀리식 블록체인",
+        "level3Code": "SCTIDXB01-01",
+        "level3Name": "모놀리식 블록체인"
+      }
+    },
+    {
+      "asset": "XRP",
+      "themes": ["infrastructure", "payments"],
+      "evidence": {
+        "url": "https://datalab.upbit.com/assets/XRP/summary",
+        "provider": "Upbit DataLab",
+        "checkedAt": "2026-10-14",
+        "review": "reviewed",
+        "basis": "editorial",
+        "note": "업비트 제공 분류를 대조한 보리차트의 편집 연결입니다. 토큰의 권리·가격 원인·전체 시장 순위를 뜻하지 않습니다."
+      },
+      "providerClassification": {
+        "level1Code": "SCTIDXA",
+        "level1Name": "인프라",
+        "level2Code": "SCTIDXA01",
+        "level2Name": "지급결제 인프라",
+        "level3Code": "SCTIDXA01-01",
+        "level3Name": "지급결제 인프라"
+      }
+    },
+    {
+      "asset": "LINK",
+      "themes": ["infrastructure", "oracles"],
+      "evidence": {
+        "url": "https://datalab.upbit.com/assets/LINK/summary",
+        "provider": "Upbit DataLab",
+        "checkedAt": "2026-10-14",
+        "review": "reviewed",
+        "basis": "editorial",
+        "note": "업비트 제공 분류를 대조한 보리차트의 편집 연결입니다. 토큰의 권리·가격 원인·전체 시장 순위를 뜻하지 않습니다."
+      },
+      "providerClassification": {
+        "level1Code": "SCTIDXA",
+        "level1Name": "인프라",
+        "level2Code": "SCTIDXA03",
+        "level2Name": "디앱 인프라",
+        "level3Code": "SCTIDXA03-01",
+        "level3Name": "오라클"
+      }
+    },
+    {
+      "asset": "ONDO",
+      "themes": ["defi", "rwa"],
+      "evidence": {
+        "url": "https://datalab.upbit.com/assets/ONDO/summary",
+        "provider": "Upbit DataLab",
+        "checkedAt": "2026-10-14",
+        "review": "reviewed",
+        "basis": "editorial",
+        "note": "업비트 제공 분류를 대조한 보리차트의 편집 연결입니다. 토큰의 권리·가격 원인·전체 시장 순위를 뜻하지 않습니다."
+      },
+      "providerClassification": {
+        "level1Code": "SCTIDXC",
+        "level1Name": "디파이",
+        "level2Code": "SCTIDXC03",
+        "level2Name": "예치",
+        "level3Code": "SCTIDXC03-04",
+        "level3Name": "RWA"
+      }
+    },
+    {
+      "asset": "PEPE",
+      "themes": ["memes"],
+      "evidence": {
+        "url": "https://datalab.upbit.com/assets/PEPE/summary",
+        "provider": "Upbit DataLab",
+        "checkedAt": "2026-10-14",
+        "review": "reviewed",
+        "basis": "editorial",
+        "note": "업비트 제공 분류를 대조한 보리차트의 편집 연결입니다. 토큰의 권리·가격 원인·전체 시장 순위를 뜻하지 않습니다."
+      },
+      "providerClassification": {
+        "level1Code": "SCTIDXE",
+        "level1Name": "밈",
+        "level2Code": "SCTIDXE01",
+        "level2Name": "밈",
+        "level3Code": "SCTIDXE01-01",
+        "level3Name": "밈"
+      }
+    },
+    {
+      "asset": "PENGU",
+      "themes": ["memes"],
+      "evidence": {
+        "url": "https://datalab.upbit.com/assets/PENGU/summary",
+        "provider": "Upbit DataLab",
+        "checkedAt": "2026-10-14",
+        "review": "reviewed",
+        "basis": "editorial",
+        "note": "업비트 제공 분류를 대조한 보리차트의 편집 연결입니다. 토큰의 권리·가격 원인·전체 시장 순위를 뜻하지 않습니다."
+      },
+      "providerClassification": {
+        "level1Code": "SCTIDXE",
+        "level1Name": "밈",
+        "level2Code": "SCTIDXE01",
+        "level2Name": "밈",
+        "level3Code": "SCTIDXE01-01",
+        "level3Name": "밈"
+      }
+    },
+    {
+      "asset": "TRX",
+      "themes": ["platforms"],
+      "evidence": {
+        "url": "https://datalab.upbit.com/assets/TRX/summary",
+        "provider": "Upbit DataLab",
+        "checkedAt": "2026-10-14",
+        "review": "reviewed",
+        "basis": "editorial",
+        "note": "업비트 제공 분류를 대조한 보리차트의 편집 연결입니다. 토큰의 권리·가격 원인·전체 시장 순위를 뜻하지 않습니다."
+      },
+      "providerClassification": {
+        "level1Code": "SCTIDXB",
+        "level1Name": "스마트 컨트랙트 플랫폼",
+        "level2Code": "SCTIDXB01",
+        "level2Name": "모놀리식 블록체인",
+        "level3Code": "SCTIDXB01-01",
+        "level3Name": "모놀리식 블록체인"
+      }
+    },
+    {
+      "asset": "ADA",
+      "themes": ["platforms"],
+      "evidence": {
+        "url": "https://datalab.upbit.com/assets/ADA/summary",
+        "provider": "Upbit DataLab",
+        "checkedAt": "2026-10-14",
+        "review": "reviewed",
+        "basis": "editorial",
+        "note": "업비트 제공 분류를 대조한 보리차트의 편집 연결입니다. 토큰의 권리·가격 원인·전체 시장 순위를 뜻하지 않습니다."
+      },
+      "providerClassification": {
+        "level1Code": "SCTIDXB",
+        "level1Name": "스마트 컨트랙트 플랫폼",
+        "level2Code": "SCTIDXB01",
+        "level2Name": "모놀리식 블록체인",
+        "level3Code": "SCTIDXB01-01",
+        "level3Name": "모놀리식 블록체인"
+      }
+    },
+    {
+      "asset": "XLM",
+      "themes": ["infrastructure", "payments"],
+      "evidence": {
+        "url": "https://datalab.upbit.com/assets/XLM/summary",
+        "provider": "Upbit DataLab",
+        "checkedAt": "2026-10-14",
+        "review": "reviewed",
+        "basis": "editorial",
+        "note": "업비트 제공 분류를 대조한 보리차트의 편집 연결입니다. 토큰의 권리·가격 원인·전체 시장 순위를 뜻하지 않습니다."
+      },
+      "providerClassification": {
+        "level1Code": "SCTIDXA",
+        "level1Name": "인프라",
+        "level2Code": "SCTIDXA01",
+        "level2Name": "지급결제 인프라",
+        "level3Code": "SCTIDXA01-01",
+        "level3Name": "지급결제 인프라"
+      }
+    },
+    {
+      "asset": "NEAR",
+      "themes": ["platforms"],
+      "evidence": {
+        "url": "https://datalab.upbit.com/assets/NEAR/summary",
+        "provider": "Upbit DataLab",
+        "checkedAt": "2026-10-14",
+        "review": "reviewed",
+        "basis": "editorial",
+        "note": "업비트 제공 분류를 대조한 보리차트의 편집 연결입니다. 토큰의 권리·가격 원인·전체 시장 순위를 뜻하지 않습니다."
+      },
+      "providerClassification": {
+        "level1Code": "SCTIDXB",
+        "level1Name": "스마트 컨트랙트 플랫폼",
+        "level2Code": "SCTIDXB01",
+        "level2Name": "모놀리식 블록체인",
+        "level3Code": "SCTIDXB01-01",
+        "level3Name": "모놀리식 블록체인"
+      }
+    },
+    {
+      "asset": "BCH",
+      "themes": ["infrastructure", "payments"],
+      "evidence": {
+        "url": "https://datalab.upbit.com/assets/BCH/summary",
+        "provider": "Upbit DataLab",
+        "checkedAt": "2026-10-14",
+        "review": "reviewed",
+        "basis": "editorial",
+        "note": "업비트 제공 분류를 대조한 보리차트의 편집 연결입니다. 토큰의 권리·가격 원인·전체 시장 순위를 뜻하지 않습니다."
+      },
+      "providerClassification": {
+        "level1Code": "SCTIDXA",
+        "level1Name": "인프라",
+        "level2Code": "SCTIDXA01",
+        "level2Name": "지급결제 인프라",
+        "level3Code": "SCTIDXA01-01",
+        "level3Name": "지급결제 인프라"
+      }
+    },
+    {
+      "asset": "UNI",
+      "themes": ["defi", "dex"],
+      "evidence": {
+        "url": "https://datalab.upbit.com/assets/UNI/summary",
+        "provider": "Upbit DataLab",
+        "checkedAt": "2026-10-14",
+        "review": "reviewed",
+        "basis": "editorial",
+        "note": "업비트 제공 분류를 대조한 보리차트의 편집 연결입니다. 토큰의 권리·가격 원인·전체 시장 순위를 뜻하지 않습니다."
+      },
+      "providerClassification": {
+        "level1Code": "SCTIDXC",
+        "level1Name": "디파이",
+        "level2Code": "SCTIDXC02",
+        "level2Name": "교환",
+        "level3Code": "SCTIDXC02-03",
+        "level3Name": "DEX"
+      }
+    },
+    {
+      "asset": "AVAX",
+      "themes": ["platforms"],
+      "evidence": {
+        "url": "https://datalab.upbit.com/assets/AVAX/summary",
+        "provider": "Upbit DataLab",
+        "checkedAt": "2026-10-14",
+        "review": "reviewed",
+        "basis": "editorial",
+        "note": "업비트 제공 분류를 대조한 보리차트의 편집 연결입니다. 토큰의 권리·가격 원인·전체 시장 순위를 뜻하지 않습니다."
+      },
+      "providerClassification": {
+        "level1Code": "SCTIDXB",
+        "level1Name": "스마트 컨트랙트 플랫폼",
+        "level2Code": "SCTIDXB01",
+        "level2Name": "모놀리식 블록체인",
+        "level3Code": "SCTIDXB01-01",
+        "level3Name": "모놀리식 블록체인"
+      }
+    },
+    {
+      "asset": "HBAR",
+      "themes": ["platforms"],
+      "evidence": {
+        "url": "https://datalab.upbit.com/assets/HBAR/summary",
+        "provider": "Upbit DataLab",
+        "checkedAt": "2026-10-14",
+        "review": "reviewed",
+        "basis": "editorial",
+        "note": "업비트 제공 분류를 대조한 보리차트의 편집 연결입니다. 토큰의 권리·가격 원인·전체 시장 순위를 뜻하지 않습니다."
+      },
+      "providerClassification": {
+        "level1Code": "SCTIDXB",
+        "level1Name": "스마트 컨트랙트 플랫폼",
+        "level2Code": "SCTIDXB01",
+        "level2Name": "모놀리식 블록체인",
+        "level3Code": "SCTIDXB01-01",
+        "level3Name": "모놀리식 블록체인"
+      }
+    },
+    {
+      "asset": "SUI",
+      "themes": ["platforms"],
+      "evidence": {
+        "url": "https://datalab.upbit.com/assets/SUI/summary",
+        "provider": "Upbit DataLab",
+        "checkedAt": "2026-10-14",
+        "review": "reviewed",
+        "basis": "editorial",
+        "note": "업비트 제공 분류를 대조한 보리차트의 편집 연결입니다. 토큰의 권리·가격 원인·전체 시장 순위를 뜻하지 않습니다."
+      },
+      "providerClassification": {
+        "level1Code": "SCTIDXB",
+        "level1Name": "스마트 컨트랙트 플랫폼",
+        "level2Code": "SCTIDXB01",
+        "level2Name": "모놀리식 블록체인",
+        "level3Code": "SCTIDXB01-01",
+        "level3Name": "모놀리식 블록체인"
+      }
+    },
+    {
+      "asset": "SHIB",
+      "themes": ["memes"],
+      "evidence": {
+        "url": "https://datalab.upbit.com/assets/SHIB/summary",
+        "provider": "Upbit DataLab",
+        "checkedAt": "2026-10-14",
+        "review": "reviewed",
+        "basis": "editorial",
+        "note": "업비트 제공 분류를 대조한 보리차트의 편집 연결입니다. 토큰의 권리·가격 원인·전체 시장 순위를 뜻하지 않습니다."
+      },
+      "providerClassification": {
+        "level1Code": "SCTIDXE",
+        "level1Name": "밈",
+        "level2Code": "SCTIDXE01",
+        "level2Name": "밈",
+        "level3Code": "SCTIDXE01-01",
+        "level3Name": "밈"
+      }
+    },
+    {
+      "asset": "TAO",
+      "themes": ["infrastructure", "depin", "ai"],
+      "evidence": {
+        "url": "https://datalab.upbit.com/assets/TAO/summary",
+        "provider": "Upbit DataLab",
+        "checkedAt": "2026-10-14",
+        "review": "reviewed",
+        "basis": "editorial",
+        "note": "업비트 제공 분류를 대조한 보리차트의 편집 연결입니다. 토큰의 권리·가격 원인·전체 시장 순위를 뜻하지 않습니다."
+      },
+      "providerClassification": {
+        "level1Code": "SCTIDXA",
+        "level1Name": "인프라",
+        "level2Code": "SCTIDXA05",
+        "level2Name": "DePIN",
+        "level3Code": "SCTIDXA05-01",
+        "level3Name": "AI"
+      }
+    },
+    {
+      "asset": "AAVE",
+      "themes": ["defi", "lending"],
+      "evidence": {
+        "url": "https://datalab.upbit.com/assets/AAVE/summary",
+        "provider": "Upbit DataLab",
+        "checkedAt": "2026-10-14",
+        "review": "reviewed",
+        "basis": "editorial",
+        "note": "업비트 제공 분류를 대조한 보리차트의 편집 연결입니다. 토큰의 권리·가격 원인·전체 시장 순위를 뜻하지 않습니다."
+      },
+      "providerClassification": {
+        "level1Code": "SCTIDXC",
+        "level1Name": "디파이",
+        "level2Code": "SCTIDXC03",
+        "level2Name": "예치",
+        "level3Code": "SCTIDXC03-01",
+        "level3Name": "렌딩"
+      }
+    },
+    {
+      "asset": "MNT",
+      "themes": ["platforms"],
+      "evidence": {
+        "url": "https://datalab.upbit.com/assets/MNT/summary",
+        "provider": "Upbit DataLab",
+        "checkedAt": "2026-10-14",
+        "review": "reviewed",
+        "basis": "editorial",
+        "note": "업비트 제공 분류를 대조한 보리차트의 편집 연결입니다. 토큰의 권리·가격 원인·전체 시장 순위를 뜻하지 않습니다."
+      },
+      "providerClassification": {
+        "level1Code": "SCTIDXB",
+        "level1Name": "스마트 컨트랙트 플랫폼",
+        "level2Code": "SCTIDXB02",
+        "level2Name": "모듈러 블록체인",
+        "level3Code": "SCTIDXB02-01",
+        "level3Name": "모듈러 블록체인"
+      }
+    },
+    {
+      "asset": "DOT",
+      "themes": ["platforms"],
+      "evidence": {
+        "url": "https://datalab.upbit.com/assets/DOT/summary",
+        "provider": "Upbit DataLab",
+        "checkedAt": "2026-10-14",
+        "review": "reviewed",
+        "basis": "editorial",
+        "note": "업비트 제공 분류를 대조한 보리차트의 편집 연결입니다. 토큰의 권리·가격 원인·전체 시장 순위를 뜻하지 않습니다."
+      },
+      "providerClassification": {
+        "level1Code": "SCTIDXB",
+        "level1Name": "스마트 컨트랙트 플랫폼",
+        "level2Code": "SCTIDXB02",
+        "level2Name": "모듈러 블록체인",
+        "level3Code": "SCTIDXB02-01",
+        "level3Name": "모듈러 블록체인"
+      }
+    },
+    {
+      "asset": "ICP",
+      "themes": ["platforms"],
+      "evidence": {
+        "url": "https://datalab.upbit.com/assets/ICP/summary",
+        "provider": "Upbit DataLab",
+        "checkedAt": "2026-10-14",
+        "review": "reviewed",
+        "basis": "editorial",
+        "note": "업비트 제공 분류를 대조한 보리차트의 편집 연결입니다. 토큰의 권리·가격 원인·전체 시장 순위를 뜻하지 않습니다."
+      },
+      "providerClassification": {
+        "level1Code": "SCTIDXB",
+        "level1Name": "스마트 컨트랙트 플랫폼",
+        "level2Code": "SCTIDXB01",
+        "level2Name": "모놀리식 블록체인",
+        "level3Code": "SCTIDXB01-01",
+        "level3Name": "모놀리식 블록체인"
+      }
+    },
+    {
+      "asset": "XAUT",
+      "themes": ["rwa"],
+      "evidence": {
+        "url": "https://datalab.upbit.com/assets/XAUT/summary",
+        "provider": "Upbit DataLab",
+        "checkedAt": "2026-10-14",
+        "review": "reviewed",
+        "basis": "editorial",
+        "note": "업비트 제공 분류를 대조한 보리차트의 편집 연결입니다. 토큰의 권리·가격 원인·전체 시장 순위를 뜻하지 않습니다."
+      },
+      "providerClassification": {
+        "level1Code": "SCTIDXC",
+        "level1Name": "디파이",
+        "level2Code": "SCTIDXC03",
+        "level2Name": "예치",
+        "level3Code": "SCTIDXC03-04",
+        "level3Name": "RWA"
+      }
+    },
+    {
+      "asset": "ENA",
+      "themes": ["defi", "stablecoin-related"],
+      "evidence": {
+        "url": "https://datalab.upbit.com/assets/ENA/summary",
+        "provider": "Upbit DataLab",
+        "checkedAt": "2026-10-14",
+        "review": "reviewed",
+        "basis": "editorial",
+        "note": "업비트 제공 분류를 대조한 보리차트의 편집 연결입니다. 토큰의 권리·가격 원인·전체 시장 순위를 뜻하지 않습니다."
+      },
+      "providerClassification": {
+        "level1Code": "SCTIDXC",
+        "level1Name": "디파이",
+        "level2Code": "SCTIDXC01",
+        "level2Name": "스테이블 코인 그룹",
+        "level3Code": "SCTIDXC01-02",
+        "level3Name": "스테이블 코인 연관 자산"
+      }
+    },
+    {
+      "asset": "JST",
+      "themes": ["defi", "lending"],
+      "evidence": {
+        "url": "https://datalab.upbit.com/assets/JST/summary",
+        "provider": "Upbit DataLab",
+        "checkedAt": "2026-10-14",
+        "review": "reviewed",
+        "basis": "editorial",
+        "note": "업비트 제공 분류를 대조한 보리차트의 편집 연결입니다. 토큰의 권리·가격 원인·전체 시장 순위를 뜻하지 않습니다."
+      },
+      "providerClassification": {
+        "level1Code": "SCTIDXC",
+        "level1Name": "디파이",
+        "level2Code": "SCTIDXC03",
+        "level2Name": "예치",
+        "level3Code": "SCTIDXC03-01",
+        "level3Name": "렌딩"
+      }
+    },
+    {
+      "asset": "WLFI",
+      "themes": ["defi", "lending"],
+      "evidence": {
+        "url": "https://datalab.upbit.com/assets/WLFI/summary",
+        "provider": "Upbit DataLab",
+        "checkedAt": "2026-10-14",
+        "review": "reviewed",
+        "basis": "editorial",
+        "note": "업비트 제공 분류를 대조한 보리차트의 편집 연결입니다. 토큰의 권리·가격 원인·전체 시장 순위를 뜻하지 않습니다."
+      },
+      "providerClassification": {
+        "level1Code": "SCTIDXC",
+        "level1Name": "디파이",
+        "level2Code": "SCTIDXC03",
+        "level2Name": "예치",
+        "level3Code": "SCTIDXC03-01",
+        "level3Name": "렌딩"
+      }
+    },
+    {
+      "asset": "ETC",
+      "themes": ["platforms"],
+      "evidence": {
+        "url": "https://datalab.upbit.com/assets/ETC/summary",
+        "provider": "Upbit DataLab",
+        "checkedAt": "2026-10-14",
+        "review": "reviewed",
+        "basis": "editorial",
+        "note": "업비트 제공 분류를 대조한 보리차트의 편집 연결입니다. 토큰의 권리·가격 원인·전체 시장 순위를 뜻하지 않습니다."
+      },
+      "providerClassification": {
+        "level1Code": "SCTIDXB",
+        "level1Name": "스마트 컨트랙트 플랫폼",
+        "level2Code": "SCTIDXB01",
+        "level2Name": "모놀리식 블록체인",
+        "level3Code": "SCTIDXB01-01",
+        "level3Name": "모놀리식 블록체인"
+      }
+    },
+    {
+      "asset": "ALGO",
+      "themes": ["platforms"],
+      "evidence": {
+        "url": "https://datalab.upbit.com/assets/ALGO/summary",
+        "provider": "Upbit DataLab",
+        "checkedAt": "2026-10-14",
+        "review": "reviewed",
+        "basis": "editorial",
+        "note": "업비트 제공 분류를 대조한 보리차트의 편집 연결입니다. 토큰의 권리·가격 원인·전체 시장 순위를 뜻하지 않습니다."
+      },
+      "providerClassification": {
+        "level1Code": "SCTIDXB",
+        "level1Name": "스마트 컨트랙트 플랫폼",
+        "level2Code": "SCTIDXB01",
+        "level2Name": "모놀리식 블록체인",
+        "level3Code": "SCTIDXB01-01",
+        "level3Name": "모놀리식 블록체인"
+      }
+    },
+    {
+      "asset": "WLD",
+      "themes": ["infrastructure", "identity"],
+      "evidence": {
+        "url": "https://datalab.upbit.com/assets/WLD/summary",
+        "provider": "Upbit DataLab",
+        "checkedAt": "2026-10-14",
+        "review": "reviewed",
+        "basis": "editorial",
+        "note": "업비트 제공 분류를 대조한 보리차트의 편집 연결입니다. 토큰의 권리·가격 원인·전체 시장 순위를 뜻하지 않습니다."
+      },
+      "providerClassification": {
+        "level1Code": "SCTIDXA",
+        "level1Name": "인프라",
+        "level2Code": "SCTIDXA04",
+        "level2Name": "유저 인프라",
+        "level3Code": "SCTIDXA04-01",
+        "level3Name": "DID"
+      }
+    },
+    {
+      "asset": "RENDER",
+      "themes": ["infrastructure", "depin", "ai"],
+      "evidence": {
+        "url": "https://datalab.upbit.com/assets/RENDER/summary",
+        "provider": "Upbit DataLab",
+        "checkedAt": "2026-10-14",
+        "review": "reviewed",
+        "basis": "editorial",
+        "note": "업비트 제공 분류를 대조한 보리차트의 편집 연결입니다. 토큰의 권리·가격 원인·전체 시장 순위를 뜻하지 않습니다."
+      },
+      "providerClassification": {
+        "level1Code": "SCTIDXA",
+        "level1Name": "인프라",
+        "level2Code": "SCTIDXA05",
+        "level2Name": "DePIN",
+        "level3Code": "SCTIDXA05-01",
+        "level3Name": "AI"
+      }
+    },
+    {
+      "asset": "ARB",
+      "themes": ["platforms"],
+      "evidence": {
+        "url": "https://datalab.upbit.com/assets/ARB/summary",
+        "provider": "Upbit DataLab",
+        "checkedAt": "2026-10-14",
+        "review": "reviewed",
+        "basis": "editorial",
+        "note": "업비트 제공 분류를 대조한 보리차트의 편집 연결입니다. 토큰의 권리·가격 원인·전체 시장 순위를 뜻하지 않습니다."
+      },
+      "providerClassification": {
+        "level1Code": "SCTIDXB",
+        "level1Name": "스마트 컨트랙트 플랫폼",
+        "level2Code": "SCTIDXB02",
+        "level2Name": "모듈러 블록체인",
+        "level3Code": "SCTIDXB02-01",
+        "level3Name": "모듈러 블록체인"
+      }
+    },
+    {
+      "asset": "ATOM",
+      "themes": ["platforms"],
+      "evidence": {
+        "url": "https://datalab.upbit.com/assets/ATOM/summary",
+        "provider": "Upbit DataLab",
+        "checkedAt": "2026-10-14",
+        "review": "reviewed",
+        "basis": "editorial",
+        "note": "업비트 제공 분류를 대조한 보리차트의 편집 연결입니다. 토큰의 권리·가격 원인·전체 시장 순위를 뜻하지 않습니다."
+      },
+      "providerClassification": {
+        "level1Code": "SCTIDXB",
+        "level1Name": "스마트 컨트랙트 플랫폼",
+        "level2Code": "SCTIDXB01",
+        "level2Name": "모놀리식 블록체인",
+        "level3Code": "SCTIDXB01-01",
+        "level3Name": "모놀리식 블록체인"
+      }
+    },
+    {
+      "asset": "VVV",
+      "themes": ["infrastructure", "depin", "ai"],
+      "evidence": {
+        "url": "https://datalab.upbit.com/assets/VVV/summary",
+        "provider": "Upbit DataLab",
+        "checkedAt": "2026-10-14",
+        "review": "reviewed",
+        "basis": "editorial",
+        "note": "업비트 제공 분류를 대조한 보리차트의 편집 연결입니다. 토큰의 권리·가격 원인·전체 시장 순위를 뜻하지 않습니다."
+      },
+      "providerClassification": {
+        "level1Code": "SCTIDXA",
+        "level1Name": "인프라",
+        "level2Code": "SCTIDXA05",
+        "level2Name": "DePIN",
+        "level3Code": "SCTIDXA05-01",
+        "level3Name": "AI"
+      }
+    },
+    {
+      "asset": "MORPHO",
+      "themes": ["defi", "lending"],
+      "evidence": {
+        "url": "https://datalab.upbit.com/assets/MORPHO/summary",
+        "provider": "Upbit DataLab",
+        "checkedAt": "2026-10-14",
+        "review": "reviewed",
+        "basis": "editorial",
+        "note": "업비트 제공 분류를 대조한 보리차트의 편집 연결입니다. 토큰의 권리·가격 원인·전체 시장 순위를 뜻하지 않습니다."
+      },
+      "providerClassification": {
+        "level1Code": "SCTIDXC",
+        "level1Name": "디파이",
+        "level2Code": "SCTIDXC03",
+        "level2Name": "예치",
+        "level3Code": "SCTIDXC03-01",
+        "level3Name": "렌딩"
+      }
+    },
+    {
+      "asset": "FIL",
+      "themes": ["infrastructure", "depin", "storage"],
+      "evidence": {
+        "url": "https://datalab.upbit.com/assets/FIL/summary",
+        "provider": "Upbit DataLab",
+        "checkedAt": "2026-10-14",
+        "review": "reviewed",
+        "basis": "editorial",
+        "note": "업비트 제공 분류를 대조한 보리차트의 편집 연결입니다. 토큰의 권리·가격 원인·전체 시장 순위를 뜻하지 않습니다."
+      },
+      "providerClassification": {
+        "level1Code": "SCTIDXA",
+        "level1Name": "인프라",
+        "level2Code": "SCTIDXA05",
+        "level2Name": "DePIN",
+        "level3Code": "SCTIDXA05-03",
+        "level3Name": "스토리지"
+      }
+    },
+    {
+      "asset": "AERO",
+      "themes": ["defi", "dex"],
+      "evidence": {
+        "url": "https://datalab.upbit.com/assets/AERO/summary",
+        "provider": "Upbit DataLab",
+        "checkedAt": "2026-10-14",
+        "review": "reviewed",
+        "basis": "editorial",
+        "note": "업비트 제공 분류를 대조한 보리차트의 편집 연결입니다. 토큰의 권리·가격 원인·전체 시장 순위를 뜻하지 않습니다."
+      },
+      "providerClassification": {
+        "level1Code": "SCTIDXC",
+        "level1Name": "디파이",
+        "level2Code": "SCTIDXC02",
+        "level2Name": "교환",
+        "level3Code": "SCTIDXC02-03",
+        "level3Name": "DEX"
+      }
+    },
+    {
+      "asset": "STX",
+      "themes": ["platforms"],
+      "evidence": {
+        "url": "https://datalab.upbit.com/assets/STX/summary",
+        "provider": "Upbit DataLab",
+        "checkedAt": "2026-10-14",
+        "review": "reviewed",
+        "basis": "editorial",
+        "note": "업비트 제공 분류를 대조한 보리차트의 편집 연결입니다. 토큰의 권리·가격 원인·전체 시장 순위를 뜻하지 않습니다."
+      },
+      "providerClassification": {
+        "level1Code": "SCTIDXB",
+        "level1Name": "스마트 컨트랙트 플랫폼",
+        "level2Code": "SCTIDXB02",
+        "level2Name": "모듈러 블록체인",
+        "level3Code": "SCTIDXB02-01",
+        "level3Name": "모듈러 블록체인"
+      }
+    },
+    {
+      "asset": "INJ",
+      "themes": ["platforms"],
+      "evidence": {
+        "url": "https://datalab.upbit.com/assets/INJ/summary",
+        "provider": "Upbit DataLab",
+        "checkedAt": "2026-10-14",
+        "review": "reviewed",
+        "basis": "editorial",
+        "note": "업비트 제공 분류를 대조한 보리차트의 편집 연결입니다. 토큰의 권리·가격 원인·전체 시장 순위를 뜻하지 않습니다."
+      },
+      "providerClassification": {
+        "level1Code": "SCTIDXB",
+        "level1Name": "스마트 컨트랙트 플랫폼",
+        "level2Code": "SCTIDXB01",
+        "level2Name": "모놀리식 블록체인",
+        "level3Code": "SCTIDXB01-01",
+        "level3Name": "모놀리식 블록체인"
+      }
+    },
+    {
+      "asset": "VET",
+      "themes": ["platforms"],
+      "evidence": {
+        "url": "https://datalab.upbit.com/assets/VET/summary",
+        "provider": "Upbit DataLab",
+        "checkedAt": "2026-10-14",
+        "review": "reviewed",
+        "basis": "editorial",
+        "note": "업비트 제공 분류를 대조한 보리차트의 편집 연결입니다. 토큰의 권리·가격 원인·전체 시장 순위를 뜻하지 않습니다."
+      },
+      "providerClassification": {
+        "level1Code": "SCTIDXB",
+        "level1Name": "스마트 컨트랙트 플랫폼",
+        "level2Code": "SCTIDXB01",
+        "level2Name": "모놀리식 블록체인",
+        "level3Code": "SCTIDXB01-01",
+        "level3Name": "모놀리식 블록체인"
+      }
+    },
+    {
+      "asset": "RAY",
+      "themes": ["defi", "dex"],
+      "evidence": {
+        "url": "https://datalab.upbit.com/assets/RAY/summary",
+        "provider": "Upbit DataLab",
+        "checkedAt": "2026-10-14",
+        "review": "reviewed",
+        "basis": "editorial",
+        "note": "업비트 제공 분류를 대조한 보리차트의 편집 연결입니다. 토큰의 권리·가격 원인·전체 시장 순위를 뜻하지 않습니다."
+      },
+      "providerClassification": {
+        "level1Code": "SCTIDXC",
+        "level1Name": "디파이",
+        "level2Code": "SCTIDXC02",
+        "level2Name": "교환",
+        "level3Code": "SCTIDXC02-03",
+        "level3Name": "DEX"
+      }
+    },
+    {
+      "asset": "CRO",
+      "themes": ["platforms"],
+      "evidence": {
+        "url": "https://datalab.upbit.com/assets/CRO/summary",
+        "provider": "Upbit DataLab",
+        "checkedAt": "2026-10-14",
+        "review": "reviewed",
+        "basis": "editorial",
+        "note": "업비트 제공 분류를 대조한 보리차트의 편집 연결입니다. 토큰의 권리·가격 원인·전체 시장 순위를 뜻하지 않습니다."
+      },
+      "providerClassification": {
+        "level1Code": "SCTIDXB",
+        "level1Name": "스마트 컨트랙트 플랫폼",
+        "level2Code": "SCTIDXB01",
+        "level2Name": "모놀리식 블록체인",
+        "level3Code": "SCTIDXB01-01",
+        "level3Name": "모놀리식 블록체인"
+      }
+    },
+    {
+      "asset": "APT",
+      "themes": ["platforms"],
+      "evidence": {
+        "url": "https://datalab.upbit.com/assets/APT/summary",
+        "provider": "Upbit DataLab",
+        "checkedAt": "2026-10-14",
+        "review": "reviewed",
+        "basis": "editorial",
+        "note": "업비트 제공 분류를 대조한 보리차트의 편집 연결입니다. 토큰의 권리·가격 원인·전체 시장 순위를 뜻하지 않습니다."
+      },
+      "providerClassification": {
+        "level1Code": "SCTIDXB",
+        "level1Name": "스마트 컨트랙트 플랫폼",
+        "level2Code": "SCTIDXB01",
+        "level2Name": "모놀리식 블록체인",
+        "level3Code": "SCTIDXB01-01",
+        "level3Name": "모놀리식 블록체인"
+      }
+    },
+    {
+      "asset": "ZRO",
+      "themes": ["infrastructure", "interoperability"],
+      "evidence": {
+        "url": "https://datalab.upbit.com/assets/ZRO/summary",
+        "provider": "Upbit DataLab",
+        "checkedAt": "2026-10-14",
+        "review": "reviewed",
+        "basis": "editorial",
+        "note": "업비트 제공 분류를 대조한 보리차트의 편집 연결입니다. 토큰의 권리·가격 원인·전체 시장 순위를 뜻하지 않습니다."
+      },
+      "providerClassification": {
+        "level1Code": "SCTIDXA",
+        "level1Name": "인프라",
+        "level2Code": "SCTIDXA02",
+        "level2Name": "네트워크 인프라",
+        "level3Code": "SCTIDXA02-01",
+        "level3Name": "상호운용성/브릿지"
+      }
+    },
+    {
+      "asset": "PYTH",
+      "themes": ["infrastructure", "oracles"],
+      "evidence": {
+        "url": "https://datalab.upbit.com/assets/PYTH/summary",
+        "provider": "Upbit DataLab",
+        "checkedAt": "2026-10-14",
+        "review": "reviewed",
+        "basis": "editorial",
+        "note": "업비트 제공 분류를 대조한 보리차트의 편집 연결입니다. 토큰의 권리·가격 원인·전체 시장 순위를 뜻하지 않습니다."
+      },
+      "providerClassification": {
+        "level1Code": "SCTIDXA",
+        "level1Name": "인프라",
+        "level2Code": "SCTIDXA03",
+        "level2Name": "디앱 인프라",
+        "level3Code": "SCTIDXA03-01",
+        "level3Name": "오라클"
+      }
+    },
+    {
+      "asset": "CRV",
+      "themes": ["defi", "dex"],
+      "evidence": {
+        "url": "https://datalab.upbit.com/assets/CRV/summary",
+        "provider": "Upbit DataLab",
+        "checkedAt": "2026-10-14",
+        "review": "reviewed",
+        "basis": "editorial",
+        "note": "업비트 제공 분류를 대조한 보리차트의 편집 연결입니다. 토큰의 권리·가격 원인·전체 시장 순위를 뜻하지 않습니다."
+      },
+      "providerClassification": {
+        "level1Code": "SCTIDXC",
+        "level1Name": "디파이",
+        "level2Code": "SCTIDXC02",
+        "level2Name": "교환",
+        "level3Code": "SCTIDXC02-03",
+        "level3Name": "DEX"
+      }
+    },
+    {
+      "asset": "VIRTUAL",
+      "themes": ["infrastructure", "depin", "ai"],
+      "evidence": {
+        "url": "https://datalab.upbit.com/assets/VIRTUAL/summary",
+        "provider": "Upbit DataLab",
+        "checkedAt": "2026-10-14",
+        "review": "reviewed",
+        "basis": "editorial",
+        "note": "업비트 제공 분류를 대조한 보리차트의 편집 연결입니다. 토큰의 권리·가격 원인·전체 시장 순위를 뜻하지 않습니다."
+      },
+      "providerClassification": {
+        "level1Code": "SCTIDXA",
+        "level1Name": "인프라",
+        "level2Code": "SCTIDXA05",
+        "level2Name": "DePIN",
+        "level3Code": "SCTIDXA05-01",
+        "level3Name": "AI"
+      }
+    },
+    {
+      "asset": "SEI",
+      "themes": ["platforms"],
+      "evidence": {
+        "url": "https://datalab.upbit.com/assets/SEI/summary",
+        "provider": "Upbit DataLab",
+        "checkedAt": "2026-10-14",
+        "review": "reviewed",
+        "basis": "editorial",
+        "note": "업비트 제공 분류를 대조한 보리차트의 편집 연결입니다. 토큰의 권리·가격 원인·전체 시장 순위를 뜻하지 않습니다."
+      },
+      "providerClassification": {
+        "level1Code": "SCTIDXB",
+        "level1Name": "스마트 컨트랙트 플랫폼",
+        "level2Code": "SCTIDXB01",
+        "level2Name": "모놀리식 블록체인",
+        "level3Code": "SCTIDXB01-01",
+        "level3Name": "모놀리식 블록체인"
+      }
+    },
+    {
+      "asset": "TIA",
+      "themes": ["platforms"],
+      "evidence": {
+        "url": "https://datalab.upbit.com/assets/TIA/summary",
+        "provider": "Upbit DataLab",
+        "checkedAt": "2026-10-14",
+        "review": "reviewed",
+        "basis": "editorial",
+        "note": "업비트 제공 분류를 대조한 보리차트의 편집 연결입니다. 토큰의 권리·가격 원인·전체 시장 순위를 뜻하지 않습니다."
+      },
+      "providerClassification": {
+        "level1Code": "SCTIDXB",
+        "level1Name": "스마트 컨트랙트 플랫폼",
+        "level2Code": "SCTIDXB02",
+        "level2Name": "모듈러 블록체인",
+        "level3Code": "SCTIDXB02-01",
+        "level3Name": "모듈러 블록체인"
+      }
+    },
+    {
+      "asset": "DRV",
+      "themes": ["defi", "derivatives"],
+      "evidence": {
+        "url": "https://datalab.upbit.com/assets/DRV/summary",
+        "provider": "Upbit DataLab",
+        "checkedAt": "2026-10-14",
+        "review": "reviewed",
+        "basis": "editorial",
+        "note": "업비트 제공 분류를 대조한 보리차트의 편집 연결입니다. 토큰의 권리·가격 원인·전체 시장 순위를 뜻하지 않습니다."
+      },
+      "providerClassification": {
+        "level1Code": "SCTIDXC",
+        "level1Name": "디파이",
+        "level2Code": "SCTIDXC02",
+        "level2Name": "교환",
+        "level3Code": "SCTIDXC02-02",
+        "level3Name": "선물/옵션 DEX"
+      }
+    },
+    {
+      "asset": "PENDLE",
+      "themes": ["defi", "staking"],
+      "evidence": {
+        "url": "https://datalab.upbit.com/assets/PENDLE/summary",
+        "provider": "Upbit DataLab",
+        "checkedAt": "2026-10-14",
+        "review": "reviewed",
+        "basis": "editorial",
+        "note": "업비트 제공 분류를 대조한 보리차트의 편집 연결입니다. 토큰의 권리·가격 원인·전체 시장 순위를 뜻하지 않습니다."
+      },
+      "providerClassification": {
+        "level1Code": "SCTIDXC",
+        "level1Name": "디파이",
+        "level2Code": "SCTIDXC03",
+        "level2Name": "예치",
+        "level3Code": "SCTIDXC03-02",
+        "level3Name": "유동화 스테이킹/리스테이킹"
+      }
+    },
+    {
+      "asset": "ETHFI",
+      "themes": ["defi", "staking"],
+      "evidence": {
+        "url": "https://datalab.upbit.com/assets/ETHFI/summary",
+        "provider": "Upbit DataLab",
+        "checkedAt": "2026-10-14",
+        "review": "reviewed",
+        "basis": "editorial",
+        "note": "업비트 제공 분류를 대조한 보리차트의 편집 연결입니다. 토큰의 권리·가격 원인·전체 시장 순위를 뜻하지 않습니다."
+      },
+      "providerClassification": {
+        "level1Code": "SCTIDXC",
+        "level1Name": "디파이",
+        "level2Code": "SCTIDXC03",
+        "level2Name": "예치",
+        "level3Code": "SCTIDXC03-02",
+        "level3Name": "유동화 스테이킹/리스테이킹"
+      }
+    },
+    {
+      "asset": "SPX",
+      "themes": ["memes"],
+      "evidence": {
+        "url": "https://datalab.upbit.com/assets/SPX/summary",
+        "provider": "Upbit DataLab",
+        "checkedAt": "2026-10-14",
+        "review": "reviewed",
+        "basis": "editorial",
+        "note": "업비트 제공 분류를 대조한 보리차트의 편집 연결입니다. 토큰의 권리·가격 원인·전체 시장 순위를 뜻하지 않습니다."
+      },
+      "providerClassification": {
+        "level1Code": "SCTIDXE",
+        "level1Name": "밈",
+        "level2Code": "SCTIDXE01",
+        "level2Name": "밈",
+        "level3Code": "SCTIDXE01-01",
+        "level3Name": "밈"
+      }
+    },
+    {
+      "asset": "KAIA",
+      "themes": ["platforms"],
+      "evidence": {
+        "url": "https://docs.kaia.io/",
+        "provider": "Kaia",
+        "checkedAt": "2026-10-14",
+        "review": "reviewed",
+        "basis": "editorial",
+        "note": "Kaia 네트워크와 스마트 계약 개발의 공식 안내. 보리차트의 편집 연결이며 토큰의 권리·투자 판단을 뜻하지 않습니다."
+      }
+    },
+    {
+      "asset": "XTZ",
+      "themes": ["platforms"],
+      "evidence": {
+        "url": "https://datalab.upbit.com/assets/XTZ/summary",
+        "provider": "Upbit DataLab",
+        "checkedAt": "2026-10-14",
+        "review": "reviewed",
+        "basis": "editorial",
+        "note": "업비트 제공 분류를 대조한 보리차트의 편집 연결입니다. 토큰의 권리·가격 원인·전체 시장 순위를 뜻하지 않습니다."
+      },
+      "providerClassification": {
+        "level1Code": "SCTIDXB",
+        "level1Name": "스마트 컨트랙트 플랫폼",
+        "level2Code": "SCTIDXB01",
+        "level2Name": "모놀리식 블록체인",
+        "level3Code": "SCTIDXB01-01",
+        "level3Name": "모놀리식 블록체인"
+      }
+    },
+    {
+      "asset": "GRT",
+      "themes": ["infrastructure", "depin", "data"],
+      "evidence": {
+        "url": "https://datalab.upbit.com/assets/GRT/summary",
+        "provider": "Upbit DataLab",
+        "checkedAt": "2026-10-14",
+        "review": "reviewed",
+        "basis": "editorial",
+        "note": "업비트 제공 분류를 대조한 보리차트의 편집 연결입니다. 토큰의 권리·가격 원인·전체 시장 순위를 뜻하지 않습니다."
+      },
+      "providerClassification": {
+        "level1Code": "SCTIDXA",
+        "level1Name": "인프라",
+        "level2Code": "SCTIDXA05",
+        "level2Name": "DePIN",
+        "level3Code": "SCTIDXA05-02",
+        "level3Name": "데이터 인프라"
+      }
+    },
+    {
+      "asset": "SYRUP",
+      "themes": ["defi", "lending"],
+      "evidence": {
+        "url": "https://datalab.upbit.com/assets/SYRUP/summary",
+        "provider": "Upbit DataLab",
+        "checkedAt": "2026-10-14",
+        "review": "reviewed",
+        "basis": "editorial",
+        "note": "업비트 제공 분류를 대조한 보리차트의 편집 연결입니다. 토큰의 권리·가격 원인·전체 시장 순위를 뜻하지 않습니다."
+      },
+      "providerClassification": {
+        "level1Code": "SCTIDXC",
+        "level1Name": "디파이",
+        "level2Code": "SCTIDXC03",
+        "level2Name": "예치",
+        "level3Code": "SCTIDXC03-01",
+        "level3Name": "렌딩"
+      }
+    },
+    {
+      "asset": "CFX",
+      "themes": ["platforms"],
+      "evidence": {
+        "url": "https://datalab.upbit.com/assets/CFX/summary",
+        "provider": "Upbit DataLab",
+        "checkedAt": "2026-10-14",
+        "review": "reviewed",
+        "basis": "editorial",
+        "note": "업비트 제공 분류를 대조한 보리차트의 편집 연결입니다. 토큰의 권리·가격 원인·전체 시장 순위를 뜻하지 않습니다."
+      },
+      "providerClassification": {
+        "level1Code": "SCTIDXB",
+        "level1Name": "스마트 컨트랙트 플랫폼",
+        "level2Code": "SCTIDXB01",
+        "level2Name": "모놀리식 블록체인",
+        "level3Code": "SCTIDXB01-01",
+        "level3Name": "모놀리식 블록체인"
+      }
+    },
+    {
+      "asset": "ENS",
+      "themes": ["infrastructure", "identity"],
+      "evidence": {
+        "url": "https://datalab.upbit.com/assets/ENS/summary",
+        "provider": "Upbit DataLab",
+        "checkedAt": "2026-10-14",
+        "review": "reviewed",
+        "basis": "editorial",
+        "note": "업비트 제공 분류를 대조한 보리차트의 편집 연결입니다. 토큰의 권리·가격 원인·전체 시장 순위를 뜻하지 않습니다."
+      },
+      "providerClassification": {
+        "level1Code": "SCTIDXA",
+        "level1Name": "인프라",
+        "level2Code": "SCTIDXA04",
+        "level2Name": "유저 인프라",
+        "level3Code": "SCTIDXA04-01",
+        "level3Name": "DID"
+      }
+    },
+    {
+      "asset": "COMP",
+      "themes": ["defi", "lending"],
+      "evidence": {
+        "url": "https://datalab.upbit.com/assets/COMP/summary",
+        "provider": "Upbit DataLab",
+        "checkedAt": "2026-10-14",
+        "review": "reviewed",
+        "basis": "editorial",
+        "note": "업비트 제공 분류를 대조한 보리차트의 편집 연결입니다. 토큰의 권리·가격 원인·전체 시장 순위를 뜻하지 않습니다."
+      },
+      "providerClassification": {
+        "level1Code": "SCTIDXC",
+        "level1Name": "디파이",
+        "level2Code": "SCTIDXC03",
+        "level2Name": "예치",
+        "level3Code": "SCTIDXC03-01",
+        "level3Name": "렌딩"
+      }
+    },
+    {
+      "asset": "OP",
+      "themes": ["platforms"],
+      "evidence": {
+        "url": "https://datalab.upbit.com/assets/OP/summary",
+        "provider": "Upbit DataLab",
+        "checkedAt": "2026-10-14",
+        "review": "reviewed",
+        "basis": "editorial",
+        "note": "업비트 제공 분류를 대조한 보리차트의 편집 연결입니다. 토큰의 권리·가격 원인·전체 시장 순위를 뜻하지 않습니다."
+      },
+      "providerClassification": {
+        "level1Code": "SCTIDXB",
+        "level1Name": "스마트 컨트랙트 플랫폼",
+        "level2Code": "SCTIDXB02",
+        "level2Name": "모듈러 블록체인",
+        "level3Code": "SCTIDXB02-01",
+        "level3Name": "모듈러 블록체인"
+      }
+    },
+    {
+      "asset": "THETA",
+      "themes": ["infrastructure", "depin", "ai"],
+      "evidence": {
+        "url": "https://datalab.upbit.com/assets/THETA/summary",
+        "provider": "Upbit DataLab",
+        "checkedAt": "2026-10-14",
+        "review": "reviewed",
+        "basis": "editorial",
+        "note": "업비트 제공 분류를 대조한 보리차트의 편집 연결입니다. 토큰의 권리·가격 원인·전체 시장 순위를 뜻하지 않습니다."
+      },
+      "providerClassification": {
+        "level1Code": "SCTIDXA",
+        "level1Name": "인프라",
+        "level2Code": "SCTIDXA05",
+        "level2Name": "DePIN",
+        "level3Code": "SCTIDXA05-01",
+        "level3Name": "AI"
+      }
+    },
+    {
+      "asset": "WIF",
+      "themes": ["memes"],
+      "evidence": {
+        "url": "https://datalab.upbit.com/assets/WIF/summary",
+        "provider": "Upbit DataLab",
+        "checkedAt": "2026-10-14",
+        "review": "reviewed",
+        "basis": "editorial",
+        "note": "업비트 제공 분류를 대조한 보리차트의 편집 연결입니다. 토큰의 권리·가격 원인·전체 시장 순위를 뜻하지 않습니다."
+      },
+      "providerClassification": {
+        "level1Code": "SCTIDXE",
+        "level1Name": "밈",
+        "level2Code": "SCTIDXE01",
+        "level2Name": "밈",
+        "level3Code": "SCTIDXE01-01",
+        "level3Name": "밈"
+      }
+    },
+    {
+      "asset": "TRAC",
+      "themes": ["infrastructure", "depin", "ai"],
+      "evidence": {
+        "url": "https://datalab.upbit.com/assets/TRAC/summary",
+        "provider": "Upbit DataLab",
+        "checkedAt": "2026-10-14",
+        "review": "reviewed",
+        "basis": "editorial",
+        "note": "업비트 제공 분류를 대조한 보리차트의 편집 연결입니다. 토큰의 권리·가격 원인·전체 시장 순위를 뜻하지 않습니다."
+      },
+      "providerClassification": {
+        "level1Code": "SCTIDXA",
+        "level1Name": "인프라",
+        "level2Code": "SCTIDXA05",
+        "level2Name": "DePIN",
+        "level3Code": "SCTIDXA05-01",
+        "level3Name": "AI"
+      }
+    },
+    {
+      "asset": "AKT",
+      "themes": ["infrastructure", "depin", "ai"],
+      "evidence": {
+        "url": "https://datalab.upbit.com/assets/AKT/summary",
+        "provider": "Upbit DataLab",
+        "checkedAt": "2026-10-14",
+        "review": "reviewed",
+        "basis": "editorial",
+        "note": "업비트 제공 분류를 대조한 보리차트의 편집 연결입니다. 토큰의 권리·가격 원인·전체 시장 순위를 뜻하지 않습니다."
+      },
+      "providerClassification": {
+        "level1Code": "SCTIDXA",
+        "level1Name": "인프라",
+        "level2Code": "SCTIDXA05",
+        "level2Name": "DePIN",
+        "level3Code": "SCTIDXA05-01",
+        "level3Name": "AI"
+      }
+    },
+    {
+      "asset": "JTO",
+      "themes": ["defi", "staking"],
+      "evidence": {
+        "url": "https://datalab.upbit.com/assets/JTO/summary",
+        "provider": "Upbit DataLab",
+        "checkedAt": "2026-10-14",
+        "review": "reviewed",
+        "basis": "editorial",
+        "note": "업비트 제공 분류를 대조한 보리차트의 편집 연결입니다. 토큰의 권리·가격 원인·전체 시장 순위를 뜻하지 않습니다."
+      },
+      "providerClassification": {
+        "level1Code": "SCTIDXC",
+        "level1Name": "디파이",
+        "level2Code": "SCTIDXC03",
+        "level2Name": "예치",
+        "level3Code": "SCTIDXC03-02",
+        "level3Name": "유동화 스테이킹/리스테이킹"
+      }
+    },
+    {
+      "asset": "AXS",
+      "themes": ["culture", "nft-gaming"],
+      "evidence": {
+        "url": "https://datalab.upbit.com/assets/AXS/summary",
+        "provider": "Upbit DataLab",
+        "checkedAt": "2026-10-14",
+        "review": "reviewed",
+        "basis": "editorial",
+        "note": "업비트 제공 분류를 대조한 보리차트의 편집 연결입니다. 토큰의 권리·가격 원인·전체 시장 순위를 뜻하지 않습니다."
+      },
+      "providerClassification": {
+        "level1Code": "SCTIDXD",
+        "level1Name": "문화/엔터테인먼트",
+        "level2Code": "SCTIDXD01",
+        "level2Name": "가상세계",
+        "level3Code": "SCTIDXD01-02",
+        "level3Name": "NFT/게임"
+      }
+    },
+    {
+      "asset": "MANA",
+      "themes": ["culture", "metaverse"],
+      "evidence": {
+        "url": "https://datalab.upbit.com/assets/MANA/summary",
+        "provider": "Upbit DataLab",
+        "checkedAt": "2026-10-14",
+        "review": "reviewed",
+        "basis": "editorial",
+        "note": "업비트 제공 분류를 대조한 보리차트의 편집 연결입니다. 토큰의 권리·가격 원인·전체 시장 순위를 뜻하지 않습니다."
+      },
+      "providerClassification": {
+        "level1Code": "SCTIDXD",
+        "level1Name": "문화/엔터테인먼트",
+        "level2Code": "SCTIDXD01",
+        "level2Name": "가상세계",
+        "level3Code": "SCTIDXD01-01",
+        "level3Name": "메타버스"
+      }
+    },
+    {
+      "asset": "SAND",
+      "themes": ["culture", "metaverse"],
+      "evidence": {
+        "url": "https://datalab.upbit.com/assets/SAND/summary",
+        "provider": "Upbit DataLab",
+        "checkedAt": "2026-10-14",
+        "review": "reviewed",
+        "basis": "editorial",
+        "note": "업비트 제공 분류를 대조한 보리차트의 편집 연결입니다. 토큰의 권리·가격 원인·전체 시장 순위를 뜻하지 않습니다."
+      },
+      "providerClassification": {
+        "level1Code": "SCTIDXD",
+        "level1Name": "문화/엔터테인먼트",
+        "level2Code": "SCTIDXD01",
+        "level2Name": "가상세계",
+        "level3Code": "SCTIDXD01-01",
+        "level3Name": "메타버스"
+      }
+    },
+    {
+      "asset": "BAT",
+      "themes": ["culture", "advertising"],
+      "evidence": {
+        "url": "https://datalab.upbit.com/assets/BAT/summary",
+        "provider": "Upbit DataLab",
+        "checkedAt": "2026-10-14",
+        "review": "reviewed",
+        "basis": "editorial",
+        "note": "업비트 제공 분류를 대조한 보리차트의 편집 연결입니다. 토큰의 권리·가격 원인·전체 시장 순위를 뜻하지 않습니다."
+      },
+      "providerClassification": {
+        "level1Code": "SCTIDXD",
+        "level1Name": "문화/엔터테인먼트",
+        "level2Code": "SCTIDXD02",
+        "level2Name": "콘텐츠",
+        "level3Code": "SCTIDXD02-02",
+        "level3Name": "광고"
+      }
+    },
+    {
+      "asset": "NEO",
+      "themes": ["platforms"],
+      "evidence": {
+        "url": "https://datalab.upbit.com/assets/NEO/summary",
+        "provider": "Upbit DataLab",
+        "checkedAt": "2026-10-14",
+        "review": "reviewed",
+        "basis": "editorial",
+        "note": "업비트 제공 분류를 대조한 보리차트의 편집 연결입니다. 토큰의 권리·가격 원인·전체 시장 순위를 뜻하지 않습니다."
+      },
+      "providerClassification": {
+        "level1Code": "SCTIDXB",
+        "level1Name": "스마트 컨트랙트 플랫폼",
+        "level2Code": "SCTIDXB01",
+        "level2Name": "모놀리식 블록체인",
+        "level3Code": "SCTIDXB01-01",
+        "level3Name": "모놀리식 블록체인"
+      }
+    },
+    {
+      "asset": "A",
+      "themes": ["platforms"],
+      "evidence": {
+        "url": "https://datalab.upbit.com/assets/A/summary",
+        "provider": "Upbit DataLab",
+        "checkedAt": "2026-10-14",
+        "review": "reviewed",
+        "basis": "editorial",
+        "note": "업비트 제공 분류를 대조한 보리차트의 편집 연결입니다. 토큰의 권리·가격 원인·전체 시장 순위를 뜻하지 않습니다."
+      },
+      "providerClassification": {
+        "level1Code": "SCTIDXB",
+        "level1Name": "스마트 컨트랙트 플랫폼",
+        "level2Code": "SCTIDXB01",
+        "level2Name": "모놀리식 블록체인",
+        "level3Code": "SCTIDXB01-01",
+        "level3Name": "모놀리식 블록체인"
+      }
+    },
+    {
+      "asset": "CHZ",
+      "themes": ["culture", "sports"],
+      "evidence": {
+        "url": "https://datalab.upbit.com/assets/CHZ/summary",
+        "provider": "Upbit DataLab",
+        "checkedAt": "2026-10-14",
+        "review": "reviewed",
+        "basis": "editorial",
+        "note": "업비트 제공 분류를 대조한 보리차트의 편집 연결입니다. 토큰의 권리·가격 원인·전체 시장 순위를 뜻하지 않습니다."
+      },
+      "providerClassification": {
+        "level1Code": "SCTIDXD",
+        "level1Name": "문화/엔터테인먼트",
+        "level2Code": "SCTIDXD04",
+        "level2Name": "팬토큰",
+        "level3Code": "SCTIDXD04-01",
+        "level3Name": "스포츠"
+      }
+    },
+    {
+      "asset": "XCN",
+      "themes": ["platforms"],
+      "evidence": {
+        "url": "https://datalab.upbit.com/assets/XCN/summary",
+        "provider": "Upbit DataLab",
+        "checkedAt": "2026-10-14",
+        "review": "reviewed",
+        "basis": "editorial",
+        "note": "업비트 제공 분류를 대조한 보리차트의 편집 연결입니다. 토큰의 권리·가격 원인·전체 시장 순위를 뜻하지 않습니다."
+      },
+      "providerClassification": {
+        "level1Code": "SCTIDXB",
+        "level1Name": "스마트 컨트랙트 플랫폼",
+        "level2Code": "SCTIDXB01",
+        "level2Name": "모놀리식 블록체인",
+        "level3Code": "SCTIDXB01-01",
+        "level3Name": "모놀리식 블록체인"
+      }
+    },
+    {
+      "asset": "ORCA",
+      "themes": ["defi", "dex"],
+      "evidence": {
+        "url": "https://datalab.upbit.com/assets/ORCA/summary",
+        "provider": "Upbit DataLab",
+        "checkedAt": "2026-10-14",
+        "review": "reviewed",
+        "basis": "editorial",
+        "note": "업비트 제공 분류를 대조한 보리차트의 편집 연결입니다. 토큰의 권리·가격 원인·전체 시장 순위를 뜻하지 않습니다."
+      },
+      "providerClassification": {
+        "level1Code": "SCTIDXC",
+        "level1Name": "디파이",
+        "level2Code": "SCTIDXC02",
+        "level2Name": "교환",
+        "level3Code": "SCTIDXC02-03",
+        "level3Name": "DEX"
+      }
+    },
+    {
+      "asset": "XEC",
+      "themes": ["infrastructure", "payments"],
+      "evidence": {
+        "url": "https://datalab.upbit.com/assets/XEC/summary",
+        "provider": "Upbit DataLab",
+        "checkedAt": "2026-10-14",
+        "review": "reviewed",
+        "basis": "editorial",
+        "note": "업비트 제공 분류를 대조한 보리차트의 편집 연결입니다. 토큰의 권리·가격 원인·전체 시장 순위를 뜻하지 않습니다."
+      },
+      "providerClassification": {
+        "level1Code": "SCTIDXA",
+        "level1Name": "인프라",
+        "level2Code": "SCTIDXA01",
+        "level2Name": "지급결제 인프라",
+        "level3Code": "SCTIDXA01-01",
+        "level3Name": "지급결제 인프라"
+      }
+    },
+    {
+      "asset": "SUPER",
+      "themes": ["culture", "nft-gaming"],
+      "evidence": {
+        "url": "https://datalab.upbit.com/assets/SUPER/summary",
+        "provider": "Upbit DataLab",
+        "checkedAt": "2026-10-14",
+        "review": "reviewed",
+        "basis": "editorial",
+        "note": "업비트 제공 분류를 대조한 보리차트의 편집 연결입니다. 토큰의 권리·가격 원인·전체 시장 순위를 뜻하지 않습니다."
+      },
+      "providerClassification": {
+        "level1Code": "SCTIDXD",
+        "level1Name": "문화/엔터테인먼트",
+        "level2Code": "SCTIDXD01",
+        "level2Name": "가상세계",
+        "level3Code": "SCTIDXD01-02",
+        "level3Name": "NFT/게임"
+      }
+    },
+    {
+      "asset": "BEAM",
+      "themes": ["culture", "nft-gaming"],
+      "evidence": {
+        "url": "https://datalab.upbit.com/assets/BEAM/summary",
+        "provider": "Upbit DataLab",
+        "checkedAt": "2026-10-14",
+        "review": "reviewed",
+        "basis": "editorial",
+        "note": "업비트 제공 분류를 대조한 보리차트의 편집 연결입니다. 토큰의 권리·가격 원인·전체 시장 순위를 뜻하지 않습니다."
+      },
+      "providerClassification": {
+        "level1Code": "SCTIDXD",
+        "level1Name": "문화/엔터테인먼트",
+        "level2Code": "SCTIDXD01",
+        "level2Name": "가상세계",
+        "level3Code": "SCTIDXD01-02",
+        "level3Name": "NFT/게임"
+      }
+    },
+    {
+      "asset": "GLM",
+      "themes": ["infrastructure", "depin", "storage"],
+      "evidence": {
+        "url": "https://datalab.upbit.com/assets/GLM/summary",
+        "provider": "Upbit DataLab",
+        "checkedAt": "2026-10-14",
+        "review": "reviewed",
+        "basis": "editorial",
+        "note": "업비트 제공 분류를 대조한 보리차트의 편집 연결입니다. 토큰의 권리·가격 원인·전체 시장 순위를 뜻하지 않습니다."
+      },
+      "providerClassification": {
+        "level1Code": "SCTIDXA",
+        "level1Name": "인프라",
+        "level2Code": "SCTIDXA05",
+        "level2Name": "DePIN",
+        "level3Code": "SCTIDXA05-03",
+        "level3Name": "스토리지"
+      }
+    },
+    {
+      "asset": "2Z",
+      "themes": ["infrastructure", "depin", "data"],
+      "evidence": {
+        "url": "https://datalab.upbit.com/assets/2Z/summary",
+        "provider": "Upbit DataLab",
+        "checkedAt": "2026-10-14",
+        "review": "reviewed",
+        "basis": "editorial",
+        "note": "업비트 제공 분류를 대조한 보리차트의 편집 연결입니다. 토큰의 권리·가격 원인·전체 시장 순위를 뜻하지 않습니다."
+      },
+      "providerClassification": {
+        "level1Code": "SCTIDXA",
+        "level1Name": "인프라",
+        "level2Code": "SCTIDXA05",
+        "level2Name": "DePIN",
+        "level3Code": "SCTIDXA05-02",
+        "level3Name": "데이터 인프라"
+      }
+    },
+    {
+      "asset": "ZK",
+      "themes": ["platforms"],
+      "evidence": {
+        "url": "https://datalab.upbit.com/assets/ZK/summary",
+        "provider": "Upbit DataLab",
+        "checkedAt": "2026-10-14",
+        "review": "reviewed",
+        "basis": "editorial",
+        "note": "업비트 제공 분류를 대조한 보리차트의 편집 연결입니다. 토큰의 권리·가격 원인·전체 시장 순위를 뜻하지 않습니다."
+      },
+      "providerClassification": {
+        "level1Code": "SCTIDXB",
+        "level1Name": "스마트 컨트랙트 플랫폼",
+        "level2Code": "SCTIDXB02",
+        "level2Name": "모듈러 블록체인",
+        "level3Code": "SCTIDXB02-01",
+        "level3Name": "모듈러 블록체인"
+      }
+    },
+    {
+      "asset": "NMR",
+      "themes": ["infrastructure", "depin", "ai"],
+      "evidence": {
+        "url": "https://datalab.upbit.com/assets/NMR/summary",
+        "provider": "Upbit DataLab",
+        "checkedAt": "2026-10-14",
+        "review": "reviewed",
+        "basis": "editorial",
+        "note": "업비트 제공 분류를 대조한 보리차트의 편집 연결입니다. 토큰의 권리·가격 원인·전체 시장 순위를 뜻하지 않습니다."
+      },
+      "providerClassification": {
+        "level1Code": "SCTIDXA",
+        "level1Name": "인프라",
+        "level2Code": "SCTIDXA05",
+        "level2Name": "DePIN",
+        "level3Code": "SCTIDXA05-01",
+        "level3Name": "AI"
+      }
+    },
+    {
+      "asset": "QTUM",
+      "themes": ["platforms"],
+      "evidence": {
+        "url": "https://datalab.upbit.com/assets/QTUM/summary",
+        "provider": "Upbit DataLab",
+        "checkedAt": "2026-10-14",
+        "review": "reviewed",
+        "basis": "editorial",
+        "note": "업비트 제공 분류를 대조한 보리차트의 편집 연결입니다. 토큰의 권리·가격 원인·전체 시장 순위를 뜻하지 않습니다."
+      },
+      "providerClassification": {
+        "level1Code": "SCTIDXB",
+        "level1Name": "스마트 컨트랙트 플랫폼",
+        "level2Code": "SCTIDXB01",
+        "level2Name": "모놀리식 블록체인",
+        "level3Code": "SCTIDXB01-01",
+        "level3Name": "모놀리식 블록체인"
+      }
+    },
+    {
+      "asset": "KMNO",
+      "themes": ["defi", "lending"],
+      "evidence": {
+        "url": "https://datalab.upbit.com/assets/KMNO/summary",
+        "provider": "Upbit DataLab",
+        "checkedAt": "2026-10-14",
+        "review": "reviewed",
+        "basis": "editorial",
+        "note": "업비트 제공 분류를 대조한 보리차트의 편집 연결입니다. 토큰의 권리·가격 원인·전체 시장 순위를 뜻하지 않습니다."
+      },
+      "providerClassification": {
+        "level1Code": "SCTIDXC",
+        "level1Name": "디파이",
+        "level2Code": "SCTIDXC03",
+        "level2Name": "예치",
+        "level3Code": "SCTIDXC03-01",
+        "level3Name": "렌딩"
+      }
+    },
+    {
+      "asset": "GEOD",
+      "themes": ["infrastructure", "depin", "data"],
+      "evidence": {
+        "url": "https://datalab.upbit.com/assets/GEOD/summary",
+        "provider": "Upbit DataLab",
+        "checkedAt": "2026-10-14",
+        "review": "reviewed",
+        "basis": "editorial",
+        "note": "업비트 제공 분류를 대조한 보리차트의 편집 연결입니다. 토큰의 권리·가격 원인·전체 시장 순위를 뜻하지 않습니다."
+      },
+      "providerClassification": {
+        "level1Code": "SCTIDXA",
+        "level1Name": "인프라",
+        "level2Code": "SCTIDXA05",
+        "level2Name": "DePIN",
+        "level3Code": "SCTIDXA05-02",
+        "level3Name": "데이터 인프라"
+      }
+    },
+    {
+      "asset": "GAS",
+      "themes": ["platforms"],
+      "evidence": {
+        "url": "https://datalab.upbit.com/assets/GAS/summary",
+        "provider": "Upbit DataLab",
+        "checkedAt": "2026-10-14",
+        "review": "reviewed",
+        "basis": "editorial",
+        "note": "업비트 제공 분류를 대조한 보리차트의 편집 연결입니다. 토큰의 권리·가격 원인·전체 시장 순위를 뜻하지 않습니다."
+      },
+      "providerClassification": {
+        "level1Code": "SCTIDXB",
+        "level1Name": "스마트 컨트랙트 플랫폼",
+        "level2Code": "SCTIDXB01",
+        "level2Name": "모놀리식 블록체인",
+        "level3Code": "SCTIDXB01-01",
+        "level3Name": "모놀리식 블록체인"
+      }
+    },
+    {
+      "asset": "W",
+      "themes": ["infrastructure", "interoperability"],
+      "evidence": {
+        "url": "https://datalab.upbit.com/assets/W/summary",
+        "provider": "Upbit DataLab",
+        "checkedAt": "2026-10-14",
+        "review": "reviewed",
+        "basis": "editorial",
+        "note": "업비트 제공 분류를 대조한 보리차트의 편집 연결입니다. 토큰의 권리·가격 원인·전체 시장 순위를 뜻하지 않습니다."
+      },
+      "providerClassification": {
+        "level1Code": "SCTIDXA",
+        "level1Name": "인프라",
+        "level2Code": "SCTIDXA02",
+        "level2Name": "네트워크 인프라",
+        "level3Code": "SCTIDXA02-01",
+        "level3Name": "상호운용성/브릿지"
+      }
+    },
+    {
+      "asset": "ATH",
+      "themes": ["infrastructure", "depin", "ai"],
+      "evidence": {
+        "url": "https://datalab.upbit.com/assets/ATH/summary",
+        "provider": "Upbit DataLab",
+        "checkedAt": "2026-10-14",
+        "review": "reviewed",
+        "basis": "editorial",
+        "note": "업비트 제공 분류를 대조한 보리차트의 편집 연결입니다. 토큰의 권리·가격 원인·전체 시장 순위를 뜻하지 않습니다."
+      },
+      "providerClassification": {
+        "level1Code": "SCTIDXA",
+        "level1Name": "인프라",
+        "level2Code": "SCTIDXA05",
+        "level2Name": "DePIN",
+        "level3Code": "SCTIDXA05-01",
+        "level3Name": "AI"
+      }
+    },
+    {
+      "asset": "CFG",
+      "themes": ["defi", "rwa"],
+      "evidence": {
+        "url": "https://datalab.upbit.com/assets/CFG/summary",
+        "provider": "Upbit DataLab",
+        "checkedAt": "2026-10-14",
+        "review": "reviewed",
+        "basis": "editorial",
+        "note": "업비트 제공 분류를 대조한 보리차트의 편집 연결입니다. 토큰의 권리·가격 원인·전체 시장 순위를 뜻하지 않습니다."
+      },
+      "providerClassification": {
+        "level1Code": "SCTIDXC",
+        "level1Name": "디파이",
+        "level2Code": "SCTIDXC03",
+        "level2Name": "예치",
+        "level3Code": "SCTIDXC03-04",
+        "level3Name": "RWA"
+      }
+    },
+    {
+      "asset": "LPT",
+      "themes": ["infrastructure", "depin", "ai"],
+      "evidence": {
+        "url": "https://datalab.upbit.com/assets/LPT/summary",
+        "provider": "Upbit DataLab",
+        "checkedAt": "2026-10-14",
+        "review": "reviewed",
+        "basis": "editorial",
+        "note": "업비트 제공 분류를 대조한 보리차트의 편집 연결입니다. 토큰의 권리·가격 원인·전체 시장 순위를 뜻하지 않습니다."
+      },
+      "providerClassification": {
+        "level1Code": "SCTIDXA",
+        "level1Name": "인프라",
+        "level2Code": "SCTIDXA05",
+        "level2Name": "DePIN",
+        "level3Code": "SCTIDXA05-01",
+        "level3Name": "AI"
+      }
+    },
+    {
+      "asset": "KAVA",
+      "themes": ["platforms"],
+      "evidence": {
+        "url": "https://datalab.upbit.com/assets/KAVA/summary",
+        "provider": "Upbit DataLab",
+        "checkedAt": "2026-10-14",
+        "review": "reviewed",
+        "basis": "editorial",
+        "note": "업비트 제공 분류를 대조한 보리차트의 편집 연결입니다. 토큰의 권리·가격 원인·전체 시장 순위를 뜻하지 않습니다."
+      },
+      "providerClassification": {
+        "level1Code": "SCTIDXB",
+        "level1Name": "스마트 컨트랙트 플랫폼",
+        "level2Code": "SCTIDXB01",
+        "level2Name": "모놀리식 블록체인",
+        "level3Code": "SCTIDXB01-01",
+        "level3Name": "모놀리식 블록체인"
+      }
+    },
+    {
+      "asset": "KAITO",
+      "themes": ["infrastructure", "depin", "data"],
+      "evidence": {
+        "url": "https://datalab.upbit.com/assets/KAITO/summary",
+        "provider": "Upbit DataLab",
+        "checkedAt": "2026-10-14",
+        "review": "reviewed",
+        "basis": "editorial",
+        "note": "업비트 제공 분류를 대조한 보리차트의 편집 연결입니다. 토큰의 권리·가격 원인·전체 시장 순위를 뜻하지 않습니다."
+      },
+      "providerClassification": {
+        "level1Code": "SCTIDXA",
+        "level1Name": "인프라",
+        "level2Code": "SCTIDXA05",
+        "level2Name": "DePIN",
+        "level3Code": "SCTIDXA05-02",
+        "level3Name": "데이터 인프라"
+      }
+    },
+    {
+      "asset": "COW",
+      "themes": ["defi"],
+      "evidence": {
+        "url": "https://datalab.upbit.com/assets/COW/summary",
+        "provider": "Upbit DataLab",
+        "checkedAt": "2026-10-14",
+        "review": "reviewed",
+        "basis": "editorial",
+        "note": "업비트 제공 분류를 대조한 보리차트의 편집 연결입니다. 토큰의 권리·가격 원인·전체 시장 순위를 뜻하지 않습니다."
+      },
+      "providerClassification": {
+        "level1Code": "SCTIDXC",
+        "level1Name": "디파이",
+        "level2Code": "SCTIDXC02",
+        "level2Name": "교환",
+        "level3Code": "SCTIDXC02-04",
+        "level3Name": "애그리게이터"
+      }
+    },
+    {
+      "asset": "TFUEL",
+      "themes": ["infrastructure", "depin", "ai"],
+      "evidence": {
+        "url": "https://datalab.upbit.com/assets/TFUEL/summary",
+        "provider": "Upbit DataLab",
+        "checkedAt": "2026-10-14",
+        "review": "reviewed",
+        "basis": "editorial",
+        "note": "업비트 제공 분류를 대조한 보리차트의 편집 연결입니다. 토큰의 권리·가격 원인·전체 시장 순위를 뜻하지 않습니다."
+      },
+      "providerClassification": {
+        "level1Code": "SCTIDXA",
+        "level1Name": "인프라",
+        "level2Code": "SCTIDXA05",
+        "level2Name": "DePIN",
+        "level3Code": "SCTIDXA05-01",
+        "level3Name": "AI"
+      }
+    },
+    {
+      "asset": "SAFE",
+      "themes": ["infrastructure"],
+      "evidence": {
+        "url": "https://datalab.upbit.com/assets/SAFE/summary",
+        "provider": "Upbit DataLab",
+        "checkedAt": "2026-10-14",
+        "review": "reviewed",
+        "basis": "editorial",
+        "note": "업비트 제공 분류를 대조한 보리차트의 편집 연결입니다. 토큰의 권리·가격 원인·전체 시장 순위를 뜻하지 않습니다."
+      },
+      "providerClassification": {
+        "level1Code": "SCTIDXA",
+        "level1Name": "인프라",
+        "level2Code": "SCTIDXA04",
+        "level2Name": "유저 인프라",
+        "level3Code": "SCTIDXA04-03",
+        "level3Name": "월렛/메시징"
+      }
+    },
+    {
+      "asset": "ZIL",
+      "themes": ["platforms"],
+      "evidence": {
+        "url": "https://datalab.upbit.com/assets/ZIL/summary",
+        "provider": "Upbit DataLab",
+        "checkedAt": "2026-10-14",
+        "review": "reviewed",
+        "basis": "editorial",
+        "note": "업비트 제공 분류를 대조한 보리차트의 편집 연결입니다. 토큰의 권리·가격 원인·전체 시장 순위를 뜻하지 않습니다."
+      },
+      "providerClassification": {
+        "level1Code": "SCTIDXB",
+        "level1Name": "스마트 컨트랙트 플랫폼",
+        "level2Code": "SCTIDXB01",
+        "level2Name": "모놀리식 블록체인",
+        "level3Code": "SCTIDXB01-01",
+        "level3Name": "모놀리식 블록체인"
+      }
+    },
+    {
+      "asset": "VTHO",
+      "themes": ["platforms"],
+      "evidence": {
+        "url": "https://datalab.upbit.com/assets/VTHO/summary",
+        "provider": "Upbit DataLab",
+        "checkedAt": "2026-10-14",
+        "review": "reviewed",
+        "basis": "editorial",
+        "note": "업비트 제공 분류를 대조한 보리차트의 편집 연결입니다. 토큰의 권리·가격 원인·전체 시장 순위를 뜻하지 않습니다."
+      },
+      "providerClassification": {
+        "level1Code": "SCTIDXB",
+        "level1Name": "스마트 컨트랙트 플랫폼",
+        "level2Code": "SCTIDXB01",
+        "level2Name": "모놀리식 블록체인",
+        "level3Code": "SCTIDXB01-01",
+        "level3Name": "모놀리식 블록체인"
+      }
+    },
+    {
+      "asset": "CKB",
+      "themes": ["platforms"],
+      "evidence": {
+        "url": "https://datalab.upbit.com/assets/CKB/summary",
+        "provider": "Upbit DataLab",
+        "checkedAt": "2026-10-14",
+        "review": "reviewed",
+        "basis": "editorial",
+        "note": "업비트 제공 분류를 대조한 보리차트의 편집 연결입니다. 토큰의 권리·가격 원인·전체 시장 순위를 뜻하지 않습니다."
+      },
+      "providerClassification": {
+        "level1Code": "SCTIDXB",
+        "level1Name": "스마트 컨트랙트 플랫폼",
+        "level2Code": "SCTIDXB02",
+        "level2Name": "모듈러 블록체인",
+        "level3Code": "SCTIDXB02-01",
+        "level3Name": "모듈러 블록체인"
+      }
+    },
+    {
+      "asset": "ARKM",
+      "themes": ["infrastructure", "depin", "data"],
+      "evidence": {
+        "url": "https://datalab.upbit.com/assets/ARKM/summary",
+        "provider": "Upbit DataLab",
+        "checkedAt": "2026-10-14",
+        "review": "reviewed",
+        "basis": "editorial",
+        "note": "업비트 제공 분류를 대조한 보리차트의 편집 연결입니다. 토큰의 권리·가격 원인·전체 시장 순위를 뜻하지 않습니다."
+      },
+      "providerClassification": {
+        "level1Code": "SCTIDXA",
+        "level1Name": "인프라",
+        "level2Code": "SCTIDXA05",
+        "level2Name": "DePIN",
+        "level3Code": "SCTIDXA05-02",
+        "level3Name": "데이터 인프라"
+      }
+    },
+    {
+      "asset": "BNB",
+      "themes": ["platforms"],
+      "evidence": {
+        "url": "https://www.bnbchain.org/en",
+        "provider": "BNB Chain",
+        "checkedAt": "2026-10-14",
+        "review": "reviewed",
+        "basis": "editorial",
+        "note": "BNB Smart Chain과 BNB 생태계의 공식 네트워크 안내. 보리차트의 편집 연결이며 토큰의 권리·투자 판단을 뜻하지 않습니다."
+      }
+    },
+    {
+      "asset": "HYPE",
+      "themes": ["platforms", "defi", "dex", "derivatives"],
+      "evidence": {
+        "url": "https://hyperliquid.gitbook.io/hyperliquid-docs/about-hyperliquid.md",
+        "provider": "Hyperliquid",
+        "checkedAt": "2026-10-14",
+        "review": "reviewed",
+        "basis": "editorial",
+        "note": "L1·HyperEVM·온체인 현물 및 무기한 주문장 설명. 보리차트의 편집 연결이며 토큰의 권리·투자 판단을 뜻하지 않습니다."
+      }
+    },
+    {
+      "asset": "ZEC",
+      "themes": ["infrastructure", "payments", "privacy"],
+      "evidence": {
+        "url": "https://z.cash/learn/what-is-zcash/",
+        "provider": "Zcash",
+        "checkedAt": "2026-10-14",
+        "review": "reviewed",
+        "basis": "editorial",
+        "note": "프라이버시 기능이 있는 디지털 통화 설명. 보리차트의 편집 연결이며 토큰의 권리·투자 판단을 뜻하지 않습니다."
+      }
+    },
+    {
+      "asset": "LTC",
+      "themes": ["infrastructure", "payments"],
+      "evidence": {
+        "url": "https://github.com/litecoin-project/litecoin",
+        "provider": "Litecoin",
+        "checkedAt": "2026-10-14",
+        "review": "reviewed",
+        "basis": "editorial",
+        "note": "공식 소스의 디지털 통화와 P2P 결제 설명. 보리차트의 편집 연결이며 토큰의 권리·투자 판단을 뜻하지 않습니다."
+      }
+    },
+    {
+      "asset": "QNT",
+      "themes": ["infrastructure", "interoperability"],
+      "evidence": {
+        "url": "https://quant.network/",
+        "provider": "Quant",
+        "checkedAt": "2026-10-14",
+        "review": "reviewed",
+        "basis": "editorial",
+        "note": "분산원장 상호운용성에 관한 공식 프로젝트 설명. 보리차트의 편집 연결이며 토큰의 권리·투자 판단을 뜻하지 않습니다."
+      }
+    },
+    {
+      "asset": "PAXG",
+      "themes": ["rwa"],
+      "evidence": {
+        "url": "https://www.paxos.com/pax-gold",
+        "provider": "Paxos",
+        "checkedAt": "2026-10-14",
+        "review": "reviewed",
+        "basis": "editorial",
+        "note": "금 토큰 PAXG의 공식 제품 설명. ONDO 거버넌스와 권리가 다릅니다. 보리차트의 편집 연결이며 토큰의 권리·투자 판단을 뜻하지 않습니다."
+      }
+    },
+    {
+      "asset": "ASTER",
+      "themes": ["defi", "dex", "derivatives"],
+      "evidence": {
+        "url": "https://docs.asterdex.com/",
+        "provider": "Aster",
+        "checkedAt": "2026-10-14",
+        "review": "reviewed",
+        "basis": "editorial",
+        "note": "무기한 시장을 제공하는 탈중앙 거래소 설명. 보리차트의 편집 연결이며 토큰의 권리·투자 판단을 뜻하지 않습니다."
+      }
+    },
+    {
+      "asset": "CAKE",
+      "themes": ["defi", "dex"],
+      "evidence": {
+        "url": "https://docs.pancakeswap.finance/",
+        "provider": "PancakeSwap",
+        "checkedAt": "2026-10-14",
+        "review": "reviewed",
+        "basis": "editorial",
+        "note": "PancakeSwap 탈중앙 거래소의 공식 안내. 보리차트의 편집 연결이며 토큰의 권리·투자 판단을 뜻하지 않습니다."
+      }
+    },
+    {
+      "asset": "DASH",
+      "themes": ["infrastructure", "payments"],
+      "evidence": {
+        "url": "https://www.dash.org/",
+        "provider": "Dash",
+        "checkedAt": "2026-10-14",
+        "review": "reviewed",
+        "basis": "editorial",
+        "note": "디지털 현금과 결제에 관한 공식 설명. 보리차트의 편집 연결이며 토큰의 권리·투자 판단을 뜻하지 않습니다."
+      }
+    },
+    {
+      "asset": "FET",
+      "themes": ["infrastructure", "ai"],
+      "evidence": {
+        "url": "https://docs.superintelligence.io/artificial-superintelligence-alliance",
+        "provider": "ASI Alliance",
+        "checkedAt": "2026-10-14",
+        "review": "reviewed",
+        "basis": "editorial",
+        "note": "Fetch.ai가 참여하는 탈중앙 AI 연합의 공식 설명. 보리차트의 편집 연결이며 토큰의 권리·투자 판단을 뜻하지 않습니다."
+      }
+    },
+    {
+      "asset": "NEXO",
+      "themes": ["cefi", "lending"],
+      "evidence": {
+        "url": "https://nexo.com/buy-nexo-token",
+        "provider": "Nexo",
+        "checkedAt": "2026-10-14",
+        "review": "reviewed",
+        "basis": "editorial",
+        "note": "Nexo 플랫폼 토큰 안내. 탈중앙 프로토콜로 분류하지 않습니다. 보리차트의 편집 연결이며 토큰의 권리·투자 판단을 뜻하지 않습니다."
+      }
+    },
+    {
+      "asset": "LDO",
+      "themes": ["defi", "staking"],
+      "evidence": {
+        "url": "https://docs.lido.fi/",
+        "provider": "Lido",
+        "checkedAt": "2026-10-14",
+        "review": "reviewed",
+        "basis": "editorial",
+        "note": "Lido 유동화 스테이킹 설명. LDO와 예치 증표 stETH를 구분합니다. 보리차트의 편집 연결이며 토큰의 권리·투자 판단을 뜻하지 않습니다."
+      }
+    },
+    {
+      "asset": "GNO",
+      "themes": ["platforms", "staking", "governance"],
+      "evidence": {
+        "url": "https://docs.gnosischain.com/about/tokens/gno",
+        "provider": "Gnosis",
+        "checkedAt": "2026-10-14",
+        "review": "reviewed",
+        "basis": "editorial",
+        "note": "GNO의 스테이킹·DAO 역할 설명. 네트워크 가스 토큰 xDAI와 다릅니다. 보리차트의 편집 연결이며 토큰의 권리·투자 판단을 뜻하지 않습니다."
+      }
+    },
+    {
+      "asset": "DCR",
+      "themes": ["infrastructure", "payments", "governance"],
+      "evidence": {
+        "url": "https://docs.decred.org/",
+        "provider": "Decred",
+        "checkedAt": "2026-10-14",
+        "review": "reviewed",
+        "basis": "editorial",
+        "note": "공식 문서의 디지털 통화·커뮤니티 거버넌스 설명. 보리차트의 편집 연결이며 토큰의 권리·투자 판단을 뜻하지 않습니다."
+      }
+    },
+    {
+      "asset": "STRK",
+      "themes": ["platforms", "layer2"],
+      "evidence": {
+        "url": "https://docs.starknet.io/learn/protocol/intro.md",
+        "provider": "Starknet",
+        "checkedAt": "2026-10-14",
+        "review": "reviewed",
+        "basis": "editorial",
+        "note": "Ethereum 확장을 위한 L2 validity rollup의 공식 설명. 보리차트의 편집 연결이며 토큰의 권리·투자 판단을 뜻하지 않습니다."
+      }
+    },
+    {
+      "asset": "LUNC",
+      "themes": ["platforms"],
+      "evidence": {
+        "url": "https://classic-docs.terra.money/docs/learn/protocol.html",
+        "provider": "Terra Classic",
+        "checkedAt": "2026-10-14",
+        "review": "reviewed",
+        "basis": "editorial",
+        "note": "Terra Classic 네트워크의 프로토콜 문서. 이전 페그 설계를 현재 안정성으로 보지 않습니다. 보리차트의 편집 연결이며 토큰의 권리·투자 판단을 뜻하지 않습니다."
+      }
+    },
+    {
+      "asset": "AR",
+      "themes": ["infrastructure", "depin", "storage"],
+      "evidence": {
+        "url": "https://arweave.org/",
+        "provider": "Arweave",
+        "checkedAt": "2026-10-14",
+        "review": "reviewed",
+        "basis": "editorial",
+        "note": "영구 분산 저장 네트워크의 공식 설명. 보리차트의 편집 연결이며 토큰의 권리·투자 판단을 뜻하지 않습니다."
+      }
+    },
+    {
+      "asset": "BONK",
+      "themes": ["memes"],
+      "evidence": {
+        "url": "https://www.bonkcoin.com/",
+        "provider": "BONK",
+        "checkedAt": "2026-10-14",
+        "review": "reviewed",
+        "basis": "editorial",
+        "note": "인터넷 문화와 커뮤니티 자산에 관한 공식 설명. 보리차트의 편집 연결이며 토큰의 권리·투자 판단을 뜻하지 않습니다."
+      }
+    },
+    {
+      "asset": "FLOKI",
+      "themes": ["memes", "culture", "nft-gaming", "metaverse"],
+      "evidence": {
+        "url": "https://floki.com/",
+        "provider": "Floki",
+        "checkedAt": "2026-10-14",
+        "review": "reviewed",
+        "basis": "editorial",
+        "note": "밈에서 시작한 프로젝트와 NFT·메타버스 생태계의 공식 설명. 보리차트의 편집 연결이며 토큰의 권리·투자 판단을 뜻하지 않습니다."
+      }
+    },
+    {
+      "asset": "RUNE",
+      "themes": ["defi", "dex", "interoperability"],
+      "evidence": {
+        "url": "https://docs.thorchain.org/",
+        "provider": "THORChain",
+        "checkedAt": "2026-10-14",
+        "review": "reviewed",
+        "basis": "editorial",
+        "note": "네이티브 자산의 탈중앙 크로스체인 스왑 설명. 보리차트의 편집 연결이며 토큰의 권리·투자 판단을 뜻하지 않습니다."
+      }
+    },
+    {
+      "asset": "JASMY",
+      "themes": ["infrastructure", "data"],
+      "evidence": {
+        "url": "https://jasmy.global/",
+        "provider": "Jasmy",
+        "checkedAt": "2026-10-14",
+        "review": "reviewed",
+        "basis": "editorial",
+        "note": "개인 데이터 소유와 Personal Data Locker에 관한 공식 설명. 보리차트의 편집 연결이며 토큰의 권리·투자 판단을 뜻하지 않습니다."
+      }
+    },
+    {
+      "asset": "TWT",
+      "themes": ["infrastructure", "wallets"],
+      "evidence": {
+        "url": "https://trustwallet.com/",
+        "provider": "Trust Wallet",
+        "checkedAt": "2026-10-14",
+        "review": "reviewed",
+        "basis": "editorial",
+        "note": "셀프 커스터디 지갑 프로젝트 안내. 보리차트의 편집 연결이며 토큰의 권리·투자 판단을 뜻하지 않습니다."
+      }
+    },
+    {
+      "asset": "S",
+      "themes": ["platforms"],
+      "evidence": {
+        "url": "https://www.soniclabs.com/",
+        "provider": "Sonic",
+        "checkedAt": "2026-10-14",
+        "review": "reviewed",
+        "basis": "editorial",
+        "note": "S를 사용하는 EVM L1의 공식 설명. 이전 FTM과 혼동하지 않습니다. 보리차트의 편집 연결이며 토큰의 권리·투자 판단을 뜻하지 않습니다."
+      }
+    },
+    {
+      "asset": "CVX",
+      "themes": ["defi", "yield"],
+      "evidence": {
+        "url": "https://docs.convexfinance.com/convexfinance/general-information/why-convex",
+        "provider": "Convex",
+        "checkedAt": "2026-10-14",
+        "review": "reviewed",
+        "basis": "editorial",
+        "note": "Curve 유동성·거버넌스 관련 Convex의 공식 설명. 보리차트의 편집 연결이며 토큰의 권리·투자 판단을 뜻하지 않습니다."
+      }
+    },
+    {
+      "asset": "SFP",
+      "themes": ["infrastructure", "wallets"],
+      "evidence": {
+        "url": "https://www.safepal.com/en/",
+        "provider": "SafePal",
+        "checkedAt": "2026-10-14",
+        "review": "reviewed",
+        "basis": "editorial",
+        "note": "소프트웨어·하드웨어 지갑 프로젝트 안내. 보리차트의 편집 연결이며 토큰의 권리·투자 판단을 뜻하지 않습니다."
+      }
+    },
+    {
+      "asset": "ZEN",
+      "themes": ["infrastructure", "privacy", "platforms"],
+      "evidence": {
+        "url": "https://docs.horizen.io/",
+        "provider": "Horizen",
+        "checkedAt": "2026-10-14",
+        "review": "reviewed",
+        "basis": "editorial",
+        "note": "Base의 EVM L3와 프라이버시 앱 설명. 이전 PoW 체인 설명으로 대체하지 않습니다. 보리차트의 편집 연결이며 토큰의 권리·투자 판단을 뜻하지 않습니다."
+      }
+    },
+    {
+      "asset": "APE",
+      "themes": ["culture", "nft-gaming"],
+      "evidence": {
+        "url": "https://apecoin.com/",
+        "provider": "ApeCoin",
+        "checkedAt": "2026-10-14",
+        "review": "reviewed",
+        "basis": "editorial",
+        "note": "문화·게임·상거래 생태계의 토큰이라는 공식 메타 설명. 보리차트의 편집 연결이며 토큰의 권리·투자 판단을 뜻하지 않습니다."
+      }
+    },
+    {
+      "asset": "DYDX",
+      "themes": ["defi", "dex", "derivatives"],
+      "evidence": {
+        "url": "https://www.dydx.xyz/",
+        "provider": "dYdX",
+        "checkedAt": "2026-10-14",
+        "review": "reviewed",
+        "basis": "editorial",
+        "note": "DeFi 거래 플랫폼과 무기한 계약에 관한 공식 안내. 보리차트의 편집 연결이며 토큰의 권리·투자 판단을 뜻하지 않습니다."
+      }
+    },
+    {
+      "asset": "DEXE",
+      "themes": ["infrastructure", "governance"],
+      "evidence": {
+        "url": "https://docs.dexe.io/",
+        "provider": "DeXe",
+        "checkedAt": "2026-10-14",
+        "review": "reviewed",
+        "basis": "editorial",
+        "note": "DAO 생성·관리와 거버넌스 프로토콜 설명. 보리차트의 편집 연결이며 토큰의 권리·투자 판단을 뜻하지 않습니다."
+      }
+    },
+    {
+      "asset": "GALA",
+      "themes": ["culture", "nft-gaming"],
+      "evidence": {
+        "url": "https://blog.gala.games/upcoming-gala-v2-contract-upgrade-aa408d9cad",
+        "provider": "Gala Games",
+        "checkedAt": "2026-10-14",
+        "review": "reviewed",
+        "basis": "editorial",
+        "note": "Gala Games 생태계의 GALA v2 안내. 폐기된 v1 토큰을 별도 자산으로 넣지 않습니다. 보리차트의 편집 연결이며 토큰의 권리·투자 판단을 뜻하지 않습니다."
+      }
+    },
+    {
+      "asset": "RSR",
+      "themes": ["defi", "stablecoin-related"],
+      "evidence": {
+        "url": "https://datalab.upbit.com/assets/RSR/summary",
+        "provider": "Upbit DataLab",
+        "checkedAt": "2026-10-14",
+        "review": "reviewed",
+        "basis": "editorial",
+        "note": "Reserve Rights의 공급자 스테이블 코인 연관 분류. RSR 자체를 스테이블 코인으로 보지 않습니다. 보리차트의 편집 연결이며 토큰의 권리·투자 판단을 뜻하지 않습니다."
+      }
+    },
+    {
+      "asset": "RLC",
+      "themes": ["infrastructure", "depin", "data"],
+      "evidence": {
+        "url": "https://docs.iex.ec/get-started/welcome",
+        "provider": "iExec",
+        "checkedAt": "2026-10-14",
+        "review": "reviewed",
+        "basis": "editorial",
+        "note": "분산형 기밀 연산·데이터 프라이버시 도구 설명. 보리차트의 편집 연결이며 토큰의 권리·투자 판단을 뜻하지 않습니다."
+      }
+    },
+    {
+      "asset": "ORDI",
+      "themes": ["bitcoin-ecosystem"],
+      "evidence": {
+        "url": "https://research.binance.com/static/pdf/BRC-20%20Tokens%20-%20A%20Primer.pdf",
+        "provider": "Binance Research",
+        "checkedAt": "2026-10-14",
+        "review": "reviewed",
+        "basis": "editorial",
+        "note": "BRC-20 ORDI 발행 실험 설명. Bitcoin 네이티브 자산이나 Ordinals 전체를 대표하지 않습니다. 보리차트의 편집 연결이며 토큰의 권리·투자 판단을 뜻하지 않습니다."
+      }
+    },
+    {
+      "asset": "GMX",
+      "themes": ["defi", "dex", "derivatives"],
+      "evidence": {
+        "url": "https://docs.gmx.io/docs/tokenomics/gmx-token.md",
+        "provider": "GMX",
+        "checkedAt": "2026-10-14",
+        "review": "reviewed",
+        "basis": "editorial",
+        "note": "무기한 거래 프로토콜의 GMX 토큰 안내. 보리차트의 편집 연결이며 토큰의 권리·투자 판단을 뜻하지 않습니다."
+      }
+    },
+    {
+      "asset": "KSM",
+      "themes": ["infrastructure", "platforms"],
+      "evidence": {
+        "url": "https://docs.polkadot.com/reference/parachains/networks/",
+        "provider": "Polkadot",
+        "checkedAt": "2026-10-14",
+        "review": "reviewed",
+        "basis": "editorial",
+        "note": "경제적 가치가 있는 Kusama 네트워크와 KSM의 공식 설명. 보리차트의 편집 연결이며 토큰의 권리·투자 판단을 뜻하지 않습니다."
+      }
+    },
+    {
+      "asset": "FTT",
+      "themes": ["exchange-token", "cefi"],
+      "evidence": {
+        "url": "https://www.sec.gov/newsroom/press-releases/2022-234",
+        "provider": "미국 SEC",
+        "checkedAt": "2026-10-14",
+        "review": "reviewed",
+        "basis": "editorial",
+        "note": "2022년 자료의 FTX 발행 거래소 토큰이라는 과거 관계. 현재 운영·권리 회복을 뜻하지 않습니다. 보리차트의 편집 연결이며 토큰의 권리·투자 판단을 뜻하지 않습니다."
+      }
+    },
+    {
+      "asset": "SNX",
+      "themes": ["defi", "dex", "derivatives"],
+      "evidence": {
+        "url": "https://docs.synthetix.io/",
+        "provider": "Synthetix",
+        "checkedAt": "2026-10-14",
+        "review": "reviewed",
+        "basis": "editorial",
+        "note": "Ethereum 무기한 계약 거래의 공식 안내. 보리차트의 편집 연결이며 토큰의 권리·투자 판단을 뜻하지 않습니다."
+      }
+    },
+    {
+      "asset": "YFI",
+      "themes": ["defi", "yield"],
+      "evidence": {
+        "url": "https://docs.yearn.fi/getting-started/intro",
+        "provider": "Yearn",
+        "checkedAt": "2026-10-14",
+        "review": "reviewed",
+        "basis": "editorial",
+        "note": "DeFi 자산 운용 Vault에 관한 공식 설명. 수익을 보장하지 않습니다. 보리차트의 편집 연결이며 토큰의 권리·투자 판단을 뜻하지 않습니다."
+      }
+    },
+    {
+      "asset": "EIGEN",
+      "themes": ["infrastructure", "staking"],
+      "evidence": {
+        "url": "https://docs.eigencloud.xyz/",
+        "provider": "EigenCloud",
+        "checkedAt": "2026-10-14",
+        "review": "reviewed",
+        "basis": "editorial",
+        "note": "ETH·EIGEN을 스테이킹해 서비스를 검증하는 EigenLayer 설명. 보리차트의 편집 연결이며 토큰의 권리·투자 판단을 뜻하지 않습니다."
+      }
+    },
+    {
+      "asset": "MUBARAK",
+      "themes": ["memes"],
+      "evidence": {
+        "url": "https://www.binance.com/en/trade/MUBARAK_USDT",
+        "provider": "Binance",
+        "checkedAt": "2026-10-14",
+        "review": "reviewed",
+        "basis": "editorial",
+        "note": "공식 현물 거래 페이지의 MEME 분류 대조. 보리차트의 편집 연결이며 토큰의 권리·투자 판단을 뜻하지 않습니다."
+      }
+    },
+    {
+      "asset": "HUMA",
+      "themes": ["defi", "rwa", "lending"],
+      "evidence": {
+        "url": "https://docs.huma.finance/about-huma/what-is-huma",
+        "provider": "Huma",
+        "checkedAt": "2026-10-14",
+        "review": "reviewed",
+        "basis": "editorial",
+        "note": "온체인 결제금융과 실물 결제 자산의 금융 네트워크 설명. 보리차트의 편집 연결이며 토큰의 권리·투자 판단을 뜻하지 않습니다."
+      }
+    },
+    {
+      "asset": "BOME",
+      "themes": ["memes"],
+      "evidence": {
+        "url": "https://www.binance.com/en/trade/BOME_USDT",
+        "provider": "Binance",
+        "checkedAt": "2026-10-14",
+        "review": "reviewed",
+        "basis": "editorial",
+        "note": "공식 현물 거래 페이지의 MEME 분류 대조. 보리차트의 편집 연결이며 토큰의 권리·투자 판단을 뜻하지 않습니다."
+      }
+    },
+    {
+      "asset": "HOT",
+      "themes": ["infrastructure", "depin", "data"],
+      "evidence": {
+        "url": "https://holo.host/",
+        "provider": "Holo",
+        "checkedAt": "2026-10-14",
+        "review": "reviewed",
+        "basis": "editorial",
+        "note": "독립 운영자가 제공하는 Holochain 노드·호스팅 설명. 보리차트의 편집 연결이며 토큰의 권리·투자 판단을 뜻하지 않습니다."
+      }
+    },
+    {
+      "asset": "DGB",
+      "themes": ["infrastructure", "payments"],
+      "evidence": {
+        "url": "https://www.digibyte.org/",
+        "provider": "DigiByte",
+        "checkedAt": "2026-10-14",
+        "review": "reviewed",
+        "basis": "editorial",
+        "note": "DGB 네트워크의 디지털 자산 전송·결제 설명. 보리차트의 편집 연결이며 토큰의 권리·투자 판단을 뜻하지 않습니다."
+      }
+    },
+    {
+      "asset": "BANANAS31",
+      "themes": ["memes"],
+      "evidence": {
+        "url": "https://www.binance.com/en/academy/articles/what-is-banana-for-scale-bananas31",
+        "provider": "Binance Academy",
+        "checkedAt": "2026-10-14",
+        "review": "reviewed",
+        "basis": "editorial",
+        "note": "Banana for Scale의 밈 토큰 설명. 보리차트의 편집 연결이며 토큰의 권리·투자 판단을 뜻하지 않습니다."
+      }
+    },
+    {
+      "asset": "0G",
+      "themes": ["platforms"],
+      "evidence": {
+        "url": "https://datalab.upbit.com/assets/0G/summary",
+        "provider": "Upbit DataLab",
+        "checkedAt": "2026-10-14",
+        "review": "reviewed",
+        "basis": "editorial",
+        "note": "업비트 제공 분류를 대조한 보리차트의 편집 연결입니다. 토큰의 권리·가격 원인·전체 시장 순위를 뜻하지 않습니다."
+      },
+      "providerClassification": {
+        "level1Code": "SCTIDXB",
+        "level1Name": "스마트 컨트랙트 플랫폼",
+        "level2Code": "SCTIDXB01",
+        "level2Name": "모놀리식 블록체인",
+        "level3Code": "SCTIDXB01-01",
+        "level3Name": "모놀리식 블록체인"
+      }
+    },
+    {
+      "asset": "ENJ",
+      "themes": ["platforms", "culture", "nft-gaming"],
+      "evidence": {
+        "url": "https://docs.enjin.io/",
+        "provider": "Enjin",
+        "checkedAt": "2026-10-14",
+        "review": "reviewed",
+        "basis": "editorial",
+        "note": "게임·앱과 프로토콜 수준 NFT를 위한 블록체인 설명. 보리차트의 편집 연결이며 토큰의 권리·투자 판단을 뜻하지 않습니다."
+      }
+    },
+    {
+      "asset": "ROSE",
+      "themes": ["platforms", "infrastructure", "privacy"],
+      "evidence": {
+        "url": "https://docs.oasis.io/",
+        "provider": "Oasis",
+        "checkedAt": "2026-10-14",
+        "review": "reviewed",
+        "basis": "editorial",
+        "note": "암호화 거래와 기밀 스마트 계약·Privacy Layer 설명. 보리차트의 편집 연결이며 토큰의 권리·투자 판단을 뜻하지 않습니다."
+      }
+    },
+    {
+      "asset": "ONT",
+      "themes": ["platforms"],
+      "evidence": {
+        "url": "https://datalab.upbit.com/assets/ONT/summary",
+        "provider": "Upbit DataLab",
+        "checkedAt": "2026-10-14",
+        "review": "reviewed",
+        "basis": "editorial",
+        "note": "업비트 제공 분류를 대조한 보리차트의 편집 연결입니다. 토큰의 권리·가격 원인·전체 시장 순위를 뜻하지 않습니다."
+      },
+      "providerClassification": {
+        "level1Code": "SCTIDXB",
+        "level1Name": "스마트 컨트랙트 플랫폼",
+        "level2Code": "SCTIDXB01",
+        "level2Name": "모놀리식 블록체인",
+        "level3Code": "SCTIDXB01-01",
+        "level3Name": "모놀리식 블록체인"
+      }
+    },
+    {
+      "asset": "ASTR",
+      "themes": ["platforms"],
+      "evidence": {
+        "url": "https://datalab.upbit.com/assets/ASTR/summary",
+        "provider": "Upbit DataLab",
+        "checkedAt": "2026-10-14",
+        "review": "reviewed",
+        "basis": "editorial",
+        "note": "업비트 제공 분류를 대조한 보리차트의 편집 연결입니다. 토큰의 권리·가격 원인·전체 시장 순위를 뜻하지 않습니다."
+      },
+      "providerClassification": {
+        "level1Code": "SCTIDXB",
+        "level1Name": "스마트 컨트랙트 플랫폼",
+        "level2Code": "SCTIDXB01",
+        "level2Name": "모놀리식 블록체인",
+        "level3Code": "SCTIDXB01-01",
+        "level3Name": "모놀리식 블록체인"
+      }
+    }
+  ]
+}

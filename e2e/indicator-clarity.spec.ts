@@ -1,47 +1,42 @@
 import { test, expect } from '@playwright/test';
 import type { Page } from '@playwright/test';
+import { guideForMetric } from '../shared/learning-catalog';
 
-async function waitForSelectedDateInView(page: Page) {
+async function noOperationalUi(page: Page) {
+  await expect(
+    page.locator('.analysis-reading-date,.indicator-provenance,.chart-readings-table'),
+  ).toHaveCount(0);
+  await expect(page.getByRole('button', { name: '데이터 정보', exact: true })).toHaveCount(0);
+  await expect(page.getByRole('button', { name: '최근값 보기', exact: true })).toHaveCount(0);
+  await expect(page.getByRole('button', { name: /CSV|내보내기|공유/ })).toHaveCount(0);
+}
+async function zoom(page: Page) {
   const chart = page.locator('[data-chart-kind="analysis"]');
-  await expect
-    .poll(async () => {
-      const label = await page.locator('.analysis-reading-date').innerText();
-      const date = label.match(/(\d{4}-\d{2}-\d{2}) (\d{2}:\d{2}) UTC/);
-      if (!date) return false;
-      const selected = Date.parse(date[1] + 'T' + date[2] + ':00Z') / 1000;
-      const from = Number(await chart.getAttribute('data-visible-from'));
-      const to = Number(await chart.getAttribute('data-visible-to'));
-      return selected >= from && selected <= to;
-    })
-    .toBe(true);
+  const before = await chart.getAttribute('data-visible-from');
+  const box = (await chart.boundingBox())!;
+  await page.mouse.move(box.x + box.width / 2, box.y + box.height / 2);
+  await page.mouse.wheel(0, -320);
+  await expect(chart).not.toHaveAttribute('data-visible-from', before!);
+  return chart.getAttribute('data-visible-from');
 }
 
-test('historical readings can return to latest without changing the chart window; help has a worked example', async ({
+test('latest summary stays stable while exploring and worked help preserves the visible window', async ({
   page,
 }) => {
   await page.goto('/coins/BTC?metric=net%3Amvrv&period=1y&price_source=upbit');
   const chart = page.locator('[data-chart-kind="analysis"]');
-  await expect(chart).toBeVisible();
   await expect(chart).toHaveAttribute('data-range-ready', '1');
-  await expect(page.locator('.analysis-reading-date')).toContainText('최근 확정값');
-  const initial = await chart.getAttribute('data-visible-from');
-  await page.getByRole('button', { name: '구간·확대', exact: true }).click();
-  await page.getByRole('button', { name: '차트 확대', exact: true }).click();
-  await page.keyboard.press('Escape');
-  await expect(chart).not.toHaveAttribute('data-visible-from', initial!);
-  await chart.focus();
-  await page.keyboard.press('ArrowLeft');
-  await expect(page.locator('.analysis-reading-date')).toContainText('날짜 고정');
-  // Keyboard selection may pan to bring the chosen observation into view.
-  // Resetting the reading must preserve that actual user-visible window.
-  // The reading label updates before Lightweight Charts publishes its new range.
-  // Wait for that actual pan, rather than comparing against the preceding frame.
-  await waitForSelectedDateInView(page);
-  const window = await chart.getAttribute('data-visible-from');
-  await page.getByRole('button', { name: '최근값 보기', exact: true }).click();
-  await expect(chart).toBeFocused();
-  await expect(page.locator('.analysis-reading-date')).toContainText('최근 확정값');
-  await expect(chart).toHaveAttribute('data-visible-from', window!);
+  const latest = await page.locator('.analysis-reading-value').innerText();
+  const window = await zoom(page);
+  const box = (await chart.boundingBox())!;
+  await page.mouse.move(box.x + box.width * 0.4, box.y + box.height * 0.4);
+  await expect(page.getByTestId('chart-tooltip')).toBeVisible();
+  await expect(page.getByTestId('chart-tooltip')).toContainText('BTC');
+  await expect(page.getByTestId('chart-tooltip')).not.toHaveText(/\d{4}-\d{2}-\d{2}/);
+  await page.mouse.click(box.x + box.width * 0.4, box.y + box.height * 0.4);
+  await expect(page.locator('.analysis-reading-value')).toHaveText(latest);
+  expect(new URL(page.url()).searchParams.has('reading_date')).toBe(false);
+  await noOperationalUi(page);
   await expect(page.locator('.indicator-method')).toHaveCount(0);
   await page.getByRole('button', { name: /^지표 설명/ }).click();
   const explanation = page.getByRole('dialog', { name: '지표 설명', exact: true });
@@ -52,32 +47,42 @@ test('historical readings can return to latest without changing the chart window
   await expect(
     explanation.locator('details').filter({ has: page.getByText('계산식·기호', { exact: true }) }),
   ).toContainText('실현시가총액');
-  await expect(explanation.locator('.indicator-method').last()).toContainText(
-    '실제 매수한 금액의 합계는 아닙니다',
-  );
+  await expect(
+    explanation.locator('dd').filter({ hasText: '실제 매수한 금액의 합계는 아닙니다' }),
+  ).toBeVisible();
+  await page.keyboard.press('Escape');
+  await expect(explanation).not.toBeVisible();
+  await expect(chart).toHaveAttribute('data-visible-from', window!);
+  await expect(page.locator('.analysis-reading-value')).toHaveText(latest);
+  await page.getByRole('button', { name: /^지표 설명/ }).click();
+  await explanation.getByText('주의할 점', { exact: true }).click();
+  await expect(explanation).toContainText(guideForMetric('net:mvrv')!.caution);
   await page.screenshot({ path: test.info().outputPath('mvrv-method.png'), fullPage: true });
-  await explanation.getByText('출처·한계', { exact: true }).click();
   await page.getByRole('link', { name: '현재 분석 설명', exact: true }).click();
   await expect(page.getByRole('heading', { name: 'MVRV', exact: true })).toBeVisible();
   await expect(page.locator('.guide-terms dt').filter({ hasText: /^실현시가총액$/ })).toBeVisible();
   expect(new URL(page.url()).searchParams.get('price_source')).toBe('upbit');
 });
 
-test('keyboard panning before a manual zoom survives a chart resize', async ({ page }) => {
-  await page.goto('/coins/BTC?metric=net%3Amvrv&period=1y&price_source=upbit');
+test('manual zoom and an explicit legacy reading date survive chart resizing without changing the latest summary', async ({
+  page,
+}) => {
+  await page.goto(
+    '/coins/BTC?metric=net%3Amvrv&period=1y&price_source=upbit&reading_date=1700006400',
+  );
   const chart = page.locator('[data-chart-kind="analysis"]');
   await expect(chart).toHaveAttribute('data-range-ready', '1');
-  await chart.focus();
-  await page.keyboard.press('Home');
-  await expect(page.locator('.analysis-reading-date')).toContainText('날짜 고정');
-  await waitForSelectedDateInView(page);
-  const window = await chart.getAttribute('data-visible-from');
+  const latest = await page.locator('.analysis-reading-value').innerText();
+  const window = await zoom(page);
   const canvas = chart.locator('canvas').first();
   const width = await canvas.getAttribute('width');
   await page.setViewportSize({ width: 1000, height: 900 });
   await expect(canvas).not.toHaveAttribute('width', width!);
-  await waitForSelectedDateInView(page);
   await expect(chart).toHaveAttribute('data-visible-from', window!);
+  await chart.press('Home');
+  expect(new URL(page.url()).searchParams.get('reading_date')).toBe('1700006400');
+  await expect(page.locator('.analysis-reading-value')).toHaveText(latest);
+  await noOperationalUi(page);
 });
 
 test('coin changes open the active purpose and empty purposes offer an alternative', async ({
@@ -106,37 +111,39 @@ test('coin changes open the active purpose and empty purposes offer an alternati
   await expect(page.getByRole('button', { name: /지표 변경$/ })).toBeFocused();
 });
 
-test('source date and chart observation date are distinct; the reading toolbar fits narrow screens', async ({
+test('source dates remain separate API metadata while narrow screens show only values', async ({
   page,
 }) => {
+  const inputs: { asset: string | null; observed: number; sourceDate: number }[] = [];
   await page.route('**/api/v1/candles?*', async (route) => {
     const response = await route.fetch();
     const data = await response.json();
-    if (data.data?.length) data.meta.dataAsOf = data.data.at(-1).time + 86400;
+    if (data.data?.length) {
+      const observed = data.data.at(-1).time;
+      data.meta.dataAsOf = observed + 86400;
+      inputs.push({
+        asset: new URL(route.request().url()).searchParams.get('asset'),
+        observed,
+        sourceDate: data.meta.dataAsOf,
+      });
+    }
     await route.fulfill({ response, json: data });
   });
   await page.goto('/coins/ONDO?metric=rsi&price_source=upbit');
-  await expect(page.locator('[data-primary-metric="rsi"]')).toBeVisible();
-  await expect(page.locator('.indicator-provenance')).toHaveCount(0);
-  await page.getByRole('button', { name: '데이터 정보', exact: true }).click();
-  await expect(page.locator('.indicator-provenance')).toContainText('기준일');
-  await expect(page.locator('.indicator-provenance')).toContainText('최근 데이터');
-  await page.keyboard.press('Escape');
-  // Complete the dialog's focus restoration before moving focus into the chart.
-  // Otherwise its closing transition can return focus during the next key press.
-  await expect(page.getByRole('dialog', { name: '데이터 정보', exact: true })).not.toBeVisible();
-  await expect(page.getByRole('button', { name: '데이터 정보', exact: true })).toBeFocused();
   const chart = page.locator('[data-chart-kind="analysis"]');
   await expect(chart).toHaveAttribute('data-range-ready', '1');
+  await expect(chart).toHaveAttribute('data-primary-metric', 'rsi');
+  expect(inputs.length).toBeGreaterThan(0);
+  expect(inputs.every((i) => i.asset === 'ONDO' && i.sourceDate - i.observed === 86400)).toBe(true);
+  const latest = await page.locator('.analysis-reading-value').innerText();
   for (const width of [320, 390, 768, 1000, 1280, 1440]) {
     await page.setViewportSize({ width, height: 900 });
-    await chart.focus();
-    await expect(chart).toBeFocused();
-    await page.keyboard.press('ArrowLeft');
-    await expect(page.getByRole('button', { name: '최근값 보기', exact: true })).toBeVisible();
+    await chart.press('ArrowLeft');
+    await expect(page.locator('.analysis-reading-value')).toHaveText(latest);
+    expect(new URL(page.url()).searchParams.has('reading_date')).toBe(false);
+    await noOperationalUi(page);
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(
       true,
     );
-    await page.getByRole('button', { name: '최근값 보기', exact: true }).click();
   }
 });

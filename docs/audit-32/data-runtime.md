@@ -1,6 +1,6 @@
 # 0.32 시세 시각·단위·운영 자원 검증
 
-작성일: 2026-10-13 KST. 이 문서는 수정한 데이터 계약, 제한된 실제 원천 조회, 로컬 검사와 읽기 전용 VPS 자원 조사를 기록합니다. **0.32 코드 검사를 운영 배포나 전체 이력 복구 완료로 표현하지 않습니다.** 원격 CI·통합 브라우저 검사·최종 배포 결과는 별도 기록으로 확인해야 합니다.
+작성일: 2026-10-13 KST. 이 문서는 수정한 데이터 계약, 제한된 실제 원천 조회, 로컬 검사, VPS 자원 조사와 승인된 운영 전환을 기록합니다. **13:00:02 UTC에 0.32의 네 서비스 전환과 120초 자연 갱신 검증, 14:37 UTC에 0.32.1의 API만 교체하는 후속 전환을 마쳤습니다.** Pages·VPS 공개 자산 대조와 제한된 실제 화면 검사도 확인했습니다. 전체 과거 이력·모든 원천 신선도·전수 사용자 흐름·성능 목표 통과는 각각 구분합니다.
 
 ## 1. Binance의 실제 체결 시각
 
@@ -48,7 +48,7 @@ Binance REST·WebSocket API의 ticker `lastPrice`·`lastId`를 aggregate trade�
 
 이전 health 경로는 Binance의 오래된 실제 체결을 통계창 지연으로 바꾸는 분기가 있었습니다. 새 경로는 snapshot의 작은 시각 메타데이터만 함께 읽어 실제 체결과 미확인을 구별합니다. 잘못된 JSON을 읽을 때도 쿼리가 전체 실패하지 않도록 보호합니다. 전체 snapshot 본문을 상태 응답에 추가하지 않습니다.
 
-시세의 수집 성공 시각이 새로워도 실제 체결이 오래됐으면 정상으로 바꾸지 않습니다. 스트림 연결 정상, 프로세스 health 정상, 모든 원천의 신선도 정상은 서로 다른 판단입니다. 배포 전 읽기 전용 운영 DB 표본에서 BTC·DOGE·ETH Binance 스냅샷의 새 시각 메타데이터가 모두 없음을 확인했으므로, 운영 수집기 교체 전까지 이 계약이 실제 저장에 적용됐다고 표현하지 않습니다.
+시세의 수집 성공 시각이 새로워도 실제 체결이 오래됐으면 정상으로 바꾸지 않습니다. 스트림 연결 정상, 프로세스 health 정상, 모든 원천의 신선도 정상은 서로 다른 판단입니다. 배포 전에는 BTC·DOGE·ETH Binance 스냅샷의 새 시각 메타데이터가 없었습니다. 승인된 운영 수집기 교체 후 120초 자연 SELECT에서 세 코인의 `timestampKind=trade`, `actualTradeAt=time`, 원시 체결 ID 저장을 확인했습니다. 아래 운영 표본에는 여전히 오래된 실제 체결이 있으며 정상 수집과 구별합니다.
 
 기존 관측 링크도 exact ID로 조회할 수 있도록 보완했습니다. `signals?asset=…&id=…`는 최대 400자의 제한된 ID를 검증하고 해당 자산·ID만 읽습니다. 수정·철회된 관측도 조회해 상태를 보여주며, 다른 코인의 ID나 없는 ID는 빈 결과입니다. 읽기 때문에 관측 상태나 개인 자료를 변경하지 않습니다.
 
@@ -56,7 +56,7 @@ Binance REST·WebSocket API의 ticker `lastPrice`·`lastId`를 aggregate trade�
 
 [Coin Metrics의 HashRate 정의](https://docs.coinmetrics.io/network-data/network-data-overview/mining/hash-rate)는 DASH·ZEC를 **GH/s**, BTC·BCH·DOGE·LTC·ETC를 **TH/s**로 제공합니다. 자산별 표시 단위·계산 설명을 분리했습니다. 원천 값을 1,000배 변환하거나 기존 저장 값을 다시 쓰지 않습니다.
 
-2026-10-13 10:03 UTC 전후 읽기 전용 조회에서 운영과 Community API의 2026-10-10·11·12 세 날짜를 각각 대조했습니다. **DASH 3개·ZEC 3개, 6/6 값이 일치**했습니다. 당시 운영 응답의 값은 맞지만 단위는 두 자산 모두 TH/s로 표시돼 있었습니다. 새 GH/s 표시는 코드 수정이며, 운영 배포 확인 전에는 공개 단위 오류가 해결됐다고 표현하지 않습니다.
+2026-10-13 10:03 UTC 전후 읽기 전용 조회에서 운영과 Community API의 2026-10-10·11·12 세 날짜를 각각 대조했습니다. **DASH 3개·ZEC 3개, 6/6 값이 일치**했습니다. 당시 운영 응답의 값은 맞지만 단위는 두 자산 모두 TH/s로 표시돼 있었습니다. 최종 이미지의 격리된 후보 API는 두 자산의 `meta.unit=GH/s`와 실제 10월 12일 관측을 통과했고, 이 이미지를 운영 API에 적용했습니다. 값 자체는 변환하거나 재저장하지 않았습니다.
 
 | 자산 | 10월 10일 | 10월 11일 | 10월 12일 | 원천 단위 |
 |---|---:|---:|---:|---|
@@ -72,7 +72,7 @@ Binance REST·WebSocket API의 ticker `lastPrice`·`lastId`를 aggregate trade�
 | health·예약 회귀 | `tests/automation.test.mjs` 32개 통과. 실제 오래된 체결·시각 미확인·명시적 통계창 오류·Bybit 관측 지연 구별 포함 |
 | Node 시세·환경·세션 검사 | 서버 검사 31개 통과. 150개 요청의 세션 재사용, proof reader, 재연결·timeout·제한 대기·선택 구독 포함 |
 | TypeScript | 마지막 수정 후 `tsc -b --pretty false` exit 0 |
-| Compose 설정 | 합성 변수로 검사. recent·analysis·backup·migrate 설정은 유지되고 API·hub·quotes·background만 image/release override 적용. 실제 원격 Compose 적용은 미실행 |
+| Compose 설정 | 합성 변수와 원격 이전·후보 설정 대조. recent·analysis·backup·migrate 설정·ID 유지, API·hub·quotes·background만 image/release override로 운영 적용 |
 | 시세 proof | 실제 `lastId`·가격·T, 증거 누락·불일치, 300초 경계, 보조 요청 동시 수·deadline, 개별 실패 격리 검사 |
 | 합성 SSE 100명 | 로컬 마지막 표본 p95 903ms, RSS 증가 6,701,056바이트. VPS 부하나 실제 거래소 이벤트→화면 지연의 측정값이 아님 |
 
@@ -120,7 +120,7 @@ Binance REST·WebSocket API의 ticker `lastPrice`·`lastId`를 aggregate trade�
 
 기존 `work/price-031-reading/remote_deploy.py`는 **API만 교체**하는 검증 도구입니다. compose·server runtime이 같고 API 외 서비스 설정이 완전히 동일하다는 조건을 강제하므로, 이번 여러 서비스 교체에 그대로 사용할 수 없습니다. 당시 API만 교체하기 위한 측정 자원 예외도 전체 서비스 배포의 허가나 8GiB 과거 수집 보호 기준 통과로 확대하지 않습니다.
 
-안전한 실행 순서는 다음과 같습니다. **이 문서 작성 시점에는 준비 검토이며 원격 실행하지 않았습니다.**
+아래 절차를 사용했으며, 실제 실행 결과는 다음 절에 기록합니다.
 
 1. PR·main CI의 Linux 이미지와 소스 산출물 SHA-256, OCI config·layer·amd64를 검증합니다. VPS에서 이미지 빌드는 하지 않습니다.
 2. 새 이미지·압축 파일·독립 복원 DB·후보 컨테이너·롤백 이미지가 동시에 있는 동안의 추가 용량을 다시 계산합니다. 현재 여유 공간과 메모리로 검증한 범위만 준비합니다.
@@ -131,12 +131,123 @@ Binance REST·WebSocket API의 ticker `lastPrice`·`lastId`를 aggregate trade�
 7. 웹 자산을 반영하고 이전 정적 자산을 보존합니다. Pages·VPS 실화면에서 가격·지표 단위·상태·저장 복원을 확인합니다. 공개 주소가 달라져도 개인 IndexedDB를 서버로 옮기지 않습니다.
 8. 직접 수집·overview 호출 없이 자연 예약 갱신에서 실제 T·체결 ID·성공 시각과 선물·온체인 최신 관측을 대조합니다. 확인하지 못한 자산과 공백은 잔여 사유로 기록합니다.
 
-Git에서 제외된 `work/ux-032/remote_deploy.py`에 위 절차의 준비·활성화 도구를 작성했습니다. AST 구문 검사만 수행했으며 import·실행·원격 변경은 하지 않았습니다. 준비 단계의 30초 자연 SELECT 표본과 활성화 단계의 120초 표본은 한정된 관측이며 하루 전체의 증거가 아닙니다. 이전 API 전용 도구와 달리 허용한 네 서비스 외의 변경을 거부하고 서비스마다 실패한 단계를 역순 복구합니다. 실제 CI 산출물·원격 적용 설정·남은 디스크 용량을 검토한 뒤에만 사용할 도구입니다.
+Git에서 제외된 `work/ux-032/remote_deploy.py`에 위 절차의 준비·활성화 도구를 작성했습니다. AST와 8개 구조 회귀 검사를 통과했고, parent의 단계별 승인으로 준비·활성화를 실행했습니다. 준비와 활성화의 자연 SELECT 표본은 한정된 관측이며 하루 전체의 증거가 아닙니다. 허용한 네 서비스 외의 변경을 거부하고 실패하면 시도한 단계를 역순 복구합니다. 최종 활성화에는 실패나 롤백이 없었습니다.
 
-## 7. 잔여 항목
+## 7. CI 산출물·백업·운영 전환 결과
 
-- 0.32 통합 검사·원격 CI·main 병합·변경 서비스 배포와 운영 재검증.
-- 150개 종목의 새 체결 시각 계약이 자연 갱신으로 실제 저장되는지 확인.
+PR #65는 main `af4953fc30c0d1b5f41592c530eb3ff2a9f32db8`에 병합됐고 main CI `38394216098`이 통과했습니다. Linux 산출물의 소스 540개 내용 해시, amd64 플랫폼, OCI config와 14개 RootFS layer를 검증했습니다. VPS에서 새 이미지를 빌드하지 않았습니다.
+
+| 항목 | 확인 결과 |
+|---|---|
+| 신규 릴리스 | `vps-fc82c194ded504a9`, 검증된 배포 소스 `package.json` 버전 `0.32.0` |
+| 이전 릴리스 | `vps-63b8b1d4ea587ca8` 보존 |
+| CI config ID | `sha256:26e935015885dc07d494b023a198cd8b95725caef617bd1c6f99b4396059e2d7` |
+| OCI/운영 image ID | `sha256:5f40ac7940bc7721f35c957ab4f13c951e975febf390371b39cc1042ec6fccbd` |
+| 온라인 백업 | 12:36:25 UTC 완료, SHA-256 `0a9c8619cf0ecb890a43fd8dea2a5ef61e66faf605def940dc913772917dc713` |
+| 독립 복원 | SQLite 무결성·논리 내용 fingerprint·DELETE journal 일치 |
+| 격리 후보 | 읽기 API 29개와 process health, 핵심 3시세 actual T·ID 증명, DASH·ZEC GH/s 확인 |
+| 운영 교체 | `quote-hub → quotes → background → api`, 네 서비스 모두 검증된 image ID 사용 |
+| 보호 서비스 | recent·analysis·backup·migrate의 배포 전 ID 그대로 유지 |
+| 운영 process | 13:04 UTC `/healthz` 200, runtime의 신규 release 일치, 네 예약 lane 최근 `ok` |
+| DB·환경 | 스키마·볼륨·포트·Nginx 변경 없음. base image/release·보호 서비스 설정 유지 |
+
+준비 도구는 두 번 실패했고 진단 기록을 보존했습니다. 첫 실패는 보호된 analysis의 의도적으로 유지한 이전 이미지를 현재 base image와 같아야 한다고 잘못 검사한 것이었습니다. 두 번째는 정상 API 응답의 `meta.unit`을 top-level `unit`에서 읽은 검사 오류였습니다. 제품 API·데이터 결함으로 단정하지 않았으며, 각 원인을 고친 구조 회귀 후 이미 검증한 이미지·백업·복원본을 재검증해 재사용했습니다. 전체 준비를 무작정 반복하거나 운영 데이터를 다시 가져오지 않았습니다.
+
+### 120초 자연 예약 표본
+
+12:58:00~13:00:00 UTC 동안 수집·overview API를 호출하지 않고 운영 DB를 SELECT로 비교했습니다. 양 거래소 BTC·DOGE·ETH **6개 시세의 `last_success`가 증가**했고 Binance 핵심 3개는 새 실제 체결 증명을 저장했습니다.
+
+| 자산 | 최종 actual T=`time` | 원시 체결 ID |
+|---|---:|---:|
+| BTC | 1791896340 | 6757900222 |
+| DOGE | 1791896337 | 1625741678 |
+| ETH | 1791896340 | 4429049569 |
+
+이 표본에서 actual T는 300초 범위에 있었고 current symlink는 증명 후에만 신규 릴리스로 승격했습니다. 다른 방문자의 부재나 하루 전체 정상 운영을 보장하지 않습니다.
+
+### 241시세와 활성 원천의 남은 상태
+
+13:02 UTC 읽기 전용 DB 집계에서 기존 **241시세쌍**이 유지됐습니다. Binance 138/138은 새 실제 체결 metadata로 전환됐고 미확인 Binance는 0개였습니다. Upbit 103개 중 86개는 새 metadata, 17개는 기존 공식 체결 시각 계약에 따른 값입니다. 후자의 근거를 새 ID 증명과 같다고 표현하지 않습니다.
+
+| 원천 | 최근 확인된 체결 | 실제 체결 300초 초과 | 합계 |
+|---|---:|---:|---:|
+| Binance | 134 | 4 | 138 |
+| Upbit | 80 | 23 | 103 |
+
+이 시점의 저장 `TRADE_STALE` 오류는 24개였고 실제 체결 시각으로 직접 계산한 오래된 값은 27개였습니다. 분 단위 검증 시점과 조회 시점이 다르므로 같은 개수로 강제하지 않았습니다. 이어진 13:04 UTC summary 표본은 활성 원천 **1,585개 중 정상 1,560개·지연 25개**였고, attention의 원인은 모두 `TRADE_STALE`였습니다. HTTP 200인 summary·process health를 전체 원천 정상으로 표시하지 않습니다.
+
+활성화 직후 여유 공간은 2,863,157,248바이트, 13:04 UTC 표본은 **2,867,433,472바이트 = 약 2.67GiB**였습니다. 단계별 **2GiB 배포 reserve**는 통과했지만 **8GiB 과거 이력 guard**는 미달입니다. runtime의 `paused_low_space`를 그대로 유지하며 전체 과거 데이터를 확보했다고 보고하지 않습니다.
+
+허용한 네 서비스 외 Compose 명령·다른 프로젝트 변경은 실행하지 않았습니다. 타 프로젝트의 배포 전 전체 ID 기준본은 없어 과거 ID 불변을 입증했다고 주장하지 않습니다. 현재 19개 컨테이너는 이름을 공개하지 않고 healthy 9·healthcheck 없는 running 5·exited 4·unhealthy 1로만 집계했습니다. 해당 unhealthy 상태의 원인이나 이번 변경과의 관계는 확인하지 않았습니다.
+
+0.32 당시 Pages는 parent가 별도로 배포·자산 검증했습니다. 이후 0.32.1의 양 주소 빌드 대조와 실제 화면 검사 범위는 아래 후속 기록으로 확인합니다. 운영 backend 전환만으로 두 주소의 모든 사용자 흐름 QA가 완료됐다고 표현하지 않습니다.
+
+### 0.32.1 후속 API·웹 전환
+
+PR #66은 main `7363f80a30a5f6e98a0f18b566bec455645ab255`에 병합됐고 main CI `38406758530`의 checks·Chromium·WebKit·container·verify 다섯 작업이 통과했습니다. 설명·관측 주기 표기를 바로잡는 좁은 변경이며, 기존 0.32의 수집·체결 증명 로직을 다시 바꾸거나 수집기를 재배포하지 않았습니다. 신규 source 파일 집합은 이전과 같고 변경 경로는 `package.json`, `package-lock.json`, 세 공통 설명·지표 정의 파일과 `src/IndicatorWorkspace.tsx` 여섯 개로 제한됐습니다.
+
+| 항목 | 확인 결과 |
+|---|---|
+| 신규 API 릴리스 | `vps-c7a1074bf44ddf04`, 표시 버전 `0.32.1` |
+| CI source archive SHA | `e459c68ff85a90cc6b6000b85c53370f7eaaa4f106dc7c50cec76a10e4cacc3d` |
+| CI image archive SHA | `7026cb7f1b1adabc510d39baf1ddf1277f7fecddf86beb921e03d343cbaf085c` |
+| CI config ID | `sha256:fcbb519181108fb886bfe8a4f0cd8dbef0aafe82bf3fdee3069223950c232339` |
+| 실제 교체 | API 한 개. 신규 image ID·runtime release·공개 읽기 응답을 확인한 뒤 current 승격 |
+| 보호 7개 | quotes·background·recent·analysis·backup·quote-hub·migrate의 ID·설정 그대로 유지 |
+| DB·예약 | 스키마·볼륨·포트·Nginx·Cron 변경 없음. 운영 DB 교체·과거 값 복원 없음, 기존 자연 수집 쓰기는 계속됨. API image/release 두 키만 변경 |
+| 후보 검사 | 새 읽기 전용 독립 clone으로 29개 읽기 API 통과. 기존 private hub만 조회, 새 shadow hub·거래소 연결 없음 |
+| 운영 읽기 검사 | runtime·150개 명부·양 거래소 핵심 3코인·BTC MVRV·Bybit 펀딩 6개 응답 대조 |
+| 복구 자산 | 이전 `vps-fc82c194ded504a9`와 롤백 image·기존 백업 보존. 실패 시 이전 API 코드만 복원하며 운영 DB를 과거 값으로 덮어쓰지 않음 |
+
+원격 CI 산출물의 전체 archive SHA, OCI config·manifest·14개 layer blob SHA, diff-ID 순서와 Linux amd64를 검사했습니다. 기존 Docker blob은 실제 파일 SHA로, snapshot 재사용은 운영 API의 동일 부모 prefix 5개로 확인했습니다. 새 blob 69,326,336 B, 새 snapshot 할당 상한 92,819,456 B와 **전체 최대 blob의 임시 ingest 상한 146,762,752 B**를 함께 계산했습니다. 기존 layer가 있다는 이유로 임시 적재 공간을 0으로 두지 않았고 VPS에서 새 빌드는 하지 않았습니다.
+
+#### 좁은 배포 예산과 감사용 RAM
+
+기존 디스크 backup·clone 준비 경로는 2GiB 바닥을 통과하지 못해 **업로드·image load 전에 중단**했습니다. 감사 중복본을 줄인 뒤에도 기존 방식의 단계별 상한 571,731,177 B에 부족했으므로, 기준을 낮추는 대신 이번 새 감사 작업만 RAM으로 옮겼습니다. 준비·활성화는 별도 승인으로 실행했습니다.
+
+- 사용이 끝난 기존 `audit/ux-032`의 rehearsal clone 한 개만 gzip3로 가역 보관했습니다. raw 실제 할당 175,546,368 B → gzip 실제 할당 54,415,360 B로 **121,131,008 B**를 줄였습니다. 원본 byte SHA·21개 테이블의 행 수·스키마·내용 fingerprint·독립 메모리 복원, 열린 fd·겹치는 mount 없음과 fsync를 확인한 뒤 해당 raw 중복본만 치환했습니다. 기존 백업과 운영 DB는 보존했고 새 참조와 명시적 복원 경로를 기록했습니다.
+- 새 감사 경로 한 곳에만 **768MiB `tmpfs`**를 만들고 실제 mount의 source·target·size와 `noswap,nodev,nosuid,noexec`를 확인했습니다. 기존 `/dev/shm`, 다른 프로젝트 마운트나 전역 swap 설정을 바꾸지 않았습니다. 이 `noswap`은 해당 파일 페이지의 정책이며 helper의 모든 익명 메모리가 자동으로 잠긴다는 의미는 아닙니다.
+- 새 CI 압축 아카이브와 온라인 snapshot·독립 clone 두 개는 RAM에 두었습니다. 운영 DB는 `mode=ro`의 online backup 입력으로만 읽었습니다. 후보에는 clone **파일 하나만** 연결했고 감사 폴더·private 로그·환경 파일을 mount하지 않았습니다. 후보 768MiB와 `memory-swap=768m`은 감사용 컨테이너에만 적용했습니다.
+- 매 단계에서 현재 MemAvailable에서 **아직 채우지 않은 tmpfs 상한 + Python gzip/deserialize/fingerprint 피크 + 후보 상한**을 뺀 뒤 1.5GiB가 남는지 검사했습니다. 이미 채운 RAM은 중복 계산하지 않았고 `max(작업량, reserve)` 방식으로 바닥을 대신하지 않았습니다.
+- durable gzip의 실제 할당이 반영된 free space에서 image 임시 blob+새 snapshot의 보수적 동시 상한을 유지했습니다. 디스크 image 단계 추가 상한은 **351,108,841 B**였으며, 이미 저장된 gzip 크기를 다시 더하지 않았습니다. 공간과 메모리 조건을 통과한 후에만 적재·후보를 실행했습니다.
+
+준비 전 fresh 값은 디스크 2,659,364,864 B, MemAvailable 4,306,538,496 B였습니다. 추가 RAM 피크 상한 2,448,109,199 B와 별도 메모리 바닥 1,610,612,736 B를 함께 통과했습니다. 이 숫자는 당시의 단계 검사이며 이후 여유 공간·메모리가 고정된다는 보장은 아닙니다.
+
+#### 새 압축 백업과 독립 복원
+
+| 항목 | 검증값 |
+|---|---|
+| online snapshot raw 크기 | 175,759,360 B |
+| durable gzip3 크기 | 54,478,889 B |
+| raw SHA | `bcc7f17fa6e68eac27acdf3265cfadf0fbe3d57954d0e645f01a131d34fd6b58` |
+| gzip SHA | `cfce7356803181b613744466e573f13e7bf2bdb421de52627183d2ba3ea64b26` |
+| 독립 clone SHA | `17880184a60fc3248daedca334de27755f0f8bb314b460389b0f00d1de3d6073` |
+| 내용 대조 | 전체 스키마·인덱스·테이블의 행 수·내용 fingerprint, SQLite 무결성과 DELETE journal 일치 |
+| 독립 복원 | gzip을 별도 메모리 SQLite로 복원한 결과와 별도 RAM clone 모두 일치 |
+
+gzip·manifest·디렉토리 fsync 뒤 검증 완료 상태를 기록했습니다. 재부팅으로 RAM이 사라지면 이전 prepared 값으로 승격할 수 없고 명시적 mount·CI 아카이브 재업로드·검증된 gzip 복원·후보 재검사를 요구합니다. 복원 시 원래 백업 완료 시각을 갱신하지 않으며 1시간 freshness 조건도 유지합니다. 실제 이번 준비에서 재부팅 복구를 실행한 것은 아니며 관련 조건은 오프라인 가드로 검사했습니다. 같은 VPS의 백업으로, 서버 전체 장애에 대비한 외부 재해복구를 완료한 것은 아닙니다.
+
+기존 가드 12개와 추가 RAM 가드 11개, 총 23개가 통과했습니다. 첫 RAM fixture에서는 Windows 읽기 전용 fd의 fsync와 경로 구분자 비교 때문에 실패해 수정했습니다. 별도 진행 조회의 첫 PowerShell 인라인 명령도 인용부호 오류로 로컬에서 실패해 파일 기반 조회로 바꿨습니다. 이는 실행 도구·fixture 단계의 결함이며 제품 원천 장애로 분류하지 않았습니다. 검사 실패·기존 배포 실패 이력을 삭제하거나 전체 준비를 무작정 반복하지 않았습니다.
+
+#### 실제 적용·정리와 웹 대조
+
+운영 API 교체 후 실제 읽기 표본에서는 Upbit KRW·Binance USDT의 BTC·DOGE·ETH가 각 3개씩 ready, Coin Metrics BTC MVRV는 배, Bybit BTCUSDT 펀딩은 %로 반환됐습니다. MVRV 기준일은 10월 12일, 펀딩은 10월 13일이었고 두 응답의 stale=false를 확인했습니다. 신선도 기준을 바꾸거나 health의 503을 정상으로 강제하지 않았습니다. 이 여섯 응답으로 모든 241쌍·모든 관측·전수 이력을 정상이라고 판단하지 않습니다.
+
+실제 적용 image ID·runtime release·보호 7개 ID를 확인한 후 current를 승격했습니다. 최종 활성화에 실패나 롤백은 없었습니다. 이후 durable gzip·manifest의 SHA/bytes를 다시 확인하고 열린 fd0, Docker mount·다른 bindmount 참조 없음을 검사해 **정확한 감사 tmpfs만 일반 umount**했습니다. force/lazy 해제는 사용하지 않았습니다. RAM 임시 파일만 사라졌으며 durable gzip·운영 DB·기존 백업·이전 릴리스·롤백 image는 보존했습니다.
+
+종료 후 디스크는 **2,436,022,272 B = 약 2.27GiB**, MemAvailable은 **4,954,181,632 B = 약 4.61GiB**였습니다. 2GiB 배포·1.5GiB 메모리 바닥은 유지했지만 **8GiB 과거 이력 보호 기준보다 6,153,912,320 B 부족**합니다. 과거 이력 재개나 전체 데이터 복구 완료로 보고하지 않습니다.
+
+CI image에서 canonical dist를 회수했고 SHA는 `96c29f0e4c8fa6ac75fbd8dee9a60fbd8dff7396c7751c816fd2be9f300cb2f3`입니다. Pages 배포 `https://92aac3fe.coin-desk.pages.dev`와 VPS 공개 주소에서 **각 256개, 총 512개 공개 파일 대조가 통과**했습니다. canonical 원본 257개에는 공개 HTTP 파일과 배포 설정이 함께 있으며, `_headers`·`_redirects`·`_routes.json`은 공개 fetch 대상에서 제외했습니다. VPS HTML의 명시한 public-origin 치환은 선언한 예상 결과와 대조했습니다. 파일 byte 일치와 브라우저 사용성 통과는 별도 판단입니다.
+
+0.32.1 실제 Windows Chrome에서는 모바일 가격→MVRV→읽는 법→Escape→Supertrend→주봉 확정 OHLC 데이터 정보와 PC 차트를 확인했습니다. 1280×800의 차트 시작점 232px·높이440px·너비1209px, 불필요한 dialog0을 기록했고 저장된 다크 설정·개인 자료를 보존했습니다. 이는 일곱 흐름의 실제 화면 표본이며 모든 코인·모든 버튼·전체 과거 데이터 검증으로 확대하지 않습니다. 기존 0.32의 실화면·실패 기록도 그대로 보존합니다.
+
+근거는 로컬 비공개 `work/ux-032/patch-0321`의 CI metadata, prepared·activation/cleanup 결과, canonical-assets·deployment-public-final·chrome-real-qa 기록입니다. 원시 private log·환경 설정·컨테이너 원본 ID·개인 자료를 공개 문서에 포함하지 않았습니다.
+
+## 8. 잔여 항목
+
+- Pages·VPS 0.32.1 공개 자산 대조와 위 실제 Chrome 일곱 흐름은 완료했습니다. 전체 후속 실화면·저장 복원·브라우저 조건별 최종 검사 범위는 별도 QA 기록으로 확인합니다. 파일 일치나 일부 실제 화면 표본을 전수 사용자 경험 통과로 바꾸지 않습니다.
+- 추가 실화면 검사에서 모바일 BTC 해시 리본 차트 시작점 303px와 DASH 281px가 280px 합격선을 넘었습니다. 좁은 배치 수정과 후속 검증이 필요하며, 기존 일곱 흐름의 일부 표본 통과로 이 결함을 숨기지 않습니다.
+- 계속 남아 있는 개별 오래된 체결·수집/관측 지연을 실제 시각에 따라 표시. 241쌍 표본을 지속 정상의 보장으로 확대하지 않음.
 - 낮은 공간으로 보류한 과거 이력: 8GiB 기준을 유지하며 추가 최적화나 용량 확보 필요.
 - 주소별 LCP·VPS SSE 100명 등 성능 목표의 실제 측정. 로컬 합성 값과 구별.
 - Apple 기기가 없는 실제 Safari·VoiceOver, 사람 대상 사용성 검사는 별도 미검증.

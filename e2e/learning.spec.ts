@@ -1,9 +1,39 @@
 import { test, expect, type Page } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
 import { GUIDE_ARTICLES } from '../shared/learning-catalog';
+import { detectPatterns } from '../shared/candle-patterns';
+import type { Candle } from '../shared/types';
 test.describe.configure({ mode: 'parallel' });
 const chart = (page: Page) => page.locator('[data-chart-kind="analysis"]');
 const openApply = (page: Page) => page.locator('.guide-use > summary').click();
+async function actualCandles(page: Page, asset: string, market: string): Promise<Candle[]> {
+  const rows: Candle[] = [];
+  let from = 0;
+  for (let count = 0; count < 8; count++) {
+    const response = await page.request.get(
+      '/api/v1/candles?' +
+        new URLSearchParams({ asset, market, interval: '1d', from: String(from), limit: '1000' }),
+    );
+    expect(response.ok()).toBe(true);
+    const body = await response.json();
+    expect(body.meta.market).toBe(market);
+    rows.push(...body.data);
+    if (body.nextCursor === null) return rows;
+    expect(body.nextCursor).toBeGreaterThan(from);
+    from = body.nextCursor;
+  }
+  throw new Error('Bounded fixture history exceeded');
+}
+async function noOperationalPanels(page: Page) {
+  await expect(
+    page.locator(
+      '.analysis-reading-date,.indicator-provenance,.guide-supported-assets,.guide-data',
+    ),
+  ).toHaveCount(0);
+  await expect(page.getByRole('button', { name: '데이터 정보', exact: true })).toHaveCount(0);
+  await expect(page.getByRole('button', { name: /CSV|내보내기|공유/ })).toHaveCount(0);
+}
+
 test.beforeEach(async ({ page }) => {
   await page.route('**/*', (route) =>
     new URL(route.request().url()).hostname === '127.0.0.1' ? route.continue() : route.abort(),
@@ -22,8 +52,20 @@ test('guide search retains filters, favorites and source context; real OHLC is r
   await expect(page.getByRole('heading', { name: '상승 장악형', exact: true })).toBeVisible();
   await openApply(page);
   await expect(page.getByLabel('사전 코인', { exact: true })).toHaveValue('DOGE');
-  await expect(page.locator('.guide-apply')).toContainText('필요한 데이터가 없습니다');
+  await expect(page.getByLabel('사전 가격 기준', { exact: true })).toHaveValue('reference');
+  await expect(page.locator('.guide-apply')).toContainText(
+    '이 가격 기준에는 표시할 수 없습니다. 다른 가격 기준을 선택해 주세요.',
+  );
   await expect(page.locator('.guide-primary')).toHaveCount(2);
+  const alternatives = await page
+    .locator('.guide-primary')
+    .evaluateAll((links) => links.map((link) => (link as HTMLAnchorElement).href));
+  expect(alternatives.every((href) => new URL(href).searchParams.get('asset') === 'DOGE')).toBe(
+    true,
+  );
+  expect(alternatives.map((href) => new URL(href).searchParams.get('price_source')).sort()).toEqual(
+    ['binance', 'upbit'],
+  );
   await page.getByRole('link', { name: '사전 목록', exact: true }).click();
   await expect(page.getByRole('searchbox', { name: '분석 사전 검색' })).toHaveValue('장악형');
   await page.getByRole('button', { name: '즐겨찾기', exact: true }).click();
@@ -38,7 +80,11 @@ test('guide search retains filters, favorites and source context; real OHLC is r
   expect(new URL(page.url()).searchParams.get('patterns')).toBe('bullish-engulfing');
   expect(new URL(page.url()).searchParams.get('pattern_trend')).toBe('none');
   expect(new URL(page.url()).searchParams.has('q')).toBe(false);
-  await expect(page.getByRole('region', { name: '캔들 패턴 관찰' })).toContainText('0건');
+  expect(
+    detectPatterns(await actualCandles(page, 'DOGE', 'upbit'), ['bullish-engulfing'], 'none'),
+  ).toEqual([]);
+  await expect(page.getByRole('region', { name: '캔들 패턴 관찰' })).toHaveCount(0);
+  await noOperationalPanels(page);
   const picker = page.getByRole('button', { name: '캔들 패턴 1', exact: true });
   await page.getByRole('button', { name: '더보기', exact: true }).click();
   await picker.click();
@@ -47,29 +93,34 @@ test('guide search retains filters, favorites and source context; real OHLC is r
   await expect(picker).toBeFocused();
 });
 
-test('confirmed patterns navigate their chart, survive save/share and clear selection on asset change', async ({
+test('confirmed pattern calculations and legacy bookmarks survive save and resizing without public date lists or sharing UI', async ({
   page,
 }) => {
   await page.setViewportSize({ width: 1280, height: 800 });
-  await page.goto('/learn/pattern-doji?asset=DOGE&price_source=upbit');
+  await page.goto('/learn/pattern-doji?asset=DOGE&price_source=upbit&period=all');
   await openApply(page);
   await page.locator('.guide-primary').click();
   await expect(chart(page)).toHaveAttribute('data-observations', '1100');
   await expect(chart(page)).toHaveAttribute('data-range-ready', '1');
-  expect((await chart(page).boundingBox())!.y).toBeLessThanOrEqual(260);
-  const list = page.getByRole('region', { name: '캔들 패턴 관찰' });
-  await expect(list).toContainText('1100건');
+  expect((await chart(page).boundingBox())!.y).toBeLessThanOrEqual(240);
+  const input = await actualCandles(page, 'DOGE', 'upbit');
+  const hits = detectPatterns(input, ['doji'], 'sma50');
+  expect(hits).toHaveLength(1100);
+  // The bounded test DB uses equal open/close bars, so every finalized bar meets
+  // the doji body/range condition. No source substitution or future bars are used.
+  expect(hits.every((hit) => hit.body === 0 && hit.confirmedAt <= Date.now() / 1000)).toBe(true);
+  await expect(page.getByRole('region', { name: '캔들 패턴 관찰' })).toHaveCount(0);
   const first = Number(await chart(page).getAttribute('data-visible-from'));
-  await list
-    .getByRole('button', { name: /차트에서 보기/ })
-    .first()
-    .click();
-  await expect(page.locator('.pattern-detail')).toContainText('몸통');
+  const selected = hits.at(-1)!;
+  const bookmarked = new URL(page.url());
+  bookmarked.searchParams.set('pattern_focus', selected.id);
+  bookmarked.searchParams.set('reading_date', String(selected.time));
+  await page.goto(bookmarked.href);
+  await expect(chart(page)).toHaveAttribute('data-range-ready', '1');
   await expect
     .poll(async () => Number(await chart(page).getAttribute('data-visible-from')))
     .toBeGreaterThan(first);
-  // A plain bookmarked observation (before generating an explicit range share)
-  // must survive initial layout, a reload and subsequent chart resizing.
+  const latest = await page.locator('.analysis-reading-value').innerText();
   await page.reload();
   await expect(chart(page)).toHaveAttribute('data-range-ready', '1');
   await expect
@@ -78,28 +129,34 @@ test('confirmed patterns navigate their chart, survive save/share and clear sele
   const focusedFrom = await chart(page).getAttribute('data-visible-from');
   await page.setViewportSize({ width: 1000, height: 800 });
   await expect(chart(page)).toHaveAttribute('data-visible-from', focusedFrom!);
-  if (
-    (await page
-      .getByRole('button', { name: '더보기', exact: true })
-      .getAttribute('aria-expanded')) !== 'true'
-  )
-    await page.getByRole('button', { name: '더보기', exact: true }).click();
-  await page.locator('.analysis-tools > summary').click();
-  await page.getByRole('button', { name: '링크 공유', exact: true }).click();
-  const url = await page.getByRole('textbox', { name: '공유 주소', exact: true }).inputValue();
-  expect(new URL(url).searchParams.get('patterns')).toBe('doji');
-  await page.goto(url);
-  await expect(list).toContainText('1100건');
+  const url = new URL(page.url());
+  url.searchParams.set('chart_from', focusedFrom!);
+  url.searchParams.set('chart_to', (await chart(page).getAttribute('data-visible-to'))!);
+  await page.goto(url.href);
   await expect(chart(page)).toHaveAttribute('data-range-ready', '1');
   await expect(chart(page)).toHaveAttribute(
     'data-visible-from',
-    new URL(url).searchParams.get('chart_from')!,
+    url.searchParams.get('chart_from')!,
   );
+  await expect(page.locator('.analysis-reading-value')).toHaveText(latest);
+  await noOperationalPanels(page);
   await page.getByRole('button', { name: '분석 저장', exact: true }).click();
   await page.getByLabel('작업공간 이름', { exact: true }).fill('도지 조건 확인');
   await page.getByRole('button', { name: '현재 구성 저장', exact: true }).click();
-  await expect(page.getByRole('link', { name: /도지 조건 확인/ })).toBeVisible();
   await page.getByRole('button', { name: '분석 저장 닫기', exact: true }).click();
+  await page.goto('/workspace');
+  await page.getByRole('link', { name: /도지 조건 확인/ }).click();
+  await expect(chart(page)).toHaveAttribute('data-range-ready', '1');
+  expect(new URL(page.url()).searchParams.get('patterns')).toBe('doji');
+  expect(new URL(page.url()).searchParams.get('reading_date')).toBe(String(selected.time));
+  await expect(chart(page)).toHaveAttribute('data-visible-from', focusedFrom!);
+  // Selection focus is a legacy URL state, not a saved-workspace field.
+  // Reapply it explicitly to verify asset changes still clear the old asset's selection.
+  const reopen = new URL(page.url());
+  reopen.searchParams.set('pattern_focus', selected.id);
+  await page.goto(reopen.href);
+  await expect(chart(page)).toHaveAttribute('data-range-ready', '1');
+  expect(new URL(page.url()).searchParams.get('pattern_focus')).toBe(selected.id);
   await page.getByRole('button', { name: /코인 변경/ }).click();
   await page.getByRole('searchbox', { name: '코인 검색' }).fill('ETH');
   await page.getByRole('searchbox', { name: '코인 검색' }).press('Enter');
@@ -118,10 +175,12 @@ test('onchain guides open the corresponding primary metric and unsupported coins
   await page.getByRole('button', { name: /^지표 설명/ }).click();
   await page
     .getByRole('dialog', { name: '지표 설명', exact: true })
-    .getByText('출처·한계', { exact: true })
+    .getByText('주의할 점', { exact: true })
     .click();
   await page.getByRole('link', { name: '현재 분석 설명', exact: true }).click();
   await expect(page.locator('.guide-title')).toContainText('MVRV');
+  await expect(page.locator('.guide-supported-assets,.guide-data')).toHaveCount(0);
+  expect(new URL(page.url()).searchParams.get('asset')).toBe('ETH');
   await openApply(page);
   await expect(page.getByLabel('사전 가격 기준', { exact: true })).toHaveValue('upbit');
   await page.goto('/learn/powerlaw?asset=DOGE&price_source=upbit');
@@ -169,7 +228,7 @@ test('a guide activates a real drawing tool and Help follows the selected analys
   await page.getByRole('button', { name: /^지표 설명/ }).click();
   await page
     .getByRole('dialog', { name: '지표 설명', exact: true })
-    .getByText('출처·한계', { exact: true })
+    .getByText('주의할 점', { exact: true })
     .click();
   await page.getByRole('link', { name: '현재 분석 설명', exact: true }).click();
   await expect(page.locator('.guide-title')).toContainText('가격 위치 밴드');
@@ -245,15 +304,21 @@ for (const width of [320, 390, 768, 1000, 1280, 1440]) {
 test('guide remains usable at 200 percent zoom with keyboard and missing observations', async ({
   page,
 }) => {
-  await page.route('**/api/v1/network-catalog?asset=ETH', async (route) =>
-    route.fulfill({ json: { data: [] } }),
-  );
+  const catalogRequests: string[] = [];
+  await page.route('**/api/v1/network-catalog?asset=ETH', async (route) => {
+    catalogRequests.push(route.request().url());
+    await route.fulfill({ json: { data: [] } });
+  });
   await page.setViewportSize({ width: 1280, height: 1000 });
   await page.goto('/learn/net-mvrv?asset=ETH');
   await expect(page.locator('.guide-method')).toContainText('시가총액');
   await expect(page.locator('.guide-apply')).toHaveCount(0);
   await openApply(page);
-  await expect(page.locator('.guide-apply')).toContainText('실제 관측이 아직 없습니다');
+  await expect.poll(() => catalogRequests.length).toBe(1);
+  await expect(page.getByLabel('사전 코인', { exact: true })).toHaveValue('ETH');
+  await expect(page.locator('.guide-apply').getByRole('status')).toHaveText(
+    '이 지표를 표시할 수 없습니다. 다른 지표를 선택해 주세요.',
+  );
   await expect(page.locator('.guide-primary')).toHaveCount(0);
   await page.evaluate(() => {
     document.documentElement.style.zoom = '2';
@@ -393,5 +458,13 @@ test('every existing guide renders an explanation and worked example without a c
     await expect(page.locator('.guide-method li').first()).toBeVisible();
     await expect(page.locator('.guide-example li').first()).toBeVisible();
     await expect(page.locator('canvas, [data-chart-kind], .guide-apply')).toHaveCount(0);
+    await expect(page.locator('.guide-supported-assets,.guide-data')).toHaveCount(0);
+    await expect(page.getByRole('heading', { name: '데이터·지원 범위' })).toHaveCount(0);
+    await expect(page.locator('.guide-toc a')).toHaveCount(4);
+    expect(
+      await page
+        .locator('.guide-toc a')
+        .evaluateAll((links) => links.map((link) => link.getAttribute('href'))),
+    ).toEqual(['#meaning', '#method', '#example', '#limits']);
   }
 });

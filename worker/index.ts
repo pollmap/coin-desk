@@ -5,6 +5,7 @@ import { indicatorComparison } from './indicator-comparison';
 import { comparisonSelection } from '../shared/indicator-comparison';
 import { datasetCoverage } from './dataset-coverage';
 import { marketSnapshot } from './market-snapshot';
+import { themeMarket } from './theme-market';
 import { discoverAssets } from '../shared/asset-discovery';
 import { supportsMarket } from '../shared/asset-registry';
 import { assetKnowledge, themesResponse } from '../shared/knowledge';
@@ -65,6 +66,7 @@ function canonicalRequest(request: Request) {
   const endpoint = url.pathname.slice('/api/v1/'.length);
   const fields: Record<string, string[]> = {
     market: ['market', 'assets', 'q', 'supported', 'sort', 'offset', 'limit', 'spark_limit'],
+    'theme-market': ['market'],
     assets: ['q', 'market', 'metric', 'theme', 'offset', 'limit'],
     themes: [],
     knowledge: ['asset'],
@@ -284,6 +286,11 @@ async function api(request: Request, env: Env): Promise<Response> {
   const { asset, market } = selection(q);
   if (request.method !== 'GET') return response({ error: 'Read-only API' }, 405);
   const endpoint = url.pathname.replace('/api/v1/', '');
+  if (endpoint === 'theme-market') {
+    if (!['upbit', 'binance'].includes(q.get('market') ?? 'binance'))
+      throw new RequestError('Unknown market');
+    return response(await themeMarket(env, market));
+  }
   if (endpoint === 'indicator-comparison') {
     try {
       comparisonSelection(q);
@@ -746,7 +753,7 @@ export default {
       // Quotes bypass edge caching so a newly committed scheduled snapshot is
       // visible immediately instead of waiting for an older response to expire.
       const liveStatus =
-        /\/(health|status(?:\/summary|\/sources)?|market|overview|dominance|research\/public|indicator-comparison|coverage)$/.test(
+        /\/(health|status(?:\/summary|\/sources)?|market|theme-market|overview|dominance|research\/public|indicator-comparison|coverage)$/.test(
           url.pathname,
         );
       const cached = liveStatus ? undefined : await cache.match(canonical).catch(() => undefined);

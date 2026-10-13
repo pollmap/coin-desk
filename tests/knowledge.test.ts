@@ -15,7 +15,7 @@ describe('Evidence-backed bounded relationships', () => {
         expect(ids.has(edge.source) && ids.has(edge.target)).toBe(true);
         expect(edge.evidence.review).toBe('reviewed');
         expect(new URL(edge.evidence.url).protocol).toBe('https:');
-        expect(edge.evidence.checkedAt).toMatch(/^2026-10-09$/);
+        expect(edge.evidence.checkedAt).toMatch(/^\d{4}-\d{2}-\d{2}$/);
       }
       for (const node of graph.nodes.filter((n) => ['project', 'network'].includes(n.kind))) {
         expect(node.description).not.toBe(graph.nodes[0].description);

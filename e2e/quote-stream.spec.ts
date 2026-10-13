@@ -69,10 +69,10 @@ test('live prices preserve the historical canvas, reject old events and retain t
   expect(await canvas!.evaluate((el) => el.isConnected)).toBe(true);
   await emit(3, 86000000, now + 1, false);
   await expect(page.locator('.detail-quote')).toContainText('₩86,000,000');
-  await expect(page.locator('.detail-quote')).toContainText('확인 지연');
+  await expect(page.locator('.detail-quote')).toContainText('가격 확인 지연');
   await emit(4, 87000000, now + 2);
   await expect(page.locator('.detail-quote')).toContainText('₩87,000,000');
-  await expect(page.locator('.detail-quote')).not.toContainText('확인 지연');
+  await expect(page.locator('.detail-quote')).not.toContainText('가격 확인 지연');
   expect(await canvas!.evaluate((el) => el.isConnected)).toBe(true);
 });
 
@@ -127,19 +127,20 @@ test('legacy Binance window time stays unverified until a real trade arrives and
   const chart = page.locator('[data-chart-kind="analysis"]');
   const quote = page.locator('.detail-quote');
   await expect(chart).toHaveAttribute('data-range-ready', '1');
-  await expect(quote).toContainText('시각 미확인');
-  await expect(quote).toHaveAttribute('title', /^시세 기준 · 체결 시각 미확인 /);
+  await expect(quote).toContainText('가격 확인 지연');
+  await expect(quote).not.toHaveAttribute('title');
   await expect(chart).not.toHaveAttribute('data-live-price');
   const canvas = await chart.locator('canvas').first().elementHandle();
   await page.evaluate(() => {
     (window as unknown as { emitVerifiedTrade: () => void }).emitVerifiedTrade();
   });
   await expect(quote).toContainText('65,000');
-  await expect(quote).not.toContainText('시각 미확인');
-  await expect(quote).toHaveAttribute('title', /^실제 체결 /);
+  await expect(quote).not.toContainText('가격 확인 지연');
+  await expect(quote).not.toHaveAttribute('title');
   await expect(chart).toHaveAttribute('data-live-price', '65000');
   await page.clock.fastForward(301000);
-  await expect(quote).toContainText('체결 지연');
+  await expect(quote).toContainText('가격 확인 지연');
+  await expect(chart).not.toHaveAttribute('data-live-price');
   await expect(quote).toContainText('65,000');
   expect(await canvas!.evaluate((element) => element.isConnected)).toBe(true);
 });
