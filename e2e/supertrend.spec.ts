@@ -20,7 +20,10 @@ test('retains fractional price precision in Supertrend readings', async ({ page 
     '1',
   );
   await expect(
-    page.locator('.analysis-legend > span').filter({ hasText: '슈퍼트렌드 10·3' }).locator('b'),
+    page
+      .locator('.analysis-secondary-readings > span')
+      .filter({ hasText: '슈퍼트렌드 10·3' })
+      .locator('b'),
   ).toHaveText(/\d+\.\d{5,}/);
 });
 

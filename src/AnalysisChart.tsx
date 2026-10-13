@@ -1,5 +1,6 @@
 import { memo, useEffect, useMemo, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
+import { RotateCcw } from 'lucide-react';
 import {
   CandlestickSeries,
   LineSeries,
@@ -197,6 +198,10 @@ export const AnalysisChart = memo(function AnalysisChart({
     t === undefined
       ? '—'
       : new Date(t * 1000).toISOString().slice(0, 16).replace('T', ' ') + ' UTC';
+  const showReadingTime = useMemo(
+    () => step < 86400 || points.some((point) => point.time % 86400 !== 0),
+    [points, step],
+  );
   const metricNumber = (value: number | undefined) => numeric(value, readingDigits(value));
   const lineNumber = (line: AnalysisLine, value: number | undefined) =>
     numeric(value, line.supertrend ? priceDigits(value ?? 0, line.unit) : readingDigits(value));
@@ -780,6 +785,32 @@ export const AnalysisChart = memo(function AnalysisChart({
       )}
     </details>
   ) : null;
+  const secondaryReadings = lines.map((l, i) =>
+    l.id.startsWith('band:') ? null : (
+      <span key={l.id} className="analysis-secondary-reading" title={`${l.title} · ${l.source}`}>
+        <i style={{ background: l.color }} />
+        {l.legendTitle ?? l.title}{' '}
+        <b>
+          {lineNumber(
+            l,
+            selectedTime === null
+              ? l.data.at(-1)?.value
+              : time === undefined
+                ? undefined
+                : readings.maps[i + 1].get(time),
+          )}
+        </b>{' '}
+        {l.unit}
+        {l.warning && <small role="status"> · {l.warning}</small>}
+        {selectedTime === null && l.data.at(-1)?.time !== time && (
+          <small> · {timestamp(l.data.at(-1)?.time).slice(0, 10)}</small>
+        )}
+      </span>
+    ),
+  );
+  const secondaryBelowChart =
+    ['view:hash_ribbons', 'view:hashrate_trend'].includes(primary?.id ?? '') ||
+    lines.some((line) => line.supertrend !== undefined);
   return (
     <>
       <div className="analysis-legend">
@@ -787,14 +818,27 @@ export const AnalysisChart = memo(function AnalysisChart({
           {asset} · {primary?.title ?? unit}
         </span>
         <span>
-          <span className="analysis-reading-date" title={timestamp(summaryTime)}>
-            <span className={!pinned ? 'sr-only' : undefined}>
+          <time
+            className="analysis-reading-date"
+            dateTime={
+              summaryTime === undefined ? undefined : new Date(summaryTime * 1000).toISOString()
+            }
+            title={timestamp(summaryTime)}
+          >
+            <span className={!pinned ? 'sr-only' : 'analysis-reading-full-date'}>
               {!pinned ? (primary ? '최근 확정값' : (summaryLabel ?? '최근 관측')) : '날짜 고정'}
             </span>{' '}
-            {!pinned
-              ? `${timestamp(summaryTime).slice(5, 10).replace('-', '.')} 기준`
-              : `· ${timestamp(summaryTime)}`}
-          </span>{' '}
+            {!pinned ? (
+              `${timestamp(summaryTime).slice(5, 10).replace('-', '.')} 기준`
+            ) : (
+              <>
+                <span className="analysis-reading-full-date">· {timestamp(summaryTime)}</span>
+                <span className="analysis-reading-compact-date" aria-hidden="true">
+                  {timestamp(summaryTime).slice(0, showReadingTime ? 16 : 10)}
+                </span>
+              </>
+            )}
+          </time>{' '}
           <b className="analysis-reading-value">
             {readingLabel && <span className="analysis-reading-asset">{readingLabel} </span>}
             {primary || !['USD', 'USDT', 'KRW'].includes(unit) ? (
@@ -810,37 +854,18 @@ export const AnalysisChart = memo(function AnalysisChart({
         {pinned && selectedTime !== null && (
           <button
             className="analysis-reading-reset"
+            aria-label="최근값 보기"
+            title="최근값 보기"
             onClick={() => {
               explore(null);
               host.current?.focus({ preventScroll: true });
             }}
           >
-            최근값 보기
+            <RotateCcw size={16} aria-hidden="true" />
+            <span>최근값 보기</span>
           </button>
         )}
-        {lines.map((l, i) =>
-          l.id.startsWith('band:') ? null : (
-            <span key={l.id} title={`${l.title} · ${l.source}`}>
-              <i style={{ background: l.color }} />
-              {l.legendTitle ?? l.title}{' '}
-              <b>
-                {lineNumber(
-                  l,
-                  selectedTime === null
-                    ? l.data.at(-1)?.value
-                    : time === undefined
-                      ? undefined
-                      : readings.maps[i + 1].get(time),
-                )}
-              </b>{' '}
-              {l.unit}
-              {l.warning && <small role="status"> · {l.warning}</small>}
-              {selectedTime === null && l.data.at(-1)?.time !== time && (
-                <small> · {timestamp(l.data.at(-1)?.time).slice(0, 10)}</small>
-              )}
-            </span>
-          ),
-        )}
+        {!secondaryBelowChart && secondaryReadings}
       </div>
       <div className={'analysis-surface' + (drawingKey ? ' with-drawings' : '')}>
         {!pinned && selectedTime !== null && (
@@ -905,6 +930,9 @@ export const AnalysisChart = memo(function AnalysisChart({
           />
         )}
       </div>
+      {secondaryBelowChart && (
+        <div className="analysis-secondary-readings">{secondaryReadings}</div>
+      )}
       {toolbarTarget ? createPortal(navigator, toolbarTarget) : navigator}
       <span className="sr-only" role="status">
         {selectedTime !== null

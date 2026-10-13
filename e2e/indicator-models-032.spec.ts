@@ -206,7 +206,7 @@ test('BTC hash ribbons show actual calculated means and one event per recovery c
   await page.goto('/coins/BTC?metric=view:hash_ribbons&period=all&price_source=reference');
   await expect(chart(page)).toHaveAttribute('data-primary-metric', 'view:hash_ribbons');
   await expect(chart(page)).toHaveAttribute('data-range-ready', '1');
-  await expect(page.locator('.analysis-legend')).toContainText('60일 평균');
+  await expect(page.locator('.analysis-secondary-readings')).toContainText('60일 평균');
   await expect(page.locator('.analysis-legend')).toContainText('TH/s');
   const transitions = page.locator('.indicator-transition-list');
   await expect(transitions.locator('summary')).toContainText('6개');
@@ -254,7 +254,7 @@ test('missing BTC price conditions preserve hash lines without fabricating confi
   await expect(transitions.locator('summary')).toContainText('4개');
   await transitions.locator('summary').click();
   await expect(transitions.getByRole('button', { name: /회복 후 가격 조건 충족/ })).toHaveCount(0);
-  await expect(page.locator('.analysis-legend')).toContainText('60일 평균');
+  await expect(page.locator('.analysis-secondary-readings')).toContainText('60일 평균');
 });
 
 test('PoW hash trend preserves source units and cannot become ETH mining or BTC confirmation', async ({
