@@ -8,6 +8,8 @@ import {
   recipeUrl,
 } from '../shared/research-library';
 import { buildLibraryIndex, searchDocument, searchLibrary } from '../shared/library-search';
+import { contiguousCalculation } from '../shared/analysis-workspace';
+import { DAY } from '../shared/math';
 
 it('applies validated bar ribbons while preserving daily and oscillator overlays', () => {
   expect(applyRibbon(['sma:7:bar', 'sma200', 'rsi'], 'ema', '55, 8, 21').value).toEqual([
@@ -40,6 +42,44 @@ it('gives each ribbon line a distinct color without changing calculated values o
     true,
   );
   expect(withGap[1].data.some((p) => p.time > 220 * 86400)).toBe(false);
+});
+it('uses daily changes for the basic RSI and selected weekly changes for advanced RSI and bands', () => {
+  const start = Date.UTC(2024, 0, 1) / 1000;
+  const points = Array.from({ length: 141 }, (_, i) => ({
+    time: start + i * DAY,
+    value: 100 + i / 4 + (i % 9),
+  }));
+  const basic = contiguousCalculation(points, 'rsi', 14);
+  const weekly = points.filter((_, i) => i % 7 === 0);
+  const lines = workspaceIndicators(weekly, points, ['rsi:14:bar', 'bb:20:bar:2'], 'USDT', 7 * DAY);
+  const advanced = lines.find((line) => line.id === 'rsi:14:bar:0')!;
+  const gainLoss = (values: typeof points) =>
+    values.slice(1, 15).reduce(
+      (sums, p, i) => {
+        const change = p.value - values[i].value;
+        return [sums[0] + Math.max(change, 0), sums[1] + Math.max(-change, 0)];
+      },
+      [0, 0],
+    );
+  const expectedFirst = (values: typeof points) => {
+    const [gain, loss] = gainLoss(values);
+    return 100 - 100 / (1 + gain / loss);
+  };
+  expect(basic[0].time).toBe(start + 14 * DAY);
+  expect(basic[0].value).toBeCloseTo(expectedFirst(points), 10);
+  expect(advanced.data[0].time).toBe(start + 14 * 7 * DAY);
+  expect(advanced.data[0].value).toBeCloseTo(expectedFirst(weekly), 10);
+  expect(advanced.step).toBe(7 * DAY);
+  expect(contiguousCalculation(weekly, 'rsi', 14)).toEqual([]);
+
+  const firstTwenty = weekly.slice(0, 20).map((p) => p.value);
+  const mean = firstTwenty.reduce((sum, value) => sum + value, 0) / 20;
+  const sigma = Math.sqrt(firstTwenty.reduce((sum, value) => sum + (value - mean) ** 2, 0) / 20);
+  const bands = lines.filter((line) => line.id.startsWith('bb:20:bar:2:'));
+  expect(bands.map((line) => line.data[0].time)).toEqual(Array(3).fill(start + 19 * 7 * DAY));
+  [mean, mean + 2 * sigma, mean - 2 * sigma].forEach((expected, i) =>
+    expect(bands[i].data[0].value).toBeCloseTo(expected, 10),
+  );
 });
 it('searches multiword normalized text, exact author and applicable review state in stable date order', () => {
   const rows = [

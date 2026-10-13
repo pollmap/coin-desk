@@ -9,6 +9,7 @@ import {
 import { guideLesson } from '../shared/guide-lessons';
 import { rollingVwap, seasonality, powerLaw } from '../shared/advanced-analysis';
 import { DAY } from '../shared/math';
+import { METRIC_GUIDES } from '../shared/metric-guides';
 
 describe('guide explanation coverage', () => {
   it.each(GUIDE_ARTICLES)(
@@ -30,6 +31,15 @@ describe('guide explanation coverage', () => {
       expect(guideHref(p.guide, new URLSearchParams())).toMatch(/^\/learn\//);
     }
     expect(searchGuides('표준편차').some((g) => g.id === 'rainbow')).toBe(true);
+  });
+  it('distinguishes the fixed daily RSI, advanced bar settings and visible chart range', () => {
+    const lesson = guideLesson(guideArticle('rsi')!);
+    expect(lesson.method.join(' ')).toContain('기본 RSI 14는 확정 일봉, N = 14');
+    expect(lesson.method.join(' ')).toContain('고급 기술 설정에서는 봉 간격과 N을 따로');
+    expect(lesson.method.join(' ')).toContain('표시 기간(1개월·1년 등)은 계산 기간 N을 바꾸지');
+    expect(lesson.terms.find(([name]) => name === 'N')?.[1]).toContain('15개 종가');
+    expect(METRIC_GUIDES.rsi.example).toContain('확정 일봉의 14개 변화');
+    expect(METRIC_GUIDES.rsi.example).toContain('주봉 RSI 14는 14주 변화');
   });
   it('checks numerical VWAP and power-law examples against executable calculations', () => {
     const time = Date.UTC(2020, 0, 1) / 1000;

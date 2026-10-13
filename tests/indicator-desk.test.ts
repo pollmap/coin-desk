@@ -146,6 +146,26 @@ describe('indicator entry and compatibility', () => {
     expect(indicatorDefinition('view:btc_rainbow')?.assets).toEqual(['BTC']);
     expect(indicatorDefinition('relative')?.unit).toBe('BTC/자산');
   });
+  it('describes selected price bars separately from fixed daily RSI and network observations', () => {
+    for (const id of ['view:price', 'view:bb', 'view:ribbon', 'view:supertrend'])
+      expect(indicatorDefinition(id)?.observationCadence).toBe('선택한 확정 봉');
+    for (const id of ['rsi', 'drawdown', 'net:mvrv', 'view:rainbow', 'view:vwap'])
+      expect(indicatorDefinition(id)?.observationCadence).toBe('일별 확정 관측');
+    expect(indicatorDefinition('rsi')?.comparison?.definitionKey).toBe(
+      'confirmed-close:wilder-rsi14:1d',
+    );
+    const link = new URL(
+      indicatorUrl(
+        'BTC',
+        'rsi',
+        new URLSearchParams('metric=view:supertrend&interval=1w&price_source=binance'),
+      ),
+      'https://test.invalid',
+    );
+    expect(link.searchParams.get('interval')).toBe('1w');
+    expect(resolveIndicator('BTC', link.pathname, link.searchParams).id).toBe('rsi');
+    expect(indicatorDefinition('rsi')?.formula).toContain('Wilder 14일');
+  });
 });
 describe('expanding BTC log regression', () => {
   it('matches independently calculated batch least squares and population residual variance', () => {
