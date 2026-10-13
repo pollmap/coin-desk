@@ -269,9 +269,17 @@ test('mobile search Escape focus and 200 percent keyboard reflow', async ({ page
   );
   await chart(page).focus();
   await page.keyboard.press('Home');
-  const first = await page.locator('.analysis-legend').innerText();
+  const legend = page.locator('.analysis-legend');
+  await expect(legend).toContainText('날짜 고정');
+  await expect(page).toHaveURL(/reading_date=\d+/);
+  const first = await legend.innerText();
+  const firstDate = new URL(page.url()).searchParams.get('reading_date');
   await page.keyboard.press('End');
-  expect(await page.locator('.analysis-legend').innerText()).not.toBe(first);
+  // Keyboard navigation updates the URL before React commits the legend.
+  // Assert the user-visible result, rather than sampling that intermediate frame.
+  await expect.poll(() => new URL(page.url()).searchParams.get('reading_date')).not.toBe(firstDate);
+  await expect(legend).not.toHaveText(first);
+  await expect(legend).toContainText('날짜 고정');
 });
 for (const asset of ['BTC', 'DOGE', 'ETH', 'XRP', 'LINK', 'SOL', 'ONDO', 'PEPE'])
   test(asset + ' selected onchain and futures do not request prices', async ({ page }) => {
