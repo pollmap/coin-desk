@@ -726,6 +726,11 @@
 }
 .analysis-canvas {
   min-height: 0;
+  touch-action: pan-y;
+}
+.analysis-canvas:focus-visible {
+  outline: 2px solid var(--accent, #0f666b);
+  outline-offset: 2px;
 }
 @media (min-width: 1100px) {
   .app main:has(.analysis-workspace) {
@@ -798,5 +803,42 @@
   color: var(--text);
   background: var(--surface, var(--bg));
   font-size: 12px;
+  pointer-events: none;
+}
+.analysis-hover-reading.analysis-inspection {
+  z-index: 5;
+  display: grid;
+  gap: 3px;
+  width: max-content;
+  padding: 7px 9px;
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  font-variant-numeric: tabular-nums;
+  line-height: 1.45;
+  overflow-wrap: anywhere;
+}
+.analysis-inspection time {
+  color: var(--muted);
+  font-size: 12px;
+}
+.analysis-inspection > span {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 10px;
+}
+.analysis-inspection b {
+  font-weight: 600;
+  text-align: right;
+}
+.analysis-observation-dot {
+  position: absolute;
+  z-index: 3;
+  width: 8px;
+  height: 8px;
+  border: 2px solid var(--surface, var(--bg));
+  border-radius: 50%;
+  background: var(--accent, #0f666b);
+  transform: translate(-50%, -50%);
   pointer-events: none;
 }

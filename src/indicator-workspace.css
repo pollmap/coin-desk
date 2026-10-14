@@ -596,6 +596,12 @@
     grid-column: 1 / -1;
   }
 }
+/* Remove unused legend space on short phones, retaining its 24px value line. */
+@media (max-width: 600px) and (max-height: 600px) {
+  .app.product-desk .indicator-workspace .analysis-legend-focused {
+    min-height: 24px;
+  }
+}
 @media (max-width: 600px) {
   .app:has(.indicator-workspace) main {
     padding: 8px;

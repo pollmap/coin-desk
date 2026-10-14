@@ -32,7 +32,7 @@ test('latest summary stays stable while exploring and worked help preserves the 
   await page.mouse.move(box.x + box.width * 0.4, box.y + box.height * 0.4);
   await expect(page.getByTestId('chart-tooltip')).toBeVisible();
   await expect(page.getByTestId('chart-tooltip')).toContainText('BTC');
-  await expect(page.getByTestId('chart-tooltip')).not.toHaveText(/\d{4}-\d{2}-\d{2}/);
+  await expect(page.getByTestId('chart-tooltip')).toContainText(/\d{4}-\d{2}-\d{2}/);
   await page.mouse.click(box.x + box.width * 0.4, box.y + box.height * 0.4);
   await expect(page.locator('.analysis-reading-value')).toHaveText(latest);
   expect(new URL(page.url()).searchParams.has('reading_date')).toBe(false);

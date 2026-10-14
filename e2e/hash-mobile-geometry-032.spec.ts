@@ -36,7 +36,7 @@ async function hashFixture(page: Page, asset: 'BTC' | 'DASH') {
   });
   const latest60 = data.slice(-60).reduce((sum, point) => sum + point.value, 0) / 60;
   const latest30 = data.slice(-30).reduce((sum, point) => sum + point.value, 0) / 30;
-  return { last, unit, latest60, latest30 };
+  return { last, unit, latest60, latest30, data };
 }
 
 async function focusedOnly(page: Page) {
@@ -170,12 +170,37 @@ for (const width of [320, 390, 1280]) {
             expect(reading.unitBottom).toBeLessThanOrEqual(reading.valueBottom + 1);
           }
           expect(reading.unitFont).toBeGreaterThanOrEqual(12);
-          await page.mouse.move(box.x + box.width * 0.5, box.y + box.height * 0.4);
+          // The actual hash price axis may occupy half a 320px chart. Inspect
+          // inside the pane canvas, not the midpoint of the host/price axis.
+          const plot = (await chart.locator('canvas').first().boundingBox())!;
+          expect(plot.width).toBeGreaterThan(60);
+          const point = { x: plot.x + plot.width * 0.5, y: plot.y + plot.height * 0.4 };
+          await page.mouse.move(point.x, point.y);
           await expect(page.getByTestId('chart-tooltip')).toBeVisible();
           await expect(page.getByTestId('chart-tooltip')).toContainText(asset);
           await expect(page.getByTestId('chart-tooltip')).toContainText(fixture.unit);
-          await expect(page.getByTestId('chart-tooltip')).not.toHaveText(/\d{4}-\d{2}-\d{2}/);
-          await chart.click({ position: { x: box.width * 0.5, y: box.height * 0.4 } });
+          await expect(page.getByTestId('chart-tooltip')).toContainText(/\d{4}-\d{2}-\d{2}/);
+          const inspectedTime = Number(await chart.getAttribute('data-hover-time'));
+          const observedIndex = fixture.data.findIndex((row) => row.time === inspectedTime);
+          expect(observedIndex).toBeGreaterThanOrEqual(59);
+          const expected30 =
+            fixture.data
+              .slice(observedIndex - 29, observedIndex + 1)
+              .reduce((sum, row) => sum + row.value, 0) / 30;
+          const expected60 =
+            fixture.data
+              .slice(observedIndex - 59, observedIndex + 1)
+              .reduce((sum, row) => sum + row.value, 0) / 60;
+          expect(Number(await chart.getAttribute('data-hover-value'))).toBeCloseTo(expected30, 6);
+          expect(Number(await chart.getAttribute('data-hover-line-value'))).toBeCloseTo(
+            expected60,
+            6,
+          );
+          await expect(page.getByTestId('chart-tooltip').locator('time')).toHaveAttribute(
+            'datetime',
+            new Date(inspectedTime * 1000).toISOString(),
+          );
+          await chart.click({ position: { x: point.x - box.x, y: point.y - box.y } });
           await chart.press('ArrowLeft');
           await expect(summary).toHaveText(latest);
           expect(new URL(page.url()).searchParams.get('reading_date')).toBe(String(explicit));

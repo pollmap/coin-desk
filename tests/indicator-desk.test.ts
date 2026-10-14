@@ -103,7 +103,7 @@ describe('indicator entry and compatibility', () => {
       if (['SOL', 'ONDO', 'PEPE'].includes(asset)) {
         expect(p.get('price_source')).toBe('reference');
         expect(p.has('market')).toBe(false);
-        expect(p.get('period')).toBe('1m');
+        expect(p.get('period')).toBe('all');
         expect(p.get('transition')).toBe('net:mvrv');
       }
     }
@@ -130,6 +130,53 @@ describe('indicator entry and compatibility', () => {
     const p = new URL(workspaceUrl(desk.workspaces[0]), 'https://test.invalid').searchParams;
     expect(p.get('metric')).toBe('net:mvrv');
     expect(p.get('chart_from')).toBe('1700000000');
+  });
+  it('opens new price overlays on the full history without overriding explicit URLs or saved analysis', () => {
+    for (const id of ['view:price', 'view:supertrend', 'view:ribbon', 'view:bb']) {
+      expect(indicatorDefinition(id)?.defaultPeriod).toBe('all');
+      expect(
+        resolveIndicator('DOGE', '/coins/DOGE', new URLSearchParams({ metric: id })).period,
+      ).toBe('all');
+      const explicit = new URLSearchParams({
+        metric: id,
+        price_source: 'upbit',
+        period: '3m',
+        chart_from: '1700000000',
+        chart_to: '1707000000',
+      });
+      expect(resolveIndicator('DOGE', '/coins/DOGE', explicit).period).toBe('3m');
+      const reopened = new URL(indicatorUrl('DOGE', id, explicit), 'https://test.invalid')
+        .searchParams;
+      expect(reopened.get('period')).toBe('3m');
+      expect(reopened.get('chart_from')).toBe('1700000000');
+      expect(reopened.get('chart_to')).toBe('1707000000');
+      const switched = new URL(
+        indicatorUrl(
+          'DOGE',
+          id,
+          new URLSearchParams('metric=net:mvrv&period=5y&price_source=upbit'),
+        ),
+        'https://test.invalid',
+      ).searchParams;
+      expect(switched.get('period')).toBe('all');
+      const desk = normalizeDesk({
+        version: 2,
+        workspaces: [
+          {
+            name: '기존 분석',
+            asset: 'DOGE',
+            metric: id,
+            priceSource: 'upbit',
+            period: '3m',
+            dateWindow: { from: 1700000000, to: 1707000000 },
+          },
+        ],
+      });
+      const restored = new URL(workspaceUrl(desk.workspaces[0]), 'https://test.invalid')
+        .searchParams;
+      expect(restored.get('period')).toBe('3m');
+      expect(restored.get('chart_from')).toBe('1700000000');
+    }
   });
   it('pins model-specific currencies and exchange-volume sources', () => {
     expect(

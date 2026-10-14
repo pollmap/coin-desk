@@ -126,7 +126,7 @@ async function latestStays(page: Page) {
   const box = (await chart(page).boundingBox())!;
   await page.mouse.move(box.x + box.width * 0.5, box.y + box.height * 0.4);
   await expect(page.getByTestId('chart-tooltip')).toBeVisible();
-  await expect(page.getByTestId('chart-tooltip')).not.toHaveText(/\d{4}-\d{2}-\d{2}/);
+  await expect(page.getByTestId('chart-tooltip')).toContainText(/\d{4}-\d{2}-\d{2}/);
   await chart(page).click({ position: { x: box.width * 0.5, y: box.height * 0.4 } });
   await chart(page).press('ArrowLeft');
   await expect(summary).toHaveText(value);

@@ -38,7 +38,7 @@ import {
 import { scheduled, refreshMinuteQuotes, refreshRecentFutures } from './scheduled';
 import { publicResearchFeed } from './public-research';
 import { researchFeed } from './research';
-import { candleHistory } from './candle-history';
+import { candleExtent, candleHistory } from './candle-history';
 import { getDominance, DOMINANCE_VERSION } from './dominance';
 import { REFERENCE_ASSETS, REFERENCE_SOURCE, REFERENCE_VERSION } from './reference-price';
 import { operationStatus, recentOperationStatus, statusSummary, sourcePage } from './health';
@@ -648,11 +648,7 @@ async function api(request: Request, env: Env): Promise<Response> {
         last: number | null;
         fetched: number | null;
       } | null>(env.DB, 'history:' + asset + ':' + market + ':' + base, null)) ??
-      (await env.DB.prepare(
-        'SELECT MIN(time) AS first,MAX(time) AS last,MAX(fetched_at) AS fetched FROM candles WHERE asset=? AND market=? AND interval=?',
-      )
-        .bind(asset, market, base)
-        .first<{ first: number | null; last: number | null; fetched: number | null }>());
+      (await candleExtent(env, asset, market, base));
     let gaps = 0;
     for (let i = 1; i < rows.length; i++)
       if (rows[i].time - rows[i - 1].time > (base === '1h' ? 3600 : DAY)) gaps++;
