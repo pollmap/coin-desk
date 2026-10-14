@@ -1,0 +1,311 @@
+{
+  "schemaVersion": 1,
+  "scope": "0.34.1 canceled native touch correction; isolated fixture QA, not deployed product QA.",
+  "sources": [
+    {
+      "path": "vite.config.ts",
+      "sha256": "03bededefa8b6baf0d68e6330bafaed75ac2fc5853adf494d47093fea1d8cead"
+    },
+    {
+      "path": "scripts/chart-touch-cancel.ts",
+      "sha256": "f16f590fab47e0d83526924c696dec08f5b9c6675e48894280407a11226694c2"
+    },
+    {
+      "path": "tests/chart-touch-cancel.test.ts",
+      "sha256": "0065262fe03c99fa43067856cfc929ccaacec178ab22779ebefb041e615d5743"
+    },
+    {
+      "path": "e2e/price-chart-034.spec.ts",
+      "sha256": "7dc9894dde3395eeea853f883735ea0794ea2d6de0edf6b256472a104cbd77f8"
+    }
+  ],
+  "libraryVersion": "5.2.1",
+  "rawDistributionHashes": [
+    {
+      "file": "lightweight-charts.development.mjs",
+      "sha256": "350786b76b81fd99d2fd4f782ad9a35747883cce3c2671d0b35eade8b397a4ae"
+    },
+    {
+      "file": "lightweight-charts.production.mjs",
+      "sha256": "faf0924968b1cbb9ea5bb6baa43a27ed6a0802341c07238b72ae869ffebab90c"
+    }
+  ],
+  "nodeModulesModified": false,
+  "targetedUnitTests": {
+    "passed": 13,
+    "failed": 0,
+    "variants": [
+      "development",
+      "production"
+    ],
+    "includesOriginalDefectReproduction": true
+  },
+  "typeCheck": {
+    "passed": true
+  },
+  "nativeBrowser": {
+    "engine": "Chromium",
+    "viewport": {
+      "width": 320,
+      "height": 568
+    },
+    "actualCDPEvents": true,
+    "fixturePrices": true,
+    "automaticRetries": 0,
+    "developmentPassed": true,
+    "minifiedProductionPassed": true,
+    "cancelDidNotEmitTouchendTapOrClick": true,
+    "outsideControlsFirstTap": [
+      "period",
+      "more",
+      "explanation"
+    ],
+    "freshPanAndPinchPassed": true,
+    "sameCanvasPreserved": true,
+    "rotationRangePreserved": true,
+    "latestRepresentativeUnchanged": true,
+    "canceledPanLogicalFrames": {
+      "development": {
+        "atCancel": [
+          "142.1171082651908",
+          "147.178222130338"
+        ],
+        "frames": [
+          {
+            "frame": 0,
+            "from": "142.1171082651908",
+            "to": "147.178222130338"
+          },
+          {
+            "frame": 1,
+            "from": "142.1171082651908",
+            "to": "147.178222130338"
+          },
+          {
+            "frame": 2,
+            "from": "142.1171082651908",
+            "to": "147.178222130338"
+          },
+          {
+            "frame": 3,
+            "from": "142.1171082651908",
+            "to": "147.178222130338"
+          },
+          {
+            "frame": 4,
+            "from": "142.1171082651908",
+            "to": "147.178222130338"
+          },
+          {
+            "frame": 5,
+            "from": "142.1171082651908",
+            "to": "147.178222130338"
+          },
+          {
+            "frame": 6,
+            "from": "142.1171082651908",
+            "to": "147.178222130338"
+          },
+          {
+            "frame": 7,
+            "from": "142.1171082651908",
+            "to": "147.178222130338"
+          },
+          {
+            "frame": 8,
+            "from": "142.1171082651908",
+            "to": "147.178222130338"
+          },
+          {
+            "frame": 9,
+            "from": "142.1171082651908",
+            "to": "147.178222130338"
+          },
+          {
+            "frame": 10,
+            "from": "142.1171082651908",
+            "to": "147.178222130338"
+          },
+          {
+            "frame": 11,
+            "from": "142.1171082651908",
+            "to": "147.178222130338"
+          },
+          {
+            "frame": 12,
+            "from": "142.1171082651908",
+            "to": "147.178222130338"
+          },
+          {
+            "frame": 13,
+            "from": "142.1171082651908",
+            "to": "147.178222130338"
+          },
+          {
+            "frame": 14,
+            "from": "142.1171082651908",
+            "to": "147.178222130338"
+          },
+          {
+            "frame": 15,
+            "from": "142.1171082651908",
+            "to": "147.178222130338"
+          },
+          {
+            "frame": 16,
+            "from": "142.1171082651908",
+            "to": "147.178222130338"
+          },
+          {
+            "frame": 17,
+            "from": "142.1171082651908",
+            "to": "147.178222130338"
+          },
+          {
+            "frame": 18,
+            "from": "142.1171082651908",
+            "to": "147.178222130338"
+          },
+          {
+            "frame": 19,
+            "from": "142.1171082651908",
+            "to": "147.178222130338"
+          }
+        ],
+        "note": "Observed native cancel range; no claimed kinetic behavior without reading this evidence."
+      },
+      "production": {
+        "atCancel": [
+          "141.87318706552904",
+          "146.93430093067624"
+        ],
+        "frames": [
+          {
+            "frame": 0,
+            "from": "141.87318706552904",
+            "to": "146.93430093067624"
+          },
+          {
+            "frame": 1,
+            "from": "141.87318706552904",
+            "to": "146.93430093067624"
+          },
+          {
+            "frame": 2,
+            "from": "141.87318706552904",
+            "to": "146.93430093067624"
+          },
+          {
+            "frame": 3,
+            "from": "141.87318706552904",
+            "to": "146.93430093067624"
+          },
+          {
+            "frame": 4,
+            "from": "141.87318706552904",
+            "to": "146.93430093067624"
+          },
+          {
+            "frame": 5,
+            "from": "141.87318706552904",
+            "to": "146.93430093067624"
+          },
+          {
+            "frame": 6,
+            "from": "141.87318706552904",
+            "to": "146.93430093067624"
+          },
+          {
+            "frame": 7,
+            "from": "141.87318706552904",
+            "to": "146.93430093067624"
+          },
+          {
+            "frame": 8,
+            "from": "141.87318706552904",
+            "to": "146.93430093067624"
+          },
+          {
+            "frame": 9,
+            "from": "141.87318706552904",
+            "to": "146.93430093067624"
+          },
+          {
+            "frame": 10,
+            "from": "141.87318706552904",
+            "to": "146.93430093067624"
+          },
+          {
+            "frame": 11,
+            "from": "141.87318706552904",
+            "to": "146.93430093067624"
+          },
+          {
+            "frame": 12,
+            "from": "141.87318706552904",
+            "to": "146.93430093067624"
+          },
+          {
+            "frame": 13,
+            "from": "141.87318706552904",
+            "to": "146.93430093067624"
+          },
+          {
+            "frame": 14,
+            "from": "141.87318706552904",
+            "to": "146.93430093067624"
+          },
+          {
+            "frame": 15,
+            "from": "141.87318706552904",
+            "to": "146.93430093067624"
+          },
+          {
+            "frame": 16,
+            "from": "141.87318706552904",
+            "to": "146.93430093067624"
+          },
+          {
+            "frame": 17,
+            "from": "141.87318706552904",
+            "to": "146.93430093067624"
+          },
+          {
+            "frame": 18,
+            "from": "141.87318706552904",
+            "to": "146.93430093067624"
+          },
+          {
+            "frame": 19,
+            "from": "141.87318706552904",
+            "to": "146.93430093067624"
+          }
+        ],
+        "note": "Observed native cancel range; no claimed kinetic behavior without reading this evidence."
+      }
+    }
+  },
+  "compiledOriginalLicense": true,
+  "compiledChangeNotice": true,
+  "devTransformedEntryPoints": [
+    {
+      "variant": "development",
+      "status": 200,
+      "cleanupApplied": true
+    },
+    {
+      "variant": "production",
+      "status": 200,
+      "cleanupApplied": true
+    }
+  ],
+  "priorDiagnosticBuildFailuresPreserved": [
+    "build-01 removed license and notice",
+    "build-02 retained original license but class-local change notice dropped"
+  ],
+  "physicalDevice": false,
+  "SafariVoiceOver": false,
+  "peopleUsability": false,
+  "serverMutations": 0,
+  "originalLiveFailedRunPreserved": true
+}

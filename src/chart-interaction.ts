@@ -8,6 +8,16 @@ export function chartPrecision(values: readonly number[], digits: (value: number
   return { precision, minMove: 10 ** -precision };
 }
 
+/** Axis ticks below their displayed resolution are zero; observations remain untouched. */
+export function chartAxisValue(value: number, minMove: number) {
+  return Number.isFinite(value) &&
+    Number.isFinite(minMove) &&
+    minMove > 0 &&
+    Math.abs(value) < minMove / 2
+    ? 0
+    : value;
+}
+
 /** Keep one mobile pane clear of fixed navigation; scrolling never changes its height. */
 export function mobileChartHeight(viewportHeight: number, documentTop: number, navigation: number) {
   return Math.max(240, Math.min(330, Math.floor(viewportHeight - documentTop - navigation - 8)));

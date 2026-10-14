@@ -40,6 +40,7 @@ import {
   chartDate,
   chartTick,
   chartPrecision,
+  chartAxisValue,
   inspectionPosition,
   logicalRangeChanged,
   mobileChartHeight,
@@ -471,7 +472,7 @@ export const AnalysisChart = memo(function AnalysisChart({
           priceFormat: {
             type: 'custom',
             minMove: primaryPrecision.minMove,
-            formatter: (v: number) => money(v, unit),
+            formatter: (v: number) => money(chartAxisValue(v, primaryPrecision.minMove), unit),
           },
         })
       : chart.addSeries(LineSeries, {
@@ -481,7 +482,7 @@ export const AnalysisChart = memo(function AnalysisChart({
           priceFormat: {
             type: 'custom',
             minMove: primaryPrecision.minMove,
-            formatter: (v: number) => display(v),
+            formatter: (v: number) => display(chartAxisValue(v, primaryPrecision.minMove)),
           },
         });
     if (candles?.length) price.setData(candles.map((p) => ({ ...p, time: ts(p.time) })));
@@ -517,6 +518,10 @@ export const AnalysisChart = memo(function AnalysisChart({
       const paneKey = line.pane ?? line.id;
       if (!line.overlay && !panes.has(paneKey)) panes.set(paneKey, panes.size + 1);
       const index = line.overlay ? 0 : panes.get(paneKey)!;
+      const precision = chartPrecision(
+        line.data.map((p) => p.value),
+        (v) => (line.supertrend ? priceDigits(v, line.unit) : readingDigits(v)),
+      );
       const series = chart.addSeries(
         LineSeries,
         {
@@ -530,11 +535,8 @@ export const AnalysisChart = memo(function AnalysisChart({
           priceLineVisible: false,
           priceFormat: {
             type: 'custom',
-            minMove: chartPrecision(
-              line.data.map((p) => p.value),
-              (v) => (line.supertrend ? priceDigits(v, line.unit) : readingDigits(v)),
-            ).minMove,
-            formatter: (v: number) => lineNumber(line, v),
+            minMove: precision.minMove,
+            formatter: (v: number) => lineNumber(line, chartAxisValue(v, precision.minMove)),
           },
         },
         index,
@@ -832,34 +834,40 @@ export const AnalysisChart = memo(function AnalysisChart({
         : chart.timeScale().getVisibleRange();
       if (candleMode) price.setData((data.candles ?? []).map((p) => ({ ...p, time: ts(p.time) })));
       else price.setData(gapData(data.points, step));
+      const precision = chartPrecision(
+        data.points.map((p) => p.value),
+        (v) =>
+          primary || !['USD', 'USDT', 'KRW'].includes(unit)
+            ? readingDigits(v)
+            : priceDigits(v, unit),
+      );
       price.applyOptions({
         priceFormat: {
           type: 'custom',
-          minMove: chartPrecision(
-            data.points.map((p) => p.value),
-            (v) =>
-              primary || !['USD', 'USDT', 'KRW'].includes(unit)
-                ? readingDigits(v)
-                : priceDigits(v, unit),
-          ).minMove,
-          formatter: (v: number) => (candleMode ? money(v, unit) : display(v)),
+          minMove: precision.minMove,
+          formatter: (v: number) => {
+            const value = chartAxisValue(v, precision.minMove);
+            return candleMode ? money(value, unit) : display(value);
+          },
         },
       });
       cursorSeries[0].values = new Map(data.points.map((p) => [p.time, p.value]));
       for (const entry of cursorSeries.slice(1)) {
         const line = data.lines.find((l) => l.id === entry.id);
         entry.series.setData(gapData(line?.data ?? [], line?.step ?? 86400));
-        if (line)
+        if (line) {
+          const precision = chartPrecision(
+            line.data.map((p) => p.value),
+            (v) => (line.supertrend ? priceDigits(v, line.unit) : readingDigits(v)),
+          );
           entry.series.applyOptions({
             priceFormat: {
               type: 'custom',
-              minMove: chartPrecision(
-                line.data.map((p) => p.value),
-                (v) => (line.supertrend ? priceDigits(v, line.unit) : readingDigits(v)),
-              ).minMove,
-              formatter: (v: number) => lineNumber(line, v),
+              minMove: precision.minMove,
+              formatter: (v: number) => lineNumber(line, chartAxisValue(v, precision.minMove)),
             },
           });
+        }
         entry.values = new Map((line?.data ?? []).map((p) => [p.time, p.value]));
         if ('primitive' in entry)
           (entry.primitive as SupertrendPrimitive).setRows(line?.supertrend?.rows ?? []);
@@ -1315,7 +1323,8 @@ export const AnalysisChart = memo(function AnalysisChart({
   );
   const secondaryBelowChart =
     ['view:hash_ribbons', 'view:hashrate_trend'].includes(primary?.id ?? '') ||
-    lines.some((line) => line.supertrend !== undefined);
+    lines.some((line) => line.supertrend !== undefined) ||
+    (publicFocus && !primary && lines.some((line) => line.overlay));
   return (
     <>
       <div className={'analysis-legend' + (publicFocus ? ' analysis-legend-focused' : '')}>

@@ -1,0 +1,697 @@
+{
+  "schemaVersion": 1,
+  "scope": "Five selected assets: read available full source histories; check unit, first/end/count and representative rendered closes, axes, gestures and saving. Not all 150 assets or every historical supplier value.",
+  "release": "0.34.0",
+  "runtimeRelease": "vps-a6749ebb36fbed9d",
+  "mainCommit": "db12c066840eba44506d39280fad272aac3c863c",
+  "canonicalDistSha256": "bb64fb9bbe70e88a4baeaedfb3e87cdd8503aaf8f61e4b1f71f919ac19910a37",
+  "localDeploymentPinsMatched": true,
+  "mainCiRunVerified": 38553849327,
+  "startedAt": "2026-10-14T11:34:42.116Z",
+  "completedAt": "2026-10-14T11:40:50.194Z",
+  "passed": false,
+  "selectedScope": {
+    "origins": [
+      "pages",
+      "vps"
+    ],
+    "widths": [
+      320,
+      390,
+      1280
+    ],
+    "themes": [
+      "light",
+      "dark"
+    ]
+  },
+  "observedDailyCutoffUtc": 1791936000,
+  "browser": "153.0.8010.12",
+  "realPublicData": true,
+  "fixtureData": false,
+  "caseRetries": 0,
+  "serverMutationsTransmitted": 0,
+  "userProfileUsed": false,
+  "lcpOrLoadCertification": false,
+  "physicalDevice": false,
+  "physicalSafariVoiceOver": false,
+  "peopleUsabilityStudy": false,
+  "originalScreenshotLocationsOmitted": true,
+  "deployment": [
+    {
+      "origin": "pages",
+      "runtime": "vps-a6749ebb36fbed9d",
+      "localReviewedVersion": "0.34.0",
+      "codeIdentityMethod": "Exact runtime release pin; root verifies public build hashes separately.",
+      "currentSourceCounts": {
+        "ok": 1549,
+        "delayed": 36
+      },
+      "healthOk": false,
+      "manualReads": [
+        {
+          "path": "/api/v1/runtime",
+          "status": 200,
+          "bytes": 936
+        },
+        {
+          "path": "/api/v1/status/summary",
+          "status": 200,
+          "bytes": 11146
+        }
+      ]
+    },
+    {
+      "origin": "vps",
+      "runtime": "vps-a6749ebb36fbed9d",
+      "localReviewedVersion": "0.34.0",
+      "codeIdentityMethod": "Exact runtime release pin; root verifies public build hashes separately.",
+      "currentSourceCounts": {
+        "ok": 1532,
+        "delayed": 53
+      },
+      "healthOk": false,
+      "manualReads": [
+        {
+          "path": "/api/v1/runtime",
+          "status": 200,
+          "bytes": 936
+        },
+        {
+          "path": "/api/v1/status/summary",
+          "status": 200,
+          "bytes": 13774
+        }
+      ]
+    }
+  ],
+  "actualHistories": [
+    {
+      "origin": "pages",
+      "asset": "XRP",
+      "market": "binance",
+      "unit": "USDT",
+      "interval": "1d",
+      "observations": 3085,
+      "first": 1525392000,
+      "last": 1791849600,
+      "closedOnly": true,
+      "priorProviderBoundaryEvidence": "2026-10-10T19:12:28.313966+00:00"
+    },
+    {
+      "origin": "pages",
+      "asset": "DOGE",
+      "market": "binance",
+      "unit": "USDT",
+      "interval": "1d",
+      "observations": 2658,
+      "first": 1562284800,
+      "last": 1791849600,
+      "closedOnly": true,
+      "priorProviderBoundaryEvidence": "2026-10-10T19:12:28.313966+00:00"
+    },
+    {
+      "origin": "pages",
+      "asset": "DOGE",
+      "market": "binance",
+      "unit": "USDT",
+      "interval": "1w",
+      "observations": 380,
+      "first": 1561939200,
+      "last": 1791158400,
+      "closedOnly": true,
+      "priorProviderBoundaryEvidence": "2026-10-10T19:12:28.313966+00:00"
+    },
+    {
+      "origin": "pages",
+      "asset": "DOGE",
+      "market": "binance",
+      "unit": "USDT",
+      "interval": "1M",
+      "observations": 87,
+      "first": 1561939200,
+      "last": 1788220800,
+      "closedOnly": true,
+      "priorProviderBoundaryEvidence": "2026-10-10T19:12:28.313966+00:00"
+    },
+    {
+      "origin": "pages",
+      "asset": "PEPE",
+      "market": "binance",
+      "unit": "USDT",
+      "interval": "1d",
+      "observations": 1258,
+      "first": 1683244800,
+      "last": 1791849600,
+      "closedOnly": true,
+      "priorProviderBoundaryEvidence": "2026-10-10T19:12:28.313966+00:00"
+    },
+    {
+      "origin": "pages",
+      "asset": "SHIB",
+      "market": "binance",
+      "unit": "USDT",
+      "interval": "1d",
+      "observations": 1983,
+      "first": 1620604800,
+      "last": 1791849600,
+      "closedOnly": true,
+      "priorProviderBoundaryEvidence": "2026-10-10T19:12:28.313966+00:00"
+    },
+    {
+      "origin": "pages",
+      "asset": "BTC",
+      "market": "upbit",
+      "unit": "KRW",
+      "interval": "1d",
+      "observations": 3306,
+      "first": 1506297600,
+      "last": 1791849600,
+      "closedOnly": true,
+      "priorProviderBoundaryEvidence": "2026-10-10T19:12:28.313966+00:00"
+    },
+    {
+      "origin": "vps",
+      "asset": "XRP",
+      "market": "binance",
+      "unit": "USDT",
+      "interval": "1d",
+      "observations": 3085,
+      "first": 1525392000,
+      "last": 1791849600,
+      "closedOnly": true,
+      "priorProviderBoundaryEvidence": "2026-10-10T19:12:28.313966+00:00"
+    },
+    {
+      "origin": "vps",
+      "asset": "DOGE",
+      "market": "binance",
+      "unit": "USDT",
+      "interval": "1d",
+      "observations": 2658,
+      "first": 1562284800,
+      "last": 1791849600,
+      "closedOnly": true,
+      "priorProviderBoundaryEvidence": "2026-10-10T19:12:28.313966+00:00"
+    },
+    {
+      "origin": "vps",
+      "asset": "DOGE",
+      "market": "binance",
+      "unit": "USDT",
+      "interval": "1w",
+      "observations": 380,
+      "first": 1561939200,
+      "last": 1791158400,
+      "closedOnly": true,
+      "priorProviderBoundaryEvidence": "2026-10-10T19:12:28.313966+00:00"
+    },
+    {
+      "origin": "vps",
+      "asset": "DOGE",
+      "market": "binance",
+      "unit": "USDT",
+      "interval": "1M",
+      "observations": 87,
+      "first": 1561939200,
+      "last": 1788220800,
+      "closedOnly": true,
+      "priorProviderBoundaryEvidence": "2026-10-10T19:12:28.313966+00:00"
+    },
+    {
+      "origin": "vps",
+      "asset": "PEPE",
+      "market": "binance",
+      "unit": "USDT",
+      "interval": "1d",
+      "observations": 1258,
+      "first": 1683244800,
+      "last": 1791849600,
+      "closedOnly": true,
+      "priorProviderBoundaryEvidence": "2026-10-10T19:12:28.313966+00:00"
+    },
+    {
+      "origin": "vps",
+      "asset": "SHIB",
+      "market": "binance",
+      "unit": "USDT",
+      "interval": "1d",
+      "observations": 1983,
+      "first": 1620604800,
+      "last": 1791849600,
+      "closedOnly": true,
+      "priorProviderBoundaryEvidence": "2026-10-10T19:12:28.313966+00:00"
+    },
+    {
+      "origin": "vps",
+      "asset": "BTC",
+      "market": "upbit",
+      "unit": "KRW",
+      "interval": "1d",
+      "observations": 3306,
+      "first": 1506297600,
+      "last": 1791849600,
+      "closedOnly": true,
+      "priorProviderBoundaryEvidence": "2026-10-10T19:12:28.313966+00:00"
+    }
+  ],
+  "cases": [
+    {
+      "origin": "pages",
+      "width": 320,
+      "height": 568,
+      "theme": "light",
+      "passed": false,
+      "deadlineHit": false,
+      "startedAt": "2026-10-14T11:34:45.310Z",
+      "completedAt": "2026-10-14T11:35:50.802Z",
+      "forbiddenRequestCount": 0,
+      "failedApiResponseCount": 0,
+      "failedRequestCount": 0,
+      "pageErrorCount": 0,
+      "steps": [
+        {
+          "name": "xrp-full-history-and-explicit-all-reset",
+          "status": "failed",
+          "error": "Chart starts below accepted position. · {\"x\":16,\"y\":298,\"width\":288,\"height\":240}"
+        },
+        {
+          "name": "doge-supertrend-warmup-prices",
+          "status": "passed",
+          "representativeSelectedSourceChecksPassed": true
+        },
+        {
+          "name": "pepe-shib-real-rendered-axis",
+          "status": "passed",
+          "representativeSelectedSourceChecksPassed": true
+        },
+        {
+          "name": "btc-krw-keyboard-close-and-save-restore",
+          "status": "passed",
+          "representativeSelectedSourceChecksPassed": true
+        },
+        {
+          "name": "chromium-native-longpress-drag-and-cancel",
+          "status": "failed",
+          "error": "expect(locator).toBeVisible() failed\n\nLocator: getByRole('menu', { name: '조회 기간', exact: true })\nExpected: visible\nTimeout: 30000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" getByRole('menu', { name: '조회 기간', exact: true }) with timeout 30000ms\n  - waiting for getByRole('menu', { name: '조회 기간', exact: true })\n"
+        }
+      ]
+    },
+    {
+      "origin": "pages",
+      "width": 320,
+      "height": 568,
+      "theme": "dark",
+      "passed": false,
+      "deadlineHit": false,
+      "startedAt": "2026-10-14T11:35:50.815Z",
+      "completedAt": "2026-10-14T11:36:10.132Z",
+      "forbiddenRequestCount": 0,
+      "failedApiResponseCount": 0,
+      "failedRequestCount": 0,
+      "pageErrorCount": 0,
+      "steps": [
+        {
+          "name": "xrp-full-history-and-explicit-all-reset",
+          "status": "failed",
+          "error": "Chart starts below accepted position. · {\"x\":16,\"y\":298,\"width\":288,\"height\":240}"
+        },
+        {
+          "name": "doge-supertrend-warmup-prices",
+          "status": "passed",
+          "representativeSelectedSourceChecksPassed": true
+        },
+        {
+          "name": "pepe-shib-real-rendered-axis",
+          "status": "passed",
+          "representativeSelectedSourceChecksPassed": true
+        },
+        {
+          "name": "btc-krw-keyboard-close-and-save-restore",
+          "status": "passed",
+          "representativeSelectedSourceChecksPassed": true
+        }
+      ]
+    },
+    {
+      "origin": "pages",
+      "width": 390,
+      "height": 844,
+      "theme": "light",
+      "passed": false,
+      "deadlineHit": false,
+      "startedAt": "2026-10-14T11:36:10.140Z",
+      "completedAt": "2026-10-14T11:36:29.147Z",
+      "forbiddenRequestCount": 0,
+      "failedApiResponseCount": 0,
+      "failedRequestCount": 0,
+      "pageErrorCount": 0,
+      "steps": [
+        {
+          "name": "xrp-full-history-and-explicit-all-reset",
+          "status": "failed",
+          "error": "Chart starts below accepted position. · {\"x\":16,\"y\":298,\"width\":358,\"height\":330}"
+        },
+        {
+          "name": "doge-supertrend-warmup-prices",
+          "status": "passed",
+          "representativeSelectedSourceChecksPassed": true
+        },
+        {
+          "name": "pepe-shib-real-rendered-axis",
+          "status": "passed",
+          "representativeSelectedSourceChecksPassed": true
+        },
+        {
+          "name": "btc-krw-keyboard-close-and-save-restore",
+          "status": "passed",
+          "representativeSelectedSourceChecksPassed": true
+        }
+      ]
+    },
+    {
+      "origin": "pages",
+      "width": 390,
+      "height": 844,
+      "theme": "dark",
+      "passed": false,
+      "deadlineHit": false,
+      "startedAt": "2026-10-14T11:36:29.157Z",
+      "completedAt": "2026-10-14T11:36:46.730Z",
+      "forbiddenRequestCount": 0,
+      "failedApiResponseCount": 0,
+      "failedRequestCount": 0,
+      "pageErrorCount": 0,
+      "steps": [
+        {
+          "name": "xrp-full-history-and-explicit-all-reset",
+          "status": "failed",
+          "error": "Chart starts below accepted position. · {\"x\":16,\"y\":298,\"width\":358,\"height\":330}"
+        },
+        {
+          "name": "doge-supertrend-warmup-prices",
+          "status": "passed",
+          "representativeSelectedSourceChecksPassed": true
+        },
+        {
+          "name": "pepe-shib-real-rendered-axis",
+          "status": "passed",
+          "representativeSelectedSourceChecksPassed": true
+        },
+        {
+          "name": "btc-krw-keyboard-close-and-save-restore",
+          "status": "passed",
+          "representativeSelectedSourceChecksPassed": true
+        }
+      ]
+    },
+    {
+      "origin": "pages",
+      "width": 1280,
+      "height": 800,
+      "theme": "light",
+      "passed": true,
+      "deadlineHit": false,
+      "startedAt": "2026-10-14T11:36:46.737Z",
+      "completedAt": "2026-10-14T11:37:06.957Z",
+      "forbiddenRequestCount": 0,
+      "failedApiResponseCount": 0,
+      "failedRequestCount": 0,
+      "pageErrorCount": 0,
+      "steps": [
+        {
+          "name": "xrp-full-history-and-explicit-all-reset",
+          "status": "passed",
+          "representativeSelectedSourceChecksPassed": true
+        },
+        {
+          "name": "doge-supertrend-warmup-prices",
+          "status": "passed",
+          "representativeSelectedSourceChecksPassed": true
+        },
+        {
+          "name": "pepe-shib-real-rendered-axis",
+          "status": "passed",
+          "representativeSelectedSourceChecksPassed": true
+        },
+        {
+          "name": "btc-krw-keyboard-close-and-save-restore",
+          "status": "passed",
+          "representativeSelectedSourceChecksPassed": true
+        }
+      ]
+    },
+    {
+      "origin": "pages",
+      "width": 1280,
+      "height": 800,
+      "theme": "dark",
+      "passed": true,
+      "deadlineHit": false,
+      "startedAt": "2026-10-14T11:37:06.963Z",
+      "completedAt": "2026-10-14T11:37:26.810Z",
+      "forbiddenRequestCount": 0,
+      "failedApiResponseCount": 0,
+      "failedRequestCount": 0,
+      "pageErrorCount": 0,
+      "steps": [
+        {
+          "name": "xrp-full-history-and-explicit-all-reset",
+          "status": "passed",
+          "representativeSelectedSourceChecksPassed": true
+        },
+        {
+          "name": "doge-supertrend-warmup-prices",
+          "status": "passed",
+          "representativeSelectedSourceChecksPassed": true
+        },
+        {
+          "name": "pepe-shib-real-rendered-axis",
+          "status": "passed",
+          "representativeSelectedSourceChecksPassed": true
+        },
+        {
+          "name": "btc-krw-keyboard-close-and-save-restore",
+          "status": "passed",
+          "representativeSelectedSourceChecksPassed": true
+        }
+      ]
+    },
+    {
+      "origin": "vps",
+      "width": 320,
+      "height": 568,
+      "theme": "light",
+      "passed": false,
+      "deadlineHit": false,
+      "startedAt": "2026-10-14T11:37:28.486Z",
+      "completedAt": "2026-10-14T11:38:06.626Z",
+      "forbiddenRequestCount": 0,
+      "failedApiResponseCount": 0,
+      "failedRequestCount": 0,
+      "pageErrorCount": 0,
+      "steps": [
+        {
+          "name": "xrp-full-history-and-explicit-all-reset",
+          "status": "failed",
+          "error": "Chart starts below accepted position. · {\"x\":16,\"y\":298,\"width\":288,\"height\":240}"
+        },
+        {
+          "name": "doge-supertrend-warmup-prices",
+          "status": "passed",
+          "representativeSelectedSourceChecksPassed": true
+        },
+        {
+          "name": "pepe-shib-real-rendered-axis",
+          "status": "passed",
+          "representativeSelectedSourceChecksPassed": true
+        },
+        {
+          "name": "btc-krw-keyboard-close-and-save-restore",
+          "status": "passed",
+          "representativeSelectedSourceChecksPassed": true
+        }
+      ]
+    },
+    {
+      "origin": "vps",
+      "width": 320,
+      "height": 568,
+      "theme": "dark",
+      "passed": false,
+      "deadlineHit": false,
+      "startedAt": "2026-10-14T11:38:06.634Z",
+      "completedAt": "2026-10-14T11:38:37.264Z",
+      "forbiddenRequestCount": 0,
+      "failedApiResponseCount": 0,
+      "failedRequestCount": 0,
+      "pageErrorCount": 0,
+      "steps": [
+        {
+          "name": "xrp-full-history-and-explicit-all-reset",
+          "status": "failed",
+          "error": "Chart starts below accepted position. · {\"x\":16,\"y\":298,\"width\":288,\"height\":240}"
+        },
+        {
+          "name": "doge-supertrend-warmup-prices",
+          "status": "passed",
+          "representativeSelectedSourceChecksPassed": true
+        },
+        {
+          "name": "pepe-shib-real-rendered-axis",
+          "status": "passed",
+          "representativeSelectedSourceChecksPassed": true
+        },
+        {
+          "name": "btc-krw-keyboard-close-and-save-restore",
+          "status": "passed",
+          "representativeSelectedSourceChecksPassed": true
+        }
+      ]
+    },
+    {
+      "origin": "vps",
+      "width": 390,
+      "height": 844,
+      "theme": "light",
+      "passed": false,
+      "deadlineHit": false,
+      "startedAt": "2026-10-14T11:38:37.269Z",
+      "completedAt": "2026-10-14T11:39:06.556Z",
+      "forbiddenRequestCount": 0,
+      "failedApiResponseCount": 0,
+      "failedRequestCount": 0,
+      "pageErrorCount": 0,
+      "steps": [
+        {
+          "name": "xrp-full-history-and-explicit-all-reset",
+          "status": "failed",
+          "error": "Chart starts below accepted position. · {\"x\":16,\"y\":298,\"width\":358,\"height\":330}"
+        },
+        {
+          "name": "doge-supertrend-warmup-prices",
+          "status": "passed",
+          "representativeSelectedSourceChecksPassed": true
+        },
+        {
+          "name": "pepe-shib-real-rendered-axis",
+          "status": "passed",
+          "representativeSelectedSourceChecksPassed": true
+        },
+        {
+          "name": "btc-krw-keyboard-close-and-save-restore",
+          "status": "passed",
+          "representativeSelectedSourceChecksPassed": true
+        }
+      ]
+    },
+    {
+      "origin": "vps",
+      "width": 390,
+      "height": 844,
+      "theme": "dark",
+      "passed": false,
+      "deadlineHit": false,
+      "startedAt": "2026-10-14T11:39:06.562Z",
+      "completedAt": "2026-10-14T11:39:40.105Z",
+      "forbiddenRequestCount": 0,
+      "failedApiResponseCount": 0,
+      "failedRequestCount": 0,
+      "pageErrorCount": 0,
+      "steps": [
+        {
+          "name": "xrp-full-history-and-explicit-all-reset",
+          "status": "failed",
+          "error": "Chart starts below accepted position. · {\"x\":16,\"y\":298,\"width\":358,\"height\":330}"
+        },
+        {
+          "name": "doge-supertrend-warmup-prices",
+          "status": "passed",
+          "representativeSelectedSourceChecksPassed": true
+        },
+        {
+          "name": "pepe-shib-real-rendered-axis",
+          "status": "passed",
+          "representativeSelectedSourceChecksPassed": true
+        },
+        {
+          "name": "btc-krw-keyboard-close-and-save-restore",
+          "status": "passed",
+          "representativeSelectedSourceChecksPassed": true
+        }
+      ]
+    },
+    {
+      "origin": "vps",
+      "width": 1280,
+      "height": 800,
+      "theme": "light",
+      "passed": true,
+      "deadlineHit": false,
+      "startedAt": "2026-10-14T11:39:40.113Z",
+      "completedAt": "2026-10-14T11:40:14.951Z",
+      "forbiddenRequestCount": 0,
+      "failedApiResponseCount": 0,
+      "failedRequestCount": 0,
+      "pageErrorCount": 0,
+      "steps": [
+        {
+          "name": "xrp-full-history-and-explicit-all-reset",
+          "status": "passed",
+          "representativeSelectedSourceChecksPassed": true
+        },
+        {
+          "name": "doge-supertrend-warmup-prices",
+          "status": "passed",
+          "representativeSelectedSourceChecksPassed": true
+        },
+        {
+          "name": "pepe-shib-real-rendered-axis",
+          "status": "passed",
+          "representativeSelectedSourceChecksPassed": true
+        },
+        {
+          "name": "btc-krw-keyboard-close-and-save-restore",
+          "status": "passed",
+          "representativeSelectedSourceChecksPassed": true
+        }
+      ]
+    },
+    {
+      "origin": "vps",
+      "width": 1280,
+      "height": 800,
+      "theme": "dark",
+      "passed": true,
+      "deadlineHit": false,
+      "startedAt": "2026-10-14T11:40:14.959Z",
+      "completedAt": "2026-10-14T11:40:50.033Z",
+      "forbiddenRequestCount": 0,
+      "failedApiResponseCount": 0,
+      "failedRequestCount": 0,
+      "pageErrorCount": 0,
+      "steps": [
+        {
+          "name": "xrp-full-history-and-explicit-all-reset",
+          "status": "passed",
+          "representativeSelectedSourceChecksPassed": true
+        },
+        {
+          "name": "doge-supertrend-warmup-prices",
+          "status": "passed",
+          "representativeSelectedSourceChecksPassed": true
+        },
+        {
+          "name": "pepe-shib-real-rendered-axis",
+          "status": "passed",
+          "representativeSelectedSourceChecksPassed": true
+        },
+        {
+          "name": "btc-krw-keyboard-close-and-save-restore",
+          "status": "passed",
+          "representativeSelectedSourceChecksPassed": true
+        }
+      ]
+    }
+  ]
+}
