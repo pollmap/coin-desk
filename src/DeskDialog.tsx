@@ -11,6 +11,7 @@ export function DeskDialog({
   returnFocus,
   wide = false,
   sheet = false,
+  reading = false,
 }: {
   open: boolean;
   onOpenChange: (open: boolean) => void;
@@ -19,6 +20,7 @@ export function DeskDialog({
   returnFocus?: RefObject<HTMLElement | null>;
   wide?: boolean;
   sheet?: boolean;
+  reading?: boolean;
 }) {
   const popup = useRef<HTMLDivElement>(null);
   return (
@@ -28,7 +30,10 @@ export function DeskDialog({
         <Dialog.Popup
           ref={popup}
           className={
-            'desk-dialog' + (wide ? ' desk-dialog-wide' : '') + (sheet ? ' desk-dialog-sheet' : '')
+            'desk-dialog' +
+            (wide ? ' desk-dialog-wide' : '') +
+            (sheet ? ' desk-dialog-sheet' : '') +
+            (reading ? ' desk-dialog-reading' : '')
           }
           finalFocus={returnFocus}
           initialFocus={(interaction) =>

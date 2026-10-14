@@ -27,6 +27,15 @@
 .desk-dialog-wide {
   width: min(1100px, calc(100vw - 24px));
 }
+.desk-dialog-reading {
+  height: min(720px, calc(100dvh - 32px));
+}
+.desk-dialog-reading > .desk-dialog-heading {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background: var(--panel);
+}
 .desk-dialog-heading {
   display: flex;
   align-items: center;
@@ -189,5 +198,8 @@
     margin: 0;
     border-radius: 14px 14px 0 0;
     padding-bottom: calc(20px + env(safe-area-inset-bottom));
+  }
+  .desk-dialog-sheet.desk-dialog-reading {
+    height: 85dvh;
   }
 }

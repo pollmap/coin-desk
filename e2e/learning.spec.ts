@@ -193,6 +193,160 @@ test('onchain guides open the corresponding primary metric and unsupported coins
   await expect(page.getByLabel('가격 기준', { exact: true })).toHaveValue('reference');
 });
 
+test.describe('deferred explanation lesson input', () => {
+  test.use({ hasTouch: true });
+  test('lesson loading never exposes moving actions or retargets a native close, and guide context stays intact', async ({
+    page,
+  }) => {
+    type Input = { type: string; trusted: boolean; label: string | null; summary?: string };
+    await page.addInitScript(() => {
+      const events: Input[] = [];
+      Object.assign(window, { nativeLessonEvents: events });
+      for (const type of ['pointerdown', 'pointerup', 'click', 'touchstart', 'touchend'])
+        document.addEventListener(
+          type,
+          (event) => {
+            const target = event.target instanceof Element ? event.target : null;
+            if (!target?.closest('.desk-dialog')) return;
+            events.push({
+              type,
+              trusted: event.isTrusted,
+              label: target.closest('button')?.getAttribute('aria-label') ?? null,
+              summary: target.closest('summary')?.textContent ?? undefined,
+            });
+          },
+          true,
+        );
+    });
+    let releaseLesson: (() => Promise<void>) | undefined;
+    await page.route('**/*IndicatorMethod*', async (route) => {
+      const response = await route.fetch();
+      releaseLesson = () => route.fulfill({ response });
+    });
+    const inputs = () =>
+      page.evaluate(
+        () => (window as unknown as Window & { nativeLessonEvents: Input[] }).nativeLessonEvents,
+      );
+    for (const viewport of [
+      { width: 320, height: 568 },
+      { width: 390, height: 844 },
+      { width: 1280, height: 720 },
+    ]) {
+      releaseLesson = undefined;
+      await page.setViewportSize(viewport);
+      await page.goto('/learn/net-mvrv?asset=ETH&price_source=upbit');
+      await openApply(page);
+      await page.locator('.guide-primary').click();
+      await expect(chart(page)).toHaveAttribute('data-asset', 'ETH');
+      await expect(chart(page)).toHaveAttribute('data-range-ready', '1');
+      const range = [
+        await chart(page).getAttribute('data-visible-from'),
+        await chart(page).getAttribute('data-visible-to'),
+      ];
+      const canvas = await chart(page).locator('canvas').first().elementHandle();
+      const latest = await page.locator('.analysis-reading-value').innerText();
+      const trigger = page.getByRole('button', { name: /^지표 설명/ });
+      if (viewport.width < 768) await trigger.tap();
+      else await trigger.click();
+      await expect.poll(() => Boolean(releaseLesson)).toBe(true);
+      const dialog = page.getByRole('dialog', { name: '지표 설명', exact: true });
+      await expect(dialog).toHaveClass(/desk-dialog-reading/);
+      await expect(dialog.locator('.indicator-concept')).toBeVisible();
+      await expect(dialog.getByText('주의할 점', { exact: true })).toHaveCount(0);
+      await expect(dialog.getByText('계산식·기호', { exact: true })).toHaveCount(0);
+      await expect(dialog.getByRole('link', { name: '현재 분석 설명', exact: true })).toHaveCount(
+        0,
+      );
+      const close = dialog.getByRole('button', { name: '지표 설명 닫기', exact: true });
+      const closeBefore = (await close.boundingBox())!;
+      const dialogBefore = (await dialog.boundingBox())!;
+      await page.mouse.move(
+        closeBefore.x + closeBefore.width / 2,
+        closeBefore.y + closeBefore.height / 2,
+      );
+      await page.mouse.down();
+      await releaseLesson!();
+      await expect(dialog.locator('.indicator-method').first()).toBeVisible();
+      const closeAfter = await close.boundingBox();
+      const dialogAfter = await dialog.boundingBox();
+      expect(closeAfter).toEqual(closeBefore);
+      expect(dialogAfter).toEqual(dialogBefore);
+      await page.mouse.up();
+      await expect(dialog).not.toBeVisible();
+      await expect(trigger).toBeFocused();
+      const closeEvents = await inputs();
+      for (const type of ['pointerdown', 'pointerup', 'click'])
+        expect(closeEvents.filter((event) => event.type === type).at(-1)).toMatchObject({
+          trusted: true,
+          label: '지표 설명 닫기',
+        });
+
+      if (viewport.width < 768) await trigger.tap();
+      else await trigger.click();
+      const caution = dialog.getByText('주의할 점', { exact: true });
+      await caution.scrollIntoViewIfNeeded();
+      const cautionBefore = (await caution.boundingBox())!;
+      await page.mouse.move(
+        cautionBefore.x + cautionBefore.width / 2,
+        cautionBefore.y + cautionBefore.height / 2,
+      );
+      await page.mouse.down();
+      await page.evaluate(
+        () =>
+          new Promise<void>((resolve) =>
+            requestAnimationFrame(() => requestAnimationFrame(() => resolve())),
+          ),
+      );
+      expect(await caution.boundingBox()).toEqual(cautionBefore);
+      await page.mouse.up();
+      await expect(caution.locator('..')).toHaveAttribute('open', '');
+      await expect(dialog.getByRole('link', { name: '현재 분석 설명', exact: true })).toBeVisible();
+      await page.keyboard.press('Escape');
+      await expect(dialog).not.toBeVisible();
+      await expect(trigger).toBeFocused();
+      if (viewport.width < 768) {
+        await trigger.tap();
+        await close.tap();
+        await expect(dialog).not.toBeVisible();
+        await expect(trigger).toBeFocused();
+        expect(
+          (await inputs()).some(
+            (event) =>
+              event.type === 'touchstart' && event.trusted && event.label === '지표 설명 닫기',
+          ),
+        ).toBe(true);
+      }
+      await expect(page.locator('.analysis-reading-value')).toHaveText(latest);
+      await expect(chart(page)).toHaveAttribute('data-visible-from', range[0]!);
+      await expect(chart(page)).toHaveAttribute('data-visible-to', range[1]!);
+      expect(await canvas!.evaluate((element) => element.isConnected)).toBe(true);
+      await trigger.click();
+      await caution.focus();
+      await page.keyboard.press('Enter');
+      await expect(caution.locator('..')).toHaveAttribute('open', '');
+      await dialog.getByRole('link', { name: '현재 분석 설명', exact: true }).click();
+      await expect(page.locator('.guide-title')).toContainText('MVRV');
+      expect(new URL(page.url()).searchParams.get('asset')).toBe('ETH');
+      expect(new URL(page.url()).searchParams.get('price_source')).toBe('upbit');
+      await test.info().attach(`lesson-native-targets-${viewport.width}.json`, {
+        body: Buffer.from(
+          JSON.stringify({
+            viewport,
+            closeBefore,
+            closeAfter,
+            dialogBefore,
+            dialogAfter,
+            cautionBefore,
+            range,
+            events: closeEvents,
+          }),
+        ),
+        contentType: 'application/json',
+      });
+    }
+  });
+});
+
 test('a guide activates a real drawing tool and Help follows the selected analysis', async ({
   page,
 }) => {
