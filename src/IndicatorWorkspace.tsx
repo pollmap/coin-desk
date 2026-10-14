@@ -58,7 +58,11 @@ import { PatternPicker } from './PatternControls';
 import { IndicatorNavigation } from './IndicatorNavigation';
 import { save, saved, money } from './lib';
 import { SpotQuote } from './SpotQuote';
-import { eligibleChartPrice, type LiveChartPrice } from '../shared/live-chart-price';
+import {
+  eligibleChartPrice,
+  supportsLiveChartPrice,
+  type LiveChartPrice,
+} from '../shared/live-chart-price';
 import { IndicatorShortcuts } from './IndicatorShortcuts';
 import { RelativeControls } from './RelativeControls';
 import { supertrend, supertrendSettings } from '../shared/supertrend';
@@ -162,10 +166,10 @@ export function IndicatorWorkspace() {
       (params.has('rainbow_unit') && params.get('rainbow_unit') !== unit));
   const log =
     isSupertrend || id === 'view:price' ? params.get('log') === '1' : params.get('log') !== '0';
+  const livePriceEnabled = supportsLiveChartPrice(id, basis);
   const quoteMarket = availableMarket(
     asset,
-    (id === 'view:price' ? basis : (params.get('market') ?? params.get('price_source'))) ===
-      'binance'
+    (livePriceEnabled ? basis : (params.get('market') ?? params.get('price_source'))) === 'binance'
       ? 'binance'
       : 'upbit',
   );
@@ -175,7 +179,7 @@ export function IndicatorWorkspace() {
       setLivePrice((previous) => {
         if (
           !quote ||
-          id !== 'view:price' ||
+          !livePriceEnabled ||
           quote.market !== basis ||
           !eligibleChartPrice(quote, asset, unit)
         )
@@ -197,7 +201,7 @@ export function IndicatorWorkspace() {
         return quote;
       });
     },
-    [asset, basis, id, unit],
+    [asset, basis, livePriceEnabled, unit],
   );
   const stSettings = supertrendSettings(params);
   const auxiliary = [...new Set((params.get('panels') ?? '').split(','))]
@@ -899,8 +903,8 @@ export function IndicatorWorkspace() {
             <SpotQuote
               asset={asset}
               market={quoteMarket}
-              syncPriceSource={id === 'view:price'}
-              onQuote={id === 'view:price' ? receiveQuote : undefined}
+              syncPriceSource={livePriceEnabled}
+              onQuote={livePriceEnabled ? receiveQuote : undefined}
             />
           )
         }
@@ -1243,9 +1247,7 @@ export function IndicatorWorkspace() {
                           ? '최근 확정 종가'
                           : undefined
                     }
-                    livePrice={
-                      id === 'view:price' && livePrice?.market === basis ? livePrice : null
-                    }
+                    livePrice={livePriceEnabled && livePrice?.market === basis ? livePrice : null}
                     onSignal={() => {}}
                     publicFocus
                     advancedTools={false}

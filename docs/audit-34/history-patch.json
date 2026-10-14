@@ -1,0 +1,870 @@
+{
+  "schemaVersion": 1,
+  "recordedAt": "2026-10-14T14:30:01.402604+00:00",
+  "commit": "bd66a7cf59a8eff201b7ad61c142235400611d4a",
+  "runtime": "vps-c0efd6732c5de070",
+  "canonicalDistSha256": "62efe3fcdcf0b00340c78c73b1aef69d71a873cab2cbeb18c35ce1a662878b0c",
+  "mainCiAttempt": 2,
+  "sameRuntimeAndBoth224CanonicalBytesPreflight": true,
+  "scope": {
+    "cataloguePriceCoverageAssets": 150,
+    "dailyAndReferenceSourceFirstAndUnitChecks": 384,
+    "fullCandleAndReferencePriceAssets": ["BTC", "DOGE"],
+    "fullPriceSources": 6,
+    "fullPricePointsPerOrigin": 21946,
+    "independentWeeklyMonthlyCombinationsPerOrigin": 8,
+    "other148LifetimePricesIndependentlyChecked": false,
+    "all150OnchainLifetimeIndependentlyChecked": false,
+    "providerEarliestObservationEvidenceDate": "2026-10-10",
+    "worldwideFirstTradeEstablished": false
+  },
+  "origins": {
+    "pages": {
+      "assets": 150,
+      "checkedAssets": 150,
+      "assetErrors": 0,
+      "dailyAndReferenceHistories": 384,
+      "startMatches": 384,
+      "unitMatches": 384,
+      "dailyAndReferenceInternalMissingSlots": 334,
+      "dailyAndReferencePriorCheckedMissingSlots": 334,
+      "dailyAndReferenceUnverifiedMissingSlots": 0,
+      "hourlyInternalMissingSlots": 3117,
+      "hourlyUnverifiedMissingSlots": 44,
+      "historiesRequiringReview": 80,
+      "requestsThisRun": 183,
+      "retriesThisRun": 0,
+      "checkedAt": "2026-10-14T14:15:24+00:00",
+      "priorProviderEvidenceCompletedAt": "2026-10-10T19:12:28.313966+00:00"
+    },
+    "vps": {
+      "assets": 150,
+      "checkedAssets": 150,
+      "assetErrors": 0,
+      "dailyAndReferenceHistories": 384,
+      "startMatches": 384,
+      "unitMatches": 384,
+      "dailyAndReferenceInternalMissingSlots": 334,
+      "dailyAndReferencePriorCheckedMissingSlots": 334,
+      "dailyAndReferenceUnverifiedMissingSlots": 0,
+      "hourlyInternalMissingSlots": 3117,
+      "hourlyUnverifiedMissingSlots": 44,
+      "historiesRequiringReview": 80,
+      "requestsThisRun": 183,
+      "retriesThisRun": 0,
+      "checkedAt": "2026-10-14T14:18:56+00:00",
+      "priorProviderEvidenceCompletedAt": "2026-10-10T19:12:28.313966+00:00"
+    }
+  },
+  "samePriceSourceSetsBetweenOrigins": true,
+  "priceSourceRecordCount": 625,
+  "sourceBoundaryCountUnitAndGapDifferencesBetweenOrigins": [],
+  "corePageAndUtcAggregationProof": {
+    "pages": {
+      "assets": ["BTC", "DOGE"],
+      "priceSources": 6,
+      "currentPricePoints": 21946,
+      "allFirstLastCountHistoryStartUnitMatchCurrentCoverage": true,
+      "utcWeeklyMonthlyComparisons": 8,
+      "allUtcAggregationsMatch": true,
+      "fullHistoryPageLimit": 1000,
+      "pageCountCap": 20,
+      "observedLastDateUTC": "2026-10-13T00:00:00+00:00"
+    },
+    "vps": {
+      "assets": ["BTC", "DOGE"],
+      "priceSources": 6,
+      "currentPricePoints": 21946,
+      "allFirstLastCountHistoryStartUnitMatchCurrentCoverage": true,
+      "utcWeeklyMonthlyComparisons": 8,
+      "allUtcAggregationsMatch": true,
+      "fullHistoryPageLimit": 1000,
+      "pageCountCap": 20,
+      "observedLastDateUTC": "2026-10-13T00:00:00+00:00"
+    }
+  },
+  "requests": {
+    "pages": 183,
+    "vps": 183,
+    "additionalGapDetailsOwnerReads": 34,
+    "totalOwnerReads": 400,
+    "providerReads": 2,
+    "mutatingRequests": 0,
+    "retries": 0,
+    "workers": 2,
+    "globalSpacingSeconds": 0.3,
+    "timeoutSeconds": 25,
+    "providerReadAuthorization": "Two separately authorized bounded GETs, not automatic retries.",
+    "allRequestsCompleted": true
+  },
+  "residual": {
+    "dailySources": 9,
+    "dailySlots": 334,
+    "dailyCurrentUnknown": 0,
+    "dailyScope": "Existing provider-response absence evidence; no current provider reread and no claim of permanent original non-provision.",
+    "dailyExactRanges": [
+      {
+        "asset": "ETH",
+        "source": "upbit:1d",
+        "unit": "KRW",
+        "missingSlots": 3,
+        "unverifiedSlots": 0,
+        "classification": "provider-no-observation-at-prior-check",
+        "exactTimesInferredByFrozenKnownSubsetCountEquality": true,
+        "priorCheckedAtUTC": ["2026-10-11T11:01:44+00:00"],
+        "ranges": [
+          {
+            "from": 1508544000,
+            "toExclusive": 1508803200,
+            "slots": 3,
+            "fromUTC": "2017-10-21T00:00:00+00:00",
+            "toExclusiveUTC": "2017-10-24T00:00:00+00:00"
+          }
+        ],
+        "counterChangedFromPreviousAudit": false
+      },
+      {
+        "asset": "XRP",
+        "source": "upbit:1d",
+        "unit": "KRW",
+        "missingSlots": 3,
+        "unverifiedSlots": 0,
+        "classification": "provider-no-observation-at-prior-check",
+        "exactTimesInferredByFrozenKnownSubsetCountEquality": true,
+        "priorCheckedAtUTC": ["2026-10-11T11:01:44+00:00"],
+        "ranges": [
+          {
+            "from": 1508544000,
+            "toExclusive": 1508803200,
+            "slots": 3,
+            "fromUTC": "2017-10-21T00:00:00+00:00",
+            "toExclusiveUTC": "2017-10-24T00:00:00+00:00"
+          }
+        ],
+        "counterChangedFromPreviousAudit": false
+      },
+      {
+        "asset": "ADA",
+        "source": "upbit:1d",
+        "unit": "KRW",
+        "missingSlots": 3,
+        "unverifiedSlots": 0,
+        "classification": "provider-no-observation-at-prior-check",
+        "exactTimesInferredByFrozenKnownSubsetCountEquality": true,
+        "priorCheckedAtUTC": ["2026-10-11T11:01:45+00:00"],
+        "ranges": [
+          {
+            "from": 1508544000,
+            "toExclusive": 1508803200,
+            "slots": 3,
+            "fromUTC": "2017-10-21T00:00:00+00:00",
+            "toExclusiveUTC": "2017-10-24T00:00:00+00:00"
+          }
+        ],
+        "counterChangedFromPreviousAudit": false
+      },
+      {
+        "asset": "XLM",
+        "source": "upbit:1d",
+        "unit": "KRW",
+        "missingSlots": 3,
+        "unverifiedSlots": 0,
+        "classification": "provider-no-observation-at-prior-check",
+        "exactTimesInferredByFrozenKnownSubsetCountEquality": true,
+        "priorCheckedAtUTC": ["2026-10-11T11:01:45+00:00"],
+        "ranges": [
+          {
+            "from": 1508544000,
+            "toExclusive": 1508803200,
+            "slots": 3,
+            "fromUTC": "2017-10-21T00:00:00+00:00",
+            "toExclusiveUTC": "2017-10-24T00:00:00+00:00"
+          }
+        ],
+        "counterChangedFromPreviousAudit": false
+      },
+      {
+        "asset": "BCH",
+        "source": "upbit:1d",
+        "unit": "KRW",
+        "missingSlots": 3,
+        "unverifiedSlots": 0,
+        "classification": "provider-no-observation-at-prior-check",
+        "exactTimesInferredByFrozenKnownSubsetCountEquality": true,
+        "priorCheckedAtUTC": ["2026-10-11T11:01:46+00:00"],
+        "ranges": [
+          {
+            "from": 1508544000,
+            "toExclusive": 1508803200,
+            "slots": 3,
+            "fromUTC": "2017-10-21T00:00:00+00:00",
+            "toExclusiveUTC": "2017-10-24T00:00:00+00:00"
+          }
+        ],
+        "counterChangedFromPreviousAudit": false
+      },
+      {
+        "asset": "ETC",
+        "source": "upbit:1d",
+        "unit": "KRW",
+        "missingSlots": 3,
+        "unverifiedSlots": 0,
+        "classification": "provider-no-observation-at-prior-check",
+        "exactTimesInferredByFrozenKnownSubsetCountEquality": true,
+        "priorCheckedAtUTC": ["2026-10-11T11:02:07+00:00"],
+        "ranges": [
+          {
+            "from": 1508544000,
+            "toExclusive": 1508803200,
+            "slots": 3,
+            "fromUTC": "2017-10-21T00:00:00+00:00",
+            "toExclusiveUTC": "2017-10-24T00:00:00+00:00"
+          }
+        ],
+        "counterChangedFromPreviousAudit": false
+      },
+      {
+        "asset": "NEO",
+        "source": "upbit:1d",
+        "unit": "KRW",
+        "missingSlots": 3,
+        "unverifiedSlots": 0,
+        "classification": "provider-no-observation-at-prior-check",
+        "exactTimesInferredByFrozenKnownSubsetCountEquality": true,
+        "priorCheckedAtUTC": ["2026-10-11T11:04:00+00:00"],
+        "ranges": [
+          {
+            "from": 1508544000,
+            "toExclusive": 1508803200,
+            "slots": 3,
+            "fromUTC": "2017-10-21T00:00:00+00:00",
+            "toExclusiveUTC": "2017-10-24T00:00:00+00:00"
+          }
+        ],
+        "counterChangedFromPreviousAudit": false
+      },
+      {
+        "asset": "QTUM",
+        "source": "upbit:1d",
+        "unit": "KRW",
+        "missingSlots": 3,
+        "unverifiedSlots": 0,
+        "classification": "provider-no-observation-at-prior-check",
+        "exactTimesInferredByFrozenKnownSubsetCountEquality": true,
+        "priorCheckedAtUTC": ["2026-10-11T11:04:46+00:00"],
+        "ranges": [
+          {
+            "from": 1508544000,
+            "toExclusive": 1508803200,
+            "slots": 3,
+            "fromUTC": "2017-10-21T00:00:00+00:00",
+            "toExclusiveUTC": "2017-10-24T00:00:00+00:00"
+          }
+        ],
+        "counterChangedFromPreviousAudit": false
+      },
+      {
+        "asset": "FTT",
+        "source": "binance:1d",
+        "unit": "USDT",
+        "missingSlots": 310,
+        "unverifiedSlots": 0,
+        "classification": "provider-no-observation-at-prior-check",
+        "exactTimesInferredByFrozenKnownSubsetCountEquality": true,
+        "priorCheckedAtUTC": ["2026-10-11T11:05:56+00:00", "2026-10-11T11:05:57+00:00"],
+        "ranges": [
+          {
+            "from": 1668556800,
+            "toExclusive": 1695340800,
+            "slots": 310,
+            "fromUTC": "2022-11-16T00:00:00+00:00",
+            "toExclusiveUTC": "2023-09-22T00:00:00+00:00"
+          }
+        ],
+        "counterChangedFromPreviousAudit": false
+      }
+    ],
+    "hourlySourceCount": 13,
+    "hourlyInternalMissingSlots": 3117,
+    "unknownRelativeToDeployedGapEvidence": 44,
+    "priorOfficialAbsentStillMissing": 41,
+    "priorOfficialProbeCheckedAt": "2026-10-14T06:56:48+00:00",
+    "newUnknown": 3,
+    "newUnknownItems": [
+      {
+        "asset": "WIF",
+        "source": "upbit:1h",
+        "time": 1791957600,
+        "utc": "2026-10-14T06:00:00+00:00"
+      },
+      {
+        "asset": "WIF",
+        "source": "upbit:1h",
+        "time": 1791972000,
+        "utc": "2026-10-14T10:00:00+00:00"
+      },
+      {
+        "asset": "WIF",
+        "source": "upbit:1h",
+        "time": 1791975600,
+        "utc": "2026-10-14T11:00:00+00:00"
+      }
+    ],
+    "hourlyExactUnknownRanges": [
+      {
+        "asset": "MNT",
+        "source": "upbit:1h",
+        "unknown": 2,
+        "ranges": [
+          {
+            "from": 1791910800,
+            "toExclusive": 1791914400,
+            "slots": 1,
+            "fromUTC": "2026-10-13T17:00:00+00:00",
+            "toExclusiveUTC": "2026-10-13T18:00:00+00:00"
+          },
+          {
+            "from": 1791928800,
+            "toExclusive": 1791932400,
+            "slots": 1,
+            "fromUTC": "2026-10-13T22:00:00+00:00",
+            "toExclusiveUTC": "2026-10-13T23:00:00+00:00"
+          }
+        ],
+        "priorOfficialAbsent": 2,
+        "newUnknown": 0
+      },
+      {
+        "asset": "PENDLE",
+        "source": "upbit:1h",
+        "unknown": 1,
+        "ranges": [
+          {
+            "from": 1791828000,
+            "toExclusive": 1791831600,
+            "slots": 1,
+            "fromUTC": "2026-10-12T18:00:00+00:00",
+            "toExclusiveUTC": "2026-10-12T19:00:00+00:00"
+          }
+        ],
+        "priorOfficialAbsent": 1,
+        "newUnknown": 0
+      },
+      {
+        "asset": "SPX",
+        "source": "upbit:1h",
+        "unknown": 2,
+        "ranges": [
+          {
+            "from": 1791712800,
+            "toExclusive": 1791716400,
+            "slots": 1,
+            "fromUTC": "2026-10-11T10:00:00+00:00",
+            "toExclusiveUTC": "2026-10-11T11:00:00+00:00"
+          },
+          {
+            "from": 1791914400,
+            "toExclusive": 1791918000,
+            "slots": 1,
+            "fromUTC": "2026-10-13T18:00:00+00:00",
+            "toExclusiveUTC": "2026-10-13T19:00:00+00:00"
+          }
+        ],
+        "priorOfficialAbsent": 2,
+        "newUnknown": 0
+      },
+      {
+        "asset": "COMP",
+        "source": "upbit:1h",
+        "unknown": 5,
+        "ranges": [
+          {
+            "from": 1791723600,
+            "toExclusive": 1791727200,
+            "slots": 1,
+            "fromUTC": "2026-10-11T13:00:00+00:00",
+            "toExclusiveUTC": "2026-10-11T14:00:00+00:00"
+          },
+          {
+            "from": 1791745200,
+            "toExclusive": 1791748800,
+            "slots": 1,
+            "fromUTC": "2026-10-11T19:00:00+00:00",
+            "toExclusiveUTC": "2026-10-11T20:00:00+00:00"
+          },
+          {
+            "from": 1791914400,
+            "toExclusive": 1791925200,
+            "slots": 3,
+            "fromUTC": "2026-10-13T18:00:00+00:00",
+            "toExclusiveUTC": "2026-10-13T21:00:00+00:00"
+          }
+        ],
+        "priorOfficialAbsent": 5,
+        "newUnknown": 0
+      },
+      {
+        "asset": "THETA",
+        "source": "upbit:1h",
+        "unknown": 1,
+        "ranges": [
+          {
+            "from": 1791943200,
+            "toExclusive": 1791946800,
+            "slots": 1,
+            "fromUTC": "2026-10-14T02:00:00+00:00",
+            "toExclusiveUTC": "2026-10-14T03:00:00+00:00"
+          }
+        ],
+        "priorOfficialAbsent": 1,
+        "newUnknown": 0
+      },
+      {
+        "asset": "WIF",
+        "source": "upbit:1h",
+        "unknown": 15,
+        "ranges": [
+          {
+            "from": 1791727200,
+            "toExclusive": 1791730800,
+            "slots": 1,
+            "fromUTC": "2026-10-11T14:00:00+00:00",
+            "toExclusiveUTC": "2026-10-11T15:00:00+00:00"
+          },
+          {
+            "from": 1791745200,
+            "toExclusive": 1791752400,
+            "slots": 2,
+            "fromUTC": "2026-10-11T19:00:00+00:00",
+            "toExclusiveUTC": "2026-10-11T21:00:00+00:00"
+          },
+          {
+            "from": 1791788400,
+            "toExclusive": 1791792000,
+            "slots": 1,
+            "fromUTC": "2026-10-12T07:00:00+00:00",
+            "toExclusiveUTC": "2026-10-12T08:00:00+00:00"
+          },
+          {
+            "from": 1791810000,
+            "toExclusive": 1791813600,
+            "slots": 1,
+            "fromUTC": "2026-10-12T13:00:00+00:00",
+            "toExclusiveUTC": "2026-10-12T14:00:00+00:00"
+          },
+          {
+            "from": 1791831600,
+            "toExclusive": 1791835200,
+            "slots": 1,
+            "fromUTC": "2026-10-12T19:00:00+00:00",
+            "toExclusiveUTC": "2026-10-12T20:00:00+00:00"
+          },
+          {
+            "from": 1791878400,
+            "toExclusive": 1791882000,
+            "slots": 1,
+            "fromUTC": "2026-10-13T08:00:00+00:00",
+            "toExclusiveUTC": "2026-10-13T09:00:00+00:00"
+          },
+          {
+            "from": 1791907200,
+            "toExclusive": 1791910800,
+            "slots": 1,
+            "fromUTC": "2026-10-13T16:00:00+00:00",
+            "toExclusiveUTC": "2026-10-13T17:00:00+00:00"
+          },
+          {
+            "from": 1791914400,
+            "toExclusive": 1791925200,
+            "slots": 3,
+            "fromUTC": "2026-10-13T18:00:00+00:00",
+            "toExclusiveUTC": "2026-10-13T21:00:00+00:00"
+          },
+          {
+            "from": 1791943200,
+            "toExclusive": 1791946800,
+            "slots": 1,
+            "fromUTC": "2026-10-14T02:00:00+00:00",
+            "toExclusiveUTC": "2026-10-14T03:00:00+00:00"
+          },
+          {
+            "from": 1791957600,
+            "toExclusive": 1791961200,
+            "slots": 1,
+            "fromUTC": "2026-10-14T06:00:00+00:00",
+            "toExclusiveUTC": "2026-10-14T07:00:00+00:00"
+          },
+          {
+            "from": 1791972000,
+            "toExclusive": 1791979200,
+            "slots": 2,
+            "fromUTC": "2026-10-14T10:00:00+00:00",
+            "toExclusiveUTC": "2026-10-14T12:00:00+00:00"
+          }
+        ],
+        "priorOfficialAbsent": 12,
+        "newUnknown": 3
+      },
+      {
+        "asset": "XCN",
+        "source": "upbit:1h",
+        "unknown": 1,
+        "ranges": [
+          {
+            "from": 1791824400,
+            "toExclusive": 1791828000,
+            "slots": 1,
+            "fromUTC": "2026-10-12T17:00:00+00:00",
+            "toExclusiveUTC": "2026-10-12T18:00:00+00:00"
+          }
+        ],
+        "priorOfficialAbsent": 1,
+        "newUnknown": 0
+      },
+      {
+        "asset": "SUPER",
+        "source": "upbit:1h",
+        "unknown": 2,
+        "ranges": [
+          {
+            "from": 1791745200,
+            "toExclusive": 1791748800,
+            "slots": 1,
+            "fromUTC": "2026-10-11T19:00:00+00:00",
+            "toExclusiveUTC": "2026-10-11T20:00:00+00:00"
+          },
+          {
+            "from": 1791824400,
+            "toExclusive": 1791828000,
+            "slots": 1,
+            "fromUTC": "2026-10-12T17:00:00+00:00",
+            "toExclusiveUTC": "2026-10-12T18:00:00+00:00"
+          }
+        ],
+        "priorOfficialAbsent": 2,
+        "newUnknown": 0
+      },
+      {
+        "asset": "GLM",
+        "source": "upbit:1h",
+        "unknown": 1,
+        "ranges": [
+          {
+            "from": 1791925200,
+            "toExclusive": 1791928800,
+            "slots": 1,
+            "fromUTC": "2026-10-13T21:00:00+00:00",
+            "toExclusiveUTC": "2026-10-13T22:00:00+00:00"
+          }
+        ],
+        "priorOfficialAbsent": 1,
+        "newUnknown": 0
+      },
+      {
+        "asset": "KMNO",
+        "source": "upbit:1h",
+        "unknown": 1,
+        "ranges": [
+          {
+            "from": 1791817200,
+            "toExclusive": 1791820800,
+            "slots": 1,
+            "fromUTC": "2026-10-12T15:00:00+00:00",
+            "toExclusiveUTC": "2026-10-12T16:00:00+00:00"
+          }
+        ],
+        "priorOfficialAbsent": 1,
+        "newUnknown": 0
+      },
+      {
+        "asset": "KAVA",
+        "source": "upbit:1h",
+        "unknown": 5,
+        "ranges": [
+          {
+            "from": 1791738000,
+            "toExclusive": 1791741600,
+            "slots": 1,
+            "fromUTC": "2026-10-11T17:00:00+00:00",
+            "toExclusiveUTC": "2026-10-11T18:00:00+00:00"
+          },
+          {
+            "from": 1791831600,
+            "toExclusive": 1791835200,
+            "slots": 1,
+            "fromUTC": "2026-10-12T19:00:00+00:00",
+            "toExclusiveUTC": "2026-10-12T20:00:00+00:00"
+          },
+          {
+            "from": 1791907200,
+            "toExclusive": 1791918000,
+            "slots": 3,
+            "fromUTC": "2026-10-13T16:00:00+00:00",
+            "toExclusiveUTC": "2026-10-13T19:00:00+00:00"
+          }
+        ],
+        "priorOfficialAbsent": 5,
+        "newUnknown": 0
+      },
+      {
+        "asset": "COW",
+        "source": "upbit:1h",
+        "unknown": 4,
+        "ranges": [
+          {
+            "from": 1791748800,
+            "toExclusive": 1791752400,
+            "slots": 1,
+            "fromUTC": "2026-10-11T20:00:00+00:00",
+            "toExclusiveUTC": "2026-10-11T21:00:00+00:00"
+          },
+          {
+            "from": 1791896400,
+            "toExclusive": 1791900000,
+            "slots": 1,
+            "fromUTC": "2026-10-13T13:00:00+00:00",
+            "toExclusiveUTC": "2026-10-13T14:00:00+00:00"
+          },
+          {
+            "from": 1791918000,
+            "toExclusive": 1791925200,
+            "slots": 2,
+            "fromUTC": "2026-10-13T19:00:00+00:00",
+            "toExclusiveUTC": "2026-10-13T21:00:00+00:00"
+          }
+        ],
+        "priorOfficialAbsent": 4,
+        "newUnknown": 0
+      },
+      {
+        "asset": "TFUEL",
+        "source": "upbit:1h",
+        "unknown": 4,
+        "ranges": [
+          {
+            "from": 1791720000,
+            "toExclusive": 1791727200,
+            "slots": 2,
+            "fromUTC": "2026-10-11T12:00:00+00:00",
+            "toExclusiveUTC": "2026-10-11T14:00:00+00:00"
+          },
+          {
+            "from": 1791914400,
+            "toExclusive": 1791921600,
+            "slots": 2,
+            "fromUTC": "2026-10-13T18:00:00+00:00",
+            "toExclusiveUTC": "2026-10-13T20:00:00+00:00"
+          }
+        ],
+        "priorOfficialAbsent": 4,
+        "newUnknown": 0
+      }
+    ],
+    "newProviderResultInterpretation": "첫 응답의 실제 관측 상단은09시여서 세 시각 전체를 둘러싸지 못해 미확인으로 유지했습니다. 별도 승인한 두 번째 응답은10월13일05시~10월14일13시UTC의 유효 봉을 반환해 세 시각의 양쪽을 포함했고,06·10·11시 봉은 모두 없었습니다. 이번 확인 시점의 원천 응답 부재3개이며, 처음부터 미제공·영구 부재·철회 원인은 확정하지 않습니다.",
+    "firstProviderCheck": {
+      "checkedAt": "2026-10-14T14:25:48.033071+00:00",
+      "requestUrl": "https://api.upbit.com/v1/candles/minutes/60?market=KRW-WIF&to=2026-10-14T12%3A00%3A00Z&count=24",
+      "method": "GET",
+      "requestToExclusiveUTC": "2026-10-14T12:00:00Z",
+      "count": 24,
+      "timeoutSeconds": 25,
+      "responseBodyCapBytes": 1048576,
+      "status": 200,
+      "bodyBytes": 8052,
+      "bodySha256": "1ece7916af68ace5a56fb1b0b3ae567148fd9282dd6d6606caa38604c2f8b729",
+      "returnedRows": 24,
+      "responseFirstUTC": "2026-10-13T03:00:00+00:00",
+      "responseLastUTC": "2026-10-14T09:00:00+00:00",
+      "actualResponseObservationsBracketAll3Targets": false,
+      "recoverableMissingSlots": 0,
+      "providerAbsentMissingSlots": 0,
+      "unverifiedMissingSlots": 3
+    },
+    "latestProviderCheck": {
+      "checkedAt": "2026-10-14T14:28:31.908503+00:00",
+      "requestUrl": "https://api.upbit.com/v1/candles/minutes/60?market=KRW-WIF&to=2026-10-14T14%3A00%3A00Z&count=24",
+      "method": "GET",
+      "requestToExclusiveUTC": "2026-10-14T14:00:00Z",
+      "count": 24,
+      "timeoutSeconds": 25,
+      "responseBodyCapBytes": 1048576,
+      "status": 200,
+      "bodyBytes": 8052,
+      "bodySha256": "11dd32bc4b42eaa372f935ddaaddafd770879c11c320fb4423d4e53e728d4c19",
+      "returnedRows": 24,
+      "responseFirstUTC": "2026-10-13T05:00:00+00:00",
+      "responseLastUTC": "2026-10-14T13:00:00+00:00",
+      "recoverableMissingSlots": 0,
+      "providerAbsentMissingSlots": 3,
+      "unverifiedMissingSlots": 0,
+      "targets": [
+        {
+          "time": 1791957600,
+          "dateUTC": "2026-10-14T06:00:00+00:00",
+          "providerObservationPresent": false,
+          "hasActualObservationsOnBothSides": true,
+          "classification": "provider-no-observation-at-check",
+          "observation": null
+        },
+        {
+          "time": 1791972000,
+          "dateUTC": "2026-10-14T10:00:00+00:00",
+          "providerObservationPresent": false,
+          "hasActualObservationsOnBothSides": true,
+          "classification": "provider-no-observation-at-check",
+          "observation": null
+        },
+        {
+          "time": 1791975600,
+          "dateUTC": "2026-10-14T11:00:00+00:00",
+          "providerObservationPresent": false,
+          "hasActualObservationsOnBothSides": true,
+          "classification": "provider-no-observation-at-check",
+          "observation": null
+        }
+      ]
+    },
+    "newHourlySlotsComparedWithPriorOfficialProbe": 3,
+    "newHourlySlotsAbsentAtLatestProviderCheck": 3,
+    "newHourlySlotsRemainingUnverified": 0,
+    "newUnknownMeaning": "Snapshot comparison against the previous official probe, before the separately authorized new provider checks; not3 remaining unverified slots.",
+    "unknownRelativeToDeployedGapEvidenceMeaning": "The deployed API gap-evidence catalogue is unchanged.41 slots have the existing audit-only official absence proof and3 have the latest proof; the API still reports44 relative to its older catalogue."
+  },
+  "counterChangesFromOriginal034Audit": [
+    {
+      "asset": "OP",
+      "source": "upbit:1h",
+      "oldMissing": 46,
+      "currentMissing": 45,
+      "oldUnknown": 0,
+      "currentUnknown": 0,
+      "oldFirst": 1784185200,
+      "currentFirst": 1784217600,
+      "oldLast": 1791954000,
+      "currentLast": 1791982800
+    },
+    {
+      "asset": "WIF",
+      "source": "upbit:1h",
+      "oldMissing": 290,
+      "currentMissing": 292,
+      "oldUnknown": 12,
+      "currentUnknown": 15,
+      "oldFirst": 1784185200,
+      "currentFirst": 1784214000,
+      "oldLast": 1791954000,
+      "currentLast": 1791982800
+    },
+    {
+      "asset": "XCN",
+      "source": "upbit:1h",
+      "oldMissing": 94,
+      "currentMissing": 93,
+      "oldUnknown": 1,
+      "currentUnknown": 1,
+      "oldFirst": 1784185200,
+      "currentFirst": 1784214000,
+      "oldLast": 1791954000,
+      "currentLast": 1791982800
+    },
+    {
+      "asset": "KAVA",
+      "source": "upbit:1h",
+      "oldMissing": 101,
+      "currentMissing": 99,
+      "oldUnknown": 5,
+      "currentUnknown": 5,
+      "oldFirst": 1784185200,
+      "currentFirst": 1784217600,
+      "oldLast": 1791954000,
+      "currentLast": 1791982800
+    }
+  ],
+  "originalInputsAndEvidence": [
+    {
+      "path": "scripts/audit_price_history.py",
+      "sha256": "45df3071072f5b928fa72bec2003f477cf9356abc7c1775948ed4acac2a3c104",
+      "unchanged": true
+    },
+    {
+      "path": "shared/asset-registry.json",
+      "sha256": "faabf9271ca2e2ae08c537c9b0df9e67448bdbd0b4cc4be60257d35e7024c2fb",
+      "unchanged": true
+    },
+    {
+      "path": "shared/price-history-origins.json",
+      "sha256": "e29aed53f875eed2c882af0e2ae3b3eea518c03f53375ade9a5319aa319ab906",
+      "unchanged": true
+    },
+    {
+      "path": "docs/audit-28/provider-origins.json",
+      "sha256": "8fdb0a4bc947230c8c8a23094858a5830f657c5a2cf219d0e33dcda2b2571974",
+      "unchanged": true
+    },
+    {
+      "path": "docs/audit-34/history.json",
+      "sha256": "e226045758333218a1e2a9ffea1634c3cd8f4242120a232d275e9de86e6e2d88",
+      "unchanged": true
+    },
+    {
+      "path": "docs/audit-34/history.md",
+      "sha256": "92610567758f95255e93ebc369439bc9bf19f5152fa49b5b9ed85c5485a6c53b",
+      "unchanged": true
+    },
+    {
+      "path": "docs/audit-34/hourly-gap-check.json",
+      "sha256": "944500ec5fbced94092d902ab902a4efc8f3418556f1aa151df9ff6ec557904d",
+      "unchanged": true
+    }
+  ],
+  "newCheckpointScope": true,
+  "original034CheckpointReused": false,
+  "processesAndReadsCompleted": true,
+  "localFreeBytes": 128278528,
+  "remote8GiBHistoryProtectionUnchanged": true,
+  "dataRecoveryOrCollectionPerformed": false,
+  "sourceGitPrivateOrOriginalDocsModified": false,
+  "evidence": [
+    {
+      "path": "work/ux-0341/history-post-vps-c0efd6732c5de070-pages-checkpoint.json",
+      "sha256": "06e0ad7af25bea26b88357488e064799249505399df807d71b9ab2a32c445c04",
+      "bytes": 612018
+    },
+    {
+      "path": "work/ux-0341/history-post-vps-c0efd6732c5de070-pages-report.json",
+      "sha256": "2472ba50688aa4e993a4fc9f675b5fa05fd0cc9acfe3ff2064adb9af83906b5c",
+      "bytes": 683468
+    },
+    {
+      "path": "work/ux-0341/history-post-vps-c0efd6732c5de070-vps-checkpoint.json",
+      "sha256": "2a635c283cf4223383250c5ee2fff2c66a6bbe818c0d8008f0f78cc23872eebe",
+      "bytes": 612032
+    },
+    {
+      "path": "work/ux-0341/history-post-vps-c0efd6732c5de070-vps-report.json",
+      "sha256": "00c247703688c1bb7af4dfe0109ae688f77f9136fa8d5b5c58cf7f901288c456",
+      "bytes": 683482
+    },
+    {
+      "path": "work/ux-0341/history-post-vps-c0efd6732c5de070-gap-details.json",
+      "sha256": "d5969e6ab216ae778fedf584d1a745c1db2495f1b71bd180823592898b659b21",
+      "bytes": 38373
+    },
+    {
+      "path": "work/ux-0341/history-post-execution-gate.json",
+      "sha256": "35b9b17ae85e444187d2f48b1c58d53f110135565595034b729a7f2598cac046",
+      "bytes": 875
+    },
+    {
+      "path": "work/ux-0341/hourly-gap-new3-provider-check.json",
+      "sha256": "0745b091c4578e75b5a606d39a0698cfda325d8e98b63607598febb948fe60a0",
+      "bytes": 6808
+    },
+    {
+      "path": "work/ux-0341/hourly-gap-new3-provider-check-second.json",
+      "sha256": "5b48e8082fab56732c57b2099fe06725b50d41be5f9c575725a2be7efaf1d576",
+      "bytes": 7041
+    }
+  ],
+  "newAuditDocumentationOnly": true
+}

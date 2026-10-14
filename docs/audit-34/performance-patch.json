@@ -1,0 +1,585 @@
+{
+  "schemaVersion": 1,
+  "release": "0.34.1",
+  "state": "complete",
+  "aggregation": {
+    "method": "저장된 최종 측정 결과의 읽기 전용 독립 대조",
+    "newNetworkRequests": 0,
+    "newBrowserRuns": 0,
+    "newLoadRuns": 0,
+    "newSshConnections": 0,
+    "productChanges": 0,
+    "automaticRetriesAdded": 0,
+    "criteriaRelaxations": 0,
+    "mismatchesFound": []
+  },
+  "deployment": {
+    "version": "0.34.1",
+    "commit": "bd66a7cf59a8eff201b7ad61c142235400611d4a",
+    "release": "vps-c0efd6732c5de070",
+    "canonicalDistSha256": "62efe3fcdcf0b00340c78c73b1aef69d71a873cab2cbeb18c35ce1a662878b0c"
+  },
+  "apiImageId": "sha256:2256d27bd4800c1b05b4828cdf6cf8a252b1554420ee32002cea42cdba03a3ff",
+  "identityProof": {
+    "browserPrePostChecks": 4,
+    "ssePrePostChecks": 2,
+    "allMatched": true,
+    "publicFilesPerOrigin": 224,
+    "sameCanonicalMainRuntime": true,
+    "identityReadsExcludedFromTimingSamples": true,
+    "identityReadsMayWarmCdnDnsTlsCaches": true
+  },
+  "statistics": {
+    "p95": "nearest rank: 정렬한 n개 중 ceil(0.95×n)번째",
+    "browserMedian": "nearest rank: ceil(0.5×n)번째",
+    "resourceMedian": "중앙 두 값의 평균을 사용하는 통상 중앙값",
+    "browserAndResourceRawSamplesRecalculated": true,
+    "sseLatencyRawArrayRetained": false,
+    "sseLatencyVerification": "고정 러너의 nearest-rank 코드와 보고된 개수·시장별 합계·시계 오차 합산을 대조했습니다. 지연 원시 배열은 저장되지 않아 독립 재계산하지 못했습니다.",
+    "sseHandshakeRawSamplesRecalculated": true
+  },
+  "browser": {
+    "startedAtUtc": "2026-10-14T14:37:24.796Z",
+    "completedAtUtc": "2026-10-14T14:44:28.074Z",
+    "environment": {
+      "platform": "Windows",
+      "logicalCpus": 16,
+      "cpuModel": "AMD Ryzen AI 7 350 w/ Radeon 860M",
+      "totalMemoryMiB": 32042,
+      "nodeVersion": "v24.18.0"
+    },
+    "conditions": {
+      "viewport": "1280x800",
+      "rounds": 20,
+      "downlinkMbps": 10,
+      "uplinkMbps": 5,
+      "addedLatencyMs": 0,
+      "cpuThrottlingRate": 1,
+      "browserCacheDisabled": true,
+      "serviceWorkers": "blocked",
+      "sharedBrowserProcessWithinOrigin": true,
+      "browserProcessSeparatedBetweenOrigins": true,
+      "cdnAndOsDnsTlsCachesNotPurged": true,
+      "identityReadsExcludedFromSamplesAndMayWarmCaches": true,
+      "screenshotOptional": false,
+      "observationWindowAfterFirstValueMs": 8000
+    },
+    "results": [
+      {
+        "origin": "pages",
+        "publicUrl": "https://coin-desk.pages.dev",
+        "browserVersion": "153.0.8010.12",
+        "rounds": 20,
+        "lcpMs": {
+          "count": 20,
+          "min": 340,
+          "median": 376,
+          "p95": 420,
+          "max": 676
+        },
+        "firstNumericPriceMs": {
+          "count": 20,
+          "min": 1030.6999999955297,
+          "median": 1120.2999999970198,
+          "p95": 1581.8999999985099,
+          "max": 1988
+        },
+        "clientReceiptToDomMs": {
+          "count": 351,
+          "min": 12.699999995529652,
+          "median": 27.69999999552965,
+          "p95": 35.5,
+          "max": 42.20000000298023
+        },
+        "hubReceiptToDomMs": {
+          "count": 351,
+          "min": 295.5,
+          "median": 725.5,
+          "p95": 1215.5,
+          "max": 1294.5
+        },
+        "conservativeHubToDomP95UpperMs": 1609.0,
+        "clock": {
+          "valid": true,
+          "samples": 8,
+          "offsetMs": 4586.5,
+          "errorBoundMs": 393.5
+        },
+        "lcpP95Goal2500MsPassed": true,
+        "hubToDomGoal3000MsPassed": true,
+        "errorCount": 0,
+        "visibleChangedTickCoverage": {
+          "candidateTicks": 353,
+          "completedDomSamples": 351,
+          "superseded": 0,
+          "timeouts": 0,
+          "scope": "Only changed, display-distinct, actually observed DOM updates; superseded intermediate ticks are not measured paint samples."
+        },
+        "representativeSampleCounters": {
+          "invalidPayloads": 0,
+          "superseded": 0,
+          "paintTimeouts": 0,
+          "negativeClockLatencySamples": 0,
+          "clockInconsistentLatencySamples": 0,
+          "changedVisiblePriceTicks": 353
+        },
+        "rawSamplesIndependentlyRecalculated": true
+      },
+      {
+        "origin": "vps",
+        "publicUrl": "https://coin-desk.62.171.141.206.sslip.io",
+        "browserVersion": "153.0.8010.12",
+        "rounds": 20,
+        "lcpMs": {
+          "count": 20,
+          "min": 2136,
+          "median": 2208,
+          "p95": 2432,
+          "max": 2736
+        },
+        "firstNumericPriceMs": {
+          "count": 20,
+          "min": 2517.5,
+          "median": 2602.6999999955297,
+          "p95": 2949.89999999851,
+          "max": 3208.10000000149
+        },
+        "clientReceiptToDomMs": {
+          "count": 240,
+          "min": 12.5,
+          "median": 27.600000001490116,
+          "p95": 33.5,
+          "max": 37.100000001490116
+        },
+        "hubReceiptToDomMs": {
+          "count": 240,
+          "min": 305.5,
+          "median": 757.5,
+          "p95": 1306.5,
+          "max": 2088.5
+        },
+        "conservativeHubToDomP95UpperMs": 1762.0,
+        "clock": {
+          "valid": true,
+          "samples": 8,
+          "offsetMs": 4561.5,
+          "errorBoundMs": 455.5
+        },
+        "lcpP95Goal2500MsPassed": true,
+        "hubToDomGoal3000MsPassed": true,
+        "errorCount": 0,
+        "visibleChangedTickCoverage": {
+          "candidateTicks": 241,
+          "completedDomSamples": 240,
+          "superseded": 0,
+          "timeouts": 0,
+          "scope": "Only changed, display-distinct, actually observed DOM updates; superseded intermediate ticks are not measured paint samples."
+        },
+        "representativeSampleCounters": {
+          "invalidPayloads": 0,
+          "superseded": 0,
+          "paintTimeouts": 0,
+          "negativeClockLatencySamples": 0,
+          "clockInconsistentLatencySamples": 0,
+          "changedVisiblePriceTicks": 241
+        },
+        "rawSamplesIndependentlyRecalculated": true
+      }
+    ],
+    "previousVersionComparison": [
+      {
+        "origin": "pages",
+        "previousVersion": "0.33.0",
+        "currentVersion": "0.34.1",
+        "previousLcpMs": {
+          "count": 20,
+          "min": 328,
+          "median": 356,
+          "p95": 456,
+          "max": 516
+        },
+        "currentLcpMs": {
+          "count": 20,
+          "min": 340,
+          "median": 376,
+          "p95": 420,
+          "max": 676
+        },
+        "lcpP95ChangeMs": -36,
+        "previousFirstNumericPriceP95Ms": 1616.5,
+        "currentFirstNumericPriceP95Ms": 1581.8999999985099,
+        "sameDeclaredBrowserAndThrottleConditions": true,
+        "sameTimeOrNetworkState": false,
+        "causalAttributionEstablished": false
+      },
+      {
+        "origin": "vps",
+        "previousVersion": "0.33.0",
+        "currentVersion": "0.34.1",
+        "previousLcpMs": {
+          "count": 20,
+          "min": 2124,
+          "median": 2204,
+          "p95": 2928,
+          "max": 3196
+        },
+        "currentLcpMs": {
+          "count": 20,
+          "min": 2136,
+          "median": 2208,
+          "p95": 2432,
+          "max": 2736
+        },
+        "lcpP95ChangeMs": -496,
+        "previousFirstNumericPriceP95Ms": 3379.6,
+        "currentFirstNumericPriceP95Ms": 2949.89999999851,
+        "sameDeclaredBrowserAndThrottleConditions": true,
+        "sameTimeOrNetworkState": false,
+        "causalAttributionEstablished": false
+      }
+    ],
+    "freshnessNotProvenByFirstNumericPrice": true,
+    "physicalCompositorPaintNotMeasured": true,
+    "exchangeToScreenLatencyNotMeasured": true,
+    "observedChronologyLimitSeconds": 300
+  },
+  "sse": {
+    "state": "complete",
+    "steadyDurationMs": 60001,
+    "maximumSimultaneouslyOpenClients": 100,
+    "mainSessions": 100,
+    "normalMainSessions": 100,
+    "changedSubscriptionReconnects": 10,
+    "normalReconnectSessions": 10,
+    "errorCount": 0,
+    "disconnectedFrames": 0,
+    "invalidClockLatencySamples": 0,
+    "automaticRetries": 0,
+    "assetsSubscribed": 150,
+    "supportedPairsSubscribed": 241,
+    "perClientAssetLimit": 50,
+    "mainHandshakeMs": {
+      "count": 100,
+      "min": 305,
+      "median": 863,
+      "p95": 922,
+      "max": 1008
+    },
+    "reconnectHandshakeMs": {
+      "count": 10,
+      "min": 836,
+      "median": 847,
+      "p95": 1400,
+      "max": 1400
+    },
+    "wholeCohortHubToClientMs": {
+      "count": 50304,
+      "min": 279.5,
+      "median": 686.5,
+      "p95": 1248.5,
+      "max": 2702.5
+    },
+    "steadyHundredHubToClientMs": {
+      "count": 46110,
+      "min": 283.5,
+      "median": 689.5,
+      "p95": 1252.5,
+      "max": 2702.5
+    },
+    "steadyByMarketMs": {
+      "upbit": {
+        "count": 8375,
+        "min": 286.5,
+        "median": 817.5,
+        "p95": 1251.5,
+        "max": 2010.5
+      },
+      "binance": {
+        "count": 37735,
+        "min": 283.5,
+        "median": 665.5,
+        "p95": 1253.5,
+        "max": 2702.5
+      }
+    },
+    "clock": {
+      "valid": true,
+      "samples": 8,
+      "offsetMs": 4568.5,
+      "errorBoundMs": 370.5
+    },
+    "steadyConservativeP95UpperMs": 1623,
+    "latencyGoal3000MsPassed": true,
+    "actualFreshPairsObserved": 231,
+    "actualFreshByMarket": {
+      "upbit": 94,
+      "binance": 137
+    },
+    "freshNotObservedPairs": [
+      "binance:YFI",
+      "upbit:COMP",
+      "upbit:COW",
+      "upbit:GRT",
+      "upbit:ICP",
+      "upbit:JST",
+      "upbit:MORPHO",
+      "upbit:SPX",
+      "upbit:WIF",
+      "upbit:XAUT"
+    ],
+    "actualNewTickPairsObserved": 202,
+    "uniqueNewTradesReported": 3086,
+    "uniqueTradeCounterCapped": false,
+    "uniqueTradesNotIndependentlyReconstructed": true,
+    "sameTradeMayProduceMultipleClientLatencySamples": true,
+    "freshMissingDoesNotByItselfEstablishCollectionFailure": true,
+    "sourceExchangeConnectionsCreatedByProbe": false,
+    "physicalPaintOrExchangeToScreenNotMeasured": true
+  },
+  "resources": {
+    "state": "complete",
+    "plannedDurationSeconds": 120,
+    "elapsedSeconds": 122.313,
+    "sampleCount": 9,
+    "sampleIntervalSeconds": 15,
+    "sshConnections": 1,
+    "writesToServices": 0,
+    "automaticRetryPerformed": false,
+    "exactApiImageVerified": true,
+    "containerIdsUnchanged": true,
+    "processIdentityGuardsEnforcedByMeasuredReader": [
+      "실행 파일 이름",
+      "/proc 시작 시각 불변",
+      "대상 컨테이너 cgroup",
+      "Node 0개면 실패"
+    ],
+    "wholeWindow": {
+      "api": {
+        "samples": 9,
+        "nodeProcessCountStable": true,
+        "positiveNodeProcessObserved": true,
+        "cpuPercent": {
+          "first": 52.04,
+          "last": 0.93,
+          "min": 0.76,
+          "max": 52.04,
+          "median": 2.43,
+          "p95": 52.04
+        },
+        "containerMemoryBytes": {
+          "first": 141348045,
+          "last": 140928614,
+          "min": 140928614,
+          "max": 141348045,
+          "median": 141348045,
+          "p95": 141348045
+        },
+        "nodeRssBytes": {
+          "first": 154918912,
+          "last": 154439680,
+          "min": 154365952,
+          "max": 154918912,
+          "median": 154427392,
+          "p95": 154918912
+        }
+      },
+      "quote-hub": {
+        "samples": 9,
+        "nodeProcessCountStable": true,
+        "positiveNodeProcessObserved": true,
+        "cpuPercent": {
+          "first": 25.47,
+          "last": 10.6,
+          "min": 8.27,
+          "max": 25.47,
+          "median": 12.67,
+          "p95": 25.47
+        },
+        "containerMemoryBytes": {
+          "first": 48549069,
+          "last": 42519757,
+          "min": 42519757,
+          "max": 48549069,
+          "median": 42677043,
+          "p95": 48549069
+        },
+        "nodeRssBytes": {
+          "first": 79474688,
+          "last": 80154624,
+          "min": 79474688,
+          "max": 80154624,
+          "median": 80150528,
+          "p95": 80154624
+        }
+      }
+    },
+    "overlapWithSteadyHundred": {
+      "clientClockStartUtc": "2026-10-14T14:45:48.480000+00:00",
+      "clientClockEndUtc": "2026-10-14T14:46:48.481000+00:00",
+      "vpsMinusClientOffsetMs": 4568.5,
+      "offsetErrorBoundMs": 370.5,
+      "formula": "보수적 서버 구간: [clientStart + offset + error, clientEnd + offset − error]",
+      "guaranteedServerClockStartUtc": "2026-10-14T14:45:53.419000+00:00",
+      "guaranteedServerClockEndUtc": "2026-10-14T14:46:52.679000+00:00",
+      "sampleIndices": [1, 2, 3, 4],
+      "sampleCount": 4,
+      "sampleServerTimesUtc": [
+        "2026-10-14T14:45:55.250264+00:00",
+        "2026-10-14T14:46:10.269853+00:00",
+        "2026-10-14T14:46:25.216478+00:00",
+        "2026-10-14T14:46:40.208732+00:00"
+      ],
+      "services": {
+        "api": {
+          "samples": 4,
+          "nodeProcessCountStable": true,
+          "positiveNodeProcessObserved": true,
+          "cpuPercent": {
+            "first": 2.59,
+            "last": 2.95,
+            "min": 2.43,
+            "max": 3.09,
+            "median": 2.77,
+            "p95": 3.09
+          },
+          "containerMemoryBytes": {
+            "first": 141348045,
+            "last": 141348045,
+            "min": 141348045,
+            "max": 141348045,
+            "median": 141348045.0,
+            "p95": 141348045
+          },
+          "nodeRssBytes": {
+            "first": 154365952,
+            "last": 154370048,
+            "min": 154365952,
+            "max": 154370048,
+            "median": 154365952.0,
+            "p95": 154370048
+          }
+        },
+        "quote-hub": {
+          "samples": 4,
+          "nodeProcessCountStable": true,
+          "positiveNodeProcessObserved": true,
+          "cpuPercent": {
+            "first": 17.43,
+            "last": 9.29,
+            "min": 9.29,
+            "max": 17.43,
+            "median": 13.92,
+            "p95": 17.43
+          },
+          "containerMemoryBytes": {
+            "first": 42834330,
+            "last": 42928701,
+            "min": 42614129,
+            "max": 42928701,
+            "median": 42724229.5,
+            "p95": 42928701
+          },
+          "nodeRssBytes": {
+            "first": 80044032,
+            "last": 80150528,
+            "min": 80044032,
+            "max": 80150528,
+            "median": 80097280.0,
+            "p95": 80150528
+          }
+        }
+      }
+    },
+    "entire120SecondsNotCertifiedAs100ClientLoad": true,
+    "dockerContainerMemoryIsNotNodeRss": true,
+    "containerCpuIsNotWholeHostCpu": true,
+    "longTermLeakNotCertified": true,
+    "priorResourceWindowNotIdentical": {
+      "priorSamples": 13,
+      "priorElapsedSeconds": 182.258,
+      "currentSamples": 9,
+      "currentElapsedSeconds": 122.313,
+      "crossVersionResourceCausalityNotEstablished": true
+    }
+  },
+  "earlierInvalidMeasurement": {
+    "preserved": true,
+    "state": "invalid",
+    "sampleCount": 0,
+    "error": "Performance identity guard failed: fetch failed",
+    "diagnosis": "별도 공개 GET 진단에서 Pages의 /index.html이 /로 HTTP 308을 반환했습니다. 임의 redirect를 거부하는 바이트 검사가 alias에서 중단됐으며, 제품 성능 실패로 해석하지 않습니다.",
+    "correctiveChange": "알려진 index.html만 정규 첫 주소 /로 직접 요청. JS/CSS 경로·redirect:error·크기 상한·해시·runtime 검증과 측정 조건은 유지.",
+    "helperOneLineOnly": true,
+    "originalHelperSha256": "a1e3846f72bded88b02318049f24a66dd2aeb4b3f5ecf110c5012f8e5d592ff1",
+    "correctedHelperSha256": "0c4f0c09bed03e37e2a8981d1aba6dc6fd778d443c95c32d7edb07ec15adb211",
+    "originalReportSha256": "77e3420fae7f369e71ea3995acb15a106b85349b25fa5f8e7bdf50f6cd681e1e",
+    "invalidReportNotOverwritten": true
+  },
+  "interpretation": [
+    "두 공개 주소의 LCP p95가 2.5초 목표를 통과했지만 VPS 최대 표본은 2.736초입니다.",
+    "0.33과 주요 브라우저·네트워크 제한 설정은 같고 시간대·네트워크 상태·캐시는 통제되지 않았습니다. 수치 차이를 코드 변경의 인과 효과로 확정하지 않습니다.",
+    "허브→DOM과 허브→클라이언트 지연은 물리적 화면 그리기 또는 거래소→화면 지연이 아닙니다.",
+    "100명 steady 부하와 자원 관측이 확실히 겹치는 것은 4개 표본이며 전체 120초의 부하 검증이 아닙니다.",
+    "시험 도구는 직접 공급자 수집·DB 쓰기·서버 변경을 하지 않았습니다. 기존 독립 수집기의 자연 갱신은 별도 운영 흐름입니다."
+  ],
+  "remaining": [
+    "60초 SSE에서 지원 조합 241개 중 신선한 체결을 관측한 것은 231개입니다. 나머지 10개를 정상 또는 장애로 일괄 판정하지 않습니다.",
+    "장기 자원 증가·모든 과거 이력 완전성·실제 Safari/VoiceOver·사람 대상 사용성은 이번 성능 시험 범위 밖입니다.",
+    "48시간 대기는 완료 조건에 추가하지 않습니다."
+  ],
+  "evidence": [
+    {
+      "name": "performance-browser-root-verified-0341.json",
+      "sha256": "da5b75c4641d8c6caaaaaac9c1fd4253946469926c6091d8cf32cf096f98071b",
+      "publicRawContentOmitted": true
+    },
+    {
+      "name": "performance-sse-final-0341.json",
+      "sha256": "cce283470b3263f8c874d60268e6a2081e422833f0526a47a5e3e560c3333568",
+      "publicRawContentOmitted": true
+    },
+    {
+      "name": "performance-resources-final-0341.json",
+      "sha256": "8dff24dc305c382a608674ffbc103a1929ae93f1ada5fd34f765f86a9fe4fbf8",
+      "publicRawContentOmitted": true
+    },
+    {
+      "name": "performance-browser-final-0341.json",
+      "sha256": "77e3420fae7f369e71ea3995acb15a106b85349b25fa5f8e7bdf50f6cd681e1e",
+      "publicRawContentOmitted": true
+    },
+    {
+      "name": "performance.json",
+      "sha256": "51ce9abd70ae9bb92640974f9609ec64bce40916fc669fe917d12c8bb795692c",
+      "publicRawContentOmitted": true
+    },
+    {
+      "name": "performance.md",
+      "sha256": "8a1eda0dceb00a8cbe5e5772ea14d369d2eb97b9d1ca97d2ee8acc32460abe81",
+      "publicRawContentOmitted": true
+    },
+    {
+      "name": "resources-remote.py",
+      "sha256": "4ee7a92480048c19758d4074edc229172fccbf0b38b308e5b18a21dceb8e2b27",
+      "publicRawContentOmitted": true
+    },
+    {
+      "name": "performance-live.mjs",
+      "sha256": "0c4f0c09bed03e37e2a8981d1aba6dc6fd778d443c95c32d7edb07ec15adb211",
+      "publicRawContentOmitted": true
+    },
+    {
+      "name": "performance-live-before-root-url-fix.mjs",
+      "sha256": "a1e3846f72bded88b02318049f24a66dd2aeb4b3f5ecf110c5012f8e5d592ff1",
+      "publicRawContentOmitted": true
+    }
+  ],
+  "privacy": {
+    "rawHeadersIncluded": false,
+    "absoluteInternalPathsIncluded": false,
+    "userProfilesIncluded": false,
+    "privateNotesIncluded": false,
+    "pidsIncluded": false,
+    "personalOriginalsIncluded": false
+  }
+}

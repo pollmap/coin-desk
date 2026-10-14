@@ -1,0 +1,162 @@
+{
+  "schemaVersion": 1,
+  "checkedAt": "2026-10-14T13:00:46.966Z",
+  "repository": "pollmap/coin-desk",
+  "pullRequest": 71,
+  "pullRequestUrl": "https://github.com/pollmap/coin-desk/pull/71",
+  "headRevision": "4b15ef2cb228edbe69abdfeb6add7a08571781ad",
+  "runId": 38565801744,
+  "runUrl": "https://github.com/pollmap/coin-desk/actions/runs/38565801744",
+  "runNumber": 241,
+  "runAttempt": 1,
+  "status": "completed",
+  "conclusion": "success",
+  "passed": true,
+  "allJobsCompleted": true,
+  "allJobHeadRevisionsMatch": true,
+  "jobCount": 5,
+  "jobs": [
+    {
+      "id": 115858029118,
+      "head_sha": "4b15ef2cb228edbe69abdfeb6add7a08571781ad",
+      "name": "checks",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/pollmap/coin-desk/actions/runs/38565801744/job/115858029118"
+    },
+    {
+      "id": 115858029283,
+      "head_sha": "4b15ef2cb228edbe69abdfeb6add7a08571781ad",
+      "name": "container",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/pollmap/coin-desk/actions/runs/38565801744/job/115858029283"
+    },
+    {
+      "id": 115858029415,
+      "head_sha": "4b15ef2cb228edbe69abdfeb6add7a08571781ad",
+      "name": "browser (webkit)",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/pollmap/coin-desk/actions/runs/38565801744/job/115858029415"
+    },
+    {
+      "id": 115858029452,
+      "head_sha": "4b15ef2cb228edbe69abdfeb6add7a08571781ad",
+      "name": "browser (chromium)",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/pollmap/coin-desk/actions/runs/38565801744/job/115858029452"
+    },
+    {
+      "id": 115865269493,
+      "head_sha": "4b15ef2cb228edbe69abdfeb6add7a08571781ad",
+      "name": "verify",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/pollmap/coin-desk/actions/runs/38565801744/job/115865269493"
+    }
+  ],
+  "checks": {
+    "typescript": true,
+    "unitFilesPassed": 78,
+    "unitPassed": 825,
+    "pythonRecoveryPassed": 2,
+    "nodeServerPassed": 31,
+    "nodeServerFailed": 0,
+    "pythonServerPassed": 32,
+    "dependencyAuditKnownFindings": 0,
+    "summaryEvidence": [
+      "found 0 vulnerabilities",
+      "found 0 vulnerabilities",
+      "Test Files  78 passed (78)",
+      "Tests  825 passed (825)",
+      "Ran 2 tests in 0.101s",
+      "OK",
+      "ℹ tests 31",
+      "ℹ pass 31",
+      "ℹ fail 0",
+      "ℹ cancelled 0",
+      "ℹ skipped 0",
+      "ℹ todo 0",
+      "Ran 32 tests in 0.702s",
+      "OK"
+    ],
+    "officialLogTruncated": false
+  },
+  "browsers": [
+    {
+      "engine": "chromium",
+      "jobId": 115858029452,
+      "passed": 214,
+      "failed": 0,
+      "excluded": 1,
+      "flaky": 0,
+      "summaryEvidence": ["1 skipped", "214 passed (9.3m)"],
+      "excludedTests": [
+        "e2e/private-archive.spec.ts:4:1 › local archive folder imports full metadata and image references without publishing them"
+      ],
+      "caseRetryPolicy": 0,
+      "retryMarkers": 0,
+      "regressionEvidence": [
+        "✓    8 [chromium] › e2e/analysis-library.spec.ts:139:1 › analysis recipes replace the main chart with calculated views (4.4s)",
+        "✓  115 [chromium] › e2e/price-chart-034.spec.ts:189:1 › new price, Supertrend, ribbon and Bollinger views display the complete actual fixture history (5.9s)",
+        "✓  123 [chromium] › e2e/price-chart-034.spec.ts:339:1 › DOGE axis zero stays compact without rounding actual observations through refresh (2.1s)",
+        "✓  125 [chromium] › e2e/price-chart-034.spec.ts:401:1 › ribbon and Bollinger keep every latest overlay value below mobile charts without hiding either axis (18.3s)",
+        "✓  154 [chromium] › e2e/price-chart-034.spec.ts:1121:3 › actual touch-capable browser input › native long press, horizontal pan, pinch and cancellation keep inspected values and window state (5.7s)",
+        "✓  162 [chromium] › e2e/ribbon-review.spec.ts:4:1 › ribbon settings preserve the selected date window and survive reload (6.4s)"
+      ],
+      "logEvidence": {
+        "source": "Official GitHub fetch_workflow_job_logs, full decoded content",
+        "completeDecodedContent": true,
+        "characters": 598060,
+        "sourceControlCliUsed": false
+      }
+    },
+    {
+      "engine": "webkit",
+      "jobId": 115858029415,
+      "passed": 213,
+      "failed": 0,
+      "excluded": 2,
+      "flaky": 0,
+      "summaryEvidence": ["2 skipped", "213 passed (14.4m)"],
+      "excludedTests": [
+        "e2e/private-archive.spec.ts:4:1 › local archive folder imports full metadata and image references without publishing them",
+        "e2e/price-chart-034.spec.ts:1121:3 › actual touch-capable browser input › native long press, horizontal pan, pinch and cancellation keep inspected values and window state"
+      ],
+      "caseRetryPolicy": 0,
+      "retryMarkers": 0,
+      "regressionEvidence": [
+        "✓    8 [webkit] › e2e/analysis-library.spec.ts:139:1 › analysis recipes replace the main chart with calculated views (8.6s)",
+        "✓  116 [webkit] › e2e/price-chart-034.spec.ts:189:1 › new price, Supertrend, ribbon and Bollinger views display the complete actual fixture history (9.1s)",
+        "✓  123 [webkit] › e2e/price-chart-034.spec.ts:339:1 › DOGE axis zero stays compact without rounding actual observations through refresh (3.5s)",
+        "✓  125 [webkit] › e2e/price-chart-034.spec.ts:401:1 › ribbon and Bollinger keep every latest overlay value below mobile charts without hiding either axis (36.8s)",
+        "✓  159 [webkit] › e2e/ribbon-review.spec.ts:4:1 › ribbon settings preserve the selected date window and survive reload (13.3s)"
+      ],
+      "logEvidence": {
+        "source": "Official GitHub fetch_workflow_job_logs, full decoded content",
+        "completeDecodedContent": true,
+        "characters": 714532,
+        "sourceControlCliUsed": false
+      }
+    }
+  ],
+  "browserTotals": {
+    "cases": 430,
+    "passed": 427,
+    "failed": 0,
+    "excluded": 3,
+    "flaky": 0,
+    "retryMarkers": 0
+  },
+  "providerPolicy": "Code Review returned PR headRevision retained; jobId alone for log reads; official GitHub full browser logs; no source-control CLI fallback.",
+  "priorFailedRun": {
+    "runId": 38563111043,
+    "proof": "ci-pr-38563111043.json",
+    "preserved": true,
+    "notCountedAsSuccess": true
+  },
+  "scope": "Latest PR CI gate only; not main CI, deployment or operating-data verification.",
+  "rawLogsOrInternalPathsSaved": false
+}

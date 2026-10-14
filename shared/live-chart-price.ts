@@ -8,6 +8,14 @@ export interface LiveChartPrice {
   stale: boolean;
 }
 
+/** Only these views have an unconverted spot-price axis for a live reference. */
+export function supportsLiveChartPrice(metricId: string, basis: string): boolean {
+  return (
+    ['view:price', 'view:supertrend', 'view:ribbon', 'view:bb'].includes(metricId) &&
+    (basis === 'upbit' || basis === 'binance')
+  );
+}
+
 /** A separate reference line, never a fabricated OHLC or historical observation. */
 export function eligibleChartPrice(
   quote: LiveChartPrice | null | undefined,

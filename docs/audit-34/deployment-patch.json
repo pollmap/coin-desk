@@ -1,0 +1,226 @@
+{
+  "schemaVersion": 1,
+  "version": "0.34.1",
+  "recordedAt": "2026-10-14T14:20:30.213783+00:00",
+  "commit": "bd66a7cf59a8eff201b7ad61c142235400611d4a",
+  "runtimeRelease": "vps-c0efd6732c5de070",
+  "previousRuntimeRelease": "vps-a6749ebb36fbed9d",
+  "pagesImmutableUrl": "https://21b289b8.coin-desk.pages.dev",
+  "ci": {
+    "runId": 38568067050,
+    "runUrl": "https://github.com/pollmap/coin-desk/actions/runs/38568067050",
+    "runAttempt": 2,
+    "allFiveJobsPassed": true,
+    "allJobHeadsMatched": true,
+    "unitPassed": 825,
+    "nodeServerPassed": 31,
+    "pythonServerPassed": 32,
+    "recoveryPassed": 2,
+    "browserPassed": 427,
+    "browserExcluded": 3,
+    "browserFailed": 0,
+    "failedJobReruns": 1,
+    "browserCaseRetries": 0,
+    "successfulJobsCarriedForward": ["checks", "container", "browser (chromium)"],
+    "originalAttemptFailed": true,
+    "originalBnbFailureCause": "Unconfirmed; original trace had a started request with no completed response by its unchanged deadline.",
+    "separateUnchangedSourceDiagnosis": {
+      "webkit1280OriginalCasePassed": 3,
+      "durationSeconds": 29.8,
+      "browserCaseRetries": 0,
+      "doesNotEstablishOriginalFailureCause": true
+    }
+  },
+  "image": {
+    "ciImageId": "sha256:f54b93c109ebceb012a9055ce5d39eef3b4a0b9b5676abb864614c1c7cbdb5ee",
+    "ciImageTag": "coin-desk:git-bd66a7cf59a8eff201b7ad61c142235400611d4a",
+    "actualLoadedImageId": "sha256:2256d27bd4800c1b05b4828cdf6cf8a252b1554420ee32002cea42cdba03a3ff",
+    "actualLoadedImageIdScope": "A separate read-only check matched the running API Image to the prepared loadedId and one of the exact verified config/OCI identities.",
+    "canonicalDistSha256": "62efe3fcdcf0b00340c78c73b1aef69d71a873cab2cbeb18c35ce1a662878b0c",
+    "ciConfigId": "sha256:f54b93c109ebceb012a9055ce5d39eef3b4a0b9b5676abb864614c1c7cbdb5ee",
+    "ociManifestId": "sha256:2256d27bd4800c1b05b4828cdf6cf8a252b1554420ee32002cea42cdba03a3ff",
+    "actualMatchesVerifiedLoadedId": true,
+    "layerChainVerified": true,
+    "platformVerified": true
+  },
+  "activation": {
+    "startedAtUtc": "2026-10-14T13:59:48+00:00",
+    "completedAtUtc": "2026-10-14T14:00:42+00:00",
+    "promoted": true,
+    "changedServices": ["api"],
+    "schemaChanged": false,
+    "migrationApplied": false,
+    "protectedServices": [
+      "quotes",
+      "background",
+      "recent",
+      "analysis",
+      "backup",
+      "quote-hub",
+      "migrate"
+    ],
+    "protectedContainerCountVerified": 7,
+    "collectorsOrQuoteHubReplaced": false,
+    "directCollectionApiCalled": false,
+    "providerFreshnessOverridden": false
+  },
+  "backupAndRestore": {
+    "backupVerified": true,
+    "independentMemoryRestoreVerified": true,
+    "independentCloneVerified": true,
+    "userTableCount": 21,
+    "schemaAndAllTableFingerprintsCompared": true,
+    "completeContentSha256": "571cb5c27633a61213df40c4ed106bede15bff739cf9026b4f1c5c64f4dfe569",
+    "rawSha256": "8df13c0a208fccd936a8f744343e9218eeebdf60283aa6aa8a65ec883fc2eb57",
+    "cloneSha256": "1858b8b10e590d44aad06d5fad3cd10bf084513c2b7e4e0b7657e514b21a97b9",
+    "gzipSha256": "8a5c7759d2d9ddc1bef4b3c27c4047fb18a5de569dc47691b989df14419ab88b",
+    "rawBytes": 179302400,
+    "gzipBytes": 55493068,
+    "liveDatabaseOverwritten": false,
+    "offsite": false,
+    "completedAtUtc": "2026-10-14T13:52:57+00:00"
+  },
+  "cleanup": {
+    "completedAtUtc": "2026-10-14T14:01:31+00:00",
+    "ownedRamMountPresentAfterCleanup": false,
+    "openFilesInOwnedRamStage": 0,
+    "noContainerMountReferencesVerified": true,
+    "durableBackupRetained": true,
+    "productionDataDeleted": false
+  },
+  "capacity": {
+    "activationCleanupMeasuredAtUtc": "2026-10-14T14:01:35+00:00",
+    "freeDiskBytesAfterCleanup": 9000538112,
+    "memoryAvailableBytesAfterCleanup": 4843950080,
+    "latestReadMeasuredAtUtc": "2026-10-14T14:14:39+00:00",
+    "latestFreeDiskBytes": 9003782144,
+    "historyGuardBytes": 8589934592,
+    "historyGuardMet": true
+  },
+  "publicVerification": {
+    "checkedAt": "2026-10-14T14:06:56.402758+00:00",
+    "bothOriginsCanonicalBytesMatched": true,
+    "origins": {
+      "pages": {
+        "url": "https://coin-desk.pages.dev",
+        "indexHttpStatus": 200,
+        "publicFiles": 224,
+        "filesMatchingCanonicalBytes": 224,
+        "readOnlyChecks": {
+          "/api/v1/runtime": {
+            "httpStatus": 200,
+            "elapsedMilliseconds": 366.67,
+            "responseBytes": 928,
+            "kind": "vps",
+            "release": "vps-c0efd6732c5de070"
+          },
+          "/api/v1/status/summary": {
+            "httpStatus": 200,
+            "elapsedMilliseconds": 564.12,
+            "responseBytes": 8562,
+            "checkedAtUtc": "2026-10-14T14:07:56+00:00",
+            "sourceCounts": {
+              "ok": 1566,
+              "delayed": 19
+            },
+            "activeSources": 1585,
+            "totalSourcesIncludingInactive": 1635,
+            "healthOk": false
+          },
+          "/api/v1/health": {
+            "httpStatus": 503,
+            "elapsedMilliseconds": 2086.01,
+            "responseBytes": 1061388,
+            "checkedAtUtc": "2026-10-14T14:07:56+00:00",
+            "ok": false,
+            "activeDiagnoses": {
+              "CURRENT": 1566,
+              "TRADE_STALE": 19
+            }
+          }
+        },
+        "securityHeaderPresence": {
+          "content-security-policy": true,
+          "content-security-policy-report-only": false,
+          "strict-transport-security": true,
+          "permissions-policy": true,
+          "x-frame-options": true,
+          "x-content-type-options": true,
+          "referrer-policy": true
+        }
+      },
+      "vps": {
+        "url": "https://coin-desk.62.171.141.206.sslip.io",
+        "indexHttpStatus": 200,
+        "publicFiles": 224,
+        "filesMatchingCanonicalBytes": 224,
+        "readOnlyChecks": {
+          "/api/v1/runtime": {
+            "httpStatus": 200,
+            "elapsedMilliseconds": 886.47,
+            "responseBytes": 929,
+            "kind": "vps",
+            "release": "vps-c0efd6732c5de070"
+          },
+          "/api/v1/status/summary": {
+            "httpStatus": 200,
+            "elapsedMilliseconds": 852.39,
+            "responseBytes": 8562,
+            "checkedAtUtc": "2026-10-14T14:07:56+00:00",
+            "sourceCounts": {
+              "ok": 1566,
+              "delayed": 19
+            },
+            "activeSources": 1585,
+            "totalSourcesIncludingInactive": 1635,
+            "healthOk": false
+          },
+          "/api/v1/health": {
+            "httpStatus": 503,
+            "elapsedMilliseconds": 4163.79,
+            "responseBytes": 1061362,
+            "checkedAtUtc": "2026-10-14T14:08:01+00:00",
+            "ok": false,
+            "activeDiagnoses": {
+              "CURRENT": 1566,
+              "TRADE_STALE": 19
+            }
+          }
+        },
+        "securityHeaderPresence": {
+          "content-security-policy": true,
+          "content-security-policy-report-only": false,
+          "strict-transport-security": true,
+          "permissions-policy": true,
+          "x-frame-options": true,
+          "x-content-type-options": true,
+          "referrer-policy": true
+        }
+      }
+    },
+    "verificationIsNotLiveUserFlowQa": true
+  },
+  "remainingGates": {
+    "liveBrowserQa": "passed 49/49 in the selected price-chart scope; not a complete 150-asset or all-product-flow review",
+    "postDeploymentPerformance": "pending",
+    "physicalSafariVoiceOver": "not verified; no Apple device",
+    "realPersonUsability": "not verified"
+  },
+  "privacy": {
+    "rawHeadersSaved": false,
+    "credentialsSaved": false,
+    "personalOriginalsSaved": false,
+    "privateInternalPathsSaved": false
+  },
+  "scope": "Code/CI, deployment/backup/public-byte checks and the linked 49/49 selected price-chart live QA are complete. These checks do not claim all data is fresh, all historical gaps are repaired, every product flow is verified, physical-device QA is complete, or performance targets are met.",
+  "validation": {
+    "livePriceChart": "passed 49/49 selected-scope actual-public-data checks in 12 ephemeral Chromium contexts",
+    "livePriceChartEvidence": "live-patch.json",
+    "livePriceChartSourceEvidenceSha256": "ffedb10bfff54c24c51784377b08a4829e55ae42ed6f06ae676222b86e963ffb",
+    "livePriceChartCompletedAt": "2026-10-14T14:31:35.881Z",
+    "livePriceChartSelectedAssets": 5,
+    "livePriceChartHistoriesAcrossBothOrigins": 14,
+    "livePriceChartCaseRetries": 0,
+    "physicalDeviceVerified": false
+  }
+}
