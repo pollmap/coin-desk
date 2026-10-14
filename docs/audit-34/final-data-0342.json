@@ -1,0 +1,187 @@
+{
+  "schemaVersion": 1,
+  "version": "0.34.2",
+  "commit": "72fd084adf83de6a488c49afd8de4f1e5f1b0c38",
+  "runtimeRelease": "vps-84c91c439802eb85",
+  "checkedAtUtc": "2026-10-14T17:10:26.798662+00:00",
+  "readOnly": true,
+  "credentialsUsed": false,
+  "collectorOrOverviewCalled": false,
+  "origins": {
+    "pages": {
+      "url": "https://coin-desk.pages.dev",
+      "runtime": {
+        "httpStatus": 200,
+        "kind": "vps",
+        "release": "vps-84c91c439802eb85",
+        "historyCollection": "paused_low_space",
+        "backup": {
+          "ok": true,
+          "lastCompletedAt": 1791913760,
+          "verified": true
+        },
+        "scheduler": [
+          {
+            "lane": "quotes",
+            "scheduled_at": 1791997800,
+            "started_at": 1791997800,
+            "completed_at": null,
+            "outcome": "running",
+            "last_success": 1791997767,
+            "reason": "running",
+            "healthy": true
+          },
+          {
+            "lane": "background",
+            "scheduled_at": 1791997800,
+            "started_at": 1791997800,
+            "completed_at": 1791997800,
+            "outcome": "ok",
+            "last_success": 1791997800,
+            "reason": null,
+            "healthy": true
+          },
+          {
+            "lane": "recent",
+            "scheduled_at": 1791997800,
+            "started_at": 1791997800,
+            "completed_at": 1791997800,
+            "outcome": "ok",
+            "last_success": 1791997800,
+            "reason": null,
+            "healthy": true
+          },
+          {
+            "lane": "analysis",
+            "scheduled_at": 1791997800,
+            "started_at": 1791997800,
+            "completed_at": 1791997800,
+            "outcome": "ok",
+            "last_success": 1791997800,
+            "reason": null,
+            "healthy": true
+          }
+        ]
+      },
+      "summary": {
+        "httpStatus": 200,
+        "now": 1791997823,
+        "sourceCounts": {
+          "ok": 1532,
+          "delayed": 53
+        },
+        "totalSources": 1635,
+        "healthOk": false
+      },
+      "health": {
+        "httpStatus": 503,
+        "ok": false,
+        "version": null,
+        "responseBytes": 1070079
+      }
+    },
+    "vps": {
+      "url": "https://coin-desk.62.171.141.206.sslip.io",
+      "runtime": {
+        "httpStatus": 200,
+        "kind": "vps",
+        "release": "vps-84c91c439802eb85",
+        "historyCollection": "paused_low_space",
+        "backup": {
+          "ok": true,
+          "lastCompletedAt": 1791913760,
+          "verified": true
+        },
+        "scheduler": [
+          {
+            "lane": "quotes",
+            "scheduled_at": 1791997800,
+            "started_at": 1791997800,
+            "completed_at": null,
+            "outcome": "running",
+            "last_success": 1791997767,
+            "reason": "running",
+            "healthy": true
+          },
+          {
+            "lane": "background",
+            "scheduled_at": 1791997800,
+            "started_at": 1791997800,
+            "completed_at": 1791997800,
+            "outcome": "ok",
+            "last_success": 1791997800,
+            "reason": null,
+            "healthy": true
+          },
+          {
+            "lane": "recent",
+            "scheduled_at": 1791997800,
+            "started_at": 1791997800,
+            "completed_at": 1791997800,
+            "outcome": "ok",
+            "last_success": 1791997800,
+            "reason": null,
+            "healthy": true
+          },
+          {
+            "lane": "analysis",
+            "scheduled_at": 1791997800,
+            "started_at": 1791997800,
+            "completed_at": 1791997800,
+            "outcome": "ok",
+            "last_success": 1791997800,
+            "reason": null,
+            "healthy": true
+          }
+        ]
+      },
+      "summary": {
+        "httpStatus": 200,
+        "now": 1791997823,
+        "sourceCounts": {
+          "ok": 1532,
+          "delayed": 53
+        },
+        "totalSources": 1635,
+        "healthOk": false
+      },
+      "health": {
+        "httpStatus": 503,
+        "ok": false,
+        "version": null,
+        "responseBytes": 1070068
+      }
+    }
+  },
+  "limits": {
+    "pointInTimeSnapshot": true,
+    "allHistoricalDataComplete": false,
+    "allSourcesCurrentlyHealthy": false,
+    "physicalSafariVoiceOverVerified": false,
+    "physicalPhoneVerified": false,
+    "peopleUsabilityVerified": false,
+    "48HourWaitAdded": false
+  },
+  "sourceDiagnosis": {
+    "httpStatus": 200,
+    "activeCount": 1585,
+    "statusCounts": {
+      "ok": 1533,
+      "delayed": 52
+    },
+    "attentionDiagnosisCounts": {
+      "TRADE_STALE": 52
+    },
+    "attentionErrorCodeCounts": {
+      "TRADE_STALE": 29,
+      "none": 23
+    },
+    "nonQuoteAttentionCount": 0
+  },
+  "interpretation": [
+    "Summary and full source reads are sequential point-in-time samples; counts can differ while collection continues.",
+    "HTTP 503 and stale trade diagnoses are retained; release/static/UI verification is not certification that every trade is fresh.",
+    "History collection remains subject to the unchanged 8GiB free-space guard; no historical data was deleted or synthesized.",
+    "The full raw status and response headers are not included in public evidence."
+  ]
+}

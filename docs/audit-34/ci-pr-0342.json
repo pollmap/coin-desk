@@ -1,0 +1,186 @@
+{
+  "schemaVersion": 1,
+  "checkedAt": "2026-10-14T15:48:12.229Z",
+  "repository": "pollmap/coin-desk",
+  "pullRequest": 72,
+  "pullRequestUrl": "https://github.com/pollmap/coin-desk/pull/72",
+  "expectedPullRequestHead": "753873385a5d2156bfdf86a96721ca350ea82abd",
+  "returnedHeadRevision": "753873385a5d2156bfdf86a96721ca350ea82abd",
+  "runId": 38589896200,
+  "runUrl": "https://github.com/pollmap/coin-desk/actions/runs/38589896200",
+  "runNumber": 243,
+  "runAttempt": 1,
+  "event": "pull_request",
+  "status": "completed",
+  "conclusion": "success",
+  "passed": true,
+  "allJobsCompleted": true,
+  "allJobHeadsMatched": true,
+  "jobCount": 5,
+  "jobs": [
+    {
+      "id": 115941664415,
+      "head_sha": "753873385a5d2156bfdf86a96721ca350ea82abd",
+      "name": "checks",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/pollmap/coin-desk/actions/runs/38589896200/job/115941664415"
+    },
+    {
+      "id": 115941664661,
+      "head_sha": "753873385a5d2156bfdf86a96721ca350ea82abd",
+      "name": "container",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/pollmap/coin-desk/actions/runs/38589896200/job/115941664661"
+    },
+    {
+      "id": 115941664985,
+      "head_sha": "753873385a5d2156bfdf86a96721ca350ea82abd",
+      "name": "browser (webkit)",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/pollmap/coin-desk/actions/runs/38589896200/job/115941664985"
+    },
+    {
+      "id": 115941665093,
+      "head_sha": "753873385a5d2156bfdf86a96721ca350ea82abd",
+      "name": "browser (chromium)",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/pollmap/coin-desk/actions/runs/38589896200/job/115941665093"
+    },
+    {
+      "id": 115949608802,
+      "head_sha": "753873385a5d2156bfdf86a96721ca350ea82abd",
+      "name": "verify",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/pollmap/coin-desk/actions/runs/38589896200/job/115949608802"
+    }
+  ],
+  "checks": {
+    "typescript": true,
+    "unitFilesPassed": 78,
+    "unitPassed": 826,
+    "nodeServerPassed": 31,
+    "nodeServerFailed": 0,
+    "pythonServerPassed": 32,
+    "recoveryPassed": 2,
+    "dependencyAuditKnownFindings": 0,
+    "summaryEvidence": [
+      "found 0 vulnerabilities",
+      "found 0 vulnerabilities",
+      "Test Files  78 passed (78)",
+      "Tests  826 passed (826)",
+      "Ran 2 tests in 0.246s",
+      "OK",
+      "ℹ tests 31",
+      "ℹ pass 31",
+      "ℹ fail 0",
+      "ℹ cancelled 0",
+      "ℹ skipped 0",
+      "ℹ todo 0",
+      "Ran 32 tests in 3.082s",
+      "OK"
+    ],
+    "officialLogTruncated": false
+  },
+  "browsers": [
+    {
+      "engine": "chromium",
+      "jobId": 115941665093,
+      "passed": 218,
+      "failed": 0,
+      "excluded": 1,
+      "flaky": 0,
+      "summaryEvidence": ["1 skipped", "218 passed (10.7m)"],
+      "excludedTests": [
+        "e2e/private-archive.spec.ts:4:1 › local archive folder imports full metadata and image references without publishing them"
+      ],
+      "browserCaseRetryPolicy": 0,
+      "retryMarkers": 0,
+      "overlayAndNativeRegressionEvidence": [
+        "✓  102 [chromium] › e2e/live-price-overlays.spec.ts:100:3 › overlay current price view:supertrend stays separate from closed data and uses the chart source (4.3s)",
+        "✓  103 [chromium] › e2e/live-price-overlays.spec.ts:100:3 › overlay current price view:ribbon stays separate from closed data and uses the chart source (4.5s)",
+        "✓  104 [chromium] › e2e/live-price-overlays.spec.ts:100:3 › overlay current price view:bb stays separate from closed data and uses the chart source (4.3s)",
+        "✓  105 [chromium] › e2e/live-price-overlays.spec.ts:202:1 › indicator-only and USD reference views never borrow a live spot-price axis (8.4s)",
+        "✓  162 [chromium] › e2e/price-chart-034.spec.ts:1121:3 › actual touch-capable browser input › native long press, horizontal pan, pinch and cancellation keep inspected values and window state (6.3s)"
+      ],
+      "officialLogs": {
+        "source": "Official GitHub fetch_workflow_job_logs structuredContent.content",
+        "completeDecodedContent": true,
+        "characters": 613722,
+        "codeReviewLogTruncated": true,
+        "sourceControlCliUsed": false
+      }
+    },
+    {
+      "engine": "webkit",
+      "jobId": 115941664985,
+      "passed": 217,
+      "failed": 0,
+      "excluded": 2,
+      "flaky": 0,
+      "summaryEvidence": ["2 skipped", "217 passed (14.3m)"],
+      "excludedTests": [
+        "e2e/private-archive.spec.ts:4:1 › local archive folder imports full metadata and image references without publishing them",
+        "e2e/price-chart-034.spec.ts:1121:3 › actual touch-capable browser input › native long press, horizontal pan, pinch and cancellation keep inspected values and window state"
+      ],
+      "browserCaseRetryPolicy": 0,
+      "retryMarkers": 0,
+      "overlayAndNativeRegressionEvidence": [
+        "✓  102 [webkit] › e2e/live-price-overlays.spec.ts:100:3 › overlay current price view:supertrend stays separate from closed data and uses the chart source (7.4s)",
+        "✓  103 [webkit] › e2e/live-price-overlays.spec.ts:100:3 › overlay current price view:ribbon stays separate from closed data and uses the chart source (7.4s)",
+        "✓  104 [webkit] › e2e/live-price-overlays.spec.ts:100:3 › overlay current price view:bb stays separate from closed data and uses the chart source (7.6s)",
+        "✓  105 [webkit] › e2e/live-price-overlays.spec.ts:202:1 › indicator-only and USD reference views never borrow a live spot-price axis (9.9s)",
+        "-  166 [webkit] › e2e/price-chart-034.spec.ts:1121:3 › actual touch-capable browser input › native long press, horizontal pan, pinch and cancellation keep inspected values and window state"
+      ],
+      "officialLogs": {
+        "source": "Official GitHub fetch_workflow_job_logs structuredContent.content",
+        "completeDecodedContent": true,
+        "characters": 738440,
+        "codeReviewLogTruncated": true,
+        "sourceControlCliUsed": false
+      }
+    }
+  ],
+  "browserTotals": {
+    "cases": 438,
+    "passed": 435,
+    "failed": 0,
+    "excluded": 3,
+    "flaky": 0,
+    "retryMarkers": 0
+  },
+  "retries": {
+    "workflowRunAttempt": 1,
+    "failedJobReruns": 0,
+    "browserCaseRetries": 0,
+    "policyVerifiedInExactHeadConfiguration": true,
+    "configurationSource": "https://github.com/pollmap/coin-desk/blob/753873385a5d2156bfdf86a96721ca350ea82abd/playwright.config.ts",
+    "automaticRerunPerformed": false
+  },
+  "verify": {
+    "jobId": 115949608802,
+    "officialLogTruncated": false,
+    "summaryEvidence": [
+      "CHECKS_RESULT: success",
+      "BROWSER_RESULT: success",
+      "CONTAINER_RESULT: success"
+    ]
+  },
+  "earlierNativeFailure": {
+    "preserved": true,
+    "source": "work/ux-0342/live-axis-green-01",
+    "causeEstablished": false,
+    "separateLocalDirectModelDiagnosticsPassed": 3,
+    "prChromiumNativeCasePassed": true,
+    "doesNotEstablishEarlierFailureCause": true
+  },
+  "scope": "Exact-head PR CI only, not a main deployment gate or a certification of public-data freshness, physical Safari/VoiceOver, real-phone interaction or people usability.",
+  "sourceControlCliUsed": false,
+  "rawLogsSaved": false,
+  "privateInternalPathsSaved": false,
+  "credentialsOrPersonalOriginalsSaved": false
+}

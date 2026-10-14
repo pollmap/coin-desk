@@ -1,0 +1,396 @@
+{
+  "schemaVersion": 1,
+  "version": "0.34.2",
+  "commit": "72fd084adf83de6a488c49afd8de4f1e5f1b0c38",
+  "runtimeRelease": "vps-84c91c439802eb85",
+  "preparedAtUtc": "2026-10-14T16:54:33.521189Z",
+  "privacy": {
+    "credentialsIncluded": false,
+    "requestOrResponseHeadersIncluded": false,
+    "personalOriginalsIncluded": false,
+    "internalFilesystemPathsIncluded": false,
+    "rawLogsIncluded": false
+  },
+  "scopeLimits": {
+    "allSourcesCurrentlyHealthy": false,
+    "allHistoricalDataComplete": false,
+    "physicalSafariVoiceOverVerified": false,
+    "physicalPhoneVerified": false,
+    "peopleUsabilityVerified": false,
+    "48HourWaitAdded": false
+  },
+  "observation": {
+    "databaseReadStartUtc": "2026-10-14T16:38:28Z",
+    "databaseReadFinishUtc": "2026-10-14T16:43:59Z",
+    "elapsedSeconds": 331.053,
+    "readOnlyDatabaseChanges": 0,
+    "directCollectionOrOverviewCalled": false,
+    "otherVisitorsAbsentGuaranteed": false,
+    "shortSampleNotWholeDayEvidence": true,
+    "schedulerResultsNot48HourCertification": true
+  },
+  "registry": {
+    "assets": 150,
+    "expectedQuotePairs": 241,
+    "storedQuotePairs": 241,
+    "pairSetMatches": true
+  },
+  "naturalUpdates": {
+    "coreQuoteCount": 6,
+    "coreQuotes": [
+      {
+        "key": "quote:BTC:binance",
+        "confirmationAdvanced": true,
+        "actualTradeTimeAdvanced": true
+      },
+      {
+        "key": "quote:BTC:upbit",
+        "confirmationAdvanced": true,
+        "actualTradeTimeAdvanced": true
+      },
+      {
+        "key": "quote:DOGE:binance",
+        "confirmationAdvanced": true,
+        "actualTradeTimeAdvanced": true
+      },
+      {
+        "key": "quote:DOGE:upbit",
+        "confirmationAdvanced": true,
+        "actualTradeTimeAdvanced": true
+      },
+      {
+        "key": "quote:ETH:binance",
+        "confirmationAdvanced": true,
+        "actualTradeTimeAdvanced": true
+      },
+      {
+        "key": "quote:ETH:upbit",
+        "confirmationAdvanced": true,
+        "actualTradeTimeAdvanced": true
+      }
+    ],
+    "allSixActualTradeAndConfirmationTimesAdvanced": true,
+    "quoteConfirmationsAdvanced": 225,
+    "quoteActualTradeTimesAdvanced": 216,
+    "derivativeConfirmationsAdvanced": 14,
+    "networkConfirmationsAdvanced": 0,
+    "completedScheduledRuns": [
+      {
+        "lane": "analysis",
+        "outcome": "ok",
+        "runs": 5,
+        "firstStart": 1791995940,
+        "lastCompletion": 1791996180
+      },
+      {
+        "lane": "background",
+        "outcome": "ok",
+        "runs": 5,
+        "firstStart": 1791995940,
+        "lastCompletion": 1791996182
+      },
+      {
+        "lane": "quotes",
+        "outcome": "ok",
+        "runs": 6,
+        "firstStart": 1791995880,
+        "lastCompletion": 1791996208
+      },
+      {
+        "lane": "recent",
+        "outcome": "ok",
+        "runs": 5,
+        "firstStart": 1791995940,
+        "lastCompletion": 1791996180
+      }
+    ],
+    "completedScheduledRunTotal": 21,
+    "latestCompletedLanes": [
+      {
+        "lane": "analysis",
+        "latestScheduledAt": 1791996180,
+        "latestCompletedAt": 1791996180
+      },
+      {
+        "lane": "background",
+        "latestScheduledAt": 1791996180,
+        "latestCompletedAt": 1791996182
+      },
+      {
+        "lane": "quotes",
+        "latestScheduledAt": 1791996180,
+        "latestCompletedAt": 1791996208
+      },
+      {
+        "lane": "recent",
+        "latestScheduledAt": 1791996180,
+        "latestCompletedAt": 1791996180
+      }
+    ],
+    "readOnlyChanges": 0
+  },
+  "freshness": {
+    "actualTradeValiditySeconds": 300,
+    "criteriaNotRelaxed": true,
+    "quotesAtFinalSnapshot": {
+      "provenFreshBySource": {
+        "binance": 137,
+        "upbit": 78
+      },
+      "provenStaleBySource": {
+        "upbit": 25,
+        "binance": 1
+      },
+      "notProvenByNewMetadata": {}
+    },
+    "initialPublicHealth": [
+      {
+        "origin": "https://coin-desk.pages.dev",
+        "healthCheckedAtUtc": "2026-10-14T16:39:51Z",
+        "healthHttpStatus": 503,
+        "healthOk": false,
+        "activeDiagnoses": {
+          "CURRENT": 1529,
+          "PROVIDER_RATE_LIMIT": 1,
+          "TRADE_STALE": 55
+        },
+        "statusCheckedAtUtc": "2026-10-14T16:39:50Z",
+        "statusHttpStatus": 200,
+        "activeSourceCounts": {
+          "ok": 1529,
+          "error": 1,
+          "delayed": 55
+        },
+        "activeSourceCount": 1585,
+        "allSourceRowsIncludingInactive": 1635,
+        "runtimeHttpStatus": 200,
+        "runtimeRelease": "vps-84c91c439802eb85",
+        "historyCollection": "paused_low_space"
+      },
+      {
+        "origin": "https://coin-desk.62.171.141.206.sslip.io",
+        "healthCheckedAtUtc": "2026-10-14T16:39:56Z",
+        "healthHttpStatus": 503,
+        "healthOk": false,
+        "activeDiagnoses": {
+          "CURRENT": 1529,
+          "PROVIDER_RATE_LIMIT": 1,
+          "TRADE_STALE": 55
+        },
+        "statusCheckedAtUtc": "2026-10-14T16:39:50Z",
+        "statusHttpStatus": 200,
+        "activeSourceCounts": {
+          "ok": 1529,
+          "error": 1,
+          "delayed": 55
+        },
+        "activeSourceCount": 1585,
+        "allSourceRowsIncludingInactive": 1635,
+        "runtimeHttpStatus": 200,
+        "runtimeRelease": "vps-84c91c439802eb85",
+        "historyCollection": "paused_low_space"
+      }
+    ],
+    "naturalBefore": {
+      "databaseReadAtUtc": "2026-10-14T16:38:28Z",
+      "finishedAtUtc": "2026-10-14T16:38:29Z",
+      "statusHttpStatus": 200,
+      "activeSourceCounts": {
+        "ok": 1533,
+        "error": 1,
+        "delayed": 51
+      },
+      "allSourceRowsIncludingInactive": 1635,
+      "attentionHttpStatus": 200,
+      "attentionTotal": 52,
+      "diagnoses": {
+        "PROVIDER_RATE_LIMIT": 1,
+        "TRADE_STALE": 51
+      },
+      "readOnlyChanges": 0
+    },
+    "separateMiddleDiagnostic": {
+      "statusCheckedAtUtc": "2026-10-14T16:41:21Z",
+      "healthCheckedAtUtc": "2026-10-14T16:41:19Z",
+      "activeSourceCount": 1585,
+      "activeSourceCounts": {
+        "ok": 1538,
+        "delayed": 47
+      },
+      "activeDiagnoses": {
+        "CURRENT": 1538,
+        "TRADE_STALE": 47
+      },
+      "healthOk": false,
+      "healthReasonCounts": {
+        "SOURCE_DELAYED": 47
+      },
+      "nonQuoteProblemCount": 0,
+      "independentReadNotSameTimestampAsOtherSnapshots": true
+    },
+    "naturalAfter": {
+      "databaseReadAtUtc": "2026-10-14T16:43:59Z",
+      "finishedAtUtc": "2026-10-14T16:44:00Z",
+      "statusHttpStatus": 200,
+      "activeSourceCounts": {
+        "ok": 1546,
+        "delayed": 39
+      },
+      "allSourceRowsIncludingInactive": 1635,
+      "attentionHttpStatus": 200,
+      "attentionTotal": 39,
+      "diagnoses": {
+        "TRADE_STALE": 39
+      },
+      "readOnlyChanges": 0
+    },
+    "finalAllHealthy": false,
+    "rateLimitNoLongerPresentInLaterSnapshots": true,
+    "rateLimitCauseEstablished": false,
+    "observationsAreIndependentTimesAndNotInterchangeable": true,
+    "staleTradeDoesNotByItselfProveCollectionFailure": true
+  },
+  "unitAndSourceSamples": [
+    {
+      "asset": "BTC",
+      "metric": "mvrv",
+      "httpStatus": 200,
+      "unit": "배",
+      "source": "Coin Metrics Community · CC BY-NC 4.0",
+      "latestObservationUtc": "2026-10-13T00:00:00Z",
+      "stale": false,
+      "returnedSamplePoints": [
+        {
+          "time": 1279411200,
+          "value": 146.0383322
+        },
+        {
+          "time": 1279497600,
+          "value": 62.56512971
+        }
+      ],
+      "scope": "Two returned historical observations and metadata were inspected; this is not an independent full-history provider reconciliation."
+    },
+    {
+      "asset": "ETH",
+      "metric": "mvrv",
+      "httpStatus": 200,
+      "unit": "배",
+      "source": "Coin Metrics Community · CC BY-NC 4.0",
+      "latestObservationUtc": "2026-10-13T00:00:00Z",
+      "stale": false,
+      "returnedSamplePoints": [
+        {
+          "time": 1438992000,
+          "value": 5.78278879
+        },
+        {
+          "time": 1439078400,
+          "value": 4.88081534
+        }
+      ],
+      "scope": "Two returned historical observations and metadata were inspected; this is not an independent full-history provider reconciliation."
+    },
+    {
+      "asset": "DOGE",
+      "metric": "mvrv",
+      "httpStatus": 200,
+      "unit": "배",
+      "source": "Coin Metrics Community · CC BY-NC 4.0",
+      "latestObservationUtc": "2026-10-13T00:00:00Z",
+      "stale": false,
+      "returnedSamplePoints": [
+        {
+          "time": 1390435200,
+          "value": 10.30827487
+        },
+        {
+          "time": 1390521600,
+          "value": 6.95312177
+        }
+      ],
+      "scope": "Two returned historical observations and metadata were inspected; this is not an independent full-history provider reconciliation."
+    },
+    {
+      "asset": "DASH",
+      "metric": "hashrate",
+      "httpStatus": 200,
+      "unit": "GH/s",
+      "source": "Coin Metrics Community · CC BY-NC 4.0",
+      "latestObservationUtc": "2026-10-13T00:00:00Z",
+      "stale": false,
+      "returnedSamplePoints": [
+        {
+          "time": 1390089600,
+          "value": 0.0573637392846296
+        },
+        {
+          "time": 1390176000,
+          "value": 0.136999272112778
+        }
+      ],
+      "scope": "Two returned historical observations and metadata were inspected; this is not an independent full-history provider reconciliation."
+    },
+    {
+      "asset": "ZEC",
+      "metric": "hashrate",
+      "httpStatus": 200,
+      "unit": "GH/s",
+      "source": "Coin Metrics Community · CC BY-NC 4.0",
+      "latestObservationUtc": "2026-10-13T00:00:00Z",
+      "stale": false,
+      "returnedSamplePoints": [
+        {
+          "time": 1477612800,
+          "value": 0.0001736612943514272
+        },
+        {
+          "time": 1477699200,
+          "value": 0.0015840551878260867
+        }
+      ],
+      "scope": "Two returned historical observations and metadata were inspected; this is not an independent full-history provider reconciliation."
+    }
+  ],
+  "historyAndCapacity": {
+    "reservedHistoryKeyCountBefore": 639,
+    "reservedHistoryKeyCountAfter": 639,
+    "absentHistoryKeysDoNotProveLoss": true,
+    "allHistoricalDataVerified": false,
+    "freeDiskBytes": 6493999104,
+    "freeDiskGiB": 6.048,
+    "historyGuardBytes": 8589934592,
+    "historyCollection": "paused_low_space",
+    "historyGuardMet": false,
+    "latestCollectionKeptSeparateFromOptionalHistory": true,
+    "originalDataDeletedForCapacity": false
+  },
+  "validation": {
+    "codeAndDeployment": "See deployment-0342.json; this file verifies only the bounded natural-update sample.",
+    "allActualDataComplete": false,
+    "liveCurrentAxisQa": "pending inclusion of the separate actual QA report",
+    "performance": "pending actual 0.34.2 measurements"
+  },
+  "evidence": [
+    {
+      "file": "natural-final-0342.comparison.json",
+      "sha256": "99e28a49f3ec9c702dc68109b652f57c27441f94b0b004d20f263c62a6a00404"
+    },
+    {
+      "file": "natural-final-0342.start.private.json",
+      "sha256": "ea1928332b6ef83451cc0bf5a51a6a6d1eced271b95b3fe474be262528d38dde"
+    },
+    {
+      "file": "natural-final-0342.finish.1791996237009943300.private.json",
+      "sha256": "791dabdccc19c796d0efaf014691db91040370f2fe7558783ffb8f64f2cd7a95"
+    },
+    {
+      "file": "deployment-public-final.json",
+      "sha256": "347c751f36a21a04efef13162337ed9b9422046251351c9ecb6d317b7b18cdd1"
+    },
+    {
+      "file": "final-source-diagnostic.private.json",
+      "sha256": "29d2ed5d424d6e9551716dbd8a52cf6001e9f04ebb57a68609c3c8ffe31699ba"
+    }
+  ]
+}

@@ -1,0 +1,884 @@
+{
+  "schemaVersion": 1,
+  "state": "aggregated_from_existing_local_evidence",
+  "deployment": {
+    "version": "0.34.2",
+    "commit": "72fd084adf83de6a488c49afd8de4f1e5f1b0c38",
+    "release": "vps-84c91c439802eb85",
+    "canonicalDistSha256": "9005acc59291421ba24fb60a83488ae229129bc02531514a3e3e4420bf2d30b6"
+  },
+  "apiImageId": "sha256:11b349340a4d64a3c5cd43b003a7bc56694e61be93824ac2a9a872d06b74f9f9",
+  "aggregation": {
+    "method": "Local-only independent JSON aggregation; no network, browser, SSH or collection executed.",
+    "newNetworkRequests": 0,
+    "newBrowserRuns": 0,
+    "newLoadRuns": 0,
+    "newSshConnections": 0,
+    "criteriaRelaxations": 0,
+    "mismatchesFound": []
+  },
+  "statistics": {
+    "p95": "nearest rank ceil(0.95*n)",
+    "browserMedian": "nearest rank ceil(0.5*n)",
+    "resourceMedian": "usual median, midpoint of the two middle values for even n",
+    "browserAndResourceRawSamplesRecalculated": true,
+    "sseDeliveryRawSamplesRecalculated": false
+  },
+  "browser": {
+    "state": "complete",
+    "inputFailureRecorded": false,
+    "startedAtUtc": "2026-10-14T16:52:48.949Z",
+    "completedAtUtc": "2026-10-14T16:59:54.512Z",
+    "environment": {
+      "platform": "win32",
+      "logicalCpus": 16,
+      "cpuModel": "AMD Ryzen AI 7 350 w/ Radeon 860M",
+      "totalMemoryMiB": 32042,
+      "nodeVersion": "v24.18.0"
+    },
+    "identity": {
+      "checks": 4,
+      "allMatched": true,
+      "identityReadsExcludedFromTiming": true,
+      "identityReadsMayWarmCdnDnsTlsCaches": true
+    },
+    "results": [
+      {
+        "origin": "pages",
+        "publicUrl": "https://coin-desk.pages.dev",
+        "browserVersion": "153.0.8010.12",
+        "roundsObserved": 20,
+        "roundsRequested": 20,
+        "settings": {
+          "viewport": "1280x800",
+          "rounds": 20,
+          "downlinkMbps": 10,
+          "uplinkMbps": 5,
+          "addedLatencyMs": 0,
+          "cpuThrottlingRate": 1,
+          "browserCacheDisabled": true,
+          "serviceWorkers": "blocked",
+          "sharedBrowserProcessWithinOrigin": true,
+          "browserProcessSeparatedBetweenOrigins": true,
+          "cdnAndOsDnsTlsCachesNotPurged": true,
+          "identityReadsExcludedFromSamplesAndMayWarmCaches": true,
+          "observationWindowAfterFirstValueMs": 8000
+        },
+        "lcpMs": {
+          "count": 20,
+          "missingOrInvalidCount": 0,
+          "negativeCount": 0,
+          "min": 336,
+          "median": 372,
+          "p95": 412,
+          "max": 428
+        },
+        "firstNumericPriceMs": {
+          "count": 20,
+          "missingOrInvalidCount": 0,
+          "negativeCount": 0,
+          "min": 1061.6999999955297,
+          "median": 1154.3999999985099,
+          "p95": 1870.2999999970198,
+          "max": 1950.8999999985099
+        },
+        "clientReceiptToDomMs": {
+          "count": 105,
+          "missingOrInvalidCount": 0,
+          "negativeCount": 0,
+          "min": 12.099999994039536,
+          "median": 26.799999997019768,
+          "p95": 34.30000000447035,
+          "max": 35.600000001490116
+        },
+        "hubReceiptToDomMs": {
+          "count": 105,
+          "missingOrInvalidCount": 0,
+          "negativeCount": 0,
+          "min": 354.5,
+          "median": 756.5,
+          "p95": 1280.5,
+          "max": 1395.5
+        },
+        "conservativeHubToDomP95UpperMs": 1708.0,
+        "clock": {
+          "valid": true,
+          "samples": 8,
+          "offsetMs": 4481.5,
+          "errorBoundMs": 427.5
+        },
+        "lcpP95Goal2500MsPassed": true,
+        "hubToDomGoal3000MsPassed": true,
+        "errorCount": 0,
+        "failedOrIncompleteRounds": [],
+        "counters": {
+          "invalidPayloads": 0,
+          "superseded": 0,
+          "paintTimeouts": 0,
+          "negativeClockLatencySamples": 0,
+          "clockInconsistentLatencySamples": 0,
+          "changedVisiblePriceTicks": 105
+        },
+        "perRound": [
+          {
+            "round": 1,
+            "lcpMs": 428,
+            "firstNumericPriceMs": 1950.8999999985099,
+            "httpStatus": 200,
+            "errorRecorded": false
+          },
+          {
+            "round": 2,
+            "lcpMs": 348,
+            "firstNumericPriceMs": 1061.6999999955297,
+            "httpStatus": 200,
+            "errorRecorded": false
+          },
+          {
+            "round": 3,
+            "lcpMs": 412,
+            "firstNumericPriceMs": 1102.8999999985099,
+            "httpStatus": 200,
+            "errorRecorded": false
+          },
+          {
+            "round": 4,
+            "lcpMs": 368,
+            "firstNumericPriceMs": 1081,
+            "httpStatus": 200,
+            "errorRecorded": false
+          },
+          {
+            "round": 5,
+            "lcpMs": 404,
+            "firstNumericPriceMs": 1870.2999999970198,
+            "httpStatus": 200,
+            "errorRecorded": false
+          },
+          {
+            "round": 6,
+            "lcpMs": 360,
+            "firstNumericPriceMs": 1201.5999999940395,
+            "httpStatus": 200,
+            "errorRecorded": false
+          },
+          {
+            "round": 7,
+            "lcpMs": 408,
+            "firstNumericPriceMs": 1333.3999999985099,
+            "httpStatus": 200,
+            "errorRecorded": false
+          },
+          {
+            "round": 8,
+            "lcpMs": 380,
+            "firstNumericPriceMs": 1317.8999999985099,
+            "httpStatus": 200,
+            "errorRecorded": false
+          },
+          {
+            "round": 9,
+            "lcpMs": 388,
+            "firstNumericPriceMs": 1167,
+            "httpStatus": 200,
+            "errorRecorded": false
+          },
+          {
+            "round": 10,
+            "lcpMs": 396,
+            "firstNumericPriceMs": 1168.5,
+            "httpStatus": 200,
+            "errorRecorded": false
+          },
+          {
+            "round": 11,
+            "lcpMs": 372,
+            "firstNumericPriceMs": 1103.7999999970198,
+            "httpStatus": 200,
+            "errorRecorded": false
+          },
+          {
+            "round": 12,
+            "lcpMs": 372,
+            "firstNumericPriceMs": 1114.4000000059605,
+            "httpStatus": 200,
+            "errorRecorded": false
+          },
+          {
+            "round": 13,
+            "lcpMs": 376,
+            "firstNumericPriceMs": 1095.1999999955297,
+            "httpStatus": 200,
+            "errorRecorded": false
+          },
+          {
+            "round": 14,
+            "lcpMs": 364,
+            "firstNumericPriceMs": 1702,
+            "httpStatus": 200,
+            "errorRecorded": false
+          },
+          {
+            "round": 15,
+            "lcpMs": 368,
+            "firstNumericPriceMs": 1154.3999999985099,
+            "httpStatus": 200,
+            "errorRecorded": false
+          },
+          {
+            "round": 16,
+            "lcpMs": 368,
+            "firstNumericPriceMs": 1063.8000000044703,
+            "httpStatus": 200,
+            "errorRecorded": false
+          },
+          {
+            "round": 17,
+            "lcpMs": 340,
+            "firstNumericPriceMs": 1638.8999999985099,
+            "httpStatus": 200,
+            "errorRecorded": false
+          },
+          {
+            "round": 18,
+            "lcpMs": 400,
+            "firstNumericPriceMs": 1436.2000000029802,
+            "httpStatus": 200,
+            "errorRecorded": false
+          },
+          {
+            "round": 19,
+            "lcpMs": 380,
+            "firstNumericPriceMs": 1119.5,
+            "httpStatus": 200,
+            "errorRecorded": false
+          },
+          {
+            "round": 20,
+            "lcpMs": 336,
+            "firstNumericPriceMs": 1121.8000000044703,
+            "httpStatus": 200,
+            "errorRecorded": false
+          }
+        ],
+        "outliersNotDropped": true,
+        "independentlyRecalculated": true,
+        "freshnessNotProvenByFirstNumericPrice": true,
+        "physicalCompositorPaintNotMeasured": true
+      },
+      {
+        "origin": "vps",
+        "publicUrl": "https://coin-desk.62.171.141.206.sslip.io",
+        "browserVersion": "153.0.8010.12",
+        "roundsObserved": 20,
+        "roundsRequested": 20,
+        "settings": {
+          "viewport": "1280x800",
+          "rounds": 20,
+          "downlinkMbps": 10,
+          "uplinkMbps": 5,
+          "addedLatencyMs": 0,
+          "cpuThrottlingRate": 1,
+          "browserCacheDisabled": true,
+          "serviceWorkers": "blocked",
+          "sharedBrowserProcessWithinOrigin": true,
+          "browserProcessSeparatedBetweenOrigins": true,
+          "cdnAndOsDnsTlsCachesNotPurged": true,
+          "identityReadsExcludedFromSamplesAndMayWarmCaches": true,
+          "observationWindowAfterFirstValueMs": 8000
+        },
+        "lcpMs": {
+          "count": 20,
+          "missingOrInvalidCount": 0,
+          "negativeCount": 0,
+          "min": 2164,
+          "median": 2256,
+          "p95": 2588,
+          "max": 2608
+        },
+        "firstNumericPriceMs": {
+          "count": 20,
+          "missingOrInvalidCount": 0,
+          "negativeCount": 0,
+          "min": 2534.5,
+          "median": 2659,
+          "p95": 2971.60000000149,
+          "max": 3016.5
+        },
+        "clientReceiptToDomMs": {
+          "count": 97,
+          "missingOrInvalidCount": 0,
+          "negativeCount": 0,
+          "min": 17.799999997019768,
+          "median": 26.69999999552965,
+          "p95": 35,
+          "max": 36
+        },
+        "hubReceiptToDomMs": {
+          "count": 97,
+          "missingOrInvalidCount": 0,
+          "negativeCount": 0,
+          "min": 349.5,
+          "median": 936.5,
+          "p95": 1401.5,
+          "max": 1557.5
+        },
+        "conservativeHubToDomP95UpperMs": 1794.0,
+        "clock": {
+          "valid": true,
+          "samples": 8,
+          "offsetMs": 4452.5,
+          "errorBoundMs": 392.5
+        },
+        "lcpP95Goal2500MsPassed": false,
+        "hubToDomGoal3000MsPassed": true,
+        "errorCount": 0,
+        "failedOrIncompleteRounds": [],
+        "counters": {
+          "invalidPayloads": 0,
+          "superseded": 0,
+          "paintTimeouts": 0,
+          "negativeClockLatencySamples": 0,
+          "clockInconsistentLatencySamples": 0,
+          "changedVisiblePriceTicks": 98
+        },
+        "perRound": [
+          {
+            "round": 1,
+            "lcpMs": 2176,
+            "firstNumericPriceMs": 2534.5,
+            "httpStatus": 200,
+            "errorRecorded": false
+          },
+          {
+            "round": 2,
+            "lcpMs": 2256,
+            "firstNumericPriceMs": 2677.60000000149,
+            "httpStatus": 200,
+            "errorRecorded": false
+          },
+          {
+            "round": 3,
+            "lcpMs": 2212,
+            "firstNumericPriceMs": 2808.6999999955297,
+            "httpStatus": 200,
+            "errorRecorded": false
+          },
+          {
+            "round": 4,
+            "lcpMs": 2168,
+            "firstNumericPriceMs": 2619.1999999955297,
+            "httpStatus": 200,
+            "errorRecorded": false
+          },
+          {
+            "round": 5,
+            "lcpMs": 2184,
+            "firstNumericPriceMs": 2534.7000000029802,
+            "httpStatus": 200,
+            "errorRecorded": false
+          },
+          {
+            "round": 6,
+            "lcpMs": 2540,
+            "firstNumericPriceMs": 3016.5,
+            "httpStatus": 200,
+            "errorRecorded": false
+          },
+          {
+            "round": 7,
+            "lcpMs": 2204,
+            "firstNumericPriceMs": 2552.6999999955297,
+            "httpStatus": 200,
+            "errorRecorded": false
+          },
+          {
+            "round": 8,
+            "lcpMs": 2480,
+            "firstNumericPriceMs": 2907.0999999940395,
+            "httpStatus": 200,
+            "errorRecorded": false
+          },
+          {
+            "round": 9,
+            "lcpMs": 2280,
+            "firstNumericPriceMs": 2609.8000000044703,
+            "httpStatus": 200,
+            "errorRecorded": false
+          },
+          {
+            "round": 10,
+            "lcpMs": 2188,
+            "firstNumericPriceMs": 2657.89999999851,
+            "httpStatus": 200,
+            "errorRecorded": false
+          },
+          {
+            "round": 11,
+            "lcpMs": 2212,
+            "firstNumericPriceMs": 2659,
+            "httpStatus": 200,
+            "errorRecorded": false
+          },
+          {
+            "round": 12,
+            "lcpMs": 2608,
+            "firstNumericPriceMs": 2971.60000000149,
+            "httpStatus": 200,
+            "errorRecorded": false
+          },
+          {
+            "round": 13,
+            "lcpMs": 2444,
+            "firstNumericPriceMs": 2797.2000000029802,
+            "httpStatus": 200,
+            "errorRecorded": false
+          },
+          {
+            "round": 14,
+            "lcpMs": 2588,
+            "firstNumericPriceMs": 2968.7000000029802,
+            "httpStatus": 200,
+            "errorRecorded": false
+          },
+          {
+            "round": 15,
+            "lcpMs": 2328,
+            "firstNumericPriceMs": 2651.7000000029802,
+            "httpStatus": 200,
+            "errorRecorded": false
+          },
+          {
+            "round": 16,
+            "lcpMs": 2164,
+            "firstNumericPriceMs": 2611.0999999940395,
+            "httpStatus": 200,
+            "errorRecorded": false
+          },
+          {
+            "round": 17,
+            "lcpMs": 2528,
+            "firstNumericPriceMs": 2899.60000000149,
+            "httpStatus": 200,
+            "errorRecorded": false
+          },
+          {
+            "round": 18,
+            "lcpMs": 2248,
+            "firstNumericPriceMs": 2675.2000000029802,
+            "httpStatus": 200,
+            "errorRecorded": false
+          },
+          {
+            "round": 19,
+            "lcpMs": 2344,
+            "firstNumericPriceMs": 2656.10000000149,
+            "httpStatus": 200,
+            "errorRecorded": false
+          },
+          {
+            "round": 20,
+            "lcpMs": 2372,
+            "firstNumericPriceMs": 2898.39999999851,
+            "httpStatus": 200,
+            "errorRecorded": false
+          }
+        ],
+        "outliersNotDropped": true,
+        "independentlyRecalculated": true,
+        "freshnessNotProvenByFirstNumericPrice": true,
+        "physicalCompositorPaintNotMeasured": true
+      }
+    ],
+    "allRawFailuresPreservedByEvidenceHash": true,
+    "errorMessagesOmittedForPrivacy": true
+  },
+  "sse": {
+    "state": "complete",
+    "identity": {
+      "checks": 2,
+      "allMatched": true,
+      "identityReadsExcludedFromTiming": true,
+      "identityReadsMayWarmCdnDnsTlsCaches": true
+    },
+    "inputFailureRecorded": false,
+    "results": [
+      {
+        "publicUrl": "https://coin-desk.62.171.141.206.sslip.io",
+        "clientsRequested": 100,
+        "mainSessions": 100,
+        "normalMainSessions": 100,
+        "reconnectSessions": 10,
+        "normalReconnectSessions": 10,
+        "maximumSimultaneouslyOpenClients": 100,
+        "steadyStartedAtUtc": "2026-10-14T17:01:04.818Z",
+        "steadyDurationMs": 60002,
+        "mainHandshakeMs": {
+          "count": 100,
+          "missingOrInvalidCount": 0,
+          "negativeCount": 0,
+          "min": 302,
+          "median": 863,
+          "p95": 917,
+          "max": 959
+        },
+        "reconnectHandshakeMs": {
+          "count": 10,
+          "missingOrInvalidCount": 0,
+          "negativeCount": 0,
+          "min": 838,
+          "median": 863,
+          "p95": 1435,
+          "max": 1435
+        },
+        "wholeCohortHubToClientMs": {
+          "count": 48872,
+          "min": 332.5,
+          "median": 741.5,
+          "p95": 1283.5,
+          "max": 2024.5
+        },
+        "wholeByMarketMs": {
+          "upbit": {
+            "count": 5782,
+            "min": 333.5,
+            "median": 805.5,
+            "p95": 1314.5,
+            "max": 1491.5
+          },
+          "binance": {
+            "count": 43090,
+            "min": 332.5,
+            "median": 737.5,
+            "p95": 1279.5,
+            "max": 2024.5
+          }
+        },
+        "steadyHundredHubToClientMs": {
+          "count": 43190,
+          "min": 332.5,
+          "median": 744.5,
+          "p95": 1287.5,
+          "max": 2024.5
+        },
+        "steadyByMarketMs": {
+          "upbit": {
+            "count": 4972,
+            "min": 333.5,
+            "median": 811.5,
+            "p95": 1314.5,
+            "max": 1491.5
+          },
+          "binance": {
+            "count": 38218,
+            "min": 332.5,
+            "median": 741.5,
+            "p95": 1282.5,
+            "max": 2024.5
+          }
+        },
+        "clock": {
+          "valid": true,
+          "samples": 8,
+          "offsetMs": 4456.5,
+          "errorBoundMs": 442.5
+        },
+        "steadyConservativeP95UpperMs": 1730.0,
+        "latencyGoal3000MsPassed": true,
+        "deliveryLatencyRawArrayRetained": false,
+        "deliveryPercentilesIndependentlyRecomputed": false,
+        "deliveryVerification": "Reported fixed-runner nearest-rank distributions only; raw delivery latency arrays were not retained. Handshake samples and clock-bound arithmetic are independently recalculated.",
+        "errors": 0,
+        "disconnectedFrames": 0,
+        "negativeClockLatencySamples": 0,
+        "clockInconsistentLatencySamples": 0,
+        "automaticRetries": 0,
+        "assetCount": 150,
+        "supportedPairs": 241,
+        "actualFreshPairCountReported": 224,
+        "actualFreshPairCountFromNames": 224,
+        "actualFreshByMarket": {
+          "upbit": 87,
+          "binance": 137
+        },
+        "freshNotObservedPairs": [
+          "binance:HOT",
+          "upbit:ASTR",
+          "upbit:ATH",
+          "upbit:ATOM",
+          "upbit:CHZ",
+          "upbit:COW",
+          "upbit:DOT",
+          "upbit:JST",
+          "upbit:PENDLE",
+          "upbit:RAY",
+          "upbit:SPX",
+          "upbit:SUPER",
+          "upbit:SYRUP",
+          "upbit:TIA",
+          "upbit:WIF",
+          "upbit:WLFI",
+          "upbit:XCN"
+        ],
+        "actualNewTickPairCountReported": 194,
+        "uniqueNewTradesReported": 2994,
+        "uniqueTradeCounterCapped": false,
+        "uniqueTradesNotIndependentlyReconstructed": true,
+        "sameTradeMayProduceMultipleClientSamples": true,
+        "sourceExchangeConnectionsCreatedByProbe": false,
+        "physicalPaintOrExchangeToScreenNotMeasured": true
+      }
+    ],
+    "rawErrorTextOmittedForPrivacy": true
+  },
+  "resources": {
+    "state": "complete",
+    "plannedDurationSeconds": 120,
+    "elapsedSeconds": 122.372,
+    "sampleCount": 9,
+    "sampleIntervalSeconds": 15,
+    "sshConnections": 1,
+    "writesToServices": 0,
+    "automaticRetryPerformed": false,
+    "exactApiImageVerified": true,
+    "containerIdsUnchanged": true,
+    "inputErrorEventCount": 0,
+    "wholeWindow": {
+      "api": {
+        "samples": 9,
+        "nodeProcessCountStable": true,
+        "positiveNodeProcessObserved": true,
+        "cpuPercent": {
+          "count": 9,
+          "missingOrInvalidCount": 0,
+          "negativeCount": 0,
+          "min": 0.95,
+          "median": 2.44,
+          "p95": 43.07,
+          "max": 43.07,
+          "first": 43.07,
+          "last": 0.95
+        },
+        "containerMemoryBytes": {
+          "count": 9,
+          "missingOrInvalidCount": 0,
+          "negativeCount": 0,
+          "min": 103022592,
+          "median": 103326679,
+          "p95": 103452508,
+          "max": 103452508,
+          "first": 103137935,
+          "last": 103022592
+        },
+        "nodeRssBytes": {
+          "count": 9,
+          "missingOrInvalidCount": 0,
+          "negativeCount": 0,
+          "min": 152117248,
+          "median": 152236032,
+          "p95": 152485888,
+          "max": 152485888,
+          "first": 152485888,
+          "last": 152268800
+        }
+      },
+      "quote-hub": {
+        "samples": 9,
+        "nodeProcessCountStable": true,
+        "positiveNodeProcessObserved": true,
+        "cpuPercent": {
+          "count": 9,
+          "missingOrInvalidCount": 0,
+          "negativeCount": 0,
+          "min": 3.61,
+          "median": 9.7,
+          "p95": 15.93,
+          "max": 15.93,
+          "first": 11.7,
+          "last": 3.61
+        },
+        "containerMemoryBytes": {
+          "count": 9,
+          "missingOrInvalidCount": 0,
+          "negativeCount": 0,
+          "min": 39059456,
+          "median": 40212890,
+          "p95": 40842035,
+          "max": 40842035,
+          "first": 39059456,
+          "last": 40842035
+        },
+        "nodeRssBytes": {
+          "count": 9,
+          "missingOrInvalidCount": 0,
+          "negativeCount": 0,
+          "min": 76165120,
+          "median": 77111296,
+          "p95": 77750272,
+          "max": 77750272,
+          "first": 76165120,
+          "last": 77750272
+        }
+      }
+    },
+    "overlapWithSteadyHundred": {
+      "state": "conservative_declared_steady_interval",
+      "clientClockStartUtc": "2026-10-14T17:01:04.818000+00:00",
+      "clientClockEndUtc": "2026-10-14T17:02:04.820000+00:00",
+      "vpsMinusClientOffsetMs": 4456.5,
+      "offsetErrorBoundMs": 442.5,
+      "formula": "[clientStart + offset + error, clientEnd + offset - error]",
+      "guaranteedServerClockStartUtc": "2026-10-14T17:01:09.717000+00:00",
+      "guaranteedServerClockEndUtc": "2026-10-14T17:02:08.834000+00:00",
+      "sampleIndices": [1, 2, 3, 4],
+      "sampleCount": 4,
+      "sampleServerTimesUtc": [
+        "2026-10-14T17:01:10.870565+00:00",
+        "2026-10-14T17:01:25.850271+00:00",
+        "2026-10-14T17:01:40.829885+00:00",
+        "2026-10-14T17:01:54.937945+00:00"
+      ],
+      "services": {
+        "api": {
+          "samples": 4,
+          "nodeProcessCountStable": true,
+          "positiveNodeProcessObserved": true,
+          "cpuPercent": {
+            "count": 4,
+            "missingOrInvalidCount": 0,
+            "negativeCount": 0,
+            "min": 2.25,
+            "median": 3.0,
+            "p95": 4.02,
+            "max": 4.02,
+            "first": 2.44,
+            "last": 2.25
+          },
+          "containerMemoryBytes": {
+            "count": 4,
+            "missingOrInvalidCount": 0,
+            "negativeCount": 0,
+            "min": 103326679,
+            "median": 103379108.0,
+            "p95": 103452508,
+            "max": 103452508,
+            "first": 103326679,
+            "last": 103452508
+          },
+          "nodeRssBytes": {
+            "count": 4,
+            "missingOrInvalidCount": 0,
+            "negativeCount": 0,
+            "min": 152117248,
+            "median": 152154112.0,
+            "p95": 152190976,
+            "max": 152190976,
+            "first": 152117248,
+            "last": 152190976
+          }
+        },
+        "quote-hub": {
+          "samples": 4,
+          "nodeProcessCountStable": true,
+          "positiveNodeProcessObserved": true,
+          "cpuPercent": {
+            "count": 4,
+            "missingOrInvalidCount": 0,
+            "negativeCount": 0,
+            "min": 7.68,
+            "median": 10.735,
+            "p95": 15.93,
+            "max": 15.93,
+            "first": 15.93,
+            "last": 8.8
+          },
+          "containerMemoryBytes": {
+            "count": 4,
+            "missingOrInvalidCount": 0,
+            "negativeCount": 0,
+            "min": 40055603,
+            "median": 40129003.5,
+            "p95": 40212890,
+            "max": 40212890,
+            "first": 40055603,
+            "last": 40212890
+          },
+          "nodeRssBytes": {
+            "count": 4,
+            "missingOrInvalidCount": 0,
+            "negativeCount": 0,
+            "min": 76914688,
+            "median": 77012992.0,
+            "p95": 77111296,
+            "max": 77111296,
+            "first": 76914688,
+            "last": 77111296
+          }
+        }
+      }
+    },
+    "entireResourceWindowNotCertifiedAs100ClientLoad": true,
+    "dockerContainerMemoryIsNotNodeRss": true,
+    "containerCpuIsNotWholeHostCpu": true,
+    "longTermLeakNotCertified": true,
+    "outliersNotDropped": true,
+    "independentlyRecalculated": true
+  },
+  "evidence": [
+    {
+      "name": "performance-browser-verified-0342.json",
+      "sha256": "eae1cf8194be292f49a5a5de3369dc71c501820bc6bd03bdddd6ce6a58cf884b",
+      "rawContentOmitted": true
+    },
+    {
+      "name": "performance-sse-verified-0342.json",
+      "sha256": "dd18e1c42298fb100bf8707b5cc8fa8f62248791c55863362985009001faaa15",
+      "rawContentOmitted": true
+    },
+    {
+      "name": "performance-resources-verified-0342.json",
+      "sha256": "7e872d23b2583afbd06b17397ae769e2d094597a30d1fe4205e191dc2dbb900a",
+      "rawContentOmitted": true
+    },
+    {
+      "name": "format-performance-audit.py",
+      "sha256": "954be5d908dc20e05c7ed81121e0bfa9deb4202db141a2f21f39da87f5b32e2c",
+      "rawContentOmitted": true
+    },
+    {
+      "name": "performance-reviewed-identity.json",
+      "sha256": "5fe0f0f6df3b63edd486ba52702ed2971e1b998b72a516e956216cd282566854",
+      "rawContentOmitted": true
+    },
+    {
+      "name": "performance-live.mjs",
+      "sha256": "7a705b076c986a9a8309a9d7f0b4198b5bb0f74390899449d9ef1b5b5cc08e7d",
+      "rawContentOmitted": true
+    },
+    {
+      "name": "resources-remote.py",
+      "sha256": "3bc3c420c95bfb6eb70ffbaf7167dd3a3bd380db9ce2cbc97721ea40d8b958e4",
+      "rawContentOmitted": true
+    },
+    {
+      "name": "deployment-public-final.json",
+      "sha256": "347c751f36a21a04efef13162337ed9b9422046251351c9ecb6d317b7b18cdd1",
+      "rawContentOmitted": true
+    },
+    {
+      "name": "live-chart-summary.json",
+      "sha256": "f60abc7a98a1b9007b6894930bf1bfb7415e1767c99164abdda6592560247933",
+      "rawContentOmitted": true
+    }
+  ],
+  "scope": "Measured selected conditions only. Not production uptime, exchange-to-screen latency, physical compositor paint, long-term leak, every asset freshness or all-user performance certification.",
+  "privacy": {
+    "rawHeadersIncluded": false,
+    "absoluteInternalPathsIncluded": false,
+    "userProfilesIncluded": false,
+    "privateNotesIncluded": false,
+    "pidsIncluded": false,
+    "personalOriginalsIncluded": false
+  },
+  "aggregatedAtUtc": "2026-10-14T17:09:13.139466+00:00"
+}

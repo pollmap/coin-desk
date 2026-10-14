@@ -1,0 +1,438 @@
+{
+  "schemaVersion": 1,
+  "version": "0.34.2",
+  "commit": "72fd084adf83de6a488c49afd8de4f1e5f1b0c38",
+  "runtimeRelease": "vps-84c91c439802eb85",
+  "preparedAtUtc": "2026-10-14T16:54:33.521189Z",
+  "privacy": {
+    "credentialsIncluded": false,
+    "requestOrResponseHeadersIncluded": false,
+    "personalOriginalsIncluded": false,
+    "internalFilesystemPathsIncluded": false,
+    "rawLogsIncluded": false
+  },
+  "scopeLimits": {
+    "allSourcesCurrentlyHealthy": false,
+    "allHistoricalDataComplete": false,
+    "physicalSafariVoiceOverVerified": false,
+    "physicalPhoneVerified": false,
+    "peopleUsabilityVerified": false,
+    "48HourWaitAdded": false
+  },
+  "identities": {
+    "previousRuntimeRelease": "vps-c0efd6732c5de070",
+    "canonicalDistSha256": "9005acc59291421ba24fb60a83488ae229129bc02531514a3e3e4420bf2d30b6",
+    "immutablePagesUrl": "https://4e3344ea.coin-desk.pages.dev",
+    "operatingOrigins": {
+      "pages": "https://coin-desk.pages.dev",
+      "vps": "https://coin-desk.62.171.141.206.sslip.io"
+    },
+    "apiImageId": "sha256:11b349340a4d64a3c5cd43b003a7bc56694e61be93824ac2a9a872d06b74f9f9",
+    "ciConfigId": "sha256:6d3748271c7f46fa9b72e2ed1b9415dbfe66269b2b8c32d7b3d5fcfee9a6c720",
+    "loadedOciManifestId": "sha256:11b349340a4d64a3c5cd43b003a7bc56694e61be93824ac2a9a872d06b74f9f9",
+    "actualImageMatchesLoadedId": true,
+    "actualImageIsVerifiedId": true,
+    "layerChainVerified": true,
+    "platformVerified": true
+  },
+  "ci": {
+    "pullRequest": {
+      "kind": "pull_request",
+      "runId": 38589896200,
+      "runAttempt": 1,
+      "conclusion": "success",
+      "exactHead": "753873385a5d2156bfdf86a96721ca350ea82abd",
+      "allFiveJobsSucceeded": true,
+      "jobHeadsMatched": true,
+      "unitPassed": 826,
+      "nodeServerPassed": 31,
+      "pythonServerPassed": 32,
+      "recoveryPassed": 2,
+      "browserTotals": {
+        "cases": 438,
+        "passed": 435,
+        "failed": 0,
+        "excluded": 3,
+        "flaky": 0,
+        "retryMarkers": 0
+      },
+      "browserEngines": [
+        {
+          "engine": "chromium",
+          "passed": 218,
+          "failed": 0,
+          "excluded": 1,
+          "retryMarkers": 0
+        },
+        {
+          "engine": "webkit",
+          "passed": 217,
+          "failed": 0,
+          "excluded": 2,
+          "retryMarkers": 0
+        }
+      ],
+      "failedJobReruns": 0,
+      "browserCaseRetries": 0
+    },
+    "main": {
+      "kind": "main",
+      "runId": 38592255744,
+      "runAttempt": 1,
+      "conclusion": "success",
+      "exactHead": "72fd084adf83de6a488c49afd8de4f1e5f1b0c38",
+      "allFiveJobsSucceeded": true,
+      "jobHeadsMatched": true,
+      "unitPassed": 826,
+      "nodeServerPassed": 31,
+      "pythonServerPassed": 32,
+      "recoveryPassed": 2,
+      "browserTotals": {
+        "cases": 438,
+        "passed": 435,
+        "failed": 0,
+        "excluded": 3,
+        "flaky": 0,
+        "retryMarkers": 0
+      },
+      "browserEngines": [
+        {
+          "engine": "chromium",
+          "passed": 218,
+          "failed": 0,
+          "excluded": 1,
+          "retryMarkers": 0
+        },
+        {
+          "engine": "webkit",
+          "passed": 217,
+          "failed": 0,
+          "excluded": 2,
+          "retryMarkers": 0
+        }
+      ],
+      "failedJobReruns": 0,
+      "browserCaseRetries": 0
+    },
+    "earlier0341AndLocalNativeFailureEvidencePreserved": true,
+    "earlierLocalNativeFailureCauseEstablished": false
+  },
+  "preparation": {
+    "stagingKind": "disk",
+    "firstAttempt": {
+      "failedAtUtc": "2026-10-14T16:20:27Z",
+      "error": "Disk stage violates 1.5GiB remaining memory reserve",
+      "stoppedBeforeBackup": true,
+      "productionUnchangedAtStop": true,
+      "partialEvidencePreserved": true
+    },
+    "explicitResume": {
+      "count": 1,
+      "automaticRetryPerformed": false,
+      "singleResumeClaimCreated": true,
+      "originalServicesVerified": 8,
+      "uploadedFilesVerified": 3,
+      "diskOwnerVerified": true,
+      "currentOldReleaseVerified": true,
+      "originalThresholdsRetained": true,
+      "acceptedKnownPreBackupTests": 1,
+      "rejectedInvalidResumeTests": 10
+    },
+    "prepared": true,
+    "candidateReadApisVerified": true,
+    "existingHubOnly": true,
+    "guardTests": {
+      "disk": 17,
+      "original": 42
+    },
+    "reservesBytes": {
+      "remainingMemory": 1610612736,
+      "disk": 2147483648,
+      "history": 8589934592
+    },
+    "guardThresholdsUnchanged": true,
+    "successfulCapacitySampleCount": 618,
+    "minimumSuccessfulRemainingMemoryBytes": 1894429471,
+    "minimumSuccessfulFreeDiskBytes": 6613049344,
+    "tmpfsAllocationBytes": 0,
+    "ramMountVerified": false,
+    "cleanupPerformed": false
+  },
+  "backupRestore": {
+    "verified": true,
+    "userTableCount": 21,
+    "schemaContentAndIndexFingerprintsChecked": true,
+    "independentDiskCloneFingerprintMatched": true,
+    "verificationBasis": "Successful disk-stage guards compare all 21 user-table schema/content/index fingerprints against the independently restored clone before backupVerified becomes true.",
+    "rawSha256": "69d5aab042eb3c036a274122fc88b0e7e5a0cb7c7950af03b30ffa71fc5a9bd1",
+    "cloneSha256": "69d5aab042eb3c036a274122fc88b0e7e5a0cb7c7950af03b30ffa71fc5a9bd1",
+    "gzipSha256": "125d10d18e946b7968548fb561f547a8ddb1c081f1f15fdad21926d921ea8139",
+    "rawCloneBytesMatched": true,
+    "rawBytes": 179425280,
+    "gzipBytes": 55544033,
+    "independentDiskRestoreVerified": true,
+    "independentMemoryRestoreVerified": false,
+    "rawSnapshotGzipAndCloneRetained": true,
+    "previousReleaseAndOriginalEvidenceRetained": true,
+    "originalDataDeletedForCapacity": false
+  },
+  "activation": {
+    "startedAtUtc": "2026-10-14T16:36:45Z",
+    "completedAtUtc": "2026-10-14T16:37:06Z",
+    "promoted": true,
+    "servicesChanged": ["api"],
+    "protectedUnchangedServices": [
+      "quotes",
+      "background",
+      "recent",
+      "analysis",
+      "backup",
+      "quote-hub",
+      "migrate"
+    ],
+    "protectedServiceCountVerified": 7,
+    "schemaChanged": false,
+    "collectorsAndQuoteHubReplaced": false,
+    "productionReadGuard": {
+      "releaseVerified": "vps-84c91c439802eb85",
+      "assetCount": 150,
+      "markets": {
+        "upbit": {
+          "currency": "KRW",
+          "rows": 3,
+          "quotesPresent": 3,
+          "states": {
+            "ready": 3
+          }
+        },
+        "binance": {
+          "currency": "USDT",
+          "rows": 3,
+          "quotesPresent": 3,
+          "states": {
+            "ready": 3
+          }
+        }
+      },
+      "series": {
+        "mvrv": {
+          "unit": "배",
+          "rows": 2,
+          "dataAsOf": 1791849600,
+          "stale": false,
+          "source": "Coin Metrics Community · CC BY-NC 4.0"
+        },
+        "funding": {
+          "unit": "%",
+          "rows": 2,
+          "dataAsOf": 1791993600,
+          "stale": false,
+          "source": "Bybit V5 public market data"
+        }
+      },
+      "themeCount": 31,
+      "matrices": {
+        "upbit": {
+          "currency": "KRW",
+          "basisDay": 1791849600,
+          "assetPoints": 102,
+          "excludedAssets": 1,
+          "themePoints": 23,
+          "excludedThemes": 8,
+          "currentQuoteNotUsed": true
+        },
+        "binance": {
+          "currency": "USDT",
+          "basisDay": 1791849600,
+          "assetPoints": 138,
+          "excludedAssets": 0,
+          "themePoints": 31,
+          "excludedThemes": 0,
+          "currentQuoteNotUsed": true
+        }
+      },
+      "providerFreshnessNotOverridden": true,
+      "collectionApisCalled": false
+    }
+  },
+  "publicVerification": {
+    "checkedAtUtc": "2026-10-14T16:38:52.488005+00:00",
+    "readOnly": true,
+    "credentialsUsed": false,
+    "staticBytesVerified": true,
+    "origins": {
+      "pages": {
+        "origin": "https://coin-desk.pages.dev",
+        "assetCount": 224,
+        "matched": 224,
+        "indexStatus": 200,
+        "securityPolicyHeaderPresence": {
+          "content-security-policy": true,
+          "content-security-policy-report-only": false,
+          "strict-transport-security": true,
+          "permissions-policy": true,
+          "x-frame-options": true,
+          "x-content-type-options": true,
+          "referrer-policy": true
+        }
+      },
+      "vps": {
+        "origin": "https://coin-desk.62.171.141.206.sslip.io",
+        "assetCount": 224,
+        "matched": 224,
+        "indexStatus": 200,
+        "securityPolicyHeaderPresence": {
+          "content-security-policy": true,
+          "content-security-policy-report-only": false,
+          "strict-transport-security": true,
+          "permissions-policy": true,
+          "x-frame-options": true,
+          "x-content-type-options": true,
+          "referrer-policy": true
+        }
+      }
+    },
+    "historicalHealthSnapshots": [
+      {
+        "origin": "https://coin-desk.pages.dev",
+        "healthCheckedAtUtc": "2026-10-14T16:39:51Z",
+        "healthHttpStatus": 503,
+        "healthOk": false,
+        "activeDiagnoses": {
+          "CURRENT": 1529,
+          "PROVIDER_RATE_LIMIT": 1,
+          "TRADE_STALE": 55
+        },
+        "statusCheckedAtUtc": "2026-10-14T16:39:50Z",
+        "statusHttpStatus": 200,
+        "activeSourceCounts": {
+          "ok": 1529,
+          "error": 1,
+          "delayed": 55
+        },
+        "activeSourceCount": 1585,
+        "allSourceRowsIncludingInactive": 1635,
+        "runtimeHttpStatus": 200,
+        "runtimeRelease": "vps-84c91c439802eb85",
+        "historyCollection": "paused_low_space"
+      },
+      {
+        "origin": "https://coin-desk.62.171.141.206.sslip.io",
+        "healthCheckedAtUtc": "2026-10-14T16:39:56Z",
+        "healthHttpStatus": 503,
+        "healthOk": false,
+        "activeDiagnoses": {
+          "CURRENT": 1529,
+          "PROVIDER_RATE_LIMIT": 1,
+          "TRADE_STALE": 55
+        },
+        "statusCheckedAtUtc": "2026-10-14T16:39:50Z",
+        "statusHttpStatus": 200,
+        "activeSourceCounts": {
+          "ok": 1529,
+          "error": 1,
+          "delayed": 55
+        },
+        "activeSourceCount": 1585,
+        "allSourceRowsIncludingInactive": 1635,
+        "runtimeHttpStatus": 200,
+        "runtimeRelease": "vps-84c91c439802eb85",
+        "historyCollection": "paused_low_space"
+      }
+    ],
+    "subsequentSeparateDiagnostic": {
+      "statusCheckedAtUtc": "2026-10-14T16:41:21Z",
+      "healthCheckedAtUtc": "2026-10-14T16:41:19Z",
+      "activeSourceCount": 1585,
+      "activeSourceCounts": {
+        "ok": 1538,
+        "delayed": 47
+      },
+      "activeDiagnoses": {
+        "CURRENT": 1538,
+        "TRADE_STALE": 47
+      },
+      "healthOk": false,
+      "healthReasonCounts": {
+        "SOURCE_DELAYED": 47
+      },
+      "nonQuoteProblemCount": 0,
+      "independentReadNotSameTimestampAsOtherSnapshots": true
+    }
+  },
+  "capacity": {
+    "activationFreeDiskBytes": 6602399744,
+    "latestNaturalSampleAtUtc": "2026-10-14T16:43:59Z",
+    "latestFreeDiskBytes": 6493999104,
+    "latestFreeDiskGiB": 6.048,
+    "historyGuardBytes": 8589934592,
+    "historyCollection": "paused_low_space",
+    "historyGuardMet": false,
+    "generalDiskReserveBytes": 2147483648,
+    "generalDiskReserveMet": true,
+    "memoryReserveBytes": 1610612736,
+    "memoryThresholdNotLowered": true
+  },
+  "validation": {
+    "codeCi": "passed exact-head PR and main CI",
+    "deployment": "passed both origins; 224 of 224 static files matched each",
+    "actualData": "331.053-second read-only natural-update sample recorded separately; delayed trades and historical limits remain",
+    "liveCurrentAxisQa": "49 of 49 actual-data steps passed in 12 contexts across both origins; see live-0342.json",
+    "performance": "40 initial loads, 100 SSE clients and 9 resource samples complete; VPS LCP p95 2588ms exceeds the 2500ms target; see performance-0342.json and performance-0342.md",
+    "finalData": "Sequential final reads preserve HTTP 503 and trade-stale diagnoses; see final-data-0342.json"
+  },
+  "evidence": [
+    {
+      "file": "ci-pr-final.json",
+      "sha256": "0639fe467f5dbe0bc3c65cf74209c2272c107f086d3f53f965dbac8a63cba46f"
+    },
+    {
+      "file": "ci-main-final.json",
+      "sha256": "7af2087fc70ea0ea087d34885caac6243cf6daa0e153346dd6acff00fb597a86"
+    },
+    {
+      "file": "prepared-disk-result.json",
+      "sha256": "f3f025c93bc44b12d98439a32ffa304f04bb18b5659345f29818ce848ab76cd4"
+    },
+    {
+      "file": "activation-result.json",
+      "sha256": "96a588669469addd5ae6c8aa97eaefe81325683b2999f141c49e57b078374c1b"
+    },
+    {
+      "file": "pages-deployment.json",
+      "sha256": "ae577867d94d05349ae32ccd49050967a4c3e0557f72aeffdadbf6c19436c4b2"
+    },
+    {
+      "file": "deployment-public-final.json",
+      "sha256": "347c751f36a21a04efef13162337ed9b9422046251351c9ecb6d317b7b18cdd1"
+    },
+    {
+      "file": "image-pin-readonly.json",
+      "sha256": "8a199a81961767b8ff889665fa9fa7aefc727445adf92ab24299c618ee4f12a9"
+    },
+    {
+      "file": "reviewed-disk-pins.json",
+      "sha256": "79ec58383db3d919818b6fd659602138a25728fda1c3c0826fdb5defd29ebf3c"
+    },
+    {
+      "file": "reviewed-resume-pins.json",
+      "sha256": "18d131f0922d541593d0085e5714b668757f77b1198ff61331c8e1c0d287bc12"
+    },
+    {
+      "file": "resume-before-backup-attempt.json",
+      "sha256": "ce0bbbc5679b51c962329ed9d16e928c987effe0269eb5890596b205db26e2af"
+    },
+    {
+      "file": "phase-20261014T161805Z.private.log",
+      "sha256": "83f3cf5c33c6fc37c2e062e4252057cf5ed1da8918f21f204d3726fde9f7b609"
+    },
+    {
+      "file": "phase-20261014T163204Z.private.log",
+      "sha256": "e169753919ae6e9d7fad1dd60c3edc9806aa86e719b2adeaa6f09351c799a179"
+    },
+    {
+      "file": "final-source-diagnostic.private.json",
+      "sha256": "29d2ed5d424d6e9551716dbd8a52cf6001e9f04ebb57a68609c3c8ffe31699ba"
+    }
+  ]
+}

@@ -130,12 +130,49 @@
     "brandAnd150LogosPassed": true
   },
   "releaseGates": {
-    "prCi": "pending",
-    "mainCi": "pending",
-    "vps": "pending",
-    "pages": "pending",
-    "actualLiveCurrentAxis": "pending"
+    "prCi": "passed",
+    "mainCi": "passed",
+    "vps": "deployed-verified",
+    "pages": "deployed-verified",
+    "actualLiveCurrentAxis": "49-real-data-steps-passed",
+    "performance": "measured-complete-with-vps-lcp-target-miss"
   },
   "physicalDeviceQa": false,
-  "no48HourWait": true
+  "no48HourWait": true,
+  "finalReleaseVerification": {
+    "mainCommit": "72fd084adf83de6a488c49afd8de4f1e5f1b0c38",
+    "runtimeRelease": "vps-84c91c439802eb85",
+    "canonicalDistSha256": "9005acc59291421ba24fb60a83488ae229129bc02531514a3e3e4420bf2d30b6",
+    "mainCiRun": 38592255744,
+    "browserPassed": 435,
+    "browserExcluded": 3,
+    "browserRetries": 0,
+    "publicFilesMatchedPerOrigin": 224,
+    "actualLiveQaStepsPassed": 49,
+    "actualLiveQaContexts": 12,
+    "initialLoadsPerOrigin": 20,
+    "lcpP95Ms": {
+      "pages": 412,
+      "vps": 2588,
+      "target": 2500,
+      "vpsTargetMet": false
+    },
+    "sseClients": 100,
+    "sseReconnectClients": 10,
+    "resourceSamples": 9,
+    "allHistoricalDataComplete": false,
+    "allSourcesCurrentlyHealthy": false,
+    "physicalDeviceQa": false,
+    "codeOrCriteriaRelaxedForPriorFailures": false,
+    "evidence": [
+      "ci-pr-0342.json",
+      "ci-main-0342.json",
+      "deployment-0342.json",
+      "live-0342.json",
+      "natural-cron-0342.json",
+      "final-data-0342.json",
+      "performance-0342.json",
+      "performance-0342.md"
+    ]
+  }
 }
