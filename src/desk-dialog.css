@@ -48,10 +48,7 @@
   border-radius: 6px;
   padding: 8px 12px;
   background: var(--panel);
-  transition:
-    background-color 150ms,
-    border-color 150ms,
-    color 150ms;
+  transition: border-color 150ms;
 }
 .desk-dialog button:hover {
   color: var(--text);

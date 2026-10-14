@@ -1,5 +1,71 @@
-import { test, expect } from '@playwright/test';
+import { test, expect, type Page } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
+
+async function closeButtonThemeFrames(page: Page, theme: 'light' | 'dark') {
+  const button = page.getByRole('button', { name: '지표 선택 닫기', exact: true });
+  return button.evaluate(async (element, nextTheme) => {
+    type Color = [number, number, number, number];
+    const parse = (text: string): Color => {
+      const parts = text.match(/\d*\.?\d+/g)?.map(Number);
+      if (!parts || parts.length < 3 || !/^rgba?\(/.test(text))
+        throw new Error('Unsupported computed color: ' + text);
+      return [parts[0], parts[1], parts[2], parts[3] ?? 1];
+    };
+    const over = (front: Color, back: Color): Color => {
+      const alpha = front[3] + back[3] * (1 - front[3]);
+      if (!alpha) return [0, 0, 0, 0];
+      return [
+        (front[0] * front[3] + back[0] * back[3] * (1 - front[3])) / alpha,
+        (front[1] * front[3] + back[1] * back[3] * (1 - front[3])) / alpha,
+        (front[2] * front[3] + back[2] * back[3] * (1 - front[3])) / alpha,
+        alpha,
+      ];
+    };
+    const luminance = (color: Color) => {
+      const channels = color.slice(0, 3).map((channel) => {
+        const value = channel / 255;
+        return value <= 0.04045 ? value / 12.92 : ((value + 0.055) / 1.055) ** 2.4;
+      });
+      return 0.2126 * channels[0] + 0.7152 * channels[1] + 0.0722 * channels[2];
+    };
+    const sample = (elapsed: number, phase: string) => {
+      const style = getComputedStyle(element);
+      const backgrounds: Color[] = [];
+      for (let node: Element | null = element; node; node = node.parentElement)
+        backgrounds.push(parse(getComputedStyle(node).backgroundColor));
+      let background: Color = [255, 255, 255, 1];
+      for (const layer of backgrounds.reverse()) background = over(layer, background);
+      const foreground = over(parse(style.color), background);
+      const front = luminance(foreground),
+        back = luminance(background);
+      const bounds = element.getBoundingClientRect();
+      return {
+        elapsed,
+        phase,
+        color: style.color,
+        backgroundColor: style.backgroundColor,
+        contrast: (Math.max(front, back) + 0.05) / (Math.min(front, back) + 0.05),
+        transitionProperty: style.transitionProperty,
+        transitionDuration: style.transitionDuration,
+        rect: { x: bounds.x, y: bounds.y, width: bounds.width, height: bounds.height },
+      };
+    };
+    const frames = [sample(0, 'before')];
+    document.documentElement.dataset.theme = nextTheme;
+    const started = performance.now();
+    frames.push(sample(0, 'immediate'));
+    await new Promise<void>((resolve) => {
+      const frame = (now: number) => {
+        const elapsed = now - started;
+        frames.push(sample(elapsed, elapsed >= 240 ? 'complete' : 'frame'));
+        if (elapsed >= 240) resolve();
+        else requestAnimationFrame(frame);
+      };
+      requestAnimationFrame(frame);
+    });
+    return frames;
+  }, theme);
+}
 
 test('primary shortcuts are price, MVRV and Supertrend, and navigate in the same chart', async ({
   page,
@@ -91,10 +157,17 @@ for (const width of [320, 390, 1280]) {
     expect(geometry.rowHeight).toBeGreaterThanOrEqual(56);
     for (const height of geometry.controlHeights)
       expect(height).toBeGreaterThanOrEqual(width < 768 ? 44 : 40);
-    for (const theme of ['light', 'dark']) {
-      await page.evaluate((value) => {
-        document.documentElement.dataset.theme = value;
-      }, theme);
+    for (const [index, theme] of ['light', 'dark', 'light'].entries()) {
+      const frames = await closeButtonThemeFrames(page, theme as 'light' | 'dark');
+      await test.info().attach(`close-button-${width}-${index}-${theme}-frames.json`, {
+        body: Buffer.from(JSON.stringify(frames)),
+        contentType: 'application/json',
+      });
+      expect(frames.filter((frame) => frame.phase === 'frame').length).toBeGreaterThan(0);
+      for (const frame of frames) {
+        expect(frame.contrast, JSON.stringify({ theme, ...frame })).toBeGreaterThanOrEqual(4.5);
+        expect(frame.rect).toEqual(frames[0].rect);
+      }
       expect(
         (
           await new AxeBuilder({ page })
@@ -102,7 +175,9 @@ for (const width of [320, 390, 1280]) {
             .analyze()
         ).violations,
       ).toEqual([]);
-      await page.screenshot({ path: test.info().outputPath(`chooser-${width}-${theme}.png`) });
+      await page.screenshot({
+        path: test.info().outputPath(`chooser-${width}-${index}-${theme}.png`),
+      });
     }
     await page.keyboard.press('Escape');
     await expect(dialog).not.toBeVisible();
