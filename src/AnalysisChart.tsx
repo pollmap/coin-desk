@@ -3,14 +3,17 @@ import { createPortal } from 'react-dom';
 import { RotateCcw } from 'lucide-react';
 import {
   CandlestickSeries,
+  CrosshairMode,
   LineSeries,
   PriceScaleMode,
+  TrackingModeExitMode,
   createSeriesMarkers,
   type IChartApi,
   type ISeriesApi,
   type IPriceLine,
   type SeriesType,
   type UTCTimestamp,
+  type MouseEventParams,
 } from 'lightweight-charts';
 import { createDeskChart } from './chart-theme';
 import { eligibleChartPrice, type LiveChartPrice } from '../shared/live-chart-price';
@@ -32,6 +35,14 @@ import {
   readingsCsv,
   readingDigits,
 } from '../shared/chart-readings';
+import {
+  chartDate,
+  chartTick,
+  chartPrecision,
+  inspectionPosition,
+  logicalRangeChanged,
+  mobileChartHeight,
+} from './chart-interaction';
 
 export interface AnalysisLine {
   id: string;
@@ -56,6 +67,18 @@ export interface ChartObservation {
   direction?: 'up' | 'down' | 'neutral';
 }
 const EMPTY_OBSERVATIONS: ChartObservation[] = [];
+interface ChartInspection {
+  time: number;
+  x: number;
+  y: number;
+  pane: number;
+  top: number;
+  width: number;
+  height: number;
+  observationX: number;
+  observationY: number | null;
+  values: { id: string; title: string; unit: string; value: number; color?: string }[];
+}
 const panelCount = (lines: AnalysisLine[]) =>
   new Set(lines.filter((l) => !l.overlay && l.data.length).map((l) => l.pane ?? l.id)).size;
 const ts = (n: number) => n as UTCTimestamp;
@@ -145,6 +168,23 @@ export const AnalysisChart = memo(function AnalysisChart({
   const liveLine = useRef<IPriceLine | null>(null);
   const moveCursor = useRef<(time: number | null, preserveRange?: boolean) => void>(() => {});
   const manualCursor = useRef(false);
+  const keyboardInspection = useRef<number | null>(null);
+  const inspectionRef = useRef<ChartInspection | null>(null);
+  const [inspection, setInspection] = useState<ChartInspection | null>(null);
+  const tooltip = useRef<HTMLDivElement>(null);
+  const [tooltipPosition, setTooltipPosition] = useState({ left: 6, top: 6, maxWidth: 240 });
+  const touchInspection = useRef(false);
+  const pointerKind = useRef('mouse');
+  const activePointers = useRef(new Map<number, { x: number; y: number }>());
+  const gesture = useRef<{
+    baseline: { from: number; to: number } | null;
+    moved: boolean;
+    expires: number;
+  } | null>(null);
+  const inspectAt = useRef<(x: number, y: number) => void>(() => {});
+  const inspectionFrame = useRef(0);
+  const tapFrame = useRef(0);
+  const cursorFrame = useRef(0);
   const publicMode = useRef(publicFocus);
   publicMode.current = publicFocus;
   const [pinned, setPinned] = useState(false);
@@ -178,9 +218,35 @@ export const AnalysisChart = memo(function AnalysisChart({
   const latest = useRef({ points, candles, lines, signals, observations, bands, initialWindow });
   latest.current = { points, candles, lines, signals, observations, bands, initialWindow };
   const updateSeries = useRef<() => void>(() => {});
-  const chartHeight = () =>
-    (host.current && host.current.clientWidth < 600 ? 330 : 440) +
-    panelCount(latest.current.lines) * 135;
+  const chartHeight = () => {
+    const surface = host.current;
+    const viewport = window.visualViewport;
+    const navigation = document.querySelector<HTMLElement>('.product-nav');
+    const navigationHeight =
+      navigation && getComputedStyle(navigation).position === 'fixed'
+        ? navigation.getBoundingClientRect().height
+        : 0;
+    const base =
+      surface && surface.clientWidth < 600
+        ? mobileChartHeight(
+            viewport?.height ?? window.innerHeight,
+            surface.getBoundingClientRect().top + window.scrollY,
+            navigationHeight,
+          )
+        : 440;
+    return base + panelCount(latest.current.lines) * 135;
+  };
+  const primaryPrecision = useMemo(
+    () =>
+      chartPrecision(
+        points.map((p) => p.value),
+        (v) =>
+          primary || !['USD', 'USDT', 'KRW'].includes(unit)
+            ? readingDigits(v)
+            : priceDigits(v, unit),
+      ),
+    [points, primary, unit],
+  );
   const display = (value: number | undefined) =>
     primary || !['USD', 'USDT', 'KRW'].includes(unit)
       ? numeric(value, readingDigits(value)) + ' ' + unit
@@ -217,6 +283,90 @@ export const AnalysisChart = memo(function AnalysisChart({
   const lineNumber = (line: AnalysisLine, value: number | undefined) =>
     numeric(value, line.supertrend ? priceDigits(value ?? 0, line.unit) : readingDigits(value));
   const fileName = (exportName ?? `${asset}-${unit}`).replace(/[\\/:*?"<>|]/g, '-');
+  function dismissInspection() {
+    cancelAnimationFrame(tapFrame.current);
+    cancelAnimationFrame(inspectionFrame.current);
+    cancelAnimationFrame(cursorFrame.current);
+    tapFrame.current = 0;
+    inspectionFrame.current = 0;
+    cursorFrame.current = 0;
+    touchInspection.current = false;
+    manualCursor.current = false;
+    keyboardInspection.current = null;
+    inspectionRef.current = null;
+    setInspection(null);
+    setSelected(null);
+    chartRef.current?.clearCrosshairPosition();
+  }
+  useEffect(() => {
+    const outside = (event: PointerEvent) => {
+      if (
+        publicMode.current &&
+        event.target instanceof Node &&
+        !host.current?.contains(event.target)
+      )
+        dismissInspection();
+    };
+    const escape = (event: KeyboardEvent) => {
+      if (
+        publicMode.current &&
+        event.key === 'Escape' &&
+        (inspectionRef.current ||
+          cursorFrame.current ||
+          tapFrame.current ||
+          inspectionFrame.current)
+      )
+        dismissInspection();
+    };
+    const releaseOutside = (event: PointerEvent) => {
+      if (
+        !activePointers.current.has(event.pointerId) ||
+        (event.target instanceof Node && host.current?.contains(event.target))
+      )
+        return;
+      activePointers.current.delete(event.pointerId);
+      if (gesture.current) gesture.current.expires = performance.now() + 250;
+      if (publicMode.current) dismissInspection();
+    };
+    document.addEventListener('pointerdown', outside, true);
+    document.addEventListener('pointerup', releaseOutside, true);
+    document.addEventListener('pointercancel', releaseOutside, true);
+    document.addEventListener('keydown', escape);
+    return () => {
+      document.removeEventListener('pointerdown', outside, true);
+      document.removeEventListener('pointerup', releaseOutside, true);
+      document.removeEventListener('pointercancel', releaseOutside, true);
+      document.removeEventListener('keydown', escape);
+      activePointers.current.clear();
+      gesture.current = null;
+    };
+  }, []);
+  useEffect(() => {
+    if (!inspection || !host.current || !tooltip.current) return;
+    const surface = host.current.getBoundingClientRect();
+    const visual = window.visualViewport;
+    const viewTop = visual?.offsetTop ?? 0;
+    const viewBottom = viewTop + (visual?.height ?? window.innerHeight);
+    const nav = document.querySelector<HTMLElement>('.product-nav');
+    const bottom =
+      nav && getComputedStyle(nav).position === 'fixed'
+        ? Math.min(viewBottom, nav.getBoundingClientRect().top)
+        : viewBottom;
+    const top = Math.max(inspection.top, viewTop - surface.top);
+    const plotBottom = Math.min(inspection.top + inspection.height, bottom - surface.top);
+    const rect = tooltip.current.getBoundingClientRect();
+    const position = inspectionPosition(
+      { x: inspection.x, y: inspection.top + inspection.y },
+      { left: 0, top, width: inspection.width, height: Math.max(1, plotBottom - top) },
+      { width: rect.width, height: rect.height },
+      pointerKind.current === 'touch',
+    );
+    setTooltipPosition({
+      ...position,
+      left: position.left + host.current.offsetLeft,
+      top: position.top + host.current.offsetTop,
+    });
+  }, [inspection]);
   function explore(t: number | null, preserveRange = false) {
     // A layout change under the pointer must not immediately replace “latest”.
     // Resume hover readings only on the next real pointer movement over the plot.
@@ -258,9 +408,29 @@ export const AnalysisChart = memo(function AnalysisChart({
         mode: settings.current.log ? PriceScaleMode.Logarithmic : PriceScaleMode.Normal,
         borderVisible: false,
         scaleMargins: { top: 0.05, bottom: 0.06 },
+        alignLabels: true,
+        entireTextOnly: true,
+        minimumWidth: 56,
       },
-      timeScale: { minBarSpacing: 0.001, borderVisible: false, lockVisibleTimeRangeOnResize: true },
-      localization: { locale: 'ko-KR' },
+      timeScale: {
+        minBarSpacing: 0.001,
+        borderVisible: false,
+        lockVisibleTimeRangeOnResize: true,
+        timeVisible: step < 86400,
+        tickMarkFormatter: (time: number, type: number) => chartTick(time, type),
+      },
+      crosshair: {
+        mode: CrosshairMode.Normal,
+        vertLine: { color: '#0f666b', visible: true, labelVisible: true },
+        horzLine: { color: '#0f666b', visible: true, labelVisible: true },
+      },
+      handleScroll: { horzTouchDrag: true, vertTouchDrag: false },
+      handleScale: { pinch: true },
+      trackingMode: { exitMode: TrackingModeExitMode.OnTouchEnd },
+      localization: {
+        locale: 'ko-KR',
+        timeFormatter: (time: number) => chartDate(time, showReadingTime) + ' KST',
+      },
     });
     chartRef.current = chart;
     const price = candles?.length
@@ -271,13 +441,21 @@ export const AnalysisChart = memo(function AnalysisChart({
           wickDownColor: '#e98a98',
           borderVisible: false,
           priceLineVisible: false,
-          priceFormat: { type: 'custom', formatter: (v: number) => money(v, unit) },
+          priceFormat: {
+            type: 'custom',
+            minMove: primaryPrecision.minMove,
+            formatter: (v: number) => money(v, unit),
+          },
         })
       : chart.addSeries(LineSeries, {
           color: primary?.color ?? '#65d4bc',
           lineWidth: 2,
           priceLineVisible: false,
-          priceFormat: { type: 'custom', formatter: (v: number) => display(v) },
+          priceFormat: {
+            type: 'custom',
+            minMove: primaryPrecision.minMove,
+            formatter: (v: number) => display(v),
+          },
         });
     if (candles?.length) price.setData(candles.map((p) => ({ ...p, time: ts(p.time) })));
     else price.setData(gapData(points, step));
@@ -293,17 +471,19 @@ export const AnalysisChart = memo(function AnalysisChart({
           lineWidth: 1,
           lineStyle: 2,
           axisLabelVisible: true,
-          title: primary.id.includes('mvrv')
-            ? '1배 · 시가총액 = 실현시가총액'
-            : primary.id.includes('funding')
-              ? '0% · 지급 방향 전환'
-              : primary.id === 'rsi'
-                ? level + ' · RSI 기준'
-                : String(level),
+          title: '',
         });
       }
     const cursorSeries = [
-      { id: 'primary', series: price, values: new Map(points.map((p) => [p.time, p.value])) },
+      {
+        id: 'primary',
+        series: price,
+        values: new Map(points.map((p) => [p.time, p.value])),
+        pane: 0,
+        title: primary?.title ?? '종가',
+        unit,
+        color: primary?.color,
+      },
     ];
     const panes = new Map<string, number>();
     for (const line of lines) {
@@ -313,9 +493,9 @@ export const AnalysisChart = memo(function AnalysisChart({
       const series = chart.addSeries(
         LineSeries,
         {
-          // The library can still show a title badge when lastValueVisible is false.
-          title: line.id.startsWith('band:') ? '' : line.title + ' · ' + line.unit,
-          lastValueVisible: !line.id.startsWith('band:'),
+          // Detailed overlay values belong in the tooltip, not competing axis badges.
+          title: '',
+          lastValueVisible: false,
           crosshairMarkerVisible: !line.id.startsWith('band:'),
           color: line.color,
           lineVisible: !line.supertrend,
@@ -323,6 +503,10 @@ export const AnalysisChart = memo(function AnalysisChart({
           priceLineVisible: false,
           priceFormat: {
             type: 'custom',
+            minMove: chartPrecision(
+              line.data.map((p) => p.value),
+              (v) => (line.supertrend ? priceDigits(v, line.unit) : readingDigits(v)),
+            ).minMove,
             formatter: (v: number) => lineNumber(line, v),
           },
         },
@@ -336,6 +520,10 @@ export const AnalysisChart = memo(function AnalysisChart({
       cursorSeries.push({
         id: line.id,
         series,
+        pane: index,
+        title: line.legendTitle ?? line.title,
+        unit: line.unit,
+        color: line.color,
         values: new Map(line.data.map((p) => [p.time, p.value])),
         ...(primitive ? { primitive } : {}),
       });
@@ -422,11 +610,139 @@ export const AnalysisChart = memo(function AnalysisChart({
         setSelected(e.time);
       }
     });
-    chart.subscribeCrosshairMove((e) => {
+    const showInspection = (event: MouseEventParams) => {
       if (!publicMode.current && manualCursor.current) return;
-      setSelectionKey(key);
-      setSelected(e.time === undefined ? null : Number(e.time));
-    });
+      if (
+        publicMode.current &&
+        manualCursor.current &&
+        keyboardInspection.current !== null &&
+        event.time !== keyboardInspection.current
+      )
+        return;
+      const paneIndex = event.paneIndex ?? 0;
+      const pane = chart.panes()[paneIndex];
+      const size = pane ? chart.paneSize(paneIndex) : undefined;
+      if (
+        !event.point ||
+        typeof event.time !== 'number' ||
+        !size ||
+        event.point.x < -1 ||
+        event.point.x > size.width + 1 ||
+        event.point.y < -1 ||
+        event.point.y > size.height + 1
+      ) {
+        if (touchInspection.current && !event.sourceEvent) return;
+        inspectionRef.current = null;
+      } else {
+        const entries = cursorSeries.filter(
+          (entry) =>
+            entry.pane === paneIndex &&
+            !entry.id.startsWith('band:') &&
+            entry.values.has(Number(event.time)),
+        );
+        const values = entries
+          .flatMap((entry) => {
+            const row = event.seriesData.get(entry.series);
+            const value =
+              row && ('close' in row ? row.close : 'value' in row ? row.value : undefined);
+            return typeof value === 'number' && Number.isFinite(value)
+              ? [{ id: entry.id, title: entry.title, unit: entry.unit, value, color: entry.color }]
+              : [];
+          })
+          .slice(0, 3);
+        const first = entries.find((entry) => entry.id === values[0]?.id);
+        const top =
+          (pane?.getHTMLElement()?.getBoundingClientRect().top ??
+            host.current!.getBoundingClientRect().top) - host.current!.getBoundingClientRect().top;
+        inspectionRef.current = values.length
+          ? {
+              time: Number(event.time),
+              x: event.point.x,
+              y: event.point.y,
+              pane: paneIndex,
+              top,
+              width: size.width,
+              height: size.height,
+              observationX: Number(
+                chart.timeScale().timeToCoordinate(ts(Number(event.time))) ?? event.point.x,
+              ),
+              observationY: first?.series.priceToCoordinate(values[0].value) ?? null,
+              values,
+            }
+          : null;
+      }
+      if (!inspectionFrame.current)
+        inspectionFrame.current = requestAnimationFrame(() => {
+          inspectionFrame.current = 0;
+          const next = inspectionRef.current;
+          setInspection(next);
+          setSelectionKey(key);
+          setSelected(next?.time ?? null);
+        });
+    };
+    chart.subscribeCrosshairMove(showInspection);
+    const syntheticInspection = (
+      time: number,
+      target: (typeof cursorSeries)[number],
+      value: number,
+      pointer?: { x: number; y: number },
+    ) => {
+      chart.setCrosshairPosition(value, ts(time), target.series);
+      // LWC deliberately does not emit crosshairMove for its synthetic-position API.
+      // Publish the same exact observation here for keyboard and tap inspection.
+      const x = chart.timeScale().timeToCoordinate(ts(time));
+      const y = target.series.priceToCoordinate(value);
+      if (x === null || y === null) return;
+      const seriesData: MouseEventParams['seriesData'] = new Map();
+      for (const entry of cursorSeries) {
+        const observed = entry.values.get(time);
+        if (observed !== undefined)
+          seriesData.set(entry.series, { time: ts(time), value: observed });
+      }
+      showInspection({
+        time: ts(time),
+        paneIndex: target.pane,
+        point: (pointer ?? { x, y }) as NonNullable<MouseEventParams['point']>,
+        seriesData,
+      });
+    };
+    inspectAt.current = (x, y) => {
+      const bounds = host.current!.getBoundingClientRect();
+      const pane = chart.panes().find((p) => {
+        const rect = p.getHTMLElement()?.getBoundingClientRect();
+        return rect && y + bounds.top >= rect.top && y + bounds.top < rect.top + p.getHeight();
+      });
+      if (!pane) {
+        dismissInspection();
+        return;
+      }
+      const index = pane.paneIndex();
+      const top = (pane.getHTMLElement()?.getBoundingClientRect().top ?? bounds.top) - bounds.top;
+      const width = chart.paneSize(index).width;
+      if (x < 0 || x > width) {
+        dismissInspection();
+        return;
+      }
+      const time = chart.timeScale().coordinateToTime(x);
+      const target = cursorSeries.find(
+        (entry) =>
+          entry.pane === index &&
+          !entry.id.startsWith('band:') &&
+          typeof time === 'number' &&
+          entry.values.has(time),
+      );
+      if (!target || typeof time !== 'number') {
+        dismissInspection();
+        return;
+      }
+      const value = target.series.coordinateToPrice(y - top);
+      if (value === null || !Number.isFinite(value)) {
+        dismissInspection();
+        return;
+      }
+      touchInspection.current = true;
+      syntheticInspection(time, target, value, { x, y: y - top });
+    };
     moveCursor.current = (time, preserveRange = false) => {
       if (time === null) {
         chart.clearCrosshairPosition();
@@ -438,6 +754,7 @@ export const AnalysisChart = memo(function AnalysisChart({
         return;
       }
       const range = chart.timeScale().getVisibleRange();
+      let moved = false;
       if (!preserveRange && range && (time < Number(range.from) || time > Number(range.to))) {
         // Keyboard/date navigation is a user pan too. Preserve it through
         // ResizeObserver and data refresh, even without a prior drag/zoom.
@@ -448,21 +765,56 @@ export const AnalysisChart = memo(function AnalysisChart({
           from: ts(pendingRange.current.from),
           to: ts(pendingRange.current.to),
         });
+        moved = true;
       }
-      chart.setCrosshairPosition(target.values.get(time)!, ts(time), target.series);
+      if (moved) {
+        cancelAnimationFrame(cursorFrame.current);
+        cursorFrame.current = requestAnimationFrame(() => {
+          cursorFrame.current = 0;
+          syntheticInspection(time, target, target.values.get(time)!);
+        });
+      } else syntheticInspection(time, target, target.values.get(time)!);
     };
     updateSeries.current = () => {
       const data = latest.current;
+      const retainedInspection =
+        publicMode.current && (touchInspection.current || keyboardInspection.current !== null)
+          ? inspectionRef.current
+          : null;
       const requested = pendingRange.current;
       const range = requested
         ? { from: ts(requested.from), to: ts(requested.to) }
         : chart.timeScale().getVisibleRange();
       if (candleMode) price.setData((data.candles ?? []).map((p) => ({ ...p, time: ts(p.time) })));
       else price.setData(gapData(data.points, step));
+      price.applyOptions({
+        priceFormat: {
+          type: 'custom',
+          minMove: chartPrecision(
+            data.points.map((p) => p.value),
+            (v) =>
+              primary || !['USD', 'USDT', 'KRW'].includes(unit)
+                ? readingDigits(v)
+                : priceDigits(v, unit),
+          ).minMove,
+          formatter: (v: number) => (candleMode ? money(v, unit) : display(v)),
+        },
+      });
       cursorSeries[0].values = new Map(data.points.map((p) => [p.time, p.value]));
       for (const entry of cursorSeries.slice(1)) {
         const line = data.lines.find((l) => l.id === entry.id);
         entry.series.setData(gapData(line?.data ?? [], line?.step ?? 86400));
+        if (line)
+          entry.series.applyOptions({
+            priceFormat: {
+              type: 'custom',
+              minMove: chartPrecision(
+                line.data.map((p) => p.value),
+                (v) => (line.supertrend ? priceDigits(v, line.unit) : readingDigits(v)),
+              ).minMove,
+              formatter: (v: number) => lineNumber(line, v),
+            },
+          });
         entry.values = new Map((line?.data ?? []).map((p) => [p.time, p.value]));
         if ('primitive' in entry)
           (entry.primitive as SupertrendPrimitive).setRows(line?.supertrend?.rows ?? []);
@@ -510,6 +862,30 @@ export const AnalysisChart = memo(function AnalysisChart({
             .timeScale()
             .setVisibleRange({ from: ts(visible[0].time), to: ts(visible.at(-1)!.time) });
       }
+      if (retainedInspection) {
+        const time = keyboardInspection.current ?? retainedInspection.time;
+        const target = cursorSeries.find(
+          (entry) =>
+            entry.pane === retainedInspection.pane &&
+            entry.id === retainedInspection.values[0]?.id &&
+            entry.values.has(time),
+        );
+        if (!target) dismissInspection();
+        else {
+          cancelAnimationFrame(cursorFrame.current);
+          cursorFrame.current = requestAnimationFrame(() => {
+            cursorFrame.current = 0;
+            if (keyboardInspection.current !== null)
+              syntheticInspection(time, target, target.values.get(time)!);
+            else {
+              const x = chart.timeScale().timeToCoordinate(ts(time));
+              const value = target.series.coordinateToPrice(retainedInspection.y);
+              if (x === null || value === null) dismissInspection();
+              else syntheticInspection(time, target, value, { x, y: retainedInspection.y });
+            }
+          });
+        }
+      }
     };
     const prior = previous.current;
     const from = periodStart(settings.current.period, points.at(-1)!.time);
@@ -545,6 +921,14 @@ export const AnalysisChart = memo(function AnalysisChart({
     ) => {
       if (range) {
         if (
+          gesture.current?.moved &&
+          performance.now() <= gesture.current.expires &&
+          logicalRangeChanged(gesture.current.baseline, chart.timeScale().getVisibleLogicalRange())
+        ) {
+          userRange.current = true;
+          pendingRange.current = null;
+        }
+        if (
           pendingRange.current?.from === Number(range.from) &&
           pendingRange.current?.to === Number(range.to)
         )
@@ -570,6 +954,21 @@ export const AnalysisChart = memo(function AnalysisChart({
       else restoreDefault();
     });
     resize.observe(surface);
+    const resizeViewport = () => {
+      const range = pendingRange.current ?? chart.timeScale().getVisibleRange();
+      const height = chartHeight();
+      surface.style.height = height + 'px';
+      chart.resize(Math.max(1, surface.clientWidth), height);
+      if (userRange.current && range)
+        chart
+          .timeScale()
+          .setVisibleRange({ from: ts(Number(range.from)), to: ts(Number(range.to)) });
+      else restoreDefault();
+      inspectionRef.current = null;
+      setInspection(null);
+    };
+    window.addEventListener('resize', resizeViewport);
+    window.visualViewport?.addEventListener('resize', resizeViewport);
     const restored = availableWindow(readings.times, initialWindow);
     if (restored && !userRange.current)
       chart.timeScale().setVisibleRange({ from: ts(restored.from), to: ts(restored.to) });
@@ -589,18 +988,33 @@ export const AnalysisChart = memo(function AnalysisChart({
       if (range) previous.current = { key, from: Number(range.from), to: Number(range.to) };
       markers.detach();
       resize.disconnect();
+      window.removeEventListener('resize', resizeViewport);
+      window.visualViewport?.removeEventListener('resize', resizeViewport);
       cancelAnimationFrame(frame);
+      cancelAnimationFrame(inspectionFrame.current);
+      cancelAnimationFrame(tapFrame.current);
+      cancelAnimationFrame(cursorFrame.current);
+      inspectionFrame.current = 0;
+      tapFrame.current = 0;
+      cursorFrame.current = 0;
+      activePointers.current.clear();
+      gesture.current = null;
       chart.remove();
       liveSeries.current = null;
       liveLine.current = null;
       chartRef.current = null;
       updateSeries.current = () => {};
       moveCursor.current = () => {};
+      inspectAt.current = () => {};
+      inspectionRef.current = null;
+      touchInspection.current = false;
+      setInspection(null);
     };
   }, [key, structure, ready, candleMode]);
   useEffect(() => {
     const series = liveSeries.current;
     if (!series) return;
+    series.applyOptions({ lastValueVisible: !eligibleChartPrice(livePrice, asset, unit) });
     if (!eligibleChartPrice(livePrice, asset, unit)) {
       if (liveLine.current) series.removePriceLine(liveLine.current);
       liveLine.current = null;
@@ -887,10 +1301,41 @@ export const AnalysisChart = memo(function AnalysisChart({
         {!secondaryBelowChart && secondaryReadings}
       </div>
       <div className={'analysis-surface' + (drawingKey ? ' with-drawings' : '')}>
-        {publicFocus && selectedTime !== null && priceValue !== undefined && (
-          <span className="analysis-hover-reading" data-testid="chart-tooltip">
-            {asset} {display(priceValue)}
-          </span>
+        {publicFocus && inspection && (
+          <div
+            ref={tooltip}
+            className="analysis-hover-reading analysis-inspection"
+            data-testid="chart-tooltip"
+            data-observation-time={inspection.time}
+            data-pane={inspection.pane}
+            style={tooltipPosition}
+          >
+            <time dateTime={new Date(inspection.time * 1000).toISOString()}>
+              {asset} · {chartDate(inspection.time, showReadingTime)} KST
+            </time>
+            {inspection.values.map((value) => (
+              <span key={value.id} data-series={value.id} data-value={value.value}>
+                <span>{value.title}</span>
+                <b>
+                  {['USD', 'USDT', 'KRW'].includes(value.unit)
+                    ? money(value.value, value.unit)
+                    : numeric(value.value, readingDigits(value.value))}{' '}
+                  {value.unit}
+                </b>
+              </span>
+            ))}
+          </div>
+        )}
+        {publicFocus && inspection && inspection.observationY !== null && (
+          <span
+            className="analysis-observation-dot"
+            aria-hidden="true"
+            style={{
+              left: inspection.observationX + (host.current?.offsetLeft ?? 0),
+              top: inspection.top + inspection.observationY + (host.current?.offsetTop ?? 0),
+              background: inspection.values[0]?.color,
+            }}
+          />
         )}
         {!publicFocus && !pinned && selectedTime !== null && (
           <span className="analysis-hover-reading" data-testid="chart-preview">
@@ -907,28 +1352,121 @@ export const AnalysisChart = memo(function AnalysisChart({
           data-price-style={candleMode ? 'candles' : 'line'}
           data-live-price={eligibleChartPrice(livePrice, asset, unit) ? livePrice.price : undefined}
           data-panels={panelCount(lines)}
-          onPointerMoveCapture={() => {
+          data-crosshair-mode="normal"
+          data-primary-precision={primaryPrecision.precision}
+          data-primary-min-move={primaryPrecision.minMove}
+          data-hover-time={inspection?.time}
+          data-hover-value={inspection?.values[0]?.value}
+          data-hover-line-value={inspection?.values[1]?.value}
+          data-hover-line-id={inspection?.values[1]?.id}
+          data-hover-pane={inspection?.pane}
+          data-hover-x={inspection?.x}
+          data-hover-y={inspection?.y}
+          data-hover-observation-x={inspection?.observationX}
+          data-hover-observation-y={inspection?.observationY ?? undefined}
+          data-axis-reading={eligibleChartPrice(livePrice, asset, unit) ? 'live' : 'close'}
+          onPointerDownCapture={(event) => {
+            pointerKind.current = event.pointerType;
+            touchInspection.current = false;
+            keyboardInspection.current = null;
+            if (!activePointers.current.size)
+              gesture.current = {
+                baseline: chartRef.current?.timeScale().getVisibleLogicalRange() ?? null,
+                moved: false,
+                expires: performance.now() + 600000,
+              };
+            else if (gesture.current) gesture.current.moved = true;
+            activePointers.current.set(event.pointerId, { x: event.clientX, y: event.clientY });
+          }}
+          onPointerMoveCapture={(event) => {
+            pointerKind.current = event.pointerType;
             if (publicFocus || !pinned) manualCursor.current = false;
+            keyboardInspection.current = null;
+            const start = activePointers.current.get(event.pointerId);
+            if (
+              start &&
+              gesture.current &&
+              Math.hypot(event.clientX - start.x, event.clientY - start.y) > 8
+            )
+              gesture.current.moved = true;
           }}
-          onPointerDown={() => {
-            pendingRange.current = null;
-            userRange.current = true;
+          onPointerUpCapture={(event) => {
+            const start = activePointers.current.get(event.pointerId);
+            const tap =
+              event.pointerType === 'touch' &&
+              activePointers.current.size === 1 &&
+              start &&
+              Math.hypot(event.clientX - start.x, event.clientY - start.y) <= 8 &&
+              !gesture.current?.moved;
+            activePointers.current.delete(event.pointerId);
+            if (gesture.current) gesture.current.expires = performance.now() + 250;
+            if (
+              (tap || (event.pointerType === 'touch' && inspectionRef.current)) &&
+              publicFocus &&
+              !(event.target instanceof Element && event.target.closest('.drawing-overlay'))
+            ) {
+              const rect = event.currentTarget.getBoundingClientRect();
+              const x = event.clientX - rect.left,
+                y = event.clientY - rect.top;
+              cancelAnimationFrame(tapFrame.current);
+              tapFrame.current = requestAnimationFrame(() => {
+                tapFrame.current = 0;
+                inspectAt.current(x, y);
+              });
+            }
           }}
-          onWheel={() => {
-            pendingRange.current = null;
-            userRange.current = true;
+          onPointerCancel={() => {
+            activePointers.current.clear();
+            if (gesture.current) gesture.current.expires = performance.now() + 250;
+            touchInspection.current = false;
+            if (publicFocus) dismissInspection();
+          }}
+          onPointerLeave={(event) => {
+            if (publicFocus && event.pointerType !== 'touch' && !manualCursor.current)
+              dismissInspection();
+          }}
+          onWheelCapture={() => {
+            gesture.current = {
+              baseline: chartRef.current?.timeScale().getVisibleLogicalRange() ?? null,
+              moved: true,
+              expires: performance.now() + 300,
+            };
+            touchInspection.current = false;
           }}
           tabIndex={0}
           role="group"
-          aria-label={`${asset} ${unit} ${primary?.title ?? '가격과 비교 지표'}${publicFocus ? '' : '. 좌우 방향키로 관측 탐색'}`}
+          aria-label={`${asset} ${unit} ${primary?.title ?? '가격과 비교 지표'}. 좌우 방향키로 값 확인, Escape로 닫기`}
           onKeyDown={(e) => {
-            if (publicFocus) return;
             if (
               e.target !== e.currentTarget ||
               !['ArrowLeft', 'ArrowRight', 'Home', 'End', 'Escape'].includes(e.key)
             )
               return;
             e.preventDefault();
+            if (publicFocus) {
+              pointerKind.current = 'keyboard';
+              if (e.key === 'Escape') {
+                dismissInspection();
+                return;
+              }
+              const next =
+                e.key === 'Home'
+                  ? readings.times[0]
+                  : e.key === 'End'
+                    ? readings.times.at(-1)
+                    : adjacentObservation(
+                        readings.times,
+                        inspectionRef.current?.time ?? selectedTime,
+                        e.key === 'ArrowLeft' ? -1 : 1,
+                      );
+              if (next !== undefined && next !== null) {
+                manualCursor.current = true;
+                keyboardInspection.current = next;
+                touchInspection.current = true;
+                moveCursor.current(next);
+              }
+              return;
+            }
             explore(
               e.key === 'Escape'
                 ? null
@@ -957,6 +1495,20 @@ export const AnalysisChart = memo(function AnalysisChart({
       </div>
       {secondaryBelowChart && (
         <div className="analysis-secondary-readings">{secondaryReadings}</div>
+      )}
+      {publicFocus && (
+        <span className="sr-only" role="status">
+          {pointerKind.current === 'keyboard' && inspection
+            ? chartDate(inspection.time, showReadingTime) +
+              ' KST. ' +
+              inspection.values
+                .map(
+                  (value) =>
+                    `${value.title} ${numeric(value.value, readingDigits(value.value))} ${value.unit}`,
+                )
+                .join('. ')
+            : ''}
+        </span>
       )}
       {toolbarTarget ? createPortal(navigator, toolbarTarget) : navigator}
       {!publicFocus && (

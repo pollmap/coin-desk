@@ -1,0 +1,391 @@
+{
+  "checkedAt": "2026-10-14T06:56:48+00:00",
+  "scope": "Bounded recheck of currently unverified hourly gaps; absence does not establish original non-provision or withdrawal.",
+  "readOnly": true,
+  "mutatingRequests": 0,
+  "retries": 0,
+  "coverageSnapshotCheckedAt": "2026-10-14T06:52:36+00:00",
+  "ownerHistoryRequests": 35,
+  "providerRequests": 13,
+  "providerLimitStopped": false,
+  "checkedAssets": 13,
+  "checkedMissingSlots": 41,
+  "recoverableMissingSlots": 0,
+  "providerAbsentMissingSlots": 41,
+  "rows": [
+    {
+      "asset": "MNT",
+      "interval": "1h",
+      "storedObservations": 2091,
+      "storedMissingSlots": 69,
+      "priorEvidenceMissingSlots": 67,
+      "unknownBeforeProviderProbe": 2,
+      "providerChecks": [
+        {
+          "time": 1791910800,
+          "date": "2026-10-13T17:00:00+00:00",
+          "classification": "provider-no-observation-at-check"
+        },
+        {
+          "time": 1791928800,
+          "date": "2026-10-13T22:00:00+00:00",
+          "classification": "provider-no-observation-at-check"
+        }
+      ],
+      "providerRequests": 1,
+      "outcome": "bounded-provider-probe-complete",
+      "storageMutation": false
+    },
+    {
+      "asset": "PENDLE",
+      "interval": "1h",
+      "storedObservations": 2144,
+      "storedMissingSlots": 16,
+      "priorEvidenceMissingSlots": 15,
+      "unknownBeforeProviderProbe": 1,
+      "providerChecks": [
+        {
+          "time": 1791828000,
+          "date": "2026-10-12T18:00:00+00:00",
+          "classification": "provider-no-observation-at-check"
+        }
+      ],
+      "providerRequests": 1,
+      "outcome": "bounded-provider-probe-complete",
+      "storageMutation": false
+    },
+    {
+      "asset": "SPX",
+      "interval": "1h",
+      "storedObservations": 2051,
+      "storedMissingSlots": 109,
+      "priorEvidenceMissingSlots": 107,
+      "unknownBeforeProviderProbe": 2,
+      "providerChecks": [
+        {
+          "time": 1791712800,
+          "date": "2026-10-11T10:00:00+00:00",
+          "classification": "provider-no-observation-at-check"
+        },
+        {
+          "time": 1791914400,
+          "date": "2026-10-13T18:00:00+00:00",
+          "classification": "provider-no-observation-at-check"
+        }
+      ],
+      "providerRequests": 1,
+      "outcome": "bounded-provider-probe-complete",
+      "storageMutation": false
+    },
+    {
+      "asset": "COMP",
+      "interval": "1h",
+      "storedObservations": 2001,
+      "storedMissingSlots": 159,
+      "priorEvidenceMissingSlots": 154,
+      "unknownBeforeProviderProbe": 5,
+      "providerChecks": [
+        {
+          "time": 1791723600,
+          "date": "2026-10-11T13:00:00+00:00",
+          "classification": "provider-no-observation-at-check"
+        },
+        {
+          "time": 1791745200,
+          "date": "2026-10-11T19:00:00+00:00",
+          "classification": "provider-no-observation-at-check"
+        },
+        {
+          "time": 1791914400,
+          "date": "2026-10-13T18:00:00+00:00",
+          "classification": "provider-no-observation-at-check"
+        },
+        {
+          "time": 1791918000,
+          "date": "2026-10-13T19:00:00+00:00",
+          "classification": "provider-no-observation-at-check"
+        },
+        {
+          "time": 1791921600,
+          "date": "2026-10-13T20:00:00+00:00",
+          "classification": "provider-no-observation-at-check"
+        }
+      ],
+      "providerRequests": 1,
+      "outcome": "bounded-provider-probe-complete",
+      "storageMutation": false
+    },
+    {
+      "asset": "THETA",
+      "interval": "1h",
+      "storedObservations": 2091,
+      "storedMissingSlots": 69,
+      "priorEvidenceMissingSlots": 68,
+      "unknownBeforeProviderProbe": 1,
+      "providerChecks": [
+        {
+          "time": 1791943200,
+          "date": "2026-10-14T02:00:00+00:00",
+          "classification": "provider-no-observation-at-check"
+        }
+      ],
+      "providerRequests": 1,
+      "outcome": "bounded-provider-probe-complete",
+      "storageMutation": false
+    },
+    {
+      "asset": "WIF",
+      "interval": "1h",
+      "storedObservations": 1870,
+      "storedMissingSlots": 290,
+      "priorEvidenceMissingSlots": 278,
+      "unknownBeforeProviderProbe": 12,
+      "providerChecks": [
+        {
+          "time": 1791727200,
+          "date": "2026-10-11T14:00:00+00:00",
+          "classification": "provider-no-observation-at-check"
+        },
+        {
+          "time": 1791745200,
+          "date": "2026-10-11T19:00:00+00:00",
+          "classification": "provider-no-observation-at-check"
+        },
+        {
+          "time": 1791748800,
+          "date": "2026-10-11T20:00:00+00:00",
+          "classification": "provider-no-observation-at-check"
+        },
+        {
+          "time": 1791788400,
+          "date": "2026-10-12T07:00:00+00:00",
+          "classification": "provider-no-observation-at-check"
+        },
+        {
+          "time": 1791810000,
+          "date": "2026-10-12T13:00:00+00:00",
+          "classification": "provider-no-observation-at-check"
+        },
+        {
+          "time": 1791831600,
+          "date": "2026-10-12T19:00:00+00:00",
+          "classification": "provider-no-observation-at-check"
+        },
+        {
+          "time": 1791878400,
+          "date": "2026-10-13T08:00:00+00:00",
+          "classification": "provider-no-observation-at-check"
+        },
+        {
+          "time": 1791907200,
+          "date": "2026-10-13T16:00:00+00:00",
+          "classification": "provider-no-observation-at-check"
+        },
+        {
+          "time": 1791914400,
+          "date": "2026-10-13T18:00:00+00:00",
+          "classification": "provider-no-observation-at-check"
+        },
+        {
+          "time": 1791918000,
+          "date": "2026-10-13T19:00:00+00:00",
+          "classification": "provider-no-observation-at-check"
+        },
+        {
+          "time": 1791921600,
+          "date": "2026-10-13T20:00:00+00:00",
+          "classification": "provider-no-observation-at-check"
+        },
+        {
+          "time": 1791943200,
+          "date": "2026-10-14T02:00:00+00:00",
+          "classification": "provider-no-observation-at-check"
+        }
+      ],
+      "providerRequests": 1,
+      "outcome": "bounded-provider-probe-complete",
+      "storageMutation": false
+    },
+    {
+      "asset": "XCN",
+      "interval": "1h",
+      "storedObservations": 2066,
+      "storedMissingSlots": 94,
+      "priorEvidenceMissingSlots": 93,
+      "unknownBeforeProviderProbe": 1,
+      "providerChecks": [
+        {
+          "time": 1791824400,
+          "date": "2026-10-12T17:00:00+00:00",
+          "classification": "provider-no-observation-at-check"
+        }
+      ],
+      "providerRequests": 1,
+      "outcome": "bounded-provider-probe-complete",
+      "storageMutation": false
+    },
+    {
+      "asset": "SUPER",
+      "interval": "1h",
+      "storedObservations": 1942,
+      "storedMissingSlots": 218,
+      "priorEvidenceMissingSlots": 216,
+      "unknownBeforeProviderProbe": 2,
+      "providerChecks": [
+        {
+          "time": 1791745200,
+          "date": "2026-10-11T19:00:00+00:00",
+          "classification": "provider-no-observation-at-check"
+        },
+        {
+          "time": 1791824400,
+          "date": "2026-10-12T17:00:00+00:00",
+          "classification": "provider-no-observation-at-check"
+        }
+      ],
+      "providerRequests": 1,
+      "outcome": "bounded-provider-probe-complete",
+      "storageMutation": false
+    },
+    {
+      "asset": "GLM",
+      "interval": "1h",
+      "storedObservations": 2078,
+      "storedMissingSlots": 82,
+      "priorEvidenceMissingSlots": 81,
+      "unknownBeforeProviderProbe": 1,
+      "providerChecks": [
+        {
+          "time": 1791925200,
+          "date": "2026-10-13T21:00:00+00:00",
+          "classification": "provider-no-observation-at-check"
+        }
+      ],
+      "providerRequests": 1,
+      "outcome": "bounded-provider-probe-complete",
+      "storageMutation": false
+    },
+    {
+      "asset": "KMNO",
+      "interval": "1h",
+      "storedObservations": 1561,
+      "storedMissingSlots": 67,
+      "priorEvidenceMissingSlots": 66,
+      "unknownBeforeProviderProbe": 1,
+      "providerChecks": [
+        {
+          "time": 1791817200,
+          "date": "2026-10-12T15:00:00+00:00",
+          "classification": "provider-no-observation-at-check"
+        }
+      ],
+      "providerRequests": 1,
+      "outcome": "bounded-provider-probe-complete",
+      "storageMutation": false
+    },
+    {
+      "asset": "KAVA",
+      "interval": "1h",
+      "storedObservations": 2059,
+      "storedMissingSlots": 101,
+      "priorEvidenceMissingSlots": 96,
+      "unknownBeforeProviderProbe": 5,
+      "providerChecks": [
+        {
+          "time": 1791738000,
+          "date": "2026-10-11T17:00:00+00:00",
+          "classification": "provider-no-observation-at-check"
+        },
+        {
+          "time": 1791831600,
+          "date": "2026-10-12T19:00:00+00:00",
+          "classification": "provider-no-observation-at-check"
+        },
+        {
+          "time": 1791907200,
+          "date": "2026-10-13T16:00:00+00:00",
+          "classification": "provider-no-observation-at-check"
+        },
+        {
+          "time": 1791910800,
+          "date": "2026-10-13T17:00:00+00:00",
+          "classification": "provider-no-observation-at-check"
+        },
+        {
+          "time": 1791914400,
+          "date": "2026-10-13T18:00:00+00:00",
+          "classification": "provider-no-observation-at-check"
+        }
+      ],
+      "providerRequests": 1,
+      "outcome": "bounded-provider-probe-complete",
+      "storageMutation": false
+    },
+    {
+      "asset": "COW",
+      "interval": "1h",
+      "storedObservations": 1980,
+      "storedMissingSlots": 180,
+      "priorEvidenceMissingSlots": 176,
+      "unknownBeforeProviderProbe": 4,
+      "providerChecks": [
+        {
+          "time": 1791748800,
+          "date": "2026-10-11T20:00:00+00:00",
+          "classification": "provider-no-observation-at-check"
+        },
+        {
+          "time": 1791896400,
+          "date": "2026-10-13T13:00:00+00:00",
+          "classification": "provider-no-observation-at-check"
+        },
+        {
+          "time": 1791918000,
+          "date": "2026-10-13T19:00:00+00:00",
+          "classification": "provider-no-observation-at-check"
+        },
+        {
+          "time": 1791921600,
+          "date": "2026-10-13T20:00:00+00:00",
+          "classification": "provider-no-observation-at-check"
+        }
+      ],
+      "providerRequests": 1,
+      "outcome": "bounded-provider-probe-complete",
+      "storageMutation": false
+    },
+    {
+      "asset": "TFUEL",
+      "interval": "1h",
+      "storedObservations": 2044,
+      "storedMissingSlots": 116,
+      "priorEvidenceMissingSlots": 112,
+      "unknownBeforeProviderProbe": 4,
+      "providerChecks": [
+        {
+          "time": 1791720000,
+          "date": "2026-10-11T12:00:00+00:00",
+          "classification": "provider-no-observation-at-check"
+        },
+        {
+          "time": 1791723600,
+          "date": "2026-10-11T13:00:00+00:00",
+          "classification": "provider-no-observation-at-check"
+        },
+        {
+          "time": 1791914400,
+          "date": "2026-10-13T18:00:00+00:00",
+          "classification": "provider-no-observation-at-check"
+        },
+        {
+          "time": 1791918000,
+          "date": "2026-10-13T19:00:00+00:00",
+          "classification": "provider-no-observation-at-check"
+        }
+      ],
+      "providerRequests": 1,
+      "outcome": "bounded-provider-probe-complete",
+      "storageMutation": false
+    }
+  ]
+}

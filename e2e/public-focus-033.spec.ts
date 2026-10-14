@@ -35,7 +35,7 @@ for (const width of [390, 1280]) {
     await page.mouse.move(surface.x + surface.width * 0.5, surface.y + 100);
     await expect(page.getByTestId('chart-tooltip')).toBeVisible();
     await expect(page.getByTestId('chart-tooltip')).toContainText('배');
-    await expect(page.getByTestId('chart-tooltip')).not.toContainText(/UTC|\d{4}-\d{2}-\d{2}/);
+    await expect(page.getByTestId('chart-tooltip')).toContainText(/\d{4}-\d{2}-\d{2}/);
     await page.mouse.click(surface.x + surface.width * 0.5, surface.y + 100);
     await expect(value(page)).toHaveText(latest);
     await expect(page).not.toHaveURL(/reading_date=/);

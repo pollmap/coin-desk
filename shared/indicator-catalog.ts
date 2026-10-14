@@ -264,12 +264,18 @@ const definitions: IndicatorBase[] = [
               : v === 'bb'
                 ? '20개 확정 종가의 SMA ± 2 × 모집단 표준편차'
                 : '확정 가격 이력으로 계산',
-        defaultPeriod:
-          v === 'price'
-            ? '1m'
-            : ['rainbow', 'btc_rainbow', 'cycles', 'seasonality', 'powerlaw'].includes(v)
-              ? 'all'
-              : '1y',
+        defaultPeriod: [
+          'price',
+          'ribbon',
+          'bb',
+          'rainbow',
+          'btc_rainbow',
+          'cycles',
+          'seasonality',
+          'powerlaw',
+        ].includes(v)
+          ? 'all'
+          : '1y',
         renderer: ['rainbow', 'btc_rainbow'].includes(v)
           ? 'bands'
           : ['relative', 'cycles', 'windows', 'seasonality'].includes(v)
@@ -493,7 +499,9 @@ export function indicatorUrl(
   ])
     p.delete(key);
   if (!supported) p.set('transition', id);
-  if (!switchingAsset || !supported) {
+  // Reopening the active analysis must retain an explicit period and viewport.
+  // A newly selected indicator still starts on its own readable default.
+  if ((!switchingAsset && previous.get('metric') !== next) || !supported) {
     p.set('period', indicatorDefinition(next)!.defaultPeriod);
     p.delete('chart_from');
     p.delete('chart_to');

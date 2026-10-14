@@ -27,8 +27,8 @@ export function createDeskChart(...args: Parameters<typeof createOriginalChart>)
         horzLines: { color: light ? '#e8edf1' : '#292e37' },
       },
       crosshair: {
-        vertLine: { labelBackgroundColor: '#465680' },
-        horzLine: { labelBackgroundColor: '#465680' },
+        vertLine: { color: light ? '#0f666b' : '#65d4bc', labelBackgroundColor: '#465680' },
+        horzLine: { color: light ? '#0f666b' : '#65d4bc', labelBackgroundColor: '#465680' },
       },
     });
     for (const pane of chart.panes())

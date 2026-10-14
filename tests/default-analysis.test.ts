@@ -36,7 +36,7 @@ describe('light market links preserve analysis defaults', () => {
         expect(url.searchParams.get('market')).toBe(availableMarket(asset.id, preferred));
         expect(url.searchParams.get('price_source')).toBe(url.searchParams.get('market'));
         expect(resolveIndicator(asset.id, url.pathname, url.searchParams).id).toBe('view:price');
-        expect(url.searchParams.get('period')).toBe('1m');
+        expect(url.searchParams.get('period')).toBe('all');
         expect(url.searchParams.get('log')).toBe('0');
         expect(resolveIndicator(asset.id, url.pathname, new URLSearchParams()).id).toBe(
           'view:price',

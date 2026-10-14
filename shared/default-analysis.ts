@@ -17,7 +17,7 @@ export function defaultPriceUrl(asset: Asset, preferred: Market) {
       price_source: market,
       asset,
       metric: 'view:price',
-      period: '1m',
+      period: 'all',
       interval: '1d',
       log: '0',
     })

@@ -1351,7 +1351,7 @@ body {
     min-width: 0;
     margin-right: 0;
   }
-  .product-desk .indicator-toolbar .period-picker select {
+  .product-desk .indicator-toolbar .period-picker .period-mobile-select {
     width: 58px;
     min-width: 0;
     padding: 4px;

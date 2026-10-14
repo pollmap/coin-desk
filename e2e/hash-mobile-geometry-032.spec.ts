@@ -174,7 +174,7 @@ for (const width of [320, 390, 1280]) {
           await expect(page.getByTestId('chart-tooltip')).toBeVisible();
           await expect(page.getByTestId('chart-tooltip')).toContainText(asset);
           await expect(page.getByTestId('chart-tooltip')).toContainText(fixture.unit);
-          await expect(page.getByTestId('chart-tooltip')).not.toHaveText(/\d{4}-\d{2}-\d{2}/);
+          await expect(page.getByTestId('chart-tooltip')).toContainText(/\d{4}-\d{2}-\d{2}/);
           await chart.click({ position: { x: box.width * 0.5, y: box.height * 0.4 } });
           await chart.press('ArrowLeft');
           await expect(summary).toHaveText(latest);
