@@ -1,0 +1,202 @@
+{
+  "schemaVersion": 1,
+  "checkedAt": "2026-10-14T11:04:17.603Z",
+  "repository": "pollmap/coin-desk",
+  "pullRequest": 70,
+  "pullRequestUrl": "https://github.com/pollmap/coin-desk/pull/70",
+  "headRevision": "a07f877e9e05af87f22c694649f3e0f081a095ea",
+  "runId": 38552139463,
+  "runUrl": "https://github.com/pollmap/coin-desk/actions/runs/38552139463",
+  "runNumber": 238,
+  "status": "completed",
+  "conclusion": "success",
+  "passed": true,
+  "allJobsCompleted": true,
+  "allJobHeadRevisionsMatch": true,
+  "jobCount": 5,
+  "jobs": [
+    {
+      "id": 115812390048,
+      "head_sha": "a07f877e9e05af87f22c694649f3e0f081a095ea",
+      "name": "checks",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/pollmap/coin-desk/actions/runs/38552139463/job/115812390048"
+    },
+    {
+      "id": 115812390395,
+      "head_sha": "a07f877e9e05af87f22c694649f3e0f081a095ea",
+      "name": "browser (chromium)",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/pollmap/coin-desk/actions/runs/38552139463/job/115812390395"
+    },
+    {
+      "id": 115812390398,
+      "head_sha": "a07f877e9e05af87f22c694649f3e0f081a095ea",
+      "name": "browser (webkit)",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/pollmap/coin-desk/actions/runs/38552139463/job/115812390398"
+    },
+    {
+      "id": 115812390446,
+      "head_sha": "a07f877e9e05af87f22c694649f3e0f081a095ea",
+      "name": "container",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/pollmap/coin-desk/actions/runs/38552139463/job/115812390446"
+    },
+    {
+      "id": 115817301141,
+      "head_sha": "a07f877e9e05af87f22c694649f3e0f081a095ea",
+      "name": "verify",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/pollmap/coin-desk/actions/runs/38552139463/job/115817301141"
+    }
+  ],
+  "checks": {
+    "typescript": true,
+    "unitFilesPassed": 77,
+    "unitPassed": 809,
+    "pythonRecoveryPassed": 2,
+    "nodeServerPassed": 31,
+    "nodeServerFailed": 0,
+    "pythonServerPassed": 32,
+    "dependencyAuditKnownFindings": 0,
+    "summaryEvidence": [
+      "found 0 vulnerabilities",
+      "found 0 vulnerabilities",
+      "Test Files  77 passed (77)",
+      "Tests  809 passed (809)",
+      "Ran 2 tests in 0.118s",
+      "OK",
+      "ℹ tests 31",
+      "ℹ pass 31",
+      "ℹ fail 0",
+      "ℹ cancelled 0",
+      "ℹ skipped 0",
+      "ℹ todo 0",
+      "Ran 32 tests in 0.584s",
+      "OK"
+    ],
+    "officialLogTruncated": false
+  },
+  "browsers": [
+    {
+      "engine": "chromium",
+      "jobId": 115812390395,
+      "passed": 212,
+      "failed": 0,
+      "excluded": 1,
+      "flaky": 0,
+      "summaryEvidence": [
+        "found 0 vulnerabilities",
+        "1 skipped",
+        "212 passed (9.7m)"
+      ],
+      "excludedTests": [
+        "e2e/private-archive.spec.ts:4:1 › local archive folder imports full metadata and image references without publishing them"
+      ],
+      "caseRetryPolicy": 0,
+      "retryMarkers": 0,
+      "regressionsPassed": [
+        "✓   20 [chromium] › e2e/core-interactions-032.spec.ts:110:3 › indicator chooser reflows in its portal, keeps IME input and returns focus at 320px (5.8s)",
+        "✓   22 [chromium] › e2e/core-interactions-032.spec.ts:110:3 › indicator chooser reflows in its portal, keeps IME input and returns focus at 390px (5.9s)",
+        "✓   23 [chromium] › e2e/core-interactions-032.spec.ts:110:3 › indicator chooser reflows in its portal, keeps IME input and returns focus at 1280px (5.9s)",
+        "✓   84 [chromium] › e2e/learning.spec.ts:167:1 › onchain guides open the corresponding primary metric and unsupported coins are explicit (5.0s)",
+        "✓   85 [chromium] › e2e/learning.spec.ts:198:3 › deferred explanation lesson input › lesson loading never exposes moving actions or retargets a native close, and guide context stays intact (12.7s)"
+      ],
+      "completeOfficialLogRead": true,
+      "codeReviewLogTruncated": true,
+      "fullLogSource": "GitHub connector fetch_workflow_job_logs",
+      "fixtureData": true,
+      "liveDataCertification": false
+    },
+    {
+      "engine": "webkit",
+      "jobId": 115812390398,
+      "passed": 211,
+      "failed": 0,
+      "excluded": 2,
+      "flaky": 0,
+      "summaryEvidence": [
+        "found 0 vulnerabilities",
+        "2 skipped",
+        "211 passed (11.0m)"
+      ],
+      "excludedTests": [
+        "e2e/private-archive.spec.ts:4:1 › local archive folder imports full metadata and image references without publishing them",
+        "e2e/price-chart-034.spec.ts:999:3 › actual touch-capable browser input › native long press, horizontal pan, pinch and cancellation keep inspected values and window state"
+      ],
+      "caseRetryPolicy": 0,
+      "retryMarkers": 0,
+      "regressionsPassed": [
+        "✓   21 [webkit] › e2e/core-interactions-032.spec.ts:110:3 › indicator chooser reflows in its portal, keeps IME input and returns focus at 320px (7.1s)",
+        "✓   22 [webkit] › e2e/core-interactions-032.spec.ts:110:3 › indicator chooser reflows in its portal, keeps IME input and returns focus at 390px (7.0s)",
+        "✓   24 [webkit] › e2e/core-interactions-032.spec.ts:110:3 › indicator chooser reflows in its portal, keeps IME input and returns focus at 1280px (7.5s)",
+        "✓   79 [webkit] › e2e/learning.spec.ts:167:1 › onchain guides open the corresponding primary metric and unsupported coins are explicit (5.3s)",
+        "✓   82 [webkit] › e2e/learning.spec.ts:198:3 › deferred explanation lesson input › lesson loading never exposes moving actions or retargets a native close, and guide context stays intact (16.0s)"
+      ],
+      "completeOfficialLogRead": true,
+      "codeReviewLogTruncated": true,
+      "fullLogSource": "GitHub connector fetch_workflow_job_logs",
+      "fixtureData": true,
+      "liveDataCertification": false
+    }
+  ],
+  "browserTotals": {
+    "allCases": 426,
+    "passed": 423,
+    "excluded": 3,
+    "failed": 0,
+    "flaky": 0,
+    "retryPolicy": 0,
+    "completeOfficialBrowserLogsRead": true
+  },
+  "container": {
+    "status": "completed",
+    "conclusion": "success",
+    "codeReviewLogTruncated": true,
+    "completeLogRead": false,
+    "claimAllVulnerabilitiesAbsent": false
+  },
+  "verify": {
+    "jobId": 115817301141,
+    "checks": "success",
+    "browser": "success",
+    "container": "success",
+    "conclusion": "success"
+  },
+  "previousFailures": [
+    {
+      "runId": 38529574566,
+      "kind": "first PR failure",
+      "preservedSeparately": true
+    },
+    {
+      "runId": 38533804014,
+      "kind": "first main failure",
+      "preservedSeparately": true
+    },
+    {
+      "runId": 38547791450,
+      "kind": "second main failure",
+      "preservedSeparately": true
+    }
+  ],
+  "latestMainSuccessFileUpdated": false,
+  "scope": "PR explanation-stability CI only. Does not replace latest main CI or deployment/live-data verification.",
+  "officialSources": [
+    "Code Review pull_requests_checks pinned exact PR head, run and job IDs",
+    "GitHub connector complete decoded browser job logs",
+    "GitHub connector commit workflow runs for final workflow conclusion"
+  ],
+  "sourceControlCliLogFallback": false,
+  "privateOriginalsRead": false,
+  "rawCredentialsHeadersOrPersonalContentSaved": false,
+  "remoteChanges": 0,
+  "gitMutations": 0,
+  "liveChartRunnerExecuted": false
+}

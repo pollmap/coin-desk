@@ -1,0 +1,212 @@
+{
+  "schemaVersion": 1,
+  "checkedAt": "2026-10-14T08:32:19.303Z",
+  "repository": "pollmap/coin-desk",
+  "runId": 38533804014,
+  "runUrl": "https://github.com/pollmap/coin-desk/actions/runs/38533804014",
+  "expectedMainCommit": "8014b9619e94514f711121cfcbe046906e32d8f2",
+  "allJobHeadRevisionsMatch": true,
+  "allJobsCompleted": true,
+  "jobCount": 5,
+  "aggregateGateConclusion": "failure",
+  "usedAsDeploymentGate": false,
+  "passed": false,
+  "conclusionEvidence": "All five jobs completed; the required verify job failed because BROWSER_RESULT=failure.",
+  "scope": "Main push CI only. The failed run is preserved and does not authorize deployment.",
+  "providerContext": {
+    "pullRequest": 68,
+    "pullRequestUrl": "https://github.com/pollmap/coin-desk/pull/68",
+    "returnedHeadRevision": "9ae368c660daa16a94334eabaaab9c1ec2661e09",
+    "initialMainShaAsPrHeadReturnedHttp409": true,
+    "followupPolicy": "Retain the PR headRevision returned by discovery. Separately verify each selected main-run job.head_sha equals expectedMainCommit."
+  },
+  "officialSource": "Codex Code Review pull_requests_checks using runId and jobId; no source-control CLI fallback.",
+  "jobs": [
+    {
+      "id": 115751708710,
+      "head_sha": "8014b9619e94514f711121cfcbe046906e32d8f2",
+      "name": "checks",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/pollmap/coin-desk/actions/runs/38533804014/job/115751708710"
+    },
+    {
+      "id": 115751708890,
+      "head_sha": "8014b9619e94514f711121cfcbe046906e32d8f2",
+      "name": "browser (webkit)",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/pollmap/coin-desk/actions/runs/38533804014/job/115751708890"
+    },
+    {
+      "id": 115751708900,
+      "head_sha": "8014b9619e94514f711121cfcbe046906e32d8f2",
+      "name": "browser (chromium)",
+      "status": "completed",
+      "conclusion": "failure",
+      "url": "https://github.com/pollmap/coin-desk/actions/runs/38533804014/job/115751708900"
+    },
+    {
+      "id": 115751708953,
+      "head_sha": "8014b9619e94514f711121cfcbe046906e32d8f2",
+      "name": "container",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/pollmap/coin-desk/actions/runs/38533804014/job/115751708953"
+    },
+    {
+      "id": 115757365354,
+      "head_sha": "8014b9619e94514f711121cfcbe046906e32d8f2",
+      "name": "verify",
+      "status": "completed",
+      "conclusion": "failure",
+      "url": "https://github.com/pollmap/coin-desk/actions/runs/38533804014/job/115757365354"
+    }
+  ],
+  "checks": {
+    "unitFilesPassed": 77,
+    "unitPassed": 809,
+    "typescript": true,
+    "pythonRecoveryPassed": 2,
+    "nodeServerPassed": 31,
+    "nodeServerFailed": 0,
+    "pythonServerPassed": 32,
+    "dependencyAuditKnownFindings": 0,
+    "officialLogTruncated": false,
+    "summaryEvidence": [
+      "found 0 vulnerabilities",
+      "found 0 vulnerabilities",
+      "Test Files  77 passed (77)",
+      "Tests  809 passed (809)",
+      "Ran 2 tests in 0.159s",
+      "OK",
+      "ℹ tests 31",
+      "ℹ pass 31",
+      "ℹ fail 0",
+      "ℹ cancelled 0",
+      "ℹ skipped 0",
+      "ℹ todo 0",
+      "Ran 32 tests in 1.637s",
+      "OK"
+    ]
+  },
+  "browsers": [
+    {
+      "engine": "chromium",
+      "jobId": 115751708900,
+      "passed": 209,
+      "failed": 2,
+      "excluded": 1,
+      "flaky": 0,
+      "summaryEvidence": [
+        "2 failed",
+        "1 skipped",
+        "209 passed (6.8m)"
+      ],
+      "codeReviewLogTruncated": true,
+      "completeLogRead": false,
+      "evidenceScope": "Visible official completion totals and failure excerpt only; truncated sections were not independently verified.",
+      "retryPolicy": 0,
+      "retryPolicySource": "playwright.config.ts",
+      "allRetryDetailsFromLogsVerified": false,
+      "fixtureData": true,
+      "liveDataCertification": false
+    },
+    {
+      "engine": "webkit",
+      "jobId": 115751708890,
+      "passed": 210,
+      "failed": 0,
+      "excluded": 2,
+      "flaky": 0,
+      "summaryEvidence": [
+        "2 skipped",
+        "210 passed (13.2m)"
+      ],
+      "codeReviewLogTruncated": true,
+      "completeLogRead": false,
+      "evidenceScope": "Visible official completion totals and failure excerpt only; truncated sections were not independently verified.",
+      "retryPolicy": 0,
+      "retryPolicySource": "playwright.config.ts",
+      "allRetryDetailsFromLogsVerified": false,
+      "fixtureData": true,
+      "liveDataCertification": false
+    }
+  ],
+  "chromiumFailures": [
+    {
+      "test": "e2e/core-interactions-032.spec.ts:44:3 indicator chooser portal, IME and focus return",
+      "viewportWidth": 320,
+      "rule": "color-contrast",
+      "impact": "serious",
+      "selector": "button[aria-label=\"지표 선택 닫기\"]",
+      "observedRatio": 1.48,
+      "requiredRatio": 4.5,
+      "foreground": "#969aa3",
+      "background": "#7a7c80",
+      "fontPixels": 14,
+      "cause": "Not established by the job log. Theme color interpolation is a code-inspection hypothesis, not a confirmed root cause."
+    },
+    {
+      "test": "e2e/core-interactions-032.spec.ts:44:3 indicator chooser portal, IME and focus return",
+      "viewportWidth": 390,
+      "rule": "color-contrast",
+      "impact": "serious",
+      "selector": "button[aria-label=\"지표 선택 닫기\"]",
+      "observedRatio": 1.48,
+      "requiredRatio": 4.5,
+      "foreground": "#969aa3",
+      "background": "#7a7c80",
+      "fontPixels": 14,
+      "cause": "Not established by the job log. Theme color interpolation is a code-inspection hypothesis, not a confirmed root cause."
+    }
+  ],
+  "declaredExclusionPolicies": [
+    {
+      "engine": "chromium",
+      "excluded": 1,
+      "policy": "Local private archive opt-in."
+    },
+    {
+      "engine": "webkit",
+      "excluded": 2,
+      "policy": "Local private archive opt-in and unsupported native multi-touch capability."
+    }
+  ],
+  "exclusionPolicyScope": "Policies corroborate counts; individual excluded test lines are outside the visible truncated main log.",
+  "container": {
+    "status": "completed",
+    "conclusion": "success",
+    "codeReviewLogTruncated": true,
+    "completeLogRead": false,
+    "claimAllVulnerabilitiesAbsent": false
+  },
+  "aggregateGate": {
+    "jobId": 115757365354,
+    "checks": "success",
+    "browser": "failure",
+    "container": "success",
+    "conclusion": "failure",
+    "summaryEvidence": [
+      "CHECKS_RESULT: success",
+      "BROWSER_RESULT: failure",
+      "CONTAINER_RESULT: success",
+      "##[error]Process completed with exit code 1."
+    ],
+    "logTruncated": false
+  },
+  "previousPrFailure": {
+    "runId": 38529574566,
+    "preservedSeparately": true
+  },
+  "finalPrPass": {
+    "runId": 38531878255,
+    "doesNotReplaceFailedMainGate": true
+  },
+  "serverWrites": 0,
+  "gitMutations": 0,
+  "deploymentPerformed": false,
+  "liveChartRunnerExecuted": false,
+  "privateOriginalsRead": false,
+  "rawCredentialsHeadersOrPersonalContentSaved": false
+}

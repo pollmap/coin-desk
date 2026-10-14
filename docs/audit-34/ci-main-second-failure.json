@@ -1,0 +1,188 @@
+{
+  "schemaVersion": 1,
+  "checkedAt": "2026-10-14T10:24:59.089Z",
+  "repository": "pollmap/coin-desk",
+  "runId": 38547791450,
+  "runUrl": "https://github.com/pollmap/coin-desk/actions/runs/38547791450",
+  "expectedMainCommit": "37372af1e7a09f8e26fe3beec84b8e2492cb4f84",
+  "providerContext": {
+    "pullRequest": 69,
+    "pullRequestUrl": "https://github.com/pollmap/coin-desk/pull/69",
+    "returnedHeadRevision": "a639872e1705cfc3f794a08d3255aa0afaa04387",
+    "jobHeadRevisionsComparedSeparately": true
+  },
+  "scope": "New main push CI final failure only; does not authorize deployment or live chart QA.",
+  "allJobHeadRevisionsMatch": true,
+  "allJobsCompleted": true,
+  "jobCount": 5,
+  "passed": false,
+  "aggregateGateConclusion": "failure",
+  "usedAsDeploymentGate": false,
+  "jobs": [
+    {
+      "id": 115798035767,
+      "head_sha": "37372af1e7a09f8e26fe3beec84b8e2492cb4f84",
+      "name": "checks",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/pollmap/coin-desk/actions/runs/38547791450/job/115798035767"
+    },
+    {
+      "id": 115798035857,
+      "head_sha": "37372af1e7a09f8e26fe3beec84b8e2492cb4f84",
+      "name": "browser (chromium)",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/pollmap/coin-desk/actions/runs/38547791450/job/115798035857"
+    },
+    {
+      "id": 115798035914,
+      "head_sha": "37372af1e7a09f8e26fe3beec84b8e2492cb4f84",
+      "name": "browser (webkit)",
+      "status": "completed",
+      "conclusion": "failure",
+      "url": "https://github.com/pollmap/coin-desk/actions/runs/38547791450/job/115798035914"
+    },
+    {
+      "id": 115798036006,
+      "head_sha": "37372af1e7a09f8e26fe3beec84b8e2492cb4f84",
+      "name": "container",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/pollmap/coin-desk/actions/runs/38547791450/job/115798036006"
+    },
+    {
+      "id": 115802204986,
+      "head_sha": "37372af1e7a09f8e26fe3beec84b8e2492cb4f84",
+      "name": "verify",
+      "status": "completed",
+      "conclusion": "failure",
+      "url": "https://github.com/pollmap/coin-desk/actions/runs/38547791450/job/115802204986"
+    }
+  ],
+  "checks": {
+    "unitFilesPassed": 77,
+    "unitPassed": 809,
+    "typescript": true,
+    "pythonRecoveryPassed": 2,
+    "nodeServerPassed": 31,
+    "nodeServerFailed": 0,
+    "pythonServerPassed": 32,
+    "dependencyAuditKnownFindings": 0,
+    "summaryEvidence": [
+      "found 0 vulnerabilities",
+      "found 0 vulnerabilities",
+      "Test Files  77 passed (77)",
+      "Tests  809 passed (809)",
+      "Ran 2 tests in 0.139s",
+      "OK",
+      "ℹ tests 31",
+      "ℹ pass 31",
+      "ℹ fail 0",
+      "ℹ cancelled 0",
+      "ℹ skipped 0",
+      "ℹ todo 0",
+      "Ran 32 tests in 1.109s",
+      "OK"
+    ],
+    "officialLogTruncated": false
+  },
+  "browsers": [
+    {
+      "engine": "chromium",
+      "jobId": 115798035857,
+      "passed": 211,
+      "failed": 0,
+      "excluded": 1,
+      "flaky": 0,
+      "summaryEvidence": [
+        "found 0 vulnerabilities",
+        "1 skipped",
+        "211 passed (9.7m)"
+      ],
+      "excludedTests": [
+        "e2e/private-archive.spec.ts:4:1 › local archive folder imports full metadata and image references without publishing them"
+      ],
+      "caseRetryPolicy": 0,
+      "retryMarkers": 0,
+      "completeOfficialLogRead": true,
+      "codeReviewLogTruncated": true,
+      "officialFullLogSource": "GitHub fetch_workflow_job_logs",
+      "fixtureData": true,
+      "liveDataCertification": false
+    },
+    {
+      "engine": "webkit",
+      "jobId": 115798035914,
+      "passed": 209,
+      "failed": 1,
+      "excluded": 2,
+      "flaky": 0,
+      "summaryEvidence": [
+        "found 0 vulnerabilities",
+        "1 failed",
+        "2 skipped",
+        "209 passed (9.3m)"
+      ],
+      "excludedTests": [
+        "e2e/private-archive.spec.ts:4:1 › local archive folder imports full metadata and image references without publishing them",
+        "e2e/price-chart-034.spec.ts:999:3 › actual touch-capable browser input › native long press, horizontal pan, pinch and cancellation keep inspected values and window state"
+      ],
+      "caseRetryPolicy": 0,
+      "retryMarkers": 0,
+      "completeOfficialLogRead": true,
+      "codeReviewLogTruncated": true,
+      "officialFullLogSource": "GitHub fetch_workflow_job_logs",
+      "fixtureData": true,
+      "liveDataCertification": false
+    }
+  ],
+  "failures": [
+    {
+      "engine": "webkit",
+      "test": "e2e/learning.spec.ts:167:1 onchain guides open the corresponding primary metric and unsupported coins are explicit",
+      "failureLine": 180,
+      "error": "locator.click: Test timeout of 45000ms exceeded.",
+      "callLog": "waiting for getByRole('link', { name: '현재 분석 설명', exact: true })",
+      "flow": "ETH MVRV guide → matching chart → indicator explanation dialog → caution section → current-analysis guide link",
+      "cause": "Not established from the job log; the locator was unavailable or did not become clickable within the whole-test deadline.",
+      "artifact": "browser-failure-evidence-webkit",
+      "preservedEvidenceKinds": [
+        "trace.zip",
+        "test-failed-1.png",
+        "error-context.md"
+      ]
+    }
+  ],
+  "container": {
+    "status": "completed",
+    "conclusion": "success",
+    "codeReviewLogTruncated": true,
+    "completeLogRead": false,
+    "claimAllVulnerabilitiesAbsent": false
+  },
+  "aggregateGate": {
+    "jobId": 115802204986,
+    "conclusion": "failure",
+    "checks": "success",
+    "browser": "failure",
+    "container": "success",
+    "summaryEvidence": [
+      "CHECKS_RESULT: success",
+      "BROWSER_RESULT: failure",
+      "CONTAINER_RESULT: success",
+      "##[error]Process completed with exit code 1."
+    ]
+  },
+  "firstMainFailurePreserved": {
+    "runId": 38533804014,
+    "file": "ci-main-38533804014.json"
+  },
+  "latestSuccessFileUpdated": false,
+  "sourceControlCliFallback": false,
+  "remoteChanges": 0,
+  "gitMutations": 0,
+  "liveChartRunnerExecuted": false,
+  "privateOriginalsRead": false,
+  "rawCredentialsHeadersOrPersonalContentSaved": false
+}

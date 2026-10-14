@@ -144,7 +144,37 @@ test('analysis recipes replace the main chart with calculated views', async ({ p
     .getByRole('navigation', { name: '지표 목록', exact: true })
     .getByRole('link', { name: '이동평균 리본 가격', exact: true })
     .click();
-  await expect(page.locator('.analysis-legend')).toContainText('SMA 7봉');
+  await expect(chart(page)).toHaveAttribute('data-range-ready', '1');
+  const ribbonLegend = page.locator('.analysis-secondary-readings');
+  const sma7 = ribbonLegend
+    .locator('.analysis-secondary-reading')
+    .filter({ hasText: /^SMA 7봉\s/ });
+  await expect(ribbonLegend.locator('.analysis-secondary-reading')).toHaveCount(4);
+  await expect(sma7).toBeVisible();
+  await expect(sma7).toContainText('USD');
+  await expect(page.locator('.analysis-legend')).not.toContainText('SMA 7봉');
+  expect((await ribbonLegend.boundingBox())!.y).toBeGreaterThanOrEqual(
+    (await chart(page).boundingBox())!.y + (await chart(page).boundingBox())!.height,
+  );
+  expect(new URL(page.url()).searchParams.get('interval') || '1d').toBe('1d');
+  await expect(chart(page)).toHaveAttribute('data-observations', '1100');
+  const latestTime = Number(await chart(page).getAttribute('data-visible-to'));
+  const latestPrices = await page.request.get(
+    `/api/v1/reference?asset=BTC&from=${latestTime - 6 * 86400}&to=${latestTime + 86400}&limit=1000`,
+  );
+  expect(latestPrices.ok()).toBe(true);
+  const reference = (await latestPrices.json()) as {
+    data: { time: number; value: number }[];
+    meta: { unit: string };
+  };
+  expect(reference.meta.unit).toBe('USD');
+  expect(reference.data).toHaveLength(7);
+  expect(reference.data.at(-1)!.time).toBe(latestTime);
+  const expectedSma = reference.data.reduce((sum, point) => sum + point.value, 0) / 7;
+  expect(Number((await sma7.locator('b').innerText()).replaceAll(',', ''))).toBeCloseTo(
+    expectedSma,
+    2,
+  );
   await page.getByRole('button', { name: /지표 변경$/ }).click();
   await page.getByLabel('지표 검색', { exact: true }).fill('반감기 사이클');
   await page

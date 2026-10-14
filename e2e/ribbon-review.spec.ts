@@ -7,15 +7,68 @@ test('ribbon settings preserve the selected date window and survive reload', asy
   const chart = page.locator('[data-chart-kind="analysis"]');
   await expect(chart).toHaveAttribute('data-range-ready', '1');
   const from = await chart.getAttribute('data-visible-from');
+  const to = await chart.getAttribute('data-visible-to');
+  const latest = await page.locator('.analysis-reading-value').innerText();
+  const reference: { time: number; value: number }[] = [];
+  let cursor = 0;
+  for (let pageIndex = 0; pageIndex < 3; pageIndex++) {
+    const response = await page.request.get(
+      `/api/v1/reference?asset=BTC&limit=1000${cursor ? `&from=${cursor}` : ''}`,
+    );
+    expect(response.ok()).toBe(true);
+    const body = (await response.json()) as {
+      data: { time: number; value: number }[];
+      nextCursor: number | null;
+      meta: { unit: string };
+    };
+    expect(body.meta.unit).toBe('USD');
+    reference.push(...body.data);
+    if (body.nextCursor === null) break;
+    expect(body.nextCursor).toBeGreaterThan(cursor);
+    cursor = body.nextCursor;
+  }
+  expect(reference).toHaveLength(1100);
+  expect(reference[0].time).toBe(Number(from));
+  expect(reference.at(-1)!.time).toBe(Number(to));
+  expect(new URL(page.url()).searchParams.get('interval') || '1d').toBe('1d');
+  await expect(chart).toHaveAttribute('data-observations', String(reference.length));
+  const expectedEma = (period: number) => {
+    let value = reference.slice(0, period).reduce((sum, point) => sum + point.value, 0) / period;
+    const weight = 2 / (period + 1);
+    for (const point of reference.slice(period))
+      value = point.value * weight + value * (1 - weight);
+    return value;
+  };
+  const verifyRibbon = async () => {
+    const legend = page.locator('.analysis-secondary-readings');
+    await expect(legend.locator('.analysis-secondary-reading')).toHaveCount(6);
+    await expect(legend).toBeVisible();
+    const chartBox = (await chart.boundingBox())!;
+    expect((await legend.boundingBox())!.y).toBeGreaterThanOrEqual(chartBox.y + chartBox.height);
+    await expect(page.locator('.analysis-legend')).not.toContainText('EMA 89봉');
+    for (const period of [8, 13, 21, 34, 55, 89]) {
+      const line = legend
+        .locator('.analysis-secondary-reading')
+        .filter({ hasText: new RegExp(`^EMA ${period}봉\\s`) });
+      await expect(line).toBeVisible();
+      await expect(line).toContainText('USD');
+      expect(Number((await line.locator('b').innerText()).replaceAll(',', ''))).toBeCloseTo(
+        expectedEma(period),
+        2,
+      );
+    }
+    await expect(chart).toHaveAttribute('data-visible-from', from!);
+    await expect(chart).toHaveAttribute('data-visible-to', to!);
+    await expect(page.locator('.analysis-reading-value')).toHaveText(latest);
+  };
   await page.getByRole('button', { name: '더보기', exact: true }).click();
   await page.getByRole('button', { name: '리본 설정', exact: true }).click();
   await page.getByRole('button', { name: /빠른 반응/ }).click();
   await page.getByRole('button', { name: '차트에 적용', exact: true }).click();
-  await expect(page.locator('.analysis-legend')).toContainText('EMA 89봉');
-  await expect(chart).toHaveAttribute('data-visible-from', from!);
+  await verifyRibbon();
   await page.reload();
   await page.getByRole('button', { name: '더보기', exact: true }).click();
-  await expect(page.locator('.analysis-legend')).toContainText('EMA 8봉');
+  await verifyRibbon();
   await page.getByRole('button', { name: '리본 설정', exact: true }).click();
   await page.getByLabel('리본 기간').fill('7, 7');
   await page.getByRole('button', { name: '차트에 적용', exact: true }).click();

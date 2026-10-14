@@ -3,13 +3,14 @@ import {
   chartDate,
   chartTick,
   chartPrecision,
+  chartAxisValue,
   inspectionPosition,
   logicalRangeChanged,
   mobileChartHeight,
   boundedLogicalPan,
   restoreLogicalView,
 } from '../src/chart-interaction';
-import { priceDigits } from '../src/lib';
+import { money, numeric, priceDigits } from '../src/lib';
 import { readingDigits } from '../shared/chart-readings';
 
 describe('chart precision and inspection layout', () => {
@@ -34,6 +35,38 @@ describe('chart precision and inspection layout', () => {
       precision: 2,
       minMove: 0.01,
     });
+  });
+  it('normalizes only sub-resolution axis zeros, including the observed floating tick and -0', () => {
+    for (const value of [1.3877787807814457e-16, -1.3877787807814457e-16, 0, -0]) {
+      expect(chartAxisValue(value, 1e-8)).toBe(0);
+      expect(Object.is(chartAxisValue(value, 1e-8), -0)).toBe(false);
+    }
+    expect(chartAxisValue(1.3877787807814457e-16, 1e-6)).toBe(0);
+    expect(chartAxisValue(-1.3877787807814457e-16, 1e-6)).toBe(0);
+    expect(money(chartAxisValue(1.3877787807814457e-16, 1e-8), 'USDT')).toBe('$0.00');
+    expect(money(chartAxisValue(-0, 1e-8), 'KRW')).toBe('₩0.00');
+    expect(numeric(chartAxisValue(-1.3877787807814457e-16, 1e-6), 2)).toBe('0.00');
+  });
+  it('preserves small prices, signed auxiliary values and the exact half-increment boundary', () => {
+    for (const value of [0.000001135, 0.000008123, 0.123456789123, -0.000134, 0.000134])
+      expect(chartAxisValue(value, 1e-8)).toBe(value);
+    expect(chartAxisValue(1e-12, 1e-12)).toBe(1e-12);
+    expect(chartAxisValue(5e-9, 1e-8)).toBe(5e-9);
+    expect(chartAxisValue(-5e-9, 1e-8)).toBe(-5e-9);
+    expect(chartAxisValue(-0.000134, 1e-6)).toBe(-0.000134);
+    expect(money(chartAxisValue(0.000001135, 1e-8), 'USDT')).toBe('$0.00000114');
+    expect(money(chartAxisValue(0.000008123, 1e-8), 'USDT')).toBe('$0.00000812');
+    expect(numeric(chartAxisValue(-0.000134, 1e-6), 6)).toBe('-0.000134');
+    const observations = [0.000001135, -0.000134, 0, -0];
+    const before = [...observations];
+    observations.forEach((value) => chartAxisValue(value, 1e-8));
+    expect(observations).toEqual(before);
+  });
+  it('does not disguise nonfinite values or invalid axis increments', () => {
+    expect(chartAxisValue(NaN, 1e-8)).toBeNaN();
+    expect(chartAxisValue(Infinity, 1e-8)).toBe(Infinity);
+    for (const minMove of [0, -1, NaN, Infinity])
+      expect(chartAxisValue(1e-16, minMove)).toBe(1e-16);
   });
   it('uses bounded mobile heights without reducing desktop chart height', () => {
     expect(mobileChartHeight(577, 270, 59)).toBe(240);

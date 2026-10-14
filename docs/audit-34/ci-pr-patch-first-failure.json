@@ -1,0 +1,211 @@
+{
+  "schemaVersion": 1,
+  "checkedAt": "2026-10-14T12:39:00.627Z",
+  "repository": "pollmap/coin-desk",
+  "pullRequest": 71,
+  "pullRequestUrl": "https://github.com/pollmap/coin-desk/pull/71",
+  "headRevision": "2985c9efb6b976662770eabe69678b294a987815",
+  "runId": 38563111043,
+  "runUrl": "https://github.com/pollmap/coin-desk/actions/runs/38563111043",
+  "status": "completed",
+  "passed": false,
+  "allJobsCompleted": true,
+  "allJobHeadRevisionsMatch": true,
+  "jobCount": 5,
+  "jobs": [
+    {
+      "id": 115848896052,
+      "head_sha": "2985c9efb6b976662770eabe69678b294a987815",
+      "name": "checks",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/pollmap/coin-desk/actions/runs/38563111043/job/115848896052"
+    },
+    {
+      "id": 115848896496,
+      "head_sha": "2985c9efb6b976662770eabe69678b294a987815",
+      "name": "browser (chromium)",
+      "status": "completed",
+      "conclusion": "failure",
+      "url": "https://github.com/pollmap/coin-desk/actions/runs/38563111043/job/115848896496"
+    },
+    {
+      "id": 115848896683,
+      "head_sha": "2985c9efb6b976662770eabe69678b294a987815",
+      "name": "browser (webkit)",
+      "status": "completed",
+      "conclusion": "failure",
+      "url": "https://github.com/pollmap/coin-desk/actions/runs/38563111043/job/115848896683"
+    },
+    {
+      "id": 115848897726,
+      "head_sha": "2985c9efb6b976662770eabe69678b294a987815",
+      "name": "container",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/pollmap/coin-desk/actions/runs/38563111043/job/115848897726"
+    },
+    {
+      "id": 115854240415,
+      "head_sha": "2985c9efb6b976662770eabe69678b294a987815",
+      "name": "verify",
+      "status": "completed",
+      "conclusion": "failure",
+      "url": "https://github.com/pollmap/coin-desk/actions/runs/38563111043/job/115854240415"
+    }
+  ],
+  "checks": {
+    "unitFilesPassed": 78,
+    "unitPassed": 825,
+    "pythonRecoveryPassed": 2,
+    "nodeServerPassed": 31,
+    "nodeServerFailed": 0,
+    "pythonServerPassed": 32,
+    "dependencyAuditKnownFindings": 0,
+    "summaryEvidence": [
+      "found 0 vulnerabilities",
+      "found 0 vulnerabilities",
+      "Test Files  78 passed (78)",
+      "Tests  825 passed (825)",
+      "Ran 2 tests in 0.081s",
+      "OK",
+      "ℹ tests 31",
+      "ℹ pass 31",
+      "ℹ fail 0",
+      "ℹ cancelled 0",
+      "ℹ skipped 0",
+      "ℹ todo 0",
+      "Ran 32 tests in 0.600s",
+      "OK"
+    ],
+    "officialLogTruncated": false
+  },
+  "scope": "Completed failed PR CI and read-only failure diagnosis only. This run is not eligible for merge/deployment.",
+  "rawLogsOrInternalPathsSaved": false,
+  "providerPolicy": "Returned Code Review headRevision retained; jobId alone for official job log reads; no CLI fallback.",
+  "caseRetriesNotYetVerified": false,
+  "runNumber": 240,
+  "runAttempt": 1,
+  "conclusion": "failure",
+  "browsers": [
+    {
+      "engine": "chromium",
+      "jobId": 115848896496,
+      "passed": 212,
+      "failed": 2,
+      "excluded": 1,
+      "flaky": 0,
+      "summaryEvidence": ["2 failed", "1 skipped", "212 passed (11.3m)"],
+      "excludedTests": [
+        "e2e/private-archive.spec.ts:4:1 › local archive folder imports full metadata and image references without publishing them"
+      ],
+      "caseRetryPolicy": 0,
+      "retryMarkers": 0,
+      "regressionEvidence": [
+        "✓  116 [chromium] › e2e/price-chart-034.spec.ts:189:1 › new price, Supertrend, ribbon and Bollinger views display the complete actual fixture history (7.1s)",
+        "✓  123 [chromium] › e2e/price-chart-034.spec.ts:339:1 › DOGE axis zero stays compact without rounding actual observations through refresh (2.9s)",
+        "✓  125 [chromium] › e2e/price-chart-034.spec.ts:401:1 › ribbon and Bollinger keep every latest overlay value below mobile charts without hiding either axis (22.5s)",
+        "✓  154 [chromium] › e2e/price-chart-034.spec.ts:1121:3 › actual touch-capable browser input › native long press, horizontal pan, pinch and cancellation keep inspected values and window state (7.0s)"
+      ],
+      "failureEvidence": [
+        "1) [chromium] › e2e/analysis-library.spec.ts:139:1 › analysis recipes replace the main chart with calculated views",
+        "Locator: locator('.analysis-legend')",
+        "Expected substring: \"SMA 7봉\"",
+        "Received string:    \"BTC · USD $59,435.27\"",
+        "2) [chromium] › e2e/ribbon-review.spec.ts:4:1 › ribbon settings preserve the selected date window and survive reload",
+        "Locator: locator('.analysis-legend')",
+        "Expected substring: \"EMA 89봉\"",
+        "Received string:    \"BTC · USD $59,435.27\""
+      ],
+      "logEvidence": {
+        "source": "Official GitHub fetch_workflow_job_logs, full decoded content",
+        "completeDecodedContent": true,
+        "characters": 606926,
+        "codeReviewTruncated": null,
+        "sourceControlCliUsed": false
+      }
+    },
+    {
+      "engine": "webkit",
+      "jobId": 115848896683,
+      "passed": 211,
+      "failed": 2,
+      "excluded": 2,
+      "flaky": 0,
+      "summaryEvidence": ["2 failed", "2 skipped", "211 passed (9.9m)"],
+      "excludedTests": [
+        "e2e/private-archive.spec.ts:4:1 › local archive folder imports full metadata and image references without publishing them",
+        "e2e/price-chart-034.spec.ts:1121:3 › actual touch-capable browser input › native long press, horizontal pan, pinch and cancellation keep inspected values and window state"
+      ],
+      "caseRetryPolicy": 0,
+      "retryMarkers": 0,
+      "regressionEvidence": [
+        "✓  115 [webkit] › e2e/price-chart-034.spec.ts:189:1 › new price, Supertrend, ribbon and Bollinger views display the complete actual fixture history (6.3s)",
+        "✓  123 [webkit] › e2e/price-chart-034.spec.ts:339:1 › DOGE axis zero stays compact without rounding actual observations through refresh (2.3s)",
+        "✓  125 [webkit] › e2e/price-chart-034.spec.ts:401:1 › ribbon and Bollinger keep every latest overlay value below mobile charts without hiding either axis (24.6s)"
+      ],
+      "failureEvidence": [
+        "1) [webkit] › e2e/analysis-library.spec.ts:139:1 › analysis recipes replace the main chart with calculated views",
+        "Locator: locator('.analysis-legend')",
+        "Expected substring: \"SMA 7봉\"",
+        "Received string:    \"BTC · USD $59,435.27\"",
+        "2) [webkit] › e2e/ribbon-review.spec.ts:4:1 › ribbon settings preserve the selected date window and survive reload",
+        "Locator: locator('.analysis-legend')",
+        "Expected substring: \"EMA 89봉\"",
+        "Received string:    \"BTC · USD $59,435.27\""
+      ],
+      "logEvidence": {
+        "source": "Official GitHub fetch_workflow_job_logs, full decoded content",
+        "completeDecodedContent": true,
+        "characters": 721443,
+        "codeReviewTruncated": true,
+        "sourceControlCliUsed": false
+      }
+    }
+  ],
+  "browserTotals": {
+    "passed": 423,
+    "failed": 4,
+    "excluded": 3,
+    "flaky": 0,
+    "retryMarkers": 0
+  },
+  "sourceFreezeCommit": "2985c9efb6b976662770eabe69678b294a987815",
+  "diagnosis": {
+    "category": "Existing QA locator does not follow intentionally relocated overlay readings.",
+    "cause": "Both tests expect ribbon labels inside .analysis-legend, while focused overlay charts render these labels in .analysis-secondary-readings beneath the chart.",
+    "failingTests": [
+      "e2e/analysis-library.spec.ts:139 analysis recipes replace the main chart with calculated views",
+      "e2e/ribbon-review.spec.ts:4 ribbon settings preserve the selected date window and survive reload"
+    ],
+    "exactTraceProof": [
+      {
+        "test": "analysis-library",
+        "timestamp": 30259.966,
+        "container": ".analysis-secondary-readings",
+        "values": "SMA 7봉 59,678.95 USD; SMA 25봉 60,319.46 USD; SMA 50봉 60,154.39 USD; SMA 100봉 59,430.77 USD"
+      },
+      {
+        "test": "ribbon-review",
+        "timestamp": 400245.759,
+        "container": ".analysis-secondary-readings",
+        "values": "EMA 8봉 59,715.76 USD; EMA 13봉 59,881.16 USD; EMA 21봉 60,029.80 USD; EMA 34봉 60,054.76 USD; EMA 55봉 59,905.19 USD; EMA 89봉 59,608.10 USD"
+      }
+    ],
+    "screenshotChecked": true,
+    "nativeCleanupRegression": "Chromium passed; WebKit native multi-touch deliberately excluded.",
+    "newAxisAndBelowChartReadingsRegression": "Passed both engines.",
+    "noRetryNoSourceChangeDuringDiagnosis": true,
+    "recommendedRepair": "Point existing tests to the same actual overlay readings, retaining period/value assertions and date-window/reload tests. Do not restore mobile wrapping or loosen timeouts."
+  },
+  "failureArtifact": {
+    "id": 11894030285,
+    "name": "browser-failure-evidence-webkit",
+    "bytes": 18241796,
+    "sha256": "392e7a420c9d6f21a5b64056ec4c9aedd38952a5c6c4791343bd9f8290edea22",
+    "officialDigestMatched": true,
+    "privateLocalOnly": true,
+    "signedDownloadUrlSaved": false
+  },
+  "mergeAndDeploymentGate": false
+}

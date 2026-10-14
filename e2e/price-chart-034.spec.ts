@@ -336,6 +336,128 @@ test('tiny PEPE and SHIB price axes preserve nonzero precision and matched toolt
   }
 });
 
+test('DOGE axis zero stays compact without rounding actual observations through refresh', async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.clock.install();
+  await canvasPricePaints(page);
+  const bars = dailyBars(120, 0.003).map((bar, index) => {
+    const close = index === 119 ? 0.08765 : 0.003 + 0.72 * Math.sin((index / 119) * Math.PI) ** 2;
+    return { ...bar, open: close * 0.998, high: close * 1.01, low: close * 0.99, close };
+  });
+  const state = { bars };
+  const requests = await fixture(page, 'DOGE', state);
+  await page.goto('/coins/DOGE?metric=view:supertrend&price_source=binance&interval=1d&period=all');
+  await ready(page);
+  const axis = async () =>
+    page.evaluate(() => {
+      const element = document.querySelector('[data-chart-kind="analysis"]')!;
+      const host = element.getBoundingClientRect();
+      const right = [...element.querySelectorAll('canvas')]
+        .map((canvas) => canvas.getBoundingClientRect())
+        .filter((bounds) => bounds.width > 0 && bounds.x > host.x + host.width / 2)
+        .sort((a, b) => b.height - a.height)[0];
+      const paints = (
+        window as unknown as {
+          priceChartPaints: { text: string; canvasX: number; canvasWidth: number }[];
+        }
+      ).priceChartPaints;
+      return {
+        width: right?.width,
+        ticks: paints
+          .filter((paint) => paint.canvasX === right?.x && paint.canvasWidth === right.width)
+          .map((paint) => paint.text)
+          .filter((text) => text.startsWith('$')),
+      };
+    });
+  await expect.poll(async () => (await axis()).ticks.includes('$0.00')).toBe(true);
+  const assertAxis = async () => {
+    const reading = await axis();
+    expect(reading.width).toBeLessThan(90);
+    expect(reading.ticks.some((text) => Number(text.slice(1)) > 0)).toBe(true);
+    expect(
+      reading.ticks.filter((text) => Number(text.slice(1)) === 0 && /\.\d{3,}$/.test(text)),
+    ).toEqual([]);
+  };
+  await assertAxis();
+  await chart(page).press('Home');
+  await expect(chart(page)).toHaveAttribute('data-hover-value', String(bars[0].close));
+  await expect(tooltip(page)).toContainText('$0.00300000');
+  const latest = await summary(page).innerText();
+  const calls = requests.length;
+  await page.evaluate(() => {
+    (window as unknown as { priceChartPaints: unknown[] }).priceChartPaints.splice(0);
+  });
+  await page.clock.fastForward(60001);
+  await expect.poll(() => requests.length).toBeGreaterThan(calls);
+  await expect.poll(async () => (await axis()).ticks.includes('$0.00')).toBe(true);
+  await assertAxis();
+  await expect(chart(page)).toHaveAttribute('data-hover-value', String(bars[0].close));
+  await expect(summary(page)).toHaveText(latest);
+  await page.screenshot({ path: test.info().outputPath('doge-axis-zero-compact.png') });
+});
+
+test('ribbon and Bollinger keep every latest overlay value below mobile charts without hiding either axis', async ({
+  page,
+}) => {
+  test.setTimeout(90000);
+  const bars = await actualCandles(page.request, 'XRP');
+  const average = (period: number) =>
+    bars.slice(-period).reduce((sum, bar) => sum + bar.close, 0) / period;
+  const middle = average(20);
+  const deviation = Math.sqrt(
+    bars.slice(-20).reduce((sum, bar) => sum + (bar.close - middle) ** 2, 0) / 20,
+  );
+  for (const viewport of [
+    { width: 320, height: 568 },
+    { width: 390, height: 844 },
+    { width: 1280, height: 800 },
+  ]) {
+    await page.setViewportSize(viewport);
+    for (const [metric, values] of [
+      ['view:ribbon', [7, 25, 50, 100].map(average)],
+      ['view:bb', [middle, middle + 2 * deviation, middle - 2 * deviation]],
+    ] as const) {
+      await page.goto(`/coins/XRP?metric=${metric}&price_source=binance&interval=1d&period=all`);
+      await ready(page);
+      const latest = await summary(page).innerText();
+      for (const theme of ['light', 'dark']) {
+        await page.evaluate((value) => {
+          document.documentElement.dataset.theme = value;
+        }, theme);
+        const box = await ready(page);
+        expect(box.y).toBeLessThanOrEqual(viewport.width < 768 ? 280 : 240);
+        expect(box.height).toBeGreaterThanOrEqual(viewport.width < 768 ? 240 : 420);
+        if (viewport.width < 768) {
+          expect(box.height).toBeLessThanOrEqual(330);
+          const navTop = await page
+            .locator('.product-nav')
+            .evaluate((element) => element.getBoundingClientRect().top);
+          expect(box.y + box.height).toBeLessThanOrEqual(navTop - 6);
+        }
+        const readings = page.locator('.analysis-secondary-readings .analysis-secondary-reading');
+        await expect(readings).toHaveCount(values.length);
+        for (const [index, value] of values.entries()) {
+          await expect(readings.nth(index)).toBeVisible();
+          const rect = (await readings.nth(index).boundingBox())!;
+          expect(rect.y).toBeGreaterThanOrEqual(box.y + box.height);
+          const rendered = Number(
+            (await readings.nth(index).locator('b').innerText()).replaceAll(',', ''),
+          );
+          expect(rendered).toBeCloseTo(value, 2);
+          await expect(readings.nth(index)).toContainText('USDT');
+        }
+        await expect(summary(page)).toHaveText(latest);
+        expect((await new AxeBuilder({ page }).include('main').analyze()).violations).toEqual([]);
+        await page.screenshot({
+          path: test.info().outputPath(`${metric.slice(5)}-${viewport.width}-${theme}-compact.png`),
+        });
+      }
+    }
+  }
+});
+
 test('keyboard history-boundary inspection preserves logical zoom through resize, refresh, older history and saved reload', async ({
   page,
 }) => {
@@ -1005,13 +1127,30 @@ test.describe('actual touch-capable browser input', () => {
       browserName !== 'chromium',
       'Playwright exposes only native tap for WebKit; native multi-touch is separately unverified, not replaced by DOM dispatch.',
     );
+    await page.setViewportSize({ width: 320, height: 568 });
     await trustedTouchLog(page);
+    await page.addInitScript(() => {
+      const clicks: { trusted: boolean; target: string }[] = [];
+      document.addEventListener(
+        'click',
+        (event) => {
+          if (
+            event.target instanceof Element &&
+            event.target.closest('[data-chart-kind="analysis"]')
+          )
+            clicks.push({ trusted: event.isTrusted, target: event.target.tagName });
+        },
+        { capture: true },
+      );
+      Object.assign(window, { chartCancelClicks: clicks });
+    });
     const bars = dailyBars(160, 0.1);
     await fixture(page, 'DOGE', { bars });
     await page.goto(
       '/coins/DOGE?metric=view:supertrend&price_source=binance&interval=1d&period=1m',
     );
     const box = await ready(page);
+    const canvas = await chart(page).locator('canvas').first().elementHandle();
     const session = await context.newCDPSession(page);
     const origin = { x: box.x + box.width * 0.5, y: box.y + box.height * 0.4, id: 1 };
     const latest = await summary(page).innerText();
@@ -1070,22 +1209,193 @@ test.describe('actual touch-capable browser input', () => {
       await chart(page).getAttribute('data-visible-from'),
       await chart(page).getAttribute('data-visible-to'),
     ];
+    const chartClicks = () =>
+      page.evaluate(
+        () => (window as unknown as { chartCancelClicks: unknown[] }).chartCancelClicks.length,
+      );
+    const beforeCancelClicks = await chartClicks();
+    const beforeCancelEnds = (await touches(page)).filter(
+      (event) => event.type === 'touchend',
+    ).length;
     await dispatchTouch(session, 'touchStart', [origin]);
     await dispatchTouch(session, 'touchCancel', []);
     await expect(tooltip(page)).not.toBeVisible();
+    // Detach just as in the actual failed live sequence. The next first tap,
+    // not a keyboard fallback or a second tap, must open the real menu.
+    await session.detach();
+    expect(await chartClicks()).toBe(beforeCancelClicks);
+    expect((await touches(page)).filter((event) => event.type === 'touchend')).toHaveLength(
+      beforeCancelEnds,
+    );
+    await expect(summary(page)).toHaveText(latest);
+    expect(new URL(page.url()).searchParams.has('reading_date')).toBe(false);
+    const periodTrigger = page.getByRole('button', { name: '조회 기간 · 1개월', exact: true });
+    await periodTrigger.tap();
+    const periodMenu = page.getByRole('menu', { name: /^조회 기간/ });
+    await expect(periodMenu).toBeVisible();
+    await page.keyboard.press('Escape');
+    await expect(periodMenu).not.toBeVisible();
+    await expect(periodTrigger).toBeFocused();
+
+    const cancelBeforeOutsideTap = async () => {
+      await page.evaluate(() => scrollTo(0, 0));
+      const bounds = (await chart(page).boundingBox())!;
+      const active = await context.newCDPSession(page);
+      const point = { x: bounds.x + bounds.width * 0.5, y: bounds.y + bounds.height * 0.4, id: 1 };
+      const clicks = await chartClicks();
+      const ends = (await touches(page)).filter((event) => event.type === 'touchend').length;
+      try {
+        await dispatchTouch(active, 'touchStart', [point]);
+        await dispatchTouch(active, 'touchCancel', []);
+      } finally {
+        await active.detach();
+      }
+      expect(await chartClicks()).toBe(clicks);
+      expect((await touches(page)).filter((event) => event.type === 'touchend')).toHaveLength(ends);
+      await expect(summary(page)).toHaveText(latest);
+      await expect(tooltip(page)).not.toBeVisible();
+    };
+    await cancelBeforeOutsideTap();
+    const more = page.getByRole('button', { name: '더보기', exact: true });
+    await more.tap();
+    await expect(more).toHaveAttribute('aria-expanded', 'true');
+    await expect(page.locator('#indicator-more')).toBeVisible();
+    await more.tap();
+    await expect(page.locator('#indicator-more')).not.toBeVisible();
+    await cancelBeforeOutsideTap();
     await page.getByRole('button', { name: /^지표 설명/ }).tap();
+    await expect(page.getByRole('dialog', { name: '지표 설명', exact: true })).toBeVisible();
     await page.keyboard.press('Escape');
     await expect(page.getByRole('dialog', { name: '지표 설명' })).not.toBeVisible();
     expect([
       await chart(page).getAttribute('data-visible-from'),
       await chart(page).getAttribute('data-visible-to'),
     ]).toEqual(zoomed);
+    expect(
+      await canvas!.evaluate(
+        (element) =>
+          element.isConnected &&
+          element === document.querySelector('[data-chart-kind="analysis"] canvas'),
+      ),
+    ).toBe(true);
+
+    // A new genuine drag and pinch must still work after cleanup. Do not
+    // recreate the chart or replace input with synthetic DOM events.
+    await page.evaluate(() => scrollTo(0, 0));
+    const recoveredBox = (await chart(page).boundingBox())!;
+    const recoveredPoint = {
+      x: recoveredBox.x + recoveredBox.width * 0.5,
+      y: recoveredBox.y + recoveredBox.height * 0.4,
+      id: 1,
+    };
+    const recovered = await context.newCDPSession(page);
+    let finalZoom: (string | null)[] = [];
+    try {
+      await dispatchTouch(recovered, 'touchStart', [recoveredPoint]);
+      for (const offset of [-15, -30, -45, -60, -80]) {
+        await dispatchTouch(recovered, 'touchMove', [
+          { ...recoveredPoint, x: recoveredPoint.x + offset },
+        ]);
+        await page.waitForTimeout(20);
+      }
+      await dispatchTouch(recovered, 'touchEnd', []);
+      await expect.poll(() => chart(page).getAttribute('data-visible-from')).not.toBe(zoomed[0]);
+      const beforePinch =
+        Number(await chart(page).getAttribute('data-visible-to')) -
+        Number(await chart(page).getAttribute('data-visible-from'));
+      const recoveredFingers = [
+        { ...recoveredPoint, x: recoveredPoint.x - 25 },
+        { ...recoveredPoint, x: recoveredPoint.x + 25, id: 2 },
+      ];
+      await dispatchTouch(recovered, 'touchStart', recoveredFingers);
+      for (const distance of [40, 60, 80]) {
+        await dispatchTouch(recovered, 'touchMove', [
+          { ...recoveredFingers[0], x: recoveredPoint.x - distance },
+          { ...recoveredFingers[1], x: recoveredPoint.x + distance },
+        ]);
+        await page.waitForTimeout(20);
+      }
+      await dispatchTouch(recovered, 'touchEnd', []);
+      await expect
+        .poll(
+          async () =>
+            Number(await chart(page).getAttribute('data-visible-to')) -
+            Number(await chart(page).getAttribute('data-visible-from')),
+        )
+        .toBeLessThan(beforePinch);
+      const beforeCanceledPan = await chart(page).getAttribute('data-visible-logical-from');
+      await dispatchTouch(recovered, 'touchStart', [recoveredPoint]);
+      for (const offset of [15, 30, 45, 60, 80]) {
+        await dispatchTouch(recovered, 'touchMove', [
+          { ...recoveredPoint, x: recoveredPoint.x + offset },
+        ]);
+        await page.waitForTimeout(20);
+      }
+      await expect
+        .poll(() => chart(page).getAttribute('data-visible-logical-from'))
+        .not.toBe(beforeCanceledPan);
+      const cancelClicks = await chartClicks();
+      const cancelEnds = (await touches(page)).filter((event) => event.type === 'touchend').length;
+      const atCancel = [
+        await chart(page).getAttribute('data-visible-logical-from'),
+        await chart(page).getAttribute('data-visible-logical-to'),
+      ];
+      await dispatchTouch(recovered, 'touchCancel', []);
+      const frames = await chart(page).evaluate(async (element) => {
+        const values: { frame: number; from: string | undefined; to: string | undefined }[] = [];
+        for (let frame = 0; frame < 20; frame++) {
+          await new Promise<void>((resolve) => requestAnimationFrame(() => resolve()));
+          values.push({
+            frame,
+            from: (element as HTMLElement).dataset.visibleLogicalFrom,
+            to: (element as HTMLElement).dataset.visibleLogicalTo,
+          });
+        }
+        return values;
+      });
+      await info.attach('canceled-pan-logical-frames.json', {
+        body: Buffer.from(
+          JSON.stringify({
+            atCancel,
+            frames,
+            note: 'Observed native cancel range; no claimed kinetic behavior without reading this evidence.',
+          }),
+        ),
+        contentType: 'application/json',
+      });
+      for (const frame of frames) {
+        expect(Number(frame.from)).toBeCloseTo(Number(atCancel[0]), 8);
+        expect(Number(frame.to)).toBeCloseTo(Number(atCancel[1]), 8);
+      }
+      expect(await chartClicks()).toBe(cancelClicks);
+      expect((await touches(page)).filter((event) => event.type === 'touchend')).toHaveLength(
+        cancelEnds,
+      );
+      await expect(summary(page)).toHaveText(latest);
+      finalZoom = [
+        await chart(page).getAttribute('data-visible-from'),
+        await chart(page).getAttribute('data-visible-to'),
+      ];
+    } finally {
+      await recovered.detach();
+    }
+    await periodTrigger.tap();
+    await expect(periodMenu).toBeVisible();
+    await page.keyboard.press('Escape');
+    await expect(periodMenu).not.toBeVisible();
     await page.setViewportSize({ width: 844, height: 390 });
     await ready(page);
     expect([
       await chart(page).getAttribute('data-visible-from'),
       await chart(page).getAttribute('data-visible-to'),
-    ]).toEqual(zoomed);
+    ]).toEqual(finalZoom);
+    expect(
+      await canvas!.evaluate(
+        (element) =>
+          element.isConnected &&
+          element === document.querySelector('[data-chart-kind="analysis"] canvas'),
+      ),
+    ).toBe(true);
     const events = await touches(page);
     expect(events.some((event) => event.trusted && event.touches === 2)).toBe(true);
     expect(events.some((event) => event.trusted && event.type === 'touchcancel')).toBe(true);
@@ -1100,6 +1410,5 @@ test.describe('actual touch-capable browser input', () => {
       ),
       contentType: 'application/json',
     });
-    await session.detach();
   });
 });
