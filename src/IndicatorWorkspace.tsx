@@ -1393,6 +1393,7 @@ export function IndicatorWorkspace() {
             title="지표 설명"
             returnFocus={explanationButton}
             sheet
+            reading
           >
             <div className="indicator-explanation">
               <p>{d?.shortMeaning ?? article?.summary ?? d?.title}</p>
@@ -1406,35 +1407,33 @@ export function IndicatorWorkspace() {
                     : '확정된 관측의 추세와 단위를 함께 확인하세요.')}
               </p>
               <h2>숫자 예시</h2>
-              {explanationOpen && article ? (
-                <Suspense fallback={<p role="status">계산 예시를 불러오는 중…</p>}>
-                  <IndicatorMethod article={article} part="example" />
-                </Suspense>
-              ) : (
-                <p>{d?.formula}</p>
-              )}
-              <details>
-                <summary>계산식·기호</summary>
+              <Suspense fallback={<p role="status">계산 예시를 불러오는 중…</p>}>
                 {explanationOpen && article ? (
-                  <Suspense fallback={<p role="status">계산식을 불러오는 중…</p>}>
-                    <IndicatorMethod article={article} part="method" />
-                  </Suspense>
+                  <IndicatorMethod article={article} part="example" />
                 ) : (
                   <p>{d?.formula}</p>
                 )}
-              </details>
-              <details>
-                <summary>주의할 점</summary>
-                <p>
-                  {article?.caution ??
-                    '결측은 보간하지 않고 미래 데이터를 사용하지 않습니다. 관측 이력이 짧으면 계산 결과가 없습니다.'}
-                </p>
-                {article && (
-                  <Link aria-label="현재 분석 설명" to={guideHref(article.id, context)}>
-                    상세 설명 읽기
-                  </Link>
-                )}
-              </details>
+                <details>
+                  <summary>계산식·기호</summary>
+                  {explanationOpen && article ? (
+                    <IndicatorMethod article={article} part="method" />
+                  ) : (
+                    <p>{d?.formula}</p>
+                  )}
+                </details>
+                <details>
+                  <summary>주의할 점</summary>
+                  <p>
+                    {article?.caution ??
+                      '결측은 보간하지 않고 미래 데이터를 사용하지 않습니다. 관측 이력이 짧으면 계산 결과가 없습니다.'}
+                  </p>
+                  {article && (
+                    <Link aria-label="현재 분석 설명" to={guideHref(article.id, context)}>
+                      상세 설명 읽기
+                    </Link>
+                  )}
+                </details>
+              </Suspense>
             </div>
           </DeskDialog>
           <DeskDialog
