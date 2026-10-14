@@ -14,6 +14,7 @@ import {
   type SeriesType,
   type UTCTimestamp,
   type MouseEventParams,
+  type LogicalRange,
 } from 'lightweight-charts';
 import { createDeskChart } from './chart-theme';
 import { eligibleChartPrice, type LiveChartPrice } from '../shared/live-chart-price';
@@ -42,6 +43,9 @@ import {
   inspectionPosition,
   logicalRangeChanged,
   mobileChartHeight,
+  boundedLogicalPan,
+  restoreLogicalView,
+  type LogicalViewAnchor,
 } from './chart-interaction';
 
 export interface AnalysisLine {
@@ -196,11 +200,17 @@ export const AnalysisChart = memo(function AnalysisChart({
   dateSelect.current = onDateSelect;
   const settings = useRef({ period, log });
   settings.current = { period, log };
-  const previous = useRef<{ key: string; from: number; to: number } | null>(null);
+  const previous = useRef<{
+    key: string;
+    from: number;
+    to: number;
+    logical?: LogicalViewAnchor | null;
+  } | null>(null);
   const userRange = useRef(false);
   // LWC applies a range on its next frame. A React data update before that frame
   // must retain the requested window rather than read back the previous one.
   const pendingRange = useRef<DateWindow | null>(null);
+  const pendingLogicalRange = useRef<{ from: number; to: number } | null>(null);
   const appliedFocus = useRef<string | null>(null);
   const rangeCallback = useRef(onVisibleRange);
   rangeCallback.current = onVisibleRange;
@@ -433,6 +443,23 @@ export const AnalysisChart = memo(function AnalysisChart({
       },
     });
     chartRef.current = chart;
+    const captureLogicalView = (): LogicalViewAnchor | null => {
+      const logical = pendingLogicalRange.current ?? chart.timeScale().getVisibleLogicalRange();
+      const range = pendingRange.current ?? chart.timeScale().getVisibleRange();
+      if (!logical || !range) return null;
+      const time = Number(range.from);
+      const index = chart.timeScale().timeToIndex(ts(time), true);
+      if (index === null) return null;
+      return { time, offset: logical.from - index, width: logical.to - logical.from };
+    };
+    const restoreLogical = (view: LogicalViewAnchor) => {
+      const index = chart.timeScale().timeToIndex(ts(view.time), true);
+      if (index === null) return false;
+      const next = restoreLogicalView(view, index);
+      pendingLogicalRange.current = next;
+      chart.timeScale().setVisibleLogicalRange(next as LogicalRange);
+      return true;
+    };
     const price = candles?.length
       ? chart.addSeries(CandlestickSeries, {
           upColor: '#55c8af',
@@ -753,19 +780,36 @@ export const AnalysisChart = memo(function AnalysisChart({
         chart.clearCrosshairPosition();
         return;
       }
-      const range = chart.timeScale().getVisibleRange();
+      const range = pendingLogicalRange.current ?? chart.timeScale().getVisibleLogicalRange();
+      const index = chart.timeScale().timeToIndex(ts(time), true);
       let moved = false;
-      if (!preserveRange && range && (time < Number(range.from) || time > Number(range.to))) {
+      if (!preserveRange && range && index !== null && (index < range.from || index > range.to)) {
         // Keyboard/date navigation is a user pan too. Preserve it through
         // ResizeObserver and data refresh, even without a prior drag/zoom.
         userRange.current = true;
-        const width = Number(range.to) - Number(range.from);
-        pendingRange.current = { from: time - width / 2, to: time + width / 2 };
-        chart.timeScale().setVisibleRange({
-          from: ts(pendingRange.current.from),
-          to: ts(pendingRange.current.to),
-        });
-        moved = true;
+        let first = Infinity,
+          last = -Infinity;
+        for (const series of [
+          latest.current.points,
+          ...latest.current.lines.map((line) => line.data),
+        ]) {
+          if (series.length) {
+            first = Math.min(first, series[0].time);
+            last = Math.max(last, series.at(-1)!.time);
+          }
+        }
+        const firstIndex = chart.timeScale().timeToIndex(ts(first), true);
+        const lastIndex = chart.timeScale().timeToIndex(ts(last), true);
+        const next =
+          firstIndex === null || lastIndex === null
+            ? null
+            : boundedLogicalPan(range, index, firstIndex, lastIndex);
+        if (next) {
+          pendingRange.current = null;
+          pendingLogicalRange.current = next;
+          chart.timeScale().setVisibleLogicalRange(next as LogicalRange);
+          moved = true;
+        }
       }
       if (moved) {
         cancelAnimationFrame(cursorFrame.current);
@@ -782,6 +826,7 @@ export const AnalysisChart = memo(function AnalysisChart({
           ? inspectionRef.current
           : null;
       const requested = pendingRange.current;
+      const logicalView = userRange.current ? captureLogicalView() : null;
       const range = requested
         ? { from: ts(requested.from), to: ts(requested.to) }
         : chart.timeScale().getVisibleRange();
@@ -846,7 +891,9 @@ export const AnalysisChart = memo(function AnalysisChart({
         ].sort((a, b) => Number(a.time) - Number(b.time)),
       );
       host.current!.dataset.observations = String(data.points.length);
-      if (range && userRange.current) chart.timeScale().setVisibleRange(range);
+      if (userRange.current && logicalView && restoreLogical(logicalView)) {
+        /* exact zoom retained */
+      } else if (range && userRange.current) chart.timeScale().setVisibleRange(range);
       else {
         const explicit = availableWindow(
           data.points.map((p) => p.time),
@@ -909,25 +956,36 @@ export const AnalysisChart = memo(function AnalysisChart({
     if (prior?.key === key && userRange.current) {
       // setData runs again before the replacement chart's next frame. Keep the
       // restored user window pending until LWC publishes those exact dates.
-      pendingRange.current = { from: prior.from, to: prior.to };
-      chart.timeScale().setVisibleRange({ from: ts(prior.from), to: ts(prior.to) });
+      if (!prior.logical || !restoreLogical(prior.logical)) {
+        pendingRange.current = { from: prior.from, to: prior.to };
+        chart.timeScale().setVisibleRange({ from: ts(prior.from), to: ts(prior.to) });
+      }
     } else if (visible.length)
       chart
         .timeScale()
         .setVisibleRange({ from: ts(visible[0].time), to: ts(visible.at(-1)!.time) });
     const surface = host.current;
+    const updateLogicalWindow = (logical: LogicalRange | null) => {
+      if (!logical) return;
+      if (
+        gesture.current?.moved &&
+        performance.now() <= gesture.current.expires &&
+        logicalRangeChanged(gesture.current.baseline, logical)
+      ) {
+        userRange.current = true;
+        pendingRange.current = null;
+        pendingLogicalRange.current = null;
+      }
+      if (pendingLogicalRange.current && !logicalRangeChanged(pendingLogicalRange.current, logical))
+        pendingLogicalRange.current = null;
+      surface.dataset.visibleLogicalFrom = String(logical.from);
+      surface.dataset.visibleLogicalTo = String(logical.to);
+    };
     const updateWindow = (
       range: ReturnType<ReturnType<IChartApi['timeScale']>['getVisibleRange']>,
     ) => {
       if (range) {
-        if (
-          gesture.current?.moved &&
-          performance.now() <= gesture.current.expires &&
-          logicalRangeChanged(gesture.current.baseline, chart.timeScale().getVisibleLogicalRange())
-        ) {
-          userRange.current = true;
-          pendingRange.current = null;
-        }
+        updateLogicalWindow(chart.timeScale().getVisibleLogicalRange());
         if (
           pendingRange.current?.from === Number(range.from) &&
           pendingRange.current?.to === Number(range.to)
@@ -940,26 +998,33 @@ export const AnalysisChart = memo(function AnalysisChart({
       }
     };
     chart.timeScale().subscribeVisibleTimeRangeChange(updateWindow);
+    chart.timeScale().subscribeVisibleLogicalRangeChange(updateLogicalWindow);
     updateWindow(chart.timeScale().getVisibleRange());
     surface.dataset.observations = String(points.length);
     const resize = new ResizeObserver(() => {
       const requested = pendingRange.current;
+      const logical = pendingLogicalRange.current ?? chart.timeScale().getVisibleLogicalRange();
       const range = requested
         ? { from: ts(requested.from), to: ts(requested.to) }
         : chart.timeScale().getVisibleRange();
       const height = chartHeight();
       surface.style.height = height + 'px';
       chart.resize(Math.max(1, surface.clientWidth), height);
-      if (userRange.current && range) chart.timeScale().setVisibleRange(range);
+      if (userRange.current && logical)
+        chart.timeScale().setVisibleLogicalRange(logical as LogicalRange);
+      else if (userRange.current && range) chart.timeScale().setVisibleRange(range);
       else restoreDefault();
     });
     resize.observe(surface);
     const resizeViewport = () => {
       const range = pendingRange.current ?? chart.timeScale().getVisibleRange();
+      const logical = pendingLogicalRange.current ?? chart.timeScale().getVisibleLogicalRange();
       const height = chartHeight();
       surface.style.height = height + 'px';
       chart.resize(Math.max(1, surface.clientWidth), height);
-      if (userRange.current && range)
+      if (userRange.current && logical)
+        chart.timeScale().setVisibleLogicalRange(logical as LogicalRange);
+      else if (userRange.current && range)
         chart
           .timeScale()
           .setVisibleRange({ from: ts(Number(range.from)), to: ts(Number(range.to)) });
@@ -985,7 +1050,14 @@ export const AnalysisChart = memo(function AnalysisChart({
       // A style switch can arrive before LWC publishes a queued user zoom.
       // Carry the requested dates into the replacement series, not its stale frame.
       const range = pendingRange.current ?? chart.timeScale().getVisibleRange();
-      if (range) previous.current = { key, from: Number(range.from), to: Number(range.to) };
+      if (range)
+        previous.current = {
+          key,
+          from: Number(range.from),
+          to: Number(range.to),
+          logical: captureLogicalView(),
+        };
+      pendingLogicalRange.current = null;
       markers.detach();
       resize.disconnect();
       window.removeEventListener('resize', resizeViewport);
@@ -1055,6 +1127,8 @@ export const AnalysisChart = memo(function AnalysisChart({
     appliedRange.current = token;
     userRange.current = false;
     pendingRange.current = null;
+    pendingLogicalRange.current = null;
+    gesture.current = null;
     appliedFocus.current = null;
     const visible = points.filter((p) => p.time >= periodStart(period, points.at(-1)?.time ?? 0));
     manualCursor.current = false;

@@ -336,6 +336,95 @@ test('tiny PEPE and SHIB price axes preserve nonzero precision and matched toolt
   }
 });
 
+test('keyboard history-boundary inspection preserves logical zoom through resize, refresh, older history and saved reload', async ({
+  page,
+}) => {
+  await page.clock.install();
+  const state = { bars: dailyBars(1250, 0.1) };
+  const requests = await fixture(page, 'DOGE', state);
+  await page.goto(
+    `/coins/DOGE?metric=view:supertrend&price_source=binance&period=all&chart_from=${state.bars[1000].time}&chart_to=${state.bars[1100].time}`,
+  );
+  await ready(page);
+  const latest = await summary(page).innerText();
+  const canvas = await chart(page).locator('canvas').first().elementHandle();
+  const logicalWidth = async () => {
+    const from = Number(await chart(page).getAttribute('data-visible-logical-from'));
+    const to = Number(await chart(page).getAttribute('data-visible-logical-to'));
+    expect(Number.isFinite(from) && Number.isFinite(to)).toBe(true);
+    return to - from;
+  };
+  const width = await logicalWidth();
+  expect(width).toBeCloseTo(100, 6);
+  const stableWidth = async () => {
+    await expect.poll(async () => Math.abs((await logicalWidth()) - width)).toBeLessThan(1e-6);
+    expect(await canvas!.evaluate((element) => element.isConnected)).toBe(true);
+    await expect(summary(page)).toHaveText(latest);
+  };
+  for (const [key, time] of [
+    ['Home', state.bars[0].time],
+    ['ArrowLeft', state.bars[0].time],
+    ['End', state.bars.at(-1)!.time],
+    ['ArrowRight', state.bars.at(-1)!.time],
+    ['Home', state.bars[0].time],
+    ['End', state.bars.at(-1)!.time],
+  ] as const) {
+    await chart(page).press(key);
+    await expect(chart(page)).toHaveAttribute('data-hover-time', String(time));
+    await stableWidth();
+  }
+  const currentFrom = await chart(page).getAttribute('data-visible-from');
+  const currentTo = await chart(page).getAttribute('data-visible-to');
+  for (const viewport of [
+    { width: 390, height: 844 },
+    { width: 1280, height: 800 },
+  ]) {
+    await page.setViewportSize(viewport);
+    await stableWidth();
+    await expect(chart(page)).toHaveAttribute('data-visible-from', currentFrom!);
+    await expect(chart(page)).toHaveAttribute('data-visible-to', currentTo!);
+  }
+  await page.getByRole('button', { name: /^지표 설명/ }).click();
+  await expect(page.getByRole('dialog', { name: '지표 설명', exact: true })).toBeVisible();
+  await page.keyboard.press('Escape');
+  await stableWidth();
+  const originalCalls = requests.length;
+  const older = {
+    ...state.bars[0],
+    time: state.bars[0].time - DAY,
+    closeTime: state.bars[0].closeTime - DAY,
+  };
+  state.bars.unshift(older);
+  await page.clock.fastForward(60001);
+  await expect.poll(() => requests.length).toBeGreaterThan(originalCalls);
+  await expect(chart(page)).toHaveAttribute('data-observations', '1251');
+  await stableWidth();
+  await expect(chart(page)).toHaveAttribute('data-visible-from', currentFrom!);
+  await expect(chart(page)).toHaveAttribute('data-visible-to', currentTo!);
+  await chart(page).press('Home');
+  await expect(chart(page)).toHaveAttribute('data-hover-time', String(older.time));
+  await stableWidth();
+  await chart(page).press('End');
+  await stableWidth();
+  const savedFrom = await chart(page).getAttribute('data-visible-from');
+  const savedTo = await chart(page).getAttribute('data-visible-to');
+  await page.getByRole('button', { name: '분석 저장', exact: true }).click();
+  await page.getByLabel('작업공간 이름', { exact: true }).fill('키보드 확대 보존');
+  await page.getByRole('button', { name: '현재 구성 저장', exact: true }).click();
+  await page.getByRole('link', { name: /키보드 확대 보존/ }).click();
+  await ready(page);
+  await expect(chart(page)).toHaveAttribute('data-visible-from', savedFrom!);
+  await expect(chart(page)).toHaveAttribute('data-visible-to', savedTo!);
+  expect(await logicalWidth()).toBeCloseTo(width, 6);
+  await page.reload();
+  await ready(page);
+  await expect(chart(page)).toHaveAttribute('data-visible-from', savedFrom!);
+  await expect(chart(page)).toHaveAttribute('data-visible-to', savedTo!);
+  expect(await logicalWidth()).toBeCloseTo(width, 6);
+  await expect(summary(page)).toHaveText(latest);
+  await publicOnly(page);
+});
+
 test('Supertrend inspection follows the actual intersection, uses the same candle and keeps the latest summary', async ({
   page,
 }) => {

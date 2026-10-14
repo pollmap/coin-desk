@@ -85,3 +85,40 @@ export function logicalRangeChanged(
     (Math.abs(before.from - after.from) > 1e-6 || Math.abs(before.to - after.to) > 1e-6)
   );
 }
+
+export interface LogicalViewAnchor {
+  time: number;
+  offset: number;
+  width: number;
+}
+
+/** Pan by bars, not calendar time: boundary clamping must never zoom the chart. */
+export function boundedLogicalPan(
+  range: { from: number; to: number },
+  target: number,
+  first: number,
+  last: number,
+) {
+  const width = range.to - range.from;
+  if (
+    ![range.from, range.to, target, first, last].every(Number.isFinite) ||
+    width <= 0 ||
+    last < first
+  )
+    return null;
+  const from =
+    width <= last - first
+      ? Math.max(first, Math.min(last - width, target - width / 2))
+      : target <= (first + last) / 2
+        ? first
+        : last - width;
+  return { from, to: from + width };
+}
+
+/** The stable observation anchor can move to another index after a prepend or correction. */
+export function restoreLogicalView(anchor: LogicalViewAnchor, currentAnchorIndex: number) {
+  return {
+    from: currentAnchorIndex + anchor.offset,
+    to: currentAnchorIndex + anchor.offset + anchor.width,
+  };
+}

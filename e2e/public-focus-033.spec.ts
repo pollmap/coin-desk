@@ -95,11 +95,13 @@ for (const width of [390, 1280]) {
   });
 }
 
-test('legacy date URLs retain their range without changing the public latest MVRV', async ({
+test('legacy date URLs and keyboard navigation preserve zoom width and save the current range without changing latest MVRV', async ({
   page,
 }) => {
   await page.goto('/coins/BTC?metric=net:mvrv&price_source=upbit&period=all');
   await expect(chart(page)).toHaveAttribute('data-range-ready', '1');
+  const firstObservation = await chart(page).getAttribute('data-visible-from');
+  const lastObservation = await chart(page).getAttribute('data-visible-to');
   const latest = await value(page).innerText();
   const response = await page.request.get(
     '/api/v1/network?asset=BTC&metric=mvrv&from=' +
@@ -123,13 +125,37 @@ test('legacy date URLs retain their range without changing the public latest MVR
   await expect(chart(page)).toHaveAttribute('data-visible-to', String(to));
   await expect(value(page)).toHaveText(latest);
   await cleanPublicChart(page);
+  const logicalWidth = async () => {
+    const start = Number(await chart(page).getAttribute('data-visible-logical-from'));
+    const end = Number(await chart(page).getAttribute('data-visible-logical-to'));
+    expect(Number.isFinite(start) && Number.isFinite(end)).toBe(true);
+    return end - start;
+  };
+  const originalWidth = await logicalWidth();
+  expect(originalWidth).toBeGreaterThan(50);
   const url = page.url();
   await chart(page).focus();
   await page.keyboard.press('Home');
+  await expect(chart(page)).toHaveAttribute('data-hover-time', firstObservation!);
+  await expect
+    .poll(async () => Math.abs((await logicalWidth()) - originalWidth))
+    .toBeLessThan(1e-6);
   await page.keyboard.press('ArrowLeft');
+  await expect(chart(page)).toHaveAttribute('data-hover-time', firstObservation!);
+  await expect
+    .poll(async () => Math.abs((await logicalWidth()) - originalWidth))
+    .toBeLessThan(1e-6);
   await page.keyboard.press('End');
+  await expect(chart(page)).toHaveAttribute('data-hover-time', lastObservation!);
+  await expect
+    .poll(async () => Math.abs((await logicalWidth()) - originalWidth))
+    .toBeLessThan(1e-6);
   await expect(page).toHaveURL(url);
   await expect(value(page)).toHaveText(latest);
+  const currentFrom = await chart(page).getAttribute('data-visible-from');
+  const currentTo = await chart(page).getAttribute('data-visible-to');
+  expect(currentFrom).not.toBe(String(from));
+  expect(currentTo).toBe(lastObservation);
   const rect = (await chart(page).boundingBox())!;
   await page.mouse.move(rect.x + rect.width * 0.4, rect.y + 100);
   await expect(page.getByTestId('chart-tooltip')).toBeVisible();
@@ -139,8 +165,13 @@ test('legacy date URLs retain their range without changing the public latest MVR
   await page.getByRole('button', { name: '현재 구성 저장', exact: true }).click();
   await page.getByRole('link', { name: /이전 날짜 링크/ }).click();
   await expect(page).toHaveURL(new RegExp(`reading_date=${old}(?:&|$)`));
-  await expect(chart(page)).toHaveAttribute('data-visible-from', String(from));
-  await expect(chart(page)).toHaveAttribute('data-visible-to', String(to));
+  await expect(chart(page)).toHaveAttribute('data-visible-from', currentFrom!);
+  await expect(chart(page)).toHaveAttribute('data-visible-to', currentTo!);
+  await expect(value(page)).toHaveText(latest);
+  await page.reload();
+  await expect(chart(page)).toHaveAttribute('data-range-ready', '1');
+  await expect(chart(page)).toHaveAttribute('data-visible-from', currentFrom!);
+  await expect(chart(page)).toHaveAttribute('data-visible-to', currentTo!);
   await expect(value(page)).toHaveText(latest);
   await cleanPublicChart(page);
 });

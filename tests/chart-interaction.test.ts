@@ -6,6 +6,8 @@ import {
   inspectionPosition,
   logicalRangeChanged,
   mobileChartHeight,
+  boundedLogicalPan,
+  restoreLogicalView,
 } from '../src/chart-interaction';
 import { priceDigits } from '../src/lib';
 import { readingDigits } from '../shared/chart-readings';
@@ -61,5 +63,31 @@ describe('chart precision and inspection layout', () => {
     expect(logicalRangeChanged({ from: 0, to: 100 }, { from: 1e-8, to: 100 })).toBe(false);
     expect(logicalRangeChanged({ from: 0, to: 100 }, { from: 1, to: 101 })).toBe(true);
     expect(logicalRangeChanged(null, { from: 1, to: 101 })).toBe(false);
+  });
+  it('keeps the exact bar width when moving repeatedly to first and last observations', () => {
+    const range = { from: 20.25, to: 75.75 };
+    const start = boundedLogicalPan(range, 0, 0, 149)!;
+    const end = boundedLogicalPan(start, 149, 0, 149)!;
+    const startAgain = boundedLogicalPan(end, 0, 0, 149)!;
+    expect(start).toEqual({ from: 0, to: 55.5 });
+    expect(end).toEqual({ from: 93.5, to: 149 });
+    expect(startAgain).toEqual(start);
+    expect(end.to - end.from).toBe(range.to - range.from);
+  });
+  it('retains zoom for irregular observations and keeps a stable observation after prepend', () => {
+    const anchor = { time: 172800, offset: 0.25, width: 55.5 };
+    const before = restoreLogicalView(anchor, 20);
+    const prepended = restoreLogicalView(anchor, 70);
+    const correctedGap = restoreLogicalView(anchor, 67);
+    expect(before).toEqual({ from: 20.25, to: 75.75 });
+    expect(prepended).toEqual({ from: 70.25, to: 125.75 });
+    expect(correctedGap.to - correctedGap.from).toBe(before.to - before.from);
+    expect(boundedLogicalPan(before, 100, 0, 149)).toEqual({ from: 72.25, to: 127.75 });
+  });
+  it('does not shrink a deliberately wider viewport or accept invalid spans', () => {
+    expect(boundedLogicalPan({ from: 40, to: 240 }, 0, 0, 149)).toEqual({ from: 0, to: 200 });
+    expect(boundedLogicalPan({ from: -200, to: 0 }, 149, 0, 149)).toEqual({ from: -51, to: 149 });
+    expect(boundedLogicalPan({ from: 1, to: 1 }, 0, 0, 149)).toBeNull();
+    expect(boundedLogicalPan({ from: 0, to: NaN }, 0, 0, 149)).toBeNull();
   });
 });
