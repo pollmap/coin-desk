@@ -1,0 +1,249 @@
+{
+  "schemaVersion": 1,
+  "checkedAt": "2026-10-14T13:51:29.843Z",
+  "repository": "pollmap/coin-desk",
+  "runId": 38568067050,
+  "runUrl": "https://github.com/pollmap/coin-desk/actions/runs/38568067050",
+  "expectedMainCommit": "bd66a7cf59a8eff201b7ad61c142235400611d4a",
+  "runNumber": 242,
+  "runAttempt": 2,
+  "event": "push",
+  "providerContext": {
+    "pullRequest": 71,
+    "pullRequestUrl": "https://github.com/pollmap/coin-desk/pull/71",
+    "returnedHeadRevision": "4b15ef2cb228edbe69abdfeb6add7a08571781ad",
+    "jobHeadRevisionsComparedSeparately": true,
+    "policy": "Retain returned PR headRevision on official Code Review reads; all main-run jobs independently match expectedMainCommit."
+  },
+  "status": "completed",
+  "conclusion": "success",
+  "passed": true,
+  "allJobsCompleted": true,
+  "allJobHeadRevisionsMatch": true,
+  "jobCount": 5,
+  "jobs": [
+    {
+      "id": 115882003934,
+      "head_sha": "bd66a7cf59a8eff201b7ad61c142235400611d4a",
+      "name": "browser (webkit)",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/pollmap/coin-desk/actions/runs/38568067050/job/115882003934"
+    },
+    {
+      "id": 115882005170,
+      "head_sha": "bd66a7cf59a8eff201b7ad61c142235400611d4a",
+      "name": "checks",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/pollmap/coin-desk/actions/runs/38568067050/job/115882005170"
+    },
+    {
+      "id": 115882006029,
+      "head_sha": "bd66a7cf59a8eff201b7ad61c142235400611d4a",
+      "name": "browser (chromium)",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/pollmap/coin-desk/actions/runs/38568067050/job/115882006029"
+    },
+    {
+      "id": 115882006433,
+      "head_sha": "bd66a7cf59a8eff201b7ad61c142235400611d4a",
+      "name": "container",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/pollmap/coin-desk/actions/runs/38568067050/job/115882006433"
+    },
+    {
+      "id": 115889555638,
+      "head_sha": "bd66a7cf59a8eff201b7ad61c142235400611d4a",
+      "name": "verify",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/pollmap/coin-desk/actions/runs/38568067050/job/115889555638"
+    }
+  ],
+  "checks": {
+    "typescript": true,
+    "unitFilesPassed": 78,
+    "unitPassed": 825,
+    "pythonRecoveryPassed": 2,
+    "nodeServerPassed": 31,
+    "nodeServerFailed": 0,
+    "pythonServerPassed": 32,
+    "dependencyAuditKnownFindings": 0,
+    "summaryEvidence": [
+      "found 0 vulnerabilities",
+      "found 0 vulnerabilities",
+      "Test Files  78 passed (78)",
+      "Tests  825 passed (825)",
+      "Ran 2 tests in 0.072s",
+      "OK",
+      "ℹ tests 31",
+      "ℹ pass 31",
+      "ℹ fail 0",
+      "ℹ cancelled 0",
+      "ℹ skipped 0",
+      "ℹ todo 0",
+      "Ran 32 tests in 0.636s",
+      "OK"
+    ],
+    "officialLogTruncated": false,
+    "logExecutionCarriedForwardFromAttempt1": true,
+    "attempt2JobId": 115882005170,
+    "originalJobId": 115865769630
+  },
+  "browsers": [
+    {
+      "engine": "chromium",
+      "jobId": 115882006029,
+      "passed": 214,
+      "failed": 0,
+      "excluded": 1,
+      "flaky": 0,
+      "summaryEvidence": ["1 skipped", "214 passed (11.3m)"],
+      "excludedTests": [
+        "e2e/private-archive.spec.ts:4:1 › local archive folder imports full metadata and image references without publishing them"
+      ],
+      "caseRetryPolicy": 0,
+      "retryMarkers": 0,
+      "carriedForwardSuccessfulExecution": true,
+      "regressionEvidence": [
+        "✓    8 [chromium] › e2e/analysis-library.spec.ts:139:1 › analysis recipes replace the main chart with calculated views (5.3s)",
+        "✓    7 [chromium] › e2e/asset-logos.spec.ts:6:3 › all 150 market logos decode and match their own identity 390 (7.6s)",
+        "✓   10 [chromium] › e2e/asset-logos.spec.ts:6:3 › all 150 market logos decode and match their own identity 1280 (5.1s)",
+        "✓   85 [chromium] › e2e/learning.spec.ts:198:3 › deferred explanation lesson input › lesson loading never exposes moving actions or retargets a native close, and guide context stays intact (14.1s)",
+        "✓  116 [chromium] › e2e/price-chart-034.spec.ts:189:1 › new price, Supertrend, ribbon and Bollinger views display the complete actual fixture history (7.3s)",
+        "✓  124 [chromium] › e2e/price-chart-034.spec.ts:339:1 › DOGE axis zero stays compact without rounding actual observations through refresh (2.4s)",
+        "✓  125 [chromium] › e2e/price-chart-034.spec.ts:401:1 › ribbon and Bollinger keep every latest overlay value below mobile charts without hiding either axis (21.6s)",
+        "✓  154 [chromium] › e2e/price-chart-034.spec.ts:1121:3 › actual touch-capable browser input › native long press, horizontal pan, pinch and cancellation keep inspected values and window state (6.7s)",
+        "✓  162 [chromium] › e2e/ribbon-review.spec.ts:4:1 › ribbon settings preserve the selected date window and survive reload (8.0s)"
+      ],
+      "failureEvidence": [],
+      "logEvidence": {
+        "source": "Official GitHub fetch_workflow_job_logs, full decoded content",
+        "completeDecodedContent": true,
+        "characters": 598319,
+        "sourceControlCliUsed": false
+      }
+    },
+    {
+      "engine": "webkit",
+      "jobId": 115882003934,
+      "passed": 213,
+      "failed": 0,
+      "excluded": 2,
+      "flaky": 0,
+      "summaryEvidence": ["2 skipped", "213 passed (13.9m)"],
+      "excludedTests": [
+        "e2e/private-archive.spec.ts:4:1 › local archive folder imports full metadata and image references without publishing them",
+        "e2e/price-chart-034.spec.ts:1121:3 › actual touch-capable browser input › native long press, horizontal pan, pinch and cancellation keep inspected values and window state"
+      ],
+      "caseRetryPolicy": 0,
+      "retryMarkers": 0,
+      "carriedForwardSuccessfulExecution": false,
+      "regressionEvidence": [
+        "✓    6 [webkit] › e2e/asset-logos.spec.ts:6:3 › all 150 market logos decode and match their own identity 390 (7.9s)",
+        "✓    8 [webkit] › e2e/analysis-library.spec.ts:139:1 › analysis recipes replace the main chart with calculated views (8.0s)",
+        "✓    9 [webkit] › e2e/asset-logos.spec.ts:6:3 › all 150 market logos decode and match their own identity 1280 (6.9s)",
+        "✓   82 [webkit] › e2e/learning.spec.ts:198:3 › deferred explanation lesson input › lesson loading never exposes moving actions or retargets a native close, and guide context stays intact (19.2s)",
+        "✓  115 [webkit] › e2e/price-chart-034.spec.ts:189:1 › new price, Supertrend, ribbon and Bollinger views display the complete actual fixture history (9.1s)",
+        "✓  123 [webkit] › e2e/price-chart-034.spec.ts:339:1 › DOGE axis zero stays compact without rounding actual observations through refresh (3.3s)",
+        "✓  125 [webkit] › e2e/price-chart-034.spec.ts:401:1 › ribbon and Bollinger keep every latest overlay value below mobile charts without hiding either axis (35.7s)",
+        "✓  159 [webkit] › e2e/ribbon-review.spec.ts:4:1 › ribbon settings preserve the selected date window and survive reload (13.2s)"
+      ],
+      "failureEvidence": [],
+      "logEvidence": {
+        "source": "Official GitHub fetch_workflow_job_logs, full decoded content",
+        "completeDecodedContent": true,
+        "characters": 718338,
+        "sourceControlCliUsed": false
+      }
+    }
+  ],
+  "browserTotals": {
+    "cases": 430,
+    "passed": 427,
+    "failed": 0,
+    "excluded": 3,
+    "flaky": 0,
+    "retryMarkers": 0
+  },
+  "retryAccounting": {
+    "workflowRunAttempt": 2,
+    "failedJobReruns": 1,
+    "explicitlyRequestedByRoot": true,
+    "browserCaseRetries": 0,
+    "automaticRerunByAuditor": false,
+    "successfulJobsCarriedForward": ["checks", "container", "browser (chromium)"],
+    "rerunJobs": ["browser (webkit)", "verify"],
+    "policy": "Workflow failed-job rerun is recorded separately from browser case retries. No second failed-job rerun was authorized or executed."
+  },
+  "verify": {
+    "jobId": 115889555638,
+    "officialLogTruncated": false,
+    "summaryEvidence": [
+      "CHECKS_RESULT: success",
+      "BROWSER_RESULT: success",
+      "CONTAINER_RESULT: success"
+    ]
+  },
+  "initialFailedAttempt": {
+    "runAttempt": 1,
+    "immutableProof": "work/ux-0341/ci-main-38568067050.json",
+    "browserTotals": {
+      "cases": 430,
+      "passed": 426,
+      "failed": 1,
+      "excluded": 3,
+      "flaky": 0,
+      "retryMarkers": 0
+    },
+    "failure": {
+      "test": "e2e/asset-logos.spec.ts:6:3 all 150 market logos decode and match their own identity 1280",
+      "engine": "webkit",
+      "message": "Logo load deadline: BNB: /coin-logos/v2/bnb-0f4502d8c525.png",
+      "timeoutMilliseconds": 15000,
+      "occurredAt": "2026-10-14T13:01:04.1516959Z",
+      "cause": "Not established from logs; request/decode/lazy-loading conditions require separate reproduction.",
+      "chromiumSameCasePassed": true,
+      "webkit390SameCasePassed": true,
+      "newChartAndRibbonRegressionPassed": true,
+      "automaticRerun": false,
+      "artifactDownloaded": false,
+      "artifactReason": "Large artifact download deferred due to local storage constraint; no trace/PNG diagnosis claim.",
+      "localDiskNotUsedAsRemoteFailureCause": true
+    },
+    "preservedWithoutModification": true,
+    "subsequentTraceDiagnosis": {
+      "officialTraceRequestStartedMilliseconds": 24841.012,
+      "probeStartedMilliseconds": 25187.304,
+      "probeFailureMilliseconds": 40216.049,
+      "responseCompleted": false,
+      "httpStatusObserved": false,
+      "responseBodyObserved": false,
+      "cause": "Unconfirmed. The trace shows a started BNB request without a completed response by the original deadline; it does not establish request, decode or lazy-loading cause.",
+      "diagnosisEvidence": "work/ux-0341/ci-main-logo-webkit/extraction-and-bnb-analysis.json"
+    },
+    "independentUnchangedSourceDiagnostic": {
+      "engine": "webkit",
+      "original1280Case": true,
+      "repeatEach": 3,
+      "workers": 1,
+      "passed": 3,
+      "failed": 0,
+      "browserCaseRetries": 0,
+      "durationSeconds": 29.8,
+      "testTimeoutMilliseconds": 90000,
+      "individualImageDeadlineMilliseconds": 15000,
+      "sourceOrTimeoutChanged": false,
+      "evidence": "work/ux-0341/ci-main-logo-webkit/diagnosis-summary.json",
+      "doesNotReplaceFullCi": true,
+      "doesNotEstablishOriginalCause": true
+    }
+  },
+  "deploymentEligible": true,
+  "scope": "Complete exact-head main CI gate only. This result does not establish operating-data freshness, public deployment, physical Safari/VoiceOver or real-person usability.",
+  "rawLogsOrInternalPathsSaved": false,
+  "sourceControlCliUsed": false
+}

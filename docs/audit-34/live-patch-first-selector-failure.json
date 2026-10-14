@@ -1,0 +1,191 @@
+{
+  "schemaVersion": 1,
+  "record": "0.34.1 첫 운영 차트 검사: 기간 메뉴 선택자 불일치",
+  "recordedAt": "2026-10-14T14:28:05.438307+00:00",
+  "release": "0.34.1",
+  "runtimeRelease": "vps-c0efd6732c5de070",
+  "mainCommit": "bd66a7cf59a8eff201b7ad61c142235400611d4a",
+  "mainCiRunVerified": 38568067050,
+  "canonicalDistSha256": "62efe3fcdcf0b00340c78c73b1aef69d71a873cab2cbeb18c35ce1a662878b0c",
+  "originalRun": {
+    "startedAt": "2026-10-14T14:09:28.398Z",
+    "completedAt": "2026-10-14T14:21:46.451Z",
+    "passed": false,
+    "caseCount": 12,
+    "casePassed": 4,
+    "caseFailed": 8,
+    "stepCount": 49,
+    "stepsPassed": 40,
+    "stepsFailed": 9,
+    "summarySha256": "e9af2b0adb7fa5b73b0c31a399c959ef9b62274235933239048a8ff83597f98e",
+    "preserved": true,
+    "automaticRetries": 0,
+    "fixtureData": false,
+    "userProfileUsed": false,
+    "serverMutationsTransmitted": 0,
+    "forbiddenRequestCount": 0
+  },
+  "failedSteps": [
+    {
+      "origin": "pages",
+      "width": 320,
+      "theme": "light",
+      "step": "xrp-full-history-and-explicit-all-reset",
+      "classification": "qa-selector-name-mismatch",
+      "failedSelector": "getByRole('menu', { name: '조회 기간', exact: true })"
+    },
+    {
+      "origin": "pages",
+      "width": 320,
+      "theme": "light",
+      "step": "chromium-native-longpress-drag-and-cancel",
+      "classification": "qa-selector-name-mismatch",
+      "failedSelector": "getByRole('menu', { name: '조회 기간', exact: true })"
+    },
+    {
+      "origin": "pages",
+      "width": 320,
+      "theme": "dark",
+      "step": "xrp-full-history-and-explicit-all-reset",
+      "classification": "qa-selector-name-mismatch",
+      "failedSelector": "getByRole('menu', { name: '조회 기간', exact: true })"
+    },
+    {
+      "origin": "pages",
+      "width": 390,
+      "theme": "light",
+      "step": "xrp-full-history-and-explicit-all-reset",
+      "classification": "qa-selector-name-mismatch",
+      "failedSelector": "getByRole('menu', { name: '조회 기간', exact: true })"
+    },
+    {
+      "origin": "pages",
+      "width": 390,
+      "theme": "dark",
+      "step": "xrp-full-history-and-explicit-all-reset",
+      "classification": "qa-selector-name-mismatch",
+      "failedSelector": "getByRole('menu', { name: '조회 기간', exact: true })"
+    },
+    {
+      "origin": "vps",
+      "width": 320,
+      "theme": "light",
+      "step": "xrp-full-history-and-explicit-all-reset",
+      "classification": "qa-selector-name-mismatch",
+      "failedSelector": "getByRole('menu', { name: '조회 기간', exact: true })"
+    },
+    {
+      "origin": "vps",
+      "width": 320,
+      "theme": "dark",
+      "step": "xrp-full-history-and-explicit-all-reset",
+      "classification": "qa-selector-name-mismatch",
+      "failedSelector": "getByRole('menu', { name: '조회 기간', exact: true })"
+    },
+    {
+      "origin": "vps",
+      "width": 390,
+      "theme": "light",
+      "step": "xrp-full-history-and-explicit-all-reset",
+      "classification": "qa-selector-name-mismatch",
+      "failedSelector": "getByRole('menu', { name: '조회 기간', exact: true })"
+    },
+    {
+      "origin": "vps",
+      "width": 390,
+      "theme": "dark",
+      "step": "xrp-full-history-and-explicit-all-reset",
+      "classification": "qa-selector-name-mismatch",
+      "failedSelector": "getByRole('menu', { name: '조회 기간', exact: true })"
+    }
+  ],
+  "diagnosis": {
+    "allNineErrorsMatchedTheExactOldMenuSelector": true,
+    "cause": "Base UI가 메뉴의 aria-labelledby를 실행 버튼에 연결합니다. 실행 버튼의 이름은 선택 기간을 포함한 ‘조회 기간 · 전체’이므로, 메뉴의 aria-label만 보고 ‘조회 기간’과 정확히 일치하도록 찾던 검사 선택자가 실제 접근성 이름을 놓쳤습니다.",
+    "classification": "QA 러너 선택자 결함",
+    "productDefectEstablishedByThisFailure": false,
+    "installedImplementation": "@base-ui/react/menu/root/MenuRoot.mjs:424 — aria-labelledby: activeTriggerElement?.id",
+    "productDefinition": [
+      "src/PeriodPicker.tsx:31 — 실행 버튼 이름: 조회 기간 · 선택 기간",
+      "src/PeriodPicker.tsx:37 — 메뉴 aria-label: 조회 기간"
+    ],
+    "scopeLimit": "이 원인은 아홉 오류에 기록된 선택자 실패를 설명합니다. 실패 단계에서 중단된 후속 동작은 수정본의 별도 전체 검사로 다시 확인해야 합니다."
+  },
+  "independentRenderedEvidence": {
+    "origin": "https://coin-desk.pages.dev",
+    "asset": "DOGE",
+    "indicator": "view:supertrend",
+    "priceSource": "binance",
+    "interval": "1d",
+    "period": "all",
+    "viewport": {
+      "width": 390,
+      "height": 844
+    },
+    "input": "실제 native tap으로 기간 버튼 열기",
+    "role": "menu",
+    "ariaLabel": "조회 기간",
+    "ariaLabelledby": "실행 버튼의 생성 ID",
+    "referencedTriggerAriaLabel": "조회 기간 · 전체",
+    "computedAccessibleName": "조회 기간 · 전체",
+    "exactOldNameMatchCount": 0,
+    "prefixNameMatchCount": 1,
+    "menuVisible": true,
+    "allMenuItemChecked": true,
+    "allMenuItemHeightPx": 44,
+    "menuRect": {
+      "x": 16,
+      "y": 239,
+      "width": 128,
+      "height": 362
+    },
+    "escapeClosedMenu": true,
+    "focusReturnedToTrigger": true,
+    "singleIsolatedPublicPage": true,
+    "fixtureData": false,
+    "userProfileUsed": false,
+    "nonGetRequestsTransmitted": 0,
+    "blockedRequests": 0,
+    "publicScreenshotOrTraceSaved": false
+  },
+  "runnerCorrection": {
+    "originalFile": "live-chart.mjs",
+    "originalSha256": "d700b2eb71df7cedd499007670806ea66954dcc91cbb47b48baafc65251325c6",
+    "correctedFile": "live-chart-final.mjs",
+    "correctedSha256": "df732efd0fea26e10adfeb06b621947820acf692fdfe5b03ebcdc092dcdeab86",
+    "changedLine": 303,
+    "before": "const menu = page.getByRole('menu', { name: '조회 기간', exact: true });",
+    "after": "const menu = page.getByRole('menu', { name: /^조회 기간 ·/ });",
+    "oneLineOnly": true,
+    "allOtherBytesUnchanged": true,
+    "meaning": "role=menu와 실행 버튼의 동일한 이름 접두어를 유지하고 현재 선택 기간이 포함된 접근성 이름을 찾습니다. 목록 항목은 기존처럼 정확한 이름으로 선택합니다.",
+    "productSourceChanged": false,
+    "thresholdsChanged": false,
+    "actionSequenceChanged": false,
+    "nativeFirstTapChanged": false,
+    "fixturesAdded": false,
+    "automaticRetriesAdded": false,
+    "unchangedChecks": [
+      "기간 버튼 native tap",
+      "메뉴 표시 확인",
+      "정확한 menuitemradio 이름",
+      "44px 이상 터치 영역",
+      "항목 native tap",
+      "선택 후 메뉴 닫힘",
+      "가격·축·기간·제스처·저장 판정"
+    ]
+  },
+  "followup": {
+    "correctedFullRunStatus": "pending",
+    "finalPassCertified": false,
+    "originalFailureIsNotReplacedByFollowup": true,
+    "separateFromPrePatch034Evidence": "live-before-patch.json"
+  },
+  "privacy": {
+    "authenticationHeadersIncluded": false,
+    "absoluteInternalPathsIncluded": false,
+    "privateProfileIncluded": false,
+    "actualUserNotesIncluded": false,
+    "personalOriginalsIncluded": false
+  }
+}

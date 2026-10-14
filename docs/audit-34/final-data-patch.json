@@ -1,0 +1,102 @@
+{
+  "schemaVersion": 1,
+  "checkedAt": "2026-10-14T14:48:36.011Z",
+  "releaseExpected": "vps-c0efd6732c5de070",
+  "directCollectionOrOverviewCalled": false,
+  "origins": {
+    "pages": {
+      "runtimeHttp": 200,
+      "runtimeRelease": "vps-c0efd6732c5de070",
+      "statusSummaryHttp": 200,
+      "sourceCounts": {
+        "ok": 1562,
+        "delayed": 23
+      },
+      "healthHttp": 503,
+      "healthOk": false,
+      "healthDelayedSources": 23,
+      "diagnosisCounts": {
+        "TRADE_STALE": 23
+      },
+      "allDelayedKeysAreQuotes": true,
+      "delayKeys": [
+        "quote:AAVE:upbit",
+        "quote:ICP:upbit",
+        "quote:XAUT:upbit",
+        "quote:VVV:upbit",
+        "quote:MORPHO:upbit",
+        "quote:AERO:upbit",
+        "quote:TIA:upbit",
+        "quote:PENDLE:upbit",
+        "quote:SPX:upbit",
+        "quote:XTZ:upbit",
+        "quote:CFX:upbit",
+        "quote:THETA:upbit",
+        "quote:WIF:upbit",
+        "quote:GLM:binance",
+        "quote:KMNO:upbit",
+        "quote:GEOD:upbit",
+        "quote:COW:upbit",
+        "quote:TFUEL:upbit",
+        "quote:ZIL:upbit",
+        "quote:VTHO:upbit",
+        "quote:YFI:binance",
+        "quote:ONT:upbit",
+        "quote:ASTR:upbit"
+      ],
+      "sourcesWithRecordedFailures": 11,
+      "recordedErrorCodeCounts": {
+        "none": 12,
+        "TRADE_STALE": 11
+      },
+      "recordedFailuresIncludePerAssetQuoteValidation": true
+    },
+    "vps": {
+      "runtimeHttp": 200,
+      "runtimeRelease": "vps-c0efd6732c5de070",
+      "statusSummaryHttp": 200,
+      "sourceCounts": {
+        "ok": 1562,
+        "delayed": 23
+      },
+      "healthHttp": 503,
+      "healthOk": false,
+      "healthDelayedSources": 23,
+      "diagnosisCounts": {
+        "TRADE_STALE": 23
+      },
+      "allDelayedKeysAreQuotes": true,
+      "delayKeys": [
+        "quote:AAVE:upbit",
+        "quote:ICP:upbit",
+        "quote:XAUT:upbit",
+        "quote:VVV:upbit",
+        "quote:MORPHO:upbit",
+        "quote:AERO:upbit",
+        "quote:TIA:upbit",
+        "quote:PENDLE:upbit",
+        "quote:SPX:upbit",
+        "quote:XTZ:upbit",
+        "quote:CFX:upbit",
+        "quote:THETA:upbit",
+        "quote:WIF:upbit",
+        "quote:GLM:binance",
+        "quote:KMNO:upbit",
+        "quote:GEOD:upbit",
+        "quote:COW:upbit",
+        "quote:TFUEL:upbit",
+        "quote:ZIL:upbit",
+        "quote:VTHO:upbit",
+        "quote:YFI:binance",
+        "quote:ONT:upbit",
+        "quote:ASTR:upbit"
+      ],
+      "sourcesWithRecordedFailures": 11,
+      "recordedErrorCodeCounts": {
+        "none": 12,
+        "TRADE_STALE": 11
+      },
+      "recordedFailuresIncludePerAssetQuoteValidation": true
+    }
+  }
+}

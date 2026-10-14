@@ -1,0 +1,141 @@
+{
+  "schemaVersion": 1,
+  "version": "0.34.2",
+  "scope": "Same-source current spot-price axis for price, Supertrend, ribbon and Bollinger; closed data, summary and calculation unchanged.",
+  "sourceEvidenceSha256": "a28a50275f7cc5afe6c135d5dea6e4e0c5aacc1c5d719555e26e0996cab2f61a",
+  "targetedImplementationEvidence": {
+    "schemaVersion": 1,
+    "checkedAt": "2026-10-14T15:19:40.555133+00:00",
+    "scope": "Exact spot-price current-axis connection for price, Supertrend, moving-average ribbon and Bollinger views. No historical candles, indicator calculations, latest summary, chart rendering implementation or production service was changed.",
+    "changedFiles": [
+      {
+        "file": "src/IndicatorWorkspace.tsx",
+        "sha256": "456794457cfb8b379e07e0c19a6fc4007879e359b8f91b4b41bce1a34176fcf1"
+      },
+      {
+        "file": "shared/live-chart-price.ts",
+        "sha256": "e42c327e513e77ece9b03c2eb86d6f927571ddb7b970f2570dfe26d31e8219a4"
+      },
+      {
+        "file": "tests/live-chart-price.test.ts",
+        "sha256": "9aaaff3d3b7741e2b4f601dfb26cd264381423813b2a46ea4f189c7d763b2fbd"
+      },
+      {
+        "file": "e2e/live-price-overlays.spec.ts",
+        "sha256": "226ecde9dda91f42c872409ace5adbc486b9cff80d288202bdc4f4f992128a78"
+      }
+    ],
+    "implementation": {
+      "priceAxisWhitelist": ["view:price", "view:supertrend", "view:ribbon", "view:bb"],
+      "sources": ["upbit", "binance"],
+      "sourceSelectionMatchesAxis": true,
+      "sameSourceUnitAssetValidationRetained": true,
+      "staleThresholdSeconds": 300,
+      "futureToleranceSeconds": 60,
+      "ohlcAndClosedSummaryUntouched": true,
+      "referenceUsdAndNonPriceIndicatorsExcluded": true
+    },
+    "types": {
+      "exit": 0
+    },
+    "targetedUnits": {
+      "files": 3,
+      "passed": 17,
+      "failed": 0
+    },
+    "targetedBrowserFinal": {
+      "chromiumPassed": 4,
+      "webkitPassed": 4,
+      "totalPassed": 8,
+      "failed": 0,
+      "caseRetries": 0,
+      "isolatedFixture": true,
+      "productionDataCertification": false,
+      "tests": [
+        "three price overlays: same source current marker, actual canvas paint, old/future/other asset/source rejected, 300-second fallback, source and asset transitions",
+        "indicator-only MVRV/NUPL/hash and USD reference are excluded; reference Supertrend unsupported"
+      ],
+      "nativeCdpProductionClaims": false
+    },
+    "originalSourceRed": {
+      "failed": 1,
+      "sourceSha256": "e63bae460a522240d7073874bedaec9995ce480cda19f7088ef4badf21d13896",
+      "caseRetries": 0,
+      "failure": "Explicit Binance chart source with a conflicting Upbit header market remained Upbit KRW.",
+      "fixedSourceRestoredExactly": true
+    },
+    "firstFixedRun": {
+      "passed": 4,
+      "failed": 5,
+      "excluded": 1,
+      "caseRetries": 0,
+      "preserved": true,
+      "fourNewAssertionFailures": "innerText capture was compared to textContent. Corrected to compare the actual rendered innerText without changing expected values.",
+      "independentNativeFailure": {
+        "expectedLogicalFrom": 142.18717638413676,
+        "observedLogicalFrom": 141.97573938678298,
+        "difference": 0.21143699735378618,
+        "causeEstablished": false,
+        "notDiscardedOrToleranceRelaxed": true
+      }
+    },
+    "nativeIndependentDirectModelDiagnostic": {
+      "repeatEach": 3,
+      "passed": 3,
+      "caseRetries": 0,
+      "nativeInputAssertionsTimeoutAnd20FramesUnchanged": true,
+      "fixtureOnlyModelProbe": true,
+      "productSourceChanged": false,
+      "originalNativeTestRestoredSha256": "7dc9894dde3395eeea853f883735ea0794ea2d6de0edf6b256472a104cbd77f8",
+      "cases": [
+        {
+          "frames": 20,
+          "livePrice": null,
+          "directModelRemainedAtCancellationRange": true,
+          "datasetMatchedModelInEveryFrame": true
+        },
+        {
+          "frames": 20,
+          "livePrice": null,
+          "directModelRemainedAtCancellationRange": true,
+          "datasetMatchedModelInEveryFrame": true
+        },
+        {
+          "frames": 20,
+          "livePrice": null,
+          "directModelRemainedAtCancellationRange": true,
+          "datasetMatchedModelInEveryFrame": true
+        }
+      ],
+      "originalFailureReproduced": false,
+      "originalFailureCauseEstablished": false,
+      "doesNotProveEarlierFailureWasOnlyPublicationDelay": true
+    },
+    "sourceFrozen": true,
+    "gitOrDeploymentChanged": false,
+    "publicApiOrCollectionCalled": false,
+    "privateDataOrCredentialsSaved": false,
+    "readyForRootFullValidation": true
+  },
+  "rootLocalValidation": {
+    "typesPassed": true,
+    "unitPassed": 826,
+    "nodeServerPassed": 31,
+    "pythonServerPassed": 32,
+    "recoveryPassed": 2,
+    "webBuildPassed": true,
+    "storybookBuildPassed": true,
+    "knownDependencyVulnerabilities": 0,
+    "relativeDocumentLinksPassed": true,
+    "brandAnd150LogosPassed": true
+  },
+  "releaseGates": {
+    "prCi": "pending",
+    "mainCi": "pending",
+    "vps": "pending",
+    "pages": "pending",
+    "actualLiveCurrentAxis": "pending"
+  },
+  "physicalDeviceQa": false,
+  "no48HourWait": true
+}

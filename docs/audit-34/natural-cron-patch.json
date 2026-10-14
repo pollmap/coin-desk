@@ -1,0 +1,277 @@
+{
+  "schemaVersion": 1,
+  "version": "0.34.1",
+  "recordedAt": "2026-10-14T14:20:30.213891+00:00",
+  "commit": "bd66a7cf59a8eff201b7ad61c142235400611d4a",
+  "runtimeRelease": "vps-c0efd6732c5de070",
+  "readOnly": true,
+  "window": {
+    "startedDatabaseReadAtUtc": "2026-10-14T14:04:35+00:00",
+    "finishedDatabaseReadAtUtc": "2026-10-14T14:14:39+00:00",
+    "elapsedMonotonicSeconds": 604.035,
+    "readOnlyDatabaseChanges": 0,
+    "directCollectionOrOverviewCalled": false,
+    "otherVisitorsAbsentGuaranteed": false
+  },
+  "coverage": {
+    "registryAssets": 150,
+    "registryQuotePairs": 241,
+    "storedQuotePairs": 241,
+    "registryPairSetMatches": true
+  },
+  "quotes": {
+    "sixCoreActualTradesAdvanced": 6,
+    "sixCoreConfirmationsAdvanced": 6,
+    "core": [
+      {
+        "key": "quote:BTC:binance",
+        "asset": "BTC",
+        "currency": "USDT",
+        "actualTradeAtUtc": "2026-10-14T14:14:00+00:00",
+        "dataAsOfUtc": "2026-10-14T14:14:00+00:00",
+        "confirmedAtUtc": "2026-10-14T14:14:01+00:00",
+        "timestampKind": "trade",
+        "actualTradeAdvanced": true,
+        "confirmationAdvanced": true,
+        "failures": 0
+      },
+      {
+        "key": "quote:BTC:upbit",
+        "asset": "BTC",
+        "currency": "KRW",
+        "actualTradeAtUtc": "2026-10-14T14:14:02+00:00",
+        "dataAsOfUtc": "2026-10-14T14:14:02+00:00",
+        "confirmedAtUtc": "2026-10-14T14:14:05+00:00",
+        "timestampKind": "trade",
+        "actualTradeAdvanced": true,
+        "confirmationAdvanced": true,
+        "failures": 0
+      },
+      {
+        "key": "quote:DOGE:binance",
+        "asset": "DOGE",
+        "currency": "USDT",
+        "actualTradeAtUtc": "2026-10-14T14:14:00+00:00",
+        "dataAsOfUtc": "2026-10-14T14:14:00+00:00",
+        "confirmedAtUtc": "2026-10-14T14:14:01+00:00",
+        "timestampKind": "trade",
+        "actualTradeAdvanced": true,
+        "confirmationAdvanced": true,
+        "failures": 0
+      },
+      {
+        "key": "quote:DOGE:upbit",
+        "asset": "DOGE",
+        "currency": "KRW",
+        "actualTradeAtUtc": "2026-10-14T14:13:41+00:00",
+        "dataAsOfUtc": "2026-10-14T14:13:41+00:00",
+        "confirmedAtUtc": "2026-10-14T14:14:05+00:00",
+        "timestampKind": "trade",
+        "actualTradeAdvanced": true,
+        "confirmationAdvanced": true,
+        "failures": 0
+      },
+      {
+        "key": "quote:ETH:binance",
+        "asset": "ETH",
+        "currency": "USDT",
+        "actualTradeAtUtc": "2026-10-14T14:14:00+00:00",
+        "dataAsOfUtc": "2026-10-14T14:14:00+00:00",
+        "confirmedAtUtc": "2026-10-14T14:14:01+00:00",
+        "timestampKind": "trade",
+        "actualTradeAdvanced": true,
+        "confirmationAdvanced": true,
+        "failures": 0
+      },
+      {
+        "key": "quote:ETH:upbit",
+        "asset": "ETH",
+        "currency": "KRW",
+        "actualTradeAtUtc": "2026-10-14T14:14:02+00:00",
+        "dataAsOfUtc": "2026-10-14T14:14:02+00:00",
+        "confirmedAtUtc": "2026-10-14T14:14:05+00:00",
+        "timestampKind": "trade",
+        "actualTradeAdvanced": true,
+        "confirmationAdvanced": true,
+        "failures": 0
+      }
+    ],
+    "allQuoteConfirmationsAdvanced": 240,
+    "allQuoteObservationTimesAdvanced": 239,
+    "snapshotFreshness": {
+      "provenFreshBySource": {
+        "binance": 136,
+        "upbit": 98
+      },
+      "provenStaleBySource": {
+        "upbit": 5,
+        "binance": 2
+      },
+      "notProvenByNewMetadata": {}
+    },
+    "actualTradeFreshnessThresholdSeconds": 300
+  },
+  "derivatives": {
+    "confirmationTimesAdvanced": 9
+  },
+  "network": {
+    "confirmationTimesAdvanced": 0,
+    "interpretation": "No network-confirmation advancement was observed in this short window; daily observations are not claimed to update every minute."
+  },
+  "scheduledLanes": [
+    {
+      "lane": "analysis",
+      "outcome": "ok",
+      "completedRuns": 10,
+      "firstStartUtc": "2026-10-14T14:05:00+00:00",
+      "lastCompletionUtc": "2026-10-14T14:14:00+00:00"
+    },
+    {
+      "lane": "background",
+      "outcome": "ok",
+      "completedRuns": 10,
+      "firstStartUtc": "2026-10-14T14:05:00+00:00",
+      "lastCompletionUtc": "2026-10-14T14:14:00+00:00"
+    },
+    {
+      "lane": "quotes",
+      "outcome": "ok",
+      "completedRuns": 10,
+      "firstStartUtc": "2026-10-14T14:05:00+00:00",
+      "lastCompletionUtc": "2026-10-14T14:14:25+00:00"
+    },
+    {
+      "lane": "recent",
+      "outcome": "ok",
+      "completedRuns": 10,
+      "firstStartUtc": "2026-10-14T14:05:00+00:00",
+      "lastCompletionUtc": "2026-10-14T14:14:00+00:00"
+    }
+  ],
+  "lastRead": {
+    "measuredAtUtc": "2026-10-14T14:14:39+00:00",
+    "statusHttpStatus": 200,
+    "activeSources": 1585,
+    "sourceCounts": {
+      "ok": 1574,
+      "delayed": 11
+    },
+    "totalSourcesIncludingInactive": 1635,
+    "attentionHttpStatus": 200,
+    "attentionTotal": 11,
+    "diagnosisCounts": {
+      "TRADE_STALE": 11
+    },
+    "errorCodeCounts": {
+      "TRADE_STALE": 5
+    },
+    "allDelayReasons": ["TRADE_STALE"],
+    "runtimeHttpStatus": 200,
+    "runtimeRelease": "vps-c0efd6732c5de070",
+    "historyCollection": "enabled",
+    "scheduledLanesHealthy": true,
+    "backup": {
+      "ok": true,
+      "lastCompletedAt": 1791913760,
+      "verified": true
+    },
+    "freshHealthRequestInThisSnapshot": false
+  },
+  "healthAtEarlierPublicVerification": {
+    "pages": {
+      "httpStatus": 503,
+      "elapsedMilliseconds": 2086.01,
+      "responseBytes": 1061388,
+      "checkedAtUtc": "2026-10-14T14:07:56+00:00",
+      "ok": false,
+      "activeDiagnoses": {
+        "CURRENT": 1566,
+        "TRADE_STALE": 19
+      }
+    },
+    "vps": {
+      "httpStatus": 503,
+      "elapsedMilliseconds": 4163.79,
+      "responseBytes": 1061362,
+      "checkedAtUtc": "2026-10-14T14:08:01+00:00",
+      "ok": false,
+      "activeDiagnoses": {
+        "CURRENT": 1566,
+        "TRADE_STALE": 19
+      }
+    }
+  },
+  "healthScope": "The public-byte verification sampled HTTP 503 with 19 TRADE_STALE sources earlier. The later natural-collection snapshot had 11 TRADE_STALE sources from status/attention; no new full health response was recorded in that snapshot. These are different observations, not a claim that health became normal.",
+  "unitChecks": [
+    {
+      "asset": "BTC",
+      "metric": "mvrv",
+      "httpStatus": 200,
+      "unit": "배",
+      "source": "Coin Metrics Community · CC BY-NC 4.0",
+      "dataAsOfUtc": "2026-10-13T00:00:00+00:00",
+      "stale": false,
+      "sampleObservationCount": 2
+    },
+    {
+      "asset": "ETH",
+      "metric": "mvrv",
+      "httpStatus": 200,
+      "unit": "배",
+      "source": "Coin Metrics Community · CC BY-NC 4.0",
+      "dataAsOfUtc": "2026-10-13T00:00:00+00:00",
+      "stale": false,
+      "sampleObservationCount": 2
+    },
+    {
+      "asset": "DOGE",
+      "metric": "mvrv",
+      "httpStatus": 200,
+      "unit": "배",
+      "source": "Coin Metrics Community · CC BY-NC 4.0",
+      "dataAsOfUtc": "2026-10-13T00:00:00+00:00",
+      "stale": false,
+      "sampleObservationCount": 2
+    },
+    {
+      "asset": "DASH",
+      "metric": "hashrate",
+      "httpStatus": 200,
+      "unit": "GH/s",
+      "source": "Coin Metrics Community · CC BY-NC 4.0",
+      "dataAsOfUtc": "2026-10-13T00:00:00+00:00",
+      "stale": false,
+      "sampleObservationCount": 2
+    },
+    {
+      "asset": "ZEC",
+      "metric": "hashrate",
+      "httpStatus": 200,
+      "unit": "GH/s",
+      "source": "Coin Metrics Community · CC BY-NC 4.0",
+      "dataAsOfUtc": "2026-10-13T00:00:00+00:00",
+      "stale": false,
+      "sampleObservationCount": 2
+    }
+  ],
+  "history": {
+    "reservedKeyCountBefore": 639,
+    "reservedKeyCountAfter": 639,
+    "absentHistoryKeysDoNotProveLoss": true,
+    "allHistoricalDataVerified": false,
+    "freeDiskBytesAtLastRead": 9003782144,
+    "historyGuardBytes": 8589934592,
+    "guardMet": true
+  },
+  "remainingGates": {
+    "liveBrowserQa": "pending",
+    "postDeploymentPerformance": "pending"
+  },
+  "privacy": {
+    "rawHeadersSaved": false,
+    "credentialsSaved": false,
+    "personalOriginalsSaved": false,
+    "privateInternalPathsSaved": false
+  },
+  "scope": "A 604-second natural-collection sample only. It shows the observed core price/confirmation advances and scheduled completions, not a complete day, all-history completeness, fresh prices for every asset, or absence of other visitors."
+}

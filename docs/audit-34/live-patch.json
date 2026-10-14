@@ -1,0 +1,716 @@
+{
+  "schemaVersion": 1,
+  "scope": "Five selected assets: read available full source histories; check unit, first/end/count and representative rendered closes, axes, gestures and saving. Not all 150 assets or every historical supplier value.",
+  "release": "0.34.1",
+  "runtimeRelease": "vps-c0efd6732c5de070",
+  "mainCommit": "bd66a7cf59a8eff201b7ad61c142235400611d4a",
+  "canonicalDistSha256": "62efe3fcdcf0b00340c78c73b1aef69d71a873cab2cbeb18c35ce1a662878b0c",
+  "localDeploymentPinsMatched": true,
+  "mainCiRunVerified": 38568067050,
+  "startedAt": "2026-10-14T14:22:57.478Z",
+  "completedAt": "2026-10-14T14:31:35.881Z",
+  "passed": true,
+  "selectedScope": {
+    "origins": ["pages", "vps"],
+    "widths": [320, 390, 1280],
+    "themes": ["light", "dark"]
+  },
+  "observedDailyCutoffUtc": 1791936000,
+  "browser": "153.0.8010.12",
+  "realPublicData": true,
+  "fixtureData": false,
+  "caseRetries": 0,
+  "serverMutationsTransmitted": 0,
+  "userProfileUsed": false,
+  "lcpOrLoadCertification": false,
+  "physicalDevice": false,
+  "physicalSafariVoiceOver": false,
+  "peopleUsabilityStudy": false,
+  "originalScreenshotLocationsOmitted": true,
+  "deployment": [
+    {
+      "origin": "pages",
+      "runtime": "vps-c0efd6732c5de070",
+      "localReviewedVersion": "0.34.1",
+      "codeIdentityMethod": "Exact runtime release pin; root verifies public build hashes separately.",
+      "currentSourceCounts": {
+        "ok": 1569,
+        "delayed": 16
+      },
+      "healthOk": false,
+      "manualReads": [
+        {
+          "path": "/api/v1/runtime",
+          "status": 200,
+          "bytes": 938
+        },
+        {
+          "path": "/api/v1/status/summary",
+          "status": 200,
+          "bytes": 8030
+        }
+      ]
+    },
+    {
+      "origin": "vps",
+      "runtime": "vps-c0efd6732c5de070",
+      "localReviewedVersion": "0.34.1",
+      "codeIdentityMethod": "Exact runtime release pin; root verifies public build hashes separately.",
+      "currentSourceCounts": {
+        "ok": 1559,
+        "delayed": 26
+      },
+      "healthOk": false,
+      "manualReads": [
+        {
+          "path": "/api/v1/runtime",
+          "status": 200,
+          "bytes": 931
+        },
+        {
+          "path": "/api/v1/status/summary",
+          "status": 200,
+          "bytes": 9553
+        }
+      ]
+    }
+  ],
+  "actualHistories": [
+    {
+      "origin": "pages",
+      "asset": "XRP",
+      "market": "binance",
+      "unit": "USDT",
+      "interval": "1d",
+      "observations": 3085,
+      "first": 1525392000,
+      "last": 1791849600,
+      "closedOnly": true,
+      "priorProviderBoundaryEvidence": "2026-10-10T19:12:28.313966+00:00"
+    },
+    {
+      "origin": "pages",
+      "asset": "DOGE",
+      "market": "binance",
+      "unit": "USDT",
+      "interval": "1d",
+      "observations": 2658,
+      "first": 1562284800,
+      "last": 1791849600,
+      "closedOnly": true,
+      "priorProviderBoundaryEvidence": "2026-10-10T19:12:28.313966+00:00"
+    },
+    {
+      "origin": "pages",
+      "asset": "DOGE",
+      "market": "binance",
+      "unit": "USDT",
+      "interval": "1w",
+      "observations": 380,
+      "first": 1561939200,
+      "last": 1791158400,
+      "closedOnly": true,
+      "priorProviderBoundaryEvidence": "2026-10-10T19:12:28.313966+00:00"
+    },
+    {
+      "origin": "pages",
+      "asset": "DOGE",
+      "market": "binance",
+      "unit": "USDT",
+      "interval": "1M",
+      "observations": 87,
+      "first": 1561939200,
+      "last": 1788220800,
+      "closedOnly": true,
+      "priorProviderBoundaryEvidence": "2026-10-10T19:12:28.313966+00:00"
+    },
+    {
+      "origin": "pages",
+      "asset": "PEPE",
+      "market": "binance",
+      "unit": "USDT",
+      "interval": "1d",
+      "observations": 1258,
+      "first": 1683244800,
+      "last": 1791849600,
+      "closedOnly": true,
+      "priorProviderBoundaryEvidence": "2026-10-10T19:12:28.313966+00:00"
+    },
+    {
+      "origin": "pages",
+      "asset": "SHIB",
+      "market": "binance",
+      "unit": "USDT",
+      "interval": "1d",
+      "observations": 1983,
+      "first": 1620604800,
+      "last": 1791849600,
+      "closedOnly": true,
+      "priorProviderBoundaryEvidence": "2026-10-10T19:12:28.313966+00:00"
+    },
+    {
+      "origin": "pages",
+      "asset": "BTC",
+      "market": "upbit",
+      "unit": "KRW",
+      "interval": "1d",
+      "observations": 3306,
+      "first": 1506297600,
+      "last": 1791849600,
+      "closedOnly": true,
+      "priorProviderBoundaryEvidence": "2026-10-10T19:12:28.313966+00:00"
+    },
+    {
+      "origin": "vps",
+      "asset": "XRP",
+      "market": "binance",
+      "unit": "USDT",
+      "interval": "1d",
+      "observations": 3085,
+      "first": 1525392000,
+      "last": 1791849600,
+      "closedOnly": true,
+      "priorProviderBoundaryEvidence": "2026-10-10T19:12:28.313966+00:00"
+    },
+    {
+      "origin": "vps",
+      "asset": "DOGE",
+      "market": "binance",
+      "unit": "USDT",
+      "interval": "1d",
+      "observations": 2658,
+      "first": 1562284800,
+      "last": 1791849600,
+      "closedOnly": true,
+      "priorProviderBoundaryEvidence": "2026-10-10T19:12:28.313966+00:00"
+    },
+    {
+      "origin": "vps",
+      "asset": "DOGE",
+      "market": "binance",
+      "unit": "USDT",
+      "interval": "1w",
+      "observations": 380,
+      "first": 1561939200,
+      "last": 1791158400,
+      "closedOnly": true,
+      "priorProviderBoundaryEvidence": "2026-10-10T19:12:28.313966+00:00"
+    },
+    {
+      "origin": "vps",
+      "asset": "DOGE",
+      "market": "binance",
+      "unit": "USDT",
+      "interval": "1M",
+      "observations": 87,
+      "first": 1561939200,
+      "last": 1788220800,
+      "closedOnly": true,
+      "priorProviderBoundaryEvidence": "2026-10-10T19:12:28.313966+00:00"
+    },
+    {
+      "origin": "vps",
+      "asset": "PEPE",
+      "market": "binance",
+      "unit": "USDT",
+      "interval": "1d",
+      "observations": 1258,
+      "first": 1683244800,
+      "last": 1791849600,
+      "closedOnly": true,
+      "priorProviderBoundaryEvidence": "2026-10-10T19:12:28.313966+00:00"
+    },
+    {
+      "origin": "vps",
+      "asset": "SHIB",
+      "market": "binance",
+      "unit": "USDT",
+      "interval": "1d",
+      "observations": 1983,
+      "first": 1620604800,
+      "last": 1791849600,
+      "closedOnly": true,
+      "priorProviderBoundaryEvidence": "2026-10-10T19:12:28.313966+00:00"
+    },
+    {
+      "origin": "vps",
+      "asset": "BTC",
+      "market": "upbit",
+      "unit": "KRW",
+      "interval": "1d",
+      "observations": 3306,
+      "first": 1506297600,
+      "last": 1791849600,
+      "closedOnly": true,
+      "priorProviderBoundaryEvidence": "2026-10-10T19:12:28.313966+00:00"
+    }
+  ],
+  "cases": [
+    {
+      "origin": "pages",
+      "width": 320,
+      "height": 568,
+      "theme": "light",
+      "passed": true,
+      "deadlineHit": false,
+      "startedAt": "2026-10-14T14:22:58.736Z",
+      "completedAt": "2026-10-14T14:23:35.667Z",
+      "forbiddenRequestCount": 0,
+      "failedApiResponseCount": 0,
+      "failedRequestCount": 0,
+      "pageErrorCount": 0,
+      "steps": [
+        {
+          "name": "xrp-full-history-and-explicit-all-reset",
+          "status": "passed",
+          "representativeSelectedSourceChecksPassed": true
+        },
+        {
+          "name": "doge-supertrend-warmup-prices",
+          "status": "passed",
+          "representativeSelectedSourceChecksPassed": true
+        },
+        {
+          "name": "pepe-shib-real-rendered-axis",
+          "status": "passed",
+          "representativeSelectedSourceChecksPassed": true
+        },
+        {
+          "name": "btc-krw-keyboard-close-and-save-restore",
+          "status": "passed",
+          "representativeSelectedSourceChecksPassed": true
+        },
+        {
+          "name": "chromium-native-longpress-drag-and-cancel",
+          "status": "passed",
+          "representativeSelectedSourceChecksPassed": true
+        }
+      ]
+    },
+    {
+      "origin": "pages",
+      "width": 320,
+      "height": 568,
+      "theme": "dark",
+      "passed": true,
+      "deadlineHit": false,
+      "startedAt": "2026-10-14T14:23:35.679Z",
+      "completedAt": "2026-10-14T14:24:02.573Z",
+      "forbiddenRequestCount": 0,
+      "failedApiResponseCount": 0,
+      "failedRequestCount": 0,
+      "pageErrorCount": 0,
+      "steps": [
+        {
+          "name": "xrp-full-history-and-explicit-all-reset",
+          "status": "passed",
+          "representativeSelectedSourceChecksPassed": true
+        },
+        {
+          "name": "doge-supertrend-warmup-prices",
+          "status": "passed",
+          "representativeSelectedSourceChecksPassed": true
+        },
+        {
+          "name": "pepe-shib-real-rendered-axis",
+          "status": "passed",
+          "representativeSelectedSourceChecksPassed": true
+        },
+        {
+          "name": "btc-krw-keyboard-close-and-save-restore",
+          "status": "passed",
+          "representativeSelectedSourceChecksPassed": true
+        }
+      ]
+    },
+    {
+      "origin": "pages",
+      "width": 390,
+      "height": 844,
+      "theme": "light",
+      "passed": true,
+      "deadlineHit": false,
+      "startedAt": "2026-10-14T14:24:02.581Z",
+      "completedAt": "2026-10-14T14:24:28.320Z",
+      "forbiddenRequestCount": 0,
+      "failedApiResponseCount": 0,
+      "failedRequestCount": 0,
+      "pageErrorCount": 0,
+      "steps": [
+        {
+          "name": "xrp-full-history-and-explicit-all-reset",
+          "status": "passed",
+          "representativeSelectedSourceChecksPassed": true
+        },
+        {
+          "name": "doge-supertrend-warmup-prices",
+          "status": "passed",
+          "representativeSelectedSourceChecksPassed": true
+        },
+        {
+          "name": "pepe-shib-real-rendered-axis",
+          "status": "passed",
+          "representativeSelectedSourceChecksPassed": true
+        },
+        {
+          "name": "btc-krw-keyboard-close-and-save-restore",
+          "status": "passed",
+          "representativeSelectedSourceChecksPassed": true
+        }
+      ]
+    },
+    {
+      "origin": "pages",
+      "width": 390,
+      "height": 844,
+      "theme": "dark",
+      "passed": true,
+      "deadlineHit": false,
+      "startedAt": "2026-10-14T14:24:28.328Z",
+      "completedAt": "2026-10-14T14:24:55.206Z",
+      "forbiddenRequestCount": 0,
+      "failedApiResponseCount": 0,
+      "failedRequestCount": 0,
+      "pageErrorCount": 0,
+      "steps": [
+        {
+          "name": "xrp-full-history-and-explicit-all-reset",
+          "status": "passed",
+          "representativeSelectedSourceChecksPassed": true
+        },
+        {
+          "name": "doge-supertrend-warmup-prices",
+          "status": "passed",
+          "representativeSelectedSourceChecksPassed": true
+        },
+        {
+          "name": "pepe-shib-real-rendered-axis",
+          "status": "passed",
+          "representativeSelectedSourceChecksPassed": true
+        },
+        {
+          "name": "btc-krw-keyboard-close-and-save-restore",
+          "status": "passed",
+          "representativeSelectedSourceChecksPassed": true
+        }
+      ]
+    },
+    {
+      "origin": "pages",
+      "width": 1280,
+      "height": 800,
+      "theme": "light",
+      "passed": true,
+      "deadlineHit": false,
+      "startedAt": "2026-10-14T14:24:55.216Z",
+      "completedAt": "2026-10-14T14:25:19.611Z",
+      "forbiddenRequestCount": 0,
+      "failedApiResponseCount": 0,
+      "failedRequestCount": 0,
+      "pageErrorCount": 0,
+      "steps": [
+        {
+          "name": "xrp-full-history-and-explicit-all-reset",
+          "status": "passed",
+          "representativeSelectedSourceChecksPassed": true
+        },
+        {
+          "name": "doge-supertrend-warmup-prices",
+          "status": "passed",
+          "representativeSelectedSourceChecksPassed": true
+        },
+        {
+          "name": "pepe-shib-real-rendered-axis",
+          "status": "passed",
+          "representativeSelectedSourceChecksPassed": true
+        },
+        {
+          "name": "btc-krw-keyboard-close-and-save-restore",
+          "status": "passed",
+          "representativeSelectedSourceChecksPassed": true
+        }
+      ]
+    },
+    {
+      "origin": "pages",
+      "width": 1280,
+      "height": 800,
+      "theme": "dark",
+      "passed": true,
+      "deadlineHit": false,
+      "startedAt": "2026-10-14T14:25:19.622Z",
+      "completedAt": "2026-10-14T14:25:46.170Z",
+      "forbiddenRequestCount": 0,
+      "failedApiResponseCount": 0,
+      "failedRequestCount": 0,
+      "pageErrorCount": 0,
+      "steps": [
+        {
+          "name": "xrp-full-history-and-explicit-all-reset",
+          "status": "passed",
+          "representativeSelectedSourceChecksPassed": true
+        },
+        {
+          "name": "doge-supertrend-warmup-prices",
+          "status": "passed",
+          "representativeSelectedSourceChecksPassed": true
+        },
+        {
+          "name": "pepe-shib-real-rendered-axis",
+          "status": "passed",
+          "representativeSelectedSourceChecksPassed": true
+        },
+        {
+          "name": "btc-krw-keyboard-close-and-save-restore",
+          "status": "passed",
+          "representativeSelectedSourceChecksPassed": true
+        }
+      ]
+    },
+    {
+      "origin": "vps",
+      "width": 320,
+      "height": 568,
+      "theme": "light",
+      "passed": true,
+      "deadlineHit": false,
+      "startedAt": "2026-10-14T14:25:47.782Z",
+      "completedAt": "2026-10-14T14:26:37.252Z",
+      "forbiddenRequestCount": 0,
+      "failedApiResponseCount": 0,
+      "failedRequestCount": 0,
+      "pageErrorCount": 0,
+      "steps": [
+        {
+          "name": "xrp-full-history-and-explicit-all-reset",
+          "status": "passed",
+          "representativeSelectedSourceChecksPassed": true
+        },
+        {
+          "name": "doge-supertrend-warmup-prices",
+          "status": "passed",
+          "representativeSelectedSourceChecksPassed": true
+        },
+        {
+          "name": "pepe-shib-real-rendered-axis",
+          "status": "passed",
+          "representativeSelectedSourceChecksPassed": true
+        },
+        {
+          "name": "btc-krw-keyboard-close-and-save-restore",
+          "status": "passed",
+          "representativeSelectedSourceChecksPassed": true
+        }
+      ]
+    },
+    {
+      "origin": "vps",
+      "width": 320,
+      "height": 568,
+      "theme": "dark",
+      "passed": true,
+      "deadlineHit": false,
+      "startedAt": "2026-10-14T14:26:37.265Z",
+      "completedAt": "2026-10-14T14:27:17.764Z",
+      "forbiddenRequestCount": 0,
+      "failedApiResponseCount": 0,
+      "failedRequestCount": 0,
+      "pageErrorCount": 0,
+      "steps": [
+        {
+          "name": "xrp-full-history-and-explicit-all-reset",
+          "status": "passed",
+          "representativeSelectedSourceChecksPassed": true
+        },
+        {
+          "name": "doge-supertrend-warmup-prices",
+          "status": "passed",
+          "representativeSelectedSourceChecksPassed": true
+        },
+        {
+          "name": "pepe-shib-real-rendered-axis",
+          "status": "passed",
+          "representativeSelectedSourceChecksPassed": true
+        },
+        {
+          "name": "btc-krw-keyboard-close-and-save-restore",
+          "status": "passed",
+          "representativeSelectedSourceChecksPassed": true
+        }
+      ]
+    },
+    {
+      "origin": "vps",
+      "width": 390,
+      "height": 844,
+      "theme": "light",
+      "passed": true,
+      "deadlineHit": false,
+      "startedAt": "2026-10-14T14:27:17.776Z",
+      "completedAt": "2026-10-14T14:28:04.370Z",
+      "forbiddenRequestCount": 0,
+      "failedApiResponseCount": 0,
+      "failedRequestCount": 0,
+      "pageErrorCount": 0,
+      "steps": [
+        {
+          "name": "xrp-full-history-and-explicit-all-reset",
+          "status": "passed",
+          "representativeSelectedSourceChecksPassed": true
+        },
+        {
+          "name": "doge-supertrend-warmup-prices",
+          "status": "passed",
+          "representativeSelectedSourceChecksPassed": true
+        },
+        {
+          "name": "pepe-shib-real-rendered-axis",
+          "status": "passed",
+          "representativeSelectedSourceChecksPassed": true
+        },
+        {
+          "name": "btc-krw-keyboard-close-and-save-restore",
+          "status": "passed",
+          "representativeSelectedSourceChecksPassed": true
+        }
+      ]
+    },
+    {
+      "origin": "vps",
+      "width": 390,
+      "height": 844,
+      "theme": "dark",
+      "passed": true,
+      "deadlineHit": false,
+      "startedAt": "2026-10-14T14:28:04.380Z",
+      "completedAt": "2026-10-14T14:28:48.237Z",
+      "forbiddenRequestCount": 0,
+      "failedApiResponseCount": 0,
+      "failedRequestCount": 0,
+      "pageErrorCount": 0,
+      "steps": [
+        {
+          "name": "xrp-full-history-and-explicit-all-reset",
+          "status": "passed",
+          "representativeSelectedSourceChecksPassed": true
+        },
+        {
+          "name": "doge-supertrend-warmup-prices",
+          "status": "passed",
+          "representativeSelectedSourceChecksPassed": true
+        },
+        {
+          "name": "pepe-shib-real-rendered-axis",
+          "status": "passed",
+          "representativeSelectedSourceChecksPassed": true
+        },
+        {
+          "name": "btc-krw-keyboard-close-and-save-restore",
+          "status": "passed",
+          "representativeSelectedSourceChecksPassed": true
+        }
+      ]
+    },
+    {
+      "origin": "vps",
+      "width": 1280,
+      "height": 800,
+      "theme": "light",
+      "passed": true,
+      "deadlineHit": false,
+      "startedAt": "2026-10-14T14:28:48.247Z",
+      "completedAt": "2026-10-14T14:30:54.359Z",
+      "forbiddenRequestCount": 0,
+      "failedApiResponseCount": 0,
+      "failedRequestCount": 0,
+      "pageErrorCount": 0,
+      "steps": [
+        {
+          "name": "xrp-full-history-and-explicit-all-reset",
+          "status": "passed",
+          "representativeSelectedSourceChecksPassed": true
+        },
+        {
+          "name": "doge-supertrend-warmup-prices",
+          "status": "passed",
+          "representativeSelectedSourceChecksPassed": true
+        },
+        {
+          "name": "pepe-shib-real-rendered-axis",
+          "status": "passed",
+          "representativeSelectedSourceChecksPassed": true
+        },
+        {
+          "name": "btc-krw-keyboard-close-and-save-restore",
+          "status": "passed",
+          "representativeSelectedSourceChecksPassed": true
+        }
+      ]
+    },
+    {
+      "origin": "vps",
+      "width": 1280,
+      "height": 800,
+      "theme": "dark",
+      "passed": true,
+      "deadlineHit": false,
+      "startedAt": "2026-10-14T14:30:54.370Z",
+      "completedAt": "2026-10-14T14:31:35.738Z",
+      "forbiddenRequestCount": 0,
+      "failedApiResponseCount": 0,
+      "failedRequestCount": 0,
+      "pageErrorCount": 0,
+      "steps": [
+        {
+          "name": "xrp-full-history-and-explicit-all-reset",
+          "status": "passed",
+          "representativeSelectedSourceChecksPassed": true
+        },
+        {
+          "name": "doge-supertrend-warmup-prices",
+          "status": "passed",
+          "representativeSelectedSourceChecksPassed": true
+        },
+        {
+          "name": "pepe-shib-real-rendered-axis",
+          "status": "passed",
+          "representativeSelectedSourceChecksPassed": true
+        },
+        {
+          "name": "btc-krw-keyboard-close-and-save-restore",
+          "status": "passed",
+          "representativeSelectedSourceChecksPassed": true
+        }
+      ]
+    }
+  ],
+  "sourceEvidenceSha256": "ffedb10bfff54c24c51784377b08a4829e55ae42ed6f06ae676222b86e963ffb",
+  "derivedCounts": {
+    "contexts": 12,
+    "stepsPassed": 49,
+    "stepsFailed": 0,
+    "selectedAssets": 5,
+    "historiesTotalAcrossBothOrigins": 14,
+    "historiesPerOrigin": {
+      "pages": 7,
+      "vps": 7
+    },
+    "nativeChromiumCdpGestureCases": 1,
+    "nativeCases": [
+      {
+        "origin": "pages",
+        "width": 320,
+        "height": 568,
+        "theme": "light",
+        "name": "chromium-native-longpress-drag-and-cancel",
+        "status": "passed"
+      }
+    ],
+    "actualPhysicalDeviceCases": 0,
+    "forbiddenRequests": 0,
+    "failedApiResponses": 0,
+    "failedRequests": 0,
+    "pageErrors": 0
+  },
+  "methodScope": "Actual Chromium public-data QA in 12 fresh ephemeral contexts across two origins, three widths and both themes. One Chromium CDP native gesture case; no physical device, Safari/VoiceOver, fixture data, private user profile, collection request or server mutation. No automatic case retry. These checks are not an LCP/SSE-load certification or complete 150-asset verification."
+}
