@@ -48,6 +48,90 @@ test('Old and duplicate trades cannot overwrite the latest quote, and restarts h
   await hub.close();
   await other.close();
 });
+test('Upbit same-millisecond fills use provider event order without advancing the actual trade time', async () => {
+  const now = 1800000000;
+  const hub = createQuoteHub({ clock: () => now + 400 });
+  const tick = (price, eventMs, tradeMs = now * 1000 + 130) => ({
+    type: 'ticker',
+    code: 'KRW-XAUT',
+    trade_price: price,
+    trade_timestamp: tradeMs,
+    timestamp: eventMs,
+  });
+  try {
+    assert.equal(hub.ingest('upbit', tick(5606000, now * 1000 + 150)), true);
+    assert.equal(hub.ingest('upbit', tick(5610000, now * 1000 + 180)), true);
+    const latest = hub.snapshot('upbit').quotes[0];
+    assert.equal(latest.price, 5610000);
+    assert.equal(latest.tradedAt, now + 0.13);
+    assert.equal(latest.sourceEventTime, now + 0.18);
+    assert.ok(now + 400 - latest.tradedAt > 300, 'event order never rescues an old actual trade');
+    assert.equal(hub.ingest('upbit', tick(5609000, now * 1000 + 160)), false);
+    assert.equal(hub.ingest('upbit', tick(9, now * 1000 + 1000, now * 1000 + 129)), false);
+    assert.equal(hub.ingest('upbit', tick(1, now * 1000 + 180)), false);
+    assert.equal(hub.snapshot('upbit').quotes[0].price, 5610000);
+    assert.equal(parseTick('upbit', tick(1, (now + 461) * 1000), now + 400), null);
+    assert.equal(parseTick('upbit', tick(1, now * 1000 + 129), now + 400), null);
+  } finally {
+    await hub.close();
+  }
+});
+test('selected Upbit SSE emits a same-time price correction once and coalesces unchanged ticker events', async () => {
+  const now = 1800000000;
+  const hub = createQuoteHub({ clock: () => now + 1 });
+  const controller = new AbortController();
+  const tick = (price, eventMs) => ({
+    type: 'ticker',
+    code: 'KRW-XAUT',
+    trade_price: price,
+    trade_timestamp: now * 1000 + 130,
+    timestamp: now * 1000 + eventMs,
+  });
+  hub.ingest('upbit', tick(5606000, 150));
+  await new Promise((resolve) => hub.server.listen(0, '127.0.0.1', resolve));
+  try {
+    const response = await fetch(
+      'http://127.0.0.1:' + hub.server.address().port + '/stream?market=upbit&assets=XAUT',
+      { signal: controller.signal },
+    );
+    const reader = response.body.getReader();
+    let buffer = '';
+    async function frame() {
+      while (true) {
+        const boundary = buffer.indexOf('\n\n');
+        if (boundary < 0) {
+          const next = await reader.read();
+          assert.equal(next.done, false);
+          buffer += new TextDecoder().decode(next.value);
+          continue;
+        }
+        const message = buffer.slice(0, boundary);
+        buffer = buffer.slice(boundary + 2);
+        const data = message.split('\n').find((line) => line.startsWith('data: '));
+        if (data) return JSON.parse(data.slice(6));
+      }
+    }
+    assert.equal((await frame()).quotes[0].price, 5606000);
+    hub.ingest('upbit', tick(5610000, 180));
+    const correction = (await frame()).quotes;
+    assert.equal(correction.length, 1);
+    assert.equal(correction[0].price, 5610000);
+    assert.equal(correction[0].tradedAt, now + 0.13);
+    assert.equal(correction[0].sourceEventTime, now + 0.18);
+    hub.ingest('upbit', tick(5610000, 200));
+    assert.deepEqual(
+      (await frame()).quotes,
+      [],
+      'a ticker heartbeat does not count as a changed price',
+    );
+    assert.equal(hub.ingest('upbit', tick(5609000, 190)), false);
+    hub.ingest('upbit', tick(5611000, 220));
+    assert.equal((await frame()).quotes[0].price, 5611000);
+  } finally {
+    controller.abort();
+    await hub.close();
+  }
+});
 test('private minute proofs retain only 64 exact trades per selected registered asset', async () => {
   const now = 1800000000;
   const hub = createQuoteHub({ clock: () => now + 10 });

@@ -15,6 +15,7 @@ export function quoteRowView(
     stream?.market === market
       ? stream.quotes.find((q) => q.asset === row.asset && q.market === market)
       : undefined;
+  const storedTradeTime = actualQuoteTime(row.quote, market);
   const preferred =
     row.status !== 'unsupported' &&
     !!tick &&
@@ -24,7 +25,16 @@ export function quoteRowView(
     (market !== 'binance' ||
       row.quote?.lastTradeId === undefined ||
       (tick.lastTradeId !== undefined && tick.lastTradeId >= row.quote.lastTradeId)) &&
-    tick.tradedAt >= (actualQuoteTime(row.quote, market) ?? 0);
+    tick.tradedAt >= (storedTradeTime ?? 0) &&
+    // REST snapshots retain integer-second timestamps. A fractional stream
+    // trade in that same second is not proof that it followed the snapshot.
+    // Only a clearly later provider event orders an equal-second correction.
+    (market !== 'upbit' ||
+      storedTradeTime === null ||
+      Math.floor(tick.tradedAt) > storedTradeTime ||
+      (Number.isSafeInteger(row.quote?.sourceEventTime) &&
+        tick.sourceEventTime !== undefined &&
+        Math.floor(tick.sourceEventTime) > row.quote!.sourceEventTime!));
   const live =
     preferred && transport === 'live' && stream?.connected === true && now - tick.tradedAt <= 300;
   return {
@@ -33,9 +43,7 @@ export function quoteRowView(
     displayPrice: preferred ? tick.price : row.quote?.price,
     displayTime: preferred ? tick.tradedAt : row.quote?.time,
     displayTimestampKind:
-      preferred || actualQuoteTime(row.quote, market) !== null
-        ? ('trade' as const)
-        : ('ticker-window' as const),
+      preferred || storedTradeTime !== null ? ('trade' as const) : ('ticker-window' as const),
     stale: !live && (!quoteTradeFresh(row.quote, market, now) || now - (row.fetchedAt ?? 0) > 300),
   };
 }
@@ -76,6 +84,10 @@ export function mergeQuoteStream(
       !Number.isFinite(q.receivedAt) ||
       q.receivedAt <= 0 ||
       q.receivedAt > now + 60 ||
+      (q.sourceEventTime !== undefined &&
+        (!Number.isFinite(q.sourceEventTime) ||
+          q.sourceEventTime < q.tradedAt ||
+          q.sourceEventTime > now + 60)) ||
       (q.lastTradeId !== undefined && (!Number.isSafeInteger(q.lastTradeId) || q.lastTradeId < 0))
     )
       continue;
@@ -84,7 +96,10 @@ export function mergeQuoteStream(
       q.tradedAt > (oldQuote?.tradedAt ?? 0) ||
       (oldQuote &&
         q.tradedAt === oldQuote.tradedAt &&
-        (q.lastTradeId ?? -1) > (oldQuote.lastTradeId ?? -1))
+        ((q.lastTradeId ?? -1) > (oldQuote.lastTradeId ?? -1) ||
+          (market === 'upbit' &&
+            q.sourceEventTime !== undefined &&
+            q.sourceEventTime > (oldQuote.sourceEventTime ?? oldQuote.tradedAt))))
     )
       quotes.set(q.asset, q);
   }

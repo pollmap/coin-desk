@@ -30,6 +30,8 @@ export interface LiveQuote {
   tradedAt: number;
   receivedAt: number;
   lastTradeId?: number;
+  /** Provider ticker event time; orders equal-time Upbit fills, never proves a fresh trade. */
+  sourceEventTime?: number;
 }
 export interface QuoteStream {
   delta?: boolean;

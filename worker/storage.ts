@@ -4,6 +4,8 @@ export interface Env {
   RUNTIME_KIND?: 'vps' | 'cloudflare';
   READ_ONLY_API?: boolean;
   HISTORY_ALLOWED?: () => boolean;
+  /** Set only by the explicit local recovery CLI, never from a public request. */
+  DERIVATIVE_HISTORY_GRANT?: import('./backfill-budget').DerivativeRecoveryGrant;
   X_BEARER_TOKEN?: string;
   X_COLLECTION_ENABLED?: string;
   X_MAX_REQUESTS_PER_DAY?: string;
@@ -71,10 +73,18 @@ export async function success(db: D1Database, key: string, asOf: number) {
   const now = epoch();
   await successStatement(db, key, asOf, now).run();
 }
-export function successStatement(db: D1Database, key: string, asOf: number, now = epoch()) {
+export function successStatement(
+  db: D1Database,
+  key: string,
+  asOf: number,
+  now = epoch(),
+  monotonicAsOf = false,
+) {
   return db
     .prepare(
-      'INSERT INTO ingestion(key,last_attempt,last_success,data_as_of,failures,error,next_attempt) VALUES (?,?,?,?,0,NULL,0) ON CONFLICT(key) DO UPDATE SET last_attempt=?,last_success=?,data_as_of=?,failures=0,error=NULL,next_attempt=0',
+      'INSERT INTO ingestion(key,last_attempt,last_success,data_as_of,failures,error,next_attempt) VALUES (?,?,?,?,0,NULL,0) ON CONFLICT(key) DO UPDATE SET last_attempt=?,last_success=?,data_as_of=' +
+        (monotonicAsOf ? 'MAX(COALESCE(ingestion.data_as_of,0),?)' : '?') +
+        ',failures=0,error=NULL,next_attempt=0',
     )
     .bind(key, now, now, asOf, now, now, asOf);
 }

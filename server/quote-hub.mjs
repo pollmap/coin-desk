@@ -31,6 +31,13 @@ export function parseTick(market, message, now = Date.now() / 1000) {
     return null;
   const lastTradeId =
     market === 'binance' && Number.isSafeInteger(data.l) && data.l >= 0 ? data.l : undefined;
+  const sourceEventTime =
+    market === 'upbit' && data.timestamp !== undefined ? Number(data.timestamp) / 1000 : undefined;
+  if (
+    sourceEventTime !== undefined &&
+    (!Number.isFinite(sourceEventTime) || sourceEventTime < tradedAt || sourceEventTime > now + 60)
+  )
+    return null;
   return {
     asset,
     market,
@@ -38,6 +45,7 @@ export function parseTick(market, message, now = Date.now() / 1000) {
     tradedAt,
     receivedAt: now,
     ...(lastTradeId !== undefined ? { lastTradeId } : {}),
+    ...(sourceEventTime !== undefined ? { sourceEventTime } : {}),
   };
 }
 
@@ -57,7 +65,12 @@ export function createQuoteHub({ clock = () => Date.now() / 1000, maxClients = 2
       previous &&
       (tick.tradedAt < previous.tradedAt ||
         (tick.tradedAt === previous.tradedAt &&
-          !(tick.lastTradeId !== undefined && tick.lastTradeId > (previous.lastTradeId ?? -1))))
+          !(
+            (tick.lastTradeId !== undefined && tick.lastTradeId > (previous.lastTradeId ?? -1)) ||
+            (market === 'upbit' &&
+              tick.sourceEventTime !== undefined &&
+              tick.sourceEventTime > (previous.sourceEventTime ?? previous.tradedAt))
+          )))
     )
       return false;
     markets[market].quotes.set(tick.asset, tick);
@@ -95,12 +108,21 @@ export function createQuoteHub({ clock = () => Date.now() / 1000, maxClients = 2
           return (
             !old ||
             q.tradedAt > old.time ||
-            (q.tradedAt === old.time && (q.lastTradeId ?? -1) > old.id)
+            (q.tradedAt === old.time &&
+              ((q.lastTradeId ?? -1) > old.id ||
+                (q.market === 'upbit' &&
+                  q.price !== old.price &&
+                  (q.sourceEventTime ?? 0) > old.eventTime)))
           );
         })
       : quotes;
     for (const q of changed)
-      client.sent.set(q.asset, { time: q.tradedAt, id: q.lastTradeId ?? -1 });
+      client.sent.set(q.asset, {
+        time: q.tradedAt,
+        id: q.lastTradeId ?? -1,
+        price: q.price,
+        eventTime: q.sourceEventTime ?? q.tradedAt,
+      });
     res.write(`event: quotes\ndata: ${JSON.stringify({ ...payload, delta, quotes: changed })}\n\n`);
   }
   const server = createServer((req, res) => {
@@ -157,15 +179,13 @@ export function createQuoteHub({ clock = () => Date.now() / 1000, maxClients = 2
         res.writeHead(400).end();
         return;
       }
-      res
-        .writeHead(200, { 'content-type': 'application/json', 'cache-control': 'no-store' })
-        .end(
-          JSON.stringify({
-            market,
-            connected: markets[market].connected,
-            trades: requested.flatMap((asset) => tradeProofs.get(asset) ?? []),
-          }),
-        );
+      res.writeHead(200, { 'content-type': 'application/json', 'cache-control': 'no-store' }).end(
+        JSON.stringify({
+          market,
+          connected: markets[market].connected,
+          trades: requested.flatMap((asset) => tradeProofs.get(asset) ?? []),
+        }),
+      );
       return;
     }
     if (clients.size >= maxClients) {
@@ -217,18 +237,20 @@ export function connectExchange(hub, market, WebSocketClass = WebSocket) {
   function connect() {
     if (stopped) return;
     const streams = [...symbols.binance.keys()].map((s) => `${s.toLowerCase()}@aggTrade`).join('/');
-    socket = new WebSocketClass(
+    const current = (socket = new WebSocketClass(
       market === 'upbit'
         ? 'wss://api.upbit.com/websocket/v1'
         : `wss://stream.binance.com:9443/stream?streams=${streams}`,
-    );
+    ));
+    const active = () => !stopped && current === socket;
     let lastReceived = Date.now(),
       openedAt = Date.now();
-    socket.addEventListener('open', () => {
+    current.addEventListener('open', () => {
+      if (!active()) return;
       hub.markets[market].connected = true;
       attempts = 0;
       if (market === 'upbit')
-        socket.send(
+        current.send(
           JSON.stringify([
             { ticket: randomUUID() },
             { type: 'ticker', codes: [...symbols.upbit.keys()], is_only_realtime: true },
@@ -236,18 +258,24 @@ export function connectExchange(hub, market, WebSocketClass = WebSocket) {
           ]),
         );
     });
-    socket.addEventListener('message', async (event) => {
+    current.addEventListener('message', async (event) => {
+      if (!active()) return;
       try {
         const raw = typeof event.data === 'string' ? event.data : await event.data.text();
-        if (raw.length > 65536) return;
+        // Binary decoding may finish after this connection closes or is replaced.
+        if (!active() || raw.length > 65536) return;
         const message = JSON.parse(raw);
         if (hub.ingest(market, message)) lastReceived = Date.now();
       } catch {
         /* Invalid individual ticks never replace a valid price. */
       }
     });
-    socket.addEventListener('error', () => socket.close());
-    socket.addEventListener('close', () => {
+    current.addEventListener('error', () => {
+      if (active()) current.close();
+    });
+    current.addEventListener('close', () => {
+      if (!active()) return;
+      socket = undefined;
       clearInterval(watchdog);
       hub.markets[market].connected = false;
       if (!stopped)
@@ -257,7 +285,8 @@ export function connectExchange(hub, market, WebSocketClass = WebSocket) {
         );
     });
     watchdog = setInterval(() => {
-      if (Date.now() - lastReceived > 90000 || Date.now() - openedAt > 23 * 3600000) socket.close();
+      if (active() && (Date.now() - lastReceived > 90000 || Date.now() - openedAt > 23 * 3600000))
+        current.close();
     }, 15000);
   }
   connect();
@@ -265,7 +294,9 @@ export function connectExchange(hub, market, WebSocketClass = WebSocket) {
     stopped = true;
     clearTimeout(retry);
     clearInterval(watchdog);
-    socket?.close();
+    const previous = socket;
+    socket = undefined;
+    previous?.close();
     hub.markets[market].connected = false;
   };
 }
