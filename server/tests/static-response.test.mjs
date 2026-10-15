@@ -1,10 +1,11 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { mkdtemp, writeFile, rm } from 'node:fs/promises';
+import { mkdtemp, writeFile, readFile, mkdir, rm } from 'node:fs/promises';
 import { join } from 'node:path';
 import { tmpdir } from 'node:os';
-import { brotliDecompressSync, gunzipSync } from 'node:zlib';
+import { brotliCompressSync, brotliDecompressSync, gunzipSync } from 'node:zlib';
 import { staticResponder } from '../static-response.mjs';
+import { buildStaticEncodings } from '../../scripts/build-static.mjs';
 
 test('Static encodings round-trip, respect refusal and revalidate across representations', async () => {
   const root = await mkdtemp(join(tmpdir(), 'coin-static-'));
@@ -81,6 +82,73 @@ test('Static HTML validators include the public origin; images are unchanged', a
     });
     assert.equal(result.headers.get('content-encoding'), null);
     assert.deepEqual(Buffer.from(await result.arrayBuffer()), bytes);
+  } finally {
+    await rm(root, { recursive: true, force: true });
+  }
+});
+
+test('Verified build-time bytes preserve negotiation, validators and original content', async () => {
+  const root = await mkdtemp(join(tmpdir(), 'coin-static-prepared-'));
+  try {
+    const sourceRoot = join(root, 'assets'),
+      precompressedRoot = join(root, 'encoded');
+    await mkdir(sourceRoot);
+    const file = join(sourceRoot, 'entry.js');
+    const text = 'export const words="' + '가격과 추세 Coin Desk '.repeat(300) + '";';
+    await writeFile(file, text);
+    const manifest = await buildStaticEncodings({ sourceRoot, outputRoot: precompressedRoot });
+    const hash = manifest.files[0].sha256;
+    const serve = staticResponder({ precompressedRoot });
+    const opts = { mime: 'text/javascript', cacheControl: 'public, max-age=31536000, immutable' };
+    const br = await serve(file, { ...opts, headers: { 'accept-encoding': 'br, gzip' } });
+    const brBytes = Buffer.from(await br.arrayBuffer());
+    assert.deepEqual(brBytes, await readFile(join(precompressedRoot, hash + '.br')));
+    assert.equal(brotliDecompressSync(brBytes).toString(), text);
+    assert.equal(br.headers.get('etag'), 'W/"' + hash + '"');
+    assert.equal(br.headers.get('content-length'), String(brBytes.length));
+    const gz = await serve(file, {
+      ...opts,
+      headers: { 'accept-encoding': 'br;q=0,gzip;q=0.8,identity;q=0' },
+    });
+    assert.equal(gz.headers.get('content-encoding'), 'gzip');
+    assert.equal(gunzipSync(Buffer.from(await gz.arrayBuffer())).toString(), text);
+    const identity = await serve(file, {
+      ...opts,
+      headers: { 'accept-encoding': 'br;q=0,gzip;q=0' },
+    });
+    assert.equal(identity.headers.get('content-encoding'), null);
+    assert.equal(await identity.text(), text);
+    const refusal = await serve(file, { ...opts, headers: { 'accept-encoding': '*;q=0' } });
+    assert.equal(refusal.status, 406);
+    const unchanged = await serve(file, {
+      ...opts,
+      headers: { 'accept-encoding': 'gzip', 'if-none-match': br.headers.get('etag') },
+    });
+    assert.equal(unchanged.status, 304);
+    assert.equal(unchanged.headers.get('vary'), 'Accept-Encoding');
+    assert.equal(await unchanged.text(), '');
+    // Corrupt and valid-but-wrong representations both return verified original data.
+    for (const invalid of [
+      Buffer.from('broken'),
+      await readFile(join(precompressedRoot, hash + '.gzip')),
+      brotliCompressSync(Buffer.from('A different valid compressed original'.repeat(20))),
+      brotliCompressSync(Buffer.alloc(Buffer.byteLength(text) + 1, 1)),
+    ]) {
+      await writeFile(join(precompressedRoot, hash + '.br'), invalid);
+      const cold = staticResponder({ precompressedRoot });
+      const response = await cold(file, { ...opts, headers: { 'accept-encoding': 'br' } });
+      assert.equal(
+        brotliDecompressSync(Buffer.from(await response.arrayBuffer())).toString(),
+        text,
+      );
+    }
+    await writeFile(file, text + '// corrected source');
+    const changed = await serve(file, { ...opts, headers: { 'accept-encoding': 'br' } });
+    assert.notEqual(changed.headers.get('etag'), br.headers.get('etag'));
+    assert.equal(
+      brotliDecompressSync(Buffer.from(await changed.arrayBuffer())).toString(),
+      text + '// corrected source',
+    );
   } finally {
     await rm(root, { recursive: true, force: true });
   }

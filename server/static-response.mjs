@@ -1,10 +1,41 @@
-import { readFile, stat } from 'node:fs/promises';
+import { readFile, stat, realpath } from 'node:fs/promises';
 import { createHash } from 'node:crypto';
-import { brotliCompress, gzip, constants } from 'node:zlib';
+import { brotliCompress, gzip, brotliDecompress, gunzip, constants } from 'node:zlib';
 import { promisify } from 'node:util';
+import { resolve, sep } from 'node:path';
 
 const brotli = promisify(brotliCompress),
-  deflate = promisify(gzip);
+  deflate = promisify(gzip),
+  unbrotli = promisify(brotliDecompress),
+  inflate = promisify(gunzip);
+
+async function precompressedBodies(root, hash, original) {
+  if (!root) return null;
+  try {
+    const canonicalRoot = await realpath(root);
+    const bodies = await Promise.all(
+      ['br', 'gzip'].map(async (encoding) => {
+        const path = await realpath(resolve(canonicalRoot, hash + '.' + encoding));
+        if (!path.startsWith(canonicalRoot + sep)) throw new Error('Unsafe encoded asset');
+        const info = await stat(path);
+        if (!info.isFile() || info.size <= 0 || info.size >= original.length)
+          throw new Error('Invalid encoded asset size');
+        const bytes = await readFile(path);
+        if (bytes.length !== info.size) throw new Error('Encoded asset changed');
+        const decoded = await (encoding === 'br' ? unbrotli : inflate)(bytes, {
+          maxOutputLength: original.length,
+        });
+        if (!decoded.equals(original)) throw new Error('Encoded asset differs from original');
+        return bytes;
+      }),
+    );
+    return { br: bodies[0], gzip: bodies[1] };
+  } catch {
+    // Old retained assets and local development have no encoded bundle. Never
+    // serve stale/corrupt bytes or run expensive quality-11 work in a request.
+    return null;
+  }
+}
 function preferredEncoding(header, compressible) {
   const weights = new Map();
   for (const part of (header || '').split(',')) {
@@ -23,7 +54,11 @@ function preferredEncoding(header, compressible) {
 }
 
 /** Public static files only. Never store API, SSE or personal data here. */
-export function staticResponder({ maxBytes = 16 * 1024 * 1024, maxEntries = 64 } = {}) {
+export function staticResponder({
+  maxBytes = 16 * 1024 * 1024,
+  maxEntries = 64,
+  precompressedRoot = 'server-dist/static-precompressed',
+} = {}) {
   const cache = new Map();
   let cachedBytes = 0;
   return async function respond(file, { mime, cacheControl, publicOrigin, headers = {} }) {
@@ -44,16 +79,22 @@ export function staticResponder({ maxBytes = 16 * 1024 * 1024, maxEntries = 64 }
         data.length >= 512 &&
         data.length <= 2 * 1024 * 1024;
       const bodies = { identity: data };
+      const hash = createHash('sha256').update(data).digest('hex');
       if (compressible) {
-        [bodies.br, bodies.gzip] = await Promise.all([
-          brotli(data, { params: { [constants.BROTLI_PARAM_QUALITY]: 5 } }),
-          deflate(data, { level: 6 }),
-        ]);
+        const prepared = /^(?:text\/(?:javascript|css)|application\/javascript)(?:;|$)/.test(mime)
+          ? await precompressedBodies(precompressedRoot, hash, data)
+          : null;
+        if (prepared) Object.assign(bodies, prepared);
+        else
+          [bodies.br, bodies.gzip] = await Promise.all([
+            brotli(data, { params: { [constants.BROTLI_PARAM_QUALITY]: 5 } }),
+            deflate(data, { level: 6 }),
+          ]);
       }
       item = {
         bodies,
         compressible,
-        etag: 'W/"' + createHash('sha256').update(data).digest('hex') + '"',
+        etag: 'W/"' + hash + '"',
       };
       item.bytes = Object.values(bodies).reduce((n, body) => n + body.length, 0);
       // Concurrent cold requests may finish together. Account for replacement too.

@@ -1,5 +1,5 @@
 import { feedRequest } from './feed-client';
-import { reserveDerivativeBackfill } from './backfill-budget';
+import { derivativeBackfillLimit, reserveDerivativeBackfill } from './backfill-budget';
 import type { Asset, Point, SeriesResponse } from '../shared/types';
 import { DAY } from '../shared/math';
 import { upstream } from './providers';
@@ -116,8 +116,21 @@ export async function updateDerivatives(
   asset: DerivativeAsset,
   metric: DerivativeMetric,
   recentOnly = false,
+  expectedOperatorLease?: number,
 ) {
+  const operatorHistory = !!env.DERIVATIVE_HISTORY_GRANT;
+  if (operatorHistory) derivativeBackfillLimit(env, epoch());
+  if (operatorHistory && recentOnly)
+    throw new Error('Recovery grant cannot change recent-only collection');
+  const leaseActive = async () =>
+    expectedOperatorLease === undefined ||
+    (expectedOperatorLease > epoch() &&
+      (await readState<number>(env.DB, 'lease:derivatives-history-operator', 0)) ===
+        expectedOperatorLease);
+  if (operatorHistory && !(await leaseActive()))
+    return { outcome: 'paused_operator_lease' as const };
   const historyPaused = env.HISTORY_ALLOWED?.() === false;
+  if (operatorHistory && historyPaused) return { outcome: 'paused_low_space' as const };
   recentOnly ||= historyPaused;
   const kind = derivativeKind(metric);
   const daily = metric.endsWith('_daily');
@@ -132,6 +145,33 @@ export async function updateDerivatives(
       : (now - 30 * DAY) * 1000;
   const coverage = await readDerivativeExtent(env.DB, asset, metric);
   let cursor = await readState<number | null>(env.DB, 'cursor:' + id, null);
+  const completed = operatorHistory
+    ? await readState<number | null>(env.DB, 'history-complete:' + id, null)
+    : null;
+  if (operatorHistory && cursor === null && completed !== null)
+    return { outcome: 'complete' as const, proof: 'existing_completion', candidateRows: 0 };
+  if (operatorHistory && cursor === null && coverage?.first && coverage.first * 1000 <= floor) {
+    await env.DB.batch([
+      env.DB.prepare(
+        'INSERT INTO state(key,value) VALUES(?,?) ON CONFLICT(key) DO UPDATE SET value=excluded.value',
+      ).bind('history-complete:' + id, JSON.stringify(now)),
+      env.DB.prepare(
+        'INSERT INTO state(key,value) VALUES(?,?) ON CONFLICT(key) DO UPDATE SET value=excluded.value',
+      ).bind(
+        'history-evidence:' + id,
+        JSON.stringify({
+          reason: 'policy_floor',
+          checkedAt: now,
+          floor: Math.floor(floor / 1000),
+          first: coverage.first,
+          last: coverage.last,
+          source: 'Bybit V5 public market data',
+          symbol: derivativeContract(asset).symbol,
+        }),
+      ),
+    ]);
+    return { outcome: 'complete' as const, proof: 'policy_floor', candidateRows: 0 };
+  }
   // Recent-only imports have no history page or cursor. Resume those partitions
   // from their oldest saved point; preserve completed legacy history and budgets.
   if (
@@ -147,21 +187,29 @@ export async function updateDerivatives(
             .bind(id + ':history:', id + ':history;')
             .first()
         : true;
-    if (!history) {
+    if (operatorHistory || !history) {
       cursor = coverage.first * 1000 - 1;
-      await env.DB.prepare('INSERT OR IGNORE INTO state(key,value) VALUES(?,?)')
-        .bind('cursor:' + id, JSON.stringify(cursor))
-        .run();
+      // Recovery uses an in-memory seed until a validated page commits. A
+      // blocked/malformed source must not create or advance a durable cursor.
+      if (!operatorHistory)
+        await env.DB.prepare('INSERT OR IGNORE INTO state(key,value) VALUES(?,?)')
+          .bind('cursor:' + id, JSON.stringify(cursor))
+          .run();
     }
   }
   const refreshRecent =
-    recentOnly ||
-    (!!coverage?.last &&
-      now - coverage.last > (daily ? 2 * DAY : kind === 'funding' ? 12 * 3600 : 2 * 3600));
+    !operatorHistory &&
+    (recentOnly ||
+      (!!coverage?.last &&
+        now - coverage.last > (daily ? 2 * DAY : kind === 'funding' ? 12 * 3600 : 2 * 3600)));
   const backfill = cursor !== null && !refreshRecent;
   const firstPage = !coverage?.last && !recentOnly;
   const size = backfill || firstPage ? 200 : metric === 'funding' ? 20 : 30;
-  if ((backfill || firstPage) && !(await reserveDerivativeBackfill(env.DB, size, now))) {
+  if (
+    (backfill || firstPage) &&
+    !(await reserveDerivativeBackfill(env.DB, size, operatorHistory ? epoch() : now, env))
+  ) {
+    if (operatorHistory) return { outcome: 'paused_daily_budget' as const, candidateRows: 0 };
     // Preserve the cursor and saved observations. The independent recent lane continues.
     // Expanded VPS assets do not all use the primary-coins recent lane. Their
     // current observations must remain independent of the historical row budget.
@@ -195,25 +243,74 @@ export async function updateDerivatives(
         : '/v5/market/account-ratio';
   // Cron egress is rejected by Bybit on this host. A Seoul-placed fetch Worker
   // performs the allowlisted request; its endpoint requires a shared secret.
-  const raw =
-    env.FEED_SERVICE || (env.FEED_URL && env.FEED_TOKEN)
-      ? await feedRequest(
-          env,
-          '/derivatives',
-          new URLSearchParams({
-            asset,
-            metric,
-            limit: String(size),
-            ...(backfill ? { endTime: String(cursor) } : {}),
-          }),
-        )
-      : await upstream(origin + path + '?' + params);
+  if (operatorHistory) {
+    try {
+      derivativeBackfillLimit(env, epoch());
+    } catch {
+      return { outcome: 'paused_expired' as const, candidateRows: size };
+    }
+    if (env.HISTORY_ALLOWED?.() === false)
+      return { outcome: 'paused_low_space' as const, candidateRows: size };
+    if (!(await leaseActive()))
+      return { outcome: 'paused_operator_lease' as const, candidateRows: size };
+  }
+  let raw: unknown;
+  try {
+    raw =
+      env.FEED_SERVICE || (env.FEED_URL && env.FEED_TOKEN)
+        ? await feedRequest(
+            env,
+            '/derivatives',
+            new URLSearchParams({
+              asset,
+              metric,
+              limit: String(size),
+              ...(backfill ? { endTime: String(cursor) } : {}),
+            }),
+          )
+        : await upstream(origin + path + '?' + params);
+  } catch (error) {
+    // The private in-process feed may wrap a Bybit 403/429 as HTTP 502.
+    // Bulk recovery stops on any opaque HTTP/network failure, without retry.
+    if (operatorHistory)
+      return {
+        outcome: 'paused_source_http' as const,
+        code: 'HISTORY_SOURCE_HTTP',
+        candidateRows: size,
+      };
+    throw error;
+  }
+  if (
+    operatorHistory &&
+    raw &&
+    typeof raw === 'object' &&
+    [10006, 10018, 10009].includes((raw as { retCode?: number }).retCode ?? 0)
+  )
+    return {
+      outcome: 'paused_source_limit' as const,
+      code: 'BYBIT_RATE_OR_IP_LIMIT',
+      candidateRows: size,
+    };
   const parsed = parseDerivativeRows(raw, asset, metric, now);
-  if (!parsed.length && !coverage?.last) throw new Error('No derivatives history available');
+  if (!parsed.length && !coverage?.last && !operatorHistory)
+    throw new Error('No derivatives history available');
   if (backfill && parsed.some((point) => point.time * 1000 > cursor!))
     throw new Error('Derivatives history cursor did not advance');
   const points = parsed.filter((point) => point.time * 1000 >= floor);
   const fetched = epoch();
+  if (operatorHistory) {
+    // A request may cross the authorization deadline or lose free space while
+    // awaiting the provider. Keep its reservation, but do not advance any data.
+    try {
+      derivativeBackfillLimit(env, fetched);
+    } catch {
+      return { outcome: 'paused_expired' as const, candidateRows: size };
+    }
+    if (env.HISTORY_ALLOWED?.() === false)
+      return { outcome: 'paused_low_space' as const, candidateRows: size };
+    if (!(await leaseActive()))
+      return { outcome: 'paused_operator_lease' as const, candidateRows: size };
+  }
   const statements: D1PreparedStatement[] = points.length
     ? [
         env.DB.prepare(
@@ -244,8 +341,47 @@ export async function updateDerivatives(
         ).bind('history-complete:' + id, JSON.stringify(fetched)),
       );
   }
-  statements.push(successStatement(env.DB, id, last, fetched));
-  if (!historyPaused && (more || seededRecent || (refreshRecent && cursor !== null)))
+  if (operatorHistory) {
+    if (last > 0)
+      statements.push(
+        env.DB.prepare(
+          'INSERT INTO ingestion(key,data_as_of) VALUES(?,?) ON CONFLICT(key) DO UPDATE SET data_as_of=MAX(COALESCE(ingestion.data_as_of,0),excluded.data_as_of)',
+        ).bind(id, last),
+      );
+    if (!more)
+      statements.push(
+        env.DB.prepare(
+          'INSERT INTO state(key,value) VALUES(?,?) ON CONFLICT(key) DO UPDATE SET value=excluded.value',
+        ).bind(
+          'history-evidence:' + id,
+          JSON.stringify({
+            checkedAt: fetched,
+            reason: !parsed.length
+              ? 'provider_empty'
+              : parsed[0].time * 1000 <= floor
+                ? 'policy_floor'
+                : 'provider_partial_page',
+            source: 'Bybit V5 public market data',
+            symbol: derivativeContract(asset).symbol,
+            metric,
+            requestedBeforeMs: backfill ? cursor : null,
+            received: parsed.length,
+            floor: Math.floor(floor / 1000),
+            first:
+              coverage?.first == null
+                ? (points[0]?.time ?? null)
+                : Math.min(coverage.first, points[0]?.time ?? coverage.first),
+            last: last || null,
+            grantId: env.DERIVATIVE_HISTORY_GRANT!.id,
+          }),
+        ),
+      );
+  } else statements.push(successStatement(env.DB, id, last, fetched, true));
+  if (
+    !operatorHistory &&
+    !historyPaused &&
+    (more || seededRecent || (refreshRecent && cursor !== null))
+  )
     statements.push(
       env.DB.prepare('UPDATE ingestion SET next_attempt=? WHERE key=?').bind(fetched + 60, id),
     );
@@ -256,6 +392,13 @@ export async function updateDerivatives(
     ).bind(rawId, 'Bybit V5 public market data', fetched, JSON.stringify(raw)),
   );
   for (let i = 0; i < statements.length; i += 40) await env.DB.batch(statements.slice(i, i + 40));
+  if (operatorHistory)
+    return {
+      outcome: more ? ('advanced' as const) : ('complete' as const),
+      candidateRows: size,
+      observations: points.length,
+      cursor: more ? parsed[0].time * 1000 - 1 : null,
+    };
 }
 
 export async function readDerivativeSeries(
