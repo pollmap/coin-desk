@@ -1,5 +1,5 @@
 import { lazy, Suspense, useEffect, useMemo, useRef, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { ArrowUpRight, CircleHelp } from 'lucide-react';
 import type { Asset, CandleResponse, Market, Period, Point, SeriesResponse } from '../shared/types';
 import type { PriceBasis } from '../shared/analysis-workspace';
@@ -76,11 +76,10 @@ export function DashboardChartCard({
   eager?: boolean;
   height?: number;
 }) {
-  const navigate = useNavigate();
   const host = useRef<HTMLElement>(null);
-  const viewport = useRef(initialWindow);
+  const [viewport, setViewport] = useState(initialWindow);
   useEffect(() => {
-    viewport.current = initialWindow;
+    setViewport(initialWindow);
   }, [initialWindow, rangeRevision]);
   const [active, setActive] = useState(eager);
   useEffect(() => {
@@ -203,9 +202,9 @@ export function DashboardChartCard({
     interval: isSupertrend ? '1w' : '1d',
     log: plot.log ? '1' : '0',
   });
-  if (initialWindow) {
-    params.set('chart_from', String(initialWindow.from));
-    params.set('chart_to', String(initialWindow.to));
+  if (viewport) {
+    params.set('chart_from', String(viewport.from));
+    params.set('chart_to', String(viewport.to));
   }
   if (isRelative) {
     params.set('benchmark_asset', other);
@@ -257,16 +256,7 @@ export function DashboardChartCard({
             className="coin-dashboard-expand"
             to={`/coins/${asset}?${params}`}
             aria-label={title + ' 크게 보기'}
-            onClick={(event) => {
-              if (event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return;
-              event.preventDefault();
-              onNavigate();
-              if (viewport.current) {
-                params.set('chart_from', String(viewport.current.from));
-                params.set('chart_to', String(viewport.current.to));
-              }
-              navigate(`/coins/${asset}?${params}`);
-            }}
+            onClick={onNavigate}
           >
             <span>크게 보기</span>
             <ArrowUpRight size={17} />
@@ -315,7 +305,9 @@ export function DashboardChartCard({
             rangeRevision={rangeRevision}
             initialWindow={initialWindow}
             onVisibleRange={(range) => {
-              viewport.current = range;
+              setViewport((current) =>
+                current?.from === range.from && current?.to === range.to ? current : range,
+              );
               onRange(metric, range);
             }}
             advancedTools={false}
