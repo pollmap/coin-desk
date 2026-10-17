@@ -1118,6 +1118,71 @@ test.describe('actual touch-capable browser input', () => {
     await publicOnly(page);
   });
 
+  test('rapid keyboard steps retain every requested date before the next paint and hand control back to pointers', async ({
+    page,
+  }) => {
+    await page.clock.install();
+    const bars = dailyBars(80, 0.1);
+    await fixture(page, 'DOGE', { bars });
+    await page.goto(
+      `/coins/DOGE?metric=view:price&price_source=binance&period=all&chart_from=${bars[40].time}&chart_to=${bars[70].time}`,
+    );
+    await ready(page);
+    const latest = await summary(page).innerText();
+    await page.clock.pauseAt(await page.evaluate(() => Date.now() + 1000));
+    // Real keyboard events deliberately arrive before rAF can publish a panned
+    // cursor. Each requested observation must advance even without a paint.
+    for (const [boundary, arrow, target] of [
+      ['End', 'ArrowLeft', 74],
+      ['Home', 'ArrowRight', 5],
+      ['End', 'ArrowLeft', 74],
+    ] as const) {
+      await chart(page).press(boundary);
+      for (let step = 0; step < 5; step++) await page.keyboard.press(arrow);
+      await page.clock.runFor(80);
+      await expect(chart(page)).toHaveAttribute('data-hover-time', String(bars[target].time));
+      await expect(summary(page)).toHaveText(latest);
+    }
+    await page.clock.resume();
+    const box = (await chart(page).boundingBox())!;
+    for (const mode of ['mouse', 'touch'] as const) {
+      // Native WebKit taps use integer CSS pixels; send the same point to both engines.
+      const x = Math.floor(box.x + box.width * (mode === 'mouse' ? 0.3 : 0.55));
+      const y = Math.floor(box.y + box.height * 0.45);
+      if (mode === 'mouse') await page.mouse.move(x, y);
+      else await page.touchscreen.tap(x, y);
+      await expect(tooltip(page)).toBeVisible();
+      // A previous keyboard tooltip may remain visible until the native tap's
+      // next frame. Read the pointer date only after this pointer was published.
+      await expect
+        .poll(async () => Number(await chart(page).getAttribute('data-hover-x')))
+        .toBeCloseTo(x - box.x, 0);
+      const time = Number(await chart(page).getAttribute('data-hover-time'));
+      const index = bars.findIndex((bar) => bar.time === time);
+      expect(index).toBeGreaterThan(0);
+      await chart(page).press('ArrowLeft');
+      await expect(chart(page)).toHaveAttribute('data-hover-time', String(bars[index - 1].time));
+      await expect(summary(page)).toHaveText(latest);
+    }
+    await chart(page).press('Escape');
+    await expect(tooltip(page)).not.toBeVisible();
+    await chart(page).press('ArrowLeft');
+    await expect(chart(page)).toHaveAttribute('data-hover-time', String(bars.at(-1)!.time));
+    const pepe = dailyBars(40, 0.000007);
+    await fixture(page, 'PEPE', { bars: pepe });
+    await page.getByRole('button', { name: '코인 변경 · 도지코인 DOGE', exact: true }).click();
+    await page.getByRole('searchbox', { name: '코인 검색', exact: true }).fill('PEPE');
+    await page.locator('.coin-result-list').getByRole('button', { name: /PEPE/ }).click();
+    await ready(page);
+    await expect(chart(page)).toHaveAttribute('data-asset', 'PEPE');
+    await expect(chart(page)).not.toHaveAttribute('data-hover-time');
+    await chart(page).press('ArrowLeft');
+    await expect(chart(page)).toHaveAttribute('data-hover-time', String(pepe.at(-1)!.time));
+    await chart(page).press('ArrowLeft');
+    await expect(chart(page)).toHaveAttribute('data-hover-time', String(pepe.at(-2)!.time));
+    await publicOnly(page);
+  });
+
   test('native long press, horizontal pan, pinch and cancellation keep inspected values and window state', async ({
     page,
     context,

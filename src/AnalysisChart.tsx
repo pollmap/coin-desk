@@ -789,6 +789,9 @@ export const AnalysisChart = memo(function AnalysisChart({
       syntheticInspection(time, target, value, { x, y: y - top });
     };
     moveCursor.current = (time, preserveRange = false) => {
+      const pendingPaint = cursorFrame.current !== 0;
+      cancelAnimationFrame(cursorFrame.current);
+      cursorFrame.current = 0;
       if (time === null) {
         chart.clearCrosshairPosition();
         return;
@@ -829,8 +832,7 @@ export const AnalysisChart = memo(function AnalysisChart({
           moved = true;
         }
       }
-      if (moved) {
-        cancelAnimationFrame(cursorFrame.current);
+      if (moved || pendingPaint) {
         cursorFrame.current = requestAnimationFrame(() => {
           cursorFrame.current = 0;
           syntheticInspection(time, target, target.values.get(time)!);
@@ -1102,6 +1104,7 @@ export const AnalysisChart = memo(function AnalysisChart({
       updateSeries.current = () => {};
       moveCursor.current = () => {};
       inspectAt.current = () => {};
+      keyboardInspection.current = null;
       inspectionRef.current = null;
       touchInspection.current = false;
       setInspection(null);
@@ -1467,6 +1470,8 @@ export const AnalysisChart = memo(function AnalysisChart({
           onPointerDownCapture={(event) => {
             pointerKind.current = event.pointerType;
             touchInspection.current = false;
+            cancelAnimationFrame(cursorFrame.current);
+            cursorFrame.current = 0;
             keyboardInspection.current = null;
             if (!activePointers.current.size)
               gesture.current = {
@@ -1480,6 +1485,8 @@ export const AnalysisChart = memo(function AnalysisChart({
           onPointerMoveCapture={(event) => {
             pointerKind.current = event.pointerType;
             if (publicFocus || !pinned) manualCursor.current = false;
+            cancelAnimationFrame(cursorFrame.current);
+            cursorFrame.current = 0;
             keyboardInspection.current = null;
             const start = activePointers.current.get(event.pointerId);
             if (
@@ -1555,7 +1562,9 @@ export const AnalysisChart = memo(function AnalysisChart({
                     ? readings.times.at(-1)
                     : adjacentObservation(
                         readings.times,
-                        inspectionRef.current?.time ?? selectedTime,
+                        // The requested cursor advances synchronously; rendering
+                        // after a pan may wait for the next animation frame.
+                        keyboardInspection.current ?? inspectionRef.current?.time ?? selectedTime,
                         e.key === 'ArrowLeft' ? -1 : 1,
                       );
               if (next !== undefined && next !== null) {

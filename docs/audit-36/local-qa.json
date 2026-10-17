@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "release": "0.36.0",
   "recordedAtUtc": "2026-10-17T09:53:58.982235+00:00",
-  "repositoryHeadAtRecord": "abea60ed7deb1f912fe9a4dde2eb45c1f496c317",
+  "repositoryHeadAtRecord": "114cefae5145b57605b89f9f2c6971166e5d48fa",
   "scope": "로컬 개발·회귀 실행 기록. 원격 CI, 배포, 운영 데이터 완전성 및 실물 기기 검증을 대신하지 않습니다.",
   "countingPolicy": {
     "aggregateTotal": null,
@@ -473,6 +473,174 @@
         "다른 44개 실행과 대상 파일이 다릅니다. 중복된 대시보드 검사를 누적 통과 수에 더하지 않습니다.",
         "최종 제품 변경은 공통 Dialog CSS 5줄 제거이며 새 의존성을 추가하지 않았습니다."
       ]
+    },
+    {
+      "id": "1792233785071-123060",
+      "phase": "reproduced_before_fix",
+      "hmr": "not_observed_in_persisted_stdout",
+      "startedAtUtc": "2026-10-17T10:43:05.685000+00:00",
+      "durationMs": 15635.515,
+      "projects": [
+        "chromium"
+      ],
+      "files": [
+        "e2e/price-chart-034.spec.ts"
+      ],
+      "result": {
+        "total": 1,
+        "passed": 0,
+        "failed": 1,
+        "flaky": 0,
+        "skipped": 0
+      },
+      "configuredRetries": 0,
+      "processExitCode": 1,
+      "dataMode": "isolated_local_fixture",
+      "evidence": {
+        "htmlReport": "work/browser-checks/1792233785071-123060/report/index.html",
+        "sha256": "028c711d0d5964777cc0c616abcdedad34eac63dda86ecc2fcb87f6936f39e95",
+        "stdout": "work/ux-036/keyboard-before.log",
+        "stdoutSha256": "187afd0b1a4abd66f1ccd3ec07ac5633464c15e7ef256318030f4d730257da2d"
+      },
+      "notes": [
+        "수정 전 다음 프레임을 정지하고 실제 End·ArrowLeft 5회를 입력했습니다. 끝에서 다섯 번째 이전 날짜 대신 마지막 날짜가 남아 제품 결함을 재현했습니다."
+      ]
+    },
+    {
+      "id": "1792233835705-147244",
+      "phase": "post_fix_probe_pointer_wait_error",
+      "hmr": "not_observed_in_persisted_stdout",
+      "startedAtUtc": "2026-10-17T10:43:56.330000+00:00",
+      "durationMs": 17673.439,
+      "projects": [
+        "chromium",
+        "webkit"
+      ],
+      "files": [
+        "e2e/price-chart-034.spec.ts"
+      ],
+      "result": {
+        "total": 2,
+        "passed": 1,
+        "failed": 1,
+        "flaky": 0,
+        "skipped": 0
+      },
+      "configuredRetries": 0,
+      "processExitCode": 1,
+      "dataMode": "isolated_local_fixture",
+      "evidence": {
+        "htmlReport": "work/browser-checks/1792233835705-147244/report/index.html",
+        "sha256": "8a6e56310ad4cb5fc4df4674597b91c839f5abb7efa8220efa112be122b6fd8b",
+        "stdout": "work/ux-036/keyboard-after-focused.log",
+        "stdoutSha256": "2fcb8fe9c5ca3e412e5abd914a1b3713a032dc3227b28138855982e320c9369b"
+      },
+      "notes": [
+        "수정 후 빠른 방향키 단계는 두 엔진에서 통과했습니다. WebKit의 터치 게시 프레임 전에 이전 툴팁 날짜를 읽어 후속 포인터 검사 1개가 실패했습니다.",
+        "새 포인터 좌표가 실제 게시됐는지를 확인한 뒤 해당 날짜를 읽도록 검사 순서를 수정했습니다. 키 입력 사이에 대기하거나 날짜 기준을 완화하지 않았습니다."
+      ]
+    },
+    {
+      "id": "1792233891226-145468",
+      "phase": "existing_regressions_passed_new_fixture_collision",
+      "hmr": "not_observed_in_persisted_stdout",
+      "startedAtUtc": "2026-10-17T10:44:51.882000+00:00",
+      "durationMs": 60040.244999999995,
+      "projects": [
+        "chromium",
+        "webkit"
+      ],
+      "files": [
+        "e2e/price-chart-034.spec.ts"
+      ],
+      "result": {
+        "total": 12,
+        "passed": 10,
+        "failed": 2,
+        "flaky": 0,
+        "skipped": 0
+      },
+      "configuredRetries": 0,
+      "processExitCode": 1,
+      "dataMode": "isolated_local_fixture",
+      "evidence": {
+        "htmlReport": "work/browser-checks/1792233891226-145468/report/index.html",
+        "sha256": "c546f3cf8640d59c7245c433a5ff0f912867822776dbfe1516f98c99ded28234",
+        "stdout": "work/ux-036/keyboard-regression.log",
+        "stdoutSha256": "24b13cf34dd218b99d31cbb3c7130b82f2ef985e10ce8fcb55a02f9b389077cd"
+      },
+      "notes": [
+        "기존 펀딩 0·음수·결측, 키보드 확대 유지, Escape, 실제 포인터 전환 검사는 양 엔진 10개 모두 통과했습니다.",
+        "신규 검사 2개는 PEPE route.continue가 앞서 등록한 DOGE 80개 관측 fixture를 가려 기본 1100개 관측을 읽었습니다. PEPE fixture를 실제 코인 전환 직전에 등록하도록 검사 구성을 수정했습니다."
+      ]
+    },
+    {
+      "id": "1792233982646-149860",
+      "phase": "native_pointer_coordinate_probe_mismatch",
+      "hmr": "not_observed_in_persisted_stdout",
+      "startedAtUtc": "2026-10-17T10:46:23.272000+00:00",
+      "durationMs": 17081.516,
+      "projects": [
+        "chromium",
+        "webkit"
+      ],
+      "files": [
+        "e2e/price-chart-034.spec.ts"
+      ],
+      "result": {
+        "total": 2,
+        "passed": 1,
+        "failed": 1,
+        "flaky": 0,
+        "skipped": 0
+      },
+      "configuredRetries": 0,
+      "processExitCode": 1,
+      "dataMode": "isolated_local_fixture",
+      "evidence": {
+        "htmlReport": "work/browser-checks/1792233982646-149860/report/index.html",
+        "sha256": "c6f8c2b3e366fa4cf3f607a415417b45dc450791d1502da937e7198bd10a5700",
+        "stdout": "work/ux-036/keyboard-final-focused.log",
+        "stdoutSha256": "91176a6ebac3122e389f5f37c0ddac99d2f95f1de97b6e1978a9077952d58c25"
+      },
+      "notes": [
+        "Chromium 신규 검사 통과. WebKit의 실제 터치 좌표 196px를 196.9px와 비교해 좌표 동기화 검사만 실패했습니다.",
+        "양 엔진에 동일한 정수 CSS 픽셀을 입력하도록 고쳤습니다. 기존 날짜·값 판정과 좌표 허용치는 유지했습니다."
+      ]
+    },
+    {
+      "id": "1792234036657-147192",
+      "phase": "passed_keyboard_pointer_coin_regression",
+      "hmr": "not_observed_in_persisted_stdout",
+      "startedAtUtc": "2026-10-17T10:47:17.301000+00:00",
+      "durationMs": 7076.289,
+      "projects": [
+        "chromium",
+        "webkit"
+      ],
+      "files": [
+        "e2e/price-chart-034.spec.ts"
+      ],
+      "result": {
+        "total": 2,
+        "passed": 2,
+        "failed": 0,
+        "flaky": 0,
+        "skipped": 0
+      },
+      "configuredRetries": 0,
+      "processExitCode": 0,
+      "dataMode": "isolated_local_fixture",
+      "evidence": {
+        "htmlReport": "work/browser-checks/1792234036657-147192/report/index.html",
+        "sha256": "902344596e0cfd8fdc4570d0b4bea671bbc64f7e60ccb4fe58e4a6028baafb3b",
+        "stdout": "work/ux-036/keyboard-native-pixels.log",
+        "stdoutSha256": "726df5005e3d5fbf0eef4867250ad9c299f8f91fe2a07c8f6a6caf1f273e2098"
+      },
+      "notes": [
+        "프레임을 멈춘 상태의 실제 End/Home와 연속 방향키, 마우스→키보드, 실제 터치→키보드, Escape, DOGE→PEPE 전환 후 날짜 초기화를 양 엔진에서 통과했습니다.",
+        "최근 대표값 유지와 기존 공개 화면 제한을 함께 검사했습니다. 고정 날짜나 값 판정을 약화하지 않았습니다."
+      ]
     }
   ],
   "geometryEvidence": {
@@ -591,7 +759,7 @@
     "localFollowupRun": "1792231832389-139060",
     "localFollowupStatus": "44 passed; remote rerun still separate"
   },
-  "updatedAtUtc": "2026-10-17T10:29:59.106180+00:00",
+  "updatedAtUtc": "2026-10-17T10:48:49.167763+00:00",
   "initialRecordRepositoryHead": "00860ad1cf6f4654abb35711d0c8ce79cb574b75",
   "remoteCiDialogRegression": {
     "runId": 39023920575,
@@ -827,5 +995,115 @@
       "측정은 공개 fixture이며 실제 기기·사람 대상 검사가 아닙니다."
     ],
     "localFollowupRun": "1792232857402-148928"
+  },
+  "remoteCiKeyboardRegression": {
+    "source": "mcp__code_review.pull_requests_checks",
+    "pullRequest": 74,
+    "head": "114cefae5145b57605b89f9f2c6971166e5d48fa",
+    "runId": 39025158439,
+    "jobs": [
+      {
+        "id": 117374601603,
+        "name": "checks",
+        "conclusion": "success",
+        "evidence": "CodeReview job metadata"
+      },
+      {
+        "id": 117374598156,
+        "name": "container",
+        "conclusion": "success",
+        "evidence": "CodeReview job metadata"
+      },
+      {
+        "id": 117374601564,
+        "name": "browser (chromium)",
+        "conclusion": "failure",
+        "passed": 230,
+        "failed": 2,
+        "skipped": 1,
+        "durationDisplay": "8.1m",
+        "logTruncated": true
+      },
+      {
+        "id": 117374598457,
+        "name": "browser (webkit)",
+        "conclusion": "success",
+        "passed": 231,
+        "failed": 0,
+        "skipped": 2,
+        "durationDisplay": "15.0m",
+        "logTruncated": true
+      },
+      {
+        "id": 117377544679,
+        "name": "verify",
+        "conclusion": "failure",
+        "reason": "BROWSER_RESULT=failure",
+        "logTruncated": false
+      }
+    ],
+    "configuredRetries": 0,
+    "failure": {
+      "file": "e2e/price-chart-034.spec.ts",
+      "helperLineAtHead": 753,
+      "tests": [
+        "actual secondary-pane zero, negative and missing funding values never borrow the price or another date",
+        "trusted lower-pane taps preserve zero and negative units, and do not fill a missing settlement"
+      ],
+      "expectedTimestamp": 1787356800,
+      "receivedTimestamp": 1787443200,
+      "meaning": "End 이후 연속 방향키의 날짜 이동이 한 번 누락됐습니다. 동일 helper의 데스크톱·터치 경로에서 발생했습니다."
+    },
+    "limitations": [
+      "브라우저 로그는 도구에서 잘린 결과이며 반환된 최종 요약과 오류 구간만 사용했습니다.",
+      "이번 head의 WebKit 통과는 비결정적 키 입력 결함이 없다는 증거로 해석하지 않습니다.",
+      "자동 재시도나 실패 job 재실행은 하지 않았습니다."
+    ]
+  },
+  "keyboardFixDiagnosis": {
+    "beforeHead": "114cefae5145b57605b89f9f2c6971166e5d48fa",
+    "cause": "onKeyDown이 비동기 렌더링 뒤의 inspectionRef로 다음 날짜를 계산했습니다. 범위 이동 후 rAF 전에 여러 입력이 오면 같은 이전 위치를 반복 참조해 이동을 잃었습니다.",
+    "reproduction": "1792233785071-123060",
+    "changes": [
+      "다음 입력은 동기 갱신한 keyboardInspection을 우선 사용합니다.",
+      "대기 중인 커서 프레임은 새 요청으로 취소·교체하고, 이미 이동한 범위도 다음 프레임에 정확히 게시합니다.",
+      "마우스·터치로 소유권을 바꾸면 대기 중인 키보드 프레임을 취소합니다.",
+      "차트 수명 종료 시 키보드 날짜를 비워 다른 코인·지표에 남지 않게 합니다."
+    ],
+    "files": [
+      {
+        "path": "src/AnalysisChart.tsx",
+        "sha256": "cd815131b41cf28d04cced4005d5d5d70b6795f499244aac43d9dbe7f984a65b"
+      },
+      {
+        "path": "e2e/price-chart-034.spec.ts",
+        "sha256": "0da9054682f4ae7499810e2897d64d1e89c70dcf2c6df41748adaf84bc5ee88d"
+      }
+    ],
+    "existingRelatedRegression": {
+      "run": "1792233891226-145468",
+      "passed": 10,
+      "note": "같은 실행의 신규 fixture 구성 실패 2개는 별도 보존했습니다."
+    },
+    "finalNewRegression": {
+      "run": "1792234036657-147192",
+      "passed": 2,
+      "failed": 0,
+      "configuredRetries": 0
+    },
+    "typeUnitCheck": {
+      "path": "work/ux-036/keyboard-fix-check.log",
+      "sha256": "9602a15eae3e84799e9f81e3cda040343d31d9ec149f62d453eb1aa4907c668d",
+      "provenance": "parent_agent_execution_persisted_log",
+      "files": 81,
+      "tests": 873,
+      "durationSeconds": 17.01,
+      "result": "passed"
+    },
+    "remoteFollowup": "pending_new_head",
+    "limitations": [
+      "로컬 Windows Chromium·WebKit 및 실제 브라우저 입력을 사용하는 자동 검사입니다. 실물 기기·사람 대상 검증은 아닙니다.",
+      "서로 겹치는 로컬 실행 수를 합산하지 않습니다."
+    ]
   }
 }
