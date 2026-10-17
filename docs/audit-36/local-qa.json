@@ -1,0 +1,831 @@
+{
+  "schemaVersion": 1,
+  "release": "0.36.0",
+  "recordedAtUtc": "2026-10-17T09:53:58.982235+00:00",
+  "repositoryHeadAtRecord": "abea60ed7deb1f912fe9a4dde2eb45c1f496c317",
+  "scope": "로컬 개발·회귀 실행 기록. 원격 CI, 배포, 운영 데이터 완전성 및 실물 기기 검증을 대신하지 않습니다.",
+  "countingPolicy": {
+    "aggregateTotal": null,
+    "reason": "대상과 시점이 다른 실행에는 중복 테스트가 포함됩니다. 개별 실행 결과를 더해 하나의 전체 회귀 완료 수로 표시하지 않습니다.",
+    "headPinning": "기록 시점 HEAD이며 모든 로컬 실행이 이 커밋으로 고정됐다는 뜻이 아닙니다.",
+    "evidenceAvailability": "work 아래 로그·HTML 보고서·스크린샷은 기기의 Git 제외 증거입니다. 공개 저장소에는 개인 원본이나 인증 로그를 포함하지 않습니다."
+  },
+  "localChecks": [
+    {
+      "id": "type-and-unit",
+      "command": "npm run check",
+      "result": "passed",
+      "tests": 873,
+      "testFiles": 81,
+      "durationSeconds": 23.33,
+      "evidence": {
+        "path": "work/ux-036/final-check.log",
+        "sha256": "a6f58d5cdd843b554eca9b6d447a97b4fd83b022e4c674df03b5ecb07ea5821f",
+        "provenance": "persisted_local_log"
+      },
+      "notes": [
+        "tsc -b && vitest run 실행 로그에서 타입과 단위 검사 통과를 확인했습니다."
+      ]
+    },
+    {
+      "id": "vps-python",
+      "command": "python -m unittest discover -s tests -p \"test_vps*.py\"",
+      "result": "passed",
+      "tests": 86,
+      "evidence": {
+        "provenance": "parent_agent_shell_result",
+        "persistedLog": null
+      },
+      "notes": [
+        "부모 에이전트가 실행한 셸 결과를 전달받았습니다. 별도 로그 파일은 저장하지 않았으며 이 문서 작성 시 재실행하지 않았습니다."
+      ]
+    },
+    {
+      "id": "node-server",
+      "command": "node --test server/tests/*.test.mjs",
+      "result": "passed",
+      "tests": 45,
+      "evidence": {
+        "provenance": "parent_agent_shell_result",
+        "persistedLog": null
+      },
+      "notes": [
+        "부모 에이전트의 셸 실행 결과입니다. 파일 기반 독립 재확인 결과와 구분합니다."
+      ]
+    },
+    {
+      "id": "backup-restore",
+      "command": "python -m unittest discover -s tests -p \"test_backup*.py\"",
+      "result": "passed",
+      "tests": 2,
+      "evidence": {
+        "provenance": "parent_agent_shell_result",
+        "persistedLog": null
+      },
+      "notes": [
+        "로컬 복구 검사 결과입니다. 운영 서버의 실제 백업 복원 완료를 의미하지 않습니다."
+      ]
+    },
+    {
+      "id": "web-build",
+      "command": "npm run build",
+      "result": "passed",
+      "evidence": {
+        "path": "work/ux-036/final-build.log",
+        "sha256": "0493da57dae54b9563743160a3df6639d1e8612e3d4cee76c67781249e11cc47",
+        "provenance": "persisted_local_log"
+      },
+      "notes": [
+        "Vite 빌드 완료 로그를 확인했습니다. 배포 완료와 구분합니다."
+      ]
+    },
+    {
+      "id": "frozen-web-build",
+      "command": "npm run build",
+      "result": "passed",
+      "evidence": {
+        "path": "work/ux-036/frozen-build.log",
+        "sha256": "ce023c72ff460f5d63de0e9ceb39a19e89dc2f509c5fcf04cb255041fcc2fc1e",
+        "provenance": "persisted_local_log"
+      },
+      "notes": [
+        "후속 빌드 완료 로그를 확인했습니다. 원격 CI의 커밋 고정 아티팩트 검증을 대신하지 않습니다."
+      ]
+    }
+  ],
+  "browserHarness": {
+    "runner": "scripts/run_browser_checks.mjs",
+    "configuration": "playwright.config.ts",
+    "fixture": "scripts/e2e-server.mjs",
+    "configuredRetries": 0,
+    "provenance": "각 HTML 보고서 내부 report.json의 통계·대상 파일·시각을 다시 읽었습니다. HMR 여부와 원인 설명은 해당 실행의 도구 출력 및 에이전트 검수 기록에 근거합니다.",
+    "caveats": [
+      "WebKit은 실제 Apple Safari·VoiceOver 검사와 다릅니다.",
+      "터치 지원 브라우저 에뮬레이션은 실제 휴대폰 검사와 다릅니다.",
+      "표준 고정 fixture는 운영 원천의 최신성이나 전체 과거 이력을 검증하지 않습니다."
+    ]
+  },
+  "browserRuns": [
+    {
+      "id": "1792228471740-108140",
+      "phase": "development_failure",
+      "hmr": "observed",
+      "notes": [
+        "초기 테스트의 잘못된 이름·ONDO 원천 기대와 PC 차트 시작 위치 결함이 함께 발견됐습니다. 후속 수정 전 결과입니다."
+      ],
+      "startedAtUtc": "2026-10-17T09:14:36.976000+00:00",
+      "durationMs": 189920.459,
+      "projects": [
+        "chromium"
+      ],
+      "files": [
+        "e2e/coin-dashboard.spec.ts"
+      ],
+      "result": {
+        "total": 6,
+        "passed": 2,
+        "failed": 4,
+        "flaky": 0,
+        "skipped": 0
+      },
+      "configuredRetries": 0,
+      "dataMode": "isolated_local_fixture",
+      "evidence": {
+        "htmlReport": "work/browser-checks/1792228471740-108140/report/index.html",
+        "lastRun": "work/browser-checks/1792228471740-108140/artifacts/.last-run.json",
+        "sha256": "cbfbf7bbbf8f2a2685ee8012dc6e7d14d7e2d2bf8de37d24a735776de51acd26"
+      }
+    },
+    {
+      "id": "1792228833420-111992",
+      "phase": "development_failure",
+      "hmr": "not_established",
+      "notes": [
+        "가격 탐색 2건이 집중 화면 전환 완료 전에 전체 canvas 개수를 검사해 실패했습니다. 대시보드 제거와 선택 원천 반영을 기다리도록 수정한 후 가격 탐색 파일을 다시 검사했습니다.",
+        "92개 전체가 통과한 것으로 기록하지 않습니다."
+      ],
+      "startedAtUtc": "2026-10-17T09:20:34.714000+00:00",
+      "durationMs": 331302.097,
+      "projects": [
+        "chromium",
+        "webkit"
+      ],
+      "files": [
+        "e2e/price-navigation.spec.ts",
+        "e2e/asset-discovery.spec.ts",
+        "e2e/asset-logos.spec.ts",
+        "e2e/coin-dashboard.spec.ts",
+        "e2e/indicator-comparison.spec.ts",
+        "e2e/market-redesign.spec.ts",
+        "e2e/themes-knowledge.spec.ts"
+      ],
+      "result": {
+        "total": 92,
+        "passed": 90,
+        "failed": 2,
+        "flaky": 0,
+        "skipped": 0
+      },
+      "configuredRetries": 0,
+      "dataMode": "isolated_local_fixture",
+      "evidence": {
+        "htmlReport": "work/browser-checks/1792228833420-111992/report/index.html",
+        "lastRun": "work/browser-checks/1792228833420-111992/artifacts/.last-run.json",
+        "sha256": "7548d104b89846dfe5545b51adc432d361d82c1c604bcf5649c62ed3c702162d"
+      }
+    },
+    {
+      "id": "1792229522821-127988",
+      "phase": "development_failure",
+      "hmr": "not_established",
+      "notes": [
+        "저장 구간 복원 후 표시 범위가 게시되기 전에 읽는 검사 1건과 기존 가격 바로가기 이름을 잘못 기대한 검사 2건이 실패했습니다. 구간 실제 반영 대기와 기존 이름에 맞는 선택자로 수정했습니다."
+      ],
+      "startedAtUtc": "2026-10-17T09:32:03.622000+00:00",
+      "durationMs": 156352.263,
+      "projects": [
+        "chromium",
+        "webkit"
+      ],
+      "files": [
+        "e2e/price-navigation.spec.ts",
+        "e2e/coin-dashboard.spec.ts"
+      ],
+      "result": {
+        "total": 40,
+        "passed": 37,
+        "failed": 3,
+        "flaky": 0,
+        "skipped": 0
+      },
+      "configuredRetries": 0,
+      "dataMode": "isolated_local_fixture",
+      "evidence": {
+        "htmlReport": "work/browser-checks/1792229522821-127988/report/index.html",
+        "lastRun": "work/browser-checks/1792229522821-127988/artifacts/.last-run.json",
+        "sha256": "d8074c021b95dc7e91d8adbcd15b774a1c26d1818dd9054429b330ad1bb8f1a6"
+      }
+    },
+    {
+      "id": "1792229751410-125752",
+      "phase": "passed_targeted_regression",
+      "hmr": "not_observed_in_terminal",
+      "notes": [
+        "대시보드·기존 가격 탐색 2개 파일의 별도 실행입니다. 저장·확대·뒤로 가기·스크롤·원천 분리·지원 필터·키보드·axe·양 테마·화면 배치를 포함합니다.",
+        "이후 해시 리본 입력 공유, 선 대비, 작은 높이, 긴 이름 CSS 변경은 아래 별도 검사로 확인했습니다."
+      ],
+      "startedAtUtc": "2026-10-17T09:35:52.113000+00:00",
+      "durationMs": 92914.691,
+      "projects": [
+        "chromium",
+        "webkit"
+      ],
+      "files": [
+        "e2e/coin-dashboard.spec.ts",
+        "e2e/price-navigation.spec.ts"
+      ],
+      "result": {
+        "total": 42,
+        "passed": 42,
+        "failed": 0,
+        "flaky": 0,
+        "skipped": 0
+      },
+      "configuredRetries": 0,
+      "dataMode": "isolated_local_fixture",
+      "evidence": {
+        "htmlReport": "work/browser-checks/1792229751410-125752/report/index.html",
+        "lastRun": "work/browser-checks/1792229751410-125752/artifacts/.last-run.json",
+        "sha256": "964c40905ce708e5119827714affe23037374ff0a2b9a999ecdbdf2656ef2c85"
+      }
+    },
+    {
+      "id": "1792230000443-131428",
+      "phase": "passed_targeted_regression",
+      "hmr": "not_established",
+      "notes": [
+        "USD 대시보드의 해시 리본 입력 공유, KRW 대시보드의 별도 BTC USD 입력, 양 테마의 실제 차트 선 대비를 검사했습니다."
+      ],
+      "startedAtUtc": "2026-10-17T09:40:01.227000+00:00",
+      "durationMs": 8048.805,
+      "projects": [
+        "chromium",
+        "webkit"
+      ],
+      "files": [
+        "e2e/dashboard-hash-input.spec.ts"
+      ],
+      "result": {
+        "total": 4,
+        "passed": 4,
+        "failed": 0,
+        "flaky": 0,
+        "skipped": 0
+      },
+      "configuredRetries": 0,
+      "dataMode": "isolated_local_fixture",
+      "evidence": {
+        "htmlReport": "work/browser-checks/1792230000443-131428/report/index.html",
+        "lastRun": "work/browser-checks/1792230000443-131428/artifacts/.last-run.json",
+        "sha256": "f1a507bc1965065ab99f4d0e5d63810bce6b6f231a5fa27433c2465483fb0035"
+      }
+    },
+    {
+      "id": "1792230024079-127736",
+      "phase": "passed_targeted_regression_with_hmr",
+      "hmr": "observed",
+      "hmrEventsKst": [
+        {
+          "time": "2026-10-17T18:41:08+09:00",
+          "file": "src/CoinDashboard.tsx"
+        },
+        {
+          "time": "2026-10-17T18:41:29+09:00",
+          "file": "src/CoinDashboard.tsx"
+        },
+        {
+          "time": "2026-10-17T18:48:03+09:00",
+          "file": "src/coin-dashboard.css"
+        },
+        {
+          "time": "2026-10-17T18:48:52+09:00",
+          "file": "src/coin-dashboard.css"
+        }
+      ],
+      "notes": [
+        "작업공간·사전·모바일·테마·상태·검색 6개 파일의 별도 실행입니다.",
+        "실행 중 작은 높이·긴 이름 대응의 HMR이 발생했습니다. 114개는 통과했지만 고정된 최종 커밋 전체 회귀의 증거로 사용하지 않습니다. 최종 커밋 검증은 원격 CI에서 별도 확인합니다."
+      ],
+      "startedAtUtc": "2026-10-17T09:40:24.726000+00:00",
+      "durationMs": 516876.999,
+      "projects": [
+        "chromium",
+        "webkit"
+      ],
+      "files": [
+        "e2e/analysis-library.spec.ts",
+        "e2e/automation-status.spec.ts",
+        "e2e/mobile-first.spec.ts",
+        "e2e/quality-search.spec.ts",
+        "e2e/theme-matrix-033.spec.ts",
+        "e2e/workspace.spec.ts"
+      ],
+      "result": {
+        "total": 114,
+        "passed": 114,
+        "failed": 0,
+        "flaky": 0,
+        "skipped": 0
+      },
+      "configuredRetries": 0,
+      "dataMode": "isolated_local_fixture",
+      "evidence": {
+        "htmlReport": "work/browser-checks/1792230024079-127736/report/index.html",
+        "lastRun": "work/browser-checks/1792230024079-127736/artifacts/.last-run.json",
+        "sha256": "64b83e4492a70a53ae8378eb30eedb9ee6a7cf7e2447ac989cacc25a8791b746"
+      }
+    },
+    {
+      "id": "1792230146902-132308",
+      "phase": "passed_intermediate_regression",
+      "hmr": "not_established",
+      "supersededBy": "1792230578583-137340",
+      "notes": [
+        "320×600 터치 에뮬레이션의 하단 탐색 겹침과 스크롤·높이 변경 안정성을 검사했습니다. 긴 이름 검사를 추가한 후 아래 실행으로 대체했습니다."
+      ],
+      "startedAtUtc": "2026-10-17T09:42:27.732000+00:00",
+      "durationMs": 5021.457,
+      "projects": [
+        "chromium",
+        "webkit"
+      ],
+      "files": [
+        "e2e/dashboard-small-viewport.spec.ts"
+      ],
+      "result": {
+        "total": 2,
+        "passed": 2,
+        "failed": 0,
+        "flaky": 0,
+        "skipped": 0
+      },
+      "configuredRetries": 0,
+      "dataMode": "isolated_local_fixture",
+      "evidence": {
+        "htmlReport": "work/browser-checks/1792230146902-132308/report/index.html",
+        "lastRun": "work/browser-checks/1792230146902-132308/artifacts/.last-run.json",
+        "sha256": "102a9e547818d5611a41f0982ab9c1d32f2c3af03d3a78022ea1774370168274"
+      }
+    },
+    {
+      "id": "1792230578583-137340",
+      "phase": "passed_targeted_regression",
+      "hmr": "not_observed_in_terminal",
+      "notes": [
+        "320×600 터치 에뮬레이션에서 차트가 하단 탐색보다 위에 있고, 스크롤과 높이만 변경해도 차트 높이가 바뀌지 않으며, 폭 변경 시 새 크기를 적용하는지 검사했습니다.",
+        "WLFI의 긴 한글명에서도 코인 선택 버튼 44×44px 이상, 차트 시작 280px 이내, 하단 탐색과 비겹침, 가로 넘침 없음을 확인했습니다."
+      ],
+      "startedAtUtc": "2026-10-17T09:49:40.219000+00:00",
+      "durationMs": 10576.94,
+      "projects": [
+        "chromium",
+        "webkit"
+      ],
+      "files": [
+        "e2e/dashboard-small-viewport.spec.ts"
+      ],
+      "result": {
+        "total": 2,
+        "passed": 2,
+        "failed": 0,
+        "flaky": 0,
+        "skipped": 0
+      },
+      "configuredRetries": 0,
+      "dataMode": "isolated_local_fixture",
+      "evidence": {
+        "htmlReport": "work/browser-checks/1792230578583-137340/report/index.html",
+        "lastRun": "work/browser-checks/1792230578583-137340/artifacts/.last-run.json",
+        "sha256": "bf366a7baa0dde2308cd595755900b209bf3b1bb0f4ffbd7937ee9279190d615"
+      }
+    },
+    {
+      "id": "1792231832389-139060",
+      "phase": "passed_post_ci_targeted_regression",
+      "hmr": "not_observed_in_persisted_stdout",
+      "command": "node scripts/run_browser_checks.mjs e2e/coin-dashboard.spec.ts e2e/price-navigation.spec.ts e2e/dashboard-small-viewport.spec.ts --project=chromium --project=webkit",
+      "startedAtUtc": "2026-10-17T10:10:33.904000+00:00",
+      "durationMs": 84935.32,
+      "projects": [
+        "chromium",
+        "webkit"
+      ],
+      "files": [
+        "e2e/coin-dashboard.spec.ts",
+        "e2e/dashboard-small-viewport.spec.ts",
+        "e2e/price-navigation.spec.ts"
+      ],
+      "result": {
+        "total": 44,
+        "passed": 44,
+        "failed": 0,
+        "flaky": 0,
+        "skipped": 0
+      },
+      "processExitCode": 0,
+      "configuredRetries": 0,
+      "dataMode": "isolated_local_fixture",
+      "evidence": {
+        "htmlReport": "work/browser-checks/1792231832389-139060/report/index.html",
+        "lastRun": "work/browser-checks/1792231832389-139060/artifacts/.last-run.json",
+        "sha256": "6af5970ce046e8be36a0b3c2f4f252c19df1afa7fd9f33b49cba96092de4f5df",
+        "stdout": "work/ux-036/post-ci-layout-regression.log",
+        "stdoutSha256": "ea2455827404bd59b52ce20efc80b064f5d3cf96779e41053c8423c744d53a27"
+      },
+      "cssStability": {
+        "path": "src/coin-dashboard.css",
+        "sha256DuringAndAfterRun": "111c1fb7be7778166482c30d081738c0a9360540e0983a65eeccf3255e242a67",
+        "unchanged": true
+      },
+      "notes": [
+        "원격 CI의 긴 한글명 배치 실패를 수정한 후 3개 파일을 함께 검사했습니다. 같은 검사의 280px 기준과 44px 터치 영역·하단 탐색 비겹침 조건을 유지했습니다.",
+        "모바일 이름·시세를 두 열로 배치하고 원천 라벨 줄바꿈·실제 여백·기간 버튼 정렬을 수정했습니다.",
+        "Windows 로컬 Chromium·WebKit 결과입니다. Linux 원격 CI는 별도 재실행 결과를 확인해야 합니다.",
+        "이 44개에는 이전 42개와 작은 화면 2개가 포함됩니다. 누적 통과 수에 더하지 않습니다."
+      ]
+    },
+    {
+      "id": "1792232857402-148928",
+      "phase": "passed_post_ci_dialog_regression",
+      "hmr": "not_observed_in_persisted_stdout",
+      "command": "node scripts/run_browser_checks.mjs e2e/indicator-comparison.spec.ts e2e/coin-dashboard.spec.ts --project=chromium --project=webkit",
+      "startedAtUtc": "2026-10-17T10:27:38.051000+00:00",
+      "durationMs": 108731.229,
+      "projects": [
+        "chromium",
+        "webkit"
+      ],
+      "files": [
+        "e2e/coin-dashboard.spec.ts",
+        "e2e/indicator-comparison.spec.ts"
+      ],
+      "result": {
+        "total": 44,
+        "passed": 44,
+        "failed": 0,
+        "flaky": 0,
+        "skipped": 0
+      },
+      "configuredRetries": 0,
+      "processExitCode": 0,
+      "dataMode": "isolated_local_fixture",
+      "evidence": {
+        "htmlReport": "work/browser-checks/1792232857402-148928/report/index.html",
+        "sha256": "bb2b70cdbbb8d2f83a7151d058e1dc21f6ddc71fb4ba39814f4572c071380b07",
+        "lastRun": "work/browser-checks/1792232857402-148928/artifacts/.last-run.json",
+        "stdout": "work/ux-036/dialog-regression.log",
+        "stdoutSha256": "ec3912a943198a0f166594cd68992f9b8f12fcf2602885b4ed4c972e6900a706"
+      },
+      "cssSha256": "a7f7a5e8751909b60b291ee6b25aa6c860844f8c281257ca606a741dcb01cf10",
+      "notes": [
+        "비교 화면 320~1920px의 기존 양 테마 axe와 확대·설정·도구·저장 복원 검사를 유지했고, 첫 visible 본문 불투명도와 어두운 설정창 검사를 추가했습니다.",
+        "대시보드의 코인·지표·설명·저장 Dialog와 키보드·Escape·초점 복귀를 함께 검사했습니다.",
+        "다른 44개 실행과 대상 파일이 다릅니다. 중복된 대시보드 검사를 누적 통과 수에 더하지 않습니다.",
+        "최종 제품 변경은 공통 Dialog CSS 5줄 제거이며 새 의존성을 추가하지 않았습니다."
+      ]
+    }
+  ],
+  "geometryEvidence": {
+    "source": "개발 중 브라우저 측정과 최종 작은 화면 회귀",
+    "beforeFix": {
+      "viewport": [
+        320,
+        600
+      ],
+      "chartTop": 264,
+      "chartHeight": 300,
+      "chartBottom": 564,
+      "bottomNavigationTop": 541,
+      "overlapPx": 23
+    },
+    "afterFix": {
+      "viewport": [
+        320,
+        600
+      ],
+      "chartTop": 264,
+      "chartHeight": 264,
+      "chartBottom": 528,
+      "bottomNavigationTop": 541,
+      "clearancePx": 13
+    },
+    "finalRegression": "1792230578583-137340",
+    "standardMobileChartHeight": 300,
+    "desktopChartHeight": 440,
+    "notes": [
+      "표본의 실제 측정값이며 모든 폰의 브라우저 UI 높이를 보장하지 않습니다.",
+      "최종 회귀는 BTC와 긴 이름 WLFI, 두 브라우저 엔진을 포함합니다."
+    ],
+    "postCiCorrection": {
+      "regression": "1792231832389-139060",
+      "maximumChartTopPx": 280,
+      "minimumTouchTargetPx": 44,
+      "minimumClearanceAboveNavigationPx": 4,
+      "checksPassed": [
+        "320×600 BTC and WLFI complete chart above navigation",
+        "WLFI full-name layout and 44×44 coin selector",
+        "no horizontal overflow",
+        "chart height stable during scroll and height-only resize",
+        "dashboard/focused navigation and saved range restoration"
+      ],
+      "measuredPixelsNotInReport": "이 실행의 HTML 보고서는 조건 통과를 증명하며 개별 bbox 수치는 별도로 출력하지 않았습니다."
+    }
+  },
+  "notClaimedComplete": [
+    "원격 PR·main CI",
+    "공개 Pages·VPS 배포",
+    "150개 자산의 모든 과거 데이터 복구",
+    "주소별 20회 초기 로딩 및 SSE 100명 성능 목표",
+    "실제 Apple Safari·VoiceOver",
+    "실물 휴대폰",
+    "사람 대상 사용성 검사"
+  ],
+  "remoteCiRegressionNotice": {
+    "runId": 39022639293,
+    "provenance": {
+      "tool": "mcp__code_review.pull_requests_checks",
+      "verifiedBy": "parent_agent",
+      "sourceCliFallbackUsed": false
+    },
+    "testFile": "e2e/dashboard-small-viewport.spec.ts",
+    "notes": [
+      "로컬 2개 통과 뒤 원격에서 발견된 추가 실패입니다. 기존 로컬 결과로 덮지 않습니다.",
+      "배치 기준 280px는 유지하며 수정 뒤 양 엔진의 작은 화면·대시보드·집중 가격 경로를 재검사합니다.",
+      "이 항목은 실패 통지이며 원격 CI 전체 통과를 의미하지 않습니다.",
+      "두 엔진 모두 같은 WLFI 배치 검사 1건에서 실패했습니다. 제외된 개인 경로 등 기존 조건부 검사를 통과 수에 넣지 않습니다."
+    ],
+    "jobs": [
+      {
+        "jobId": 117367468172,
+        "url": "https://github.com/pollmap/coin-desk/actions/runs/39022639293/job/117367468172",
+        "project": "chromium",
+        "result": {
+          "passed": 231,
+          "failed": 1,
+          "skipped": 1
+        },
+        "durationMinutes": 11.8,
+        "configuredRetries": 0,
+        "failure": {
+          "asset": "WLFI",
+          "viewport": [
+            320,
+            600
+          ],
+          "chartTopPx": 282.171875,
+          "maximumAllowedPx": 280
+        }
+      },
+      {
+        "jobId": 117367468125,
+        "url": "https://github.com/pollmap/coin-desk/actions/runs/39022639293/job/117367468125",
+        "project": "webkit",
+        "result": {
+          "passed": 230,
+          "failed": 1,
+          "skipped": 2
+        },
+        "durationMinutes": 15.6,
+        "configuredRetries": 0,
+        "failure": {
+          "asset": "WLFI",
+          "viewport": [
+            320,
+            600
+          ],
+          "chartTopPx": 283.171875,
+          "maximumAllowedPx": 280
+        }
+      }
+    ],
+    "localFollowupRun": "1792231832389-139060",
+    "localFollowupStatus": "44 passed; remote rerun still separate"
+  },
+  "updatedAtUtc": "2026-10-17T10:29:59.106180+00:00",
+  "initialRecordRepositoryHead": "00860ad1cf6f4654abb35711d0c8ce79cb574b75",
+  "remoteCiDialogRegression": {
+    "runId": 39023920575,
+    "head": "abea60ed7deb1f912fe9a4dde2eb45c1f496c317",
+    "source": "mcp__code_review.pull_requests_checks",
+    "sourceCliFallbackUsed": false,
+    "jobs": [
+      {
+        "id": 117371042935,
+        "name": "checks",
+        "result": "success",
+        "tests": {
+          "unit": 873,
+          "unitFiles": 81,
+          "nodeServer": 45,
+          "vpsPython": 86,
+          "restore": 2
+        },
+        "logTruncated": false
+      },
+      {
+        "id": 117371042851,
+        "name": "container",
+        "result": "success",
+        "confirmed": [
+          "fixture process/SQLite/static/API smoke",
+          "Dockerfile configuration scan: 0 findings"
+        ],
+        "logTruncated": true,
+        "note": "고정한 검사 범위의 통과이며 전체 보안 검증 완료가 아닙니다."
+      },
+      {
+        "id": 117371042963,
+        "name": "browser (chromium)",
+        "result": "success",
+        "passed": 232,
+        "failed": 0,
+        "skipped": 1,
+        "durationMinutes": 11.9,
+        "configuredRetries": 0,
+        "logTruncated": true,
+        "skipReasons": [
+          "private archive requires explicit local opt-in"
+        ]
+      },
+      {
+        "id": 117371042940,
+        "name": "browser (webkit)",
+        "result": "failure",
+        "passed": 229,
+        "failed": 2,
+        "skipped": 2,
+        "durationMinutes": 11.1,
+        "configuredRetries": 0,
+        "logTruncated": true,
+        "skipReasons": [
+          "private archive requires explicit local opt-in",
+          "native multi-touch unavailable through the WebKit Playwright API"
+        ],
+        "failures": [
+          {
+            "file": "e2e/indicator-comparison.spec.ts",
+            "line": 55,
+            "viewportWidth": 320,
+            "rule": "color-contrast",
+            "foreground": "#797c83",
+            "background": "#e6e6e6",
+            "actualRatio": 3.34,
+            "requiredRatio": 4.5
+          },
+          {
+            "file": "e2e/indicator-comparison.spec.ts",
+            "line": 55,
+            "viewportWidth": 768,
+            "rule": "color-contrast",
+            "foreground": "#70747b",
+            "background": "#e6e6e6",
+            "actualRatio": 3.76,
+            "requiredRatio": 4.5
+          }
+        ]
+      },
+      {
+        "id": 117373431937,
+        "name": "verify",
+        "result": "failure",
+        "reason": "BROWSER_RESULT=failure; checks and container were successful",
+        "logTruncated": false
+      }
+    ],
+    "notes": [
+      "같은 커밋을 무조건 재실행하지 않고 실제 실패 근거를 조사했습니다.",
+      "앞선 WLFI 배치 실패는 이 실행의 실패 목록에 없으며 새로운 비교 설정창 대비 실패를 별개로 보존합니다.",
+      "양 브라우저의 실행 전체 로그는 도구 응답이 일부 잘렸습니다. 수치는 반환된 최종 요약을 근거로 하며 미반환 내용을 확인했다고 표현하지 않습니다."
+    ]
+  },
+  "dialogFixDiagnosis": {
+    "status": "local targeted regression passed; remote CI for the forthcoming commit remains pending",
+    "causeAssessment": "수정 전 150ms 본문 opacity 전환의 실제 중간값을 관측했고 최종 대비는 정상이었습니다. 원격과 동일한 axe 실패는 로컬에서 재현되지 않아 원격 실패와 전환 타이밍의 연결은 근거 있는 추론으로 구분합니다.",
+    "change": "본문의 전체 opacity 전환과 starting/ending 투명 처리를 제거하고 배경막 전환은 유지했습니다. 글자색·대비 기준은 완화하지 않았습니다.",
+    "files": [
+      "src/desk-dialog.css",
+      "e2e/indicator-comparison.spec.ts"
+    ],
+    "testChanges": "기존 밝은 화면·밝은 설정창·어두운 화면 axe 검사는 유지합니다. 첫 visible 시 opacity1 및 어두운 설정창 axe·Escape 초점 복귀를 추가했습니다.",
+    "probe": "work/ux-036/dialog-transition-probe.mjs",
+    "measurements": [
+      {
+        "phase": "before",
+        "evidence": "work/ux-036/dialog-transition-before.json",
+        "sha256": "5cb558a2424b9cccda7e0d09187374ac61d2811bd26fa99d5ce419af29d3c641",
+        "cases": [
+          {
+            "engine": "chromium",
+            "width": 320,
+            "observedOpacities": [
+              0,
+              0.112745,
+              0.346699,
+              0.924745,
+              0.969231,
+              0.992881
+            ],
+            "immediateAxeViolations": 0,
+            "finalAxeViolations": 0,
+            "foreground": "rgb(32, 38, 51)",
+            "background": "rgb(255, 255, 255)"
+          },
+          {
+            "engine": "chromium",
+            "width": 768,
+            "observedOpacities": [
+              0,
+              0.112912,
+              0.346927,
+              0.96946,
+              0.992983
+            ],
+            "immediateAxeViolations": 0,
+            "finalAxeViolations": 0,
+            "foreground": "rgb(32, 38, 51)",
+            "background": "rgb(255, 255, 255)"
+          },
+          {
+            "engine": "webkit",
+            "width": 320,
+            "observedOpacities": [
+              0,
+              0.066413,
+              0.815337,
+              0.898269,
+              1
+            ],
+            "immediateAxeViolations": 0,
+            "finalAxeViolations": 0,
+            "foreground": "rgb(32, 38, 51)",
+            "background": "rgb(255, 255, 255)"
+          },
+          {
+            "engine": "webkit",
+            "width": 768,
+            "observedOpacities": [
+              0,
+              0.924824,
+              1
+            ],
+            "immediateAxeViolations": 0,
+            "finalAxeViolations": 0,
+            "foreground": "rgb(32, 38, 51)",
+            "background": "rgb(255, 255, 255)"
+          }
+        ]
+      },
+      {
+        "phase": "after",
+        "evidence": "work/ux-036/dialog-transition-after.json",
+        "sha256": "4360adda92713e40796cf5ac27bebe27e5a10f1676e51504cba07be0fbbdbef4",
+        "cases": [
+          {
+            "engine": "chromium",
+            "width": 320,
+            "observedOpacities": [
+              1
+            ],
+            "immediateAxeViolations": 0,
+            "finalAxeViolations": 0,
+            "foreground": "rgb(32, 38, 51)",
+            "background": "rgb(255, 255, 255)"
+          },
+          {
+            "engine": "chromium",
+            "width": 768,
+            "observedOpacities": [
+              1
+            ],
+            "immediateAxeViolations": 0,
+            "finalAxeViolations": 0,
+            "foreground": "rgb(32, 38, 51)",
+            "background": "rgb(255, 255, 255)"
+          },
+          {
+            "engine": "webkit",
+            "width": 320,
+            "observedOpacities": [
+              1
+            ],
+            "immediateAxeViolations": 0,
+            "finalAxeViolations": 0,
+            "foreground": "rgb(32, 38, 51)",
+            "background": "rgb(255, 255, 255)"
+          },
+          {
+            "engine": "webkit",
+            "width": 768,
+            "observedOpacities": [
+              1
+            ],
+            "immediateAxeViolations": 0,
+            "finalAxeViolations": 0,
+            "foreground": "rgb(32, 38, 51)",
+            "background": "rgb(255, 255, 255)"
+          }
+        ]
+      }
+    ],
+    "probeSetupError": {
+      "stage": "first diagnostic attempt before product modification",
+      "reason": "AxeBuilder requires explicit browser.newContext(); browser.newPage() was rejected before results were collected",
+      "resolution": "명시적인 browser context로 진단 도구를 수정했습니다. 제품 오류나 통과 수로 계산하지 않습니다."
+    },
+    "limitations": [
+      "Windows 로컬 에뮬레이션이며 Linux CI의 이후 결과를 별도 확인해야 합니다.",
+      "측정은 공개 fixture이며 실제 기기·사람 대상 검사가 아닙니다."
+    ],
+    "localFollowupRun": "1792232857402-148928"
+  }
+}

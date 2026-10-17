@@ -49,6 +49,8 @@ for (const width of [320, 390, 768, 1000, 1280, 1440, 1920])
     await page.getByRole('button', { name: '비교 설정 변경' }).click();
     const dialog = page.getByRole('dialog', { name: '비교 설정' });
     await expect(dialog).toBeVisible();
+    // Dialog text is readable from its first visible frame; do not wait out a fade.
+    expect(await dialog.evaluate((element) => getComputedStyle(element).opacity)).toBe('1');
     expect(
       (await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag21aa']).analyze())
         .violations,
@@ -60,6 +62,15 @@ for (const width of [320, 390, 768, 1000, 1280, 1440, 1920])
       (await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag21aa']).analyze())
         .violations,
     ).toEqual([]);
+    await page.getByRole('button', { name: '비교 설정 변경' }).click();
+    await expect(dialog).toBeVisible();
+    expect(await dialog.evaluate((element) => getComputedStyle(element).opacity)).toBe('1');
+    expect(
+      (await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag21aa']).analyze())
+        .violations,
+    ).toEqual([]);
+    await page.keyboard.press('Escape');
+    await expect(page.getByRole('button', { name: '비교 설정 변경' })).toBeFocused();
     const overflow = await page.evaluate(
       () => document.documentElement.scrollWidth > innerWidth + 1,
     );
