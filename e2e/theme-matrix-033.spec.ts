@@ -155,11 +155,14 @@ for (const width of [320, 390, 768, 1000, 1280, 1440, 1920])
     const member = await page.locator('.theme-members a').first().getAttribute('href');
     await page.locator('.theme-members a').first().click();
     expect(new URL(page.url()).pathname).toBe(new URL(member!, 'http://fixture').pathname);
-    await expect(page).toHaveURL(/metric=view%3Aprice/);
-    await expect(page.locator('[data-chart-kind="analysis"]')).toHaveAttribute(
-      'data-range-ready',
-      '1',
+    expect(new URL(page.url()).searchParams.has('metric')).toBe(false);
+    await expect(page.locator('.coin-dashboard')).toHaveAttribute(
+      'data-asset',
+      new URL(member!, 'http://fixture').pathname.split('/').at(-1)!,
     );
+    await expect(
+      page.locator('.coin-dashboard-card[data-metric="view:price"] [data-chart-kind="analysis"]'),
+    ).toHaveAttribute('data-range-ready', '1');
   });
 
 test('failed or unavailable matrix shows one action, never manufactured neutral coordinates', async ({
@@ -182,12 +185,18 @@ test('theme members disclose a venue change before opening another market', asyn
   await expect(member).toContainText('Binance USDT');
   await member.getByRole('link').click();
   await expect(page).toHaveURL(/coins\/BOME\?/);
-  await expect(page).toHaveURL(/price_source=binance/);
-  await expect(page.locator('[data-chart-kind="analysis"]')).toHaveAttribute('data-asset', 'BOME');
-  await expect(page.locator('[data-chart-kind="analysis"]')).toHaveAttribute(
-    'data-range-ready',
-    '1',
-  );
+  await expect(page).toHaveURL(/market=binance/);
+  await expect(page).toHaveURL(/price_source=reference/);
+  await expect(page.locator('.detail-quote')).toContainText('Binance · USDT');
+  await expect(
+    page.locator('.coin-dashboard-card[data-metric="view:price"] .coin-dashboard-card-reading'),
+  ).toContainText('USD');
+  await expect(
+    page.locator('.coin-dashboard-card[data-metric="view:price"] [data-chart-kind="analysis"]'),
+  ).toHaveAttribute('data-asset', 'BOME');
+  await expect(
+    page.locator('.coin-dashboard-card[data-metric="view:price"] [data-chart-kind="analysis"]'),
+  ).toHaveAttribute('data-range-ready', '1');
 });
 
 test('failed refresh retains theme names but removes previous prices and states', async ({

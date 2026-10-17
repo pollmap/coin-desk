@@ -9,6 +9,12 @@ import { validPatterns } from './candle-patterns';
 import { indicatorDefinition } from './indicator-catalog';
 import { validFavorites } from './personal-favorites';
 import { validSupertrendOption } from './supertrend';
+import {
+  dashboardParams,
+  isDashboardSettings,
+  normalizeDashboardSettings,
+  type DashboardSettings,
+} from './dashboard';
 
 export interface ChartSettings {
   asset: Asset;
@@ -34,6 +40,7 @@ export interface Workspace extends ChartSettings {
   normalization?: 'index' | 'percent' | 'ratio';
   comparisonWindows?: Record<string, string>;
   analysisOptions?: Record<string, string>;
+  dashboard?: DashboardSettings;
 }
 export interface PersonalDesk {
   version: 1 | 2;
@@ -106,6 +113,9 @@ export function normalizeDesk(value: unknown): PersonalDesk {
         ? { metric: entry.metric }
         : {}),
       ...validExtras(entry),
+      ...(v.version === 2 && entry.dashboard && entry.view === 'dashboard'
+        ? { dashboard: normalizeDashboardSettings(chartSettings(entry).asset, entry.dashboard) }
+        : {}),
       ...(typeof entry.comparePrice === 'boolean' ? { comparePrice: entry.comparePrice } : {}),
       ...(Array.isArray(entry.panels)
         ? {
@@ -159,6 +169,10 @@ export function importDesk(text: string): PersonalDesk {
       (w.comparePrice !== undefined && typeof w.comparePrice !== 'boolean') ||
       (w.metric !== undefined &&
         (typeof w.metric !== 'string' || !indicatorDefinition(w.metric))) ||
+      (w.dashboard !== undefined &&
+        (v.version !== 2 ||
+          w.view !== 'dashboard' ||
+          !isDashboardSettings(w.asset as Asset, w.dashboard))) ||
       (w.signal !== undefined &&
         (typeof w.signal !== 'string' ||
           !/^[A-Za-z0-9:_.-]{1,400}$/.test(w.signal) ||
@@ -181,6 +195,14 @@ export function importDesk(text: string): PersonalDesk {
 }
 export function workspaceUrl(workspace: Workspace): string {
   const config = chartSettings(workspace);
+  if (workspace.view === 'dashboard' && workspace.dashboard) {
+    const params = dashboardParams(normalizeDashboardSettings(config.asset, workspace.dashboard));
+    params.set('asset', config.asset);
+    params.set('market', config.market);
+    params.set('price_source', workspace.priceSource ?? config.market);
+    params.set('period', config.period);
+    return '/coins/' + config.asset + '?' + params;
+  }
   const params = new URLSearchParams({
     asset: config.asset,
     market: config.market,

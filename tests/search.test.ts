@@ -16,6 +16,26 @@ describe('public search and provenance', () => {
     expect(ASSET_REGISTRY).toHaveLength(150);
     for (const a of ASSET_REGISTRY) expect(search(a.id)[0]?.asset, a.id).toBe(a.id);
   });
+  it('opens coin overviews and removes retired relationship destinations, including an older cached index', () => {
+    const result = search('비트코인')[0];
+    const url = new URL(result.href, 'https://example.test');
+    expect(url.pathname).toBe('/coins/BTC');
+    expect(url.searchParams.has('metric')).toBe(false);
+    expect(docs.some((d) => d.kind === 'relation')).toBe(false);
+    const oldRelation = {
+      ...docs[0],
+      id: 'relation:BTC:old',
+      title: '비트코인',
+      kind: 'relation' as const,
+    };
+    expect(
+      rankSearch(
+        new URLSearchParams({ q: '비트코인', kind: 'relation' }),
+        [oldRelation],
+        [oldRelation.id],
+      ),
+    ).toEqual([]);
+  });
   it('connects Korean asset and purpose without claiming an investment judgement', () => {
     expect(search('비트코인 고평가')[0]).toMatchObject({ asset: 'BTC', metric: 'net:mvrv' });
     expect(search('펭귄 추세')[0]).toMatchObject({ asset: 'PENGU', metric: 'rsi' });

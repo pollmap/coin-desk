@@ -1,0 +1,178 @@
+{
+  "schema": "bori-data-diagnosis-035-v1",
+  "productionReconciliationApplied": false,
+  "productionHistoryRecoveryExecuted": false,
+  "initialInventory": {
+    "checkedAt": "2026-10-15T00:59:00.380600+00:00",
+    "assets": 150,
+    "sourceCounts": {
+      "candles": 482,
+      "network": 442,
+      "reference": 143,
+      "derivatives": 680
+    },
+    "tableCounts": {
+      "candles": 167769,
+      "price_archive": 3704,
+      "reference_prices": 296896,
+      "network_months": 3787,
+      "network_coverage": 442,
+      "derivative_series": 199256
+    },
+    "coverageIndexMismatches": 0,
+    "assetWithoutConfirmedDailyPrice": [],
+    "readOnlyChanges": 0,
+    "readOnlyChangesSecondConnection": 0,
+    "gapsByKind": {
+      "candles": 3653,
+      "network": 84,
+      "reference": 0,
+      "derivatives": 6
+    },
+    "checkpointCounts": {
+      "budget": 1,
+      "cursor": 638,
+      "history-complete": 8
+    }
+  },
+  "exchangeFirstObservation": {
+    "startedAt": "2026-10-15T01:36:35.340319+00:00",
+    "completedAt": "2026-10-15T01:49:17.391365+00:00",
+    "assetsExpected": 150,
+    "pairsExpected": 241,
+    "pairsChecked": 241,
+    "checkedMarketCounts": {
+      "binance": 138,
+      "upbit": 103
+    },
+    "complete": true,
+    "verifiedPairCount": 241,
+    "sourceDateMatches": 241,
+    "apiFirstDateAndCloseMatches": 241,
+    "apiMetadataStartsMatch": 241,
+    "errors": [],
+    "requestsActual": 585,
+    "httpStatusCounts": {
+      "200": 585
+    },
+    "sourceFirstCloseExactNumericDifferences": [],
+    "apiFirstCloseExactNumericDifferences": [],
+    "rawResponsesShaVerified": 585,
+    "allHistoricalValuesIndependentlyVerified": false
+  },
+  "coinMetrics": {
+    "rawDirectSeries": 450,
+    "rawReferenceSeries": 143,
+    "rawNetworkSeries": 307,
+    "derivedSeries": 101,
+    "duplicateNetworkPriceSeries": 34,
+    "storedSeriesCompared": 585,
+    "rawValueDifferenceSlots": 17081,
+    "derivedValueDifferenceSlots": 4041,
+    "latestSourceOnlySlots": 474,
+    "latestSourceOnlyClassification": {
+      "raw-network": 232,
+      "derived": 75,
+      "raw-reference": 138,
+      "duplicate-network-price": 29
+    },
+    "storedOnlySlots": 0,
+    "sourceHTTP200": 143,
+    "sourceHTTP403": 0,
+    "sourceHTTP429": 0
+  },
+  "diskSample": {
+    "checkedAt": 1792028572,
+    "currentRelease": "vps-84c91c439802eb85",
+    "diskFreeBytes": 55724507136,
+    "memoryAvailableBytes": 4680339456,
+    "baseSha256": "1a1c37574d2b4046bd536c60d8819ca584af93e632298fbf7875eae499439900",
+    "audit035Exists": false,
+    "freedByThisTask": false,
+    "externalChangeCauseEstablished": false,
+    "ownedAuditCompressionExecuted": false,
+    "existingProductionDataDeleted": false
+  },
+  "interpretation": {
+    "priceFirstBoundaryIsNotWorldwideFirstTrade": true,
+    "currentSourceDifferenceIsNotProvenPriorCollectorDefect": true,
+    "sourceAbsentValuesAreNotInvented": true,
+    "hourlyPricePolicyDays": 90,
+    "hourlyDerivativesPolicyDays": 30
+  },
+  "privateEvidenceHashes": {
+    "exchangeBoundary": "1365559d9a0c583667a8c0e3e00ec17172ac1ce3dffdd017b4b670ca3b1369b2",
+    "coinMetricsDifference": "6e4594b2f997c8fdc07141398aa4fe3154bcaba48302d01c765c7ae0cfafc77e",
+    "coinMetricsReview": "903584b8eec611ab5c79485c9e3b42599de44cf20cad01cc585fa1042b1218b5",
+    "spaceReadonly": "cedbf452bf90ec4f1a716efc948dd5a52437f09c937ec98063af2d3cb647da16",
+    "exchangeInternalGaps": "47fd15deba7158fb0c6ed0af31b6b88b02932fdbad83851c502b184317ebda05",
+    "derivativeSixGaps": "e84b9b1d4f1dc1210e2b59fd4d0ae22a7c3f56d049147ded3d6d56ac00a1c60a"
+  },
+  "exchangeInternalGaps": {
+    "startedAt": "2026-10-15T01:56:49.020287+00:00",
+    "completedAt": "2026-10-15T02:04:03.540104+00:00",
+    "inventoryCheckedAt": "2026-10-15T01:53:31.619390+00:00",
+    "assets": 150,
+    "sourceIntervals": 482,
+    "gappedSourcesInScope": 80,
+    "missingSlotsInScope": 3441,
+    "hourlyMissingSlotsRetainedOutside90Days": 212,
+    "hourlyFrom": 1784250000,
+    "requests": 335,
+    "sourcesAttempted": 80,
+    "sourcesCompleted": 80,
+    "classifiedSlots": 3441,
+    "recoverableSourcePresentSlots": 0,
+    "providerNoCandleSlots": 3441,
+    "unverifiedSlots": 0,
+    "errors": 0,
+    "stopReason": null,
+    "readOnly": true,
+    "serverWrites": 0,
+    "automaticRetries": 0,
+    "workers": 1,
+    "sourcePageLimit": 200,
+    "requestStatusCounts": {
+      "200": 335
+    },
+    "durationSeconds": 434.519817,
+    "compressedEvidenceBytes": 2673101,
+    "uncompressedEvidenceBytes": 22019969,
+    "rawResponsesShaVerified": 335,
+    "evidenceWindowRecheckedChecks": 3441,
+    "independentTimestampClassificationMatches": true,
+    "providerNoCandleDoesNotProveNoTrading": true,
+    "missingTimesReferToFrozenInventory": true,
+    "hourlyOutside90DaysGapsClassifiedByThisAudit": false,
+    "artifacts": {
+      "report.json": {
+        "sha256": "5727597ada9036813cb13447ea69fd1c3e997b3adf02123b8a63a0a023a62d53"
+      },
+      "checkpoint.json": {
+        "sha256": "be0161f1fd9ac4a57e57f4dcbfac6b8b8a3836f09aa99b28011f0c05feb5500c"
+      },
+      "requests.jsonl": {
+        "sha256": "9f71c63ac751bc1fb0045a84f780b2bb8102238b96c0a763d0466f0e14ec695d"
+      }
+    },
+    "inventorySha256": "899a7c091e8ecefdd7473804f919e6c91360d3a6ea5049a0eb2a1858a852dc4c",
+    "readerSha256": "d316925bae18db22ec21b621fb1828436917ac0cd983e6bfd3e1b5d0f230d59b"
+  },
+  "derivativeKnownInternalGaps": {
+    "metric": "long_account_ratio_daily",
+    "date": "2021-08-18",
+    "assets": [
+      "BTC",
+      "DOGE",
+      "ETH",
+      "SOL",
+      "XRP",
+      "LINK"
+    ],
+    "directOfficialGets": 6,
+    "http200": 6,
+    "presentTargetDates": 0,
+    "adjacentDatesVerified": true,
+    "noTradingNotProven": true
+  }
+}

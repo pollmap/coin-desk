@@ -1,0 +1,148 @@
+{
+  "checkedAt": "2026-10-17T09:51:56.990448+00:00",
+  "finishedAt": "2026-10-17T09:52:07.127477+00:00",
+  "scope": "Public default BTC series pagination and latest confirmed availability, followed by four latest-value provider comparisons. Historical values were not exhaustively compared. No direct ingestion or overview endpoint was called.",
+  "series": [
+    {
+      "metric": "mvrv_z",
+      "endpoint": "https://coin-desk.pages.dev/api/v1/series?asset=BTC&metric=mvrv_z",
+      "pages": 7,
+      "httpStatuses": [
+        200
+      ],
+      "rows": 5542,
+      "first": "2011-08-15T00:00:00+00:00",
+      "last": "2026-10-16T00:00:00+00:00",
+      "lastValue": 0.8946891508188869,
+      "unit": "Z",
+      "source": "Bitview / BRK",
+      "dataAsOf": "2026-10-16T00:00:00+00:00",
+      "stale": false,
+      "warnings": [],
+      "error": null,
+      "completePagination": true
+    },
+    {
+      "metric": "sopr_24h",
+      "endpoint": "https://coin-desk.pages.dev/api/v1/series?asset=BTC&metric=sopr_24h",
+      "pages": 7,
+      "httpStatuses": [
+        200
+      ],
+      "rows": 6491,
+      "first": "2009-01-03T00:00:00+00:00",
+      "last": "2026-10-16T00:00:00+00:00",
+      "lastValue": 1.0038141,
+      "unit": "배",
+      "source": "Bitview / BRK",
+      "dataAsOf": "2026-10-16T00:00:00+00:00",
+      "stale": false,
+      "warnings": [],
+      "error": null,
+      "completePagination": true
+    },
+    {
+      "metric": "sth_mvrv",
+      "endpoint": "https://coin-desk.pages.dev/api/v1/series?asset=BTC&metric=sth_mvrv",
+      "pages": 7,
+      "httpStatuses": [
+        200
+      ],
+      "rows": 5891,
+      "first": "2010-08-31T00:00:00+00:00",
+      "last": "2026-10-16T00:00:00+00:00",
+      "lastValue": 1.092314,
+      "unit": "배",
+      "source": "Bitview / BRK",
+      "dataAsOf": "2026-10-16T00:00:00+00:00",
+      "stale": false,
+      "warnings": [],
+      "error": null,
+      "completePagination": true
+    },
+    {
+      "metric": "lth_mvrv",
+      "endpoint": "https://coin-desk.pages.dev/api/v1/series?asset=BTC&metric=lth_mvrv",
+      "pages": 7,
+      "httpStatuses": [
+        200
+      ],
+      "rows": 5685,
+      "first": "2011-03-25T00:00:00+00:00",
+      "last": "2026-10-16T00:00:00+00:00",
+      "lastValue": 1.651948,
+      "unit": "배",
+      "source": "Bitview / BRK",
+      "dataAsOf": "2026-10-16T00:00:00+00:00",
+      "stale": false,
+      "warnings": [],
+      "error": null,
+      "completePagination": true
+    }
+  ],
+  "providerLatestComparison": {
+    "checkedAt": "2026-10-17T09:53:48.149681+00:00",
+    "sourceEndpoint": "https://bitview.space/api/series/bulk",
+    "access": "public, no credentials",
+    "latestObservationOnly": true,
+    "historyClaims": "Cumulative market-cap inputs are read solely to independently recompute the latest MVRV-Z value. Individual historical results are not compared.",
+    "results": [
+      {
+        "metric": "sopr_24h",
+        "kind": "direct provider field",
+        "providerDate": "2026-10-16",
+        "apiDate": "2026-10-16",
+        "providerValue": 1.0038141,
+        "apiValue": 1.0038141,
+        "absoluteDifference": 0.0,
+        "matches": true
+      },
+      {
+        "metric": "sth_mvrv",
+        "kind": "direct provider field",
+        "providerDate": "2026-10-16",
+        "apiDate": "2026-10-16",
+        "providerValue": 1.092314,
+        "apiValue": 1.092314,
+        "absoluteDifference": 0.0,
+        "matches": true
+      },
+      {
+        "metric": "lth_mvrv",
+        "kind": "direct provider field",
+        "providerDate": "2026-10-16",
+        "apiDate": "2026-10-16",
+        "providerValue": 1.651948,
+        "apiValue": 1.651948,
+        "absoluteDifference": 0.0,
+        "matches": true
+      },
+      {
+        "metric": "mvrv_z",
+        "kind": "locally derived from provider market_cap and realized_cap; not a direct provider MVRV-Z series",
+        "providerDate": "2026-10-16",
+        "apiDate": "2026-10-16",
+        "latestMarketCap": 1635414053699.5,
+        "latestRealizedCap": 1082328019102.54,
+        "validCumulativeObservations": 5906,
+        "sourcePages": 13,
+        "sourceVersions": {
+          "date": 13,
+          "market_cap": 2451393339,
+          "realized_cap": 2451393256
+        },
+        "independentMethod": "Python statistics.pstdev over finite positive market_cap rows with finite positive realized_cap; (latest market_cap - realized_cap) / population standard deviation",
+        "recomputedValue": 0.8946891508188869,
+        "apiValue": 0.8946891508188869,
+        "absoluteDifference": 0.0,
+        "relativeTolerance": 1e-10,
+        "matches": true
+      }
+    ],
+    "sourceLatestClosedDate": "2026-10-16",
+    "inProgressDateExcluded": [
+      "2026-10-17"
+    ],
+    "error": null
+  }
+}

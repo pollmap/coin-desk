@@ -3,6 +3,7 @@ import { Link, NavLink, useLocation } from 'react-router-dom';
 import { Search, Sun, Moon, HelpCircle, List, ArrowLeftRight, Bookmark } from 'lucide-react';
 import { ASSETS } from '../shared/catalog';
 import { saved, save } from './lib';
+import { hasFocusedAnalysisParams } from '../shared/default-analysis';
 const SearchDialog = lazy(() => import('./SearchDialog'));
 
 export function ProductTopbar() {
@@ -25,7 +26,7 @@ export function ProductTopbar() {
       (location.pathname === '/' || location.pathname === '/coins'
         ? '코인 시장'
         : location.pathname.startsWith('/coins/')
-          ? asset + ' · 지표 분석'
+          ? asset + (hasFocusedAnalysisParams(p) ? ' · 지표 분석' : ' · 코인 분석')
           : location.pathname.startsWith('/learn')
             ? '지표 사전'
             : location.pathname.startsWith('/workspace')

@@ -496,6 +496,10 @@ export function indicatorUrl(
     'draw_tool',
     'knowledge',
     'related',
+    'dashboard_cards',
+    'dashboard_ranges',
+    'dashboard_scroll',
+    'dashboard_ohlc',
   ])
     p.delete(key);
   if (!supported) p.set('transition', id);

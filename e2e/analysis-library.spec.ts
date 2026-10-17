@@ -137,7 +137,7 @@ test('unknown extension nonce and malformed rows never enter the library', async
   await expect(page.locator('.library-row')).toHaveCount(0);
 });
 test('analysis recipes replace the main chart with calculated views', async ({ page }) => {
-  await page.goto('/?asset=BTC&price_source=reference&period=all');
+  await page.goto('/?asset=BTC&metric=view:price&price_source=reference&period=all');
   await page.getByRole('button', { name: /지표 변경$/ }).click();
   await page.getByLabel('지표 검색', { exact: true }).fill('이동평균 리본');
   await page

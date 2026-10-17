@@ -1,0 +1,98 @@
+{
+  "schema": "bori-reviewed-source-reconciliation-v1",
+  "scope": "Coin Metrics reference and network history; not exchange candles or derivative history",
+  "release": "vps-0468d9de09a9705f",
+  "commit": "32b2396913cf944936da2ff6748069f96eee5d30",
+  "sourceFetch": {
+    "startedAt": "2026-10-17T09:02:04Z",
+    "finishedAt": "2026-10-17T09:05:21Z",
+    "requests": 143,
+    "http200": 143,
+    "automaticRetries": 0,
+    "cutoffExclusive": "2026-10-17T00:00:00Z",
+    "storedSnapshotAt": "2026-10-17T09:02:36Z",
+    "rawDirectSeries": 450,
+    "storedSeriesCompared": 585,
+    "firstDateMatches": 585,
+    "lastDateMatches": 585
+  },
+  "review": {
+    "historicalValueDifferences": 21122,
+    "rawDifferences": 17081,
+    "derivedDifferences": 4041,
+    "latestSourceOnlySlots": 0,
+    "storedOnlySlots": 0,
+    "roundingWithin1eMinus12Excluded": 4767,
+    "groups": [
+      { "asset": "ETH", "metric": "exchange_inflow", "slots": 4041 },
+      { "asset": "ETH", "metric": "exchange_outflow", "slots": 4041 },
+      { "asset": "ETH", "metric": "exchange_balance", "slots": 4048 },
+      { "asset": "ETH", "metric": "exchange_netflow", "slots": 4041 },
+      { "asset": "XRP", "metric": "transfers", "slots": 4951 }
+    ],
+    "cause": "The current official source differs from retained historical values. Source revision versus a prior import defect is not established.",
+    "previous474LatestSourceOnlySlots": "The October 15 latest-only differences had resolved before this application; they are not credited to this reconciliation."
+  },
+  "application": {
+    "complete": true,
+    "changed": 21122,
+    "alreadyNew": 0,
+    "assetsChecked": 143,
+    "explicitReviewedManifest": true,
+    "oldValueCompareAndSwap": true,
+    "freshBackupAndIndependentRestoreVerified": true,
+    "schemaChanged": false,
+    "ingestionStateChanged": false,
+    "dataDeleted": false,
+    "databaseOwnershipPreserved": true,
+    "eightGiBSpaceGuardPreserved": true
+  },
+  "independentLiveReadback": {
+    "checkedAt": "2026-10-17T09:23:59Z",
+    "readOnlyChanges": 0,
+    "assetsCompared": 143,
+    "seriesCompared": 585,
+    "exactMatches": 1789565,
+    "roundingExcludedAndPreserved": 4767,
+    "missing": 0,
+    "different": 0,
+    "storedWithoutSource": 0,
+    "allReviewedSourceValuesPresent": true
+  },
+  "publicReadApiSamples": {
+    "checkedAt": "2026-10-17T09:29:36Z",
+    "origins": ["https://coin-desk.pages.dev", "https://coin-desk.62.171.141.206.sslip.io"],
+    "scope": "First and last reviewed changed dates for each of the five affected metric groups, on both origins",
+    "requests": 20,
+    "http200": 20,
+    "matchesReviewedSource": 20,
+    "automaticRetries": 0,
+    "rawSourceValuesPublished": false
+  },
+  "operatorFailuresPreserved": [
+    {
+      "stage": "First dry-run",
+      "failure": "The restricted operator could not traverse the existing private audit parent.",
+      "databaseWrites": 0,
+      "resolution": "Used a separate project-owned recovery directory with verified copies; did not widen the shared audit parent permissions or add an ACL."
+    },
+    {
+      "stage": "Isolated dry-run",
+      "failure": "The sealed WAL-mode backup required its own WAL/SHM sidecars for a read-only SQLite open.",
+      "databaseWrites": 0,
+      "resolution": "Created restricted sidecars beside the isolated copy; integrity_check passed, changes were zero and the backup SHA-256 remained identical."
+    }
+  ],
+  "evidence": {
+    "reviewManifestSha256": "8d6335cc88b768edcbae87b5e6eaf179a5b1c08240bd03c29b757c14cfae9f0a",
+    "sourceTransportSha256": "fa72f9c9b210c8fb430d0852fcc553b9486a235bd80f8ff55200f62af4d4aa32",
+    "backupSha256BeforeAndAfter": "a196a71a332d083c906c5e42cf6330e386b6db88ad27daf22e488d4e0fd46aa9",
+    "privateInputsAndOperationalLogsCommitted": false,
+    "existingAuditParentModePreserved": "0700"
+  },
+  "limitations": [
+    "This source snapshot does not guarantee that providers will never revise these observations again.",
+    "This is not a claim that all 150 assets support MVRV or that all exchange and derivative history is complete.",
+    "Previously identified source-absent intervals remain separate from restored values."
+  ]
+}

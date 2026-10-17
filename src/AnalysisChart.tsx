@@ -130,6 +130,7 @@ export const AnalysisChart = memo(function AnalysisChart({
   advancedTools = true,
   toolsTarget,
   publicFocus = true,
+  height,
 }: {
   asset: string;
   unit: string;
@@ -166,6 +167,8 @@ export const AnalysisChart = memo(function AnalysisChart({
   toolsTarget?: HTMLElement | null;
   /** Public charts show the latest value and keep legacy exploration state internal. */
   publicFocus?: boolean;
+  /** Scroll dashboards reserve a stable card height independently of document position. */
+  height?: number;
 }) {
   const host = useRef<HTMLDivElement>(null),
     chartRef = useRef<IChartApi | null>(null);
@@ -226,10 +229,23 @@ export const AnalysisChart = memo(function AnalysisChart({
   const structure = lines.map((l) => [l.id, l.pane, l.overlay].join(':')).join('|');
   const ready = points.length > 0;
   const candleMode = !!candles?.length;
-  const latest = useRef({ points, candles, lines, signals, observations, bands, initialWindow });
-  latest.current = { points, candles, lines, signals, observations, bands, initialWindow };
+  const latest = useRef({
+    points,
+    candles,
+    lines,
+    signals,
+    observations,
+    bands,
+    initialWindow,
+    height,
+  });
+  latest.current = { points, candles, lines, signals, observations, bands, initialWindow, height };
   const updateSeries = useRef<() => void>(() => {});
   const chartHeight = () => {
+    if (latest.current.height !== undefined)
+      return (
+        Math.max(240, Math.min(900, latest.current.height)) + panelCount(latest.current.lines) * 135
+      );
     const surface = host.current;
     const viewport = window.visualViewport;
     const navigation = document.querySelector<HTMLElement>('.product-nav');
@@ -773,6 +789,9 @@ export const AnalysisChart = memo(function AnalysisChart({
       syntheticInspection(time, target, value, { x, y: y - top });
     };
     moveCursor.current = (time, preserveRange = false) => {
+      const pendingPaint = cursorFrame.current !== 0;
+      cancelAnimationFrame(cursorFrame.current);
+      cursorFrame.current = 0;
       if (time === null) {
         chart.clearCrosshairPosition();
         return;
@@ -813,8 +832,7 @@ export const AnalysisChart = memo(function AnalysisChart({
           moved = true;
         }
       }
-      if (moved) {
-        cancelAnimationFrame(cursorFrame.current);
+      if (moved || pendingPaint) {
         cursorFrame.current = requestAnimationFrame(() => {
           cursorFrame.current = 0;
           syntheticInspection(time, target, target.values.get(time)!);
@@ -1086,6 +1104,7 @@ export const AnalysisChart = memo(function AnalysisChart({
       updateSeries.current = () => {};
       moveCursor.current = () => {};
       inspectAt.current = () => {};
+      keyboardInspection.current = null;
       inspectionRef.current = null;
       touchInspection.current = false;
       setInspection(null);
@@ -1428,7 +1447,7 @@ export const AnalysisChart = memo(function AnalysisChart({
         <div
           ref={host}
           className="analysis-canvas"
-          style={{ height: 440 + panelCount(lines) * 135 }}
+          style={{ height: (height ?? 440) + panelCount(lines) * 135 }}
           data-chart-kind="analysis"
           data-asset={asset}
           data-primary-metric={primary?.id ?? 'price'}
@@ -1451,6 +1470,8 @@ export const AnalysisChart = memo(function AnalysisChart({
           onPointerDownCapture={(event) => {
             pointerKind.current = event.pointerType;
             touchInspection.current = false;
+            cancelAnimationFrame(cursorFrame.current);
+            cursorFrame.current = 0;
             keyboardInspection.current = null;
             if (!activePointers.current.size)
               gesture.current = {
@@ -1464,6 +1485,8 @@ export const AnalysisChart = memo(function AnalysisChart({
           onPointerMoveCapture={(event) => {
             pointerKind.current = event.pointerType;
             if (publicFocus || !pinned) manualCursor.current = false;
+            cancelAnimationFrame(cursorFrame.current);
+            cursorFrame.current = 0;
             keyboardInspection.current = null;
             const start = activePointers.current.get(event.pointerId);
             if (
@@ -1539,7 +1562,9 @@ export const AnalysisChart = memo(function AnalysisChart({
                     ? readings.times.at(-1)
                     : adjacentObservation(
                         readings.times,
-                        inspectionRef.current?.time ?? selectedTime,
+                        // The requested cursor advances synchronously; rendering
+                        // after a pan may wait for the next animation frame.
+                        keyboardInspection.current ?? inspectionRef.current?.time ?? selectedTime,
                         e.key === 'ArrowLeft' ? -1 : 1,
                       );
               if (next !== undefined && next !== null) {

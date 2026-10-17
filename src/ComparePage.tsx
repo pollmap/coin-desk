@@ -382,7 +382,7 @@ export function ComparePage() {
     <div className="comparison-page">
       <div className="page-heading">
         <div>
-          <h1>코인 성과 비교</h1>
+          <h1>가격 성과 비교</h1>
           <ComparisonModes mode="performance" />
         </div>
       </div>

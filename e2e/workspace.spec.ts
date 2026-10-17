@@ -37,7 +37,7 @@ test('loading a band does not prematurely claim zero observations or insufficien
     release();
   }
 });
-test('BTC detail defaults to MVRV; eight coins use supported metrics and sources', async ({
+test('explicit BTC MVRV entry and eight coin switches use supported metrics and sources', async ({
   page,
 }) => {
   await page.setViewportSize({ width: 1280, height: 800 });
@@ -45,7 +45,7 @@ test('BTC detail defaults to MVRV; eight coins use supported metrics and sources
   page.on('request', (r) => {
     if (r.url().includes('/api/')) requests.push(r.url());
   });
-  await page.goto('/?asset=BTC');
+  await page.goto('/?asset=BTC&metric=net:mvrv&period=5y&price_source=reference');
   await expect(chart(page)).toHaveAttribute('data-primary-metric', 'net:mvrv');
   await expect(page.getByRole('button', { name: '5년', exact: true })).toHaveAttribute(
     'aria-pressed',
@@ -90,6 +90,13 @@ test('market deep link, one-click selection and source survive back and reload w
 }) => {
   await page.goto('/coins?market=upbit&view=derivatives');
   await page.getByRole('link', { name: '도지코인 DOGE', exact: true }).click();
+  await expect(page.locator('.coin-dashboard')).toHaveAttribute('data-asset', 'DOGE');
+  expect(new URL(page.url()).searchParams.has('metric')).toBe(false);
+  await page.getByRole('combobox', { name: '차트 가격 통화', exact: true }).selectOption('upbit');
+  const priceCard = page.locator('.coin-dashboard-card[data-metric="view:price"]');
+  await expect(priceCard.locator('.coin-dashboard-card-reading')).toContainText('KRW');
+  await priceCard.getByRole('link', { name: '가격 차트 크게 보기', exact: true }).click();
+  await expect(page.locator('.coin-dashboard')).toHaveCount(0);
   await expect(chart(page)).toHaveAttribute('data-asset', 'DOGE');
   await expect(chart(page)).toHaveAttribute('data-primary-metric', 'price');
   await pick(page, '미결제약정 · 시간별');
@@ -201,7 +208,7 @@ test('slow failures, logos and stale data never contaminate another asset', asyn
     await r.fulfill({ status: 503, json: { error: 'BTC fixture outage' } });
   });
   await page.route('**/coin-logos/v2/btc-*.png', (r) => r.abort());
-  await page.goto('/?asset=BTC');
+  await page.goto('/?asset=BTC&metric=net:mvrv');
   await expect(page.locator('.coin-picker > summary .asset-logo.fallback')).toBeVisible();
   await page.getByRole('button', { name: /코인 변경/ }).click();
   await page.getByRole('searchbox', { name: '코인 검색' }).fill('DOGE');
@@ -216,13 +223,13 @@ test('slow failures, logos and stale data never contaminate another asset', asyn
     body.meta.warning = 'fixture stale observation';
     await r.fulfill({ json: body });
   });
-  await page.goto('/?asset=ETH');
+  await page.goto('/?asset=ETH&metric=net:mvrv');
   await expect(chart(page)).toBeVisible();
   await expect(page.locator('.indicator-notice')).toContainText(
     '값을 확인하는 데 시간이 걸리고 있습니다.',
   );
   await expect(page.locator('main')).not.toContainText('fixture stale observation');
-  await page.goto('/?asset=BTC');
+  await page.goto('/?asset=BTC&metric=net:mvrv');
   await expect(page.getByText('차트를 불러오지 못했습니다.')).toBeVisible();
   await expect(page.getByText(/차트를 불러오는 중/)).toHaveCount(0);
 });
@@ -231,7 +238,7 @@ for (const width of [320, 390, 768, 1000, 1280, 1440])
     test.setTimeout(120000);
     await page.setViewportSize({ width, height: 900 });
     for (const path of [
-      '/?asset=BTC',
+      '/?asset=BTC&metric=net:mvrv',
       '/?asset=DOGE&metric=view:rainbow',
       '/?asset=BTC&metric=view:btc_rainbow',
       '/onchain/ETH',
@@ -259,7 +266,7 @@ for (const width of [320, 390, 768, 1000, 1280, 1440])
   });
 test('mobile search Escape focus and 200 percent keyboard reflow', async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 900 });
-  await page.goto('/?asset=BTC');
+  await page.goto('/?asset=BTC&metric=net:mvrv');
   await expect(chart(page)).toBeVisible();
   const opener = page.getByRole('button', { name: /지표 변경$/ });
   await opener.click();
