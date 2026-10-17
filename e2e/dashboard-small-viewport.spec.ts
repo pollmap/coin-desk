@@ -25,4 +25,19 @@ test('short mobile viewport keeps the complete first chart above navigation with
   expect((await price.boundingBox())!.height).toBe(before.height);
   await page.setViewportSize({ width: 390, height: 844 });
   await expect.poll(async () => (await price.boundingBox())!.height).toBe(300);
+  await page.setViewportSize({ width: 320, height: 600 });
+  await page.goto('/coins/WLFI?market=binance');
+  await expect(price).toHaveAttribute('data-asset', 'WLFI');
+  await expect(price).toHaveAttribute('data-range-ready', '1');
+  const picker = (await page
+    .getByRole('button', { name: '코인 선택', exact: true })
+    .boundingBox())!;
+  expect(picker.width).toBeGreaterThanOrEqual(44);
+  expect(picker.height).toBeGreaterThanOrEqual(44);
+  const longNameChart = (await price.boundingBox())!;
+  expect(longNameChart.y).toBeLessThanOrEqual(280);
+  expect(longNameChart.y + longNameChart.height).toBeLessThanOrEqual(
+    (await page.locator('.product-nav').boundingBox())!.y - 4,
+  );
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
 });

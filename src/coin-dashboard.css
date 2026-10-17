@@ -390,7 +390,7 @@
     font-size: 12px;
   }
   .coin-dashboard-identity {
-    gap: 6px;
+    gap: 3px;
   }
   .coin-dashboard-identity h1 {
     font-size: 18px;
@@ -418,6 +418,9 @@
   }
   .coin-dashboard-icon {
     width: 44px;
+  }
+  .coin-dashboard-mobile-coins {
+    flex-shrink: 0;
   }
   .coin-dashboard-actions button span {
     display: none;
