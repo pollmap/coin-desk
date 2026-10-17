@@ -371,23 +371,33 @@
 }
 @media (max-width: 767px) {
   .coin-dashboard {
-    padding: 12px 12px calc(72px + env(safe-area-inset-bottom));
+    padding: 6px 12px calc(72px + env(safe-area-inset-bottom));
   }
   .coin-dashboard-heading {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 40%);
     align-items: flex-start;
     gap: 8px;
-    flex-wrap: nowrap;
   }
   .coin-dashboard-price {
-    margin-left: auto;
+    margin-left: 0;
+    min-width: 0;
     min-height: 34px;
-    flex-shrink: 0;
+  }
+  .coin-dashboard-price .detail-quote,
+  .coin-dashboard-price .quote-source-button {
+    max-width: 100%;
+  }
+  .coin-dashboard-price .quote-source-button {
+    white-space: normal;
+    text-align: right;
   }
   .coin-dashboard-price strong {
     font-size: 15px;
   }
   .coin-dashboard-price .quote-source-label {
     font-size: 12px;
+    text-wrap: balance;
   }
   .coin-dashboard-identity {
     gap: 3px;
@@ -403,12 +413,18 @@
     height: 24px;
   }
   .app .coin-dashboard-toolbar .period-picker .period-mobile-select {
-    min-width: 52px;
-    width: 52px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 2px;
+    min-width: 58px;
+    width: 58px;
+    min-height: 44px;
     padding: 6px;
   }
   .coin-dashboard-toolbar {
-    margin: 6px 0 0;
+    gap: 4px;
+    margin: 2px 0 0;
   }
   .coin-dashboard-actions button,
   .coin-dashboard-currency select,
@@ -443,12 +459,12 @@
     min-height: 44px;
   }
   .coin-dashboard-card {
-    padding: 12px 0 20px;
+    padding: 6px 0 20px;
   }
   .coin-dashboard-card-heading {
     grid-template-columns: minmax(0, 1fr) auto;
     gap: 0 8px;
-    margin-bottom: 6px;
+    margin-bottom: 4px;
   }
   .coin-dashboard-card-title h2 {
     font-size: 17px;
@@ -456,7 +472,7 @@
   .coin-dashboard-card-reading {
     grid-row: 2;
     justify-content: flex-start;
-    min-height: 28px;
+    min-height: 24px;
   }
   .coin-dashboard-card-reading strong {
     font-size: 18px;
