@@ -131,6 +131,7 @@ export const AnalysisChart = memo(function AnalysisChart({
   toolsTarget,
   publicFocus = true,
   height,
+  allowPageScroll = false,
 }: {
   asset: string;
   unit: string;
@@ -169,6 +170,8 @@ export const AnalysisChart = memo(function AnalysisChart({
   publicFocus?: boolean;
   /** Scroll dashboards reserve a stable card height independently of document position. */
   height?: number;
+  /** Embedded charts leave wheel input to the page; drag and pinch remain available. */
+  allowPageScroll?: boolean;
 }) {
   const host = useRef<HTMLDivElement>(null),
     chartRef = useRef<IChartApi | null>(null);
@@ -202,8 +205,8 @@ export const AnalysisChart = memo(function AnalysisChart({
   observationClick.current = onObservation;
   const dateSelect = useRef(onDateSelect);
   dateSelect.current = onDateSelect;
-  const settings = useRef({ period, log });
-  settings.current = { period, log };
+  const settings = useRef({ period, log, allowPageScroll });
+  settings.current = { period, log, allowPageScroll };
   const previous = useRef<{
     key: string;
     from: number;
@@ -451,8 +454,12 @@ export const AnalysisChart = memo(function AnalysisChart({
         vertLine: { color: '#0f666b', visible: true, labelVisible: true },
         horzLine: { color: '#0f666b', visible: true, labelVisible: true },
       },
-      handleScroll: { horzTouchDrag: true, vertTouchDrag: false },
-      handleScale: { pinch: true },
+      handleScroll: {
+        mouseWheel: !settings.current.allowPageScroll,
+        horzTouchDrag: true,
+        vertTouchDrag: false,
+      },
+      handleScale: { mouseWheel: !settings.current.allowPageScroll, pinch: true },
       trackingMode: { exitMode: TrackingModeExitMode.OnTouchEnd },
       localization: {
         locale: 'ko-KR',
@@ -1111,6 +1118,12 @@ export const AnalysisChart = memo(function AnalysisChart({
     };
   }, [key, structure, ready, candleMode]);
   useEffect(() => {
+    chartRef.current?.applyOptions({
+      handleScroll: { mouseWheel: !allowPageScroll },
+      handleScale: { mouseWheel: !allowPageScroll },
+    });
+  }, [allowPageScroll, key, structure, ready, candleMode]);
+  useEffect(() => {
     const series = liveSeries.current;
     if (!series) return;
     series.applyOptions({ lastValueVisible: !eligibleChartPrice(livePrice, asset, unit) });
@@ -1532,6 +1545,7 @@ export const AnalysisChart = memo(function AnalysisChart({
               dismissInspection();
           }}
           onWheelCapture={() => {
+            if (allowPageScroll) return;
             gesture.current = {
               baseline: chartRef.current?.timeScale().getVisibleLogicalRange() ?? null,
               moved: true,

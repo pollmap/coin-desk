@@ -1,10 +1,47 @@
 import { test, expect } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
 import { referenceAssets } from '../shared/asset-registry';
+import { dragChartTimeAxis } from './chart-gestures';
 
 const priceCard = '.coin-dashboard-card[data-metric="view:price"]';
 const mvrvCard = '.coin-dashboard-card[data-metric="net:mvrv"]';
 const chart = '[data-chart-kind="analysis"]';
+
+for (const deltaX of [0, 80])
+  test(`dashboard wheel scrolls the page without changing its range; focused zoom remains, deltaX=${deltaX}`, async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width: 1280, height: 800 });
+    await page.goto('/coins/BTC');
+    const plot = page.locator(`${priceCard} ${chart}`);
+    await expect(plot).toHaveAttribute('data-range-ready', '1');
+    await expect(plot).toHaveAttribute('data-visible-from', /^\d+$/);
+    const canvas = await plot.locator('canvas').first().elementHandle();
+    const from = (await plot.getAttribute('data-visible-from'))!;
+    const to = (await plot.getAttribute('data-visible-to'))!;
+    const beforeY = await page.evaluate(() => window.scrollY);
+    const box = (await plot.boundingBox())!;
+    await page.mouse.move(box.x + box.width * 0.5, box.y + box.height * 0.5);
+    await page.mouse.wheel(deltaX, 350);
+    await expect.poll(() => page.evaluate(() => window.scrollY)).toBeGreaterThan(beforeY + 100);
+    await expect(plot).toHaveAttribute('data-visible-from', from);
+    await expect(plot).toHaveAttribute('data-visible-to', to);
+    expect(await canvas!.evaluate((element) => element.isConnected)).toBe(true);
+
+    await page
+      .locator(priceCard)
+      .getByRole('link', { name: '가격 차트 크게 보기', exact: true })
+      .click();
+    await expect(page.locator('.coin-dashboard')).toHaveCount(0);
+    const focused = page.locator(chart);
+    await expect(focused).toHaveAttribute('data-range-ready', '1');
+    await expect(focused).toHaveAttribute('data-visible-from', /^\d+$/);
+    const focusedFrom = (await focused.getAttribute('data-visible-from'))!;
+    const focusedBox = (await focused.boundingBox())!;
+    await page.mouse.move(focusedBox.x + focusedBox.width * 0.65, focusedBox.y + 120);
+    await page.mouse.wheel(0, -350);
+    await expect(focused).not.toHaveAttribute('data-visible-from', focusedFrom);
+  });
 
 test('plain coin entry shows supported charts and delays lower-card requests', async ({ page }) => {
   const calls: string[] = [];
@@ -197,9 +234,7 @@ test('returning to a coin preserves its chosen period and viewport; explicit per
     'aria-pressed',
     'true',
   );
-  const box = (await canvas.boundingBox())!;
-  await page.mouse.move(box.x + box.width * 0.65, box.y + 120);
-  await page.mouse.wheel(0, -350);
+  await dragChartTimeAxis(page, canvas);
   const from = await canvas.getAttribute('data-visible-from');
   await page
     .locator('.coin-dashboard-rail')

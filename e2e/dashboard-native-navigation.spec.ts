@@ -1,4 +1,5 @@
 import { test as base, expect } from '@playwright/test';
+import { dragChartTimeAxis } from './chart-gestures';
 
 // Native background-tab navigation needs the real Chromium implementation.
 // Headless shell can load the new document without exposing its Page object.
@@ -33,11 +34,7 @@ for (const restored of [false, true])
     const plot = page.locator(`${mvrvCard} ${chart}`);
     await expect(plot).toHaveAttribute('data-range-ready', '1');
     const canvas = await plot.locator('canvas').first().elementHandle();
-    const before = await plot.getAttribute('data-visible-from');
-    const box = (await plot.boundingBox())!;
-    await page.mouse.move(box.x + box.width * 0.65, box.y + 120);
-    await page.mouse.wheel(0, -350);
-    await expect(plot).not.toHaveAttribute('data-visible-from', before!);
+    await dragChartTimeAxis(page, plot);
     const from = await plot.getAttribute('data-visible-from');
     const to = await plot.getAttribute('data-visible-to');
     const link = page.locator(mvrvCard).getByRole('link', { name: '같은 지표 비교', exact: true });
