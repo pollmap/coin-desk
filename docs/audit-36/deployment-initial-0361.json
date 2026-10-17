@@ -1,0 +1,44 @@
+{
+  "commit": "544169a186c66fabeb33ffc28b54575cb815be74",
+  "checkedAt": "2026-10-17T13:17:11.506350+00:00",
+  "staticBytesVerified": false,
+  "origins": {
+    "pages": {
+      "assetCount": 235,
+      "matched": 233,
+      "failedAssets": [
+        {
+          "origin": "pages",
+          "path": "assets/AnalysisChart-Cf1mnVzk.js",
+          "status": 200,
+          "bytes": 1954,
+          "sha256": "6828ff7a2ad309fb52ff463a273a53373ff0c0f82925d4e6b75fed3b23876ad2",
+          "expectedSha256": "51989c09792d4b9eb9e3caa91050f0e4d2aac80272896e4c002eb781e0b6bd8d",
+          "canonicalSha256": "51989c09792d4b9eb9e3caa91050f0e4d2aac80272896e4c002eb781e0b6bd8d",
+          "declaredTransform": null,
+          "matches": false,
+          "ms": 349.75
+        },
+        {
+          "origin": "pages",
+          "path": "assets/arrow-up-right-D-TbHeVV.js",
+          "status": 200,
+          "bytes": 1954,
+          "sha256": "6828ff7a2ad309fb52ff463a273a53373ff0c0f82925d4e6b75fed3b23876ad2",
+          "expectedSha256": "0e74b8ad0137487b23e8958e9d9eb69c8788e5a48c33f8b6340f18d0a04b125d",
+          "canonicalSha256": "0e74b8ad0137487b23e8958e9d9eb69c8788e5a48c33f8b6340f18d0a04b125d",
+          "declaredTransform": null,
+          "matches": false,
+          "ms": 349.3
+        }
+      ]
+    },
+    "vps": {
+      "assetCount": 235,
+      "matched": 235,
+      "failedAssets": []
+    }
+  },
+  "interpretation": "The first stable Pages check returned the same 1954-byte HTML for two JavaScript paths. The deployment-specific and stable origins returned the expected JavaScript on a later targeted read without redeployment. Propagation or caching root cause was not established. Initial evidence is preserved; the full later check is separate.",
+  "evidenceSha256": "2e1943f2200c09dcd3f4f6fd1f2833cd465a283248d5b460e2acc7a9d5a24926"
+}

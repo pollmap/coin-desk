@@ -1,0 +1,706 @@
+{
+  "codeSHA": "544169a186c66fabeb33ffc28b54575cb815be74",
+  "release": "vps-cd0636019209d1d0",
+  "version": "0.36.1",
+  "startedAt": "2026-10-17T13:21:00.456Z",
+  "finishedAt": "2026-10-17T13:22:01.258Z",
+  "ok": true,
+  "scope": "실제 Pages·VPS에서 BTC 대시보드와 BTC/ETH 비교를 모바일·PC 네 맥락에서 검사했습니다. 150개 자산·모든 지표·전체 역사 전수 검사가 아닙니다.",
+  "execution": {
+    "browser": "Playwright Chromium on Windows",
+    "contexts": 4,
+    "viewports": [
+      "390x844",
+      "1280x800"
+    ],
+    "expectedSteps": 32,
+    "executedSteps": 32,
+    "passedSteps": 32,
+    "passedContexts": 4,
+    "automaticRetries": 0,
+    "entireFlowRetried": false,
+    "allBrowserContextsClosed": true,
+    "browserClosed": true,
+    "performanceBenchmark": false
+  },
+  "privacy": {
+    "freshNonPersistentContexts": true,
+    "existingUserStorageAccessed": false,
+    "testSavesKeptOnlyInDisposedContexts": true,
+    "remoteMutationRequests": 0,
+    "ingestionRequests": 0,
+    "overviewRequests": 0,
+    "containsPersonalOriginals": false,
+    "containsAuthenticationData": false,
+    "containsRequestHeadersOrFullRequestUrls": false
+  },
+  "identity": {
+    "method": "성공한 main CI 묶음의 commit·source archive package version·release와 공개 runtime·HTML·로드한 JS/CSS 바이트를 대조했습니다.",
+    "vpsHtmlTransform": "canonical Pages origin 문자열만 VPS publicOrigin으로 정확히 치환했습니다. 다른 정규화는 하지 않았습니다.",
+    "origins": [
+      {
+        "origin": "pages",
+        "runtimeReleaseMatched": true,
+        "htmlMatched": true,
+        "entryAssetsMatched": true
+      },
+      {
+        "origin": "vps",
+        "runtimeReleaseMatched": true,
+        "htmlMatched": true,
+        "entryAssetsMatched": true
+      }
+    ]
+  },
+  "contexts": [
+    {
+      "id": "pages-390",
+      "ok": true,
+      "tasks": [
+        {
+          "name": "market-to-BTC",
+          "passed": true
+        },
+        {
+          "name": "dashboard-price-and-layout",
+          "passed": true
+        },
+        {
+          "name": "embedded-chart-leaves-vertical-scrolling-to-page",
+          "passed": true
+        },
+        {
+          "name": "MVRV-help-keeps-reading-position",
+          "passed": true
+        },
+        {
+          "name": "expanded-chart-and-browser-back",
+          "passed": true
+        },
+        {
+          "name": "BTC-relative-is-ETH-price-ratio",
+          "passed": true
+        },
+        {
+          "name": "same-indicator-versus-price-performance",
+          "passed": true
+        },
+        {
+          "name": "fresh-context-only-save-and-reopen",
+          "passed": true
+        }
+      ],
+      "chart": {
+        "topPx": 236,
+        "heightPx": 300,
+        "pageOverflowPx": 0,
+        "mobileBottomNavigationOverlap": false,
+        "referencePrice": "$81,538.30 USD",
+        "currentQuote": "₩110,031,000 Upbit · KRW ▾",
+        "visibleRange": {
+          "from": 1279411200,
+          "to": 1792108800
+        }
+      },
+      "embeddedScrolling": {
+        "input": "CDP native touch vertical drag",
+        "beforeScrollY": 0,
+        "afterScrollY": 129,
+        "beforeRange": {
+          "from": 1279411200,
+          "to": 1792108800
+        },
+        "afterRange": {
+          "from": 1279411200,
+          "to": 1792108800
+        },
+        "canvasPreserved": true
+      },
+      "mvrv": {
+        "displayValue": "1.51 배",
+        "helpPreservedRange": true
+      },
+      "focusedView": {
+        "beforeScrollY": 739,
+        "restoredScrollY": 739,
+        "dashboardRangePreserved": true,
+        "actualWheel": null
+      },
+      "comparisons": {
+        "relative": {
+          "asset": "BTC",
+          "benchmark": "ETH",
+          "mode": "price-ratio",
+          "unit": "ETH",
+          "value": "33.69 ETH"
+        },
+        "indicator": {
+          "assets": [
+            "BTC",
+            "ETH"
+          ],
+          "metric": "MVRV",
+          "source": "Coin Metrics"
+        },
+        "performance": {
+          "assets": [
+            "BTC",
+            "ETH"
+          ],
+          "source": "Upbit",
+          "unit": "KRW",
+          "normalization": "start-100",
+          "commonObservations": 3306
+        }
+      },
+      "saveAndRestore": {
+        "asset": "BTC",
+        "priceSource": "reference",
+        "period": "all",
+        "chartIds": [
+          "view:price",
+          "view:supertrend",
+          "net:mvrv",
+          "view:asset_rainbow",
+          "net:realized_price",
+          "btc:mvrv_z",
+          "net:nupl",
+          "btc:sopr_24h",
+          "btc:sth_mvrv",
+          "btc:lth_mvrv",
+          "view:hash_ribbons",
+          "net:active_addresses",
+          "view:relative"
+        ],
+        "savedMvrvRange": {
+          "from": 1279411200,
+          "to": 1792108800
+        },
+        "restoredMvrvRange": {
+          "from": 1279411200,
+          "to": 1792108800
+        },
+        "savedScrollY": 0,
+        "restoredScrollY": 0
+      },
+      "apiErrorCount": 0,
+      "uncaughtPageErrorCount": 0,
+      "blockedRequestCount": 0,
+      "loadedCodeAssets": 34,
+      "loadedCodeAssetsMatched": true,
+      "contextClosed": true
+    },
+    {
+      "id": "pages-1280",
+      "ok": true,
+      "tasks": [
+        {
+          "name": "market-to-BTC",
+          "passed": true
+        },
+        {
+          "name": "dashboard-price-and-layout",
+          "passed": true
+        },
+        {
+          "name": "embedded-chart-leaves-vertical-scrolling-to-page",
+          "passed": true
+        },
+        {
+          "name": "MVRV-help-keeps-reading-position",
+          "passed": true
+        },
+        {
+          "name": "expanded-chart-and-browser-back",
+          "passed": true
+        },
+        {
+          "name": "BTC-relative-is-ETH-price-ratio",
+          "passed": true
+        },
+        {
+          "name": "same-indicator-versus-price-performance",
+          "passed": true
+        },
+        {
+          "name": "fresh-context-only-save-and-reopen",
+          "passed": true
+        }
+      ],
+      "chart": {
+        "topPx": 229,
+        "heightPx": 440,
+        "pageOverflowPx": 0,
+        "mobileBottomNavigationOverlap": null,
+        "referencePrice": "$81,538.30 USD",
+        "currentQuote": "₩110,031,000 Upbit · KRW ▾",
+        "visibleRange": {
+          "from": 1279411200,
+          "to": 1792108800
+        }
+      },
+      "embeddedScrolling": {
+        "input": "actual diagonal wheel",
+        "beforeScrollY": 0,
+        "afterScrollY": 350,
+        "beforeRange": {
+          "from": 1279411200,
+          "to": 1792108800
+        },
+        "afterRange": {
+          "from": 1279411200,
+          "to": 1792108800
+        },
+        "canvasPreserved": true
+      },
+      "mvrv": {
+        "displayValue": "1.51 배",
+        "helpPreservedRange": true
+      },
+      "focusedView": {
+        "beforeScrollY": 1091,
+        "restoredScrollY": 1091,
+        "dashboardRangePreserved": true,
+        "actualWheel": {
+          "input": {
+            "deltaX": 0,
+            "deltaY": -350
+          },
+          "before": {
+            "from": 1279411200,
+            "to": 1792108800
+          },
+          "after": {
+            "from": 1311552000,
+            "to": 1777766400
+          },
+          "canvasPreserved": true
+        }
+      },
+      "comparisons": {
+        "relative": {
+          "asset": "BTC",
+          "benchmark": "ETH",
+          "mode": "price-ratio",
+          "unit": "ETH",
+          "value": "33.69 ETH"
+        },
+        "indicator": {
+          "assets": [
+            "BTC",
+            "ETH"
+          ],
+          "metric": "MVRV",
+          "source": "Coin Metrics"
+        },
+        "performance": {
+          "assets": [
+            "BTC",
+            "ETH"
+          ],
+          "source": "Upbit",
+          "unit": "KRW",
+          "normalization": "start-100",
+          "commonObservations": 3306
+        }
+      },
+      "saveAndRestore": {
+        "asset": "BTC",
+        "priceSource": "reference",
+        "period": "all",
+        "chartIds": [
+          "view:price",
+          "view:supertrend",
+          "net:mvrv",
+          "view:asset_rainbow",
+          "net:realized_price",
+          "btc:mvrv_z",
+          "net:nupl",
+          "btc:sopr_24h",
+          "btc:sth_mvrv",
+          "btc:lth_mvrv",
+          "view:hash_ribbons",
+          "net:active_addresses",
+          "view:relative"
+        ],
+        "savedMvrvRange": {
+          "from": 1279411200,
+          "to": 1792108800
+        },
+        "restoredMvrvRange": {
+          "from": 1279411200,
+          "to": 1792108800
+        },
+        "savedScrollY": 0,
+        "restoredScrollY": 0
+      },
+      "apiErrorCount": 0,
+      "uncaughtPageErrorCount": 0,
+      "blockedRequestCount": 0,
+      "loadedCodeAssets": 34,
+      "loadedCodeAssetsMatched": true,
+      "contextClosed": true
+    },
+    {
+      "id": "vps-390",
+      "ok": true,
+      "tasks": [
+        {
+          "name": "market-to-BTC",
+          "passed": true
+        },
+        {
+          "name": "dashboard-price-and-layout",
+          "passed": true
+        },
+        {
+          "name": "embedded-chart-leaves-vertical-scrolling-to-page",
+          "passed": true
+        },
+        {
+          "name": "MVRV-help-keeps-reading-position",
+          "passed": true
+        },
+        {
+          "name": "expanded-chart-and-browser-back",
+          "passed": true
+        },
+        {
+          "name": "BTC-relative-is-ETH-price-ratio",
+          "passed": true
+        },
+        {
+          "name": "same-indicator-versus-price-performance",
+          "passed": true
+        },
+        {
+          "name": "fresh-context-only-save-and-reopen",
+          "passed": true
+        }
+      ],
+      "chart": {
+        "topPx": 236,
+        "heightPx": 300,
+        "pageOverflowPx": 0,
+        "mobileBottomNavigationOverlap": false,
+        "referencePrice": "$81,538.30 USD",
+        "currentQuote": "₩110,014,000 Upbit · KRW ▾",
+        "visibleRange": {
+          "from": 1279411200,
+          "to": 1792108800
+        }
+      },
+      "embeddedScrolling": {
+        "input": "CDP native touch vertical drag",
+        "beforeScrollY": 0,
+        "afterScrollY": 129,
+        "beforeRange": {
+          "from": 1279411200,
+          "to": 1792108800
+        },
+        "afterRange": {
+          "from": 1279411200,
+          "to": 1792108800
+        },
+        "canvasPreserved": true
+      },
+      "mvrv": {
+        "displayValue": "1.51 배",
+        "helpPreservedRange": true
+      },
+      "focusedView": {
+        "beforeScrollY": 739,
+        "restoredScrollY": 739,
+        "dashboardRangePreserved": true,
+        "actualWheel": null
+      },
+      "comparisons": {
+        "relative": {
+          "asset": "BTC",
+          "benchmark": "ETH",
+          "mode": "price-ratio",
+          "unit": "ETH",
+          "value": "33.69 ETH"
+        },
+        "indicator": {
+          "assets": [
+            "BTC",
+            "ETH"
+          ],
+          "metric": "MVRV",
+          "source": "Coin Metrics"
+        },
+        "performance": {
+          "assets": [
+            "BTC",
+            "ETH"
+          ],
+          "source": "Upbit",
+          "unit": "KRW",
+          "normalization": "start-100",
+          "commonObservations": 3306
+        }
+      },
+      "saveAndRestore": {
+        "asset": "BTC",
+        "priceSource": "reference",
+        "period": "all",
+        "chartIds": [
+          "view:price",
+          "view:supertrend",
+          "net:mvrv",
+          "view:asset_rainbow",
+          "net:realized_price",
+          "btc:mvrv_z",
+          "net:nupl",
+          "btc:sopr_24h",
+          "btc:sth_mvrv",
+          "btc:lth_mvrv",
+          "view:hash_ribbons",
+          "net:active_addresses",
+          "view:relative"
+        ],
+        "savedMvrvRange": {
+          "from": 1279411200,
+          "to": 1792108800
+        },
+        "restoredMvrvRange": {
+          "from": 1279411200,
+          "to": 1792108800
+        },
+        "savedScrollY": 0,
+        "restoredScrollY": 0
+      },
+      "apiErrorCount": 0,
+      "uncaughtPageErrorCount": 0,
+      "blockedRequestCount": 0,
+      "loadedCodeAssets": 34,
+      "loadedCodeAssetsMatched": true,
+      "contextClosed": true
+    },
+    {
+      "id": "vps-1280",
+      "ok": true,
+      "tasks": [
+        {
+          "name": "market-to-BTC",
+          "passed": true
+        },
+        {
+          "name": "dashboard-price-and-layout",
+          "passed": true
+        },
+        {
+          "name": "embedded-chart-leaves-vertical-scrolling-to-page",
+          "passed": true
+        },
+        {
+          "name": "MVRV-help-keeps-reading-position",
+          "passed": true
+        },
+        {
+          "name": "expanded-chart-and-browser-back",
+          "passed": true
+        },
+        {
+          "name": "BTC-relative-is-ETH-price-ratio",
+          "passed": true
+        },
+        {
+          "name": "same-indicator-versus-price-performance",
+          "passed": true
+        },
+        {
+          "name": "fresh-context-only-save-and-reopen",
+          "passed": true
+        }
+      ],
+      "chart": {
+        "topPx": 229,
+        "heightPx": 440,
+        "pageOverflowPx": 0,
+        "mobileBottomNavigationOverlap": null,
+        "referencePrice": "$81,538.30 USD",
+        "currentQuote": "₩110,014,000 Upbit · KRW ▾",
+        "visibleRange": {
+          "from": 1279411200,
+          "to": 1792108800
+        }
+      },
+      "embeddedScrolling": {
+        "input": "actual diagonal wheel",
+        "beforeScrollY": 0,
+        "afterScrollY": 350,
+        "beforeRange": {
+          "from": 1279411200,
+          "to": 1792108800
+        },
+        "afterRange": {
+          "from": 1279411200,
+          "to": 1792108800
+        },
+        "canvasPreserved": true
+      },
+      "mvrv": {
+        "displayValue": "1.51 배",
+        "helpPreservedRange": true
+      },
+      "focusedView": {
+        "beforeScrollY": 1091,
+        "restoredScrollY": 1091,
+        "dashboardRangePreserved": true,
+        "actualWheel": {
+          "input": {
+            "deltaX": 0,
+            "deltaY": -350
+          },
+          "before": {
+            "from": 1279411200,
+            "to": 1792108800
+          },
+          "after": {
+            "from": 1311552000,
+            "to": 1777766400
+          },
+          "canvasPreserved": true
+        }
+      },
+      "comparisons": {
+        "relative": {
+          "asset": "BTC",
+          "benchmark": "ETH",
+          "mode": "price-ratio",
+          "unit": "ETH",
+          "value": "33.69 ETH"
+        },
+        "indicator": {
+          "assets": [
+            "BTC",
+            "ETH"
+          ],
+          "metric": "MVRV",
+          "source": "Coin Metrics"
+        },
+        "performance": {
+          "assets": [
+            "BTC",
+            "ETH"
+          ],
+          "source": "Upbit",
+          "unit": "KRW",
+          "normalization": "start-100",
+          "commonObservations": 3306
+        }
+      },
+      "saveAndRestore": {
+        "asset": "BTC",
+        "priceSource": "reference",
+        "period": "all",
+        "chartIds": [
+          "view:price",
+          "view:supertrend",
+          "net:mvrv",
+          "view:asset_rainbow",
+          "net:realized_price",
+          "btc:mvrv_z",
+          "net:nupl",
+          "btc:sopr_24h",
+          "btc:sth_mvrv",
+          "btc:lth_mvrv",
+          "view:hash_ribbons",
+          "net:active_addresses",
+          "view:relative"
+        ],
+        "savedMvrvRange": {
+          "from": 1279411200,
+          "to": 1792108800
+        },
+        "restoredMvrvRange": {
+          "from": 1279411200,
+          "to": 1792108800
+        },
+        "savedScrollY": 0,
+        "restoredScrollY": 0
+      },
+      "apiErrorCount": 0,
+      "uncaughtPageErrorCount": 0,
+      "blockedRequestCount": 0,
+      "loadedCodeAssets": 34,
+      "loadedCodeAssetsMatched": true,
+      "contextClosed": true
+    }
+  ],
+  "dataHealth": {
+    "flowPreflight": [
+      {
+        "origin": "pages",
+        "summaryHttpStatus": 200,
+        "checkedAtEpoch": 1792243264,
+        "healthOk": false,
+        "activeSourceCounts": {
+          "ok": 1549,
+          "delayed": 36
+        },
+        "totalSourcesIncludingInactive": 1635
+      },
+      {
+        "origin": "vps",
+        "summaryHttpStatus": 200,
+        "checkedAtEpoch": 1792243264,
+        "healthOk": false,
+        "activeSourceCounts": {
+          "ok": 1549,
+          "delayed": 36
+        },
+        "totalSourcesIncludingInactive": 1635
+      }
+    ],
+    "publicDeploymentVerification": {
+      "checkedAt": "2026-10-17T13:19:41.130396+00:00",
+      "origins": [
+        {
+          "origin": "pages",
+          "healthHttpStatus": 503,
+          "sourceCounts": {
+            "ok": 1553,
+            "delayed": 32
+          }
+        },
+        {
+          "origin": "vps",
+          "healthHttpStatus": 503,
+          "sourceCounts": {
+            "ok": 1553,
+            "delayed": 32
+          }
+        }
+      ]
+    },
+    "interpretation": "운영 지연·health 실패는 별도로 남깁니다. 차트 사용자 과제의 통과는 전체 원천의 정상 운영이나 전체 역사 완전성을 뜻하지 않습니다."
+  },
+  "visualReview": {
+    "screenshot": "work/ux-0361/live-final-20261017/pages-390-dashboard.png",
+    "inspected": true,
+    "findings": [
+      "현재 시세 KRW와 장기 가격 USD가 분리되어 표시됩니다.",
+      "첫 차트의 가격축·날짜축은 하단 메뉴와 겹치지 않습니다.",
+      "코인 선택·기간·통화·비교·저장과 차트 확대 버튼이 화면 안에 표시됩니다."
+    ],
+    "limitations": [
+      "한 장의 자동 브라우저 화면 검토이며 실물 휴대폰과 사람 대상 사용성 검사는 아닙니다."
+    ]
+  },
+  "priorRunHandling": "0.36.0의 PC 저장 검사 도구 전환 실패 2건과 별도 확인 결과는 기존 live-flow.json에 그대로 보존했습니다. 이번 버전에서는 이전 DOM 해제와 새 차트·스크롤 복원을 기다린 뒤 최초 한 번만 검사했습니다.",
+  "notVerified": [
+    "150개 코인의 모든 화면과 값",
+    "모든 과거 관측의 원천 전수 일치",
+    "실제 Apple Safari·VoiceOver",
+    "실물 휴대폰",
+    "사람 대상 사용성 검사",
+    "기존 개인 자료 opt-in 경로"
+  ],
+  "localEvidence": [
+    "work/ux-0361/live-final-20261017/result.json",
+    "work/ux-0361/wheel-local-summary.json"
+  ]
+}

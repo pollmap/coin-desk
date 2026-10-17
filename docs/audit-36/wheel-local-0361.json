@@ -1,0 +1,127 @@
+{
+  "scope": "0.36.1 dashboard wheel scrolling correction; local evidence only",
+  "reviewedHeadCommit": "af66608239f06e6826baeb8fd5e8777ba37c6efe",
+  "testedWorkingTreeBeforeCommit": true,
+  "executionPolicy": {
+    "productionMutations": false,
+    "retries": 0,
+    "physicalDevice": false,
+    "unrelatedUserDataAccessed": false
+  },
+  "beforeFix": {
+    "publicObservation": "work/ux-036/dashboard-wheel-live-before-fix.json",
+    "desktop": {
+      "viewport": "1280x800",
+      "wheel": [
+        0,
+        500
+      ],
+      "beforeScrollY": 0,
+      "afterScrollY": 0,
+      "rangeUnchanged": true
+    },
+    "mobile": {
+      "viewport": "390x844",
+      "input": "Chromium CDP native vertical touch",
+      "beforeScrollY": 0,
+      "afterScrollY": 105,
+      "rangeUnchanged": true
+    },
+    "regression": {
+      "failed": 4,
+      "engines": [
+        "chromium",
+        "webkit"
+      ],
+      "inputs": [
+        [
+          0,
+          350
+        ],
+        [
+          80,
+          350
+        ]
+      ],
+      "failure": "scrollY remained 0; expected more than 100",
+      "log": "work/ux-036/wheel-before-local.log",
+      "report": "work/browser-checks/1792240362742-172800/report"
+    }
+  },
+  "afterFix": {
+    "typeCheck": {
+      "command": "npx tsc -b",
+      "exitCode": 0,
+      "evidence": "Captured execution result in this task; not re-executed for this summary"
+    },
+    "unit": {
+      "command": "npx vitest run tests/chart-range.test.ts tests/chart-interaction.test.ts tests/chart-touch-cancel.test.ts tests/dashboard.test.ts tests/dashboard-data.test.ts",
+      "files": 5,
+      "passed": 51,
+      "failed": 0,
+      "evidence": "Captured execution result at local 2026-10-17 21:34:54; not re-executed for this summary"
+    },
+    "browser": {
+      "command": "node scripts/run_browser_checks.mjs e2e/coin-dashboard.spec.ts e2e/dashboard-native-navigation.spec.ts",
+      "port": 5408,
+      "engines": [
+        "chromium",
+        "webkit"
+      ],
+      "passed": 30,
+      "failed": 0,
+      "retries": 0,
+      "log": "work/ux-036/wheel-after-local.log",
+      "report": "work/browser-checks/1792240461894-155840/report",
+      "assertions": [
+        "Vertical and diagonal wheel move the dashboard page while preserving range and canvas",
+        "Focused chart wheel still changes its displayed time range",
+        "Date-axis scaling replaces dashboard wheel zoom in existing saved-range/native-navigation tests",
+        "Range, period, scroll, saving, theme/accessibility and native comparison-link regressions remain intact"
+      ]
+    },
+    "focusedNativeTouch": {
+      "passed": 1,
+      "failed": 0,
+      "engine": "chromium",
+      "input": "Native long press, horizontal pan, pinch and cancellation",
+      "log": "work/ux-036/wheel-focused-touch-regression.log",
+      "report": "work/browser-checks/1792240548101-149840/report"
+    },
+    "dashboardNativeTouch": {
+      "engine": "chromium",
+      "viewport": "390x844",
+      "fixtureOnly": true,
+      "result": "work/ux-036/dashboard-touch-probe.json",
+      "log": "work/ux-036/dashboard-touch-probe.log",
+      "trustedEvents": 19,
+      "maxSimultaneousTouches": 2,
+      "vertical": {
+        "beforeScrollY": 0,
+        "afterScrollY": 85,
+        "rangeUnchanged": true,
+        "canvasPreserved": true
+      },
+      "horizontal": {
+        "scrollY": 0,
+        "rangeChanged": true,
+        "canvasPreserved": true
+      },
+      "pinch": {
+        "beforeSpanSeconds": 31622400,
+        "afterSpanSeconds": 15724800,
+        "canvasPreserved": true
+      }
+    },
+    "diffCheck": {
+      "command": "git diff --check -- src/AnalysisChart.tsx src/DashboardChartCard.tsx e2e/coin-dashboard.spec.ts e2e/dashboard-native-navigation.spec.ts e2e/chart-gestures.ts",
+      "exitCode": 0
+    },
+    "allOwnedBrowsersAndFixturesClosed": true
+  },
+  "limitations": [
+    "This summary does not prove that 0.36.1 is deployed",
+    "Native multi-touch was verified in Chromium CDP, not a physical phone or Apple Safari",
+    "No all-asset historical data audit or human usability study is claimed"
+  ]
+}

@@ -1,0 +1,525 @@
+{
+  "codeSHA": "b374d79cc359eb58445b5d9247752d28d8ab39e4",
+  "release": "vps-51b49312b16e2990",
+  "version": "0.36.0",
+  "startedAt": "2026-10-17T12:18:14.012Z",
+  "finishedAt": "2026-10-17T12:20:47.004Z",
+  "scope": "실제 Pages·VPS에서 BTC 대시보드와 BTC/ETH 비교 과제만 검사했습니다. 150개 자산·전체 지표·과거 이력 전수 검사가 아닙니다.",
+  "execution": {
+    "browser": "Playwright Chromium, Windows host",
+    "initialContexts": 4,
+    "viewportSizes": [
+      "390x844",
+      "1280x800"
+    ],
+    "automaticRetries": 0,
+    "initialPassedSteps": 26,
+    "initialTotalSteps": 28,
+    "initialAllStepsPassedContexts": 2,
+    "targetedSaveFollowupContexts": 2,
+    "targetedSaveFollowupPassed": 2,
+    "entireFlowRetried": false,
+    "allBrowserContextsClosed": true,
+    "performanceBenchmark": false
+  },
+  "privacy": {
+    "freshNonPersistentContexts": true,
+    "existingUserStorageAccessed": false,
+    "testSavesKeptOnlyInDisposedContexts": true,
+    "remoteMutationRequests": 0,
+    "ingestionRequests": 0,
+    "overviewRequests": 0,
+    "containsPersonalOriginals": false,
+    "containsAuthenticationData": false,
+    "containsRequestHeadersOrFullRequestUrls": false
+  },
+  "identity": {
+    "method": "성공한 main CI 묶음의 commit·source archive package.json version·release, 공개 runtime release, HTML 및 실제 로드한 JS/CSS 바이트 해시를 대조했습니다. 공개 API에 없는 code SHA/version 필드를 가정하지 않았습니다.",
+    "vpsHtmlTransform": "index.html의 canonical Pages origin 문자열만 실제 VPS publicOrigin으로 치환했습니다. 다른 정규화는 하지 않았습니다.",
+    "origins": [
+      {
+        "origin": "pages",
+        "runtimeReleaseMatched": true,
+        "htmlMatched": true,
+        "entryAssetsMatched": true
+      },
+      {
+        "origin": "vps",
+        "runtimeReleaseMatched": true,
+        "htmlMatched": true,
+        "entryAssetsMatched": true
+      }
+    ]
+  },
+  "contexts": [
+    {
+      "id": "pages-390",
+      "initialPassedSteps": 7,
+      "initialTotalSteps": 7,
+      "tasks": [
+        {
+          "name": "market-to-BTC",
+          "initialResult": "passed"
+        },
+        {
+          "name": "dashboard-price-and-layout",
+          "initialResult": "passed"
+        },
+        {
+          "name": "MVRV-help-keeps-reading-position",
+          "initialResult": "passed"
+        },
+        {
+          "name": "expanded-chart-and-browser-back",
+          "initialResult": "passed"
+        },
+        {
+          "name": "BTC-relative-is-ETH-price-ratio",
+          "initialResult": "passed"
+        },
+        {
+          "name": "same-indicator-versus-price-performance",
+          "initialResult": "passed"
+        },
+        {
+          "name": "fresh-context-only-save-and-reopen",
+          "initialResult": "passed"
+        }
+      ],
+      "chart": {
+        "topPx": 236,
+        "heightPx": 300,
+        "pageOverflowPx": 0,
+        "mobileBottomNavigationOverlap": false,
+        "referencePrice": "$81,538.30 USD",
+        "currentQuote": "₩110,121,000 Upbit · KRW ▾",
+        "visibleRange": {
+          "from": 1279411200,
+          "to": 1792108800
+        }
+      },
+      "mvrv": {
+        "displayValue": "1.51 배",
+        "readingHelpOpened": true,
+        "helpPreservedRange": true
+      },
+      "expandedChartBack": {
+        "beforeScrollPx": 739,
+        "afterScrollPx": 739,
+        "viewportPreserved": true
+      },
+      "comparison": {
+        "relativeAsset": "BTC",
+        "benchmark": "ETH",
+        "relativeMode": "price-ratio",
+        "relativeUnit": "ETH",
+        "relativeDisplayValue": "33.69 ETH",
+        "indicatorMode": {
+          "assets": [
+            "BTC",
+            "ETH"
+          ],
+          "metric": "MVRV",
+          "source": "Coin Metrics"
+        },
+        "performanceMode": {
+          "assets": [
+            "BTC",
+            "ETH"
+          ],
+          "source": "Upbit",
+          "unit": "KRW",
+          "normalization": "start-100",
+          "commonObservations": 3306
+        }
+      },
+      "apiErrorCount": 0,
+      "uncaughtPageErrorCount": 0,
+      "blockedRemoteRequestCount": 0,
+      "loadedCodeAssets": 34,
+      "loadedCodeAssetsMatched": true
+    },
+    {
+      "id": "pages-1280",
+      "initialPassedSteps": 6,
+      "initialTotalSteps": 7,
+      "tasks": [
+        {
+          "name": "market-to-BTC",
+          "initialResult": "passed"
+        },
+        {
+          "name": "dashboard-price-and-layout",
+          "initialResult": "passed"
+        },
+        {
+          "name": "MVRV-help-keeps-reading-position",
+          "initialResult": "passed"
+        },
+        {
+          "name": "expanded-chart-and-browser-back",
+          "initialResult": "passed"
+        },
+        {
+          "name": "BTC-relative-is-ETH-price-ratio",
+          "initialResult": "passed"
+        },
+        {
+          "name": "same-indicator-versus-price-performance",
+          "initialResult": "passed"
+        },
+        {
+          "name": "fresh-context-only-save-and-reopen",
+          "initialResult": "runner-transition-failure"
+        }
+      ],
+      "chart": {
+        "topPx": 229,
+        "heightPx": 440,
+        "pageOverflowPx": 0,
+        "mobileBottomNavigationOverlap": null,
+        "referencePrice": "$81,538.30 USD",
+        "currentQuote": "₩110,120,000 Upbit · KRW ▾",
+        "visibleRange": {
+          "from": 1279411200,
+          "to": 1792108800
+        }
+      },
+      "mvrv": {
+        "displayValue": "1.51 배",
+        "readingHelpOpened": true,
+        "helpPreservedRange": true
+      },
+      "expandedChartBack": {
+        "beforeScrollPx": 1091,
+        "afterScrollPx": 1091,
+        "viewportPreserved": true
+      },
+      "comparison": {
+        "relativeAsset": "BTC",
+        "benchmark": "ETH",
+        "relativeMode": "price-ratio",
+        "relativeUnit": "ETH",
+        "relativeDisplayValue": "33.69 ETH",
+        "indicatorMode": {
+          "assets": [
+            "BTC",
+            "ETH"
+          ],
+          "metric": "MVRV",
+          "source": "Coin Metrics"
+        },
+        "performanceMode": {
+          "assets": [
+            "BTC",
+            "ETH"
+          ],
+          "source": "Upbit",
+          "unit": "KRW",
+          "normalization": "start-100",
+          "commonObservations": 3306
+        }
+      },
+      "apiErrorCount": 0,
+      "uncaughtPageErrorCount": 0,
+      "blockedRemoteRequestCount": 0,
+      "loadedCodeAssets": 34,
+      "loadedCodeAssetsMatched": true
+    },
+    {
+      "id": "vps-390",
+      "initialPassedSteps": 7,
+      "initialTotalSteps": 7,
+      "tasks": [
+        {
+          "name": "market-to-BTC",
+          "initialResult": "passed"
+        },
+        {
+          "name": "dashboard-price-and-layout",
+          "initialResult": "passed"
+        },
+        {
+          "name": "MVRV-help-keeps-reading-position",
+          "initialResult": "passed"
+        },
+        {
+          "name": "expanded-chart-and-browser-back",
+          "initialResult": "passed"
+        },
+        {
+          "name": "BTC-relative-is-ETH-price-ratio",
+          "initialResult": "passed"
+        },
+        {
+          "name": "same-indicator-versus-price-performance",
+          "initialResult": "passed"
+        },
+        {
+          "name": "fresh-context-only-save-and-reopen",
+          "initialResult": "passed"
+        }
+      ],
+      "chart": {
+        "topPx": 236,
+        "heightPx": 300,
+        "pageOverflowPx": 0,
+        "mobileBottomNavigationOverlap": false,
+        "referencePrice": "$81,538.30 USD",
+        "currentQuote": "₩110,120,000 Upbit · KRW ▾",
+        "visibleRange": {
+          "from": 1279411200,
+          "to": 1792108800
+        }
+      },
+      "mvrv": {
+        "displayValue": "1.51 배",
+        "readingHelpOpened": true,
+        "helpPreservedRange": true
+      },
+      "expandedChartBack": {
+        "beforeScrollPx": 739,
+        "afterScrollPx": 739,
+        "viewportPreserved": true
+      },
+      "comparison": {
+        "relativeAsset": "BTC",
+        "benchmark": "ETH",
+        "relativeMode": "price-ratio",
+        "relativeUnit": "ETH",
+        "relativeDisplayValue": "33.69 ETH",
+        "indicatorMode": {
+          "assets": [
+            "BTC",
+            "ETH"
+          ],
+          "metric": "MVRV",
+          "source": "Coin Metrics"
+        },
+        "performanceMode": {
+          "assets": [
+            "BTC",
+            "ETH"
+          ],
+          "source": "Upbit",
+          "unit": "KRW",
+          "normalization": "start-100",
+          "commonObservations": 3306
+        }
+      },
+      "apiErrorCount": 0,
+      "uncaughtPageErrorCount": 0,
+      "blockedRemoteRequestCount": 0,
+      "loadedCodeAssets": 34,
+      "loadedCodeAssetsMatched": true
+    },
+    {
+      "id": "vps-1280",
+      "initialPassedSteps": 6,
+      "initialTotalSteps": 7,
+      "tasks": [
+        {
+          "name": "market-to-BTC",
+          "initialResult": "passed"
+        },
+        {
+          "name": "dashboard-price-and-layout",
+          "initialResult": "passed"
+        },
+        {
+          "name": "MVRV-help-keeps-reading-position",
+          "initialResult": "passed"
+        },
+        {
+          "name": "expanded-chart-and-browser-back",
+          "initialResult": "passed"
+        },
+        {
+          "name": "BTC-relative-is-ETH-price-ratio",
+          "initialResult": "passed"
+        },
+        {
+          "name": "same-indicator-versus-price-performance",
+          "initialResult": "passed"
+        },
+        {
+          "name": "fresh-context-only-save-and-reopen",
+          "initialResult": "runner-transition-failure"
+        }
+      ],
+      "chart": {
+        "topPx": 229,
+        "heightPx": 440,
+        "pageOverflowPx": 0,
+        "mobileBottomNavigationOverlap": null,
+        "referencePrice": "$81,538.30 USD",
+        "currentQuote": "₩110,120,000 Upbit · KRW ▾",
+        "visibleRange": {
+          "from": 1279411200,
+          "to": 1792108800
+        }
+      },
+      "mvrv": {
+        "displayValue": "1.51 배",
+        "readingHelpOpened": true,
+        "helpPreservedRange": true
+      },
+      "expandedChartBack": {
+        "beforeScrollPx": 1091,
+        "afterScrollPx": 1091,
+        "viewportPreserved": true
+      },
+      "comparison": {
+        "relativeAsset": "BTC",
+        "benchmark": "ETH",
+        "relativeMode": "price-ratio",
+        "relativeUnit": "ETH",
+        "relativeDisplayValue": "33.69 ETH",
+        "indicatorMode": {
+          "assets": [
+            "BTC",
+            "ETH"
+          ],
+          "metric": "MVRV",
+          "source": "Coin Metrics"
+        },
+        "performanceMode": {
+          "assets": [
+            "BTC",
+            "ETH"
+          ],
+          "source": "Upbit",
+          "unit": "KRW",
+          "normalization": "start-100",
+          "commonObservations": 3306
+        }
+      },
+      "apiErrorCount": 0,
+      "uncaughtPageErrorCount": 0,
+      "blockedRemoteRequestCount": 0,
+      "loadedCodeAssets": 34,
+      "loadedCodeAssetsMatched": true
+    }
+  ],
+  "originalRunnerFailures": {
+    "retained": true,
+    "contexts": [
+      "pages-1280",
+      "vps-1280"
+    ],
+    "step": "fresh-context-only-save-and-reopen",
+    "error": "locator.scrollIntoViewIfNeeded: Element is not attached to the DOM",
+    "causeEvidence": "저장 링크는 dashboard_cards/ranges/scroll을 포함하므로 DashboardBody의 key가 바뀌어 DOM을 교체합니다. 최초 도구는 URL/BTC 속성 확인만 하고 이 교체 완료 전에 스크롤을 시도했습니다. 후속에서 기존 DOM의 isConnected=false를 확인하고 새 차트 준비 후 같은 저장 범위를 검증했습니다.",
+    "originalFailureRecordsOverwritten": false,
+    "productCodeChangedForFollowup": false,
+    "wholeFlowRerun": false
+  },
+  "targetedSaveFollowup": [
+    {
+      "origin": "pages",
+      "passed": true,
+      "oldDashboardDisposed": true,
+      "savedAsset": "BTC",
+      "savedSource": "reference",
+      "savedPeriod": "all",
+      "savedCardCount": 13,
+      "savedRange": {
+        "from": 1279411200,
+        "to": 1792108800
+      },
+      "restoredRange": {
+        "from": 1279411200,
+        "to": 1792108800
+      },
+      "savedScrollPx": 0,
+      "restoredScrollBeforeInteractionPx": 0,
+      "actualMvrvDisplay": "1.51 배",
+      "apiErrorCount": 0,
+      "uncaughtPageErrorCount": 0
+    },
+    {
+      "origin": "vps",
+      "passed": true,
+      "oldDashboardDisposed": true,
+      "savedAsset": "BTC",
+      "savedSource": "reference",
+      "savedPeriod": "all",
+      "savedCardCount": 13,
+      "savedRange": {
+        "from": 1279411200,
+        "to": 1792108800
+      },
+      "restoredRange": {
+        "from": 1279411200,
+        "to": 1792108800
+      },
+      "savedScrollPx": 0,
+      "restoredScrollBeforeInteractionPx": 0,
+      "actualMvrvDisplay": "1.51 배",
+      "apiErrorCount": 0,
+      "uncaughtPageErrorCount": 0
+    }
+  ],
+  "dataHealth": {
+    "overallHealthy": false,
+    "publicDeploymentVerification": {
+      "checkedAt": "2026-10-17T12:12:26.419607+00:00",
+      "origins": [
+        {
+          "origin": "pages",
+          "healthHttpStatus": 503,
+          "summarySourceCounts": {
+            "ok": 1551,
+            "delayed": 34
+          }
+        },
+        {
+          "origin": "vps",
+          "healthHttpStatus": 503,
+          "summarySourceCounts": {
+            "ok": 1551,
+            "delayed": 34
+          }
+        }
+      ]
+    },
+    "flowPreflight": [
+      {
+        "origin": "pages",
+        "checkedAtEpoch": 1792239498,
+        "summaryHttpStatus": 200,
+        "healthOk": false,
+        "activeSourceCounts": {
+          "ok": 1539,
+          "delayed": 46
+        },
+        "totalSourcesIncludingInactive": 1635
+      },
+      {
+        "origin": "vps",
+        "checkedAtEpoch": 1792239498,
+        "summaryHttpStatus": 200,
+        "healthOk": false,
+        "activeSourceCounts": {
+          "ok": 1539,
+          "delayed": 46
+        },
+        "totalSourcesIncludingInactive": 1635
+      }
+    ],
+    "interpretation": "앞선 공개 검증의 HTTP 503과 지연 상태를 보존했습니다. 이 흐름의 요약 조회에서는 활성 1,585개 중 정상 1,539개·지연 46개였습니다. 시점별 표본이며 차트 과제 통과를 원천 전체 정상으로 확대하지 않습니다."
+  },
+  "conclusion": "검사한 BTC 대시보드·BTC/ETH 비교·설명·확대 복귀는 최초 네 맥락에서 통과했습니다. 모바일 저장은 최초 통과했고 PC 저장은 검사 도구의 DOM 전환 대기 누락을 분리한 후속에서 정상 복원을 확인했습니다. 이 범위에서 제품 동작 오류는 재현되지 않았으나 초기 도구 실패 2건과 운영 지연은 남겨 기록합니다.",
+  "notVerified": [
+    "150개 코인의 모든 화면과 값",
+    "모든 과거 관측의 원천 전수 일치",
+    "실제 Safari·VoiceOver",
+    "실물 휴대폰",
+    "사람 대상 사용성 검사",
+    "기존 개인 자료를 사용하는 opt-in 경로"
+  ],
+  "localEvidence": [
+    "work/ux-036/live-final-20261017/result.json",
+    "work/ux-036/live-final-20261017/save-transition-followup.json"
+  ]
+}

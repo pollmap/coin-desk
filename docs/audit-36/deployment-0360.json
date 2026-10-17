@@ -1,0 +1,289 @@
+{
+  "recordedAt": "2026-10-17T12:38:20.485229+00:00",
+  "role": "intermediate 0.36.0 deployment before the discovered dashboard wheel fix",
+  "commit": "b374d79cc359eb58445b5d9247752d28d8ab39e4",
+  "release": "vps-51b49312b16e2990",
+  "backupVerified": true,
+  "canonicalDistSha256": "d9ca7b15c17f16a05ff13a1a66aa67b922f769b75201c1be7c234896a3526304",
+  "activation": {
+    "commit": "b374d79cc359eb58445b5d9247752d28d8ab39e4",
+    "release": "vps-51b49312b16e2990",
+    "previousRelease": "vps-0468d9de09a9705f",
+    "startedAt": 1792238973,
+    "attemptedServices": [
+      "api"
+    ],
+    "verifiedServices": [
+      "api"
+    ],
+    "schemaChanged": false,
+    "promoted": true,
+    "rollbackServices": [],
+    "sixCoreConfirmationsAdvanced": true,
+    "naturalCoreProofVerified": true,
+    "protectedContainerIdsVerified": [
+      "quotes",
+      "background",
+      "recent",
+      "analysis",
+      "backup",
+      "quote-hub",
+      "migrate"
+    ],
+    "completedAt": 1792239104
+  },
+  "pages": {
+    "exit": 0,
+    "commit": "b374d79cc359eb58445b5d9247752d28d8ab39e4",
+    "release": "vps-51b49312b16e2990",
+    "deploymentUrls": [
+      "https://1629cdbb.coin-desk.pages.dev"
+    ],
+    "canonicalDistSha256": "d9ca7b15c17f16a05ff13a1a66aa67b922f769b75201c1be7c234896a3526304",
+    "staticSource": "Verified main CI image canonical dist"
+  },
+  "publicCheckedAt": "2026-10-17T12:12:26.419607+00:00",
+  "staticBytesVerified": true,
+  "origins": {
+    "pages": {
+      "assetCount": 235,
+      "matched": 235,
+      "reads": {
+        "/api/v1/runtime": {
+          "status": 200,
+          "ms": 1015.23,
+          "bytes": 931,
+          "body": {
+            "kind": "vps",
+            "release": "vps-51b49312b16e2990",
+            "historyCollection": "enabled",
+            "backup": {
+              "ok": true,
+              "lastCompletedAt": 1792173340,
+              "verified": true
+            },
+            "scheduler": [
+              {
+                "lane": "quotes",
+                "scheduled_at": 1792239180,
+                "started_at": 1792239180,
+                "completed_at": null,
+                "outcome": "running",
+                "last_success": 1792239150,
+                "reason": "running",
+                "healthy": true
+              },
+              {
+                "lane": "background",
+                "scheduled_at": 1792239180,
+                "started_at": 1792239180,
+                "completed_at": 1792239184,
+                "outcome": "ok",
+                "last_success": 1792239184,
+                "reason": null,
+                "healthy": true
+              },
+              {
+                "lane": "recent",
+                "scheduled_at": 1792239180,
+                "started_at": 1792239180,
+                "completed_at": 1792239180,
+                "outcome": "ok",
+                "last_success": 1792239180,
+                "reason": null,
+                "healthy": true
+              },
+              {
+                "lane": "analysis",
+                "scheduled_at": 1792239180,
+                "started_at": 1792239180,
+                "completed_at": 1792239180,
+                "outcome": "ok",
+                "last_success": 1792239180,
+                "reason": null,
+                "healthy": true
+              }
+            ],
+            "performance": {
+              "requests": 262,
+              "responseBytes": 8706683,
+              "maxRequestMs": 1384,
+              "eventLoopP95Ms": 22,
+              "rssMiB": 107
+            }
+          }
+        },
+        "/api/v1/status/summary": {
+          "status": 200,
+          "ms": 616.24,
+          "bytes": 10995,
+          "body": {
+            "now": 1792239208,
+            "sourceCounts": {
+              "ok": 1551,
+              "delayed": 34
+            },
+            "totalSources": 1635,
+            "coverage": {
+              "expectedSources": 1585,
+              "healthySources": 1551,
+              "priceMarkets": 241,
+              "priceMarketCombinations": 300,
+              "histories": 482
+            },
+            "rebuilding": false,
+            "healthOk": false,
+            "reasonCount": 34
+          }
+        },
+        "/api/v1/health": {
+          "status": 503,
+          "ms": 2168.91,
+          "bytes": 1064142,
+          "body": {
+            "status": null,
+            "ok": false,
+            "version": null,
+            "checkedAt": 1792239209,
+            "asOf": null,
+            "summary": null,
+            "sourceRows": 1635,
+            "activeDiagnoses": {
+              "CURRENT": 1551,
+              "TRADE_STALE": 34
+            }
+          }
+        }
+      },
+      "securityHeaders": {
+        "content-security-policy": "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https://pbs.twimg.com; font-src 'self'; connect-src 'self'; worker-src 'self' blob:; object-src 'none'; base-uri 'none'; frame-ancestors 'none'; form-action 'self'",
+        "content-security-policy-report-only": null,
+        "strict-transport-security": "max-age=31536000",
+        "permissions-policy": "camera=(), microphone=(), geolocation=(), payment=(), usb=()",
+        "x-frame-options": "DENY",
+        "x-content-type-options": "nosniff",
+        "referrer-policy": "strict-origin-when-cross-origin"
+      }
+    },
+    "vps": {
+      "assetCount": 235,
+      "matched": 235,
+      "reads": {
+        "/api/v1/runtime": {
+          "status": 200,
+          "ms": 944.19,
+          "bytes": 931,
+          "body": {
+            "kind": "vps",
+            "release": "vps-51b49312b16e2990",
+            "historyCollection": "enabled",
+            "backup": {
+              "ok": true,
+              "lastCompletedAt": 1792173340,
+              "verified": true
+            },
+            "scheduler": [
+              {
+                "lane": "quotes",
+                "scheduled_at": 1792239180,
+                "started_at": 1792239180,
+                "completed_at": null,
+                "outcome": "running",
+                "last_success": 1792239150,
+                "reason": "running",
+                "healthy": true
+              },
+              {
+                "lane": "background",
+                "scheduled_at": 1792239180,
+                "started_at": 1792239180,
+                "completed_at": 1792239184,
+                "outcome": "ok",
+                "last_success": 1792239184,
+                "reason": null,
+                "healthy": true
+              },
+              {
+                "lane": "recent",
+                "scheduled_at": 1792239180,
+                "started_at": 1792239180,
+                "completed_at": 1792239180,
+                "outcome": "ok",
+                "last_success": 1792239180,
+                "reason": null,
+                "healthy": true
+              },
+              {
+                "lane": "analysis",
+                "scheduled_at": 1792239180,
+                "started_at": 1792239180,
+                "completed_at": 1792239180,
+                "outcome": "ok",
+                "last_success": 1792239180,
+                "reason": null,
+                "healthy": true
+              }
+            ],
+            "performance": {
+              "requests": 265,
+              "responseBytes": 9783594,
+              "maxRequestMs": 1384,
+              "eventLoopP95Ms": 22,
+              "rssMiB": 126
+            }
+          }
+        },
+        "/api/v1/status/summary": {
+          "status": 200,
+          "ms": 781.09,
+          "bytes": 10995,
+          "body": {
+            "now": 1792239208,
+            "sourceCounts": {
+              "ok": 1551,
+              "delayed": 34
+            },
+            "totalSources": 1635,
+            "coverage": {
+              "expectedSources": 1585,
+              "healthySources": 1551,
+              "priceMarkets": 241,
+              "priceMarketCombinations": 300,
+              "histories": 482
+            },
+            "rebuilding": false,
+            "healthOk": false,
+            "reasonCount": 34
+          }
+        },
+        "/api/v1/health": {
+          "status": 503,
+          "ms": 2730.19,
+          "bytes": 1063322,
+          "body": {
+            "status": null,
+            "ok": false,
+            "version": null,
+            "checkedAt": 1792239213,
+            "asOf": null,
+            "summary": null,
+            "sourceRows": 1635,
+            "activeDiagnoses": {
+              "CURRENT": 1555,
+              "TRADE_STALE": 30
+            }
+          }
+        }
+      },
+      "securityHeaders": {
+        "content-security-policy": "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https://pbs.twimg.com; font-src 'self'; connect-src 'self'; worker-src 'self' blob:; object-src 'none'; base-uri 'none'; frame-ancestors 'none'; form-action 'self'",
+        "content-security-policy-report-only": null,
+        "strict-transport-security": "max-age=31536000",
+        "permissions-policy": "camera=(), microphone=(), geolocation=(), payment=(), usb=()",
+        "x-frame-options": "DENY",
+        "x-content-type-options": "nosniff",
+        "referrer-policy": "strict-origin-when-cross-origin"
+      }
+    }
+  }
+}

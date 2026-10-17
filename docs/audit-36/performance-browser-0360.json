@@ -1,0 +1,278 @@
+{
+  "role": "before 0.36.1; no causal improvement claim",
+  "deployment": {
+    "version": "0.36.0",
+    "commit": "b374d79cc359eb58445b5d9247752d28d8ab39e4",
+    "release": "vps-51b49312b16e2990",
+    "canonicalDistSha256": "d9ca7b15c17f16a05ff13a1a66aa67b922f769b75201c1be7c234896a3526304",
+    "apiImageId": "sha256:8f697bd5b3ddfd4f87363cd34d9db89ca52f5b0bd724187bb7de959a0ed54b07"
+  },
+  "environment": {
+    "platform": "win32",
+    "osRelease": "10.0.26200",
+    "logicalCpus": 16,
+    "cpuModel": "AMD Ryzen AI 7 350 w/ Radeon 860M",
+    "totalMemoryMiB": 32042,
+    "availableMemoryMiBAtStart": 6953,
+    "nodeVersion": "v24.18.0",
+    "startedAt": "2026-10-17T12:21:02.307Z",
+    "availableMemoryMiBAtEnd": 6933
+  },
+  "state": "complete",
+  "results": [
+    {
+      "base": "https://coin-desk.pages.dev",
+      "settings": {
+        "viewport": "1280x800",
+        "rounds": 20,
+        "downlinkMbps": 10,
+        "uplinkMbps": 5,
+        "addedLatencyMs": 0,
+        "cpuThrottlingRate": 1,
+        "browserCacheDisabled": true,
+        "serviceWorkers": "blocked",
+        "sharedBrowserProcessWithinOrigin": true,
+        "browserProcessSeparatedBetweenOrigins": true,
+        "cdnAndOsDnsTlsCachesNotPurged": true,
+        "identityReadsExcludedFromSamplesAndMayWarmCaches": true,
+        "screenshotOptional": false,
+        "observationWindowAfterFirstValueMs": 8000
+      },
+      "browserVersion": "153.0.8010.12",
+      "clock": {
+        "valid": true,
+        "samples": 8,
+        "offsetMs": 3648,
+        "errorBoundMs": 500,
+        "rttMs": {
+          "count": 8,
+          "min": 928,
+          "median": 975,
+          "p95": 1572,
+          "max": 1572
+        },
+        "target": "https://coin-desk.62.171.141.206.sslip.io/healthz",
+        "assumption": "HTTP Date is the VPS clock rounded down to a second; no exchange-clock calibration."
+      },
+      "summary": {
+        "lcpMs": {
+          "count": 20,
+          "min": 364,
+          "median": 412,
+          "p95": 544,
+          "max": 652
+        },
+        "firstNumericPriceMs": {
+          "count": 20,
+          "min": 1020.0999999940395,
+          "median": 1167.7000000178814,
+          "p95": 1780.8999999761581,
+          "max": 3050.0999999940395
+        },
+        "clientReceiptToDomMs": {
+          "count": 135,
+          "min": 10.599999994039536,
+          "median": 25,
+          "p95": 33.30000001192093,
+          "max": 35
+        },
+        "hubReceiptToDomMs": {
+          "count": 135,
+          "min": 539,
+          "median": 920,
+          "p95": 1351,
+          "max": 1496
+        },
+        "conservativeHubToDomP95UpperMs": 1851,
+        "allTwentyValuesObserved": true,
+        "allTwentyLcpObserved": true,
+        "lcpP95Goal2500Ms": true,
+        "hubReceiptToDomGoal3000Ms": true,
+        "visibleChangedTickCoverage": {
+          "candidateTicks": 135,
+          "completedDomSamples": 135,
+          "superseded": 0,
+          "timeouts": 0,
+          "scope": "Only changed, display-distinct, actually observed DOM updates; superseded intermediate ticks are not measured paint samples."
+        },
+        "freshnessNotProvenByFirstNumericPrice": true,
+        "physicalCompositorPaintNotMeasured": true,
+        "runtimePriceChronologyLimitSeconds": 300,
+        "networkBenchmarkIsNotActualUserFieldData": true
+      },
+      "errors": [],
+      "lcpSamples": [
+        368,
+        416,
+        364,
+        412,
+        460,
+        384,
+        652,
+        488,
+        368,
+        372,
+        420,
+        380,
+        408,
+        428,
+        436,
+        484,
+        544,
+        456,
+        388,
+        404
+      ],
+      "firstPriceMs": [
+        1646.7999999821186,
+        3050.0999999940395,
+        1085.2999999821186,
+        1116.300000011921,
+        1160.4000000059605,
+        1060.4000000059605,
+        1550.5999999940395,
+        1204.4000000059605,
+        1020.0999999940395,
+        1572.5,
+        1086.300000011921,
+        1090.6000000238419,
+        1167.7000000178814,
+        1423.4000000059605,
+        1173,
+        1780.8999999761581,
+        1256.5,
+        1209.4000000059605,
+        1140,
+        1094.4000000059605
+      ]
+    },
+    {
+      "base": "https://coin-desk.62.171.141.206.sslip.io",
+      "settings": {
+        "viewport": "1280x800",
+        "rounds": 20,
+        "downlinkMbps": 10,
+        "uplinkMbps": 5,
+        "addedLatencyMs": 0,
+        "cpuThrottlingRate": 1,
+        "browserCacheDisabled": true,
+        "serviceWorkers": "blocked",
+        "sharedBrowserProcessWithinOrigin": true,
+        "browserProcessSeparatedBetweenOrigins": true,
+        "cdnAndOsDnsTlsCachesNotPurged": true,
+        "identityReadsExcludedFromSamplesAndMayWarmCaches": true,
+        "screenshotOptional": false,
+        "observationWindowAfterFirstValueMs": 8000
+      },
+      "browserVersion": "153.0.8010.12",
+      "clock": {
+        "valid": true,
+        "samples": 8,
+        "offsetMs": 3584,
+        "errorBoundMs": 572,
+        "rttMs": {
+          "count": 8,
+          "min": 1000,
+          "median": 1099,
+          "p95": 1263,
+          "max": 1263
+        },
+        "target": "https://coin-desk.62.171.141.206.sslip.io/healthz",
+        "assumption": "HTTP Date is the VPS clock rounded down to a second; no exchange-clock calibration."
+      },
+      "summary": {
+        "lcpMs": {
+          "count": 20,
+          "min": 1980,
+          "median": 2072,
+          "p95": 2644,
+          "max": 2996
+        },
+        "firstNumericPriceMs": {
+          "count": 20,
+          "min": 2322.0999999940395,
+          "median": 2506.199999988079,
+          "p95": 3425.2000000178814,
+          "max": 3793
+        },
+        "clientReceiptToDomMs": {
+          "count": 100,
+          "min": 10,
+          "median": 26.200000017881393,
+          "p95": 35.599999994039536,
+          "max": 40.29999998211861
+        },
+        "hubReceiptToDomMs": {
+          "count": 100,
+          "min": 470,
+          "median": 743,
+          "p95": 1313,
+          "max": 1748
+        },
+        "conservativeHubToDomP95UpperMs": 1885,
+        "allTwentyValuesObserved": true,
+        "allTwentyLcpObserved": true,
+        "lcpP95Goal2500Ms": false,
+        "hubReceiptToDomGoal3000Ms": true,
+        "visibleChangedTickCoverage": {
+          "candidateTicks": 100,
+          "completedDomSamples": 100,
+          "superseded": 0,
+          "timeouts": 0,
+          "scope": "Only changed, display-distinct, actually observed DOM updates; superseded intermediate ticks are not measured paint samples."
+        },
+        "freshnessNotProvenByFirstNumericPrice": true,
+        "physicalCompositorPaintNotMeasured": true,
+        "runtimePriceChronologyLimitSeconds": 300,
+        "networkBenchmarkIsNotActualUserFieldData": true
+      },
+      "errors": [],
+      "lcpSamples": [
+        2072,
+        2268,
+        2320,
+        2232,
+        2204,
+        2048,
+        2220,
+        2068,
+        2032,
+        1980,
+        2184,
+        1992,
+        2052,
+        2040,
+        1992,
+        2200,
+        2644,
+        2212,
+        2008,
+        2996
+      ],
+      "firstPriceMs": [
+        2428.9000000059605,
+        2626.300000011921,
+        2650.4000000059605,
+        2700.0999999940395,
+        2683.300000011921,
+        2432.7000000178814,
+        2548.5999999940395,
+        2506.199999988079,
+        2379.7999999821186,
+        2383.699999988079,
+        2549,
+        2322.0999999940395,
+        2385.4000000059605,
+        2382.5,
+        2393.5,
+        2562.9000000059605,
+        3793,
+        2604.7999999821186,
+        2425.5999999940395,
+        3425.2000000178814
+      ]
+    }
+  ],
+  "sourceSha256": "ca1a4ee75bdee97bd1892ef55bc764fd2c80baf28c045ad0df7a2107339bd27e",
+  "sourcePath": "work/ux-036/performance-browser-final-20261017.json"
+}

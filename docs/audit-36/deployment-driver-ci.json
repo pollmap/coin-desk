@@ -1,0 +1,266 @@
+{
+  "schemaVersion": 1,
+  "release": "0.36.0",
+  "recordedAt": "2026-10-17T12:41:02.703Z",
+  "scope": "Official VPS deployment command wrapper only; application API, web assets, container image and database contracts unchanged.",
+  "failure": {
+    "detectedDuring": "VPS 0.36 release preparation",
+    "error": "SyntaxError: unterminated string literal (detected at line 9)",
+    "cause": "A normal triple-quoted string interpreted the embedded '\\n' in r.stdout+'\\n'+r.stderr as a real newline while constructing the remote Python program.",
+    "effect": "The generated remote program failed to parse before prepare, activation or database changes. The seven uploaded staging files were preserved.",
+    "productionImpact": "No activation or database change was made by this failed invocation.",
+    "evidenceKind": "Parent deployment observation independently reproduced by generated-source compile tests.",
+    "reproductionLog": "work/ux-036/deploy-wrapper-before.log",
+    "reproducedPhases": [
+      "prepare",
+      "activate"
+    ]
+  },
+  "fix": {
+    "commit": "6dc063cc2d8fd24a29e3ffd36e471eba4e93af82",
+    "files": [
+      "scripts/deploy_vps.py",
+      "tests/test_vps_deploy_command.py"
+    ],
+    "change": "Preserve backslash escapes with a raw triple-quoted remote source literal.",
+    "tests": "Compile generated stage, prepare and activate programs locally with Runner.ssh/Runner.run mocked; never execute these programs in the regression test.",
+    "notChanged": [
+      "API",
+      "src",
+      "dist",
+      "container image",
+      "database schema/data",
+      "deployment guards",
+      "service selection",
+      "backup/rollback behavior"
+    ]
+  },
+  "localVerification": {
+    "before": {
+      "command": "python -m unittest discover -s tests -p test_vps_deploy_command.py",
+      "testMethods": 8,
+      "errors": 2,
+      "phases": [
+        "prepare",
+        "activate"
+      ],
+      "log": "work/ux-036/deploy-wrapper-before.log"
+    },
+    "after": {
+      "command": "python -m unittest discover -s tests -p test_vps*.py",
+      "passed": 88,
+      "failed": 0,
+      "durationSeconds": 4.895,
+      "log": "work/ux-036/deploy-wrapper-after.log"
+    },
+    "pythonCompilation": {
+      "command": "python -m py_compile scripts/deploy_vps.py tests/test_vps_deploy_command.py",
+      "result": "passed"
+    },
+    "diffCheck": "passed"
+  },
+  "evidenceSource": "mcp__code_review.pull_requests_checks; no source-control CLI log fallback",
+  "pullRequest": {
+    "url": "https://github.com/pollmap/coin-desk/pull/75",
+    "head": "6dc063cc2d8fd24a29e3ffd36e471eba4e93af82",
+    "runId": 39031148155,
+    "runUrl": "https://github.com/pollmap/coin-desk/actions/runs/39031148155",
+    "conclusion": "success",
+    "jobs": [
+      {
+        "id": 117391681797,
+        "head_sha": "6dc063cc2d8fd24a29e3ffd36e471eba4e93af82",
+        "name": "container",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/pollmap/coin-desk/actions/runs/39031148155/job/117391681797",
+        "fixtureSmoke": "passed; collectors off",
+        "vulnerabilityAndConfigurationGates": "passed under configured workflow thresholds",
+        "logTruncated": true
+      },
+      {
+        "id": 117391681936,
+        "head_sha": "6dc063cc2d8fd24a29e3ffd36e471eba4e93af82",
+        "name": "checks",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/pollmap/coin-desk/actions/runs/39031148155/job/117391681936",
+        "unit": {
+          "files": 81,
+          "passed": 873
+        },
+        "nodeServer": {
+          "passed": 45,
+          "failed": 0
+        },
+        "vpsPython": {
+          "passed": 88
+        },
+        "backupRestore": {
+          "passed": 2
+        },
+        "npmAuditReportedVulnerabilities": 0,
+        "logTruncated": false
+      },
+      {
+        "id": 117391681948,
+        "head_sha": "6dc063cc2d8fd24a29e3ffd36e471eba4e93af82",
+        "name": "browser (webkit)",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/pollmap/coin-desk/actions/runs/39031148155/job/117391681948",
+        "passed": 234,
+        "failed": 0,
+        "skipped": 2,
+        "configuredRetries": 0,
+        "durationDisplay": "15.5m",
+        "nativeNavigation": {
+          "freshZoom": "passed 6.6s",
+          "restoredZoom": "passed 6.4s",
+          "channel": "default"
+        },
+        "skipReasons": [
+          "Private archive opt-in fixture not supplied in public CI.",
+          "Native CDP multitouch gesture fixture runs on Chromium only; WebKit native tap tests are separate."
+        ],
+        "logTruncated": true
+      },
+      {
+        "id": 117391681962,
+        "head_sha": "6dc063cc2d8fd24a29e3ffd36e471eba4e93af82",
+        "name": "browser (chromium)",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/pollmap/coin-desk/actions/runs/39031148155/job/117391681962",
+        "passed": 235,
+        "failed": 0,
+        "skipped": 1,
+        "configuredRetries": 0,
+        "durationDisplay": "11.9m",
+        "nativeNavigation": {
+          "freshZoom": "passed 5.5s",
+          "restoredZoom": "passed 5.3s",
+          "channel": "chromium (regular full browser, headless)"
+        },
+        "skipReasons": [
+          "Private archive opt-in fixture not supplied in public CI."
+        ],
+        "logTruncated": true
+      },
+      {
+        "id": 117394857945,
+        "head_sha": "6dc063cc2d8fd24a29e3ffd36e471eba4e93af82",
+        "name": "verify",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/pollmap/coin-desk/actions/runs/39031148155/job/117394857945",
+        "logTruncated": false
+      }
+    ]
+  },
+  "main": {
+    "commit": "75b844af0a3df4ca62ea87afed2b77e975df9db0",
+    "runId": 39032284727,
+    "runUrl": "https://github.com/pollmap/coin-desk/actions/runs/39032284727",
+    "conclusion": "success",
+    "jobs": [
+      {
+        "id": 117395014123,
+        "head_sha": "75b844af0a3df4ca62ea87afed2b77e975df9db0",
+        "name": "container",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/pollmap/coin-desk/actions/runs/39032284727/job/117395014123",
+        "fixtureSmoke": "passed; collectors off",
+        "vulnerabilityAndConfigurationGates": "passed under configured workflow thresholds",
+        "logTruncated": true
+      },
+      {
+        "id": 117395014341,
+        "head_sha": "75b844af0a3df4ca62ea87afed2b77e975df9db0",
+        "name": "checks",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/pollmap/coin-desk/actions/runs/39032284727/job/117395014341",
+        "unit": {
+          "files": 81,
+          "passed": 873
+        },
+        "nodeServer": {
+          "passed": 45,
+          "failed": 0
+        },
+        "vpsPython": {
+          "passed": 88
+        },
+        "backupRestore": {
+          "passed": 2
+        },
+        "npmAuditReportedVulnerabilities": 0,
+        "logTruncated": false
+      },
+      {
+        "id": 117395014424,
+        "head_sha": "75b844af0a3df4ca62ea87afed2b77e975df9db0",
+        "name": "browser (chromium)",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/pollmap/coin-desk/actions/runs/39032284727/job/117395014424",
+        "passed": 235,
+        "failed": 0,
+        "skipped": 1,
+        "configuredRetries": 0,
+        "durationDisplay": "9.7m",
+        "nativeNavigation": {
+          "freshZoom": "passed 4.6s",
+          "restoredZoom": "passed 4.4s",
+          "channel": "chromium (regular full browser, headless)"
+        },
+        "skipReasons": [
+          "Private archive opt-in fixture not supplied in public CI."
+        ],
+        "logTruncated": true
+      },
+      {
+        "id": 117395014487,
+        "head_sha": "75b844af0a3df4ca62ea87afed2b77e975df9db0",
+        "name": "browser (webkit)",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/pollmap/coin-desk/actions/runs/39032284727/job/117395014487",
+        "passed": 234,
+        "failed": 0,
+        "skipped": 2,
+        "configuredRetries": 0,
+        "durationDisplay": "15.1m",
+        "nativeNavigation": {
+          "freshZoom": "passed 6.3s",
+          "restoredZoom": "passed 6.0s",
+          "channel": "default"
+        },
+        "skipReasons": [
+          "Private archive opt-in fixture not supplied in public CI.",
+          "Native CDP multitouch gesture fixture runs on Chromium only; WebKit native tap tests are separate."
+        ],
+        "logTruncated": true
+      },
+      {
+        "id": 117398259514,
+        "head_sha": "75b844af0a3df4ca62ea87afed2b77e975df9db0",
+        "name": "verify",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/pollmap/coin-desk/actions/runs/39032284727/job/117398259514",
+        "logTruncated": false
+      }
+    ],
+    "applicationReleaseUnchanged": "0.36 application deployment remains sourced from b374d79cc359eb58445b5d9247752d28d8ab39e4; this main commit changes only the deployment driver and its regression tests.",
+    "diagnosticsIdentityNote": "The CodeReview headRevision pins PR #75 head 6dc063cc2d8fd24a29e3ffd36e471eba4e93af82; each returned job.head_sha was independently verified to equal squash-merge main 75b844af0a3df4ca62ea87afed2b77e975df9db0."
+  },
+  "limits": [
+    "CI validates the deployment wrapper and existing fixture suites; operational deployment and source freshness require separate evidence.",
+    "No application re-deployment is required solely for this wrapper/test change.",
+    "Actual Apple Safari, VoiceOver and physical-phone testing are not represented by Playwright WebKit."
+  ],
+  "managementReadNote": "A live Chromium diagnostic read while the job was running returned provider HTTP 502; completed diagnostics were subsequently read through the same CodeReview tool. No CI retry or CLI log fallback was used."
+}

@@ -1,0 +1,120 @@
+{
+  "schema": "bori-036-public-release-v1",
+  "recordedAt": "2026-10-17T13:34:49.234501+00:00",
+  "commit": "544169a186c66fabeb33ffc28b54575cb815be74",
+  "release": "vps-cd0636019209d1d0",
+  "previousRelease": "vps-51b49312b16e2990",
+  "mainCiRunId": 39034168403,
+  "changedServices": [
+    "api"
+  ],
+  "backupVerified": true,
+  "canonicalDistSha256": "cc1398f88a2af7a385b3d1f9eac7c3abe03b24bbeb2660799d571cdfaa4277f6",
+  "activation": {
+    "commit": "544169a186c66fabeb33ffc28b54575cb815be74",
+    "release": "vps-cd0636019209d1d0",
+    "previousRelease": "vps-51b49312b16e2990",
+    "startedAt": 1792242841,
+    "attemptedServices": [
+      "api"
+    ],
+    "verifiedServices": [
+      "api"
+    ],
+    "schemaChanged": false,
+    "promoted": true,
+    "rollbackServices": [],
+    "sixCoreConfirmationsAdvanced": true,
+    "naturalCoreProofVerified": true,
+    "protectedContainerIdsVerified": [
+      "quotes",
+      "background",
+      "recent",
+      "analysis",
+      "backup",
+      "quote-hub",
+      "migrate"
+    ],
+    "completedAt": 1792242973
+  },
+  "pages": {
+    "exit": 0,
+    "commit": "544169a186c66fabeb33ffc28b54575cb815be74",
+    "release": "vps-cd0636019209d1d0",
+    "deploymentUrls": [
+      "https://3e783234.coin-desk.pages.dev"
+    ],
+    "canonicalDistSha256": "cc1398f88a2af7a385b3d1f9eac7c3abe03b24bbeb2660799d571cdfaa4277f6",
+    "staticSource": "Verified main CI image canonical dist"
+  },
+  "publicCheckedAt": "2026-10-17T13:19:41.130396+00:00",
+  "origins": {
+    "pages": {
+      "assetCount": 235,
+      "matched": 235,
+      "runtimeRelease": "vps-cd0636019209d1d0",
+      "sourceCounts": {
+        "ok": 1553,
+        "delayed": 32
+      },
+      "statusCheckedAt": 1792243237,
+      "activeExpectedSources": 1585,
+      "healthStatus": 503,
+      "healthCheckedAt": 1792243238,
+      "healthActiveDiagnoses": {
+        "CURRENT": 1553,
+        "TRADE_STALE": 32
+      },
+      "securityHeaders": {
+        "content-security-policy": "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https://pbs.twimg.com; font-src 'self'; connect-src 'self'; worker-src 'self' blob:; object-src 'none'; base-uri 'none'; frame-ancestors 'none'; form-action 'self'",
+        "content-security-policy-report-only": null,
+        "strict-transport-security": "max-age=31536000",
+        "permissions-policy": "camera=(), microphone=(), geolocation=(), payment=(), usb=()",
+        "x-frame-options": "DENY",
+        "x-content-type-options": "nosniff",
+        "referrer-policy": "strict-origin-when-cross-origin"
+      }
+    },
+    "vps": {
+      "assetCount": 235,
+      "matched": 235,
+      "runtimeRelease": "vps-cd0636019209d1d0",
+      "sourceCounts": {
+        "ok": 1553,
+        "delayed": 32
+      },
+      "statusCheckedAt": 1792243237,
+      "activeExpectedSources": 1585,
+      "healthStatus": 503,
+      "healthCheckedAt": 1792243242,
+      "healthActiveDiagnoses": {
+        "CURRENT": 1553,
+        "TRADE_STALE": 32
+      },
+      "securityHeaders": {
+        "content-security-policy": "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https://pbs.twimg.com; font-src 'self'; connect-src 'self'; worker-src 'self' blob:; object-src 'none'; base-uri 'none'; frame-ancestors 'none'; form-action 'self'",
+        "content-security-policy-report-only": null,
+        "strict-transport-security": "max-age=31536000",
+        "permissions-policy": "camera=(), microphone=(), geolocation=(), payment=(), usb=()",
+        "x-frame-options": "DENY",
+        "x-content-type-options": "nosniff",
+        "referrer-policy": "strict-origin-when-cross-origin"
+      }
+    }
+  },
+  "privateDataCommitted": false,
+  "evidence": [
+    {
+      "path": "work/ux-0361/deploy/activate-result.json",
+      "sha256": "6bd51f2493c69a111bf862ffd84fc21dbc12aa99b7f9ce6b43b1411e6578584d"
+    },
+    {
+      "path": "work/ux-0361/deploy/deployment-public-final.json",
+      "sha256": "59c095cff79e26d78ea30e1bab3c9b4407c156c889af328402ccc53468e85daa"
+    },
+    {
+      "path": "work/ux-0361/deploy/canonical-assets.json",
+      "sha256": "d3b6a86c8d8daf31f6087b8bdac48caefc75c78548628a8583b85b2b048ff59e"
+    }
+  ]
+}

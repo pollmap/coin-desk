@@ -1,0 +1,221 @@
+{
+  "schema": "bori-036-independent-performance-v1",
+  "checkedAt": "2026-10-17T13:34:48.998862+00:00",
+  "deployment": {
+    "version": "0.36.1",
+    "commit": "544169a186c66fabeb33ffc28b54575cb815be74",
+    "release": "vps-cd0636019209d1d0",
+    "canonicalDistSha256": "cc1398f88a2af7a385b3d1f9eac7c3abe03b24bbeb2660799d571cdfaa4277f6",
+    "apiImageId": "sha256:a94e2d2014f023bc0b2b68ea7af8b0aeb535ba85847b0b53892eaf275a3703f7"
+  },
+  "networkRequests": 0,
+  "quantileMethod": "nearest-rank ceil(q*n), including median",
+  "checks": [
+    {
+      "label": "https://coin-desk.pages.dev/lcpMs",
+      "count": 20,
+      "matched": true
+    },
+    {
+      "label": "https://coin-desk.pages.dev/firstNumericPriceMs",
+      "count": 20,
+      "matched": true
+    },
+    {
+      "label": "https://coin-desk.pages.dev/clientReceiptToDomMs",
+      "count": 98,
+      "matched": true
+    },
+    {
+      "label": "https://coin-desk.pages.dev/hubReceiptToDomMs",
+      "count": 98,
+      "matched": true
+    },
+    {
+      "label": "https://coin-desk.62.171.141.206.sslip.io/lcpMs",
+      "count": 20,
+      "matched": true
+    },
+    {
+      "label": "https://coin-desk.62.171.141.206.sslip.io/firstNumericPriceMs",
+      "count": 20,
+      "matched": true
+    },
+    {
+      "label": "https://coin-desk.62.171.141.206.sslip.io/clientReceiptToDomMs",
+      "count": 128,
+      "matched": true
+    },
+    {
+      "label": "https://coin-desk.62.171.141.206.sslip.io/hubReceiptToDomMs",
+      "count": 128,
+      "matched": true
+    },
+    {
+      "label": "hubReceiptToClientMs",
+      "count": 25845,
+      "matched": true
+    },
+    {
+      "label": "hubReceiptToClientMs/upbit",
+      "count": 4319,
+      "matched": true
+    },
+    {
+      "label": "hubReceiptToClientMs/binance",
+      "count": 21526,
+      "matched": true
+    },
+    {
+      "label": "steadyHundredReceiptToClientMs",
+      "count": 23642,
+      "matched": true
+    },
+    {
+      "label": "steadyHundredReceiptToClientMs/upbit",
+      "count": 3923,
+      "matched": true
+    },
+    {
+      "label": "steadyHundredReceiptToClientMs/binance",
+      "count": 19719,
+      "matched": true
+    },
+    {
+      "label": "mainHandshakeMs",
+      "count": 100,
+      "matched": true
+    },
+    {
+      "label": "reconnectHandshakeMs",
+      "count": 10,
+      "matched": true
+    }
+  ],
+  "mismatches": 0,
+  "sseSteadyResourceOverlap": {
+    "count": 3,
+    "sampleIndexes": [
+      4,
+      5,
+      6
+    ],
+    "clockOffsetMs": 3666.5,
+    "clockErrorBoundMs": 760.5,
+    "serverUtcWindowWithClockGuard": [
+      1792244004.032,
+      1792244062.512
+    ],
+    "services": {
+      "api": {
+        "cpuPercent": {
+          "count": 3,
+          "min": 2.25,
+          "median": 2.52,
+          "p95": 2.63,
+          "max": 2.63
+        },
+        "containerMemoryBytes": {
+          "count": 3,
+          "min": 79964406,
+          "median": 79995863,
+          "p95": 80027320,
+          "max": 80027320
+        },
+        "nodeRssBytes": {
+          "count": 3,
+          "min": 127619072,
+          "median": 127660032,
+          "p95": 127680512,
+          "max": 127680512
+        }
+      },
+      "quote-hub": {
+        "cpuPercent": {
+          "count": 3,
+          "min": 4.17,
+          "median": 9.71,
+          "p95": 14.31,
+          "max": 14.31
+        },
+        "containerMemoryBytes": {
+          "count": 3,
+          "min": 51369738,
+          "median": 51380224,
+          "p95": 64602767,
+          "max": 64602767
+        },
+        "nodeRssBytes": {
+          "count": 3,
+          "min": 90071040,
+          "median": 90095616,
+          "p95": 149704704,
+          "max": 149704704
+        }
+      }
+    },
+    "interpretation": "Only these sparse queries completed inside the steady 100-client interval after allowing clock error. Docker/proc query start times and CPU integration windows are not known to lie entirely inside it; not a continuous CPU profile or long-term memory test."
+  },
+  "allResourceSamples": {
+    "api": {
+      "cpuPercent": {
+        "count": 9,
+        "min": 0.63,
+        "median": 2.63,
+        "p95": 76.78,
+        "max": 76.78
+      },
+      "containerMemoryBytes": {
+        "count": 9,
+        "min": 70097306,
+        "median": 79995863,
+        "p95": 82795561,
+        "max": 82795561
+      },
+      "nodeRssBytes": {
+        "count": 9,
+        "min": 118583296,
+        "median": 127680512,
+        "p95": 130842624,
+        "max": 130842624
+      }
+    },
+    "quote-hub": {
+      "cpuPercent": {
+        "count": 9,
+        "min": 2.12,
+        "median": 6.16,
+        "p95": 22.21,
+        "max": 22.21
+      },
+      "containerMemoryBytes": {
+        "count": 9,
+        "min": 51023708,
+        "median": 51369738,
+        "p95": 64602767,
+        "max": 64602767
+      },
+      "nodeRssBytes": {
+        "count": 9,
+        "min": 89882624,
+        "median": 90071040,
+        "p95": 149704704,
+        "max": 149704704
+      }
+    }
+  },
+  "evidence": [
+    {
+      "path": "work/ux-0361/performance-browser-final-20261017.json",
+      "sha256": "811867218cbf18c85f0f15c660f3d466ab377a989586d854824b77d248d11d15"
+    },
+    {
+      "path": "work/ux-0361/performance-sse-final-20261017.json",
+      "sha256": "3d3ba781bbed36d98c9aee042e1c315b10718f81a24398128f228239bdae89b2"
+    },
+    {
+      "path": "work/ux-0361/performance-resources-final-20261017.json",
+      "sha256": "be5d43e340a507c6c3aac6902a549e70c7e8fe400a15fb64ea3f365249364301"
+    }
+  ]
+}

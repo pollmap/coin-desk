@@ -1,0 +1,64 @@
+{
+  "deployment": {
+    "version": "0.36.1",
+    "commit": "544169a186c66fabeb33ffc28b54575cb815be74",
+    "release": "vps-cd0636019209d1d0",
+    "canonicalDistSha256": "cc1398f88a2af7a385b3d1f9eac7c3abe03b24bbeb2660799d571cdfaa4277f6",
+    "apiImageId": "sha256:a94e2d2014f023bc0b2b68ea7af8b0aeb535ba85847b0b53892eaf275a3703f7"
+  },
+  "initialResult": {
+    "state": "stopped",
+    "writesToServices": 0,
+    "events": [
+      {
+        "kind": "stopped",
+        "errorCode": "API_IMAGE_MISMATCH",
+        "elapsedSeconds": 0.134,
+        "writesToServices": 0,
+        "automaticRetryPerformed": false
+      }
+    ]
+  },
+  "correction": "The probe originally compared the CI config digest to Docker loaded OCI manifest identity. The deployment rehearsal had already verified their layer chain and platform. The corrected probe binds to that recorded loaded identity and still rejects both an incorrect identity and an unexpected container replacement. Product code and service configuration did not change.",
+  "imagePortability": {
+    "ciConfigId": "sha256:a94e2d2014f023bc0b2b68ea7af8b0aeb535ba85847b0b53892eaf275a3703f7",
+    "ociManifestId": "sha256:d70ca4b42efaeb495ea63647be9a49fea4f7fe57cc8241579a24df29706f392b",
+    "loadedId": "sha256:d70ca4b42efaeb495ea63647be9a49fea4f7fe57cc8241579a24df29706f392b",
+    "verifiedIds": [
+      "sha256:a94e2d2014f023bc0b2b68ea7af8b0aeb535ba85847b0b53892eaf275a3703f7",
+      "sha256:d70ca4b42efaeb495ea63647be9a49fea4f7fe57cc8241579a24df29706f392b"
+    ],
+    "layerChainVerified": true,
+    "platformVerified": true
+  },
+  "localChecks": {
+    "generatedRemoteCodeCompiles": true,
+    "verifiedLoadedIdentityAccepted": true,
+    "configDigestAndUnrelatedDigestRejected": true
+  },
+  "helperSha256": "a508ade10bac15f7ba8b7050ced179f0578faaedf8f2b8f3fa5b612b5512d3b4",
+  "repeatedSseReason": "The first SSE run completed, but resource collection had stopped before sampling. A separate full run is retained to measure resources during the same 100-client steady interval.",
+  "firstSseRun": {
+    "state": "complete",
+    "steadyStateStartedAt": "2026-10-17T13:31:09.553Z",
+    "steadyStateElapsedMs": 60006,
+    "errors": [],
+    "summary": {
+      "openedMainSessions": 100,
+      "mainSessionsWithTwoFrames": 100,
+      "reconnectSessionsWithTwoFrames": 10,
+      "fullHundredConnectionExercise": true,
+      "steadyHundredReceiptToClientMs": {
+        "count": 23891,
+        "min": 486,
+        "median": 931,
+        "p95": 1454,
+        "max": 2172
+      },
+      "steadyConservativeP95UpperMs": 2136,
+      "latencyGoal3000Ms": true
+    },
+    "evidenceSha256": "ffe6b9d6d8b8f0862f7c1cd6b1f6495697f6d8cd2c3fe4cf9453dc75ab871d20",
+    "resourceOverlapMeasured": false
+  }
+}

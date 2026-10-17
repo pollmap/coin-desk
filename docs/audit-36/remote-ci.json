@@ -1,0 +1,214 @@
+{
+  "schemaVersion": 1,
+  "release": "0.36.0",
+  "recordedAt": "2026-10-17T12:00:00.648Z",
+  "evidenceSource": "mcp__code_review.pull_requests_checks; no source-control CLI log fallback",
+  "pullRequest": {
+    "url": "https://github.com/pollmap/coin-desk/pull/74",
+    "head": "863b8d9a88d6bdcb9c61866e44ce700f6aff9bcc",
+    "runId": 39028506737,
+    "runUrl": "https://github.com/pollmap/coin-desk/actions/runs/39028506737",
+    "conclusion": "success",
+    "jobs": [
+      {
+        "id": 117384132004,
+        "head_sha": "863b8d9a88d6bdcb9c61866e44ce700f6aff9bcc",
+        "name": "checks",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/pollmap/coin-desk/actions/runs/39028506737/job/117384132004",
+        "unit": {
+          "files": 81,
+          "passed": 873
+        },
+        "nodeServer": {
+          "passed": 45,
+          "failed": 0
+        },
+        "vpsPython": {
+          "passed": 86
+        },
+        "backupRestore": {
+          "passed": 2
+        },
+        "npmAuditReportedVulnerabilities": 0,
+        "logTruncated": false
+      },
+      {
+        "id": 117384132168,
+        "head_sha": "863b8d9a88d6bdcb9c61866e44ce700f6aff9bcc",
+        "name": "browser (chromium)",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/pollmap/coin-desk/actions/runs/39028506737/job/117384132168",
+        "passed": 235,
+        "failed": 0,
+        "skipped": 1,
+        "configuredRetries": 0,
+        "durationDisplay": "12.2m",
+        "logTruncated": true,
+        "nativeNavigation": {
+          "freshZoom": "passed 5.2s",
+          "restoredZoom": "passed 5.6s",
+          "channel": "chromium (regular full browser, headless)"
+        },
+        "skipReasons": [
+          "Private archive opt-in fixture not supplied in public CI."
+        ]
+      },
+      {
+        "id": 117384132171,
+        "head_sha": "863b8d9a88d6bdcb9c61866e44ce700f6aff9bcc",
+        "name": "browser (webkit)",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/pollmap/coin-desk/actions/runs/39028506737/job/117384132171",
+        "passed": 234,
+        "failed": 0,
+        "skipped": 2,
+        "configuredRetries": 0,
+        "durationDisplay": "15.5m",
+        "logTruncated": true,
+        "nativeNavigation": {
+          "freshZoom": "passed 6.5s",
+          "restoredZoom": "passed 6.2s",
+          "channel": "default"
+        },
+        "skipReasons": [
+          "Private archive opt-in fixture not supplied in public CI.",
+          "Native multi-touch CDP test is Chromium-only; WebKit native tap coverage remains separate."
+        ]
+      },
+      {
+        "id": 117384132287,
+        "head_sha": "863b8d9a88d6bdcb9c61866e44ce700f6aff9bcc",
+        "name": "container",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/pollmap/coin-desk/actions/runs/39028506737/job/117384132287",
+        "smoke": "passed with fixture data and collectors off",
+        "configuredSeverity": "HIGH,CRITICAL",
+        "logTruncated": true,
+        "scope": "Configured container smoke, vulnerability and Dockerfile configuration gates; not a complete security assessment."
+      },
+      {
+        "id": 117387159866,
+        "head_sha": "863b8d9a88d6bdcb9c61866e44ce700f6aff9bcc",
+        "name": "verify",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/pollmap/coin-desk/actions/runs/39028506737/job/117387159866",
+        "logTruncated": false
+      }
+    ]
+  },
+  "main": {
+    "head": "b374d79cc359eb58445b5d9247752d28d8ab39e4",
+    "runId": 39029646153,
+    "runUrl": "https://github.com/pollmap/coin-desk/actions/runs/39029646153",
+    "conclusion": "success",
+    "jobs": [
+      {
+        "id": 117387358021,
+        "head_sha": "b374d79cc359eb58445b5d9247752d28d8ab39e4",
+        "name": "container",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/pollmap/coin-desk/actions/runs/39029646153/job/117387358021",
+        "smoke": "passed with fixture data and collectors off",
+        "configuredSeverity": "HIGH,CRITICAL",
+        "logTruncated": true,
+        "scope": "Configured container smoke, vulnerability and Dockerfile configuration gates; not a complete security assessment."
+      },
+      {
+        "id": 117387358068,
+        "head_sha": "b374d79cc359eb58445b5d9247752d28d8ab39e4",
+        "name": "browser (webkit)",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/pollmap/coin-desk/actions/runs/39029646153/job/117387358068",
+        "passed": 234,
+        "failed": 0,
+        "skipped": 2,
+        "configuredRetries": 0,
+        "durationDisplay": "15.8m",
+        "logTruncated": true,
+        "nativeNavigation": {
+          "freshZoom": "passed 6.4s",
+          "restoredZoom": "passed 6.4s",
+          "channel": "default"
+        },
+        "skipReasons": [
+          "Private archive opt-in fixture not supplied in public CI.",
+          "Native multi-touch CDP test is Chromium-only; WebKit native tap coverage remains separate."
+        ]
+      },
+      {
+        "id": 117387358113,
+        "head_sha": "b374d79cc359eb58445b5d9247752d28d8ab39e4",
+        "name": "browser (chromium)",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/pollmap/coin-desk/actions/runs/39029646153/job/117387358113",
+        "passed": 235,
+        "failed": 0,
+        "skipped": 1,
+        "configuredRetries": 0,
+        "durationDisplay": "8.4m",
+        "logTruncated": true,
+        "nativeNavigation": {
+          "freshZoom": "passed 3.5s",
+          "restoredZoom": "passed 3.8s",
+          "channel": "chromium (regular full browser, headless)"
+        },
+        "skipReasons": [
+          "Private archive opt-in fixture not supplied in public CI."
+        ]
+      },
+      {
+        "id": 117387358115,
+        "head_sha": "b374d79cc359eb58445b5d9247752d28d8ab39e4",
+        "name": "checks",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/pollmap/coin-desk/actions/runs/39029646153/job/117387358115",
+        "unit": {
+          "files": 81,
+          "passed": 873
+        },
+        "nodeServer": {
+          "passed": 45,
+          "failed": 0
+        },
+        "vpsPython": {
+          "passed": 86
+        },
+        "backupRestore": {
+          "passed": 2
+        },
+        "npmAuditReportedVulnerabilities": 0,
+        "logTruncated": false
+      },
+      {
+        "id": 117390415631,
+        "head_sha": "b374d79cc359eb58445b5d9247752d28d8ab39e4",
+        "name": "verify",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/pollmap/coin-desk/actions/runs/39029646153/job/117390415631",
+        "logTruncated": false
+      }
+    ],
+    "completedVerifiedAt": "2026-10-17T12:00:00.648Z",
+    "prHeadRevisionForDiagnosticTool": "863b8d9a88d6bdcb9c61866e44ce700f6aff9bcc",
+    "headVerification": "Every main job head_sha independently equals b374d79cc359eb58445b5d9247752d28d8ab39e4. Code Review headRevision parameter refers to the preserved PR head, not the squash merge commit."
+  },
+  "interpretation": [
+    "Counts are separate test suites and engines, not unique user tasks; do not sum overlapping local runs as new coverage.",
+    "Only two native tab cases use regular Chromium channel; all other Chromium cases retain headless shell and WebKit retains its existing setup.",
+    "The earlier Ctrl-click headless-shell failure is preserved in local-qa.json. Its trace shows the exact destination document and comparison API returning HTTP 200 on a separate page identifier; missing Playwright Page registration was not treated as a product fix.",
+    "Retries remain zero and no new skips or weaker range/geometry/assertion thresholds were introduced.",
+    "CI tests use controlled fixtures; passing CI does not establish live provider freshness, production deployment, physical Safari/VoiceOver, or human usability."
+  ],
+  "earlierAttempts": "docs/audit-36/local-qa.json"
+}

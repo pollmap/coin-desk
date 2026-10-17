@@ -1,0 +1,227 @@
+{
+  "schemaVersion": 1,
+  "release": "0.36.1",
+  "recordedAt": "2026-10-17T13:05:21.623Z",
+  "scope": "Dashboard wheel scroll fix only; focused-chart wheel zoom and mobile native pan/pinch remain supported. No source collection contract changes.",
+  "evidenceSource": "mcp__code_review.pull_requests_checks; no source-control CLI log fallback",
+  "pullRequest": {
+    "url": "https://github.com/pollmap/coin-desk/pull/76",
+    "head": "af66608239f06e6826baeb8fd5e8777ba37c6efe",
+    "runId": 39033213557,
+    "runUrl": "https://github.com/pollmap/coin-desk/actions/runs/39033213557",
+    "conclusion": "success",
+    "jobs": [
+      {
+        "id": 117397770806,
+        "head_sha": "af66608239f06e6826baeb8fd5e8777ba37c6efe",
+        "name": "browser (webkit)",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/pollmap/coin-desk/actions/runs/39033213557/job/117397770806",
+        "passed": 236,
+        "failed": 0,
+        "skipped": 2,
+        "configuredRetries": 0,
+        "durationDisplay": "12.5m",
+        "nativeNavigation": {
+          "freshZoom": "passed 5.3s",
+          "restoredZoom": "passed 5.3s",
+          "channel": "default"
+        },
+        "skipReasons": [
+          "Private archive opt-in fixture not supplied in public CI.",
+          "Native CDP multitouch gesture fixture runs on Chromium only; WebKit native tap tests are separate."
+        ],
+        "logTruncated": true
+      },
+      {
+        "id": 117397770820,
+        "head_sha": "af66608239f06e6826baeb8fd5e8777ba37c6efe",
+        "name": "container",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/pollmap/coin-desk/actions/runs/39033213557/job/117397770820",
+        "fixtureSmoke": "passed; collectors off",
+        "configuredVulnerabilityAndConfigurationGates": "passed",
+        "logTruncated": true
+      },
+      {
+        "id": 117397770853,
+        "head_sha": "af66608239f06e6826baeb8fd5e8777ba37c6efe",
+        "name": "browser (chromium)",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/pollmap/coin-desk/actions/runs/39033213557/job/117397770853",
+        "passed": 237,
+        "failed": 0,
+        "skipped": 1,
+        "configuredRetries": 0,
+        "durationDisplay": "12.0m",
+        "nativeNavigation": {
+          "freshZoom": "passed 5.9s",
+          "restoredZoom": "passed 5.6s",
+          "channel": "chromium (regular full browser, headless)"
+        },
+        "skipReasons": [
+          "Private archive opt-in fixture not supplied in public CI."
+        ],
+        "logTruncated": true
+      },
+      {
+        "id": 117397770896,
+        "head_sha": "af66608239f06e6826baeb8fd5e8777ba37c6efe",
+        "name": "checks",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/pollmap/coin-desk/actions/runs/39033213557/job/117397770896",
+        "unit": {
+          "files": 81,
+          "passed": 873
+        },
+        "nodeServer": {
+          "passed": 45,
+          "failed": 0
+        },
+        "vpsPython": {
+          "passed": 88
+        },
+        "backupRestore": {
+          "passed": 2
+        },
+        "npmAuditReportedVulnerabilities": 0,
+        "logTruncated": false
+      },
+      {
+        "id": 117400445808,
+        "head_sha": "af66608239f06e6826baeb8fd5e8777ba37c6efe",
+        "name": "verify",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/pollmap/coin-desk/actions/runs/39033213557/job/117400445808",
+        "logTruncated": false
+      }
+    ]
+  },
+  "main": {
+    "commit": "544169a186c66fabeb33ffc28b54575cb815be74",
+    "runId": 39034168403,
+    "runUrl": "https://github.com/pollmap/coin-desk/actions/runs/39034168403",
+    "conclusion": "success",
+    "jobs": [
+      {
+        "id": 117400534403,
+        "head_sha": "544169a186c66fabeb33ffc28b54575cb815be74",
+        "name": "checks",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/pollmap/coin-desk/actions/runs/39034168403/job/117400534403",
+        "unit": {
+          "files": 81,
+          "passed": 873
+        },
+        "nodeServer": {
+          "passed": 45,
+          "failed": 0
+        },
+        "vpsPython": {
+          "passed": 88
+        },
+        "backupRestore": {
+          "passed": 2
+        },
+        "npmAuditReportedVulnerabilities": 0,
+        "logTruncated": false
+      },
+      {
+        "id": 117400534595,
+        "head_sha": "544169a186c66fabeb33ffc28b54575cb815be74",
+        "name": "browser (chromium)",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/pollmap/coin-desk/actions/runs/39034168403/job/117400534595",
+        "passed": 237,
+        "failed": 0,
+        "skipped": 1,
+        "configuredRetries": 0,
+        "durationDisplay": "12.1m",
+        "nativeNavigation": {
+          "freshZoom": "passed 5.7s",
+          "restoredZoom": "passed 5.6s",
+          "channel": "chromium (regular full browser, headless)"
+        },
+        "skipReasons": [
+          "Private archive opt-in fixture not supplied in public CI."
+        ],
+        "logTruncated": true
+      },
+      {
+        "id": 117400534602,
+        "head_sha": "544169a186c66fabeb33ffc28b54575cb815be74",
+        "name": "browser (webkit)",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/pollmap/coin-desk/actions/runs/39034168403/job/117400534602",
+        "passed": 236,
+        "failed": 0,
+        "skipped": 2,
+        "configuredRetries": 0,
+        "durationDisplay": "12.2m",
+        "nativeNavigation": {
+          "freshZoom": "passed 5.2s",
+          "restoredZoom": "passed 5.2s",
+          "channel": "default"
+        },
+        "skipReasons": [
+          "Private archive opt-in fixture not supplied in public CI.",
+          "Native CDP multitouch gesture fixture runs on Chromium only; WebKit native tap tests are separate."
+        ],
+        "logTruncated": true
+      },
+      {
+        "id": 117400534678,
+        "head_sha": "544169a186c66fabeb33ffc28b54575cb815be74",
+        "name": "container",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/pollmap/coin-desk/actions/runs/39034168403/job/117400534678",
+        "fixtureSmoke": "passed; collectors off",
+        "configuredVulnerabilityAndConfigurationGates": "passed",
+        "logTruncated": true
+      },
+      {
+        "id": 117403133494,
+        "head_sha": "544169a186c66fabeb33ffc28b54575cb815be74",
+        "name": "verify",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/pollmap/coin-desk/actions/runs/39034168403/job/117403133494",
+        "logTruncated": false
+      }
+    ],
+    "artifactMetadata": {
+      "id": 12100979889,
+      "name": "verified-linux-deployment",
+      "sizeInBytes": 118727448,
+      "expired": false
+    },
+    "diagnosticsIdentityNote": "The CodeReview headRevision pins PR #76 head af66608239f06e6826baeb8fd5e8777ba37c6efe; each returned job.head_sha was independently verified to equal squash-merge main 544169a186c66fabeb33ffc28b54575cb815be74."
+  },
+  "localSupplement": {
+    "record": "docs/audit-36/wheel-local-0361.json",
+    "nativeTouchProbe": "work/ux-036/dashboard-touch-probe.json",
+    "fixtureOnly": true,
+    "physicalDevice": false,
+    "gestures": [
+      "Native vertical pan scrolls the page while preserving the chart range.",
+      "Native horizontal pan changes the chart range without page scroll.",
+      "Native two-finger pinch narrows the chart range."
+    ],
+    "canvasPreserved": true,
+    "probeRetries": 0
+  },
+  "limits": [
+    "CI fixture/browser results do not by themselves verify production deployment, source freshness or performance.",
+    "Actual Apple Safari, VoiceOver, physical-phone and human usability tests remain separate.",
+    "CodeReview browser logs were truncated; final totals and native navigation cases were visible. Individual earlier wheel-case log lines were outside the returned log window."
+  ]
+}

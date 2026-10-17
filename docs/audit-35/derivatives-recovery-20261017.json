@@ -1,6 +1,6 @@
 {
   "schema": "bori-bounded-derivative-history-recovery-v1",
-  "status": "running_after_reviewed_resource_resume",
+  "status": "paused_daily_budget",
   "complete": false,
   "release": "vps-0468d9de09a9705f",
   "startedAt": "2026-10-17T09:24:52Z",
@@ -60,5 +60,2311 @@
     "The one-off operator does not stop or replace regular quote, on-chain or recent-data collectors.",
     "A later resource pause or provider failure requires diagnosis before any further explicit resume."
   ],
-  "privateInputsAndOperationalLogsCommitted": false
+  "privateInputsAndOperationalLogsCommitted": false,
+  "latestProgress": {
+    "checkedAt": "2026-10-17T11:37:15Z",
+    "containerStatus": "exited",
+    "cumulativeProgress": {
+      "attempts": 4968,
+      "candidatePages": 4950,
+      "observationsProcessed": 932914
+    },
+    "progressByMetric": {
+      "funding": {
+        "attempts": 2654,
+        "candidateRowsReserved": 530600,
+        "observationsProcessed": 524575
+      },
+      "open_interest_daily": {
+        "attempts": 789,
+        "candidateRowsReserved": 157800,
+        "observationsProcessed": 144483
+      },
+      "long_account_ratio_daily": {
+        "attempts": 790,
+        "candidateRowsReserved": 158000,
+        "observationsProcessed": 144668
+      },
+      "open_interest": {
+        "attempts": 368,
+        "candidateRowsReserved": 71800,
+        "observationsProcessed": 59594
+      },
+      "long_account_ratio": {
+        "attempts": 367,
+        "candidateRowsReserved": 71800,
+        "observationsProcessed": 59594
+      }
+    },
+    "completedPartitions": 594,
+    "remainingPartitions": 86,
+    "inventoryByMetric": {
+      "funding": {
+        "complete": 50,
+        "checkpoint_pending": 86
+      },
+      "open_interest_daily": {
+        "complete": 136
+      },
+      "long_account_ratio_daily": {
+        "complete": 136
+      },
+      "open_interest": {
+        "complete": 136
+      },
+      "long_account_ratio": {
+        "complete": 136
+      }
+    },
+    "completionEvidenceCounts": {
+      "provider_empty": 22,
+      "provider_partial_page": 290,
+      "legacy_completion_without_operator_evidence": 14,
+      "policy_floor": 268
+    },
+    "candidateBudgetUsed": 1000000.0,
+    "storedDerivativeRows": 1179389,
+    "sourceFailureEvents": 0,
+    "remainingSourceErrorStates": 0,
+    "freeDiskBytes": 29822058496,
+    "snapshotConsistency": "Container log and SQLite snapshots are sequential; latest collectors continue independently."
+  },
+  "completedRunOutcomes": [
+    {
+      "outcome": "paused_cpu_pressure",
+      "attempts": 220,
+      "pages": 220,
+      "observations": 41207,
+      "completed": 29
+    },
+    {
+      "outcome": "paused_cpu_pressure",
+      "attempts": 1117,
+      "pages": 1100,
+      "observations": 214423,
+      "completed": 100
+    },
+    {
+      "outcome": "paused_cpu_pressure",
+      "attempts": 988,
+      "pages": 988,
+      "observations": 172236,
+      "completed": 364
+    },
+    {
+      "outcome": "paused_cpu_pressure",
+      "attempts": 794,
+      "pages": 794,
+      "observations": 147518,
+      "completed": 462
+    },
+    {
+      "outcome": "paused_cpu_pressure",
+      "attempts": 26,
+      "pages": 26,
+      "observations": 5200,
+      "completed": 462
+    },
+    {
+      "outcome": "paused_cpu_pressure",
+      "attempts": 1033,
+      "pages": 1033,
+      "observations": 197790,
+      "completed": 561
+    },
+    {
+      "outcome": "paused_cpu_pressure",
+      "attempts": 413,
+      "pages": 413,
+      "observations": 81558,
+      "completed": 573
+    },
+    {
+      "outcome": "paused_cpu_pressure"
+    },
+    {
+      "outcome": "paused_cpu_pressure",
+      "attempts": 263,
+      "pages": 263,
+      "observations": 51301,
+      "completed": 586
+    },
+    {
+      "outcome": "paused_daily_budget",
+      "attempts": 114,
+      "pages": 113,
+      "observations": 21681,
+      "completed": 594
+    }
+  ],
+  "explicitResumes": [
+    {
+      "at": "2026-10-17T09:31:33Z",
+      "previousOutcome": "paused_cpu_pressure",
+      "sameContainerAndGrant": true,
+      "checkpointPreserved": true,
+      "candidateBudgetPreserved": true,
+      "limitsChanged": false,
+      "resourceAssessmentAllowed": true,
+      "hostLoad1": 2.6,
+      "hostCpuCount": 4,
+      "availableMemoryBytes": 3284492288,
+      "freeDiskBytes": 31541657600
+    },
+    {
+      "at": "2026-10-17T09:57:04Z",
+      "previousOutcome": "paused_cpu_pressure",
+      "sameContainerAndGrant": true,
+      "checkpointPreserved": true,
+      "candidateBudgetPreserved": true,
+      "limitsChanged": false,
+      "resourceAssessmentAllowed": true,
+      "hostLoad1": 2.26,
+      "hostCpuCount": 4,
+      "availableMemoryBytes": 3672821760,
+      "freeDiskBytes": 31232413696
+    },
+    {
+      "at": "2026-10-17T10:24:17Z",
+      "previousOutcome": "paused_cpu_pressure",
+      "sameContainerAndGrant": true,
+      "checkpointPreserved": true,
+      "candidateBudgetPreserved": true,
+      "limitsChanged": false,
+      "resourceAssessmentAllowed": true,
+      "hostLoad1": 2.08,
+      "hostCpuCount": 4,
+      "availableMemoryBytes": 3523416064,
+      "freeDiskBytes": 30895325184
+    },
+    {
+      "at": "2026-10-17T10:42:42Z",
+      "previousOutcome": "paused_cpu_pressure",
+      "sameContainerAndGrant": true,
+      "checkpointPreserved": true,
+      "candidateBudgetPreserved": true,
+      "limitsChanged": false,
+      "resourceAssessmentAllowed": true,
+      "hostLoad1": 3,
+      "hostCpuCount": 4,
+      "availableMemoryBytes": 3390660608,
+      "freeDiskBytes": 30589464576
+    },
+    {
+      "at": "2026-10-17T10:46:05Z",
+      "previousOutcome": "paused_cpu_pressure",
+      "sameContainerAndGrant": true,
+      "checkpointPreserved": true,
+      "candidateBudgetPreserved": true,
+      "limitsChanged": false,
+      "resourceAssessmentAllowed": true,
+      "hostLoad1": 1.38,
+      "hostCpuCount": 4,
+      "availableMemoryBytes": 3546812416,
+      "freeDiskBytes": 30574829568
+    },
+    {
+      "at": "2026-10-17T11:08:48Z",
+      "previousOutcome": "paused_cpu_pressure",
+      "sameContainerAndGrant": true,
+      "checkpointPreserved": true,
+      "candidateBudgetPreserved": true,
+      "limitsChanged": false,
+      "resourceAssessmentAllowed": true,
+      "hostLoad1": 1.99,
+      "hostCpuCount": 4,
+      "availableMemoryBytes": 3406000128,
+      "freeDiskBytes": 30122704896
+    },
+    {
+      "at": "2026-10-17T11:19:50Z",
+      "previousOutcome": "paused_cpu_pressure",
+      "sameContainerAndGrant": true,
+      "checkpointPreserved": true,
+      "candidateBudgetPreserved": true,
+      "limitsChanged": false,
+      "resourceAssessmentAllowed": true,
+      "hostLoad1": 3.18,
+      "hostCpuCount": 4,
+      "availableMemoryBytes": 3508719616,
+      "freeDiskBytes": 30075199488
+    },
+    {
+      "at": "2026-10-17T11:24:47Z",
+      "previousOutcome": "paused_cpu_pressure",
+      "sameContainerAndGrant": true,
+      "checkpointPreserved": true,
+      "candidateBudgetPreserved": true,
+      "limitsChanged": false,
+      "resourceAssessmentAllowed": true,
+      "hostLoad1": 2.35,
+      "hostCpuCount": 4,
+      "availableMemoryBytes": 3506622464,
+      "freeDiskBytes": 29970165760
+    },
+    {
+      "at": "2026-10-17T11:34:00Z",
+      "previousOutcome": "paused_cpu_pressure",
+      "sameContainerAndGrant": true,
+      "checkpointPreserved": true,
+      "candidateBudgetPreserved": true,
+      "limitsChanged": false,
+      "resourceAssessmentAllowed": true,
+      "hostLoad1": 1.8,
+      "hostCpuCount": 4,
+      "availableMemoryBytes": 3420975104,
+      "freeDiskBytes": 29832056832
+    }
+  ],
+  "resourcePauseDiagnoses": [
+    {
+      "checkedAt": "2026-10-17T09:30:30Z",
+      "hostCpuCount": 4,
+      "hostLoad1": 3.923828125,
+      "existingPauseThreshold": 3.2,
+      "cause": "Host load exceeded the existing guard; a specific workload cause is not established.",
+      "noOtherProjectsModified": true
+    },
+    {
+      "checkedAt": "2026-10-17T09:55:31Z",
+      "hostCpuCount": 4,
+      "hostLoad1": 3.54248046875,
+      "existingPauseThreshold": 3.2,
+      "cause": "Host load exceeded the existing guard; a specific workload cause is not established.",
+      "noOtherProjectsModified": true
+    },
+    {
+      "checkedAt": "2026-10-17T11:18:34Z",
+      "hostCpuCount": 4,
+      "hostLoad1": 3.52978515625,
+      "existingPauseThreshold": 3.2,
+      "cause": "Host load exceeded the existing guard; a specific workload cause is not established.",
+      "noOtherProjectsModified": true
+    }
+  ],
+  "rejectedResumeAssessments": [
+    {
+      "at": "2026-10-17T10:20:04Z",
+      "reason": "paused_cpu_pressure",
+      "hostLoad1": 3.89,
+      "hostCpuCount": 4,
+      "availableMemoryBytes": 3437547520,
+      "freeDiskBytes": 30893850624,
+      "limitsChanged": false,
+      "budgetReset": false
+    }
+  ],
+  "independentSourcePageVerification": {
+    "startedAt": 1792237061,
+    "snapshotAt": 1792237061,
+    "finishedAt": 1792237068,
+    "readOnlyChanges": 0,
+    "oneOffPaused": true,
+    "latestCollectorsStopped": false,
+    "scope": "Retained Bybit history source pages fetched since this grant began; not the entire historical corpus",
+    "grantIssuedAt": 1792229092,
+    "registrySha256": "faabf9271ca2e2ae08c537c9b0df9e67448bdbd0b4cc4be60257d35e7024c2fb",
+    "sourcePagesContentSha256": "c17a01b341a2bace0e541b8311428426b3378c66295ef4a6562db2a9909a4190",
+    "counts": {
+      "rawPages": 4950,
+      "rawBytes": 86065613,
+      "exact": 932914,
+      "outsideExistingRetentionPolicy": 24412
+    },
+    "groups": {
+      "funding": {
+        "rawPages": 2653,
+        "exact": 524575
+      },
+      "long_account_ratio": {
+        "rawPages": 359,
+        "exact": 59594,
+        "outsideExistingRetentionPolicy": 12206
+      },
+      "long_account_ratio_daily": {
+        "rawPages": 790,
+        "exact": 144668
+      },
+      "open_interest": {
+        "rawPages": 359,
+        "exact": 59594,
+        "outsideExistingRetentionPolicy": 12206
+      },
+      "open_interest_daily": {
+        "rawPages": 789,
+        "exact": 144483
+      }
+    },
+    "complete": true,
+    "snapshotConsistency": "One SQLite read transaction; later source revisions are reported separately, never overwritten by this verifier."
+  },
+  "verificationToolFailure": {
+    "stage": "Before database open",
+    "databaseWrites": 0,
+    "cause": "The verifier applied its address-space limit before spawning Docker; the child CLI could not create a thread.",
+    "resolution": "Docker identity inspection runs first with a ten-second timeout, then the Python verification retains its 768 MiB address-space and 60-second CPU bounds.",
+    "productOrProviderFailure": false
+  },
+  "legacyBoundaryVerification": {
+    "checkedAt": 1792232625,
+    "databaseSnapshotAt": 1792232605,
+    "sourceRequests": 14,
+    "readOnlyChanges": 0,
+    "latestCollectorsStopped": false,
+    "oneOffPaused": true,
+    "results": [
+      {
+        "asset": "BTC",
+        "metric": "open_interest_daily",
+        "firstStored": 1596585600,
+        "completedAt": 1791590461,
+        "requestedAt": 1792232606,
+        "receivedAt": 1792232606,
+        "http": 200,
+        "sha256": "cb37d54f523f921de6e3e578bcb6a131a3ffeda3111ef3bf2c7bc3b0af1284d8",
+        "returned": 0,
+        "oldestReturned": null,
+        "latestReturned": null,
+        "classification": "provider_boundary_confirmed"
+      },
+      {
+        "asset": "BTC",
+        "metric": "long_account_ratio_daily",
+        "firstStored": 1596585600,
+        "completedAt": 1791590462,
+        "requestedAt": 1792232608,
+        "receivedAt": 1792232608,
+        "http": 200,
+        "sha256": "5c72632b84d6ef70fd085638381a78b1dea59fcf66a3e8eb3ec261e70a612683",
+        "returned": 0,
+        "oldestReturned": null,
+        "latestReturned": null,
+        "classification": "provider_boundary_confirmed"
+      },
+      {
+        "asset": "DOGE",
+        "metric": "open_interest_daily",
+        "firstStored": 1622678400,
+        "completedAt": 1791590463,
+        "requestedAt": 1792232609,
+        "receivedAt": 1792232609,
+        "http": 200,
+        "sha256": "c5641c087bb6547a38ad84dcaac3aa4f3206ca78aa030bea3a1d41919eb970ea",
+        "returned": 0,
+        "oldestReturned": null,
+        "latestReturned": null,
+        "classification": "provider_boundary_confirmed"
+      },
+      {
+        "asset": "DOGE",
+        "metric": "long_account_ratio_daily",
+        "firstStored": 1622678400,
+        "completedAt": 1791590464,
+        "requestedAt": 1792232610,
+        "receivedAt": 1792232610,
+        "http": 200,
+        "sha256": "dd272ad2692928e5a9c608f83ff10e976fd9144295c5beb2dad30764de74782a",
+        "returned": 0,
+        "oldestReturned": null,
+        "latestReturned": null,
+        "classification": "provider_boundary_confirmed"
+      },
+      {
+        "asset": "ETH",
+        "metric": "open_interest_daily",
+        "firstStored": 1603324800,
+        "completedAt": 1791590464,
+        "requestedAt": 1792232611,
+        "receivedAt": 1792232612,
+        "http": 200,
+        "sha256": "9fe4c1404207c944a56e344e7a24d7316a7bd2aadec944f3c706ba969a5785d7",
+        "returned": 0,
+        "oldestReturned": null,
+        "latestReturned": null,
+        "classification": "provider_boundary_confirmed"
+      },
+      {
+        "asset": "ETH",
+        "metric": "long_account_ratio_daily",
+        "firstStored": 1603324800,
+        "completedAt": 1791590465,
+        "requestedAt": 1792232613,
+        "receivedAt": 1792232613,
+        "http": 200,
+        "sha256": "e7fcc9ec2adfe2a229047072692a96c23c6489859416ca92eae84a5b08fb03c5",
+        "returned": 0,
+        "oldestReturned": null,
+        "latestReturned": null,
+        "classification": "provider_boundary_confirmed"
+      },
+      {
+        "asset": "WLFI",
+        "metric": "open_interest_daily",
+        "firstStored": 1755993600,
+        "completedAt": 1791980467,
+        "requestedAt": 1792232614,
+        "receivedAt": 1792232614,
+        "http": 200,
+        "sha256": "433fa51d6c5589641bda307d95469b32c5ee5336e83c3e42e128b734c02c77f6",
+        "returned": 0,
+        "oldestReturned": null,
+        "latestReturned": null,
+        "classification": "provider_boundary_confirmed"
+      },
+      {
+        "asset": "WLFI",
+        "metric": "long_account_ratio_daily",
+        "firstStored": 1755993600,
+        "completedAt": 1791980467,
+        "requestedAt": 1792232615,
+        "receivedAt": 1792232615,
+        "http": 200,
+        "sha256": "8a2c746084a3d1e60823b16c8b8e83d62b43181d4c1754cf47f092a5f17df51d",
+        "returned": 0,
+        "oldestReturned": null,
+        "latestReturned": null,
+        "classification": "provider_boundary_confirmed"
+      },
+      {
+        "asset": "QNT",
+        "metric": "long_account_ratio",
+        "firstStored": 1789437600,
+        "completedAt": 1792026844,
+        "requestedAt": 1792232617,
+        "receivedAt": 1792232617,
+        "http": 200,
+        "sha256": "32cb4096d1944b534073307fe837a5666ca3f1a870c5dd40f0d19d7c1bb7a41a",
+        "returned": 200,
+        "oldestReturned": 1788717600,
+        "latestReturned": 1789434000,
+        "classification": "existing_30_day_policy_boundary"
+      },
+      {
+        "asset": "PAXG",
+        "metric": "open_interest",
+        "firstStored": 1789437600,
+        "completedAt": 1792026901,
+        "requestedAt": 1792232618,
+        "receivedAt": 1792232618,
+        "http": 200,
+        "sha256": "1205ed7b0228463724716f9b26769acc8b0dd7adfd0a18fbcf1fda6f6f2cc40e",
+        "returned": 200,
+        "oldestReturned": 1788717600,
+        "latestReturned": 1789434000,
+        "classification": "existing_30_day_policy_boundary"
+      },
+      {
+        "asset": "PAXG",
+        "metric": "long_account_ratio",
+        "firstStored": 1789437600,
+        "completedAt": 1792026902,
+        "requestedAt": 1792232619,
+        "receivedAt": 1792232619,
+        "http": 200,
+        "sha256": "f8792749a5980b1fb62382c413c1bf031c3b0f1883f5cf1b264f3a3864625993",
+        "returned": 200,
+        "oldestReturned": 1788717600,
+        "latestReturned": 1789434000,
+        "classification": "existing_30_day_policy_boundary"
+      },
+      {
+        "asset": "ASTER",
+        "metric": "open_interest",
+        "firstStored": 1789437600,
+        "completedAt": 1792026904,
+        "requestedAt": 1792232620,
+        "receivedAt": 1792232621,
+        "http": 200,
+        "sha256": "90fa3cd97e030def978ad5119d4d52ec23583be2b39b89be01e7ef15c2a5fabc",
+        "returned": 200,
+        "oldestReturned": 1788717600,
+        "latestReturned": 1789434000,
+        "classification": "existing_30_day_policy_boundary"
+      },
+      {
+        "asset": "XAUT",
+        "metric": "open_interest_daily",
+        "firstStored": 1743724800,
+        "completedAt": 1792109042,
+        "requestedAt": 1792232622,
+        "receivedAt": 1792232622,
+        "http": 200,
+        "sha256": "20bbcb454a3c78f1961b0a6aa7f26374352e25b693fdd4462f4f7747614ab120",
+        "returned": 0,
+        "oldestReturned": null,
+        "latestReturned": null,
+        "classification": "provider_boundary_confirmed"
+      },
+      {
+        "asset": "XAUT",
+        "metric": "long_account_ratio_daily",
+        "firstStored": 1743724800,
+        "completedAt": 1792195445,
+        "requestedAt": 1792232623,
+        "receivedAt": 1792232623,
+        "http": 200,
+        "sha256": "01fc2d9815ffad3558de870a9be52675f67261025f18f5ccb6dbd8fd8e6c9ca3",
+        "returned": 0,
+        "oldestReturned": null,
+        "latestReturned": null,
+        "classification": "provider_boundary_confirmed"
+      }
+    ],
+    "failures": [],
+    "complete": true,
+    "scope": "One fresh reverse-boundary request for each legacy completion marker; this is not a full historical re-fetch."
+  },
+  "fundingRemainingScenarios": {
+    "checkedAt": 1792234442,
+    "snapshotAt": 1792234442,
+    "sourceRequests": 1,
+    "sourceRetries": 0,
+    "readOnlyChanges": 0,
+    "pendingFundingPartitions": 127,
+    "budget": {
+      "day": 20743.0,
+      "reserved": 714000.0
+    },
+    "remainingCandidates": 286000.0,
+    "minimumNextPageReservations": 25400,
+    "scenarioAtCurrentIntervalReservations": 481200,
+    "scenarioAtEightHourReservations": 356000,
+    "intervalCounts": {
+      "240": 55,
+      "480": 71,
+      "60": 1
+    },
+    "launchEarliest": 1514764800,
+    "launchLatest": 1759412287,
+    "cursorEarliest": 1704585599.999,
+    "cursorLatest": 1770652799.999,
+    "sourceHashes": [
+      "17d5fcc5588d0eabc2d743b1197855892fbf7a3a0df21e20d9ac1e82e0dfb1fc"
+    ],
+    "scope": "Scenarios assume an unchanged interval and no missing observations from the later of contract launch and the existing 2019-01-01 policy floor to current cursor. Historical interval changes and suspended trading prevent treating either scenario as a proven remaining count. One extra page per partition is included for terminal boundary verification.",
+    "guaranteedCompletionWithinBudget": false,
+    "interpretation": "Neither calendar scenario proves a lower bound on source observations. The remaining budget does not establish that all remaining funding partitions can finish; preserve the hard ceiling and inspect actual exhaustion."
+  },
+  "fundingPrePolicyBoundaryVerification": {
+    "checkedAt": 1792234901,
+    "sourceRequests": 3,
+    "retries": 0,
+    "databaseWrites": 0,
+    "existingPolicyChanged": false,
+    "boundaryExclusive": 1546300800,
+    "results": [
+      {
+        "symbol": "BCHUSDT",
+        "at": 1792234891,
+        "http": 200,
+        "sha256": "85a89ad96180f3be5966fc0aea2c8a3cb559970cbcbe43512a039da62c8bf4f0",
+        "returned": 0,
+        "timestamp": null
+      },
+      {
+        "symbol": "LTCUSDT",
+        "at": 1792234895,
+        "http": 200,
+        "sha256": "f30ee9ca89f95a6fb4177ffab4d496bdbf1f997df8ba685627c9229615026684",
+        "returned": 0,
+        "timestamp": null
+      },
+      {
+        "symbol": "XTZUSDT",
+        "at": 1792234898,
+        "http": 200,
+        "sha256": "15931d9ca3c0dc452c88127688a0dc5ef5c25aff298f2a49b24d547159127d3b",
+        "returned": 0,
+        "timestamp": null
+      }
+    ],
+    "scope": "One reverse boundary query per contract before 2019-01-01; contract launch metadata alone is not proof of available funding history."
+  },
+  "latestCollectionDuringRecovery": {
+    "checkedAt": 1792235133,
+    "baselineAt": 1792228186,
+    "readOnlyChanges": 0,
+    "oneOffContainerStatus": "running",
+    "lanes": [
+      {
+        "lane": "analysis",
+        "latestScheduledAt": 1792235100,
+        "latestCompletedAt": 1792235100,
+        "completionAgeSeconds": 33,
+        "completionAdvanced": true
+      },
+      {
+        "lane": "background",
+        "latestScheduledAt": 1792235100,
+        "latestCompletedAt": 1792235111,
+        "completionAgeSeconds": 22,
+        "completionAdvanced": true
+      },
+      {
+        "lane": "quotes",
+        "latestScheduledAt": 1792235100,
+        "latestCompletedAt": 1792235130,
+        "completionAgeSeconds": 3,
+        "completionAdvanced": true
+      },
+      {
+        "lane": "recent",
+        "latestScheduledAt": 1792235100,
+        "latestCompletedAt": 1792235100,
+        "completionAgeSeconds": 33,
+        "completionAdvanced": true
+      }
+    ],
+    "lastTenMinuteRuns": [
+      {
+        "lane": "analysis",
+        "outcome": "ok",
+        "runs": 10,
+        "firstStart": 1792234560,
+        "lastCompletion": 1792235100
+      },
+      {
+        "lane": "background",
+        "outcome": "ok",
+        "runs": 10,
+        "firstStart": 1792234560,
+        "lastCompletion": 1792235111
+      },
+      {
+        "lane": "quotes",
+        "outcome": "ok",
+        "runs": 10,
+        "firstStart": 1792234560,
+        "lastCompletion": 1792235130
+      },
+      {
+        "lane": "recent",
+        "outcome": "ok",
+        "runs": 10,
+        "firstStart": 1792234560,
+        "lastCompletion": 1792235100
+      }
+    ],
+    "directCollectionOrOverviewCalled": false,
+    "latestCollectorsStopped": false,
+    "otherVisitorsAbsentGuaranteed": false,
+    "scope": "Six quotes compare exact deployed baseline fields. Nine recent derivatives were not recorded in that baseline; current confirmation times are tested as later than deployment, not presented as an exact two-snapshot derivative comparison.",
+    "quotes": [
+      {
+        "key": "quote:BTC:binance",
+        "last_success": 1792235106,
+        "data_as_of": 1792235105,
+        "failures": 0,
+        "actualTradeAt": 1792235105,
+        "timestampKind": "trade",
+        "confirmationAdvanced": true,
+        "dataAsOfAdvanced": true,
+        "confirmationAgeSeconds": 27,
+        "actualTradeAgeSeconds": 28
+      },
+      {
+        "key": "quote:BTC:upbit",
+        "last_success": 1792235105,
+        "data_as_of": 1792235097,
+        "failures": 0,
+        "actualTradeAt": 1792235097,
+        "timestampKind": "trade",
+        "confirmationAdvanced": true,
+        "dataAsOfAdvanced": true,
+        "confirmationAgeSeconds": 28,
+        "actualTradeAgeSeconds": 36
+      },
+      {
+        "key": "quote:DOGE:binance",
+        "last_success": 1792235106,
+        "data_as_of": 1792235101,
+        "failures": 0,
+        "actualTradeAt": 1792235101,
+        "timestampKind": "trade",
+        "confirmationAdvanced": true,
+        "dataAsOfAdvanced": true,
+        "confirmationAgeSeconds": 27,
+        "actualTradeAgeSeconds": 32
+      },
+      {
+        "key": "quote:DOGE:upbit",
+        "last_success": 1792235105,
+        "data_as_of": 1792235101,
+        "failures": 0,
+        "actualTradeAt": 1792235101,
+        "timestampKind": "trade",
+        "confirmationAdvanced": true,
+        "dataAsOfAdvanced": true,
+        "confirmationAgeSeconds": 28,
+        "actualTradeAgeSeconds": 32
+      },
+      {
+        "key": "quote:ETH:binance",
+        "last_success": 1792235106,
+        "data_as_of": 1792235105,
+        "failures": 0,
+        "actualTradeAt": 1792235105,
+        "timestampKind": "trade",
+        "confirmationAdvanced": true,
+        "dataAsOfAdvanced": true,
+        "confirmationAgeSeconds": 27,
+        "actualTradeAgeSeconds": 28
+      },
+      {
+        "key": "quote:ETH:upbit",
+        "last_success": 1792235105,
+        "data_as_of": 1792235101,
+        "failures": 0,
+        "actualTradeAt": 1792235101,
+        "timestampKind": "trade",
+        "confirmationAdvanced": true,
+        "dataAsOfAdvanced": true,
+        "confirmationAgeSeconds": 28,
+        "actualTradeAgeSeconds": 32
+      }
+    ],
+    "recentDerivatives": [
+      {
+        "key": "derivatives:BTC:funding",
+        "last_success": 1792235100,
+        "data_as_of": 1792224000,
+        "failures": 0,
+        "confirmedAfterActivationBaseline": true,
+        "confirmationAgeSeconds": 33,
+        "dataAgeSeconds": 11133
+      },
+      {
+        "key": "derivatives:BTC:open_interest",
+        "last_success": 1792235100,
+        "data_as_of": 1792234800,
+        "failures": 0,
+        "confirmedAfterActivationBaseline": true,
+        "confirmationAgeSeconds": 33,
+        "dataAgeSeconds": 333
+      },
+      {
+        "key": "derivatives:BTC:long_account_ratio",
+        "last_success": 1792235100,
+        "data_as_of": 1792234800,
+        "failures": 0,
+        "confirmedAfterActivationBaseline": true,
+        "confirmationAgeSeconds": 33,
+        "dataAgeSeconds": 333
+      },
+      {
+        "key": "derivatives:DOGE:funding",
+        "last_success": 1792234860,
+        "data_as_of": 1792224000,
+        "failures": 0,
+        "confirmedAfterActivationBaseline": true,
+        "confirmationAgeSeconds": 273,
+        "dataAgeSeconds": 11133
+      },
+      {
+        "key": "derivatives:DOGE:open_interest",
+        "last_success": 1792234860,
+        "data_as_of": 1792234800,
+        "failures": 0,
+        "confirmedAfterActivationBaseline": true,
+        "confirmationAgeSeconds": 273,
+        "dataAgeSeconds": 333
+      },
+      {
+        "key": "derivatives:DOGE:long_account_ratio",
+        "last_success": 1792234860,
+        "data_as_of": 1792234800,
+        "failures": 0,
+        "confirmedAfterActivationBaseline": true,
+        "confirmationAgeSeconds": 273,
+        "dataAgeSeconds": 333
+      },
+      {
+        "key": "derivatives:ETH:funding",
+        "last_success": 1792234920,
+        "data_as_of": 1792224000,
+        "failures": 0,
+        "confirmedAfterActivationBaseline": true,
+        "confirmationAgeSeconds": 213,
+        "dataAgeSeconds": 11133
+      },
+      {
+        "key": "derivatives:ETH:open_interest",
+        "last_success": 1792234920,
+        "data_as_of": 1792234800,
+        "failures": 0,
+        "confirmedAfterActivationBaseline": true,
+        "confirmationAgeSeconds": 213,
+        "dataAgeSeconds": 333
+      },
+      {
+        "key": "derivatives:ETH:long_account_ratio",
+        "last_success": 1792234920,
+        "data_as_of": 1792234800,
+        "failures": 0,
+        "confirmedAfterActivationBaseline": true,
+        "confirmationAgeSeconds": 213,
+        "dataAgeSeconds": 333
+      }
+    ]
+  },
+  "resumeToolPreflightFailure": {
+    "databaseWrites": 0,
+    "containerRestarted": false,
+    "cause": "A resource pause before the first request omits attempts; the local resume helper initially required that field.",
+    "resolution": "The helper records zero attempts for a pre-request pause. The same container, grant, budget, expiry and resource checks remain mandatory.",
+    "sourceFailure": false,
+    "guardRelaxed": false
+  },
+  "todaySnapshot": {
+    "dateUtc": "2026-10-17",
+    "status": "paused_daily_budget",
+    "completedPartitions": 594,
+    "remainingPartitions": 86,
+    "remainingMetrics": [
+      "funding"
+    ],
+    "remaining": [
+      {
+        "asset": "TRX",
+        "metric": "funding",
+        "cursorMilliseconds": 1646985599999,
+        "firstStored": 1646985600,
+        "lastStored": 1792195200,
+        "storedObservations": 5043
+      },
+      {
+        "asset": "ADA",
+        "metric": "funding",
+        "cursorMilliseconds": 1646985599999,
+        "firstStored": 1646985600,
+        "lastStored": 1792195200,
+        "storedObservations": 5043
+      },
+      {
+        "asset": "XLM",
+        "metric": "funding",
+        "cursorMilliseconds": 1646985599999,
+        "firstStored": 1646985600,
+        "lastStored": 1792195200,
+        "storedObservations": 5043
+      },
+      {
+        "asset": "NEAR",
+        "metric": "funding",
+        "cursorMilliseconds": 1646985599999,
+        "firstStored": 1646985600,
+        "lastStored": 1792195200,
+        "storedObservations": 5043
+      },
+      {
+        "asset": "BCH",
+        "metric": "funding",
+        "cursorMilliseconds": 1646985599999,
+        "firstStored": 1646985600,
+        "lastStored": 1792195200,
+        "storedObservations": 5043
+      },
+      {
+        "asset": "UNI",
+        "metric": "funding",
+        "cursorMilliseconds": 1646985599999,
+        "firstStored": 1646985600,
+        "lastStored": 1792195200,
+        "storedObservations": 5043
+      },
+      {
+        "asset": "AVAX",
+        "metric": "funding",
+        "cursorMilliseconds": 1646985599999,
+        "firstStored": 1646985600,
+        "lastStored": 1792195200,
+        "storedObservations": 5043
+      },
+      {
+        "asset": "HBAR",
+        "metric": "funding",
+        "cursorMilliseconds": 1646985599999,
+        "firstStored": 1646985600,
+        "lastStored": 1792195200,
+        "storedObservations": 5043
+      },
+      {
+        "asset": "SHIB",
+        "metric": "funding",
+        "cursorMilliseconds": 1635465599999,
+        "firstStored": 1635465600,
+        "lastStored": 1792195200,
+        "storedObservations": 5443
+      },
+      {
+        "asset": "AAVE",
+        "metric": "funding",
+        "cursorMilliseconds": 1646985599999,
+        "firstStored": 1646985600,
+        "lastStored": 1792195200,
+        "storedObservations": 5043
+      },
+      {
+        "asset": "DOT",
+        "metric": "funding",
+        "cursorMilliseconds": 1646985599999,
+        "firstStored": 1646985600,
+        "lastStored": 1792195200,
+        "storedObservations": 5043
+      },
+      {
+        "asset": "ICP",
+        "metric": "funding",
+        "cursorMilliseconds": 1646985599999,
+        "firstStored": 1646985600,
+        "lastStored": 1792195200,
+        "storedObservations": 5043
+      },
+      {
+        "asset": "JST",
+        "metric": "funding",
+        "cursorMilliseconds": 1658505599999,
+        "firstStored": 1658505600,
+        "lastStored": 1792195200,
+        "storedObservations": 4643
+      },
+      {
+        "asset": "ETC",
+        "metric": "funding",
+        "cursorMilliseconds": 1658505599999,
+        "firstStored": 1658505600,
+        "lastStored": 1792195200,
+        "storedObservations": 4643
+      },
+      {
+        "asset": "ALGO",
+        "metric": "funding",
+        "cursorMilliseconds": 1664265599999,
+        "firstStored": 1664265600,
+        "lastStored": 1792195200,
+        "storedObservations": 4443
+      },
+      {
+        "asset": "ATOM",
+        "metric": "funding",
+        "cursorMilliseconds": 1664265599999,
+        "firstStored": 1664265600,
+        "lastStored": 1792195200,
+        "storedObservations": 4443
+      },
+      {
+        "asset": "FIL",
+        "metric": "funding",
+        "cursorMilliseconds": 1664265599999,
+        "firstStored": 1664265600,
+        "lastStored": 1792195200,
+        "storedObservations": 4443
+      },
+      {
+        "asset": "STX",
+        "metric": "funding",
+        "cursorMilliseconds": 1675605599999,
+        "firstStored": 1675605600,
+        "lastStored": 1792195200,
+        "storedObservations": 4443
+      },
+      {
+        "asset": "INJ",
+        "metric": "funding",
+        "cursorMilliseconds": 1668556799999,
+        "firstStored": 1668556800,
+        "lastStored": 1792195200,
+        "storedObservations": 4443
+      },
+      {
+        "asset": "VET",
+        "metric": "funding",
+        "cursorMilliseconds": 1664265599999,
+        "firstStored": 1664265600,
+        "lastStored": 1792195200,
+        "storedObservations": 4443
+      },
+      {
+        "asset": "CRO",
+        "metric": "funding",
+        "cursorMilliseconds": 1664265599999,
+        "firstStored": 1664265600,
+        "lastStored": 1792195200,
+        "storedObservations": 4443
+      },
+      {
+        "asset": "ZRO",
+        "metric": "funding",
+        "cursorMilliseconds": 1718899199999,
+        "firstStored": 1718899200,
+        "lastStored": 1792209600,
+        "storedObservations": 4466
+      },
+      {
+        "asset": "PYTH",
+        "metric": "funding",
+        "cursorMilliseconds": 1718899199999,
+        "firstStored": 1718899200,
+        "lastStored": 1792209600,
+        "storedObservations": 4466
+      },
+      {
+        "asset": "CRV",
+        "metric": "funding",
+        "cursorMilliseconds": 1664265599999,
+        "firstStored": 1664265600,
+        "lastStored": 1792195200,
+        "storedObservations": 4443
+      },
+      {
+        "asset": "TIA",
+        "metric": "funding",
+        "cursorMilliseconds": 1718899199999,
+        "firstStored": 1718899200,
+        "lastStored": 1792209600,
+        "storedObservations": 4466
+      },
+      {
+        "asset": "ETHFI",
+        "metric": "funding",
+        "cursorMilliseconds": 1718899199999,
+        "firstStored": 1718899200,
+        "lastStored": 1792209600,
+        "storedObservations": 4466
+      },
+      {
+        "asset": "XTZ",
+        "metric": "funding",
+        "cursorMilliseconds": 1761292799999,
+        "firstStored": 1761292800,
+        "lastStored": 1792209600,
+        "storedObservations": 4466
+      },
+      {
+        "asset": "GRT",
+        "metric": "funding",
+        "cursorMilliseconds": 1664265599999,
+        "firstStored": 1664265600,
+        "lastStored": 1792195200,
+        "storedObservations": 4443
+      },
+      {
+        "asset": "ENS",
+        "metric": "funding",
+        "cursorMilliseconds": 1658505599999,
+        "firstStored": 1658505600,
+        "lastStored": 1792195200,
+        "storedObservations": 4643
+      },
+      {
+        "asset": "COMP",
+        "metric": "funding",
+        "cursorMilliseconds": 1658505599999,
+        "firstStored": 1658505600,
+        "lastStored": 1792195200,
+        "storedObservations": 4643
+      },
+      {
+        "asset": "OP",
+        "metric": "funding",
+        "cursorMilliseconds": 1658505599999,
+        "firstStored": 1658505600,
+        "lastStored": 1792195200,
+        "storedObservations": 4643
+      },
+      {
+        "asset": "THETA",
+        "metric": "funding",
+        "cursorMilliseconds": 1658505599999,
+        "firstStored": 1658505600,
+        "lastStored": 1792195200,
+        "storedObservations": 4643
+      },
+      {
+        "asset": "WIF",
+        "metric": "funding",
+        "cursorMilliseconds": 1713139199999,
+        "firstStored": 1713139200,
+        "lastStored": 1792209600,
+        "storedObservations": 4666
+      },
+      {
+        "asset": "JTO",
+        "metric": "funding",
+        "cursorMilliseconds": 1717948799999,
+        "firstStored": 1717948800,
+        "lastStored": 1792209600,
+        "storedObservations": 4666
+      },
+      {
+        "asset": "AXS",
+        "metric": "funding",
+        "cursorMilliseconds": 1687132799999,
+        "firstStored": 1687132800,
+        "lastStored": 1792195200,
+        "storedObservations": 4643
+      },
+      {
+        "asset": "MANA",
+        "metric": "funding",
+        "cursorMilliseconds": 1659311999999,
+        "firstStored": 1659312000,
+        "lastStored": 1792195200,
+        "storedObservations": 4643
+      },
+      {
+        "asset": "SAND",
+        "metric": "funding",
+        "cursorMilliseconds": 1661126399999,
+        "firstStored": 1661126400,
+        "lastStored": 1792195200,
+        "storedObservations": 4643
+      },
+      {
+        "asset": "BAT",
+        "metric": "funding",
+        "cursorMilliseconds": 1658505599999,
+        "firstStored": 1658505600,
+        "lastStored": 1792195200,
+        "storedObservations": 4643
+      },
+      {
+        "asset": "NEO",
+        "metric": "funding",
+        "cursorMilliseconds": 1658505599999,
+        "firstStored": 1658505600,
+        "lastStored": 1792195200,
+        "storedObservations": 4643
+      },
+      {
+        "asset": "CHZ",
+        "metric": "funding",
+        "cursorMilliseconds": 1658505599999,
+        "firstStored": 1658505600,
+        "lastStored": 1792195200,
+        "storedObservations": 4643
+      },
+      {
+        "asset": "XCN",
+        "metric": "funding",
+        "cursorMilliseconds": 1724860799999,
+        "firstStored": 1724860800,
+        "lastStored": 1792209600,
+        "storedObservations": 4466
+      },
+      {
+        "asset": "ORCA",
+        "metric": "funding",
+        "cursorMilliseconds": 1759190399999,
+        "firstStored": 1759190400,
+        "lastStored": 1792209600,
+        "storedObservations": 4466
+      },
+      {
+        "asset": "XEC",
+        "metric": "funding",
+        "cursorMilliseconds": 1664265599999,
+        "firstStored": 1664265600,
+        "lastStored": 1792195200,
+        "storedObservations": 4443
+      },
+      {
+        "asset": "SUPER",
+        "metric": "funding",
+        "cursorMilliseconds": 1761292799999,
+        "firstStored": 1761292800,
+        "lastStored": 1792209600,
+        "storedObservations": 4466
+      },
+      {
+        "asset": "BEAM",
+        "metric": "funding",
+        "cursorMilliseconds": 1711468799999,
+        "firstStored": 1711468800,
+        "lastStored": 1792209600,
+        "storedObservations": 4466
+      },
+      {
+        "asset": "GLM",
+        "metric": "funding",
+        "cursorMilliseconds": 1727913599999,
+        "firstStored": 1727913600,
+        "lastStored": 1792209600,
+        "storedObservations": 4466
+      },
+      {
+        "asset": "ZK",
+        "metric": "funding",
+        "cursorMilliseconds": 1732003199999,
+        "firstStored": 1732003200,
+        "lastStored": 1792209600,
+        "storedObservations": 4466
+      },
+      {
+        "asset": "NMR",
+        "metric": "funding",
+        "cursorMilliseconds": 1720281599999,
+        "firstStored": 1720281600,
+        "lastStored": 1792209600,
+        "storedObservations": 4466
+      },
+      {
+        "asset": "QTUM",
+        "metric": "funding",
+        "cursorMilliseconds": 1664265599999,
+        "firstStored": 1664265600,
+        "lastStored": 1792195200,
+        "storedObservations": 4443
+      },
+      {
+        "asset": "GAS",
+        "metric": "funding",
+        "cursorMilliseconds": 1750168799999,
+        "firstStored": 1750168800,
+        "lastStored": 1792209600,
+        "storedObservations": 4466
+      },
+      {
+        "asset": "W",
+        "metric": "funding",
+        "cursorMilliseconds": 1718899199999,
+        "firstStored": 1718899200,
+        "lastStored": 1792209600,
+        "storedObservations": 4466
+      },
+      {
+        "asset": "LPT",
+        "metric": "funding",
+        "cursorMilliseconds": 1761292799999,
+        "firstStored": 1761292800,
+        "lastStored": 1792209600,
+        "storedObservations": 4466
+      },
+      {
+        "asset": "KAVA",
+        "metric": "funding",
+        "cursorMilliseconds": 1664265599999,
+        "firstStored": 1664265600,
+        "lastStored": 1792195200,
+        "storedObservations": 4443
+      },
+      {
+        "asset": "KAITO",
+        "metric": "funding",
+        "cursorMilliseconds": 1761292799999,
+        "firstStored": 1761292800,
+        "lastStored": 1792209600,
+        "storedObservations": 4466
+      },
+      {
+        "asset": "COW",
+        "metric": "funding",
+        "cursorMilliseconds": 1750636799999,
+        "firstStored": 1750636800,
+        "lastStored": 1792209600,
+        "storedObservations": 4466
+      },
+      {
+        "asset": "SAFE",
+        "metric": "funding",
+        "cursorMilliseconds": 1719331199999,
+        "firstStored": 1719331200,
+        "lastStored": 1792209600,
+        "storedObservations": 4466
+      },
+      {
+        "asset": "ZIL",
+        "metric": "funding",
+        "cursorMilliseconds": 1678435199999,
+        "firstStored": 1678435200,
+        "lastStored": 1792195200,
+        "storedObservations": 4443
+      },
+      {
+        "asset": "CKB",
+        "metric": "funding",
+        "cursorMilliseconds": 1664265599999,
+        "firstStored": 1664265600,
+        "lastStored": 1792195200,
+        "storedObservations": 4443
+      },
+      {
+        "asset": "BNB",
+        "metric": "funding",
+        "cursorMilliseconds": 1664265599999,
+        "firstStored": 1664265600,
+        "lastStored": 1792195200,
+        "storedObservations": 4443
+      },
+      {
+        "asset": "ZEC",
+        "metric": "funding",
+        "cursorMilliseconds": 1664265599999,
+        "firstStored": 1664265600,
+        "lastStored": 1792195200,
+        "storedObservations": 4443
+      },
+      {
+        "asset": "LTC",
+        "metric": "funding",
+        "cursorMilliseconds": 1664265599999,
+        "firstStored": 1664265600,
+        "lastStored": 1792195200,
+        "storedObservations": 4443
+      },
+      {
+        "asset": "PAXG",
+        "metric": "funding",
+        "cursorMilliseconds": 1711468799999,
+        "firstStored": 1711468800,
+        "lastStored": 1792209600,
+        "storedObservations": 4466
+      },
+      {
+        "asset": "CAKE",
+        "metric": "funding",
+        "cursorMilliseconds": 1718899199999,
+        "firstStored": 1718899200,
+        "lastStored": 1792209600,
+        "storedObservations": 4466
+      },
+      {
+        "asset": "DASH",
+        "metric": "funding",
+        "cursorMilliseconds": 1664265599999,
+        "firstStored": 1664265600,
+        "lastStored": 1792195200,
+        "storedObservations": 4443
+      },
+      {
+        "asset": "LDO",
+        "metric": "funding",
+        "cursorMilliseconds": 1658505599999,
+        "firstStored": 1658505600,
+        "lastStored": 1792195200,
+        "storedObservations": 4643
+      },
+      {
+        "asset": "AR",
+        "metric": "funding",
+        "cursorMilliseconds": 1658505599999,
+        "firstStored": 1658505600,
+        "lastStored": 1792195200,
+        "storedObservations": 4643
+      },
+      {
+        "asset": "BONK",
+        "metric": "funding",
+        "cursorMilliseconds": 1707379199999,
+        "firstStored": 1707379200,
+        "lastStored": 1792209600,
+        "storedObservations": 4866
+      },
+      {
+        "asset": "RUNE",
+        "metric": "funding",
+        "cursorMilliseconds": 1658505599999,
+        "firstStored": 1658505600,
+        "lastStored": 1792195200,
+        "storedObservations": 4643
+      },
+      {
+        "asset": "JASMY",
+        "metric": "funding",
+        "cursorMilliseconds": 1658505599999,
+        "firstStored": 1658505600,
+        "lastStored": 1792195200,
+        "storedObservations": 4643
+      },
+      {
+        "asset": "TWT",
+        "metric": "funding",
+        "cursorMilliseconds": 1707379199999,
+        "firstStored": 1707379200,
+        "lastStored": 1792209600,
+        "storedObservations": 4866
+      },
+      {
+        "asset": "CVX",
+        "metric": "funding",
+        "cursorMilliseconds": 1722153599999,
+        "firstStored": 1722153600,
+        "lastStored": 1792209600,
+        "storedObservations": 4866
+      },
+      {
+        "asset": "ZEN",
+        "metric": "funding",
+        "cursorMilliseconds": 1658505599999,
+        "firstStored": 1658505600,
+        "lastStored": 1792195200,
+        "storedObservations": 4643
+      },
+      {
+        "asset": "APE",
+        "metric": "funding",
+        "cursorMilliseconds": 1658505599999,
+        "firstStored": 1658505600,
+        "lastStored": 1792195200,
+        "storedObservations": 4643
+      },
+      {
+        "asset": "DYDX",
+        "metric": "funding",
+        "cursorMilliseconds": 1658505599999,
+        "firstStored": 1658505600,
+        "lastStored": 1792195200,
+        "storedObservations": 4643
+      },
+      {
+        "asset": "GALA",
+        "metric": "funding",
+        "cursorMilliseconds": 1664265599999,
+        "firstStored": 1664265600,
+        "lastStored": 1792195200,
+        "storedObservations": 4443
+      },
+      {
+        "asset": "RSR",
+        "metric": "funding",
+        "cursorMilliseconds": 1664265599999,
+        "firstStored": 1664265600,
+        "lastStored": 1792216800,
+        "storedObservations": 4547
+      },
+      {
+        "asset": "ORDI",
+        "metric": "funding",
+        "cursorMilliseconds": 1713139199999,
+        "firstStored": 1713139200,
+        "lastStored": 1792209600,
+        "storedObservations": 4666
+      },
+      {
+        "asset": "KSM",
+        "metric": "funding",
+        "cursorMilliseconds": 1664265599999,
+        "firstStored": 1664265600,
+        "lastStored": 1792195200,
+        "storedObservations": 4443
+      },
+      {
+        "asset": "SNX",
+        "metric": "funding",
+        "cursorMilliseconds": 1664265599999,
+        "firstStored": 1664265600,
+        "lastStored": 1792195200,
+        "storedObservations": 4443
+      },
+      {
+        "asset": "YFI",
+        "metric": "funding",
+        "cursorMilliseconds": 1664265599999,
+        "firstStored": 1664265600,
+        "lastStored": 1792195200,
+        "storedObservations": 4443
+      },
+      {
+        "asset": "BOME",
+        "metric": "funding",
+        "cursorMilliseconds": 1718899199999,
+        "firstStored": 1718899200,
+        "lastStored": 1792209600,
+        "storedObservations": 4466
+      },
+      {
+        "asset": "0G",
+        "metric": "funding",
+        "cursorMilliseconds": 1762012799999,
+        "firstStored": 1762012800,
+        "lastStored": 1792209600,
+        "storedObservations": 4266
+      },
+      {
+        "asset": "ENJ",
+        "metric": "funding",
+        "cursorMilliseconds": 1674489599999,
+        "firstStored": 1674489600,
+        "lastStored": 1792195200,
+        "storedObservations": 4243
+      },
+      {
+        "asset": "ROSE",
+        "metric": "funding",
+        "cursorMilliseconds": 1670025599999,
+        "firstStored": 1670025600,
+        "lastStored": 1792195200,
+        "storedObservations": 4243
+      },
+      {
+        "asset": "ONT",
+        "metric": "funding",
+        "cursorMilliseconds": 1730908799999,
+        "firstStored": 1730908800,
+        "lastStored": 1792209600,
+        "storedObservations": 4266
+      },
+      {
+        "asset": "ASTR",
+        "metric": "funding",
+        "cursorMilliseconds": 1670025599999,
+        "firstStored": 1670025600,
+        "lastStored": 1792195200,
+        "storedObservations": 4243
+      }
+    ],
+    "unchangedGrant": {
+      "kind": "operator-recovery-v1",
+      "id": "recovery-035-20261017",
+      "issuedAt": 1792229092,
+      "expiresAt": 1792296000,
+      "dailyRows": 1000000
+    },
+    "candidateBudget": {
+      "day": 20743.0,
+      "reserved": 1000000.0
+    },
+    "exactMatchedSourceObservations": 932914,
+    "retainedSourcePages": 4950,
+    "rawBytes": 86065613,
+    "outsideExistingHourlyPolicyObservations": 24412,
+    "missingSourceObservations": 0,
+    "differentSourceObservations": 0,
+    "sourceFailureEvents": 0,
+    "remainingSourceErrorStates": 0,
+    "schema": {
+      "sha256": "9242fcb6b2d233d89f48e4e111d4e7c00890ec5fc7a2c6ca449701faf3daaf2f",
+      "userTableCount": 21,
+      "matchesVerifiedPreRecoveryBackup": true
+    },
+    "backupLogicalBytes": 360390656,
+    "freeDiskBytes": 29808205824,
+    "freshBackupCreatedByThisCheck": false,
+    "readOnlyChanges": 0,
+    "checkedAt": "2026-10-17T11:38:41Z",
+    "sourceVerificationAt": "2026-10-17T11:37:41Z",
+    "limitations": [
+      "The source comparison covers retained pages from this bounded recovery, not every historical record in the service.",
+      "The 544 completed open-interest and account-ratio partitions include the existing 30-day hourly policy; provider and policy boundaries remain distinct.",
+      "The 86 funding partitions retain checkpoints; the exact remaining provider observation count is not established.",
+      "A logical SQLite size check is not a newly created or restored deployment backup.",
+      "Latest collectors continue; this is a bounded snapshot and not proof of uninterrupted operation."
+    ]
+  },
+  "normalUtcResumePreparation": {
+    "preparedAt": 1792240030,
+    "state": "prepared_only_not_installed_or_executed",
+    "expectedRelease": "vps-51b49312b16e2990",
+    "expectedCommit": "b374d79cc359eb58445b5d9247752d28d8ab39e4",
+    "activationRelativePath": "audit/release-036-20261017/activation.json",
+    "tests": 28,
+    "passed": true,
+    "testScope": "Local pure guards and mocked CLI tests, including a temporary once-only receipt. No SSH, database, container or timer operation. Actual activation and next-day execution remain unverified.",
+    "files": {
+      "resume-history-next-utc-v2-20261018.py": "337b3300dff07c74ac2fde4626a09a670d39ca90e66d07bda6ab6d27ff074844",
+      "test-next-utc-resume-v2-20261018.py": "037d1e4ad690746a4dbd56d750b21900923d142f0a76a511a0cd5b9ad5d2e3a0"
+    },
+    "timerInstalled": false,
+    "budgetReset": false,
+    "newGrantCreated": false,
+    "serviceStopUsesOwnedCleanup": true,
+    "onlyCurrentExecutionResult": true,
+    "version": 2,
+    "previousInspectedHelperSha256": "9adfa8a6960850915d2e77ec6886ac98b7e2b8c62b632c4c52ed1ae7463b24d2",
+    "previousHelperPreserved": true,
+    "version2Staged": false,
+    "localPreparationIssue": {
+      "cause": "Windows text-mode write converted LF to CRLF while creating versioned helpers; local hash guard rejected the mismatch.",
+      "resolution": "Explicit UTF-8 byte writes preserve original LF and both expected hashes.",
+      "remoteActions": 0
+    }
+  },
+  "latestFreshnessSamples": [
+    {
+      "startedAt": 1792237392,
+      "scope": "Sequential bounded read-only samples, not continuous freshness or a historical completeness proof.",
+      "directCollectionOrOverviewCalled": false,
+      "public": [
+        {
+          "origin": "https://coin-desk.pages.dev",
+          "httpStatus": 503,
+          "checkedAt": 1792237398,
+          "receivedAt": 1792237396,
+          "ok": false,
+          "active": 1585,
+          "statusCounts": {
+            "ok": 1542,
+            "error": 1,
+            "delayed": 42
+          },
+          "diagnosisCounts": {
+            "PROVIDER_RATE_LIMIT": 1,
+            "TRADE_STALE": 42
+          },
+          "noncurrentSourceTypes": {
+            "quote": 42,
+            "price_candles": 1
+          },
+          "failureCounts": {
+            "1": 5,
+            "3": 3,
+            "2": 3,
+            "0": 13,
+            "6": 1,
+            "18": 1,
+            "33": 1,
+            "5": 3,
+            "14": 1,
+            "13": 2,
+            "4": 6,
+            "7": 1,
+            "9": 1,
+            "32": 1,
+            "8": 1
+          },
+          "reasonCodes": {
+            "SOURCE_ERROR": 1,
+            "SOURCE_DELAYED": 42
+          },
+          "automation": {
+            "lastCompletedAt": 1792237390,
+            "lastSucceededAt": 1792237320,
+            "lastRunStatus": "partial",
+            "stalled": false
+          }
+        },
+        {
+          "origin": "https://coin-desk.62.171.141.206.sslip.io",
+          "httpStatus": 503,
+          "checkedAt": 1792237400,
+          "receivedAt": 1792237400,
+          "ok": false,
+          "active": 1585,
+          "statusCounts": {
+            "ok": 1541,
+            "error": 1,
+            "delayed": 43
+          },
+          "diagnosisCounts": {
+            "PROVIDER_RATE_LIMIT": 1,
+            "TRADE_STALE": 43
+          },
+          "noncurrentSourceTypes": {
+            "quote": 43,
+            "price_candles": 1
+          },
+          "failureCounts": {
+            "1": 5,
+            "0": 14,
+            "3": 3,
+            "2": 3,
+            "6": 1,
+            "18": 1,
+            "33": 1,
+            "5": 3,
+            "14": 1,
+            "13": 2,
+            "4": 6,
+            "7": 1,
+            "9": 1,
+            "32": 1,
+            "8": 1
+          },
+          "reasonCodes": {
+            "SOURCE_ERROR": 1,
+            "SOURCE_DELAYED": 43
+          },
+          "automation": {
+            "lastCompletedAt": 1792237390,
+            "lastSucceededAt": 1792237320,
+            "lastRunStatus": "partial",
+            "stalled": false
+          }
+        }
+      ],
+      "coreQuotes": {
+        "checkedAt": 1792237407,
+        "release": "vps-0468d9de09a9705f",
+        "readOnlyChanges": 0,
+        "quotes": [
+          {
+            "key": "quote:BTC:binance",
+            "last_attempt": 1792237386,
+            "last_success": 1792237386,
+            "data_as_of": 1792237385,
+            "failures": 0,
+            "actualTradeAt": 1792237385,
+            "timestampKind": "trade",
+            "confirmationAgeSeconds": 21,
+            "actualTradeAgeSeconds": 22
+          },
+          {
+            "key": "quote:BTC:upbit",
+            "last_attempt": 1792237385,
+            "last_success": 1792237385,
+            "data_as_of": 1792237380,
+            "failures": 0,
+            "actualTradeAt": 1792237380,
+            "timestampKind": "trade",
+            "confirmationAgeSeconds": 22,
+            "actualTradeAgeSeconds": 27
+          },
+          {
+            "key": "quote:DOGE:binance",
+            "last_attempt": 1792237386,
+            "last_success": 1792237386,
+            "data_as_of": 1792237369,
+            "failures": 0,
+            "actualTradeAt": 1792237369,
+            "timestampKind": "trade",
+            "confirmationAgeSeconds": 21,
+            "actualTradeAgeSeconds": 38
+          },
+          {
+            "key": "quote:DOGE:upbit",
+            "last_attempt": 1792237385,
+            "last_success": 1792237385,
+            "data_as_of": 1792237353,
+            "failures": 0,
+            "actualTradeAt": 1792237353,
+            "timestampKind": "trade",
+            "confirmationAgeSeconds": 22,
+            "actualTradeAgeSeconds": 54
+          },
+          {
+            "key": "quote:ETH:binance",
+            "last_attempt": 1792237386,
+            "last_success": 1792237386,
+            "data_as_of": 1792237385,
+            "failures": 0,
+            "actualTradeAt": 1792237385,
+            "timestampKind": "trade",
+            "confirmationAgeSeconds": 21,
+            "actualTradeAgeSeconds": 22
+          },
+          {
+            "key": "quote:ETH:upbit",
+            "last_attempt": 1792237385,
+            "last_success": 1792237385,
+            "data_as_of": 1792237380,
+            "failures": 0,
+            "actualTradeAt": 1792237380,
+            "timestampKind": "trade",
+            "confirmationAgeSeconds": 22,
+            "actualTradeAgeSeconds": 27
+          }
+        ],
+        "allActualTradeFresh": true,
+        "allRecentChecks": true
+      },
+      "finishedAt": 1792237404
+    },
+    {
+      "startedAt": 1792237506,
+      "scope": "Sequential bounded read-only samples, not continuous freshness or a historical completeness proof.",
+      "directCollectionOrOverviewCalled": false,
+      "public": [
+        {
+          "origin": "https://coin-desk.pages.dev",
+          "httpStatus": 503,
+          "checkedAt": 1792237511,
+          "receivedAt": 1792237510,
+          "ok": false,
+          "active": 1585,
+          "statusCounts": {
+            "ok": 1533,
+            "error": 1,
+            "delayed": 51
+          },
+          "diagnosisCounts": {
+            "PROVIDER_RATE_LIMIT": 1,
+            "TRADE_STALE": 51
+          },
+          "noncurrentSourceTypes": {
+            "price_candles": 1,
+            "quote": 51
+          },
+          "failureCounts": {
+            "1": 4,
+            "0": 24,
+            "4": 3,
+            "2": 4,
+            "6": 3,
+            "19": 1,
+            "34": 1,
+            "5": 4,
+            "15": 1,
+            "14": 2,
+            "9": 2,
+            "10": 1,
+            "33": 1,
+            "3": 1
+          },
+          "sourceErrors": [
+            {
+              "key": "LINK:upbit:1h",
+              "status": "error",
+              "diagnosis": "PROVIDER_RATE_LIMIT",
+              "errorCode": "PROVIDER_RATE_LIMIT",
+              "last_attempt": 1792237387,
+              "last_success": 1792233780,
+              "data_as_of": 1792231200,
+              "next_attempt": 1792237507,
+              "failures": 1,
+              "expectedCadenceSeconds": 3600,
+              "retryAt": 1792237507
+            }
+          ],
+          "reasonCodes": {
+            "SOURCE_ERROR": 1,
+            "SOURCE_DELAYED": 51
+          },
+          "automation": {
+            "lastCompletedAt": 1792237500,
+            "lastSucceededAt": 1792237500,
+            "lastRunStatus": "idle",
+            "stalled": false
+          }
+        },
+        {
+          "origin": "https://coin-desk.62.171.141.206.sslip.io",
+          "httpStatus": 503,
+          "checkedAt": 1792237514,
+          "receivedAt": 1792237514,
+          "ok": false,
+          "active": 1585,
+          "statusCounts": {
+            "ok": 1534,
+            "error": 1,
+            "delayed": 50
+          },
+          "diagnosisCounts": {
+            "PROVIDER_RATE_LIMIT": 1,
+            "TRADE_STALE": 50
+          },
+          "noncurrentSourceTypes": {
+            "price_candles": 1,
+            "quote": 50
+          },
+          "failureCounts": {
+            "1": 3,
+            "0": 24,
+            "4": 3,
+            "2": 4,
+            "6": 3,
+            "19": 1,
+            "34": 1,
+            "5": 4,
+            "15": 1,
+            "14": 2,
+            "9": 2,
+            "10": 1,
+            "33": 1,
+            "3": 1
+          },
+          "sourceErrors": [
+            {
+              "key": "LINK:upbit:1h",
+              "status": "error",
+              "diagnosis": "PROVIDER_RATE_LIMIT",
+              "errorCode": "PROVIDER_RATE_LIMIT",
+              "last_attempt": 1792237387,
+              "last_success": 1792233780,
+              "data_as_of": 1792231200,
+              "next_attempt": 1792237507,
+              "failures": 1,
+              "expectedCadenceSeconds": 3600,
+              "retryAt": 1792237507
+            }
+          ],
+          "reasonCodes": {
+            "SOURCE_ERROR": 1,
+            "SOURCE_DELAYED": 50
+          },
+          "automation": {
+            "lastCompletedAt": 1792237500,
+            "lastSucceededAt": 1792237500,
+            "lastRunStatus": "idle",
+            "stalled": false
+          }
+        }
+      ],
+      "coreQuotes": {
+        "checkedAt": 1792237521,
+        "release": "vps-0468d9de09a9705f",
+        "readOnlyChanges": 0,
+        "quotes": [
+          {
+            "key": "quote:BTC:binance",
+            "last_attempt": 1792237507,
+            "last_success": 1792237507,
+            "data_as_of": 1792237505,
+            "failures": 0,
+            "actualTradeAt": 1792237505,
+            "timestampKind": "trade",
+            "confirmationAgeSeconds": 14,
+            "actualTradeAgeSeconds": 16
+          },
+          {
+            "key": "quote:BTC:upbit",
+            "last_attempt": 1792237505,
+            "last_success": 1792237505,
+            "data_as_of": 1792237485,
+            "failures": 0,
+            "actualTradeAt": 1792237485,
+            "timestampKind": "trade",
+            "confirmationAgeSeconds": 16,
+            "actualTradeAgeSeconds": 36
+          },
+          {
+            "key": "quote:DOGE:binance",
+            "last_attempt": 1792237507,
+            "last_success": 1792237507,
+            "data_as_of": 1792237505,
+            "failures": 0,
+            "actualTradeAt": 1792237505,
+            "timestampKind": "trade",
+            "confirmationAgeSeconds": 14,
+            "actualTradeAgeSeconds": 16
+          },
+          {
+            "key": "quote:DOGE:upbit",
+            "last_attempt": 1792237505,
+            "last_success": 1792237505,
+            "data_as_of": 1792237482,
+            "failures": 0,
+            "actualTradeAt": 1792237482,
+            "timestampKind": "trade",
+            "confirmationAgeSeconds": 16,
+            "actualTradeAgeSeconds": 39
+          },
+          {
+            "key": "quote:ETH:binance",
+            "last_attempt": 1792237507,
+            "last_success": 1792237507,
+            "data_as_of": 1792237503,
+            "failures": 0,
+            "actualTradeAt": 1792237503,
+            "timestampKind": "trade",
+            "confirmationAgeSeconds": 14,
+            "actualTradeAgeSeconds": 18
+          },
+          {
+            "key": "quote:ETH:upbit",
+            "last_attempt": 1792237505,
+            "last_success": 1792237505,
+            "data_as_of": 1792237490,
+            "failures": 0,
+            "actualTradeAt": 1792237490,
+            "timestampKind": "trade",
+            "confirmationAgeSeconds": 16,
+            "actualTradeAgeSeconds": 31
+          }
+        ],
+        "allActualTradeFresh": true,
+        "allRecentChecks": true
+      },
+      "finishedAt": 1792237518
+    }
+  ],
+  "linkHourlyNaturalRecovery": {
+    "receivedAt": 1792237582,
+    "source": "LINK:upbit:1h",
+    "endpoint": "/api/v1/status/sources?q=LINK%3Aupbit%3A1h&limit=2",
+    "httpStatus": 200,
+    "status": "ok",
+    "diagnosis": "CURRENT",
+    "errorCode": null,
+    "last_attempt": 1792237560,
+    "last_success": 1792237560,
+    "data_as_of": 1792234800,
+    "next_attempt": 0,
+    "failures": 0,
+    "retryAt": null,
+    "priorFailureAt": 1792237387,
+    "priorRetryDueAt": 1792237507,
+    "recoveredByExistingSchedule": true,
+    "directCollectionOrOverviewCalled": false,
+    "requestsByThisCheck": 1,
+    "readOnly": true,
+    "scope": "One provider rate-limit event naturally recovered. This is not proof of continuous provider availability or all-source health."
+  },
+  "normalUtcReadOnlyInspection": {
+    "checkedAt": 1792239182,
+    "helperSha256": "9adfa8a6960850915d2e77ec6886ac98b7e2b8c62b632c4c52ed1ae7463b24d2",
+    "helperMode": "0o700",
+    "helperStaged": true,
+    "timerInstalled": false,
+    "executeRequested": false,
+    "returnCode": 0,
+    "decision": "waiting_normal_utc_boundary",
+    "release": {
+      "release": "vps-51b49312b16e2990",
+      "commit": "b374d79cc359eb58445b5d9247752d28d8ab39e4",
+      "operatorCodeSha256": {
+        "server/history-backfill.mjs": "ed91fd54443bf4a1f4f6496b97cc971d94380710da8653e0d0ed02edb6998955",
+        "server-dist/backfill-budget.mjs": "b7928155ef61fdc9e99d355c8b789f864c286624b83641719aaec904e904e1b0",
+        "server-dist/history-operator.mjs": "b70e423d44c4b1b06ca85b787522ab148e35ab957f53cd687011b9ce3b8500cd",
+        "server/sqlite.mjs": "60ac00f648de01373d7e23a7957744180b341f1f62167a85325e34a7a8583b12",
+        "server/environment.mjs": "d31f92e9dd877c29164438c40ff699603e42ddb69e36988cf7c2816824fef6d9"
+      }
+    },
+    "unchangedGrant": {
+      "kind": "operator-recovery-v1",
+      "id": "recovery-035-20261017",
+      "issuedAt": 1792229092,
+      "expiresAt": 1792296000,
+      "dailyRows": 1000000
+    },
+    "budgetBefore": {
+      "day": 20743.0,
+      "reserved": 1000000.0
+    },
+    "resources": {
+      "freeDiskBytes": 33196044288,
+      "availableMemoryBytes": 3741995008,
+      "cgroupAvailableBytes": 794750976,
+      "load1": 1.44,
+      "cpus": 4,
+      "cpuObservationScope": "host-load-and-host-logical-cpus",
+      "cgroupCpuQuota": 0.5,
+      "maxTemperatureC": null,
+      "temperatureStatus": "not_exposed_by_host"
+    },
+    "sourceErrorStates": 0,
+    "databaseWrites": 0,
+    "budgetReset": false,
+    "started": false,
+    "automaticRestart": false
+  },
+  "normalUtcResumePreparationV3": {
+    "preparedAt": 1792241661,
+    "version": 3,
+    "expectedVersion": "0.36.1",
+    "state": "prepared_local_only_awaiting_verified_activation",
+    "expectedRelease": "vps-cd0636019209d1d0",
+    "expectedCommit": "544169a186c66fabeb33ffc28b54575cb815be74",
+    "activationRelativePath": "audit/release-0361-20261017/activation.json",
+    "tests": 29,
+    "passed": true,
+    "testScope": "Local pure guards and mocked CLI only. Real deployed image, sandbox, timer and execution are not verified for V3.",
+    "files": {
+      "resume-history-next-utc-v3-20261018.py": "1907ff52b42ddf601e89382c1c25bb0d1f69541bef4cdba6194d501e755a507b",
+      "test-next-utc-resume-v3-20261018.py": "4b5ff61ce1a5444c4a8c7b9439c790658c42ca9ac593fe9b2f4a0e6608559f5b"
+    },
+    "preservedV2Sha256": "337b3300dff07c74ac2fde4626a09a670d39ca90e66d07bda6ab6d27ff074844",
+    "remoteActions": 0,
+    "timerInstalled": false,
+    "recoveryStarted": false,
+    "budgetReset": false,
+    "newGrantCreated": false
+  },
+  "normalUtcReadOnlyInspectionV3": {
+    "checkedAt": "2026-10-17T13:17:44+00:00",
+    "version": "0.36.1",
+    "release": "vps-cd0636019209d1d0",
+    "commit": "544169a186c66fabeb33ffc28b54575cb815be74",
+    "helperSha256": "1907ff52b42ddf601e89382c1c25bb0d1f69541bef4cdba6194d501e755a507b",
+    "helperMode": "0o700",
+    "localGuardTests": 29,
+    "actualApiImageAndActivationMatch": true,
+    "operatorCodeFilesCompared": 5,
+    "operatorCodeHashesMatchExistingRecoveryImage": true,
+    "decision": "waiting_normal_utc_boundary",
+    "started": false,
+    "timerInstalled": false,
+    "databaseWritesByWrapper": 0,
+    "budgetResetByWrapper": false,
+    "existingGrantUnchanged": true,
+    "budgetBefore": {
+      "day": 20743.0,
+      "reserved": 1000000.0
+    },
+    "sourceErrorStates": 0,
+    "resources": {
+      "freeDiskBytes": 31850569728,
+      "availableMemoryBytes": 3776483328,
+      "cgroupAvailableBytes": 795131904,
+      "load1": 3.53,
+      "cpus": 4,
+      "cpuObservationScope": "host-load-and-host-logical-cpus",
+      "cgroupCpuQuota": 0.5,
+      "maxTemperatureC": null,
+      "temperatureStatus": "not_exposed_by_host"
+    },
+    "scope": "Actual deployed 0.36.1 image, activation, operator code, existing stopped container and grant were inspected. This did not install a timer or execute recovery. The UTC waiting decision does not imply that all execution guards would pass: host load 3.53 exceeded the 3.2 limit at this sample; the same limit is checked again at the scheduled time."
+  },
+  "normalUtcTimerInstalledV3": {
+    "checkedAt": "2026-10-17T13:39:25+00:00",
+    "version": "0.36.1",
+    "release": "vps-cd0636019209d1d0",
+    "commit": "544169a186c66fabeb33ffc28b54575cb815be74",
+    "helperSha256": "1907ff52b42ddf601e89382c1c25bb0d1f69541bef4cdba6194d501e755a507b",
+    "timerUnit": "coin-desk-history-once-20261018.timer",
+    "serviceUnit": "coin-desk-history-once-20261018.service",
+    "onCalendar": "2026-10-18 00:05:00 UTC",
+    "nextTriggerUtc": "2026-10-18T00:05:00Z",
+    "nextTriggerKst": "2026-10-18T09:05:00+09:00",
+    "nextTriggerEpochMicroseconds": 1792281900000000,
+    "independentTriggerChecks": [
+      "D-Bus NextElapseUSecRealtime epoch",
+      "systemd-analyze calendar --iterations=1"
+    ],
+    "timerState": "active/waiting",
+    "persistent": false,
+    "serviceState": "inactive/dead",
+    "serviceInvoked": false,
+    "restartPolicy": "no",
+    "restarts": 0,
+    "systemdAnalyzeVerifyPassed": true,
+    "sameSandboxReadOnlyInspectionPassed": true,
+    "helperAndFiveOperatorCodeHashesMatch": true,
+    "installedUnitSha256": {
+      "coin-desk-history-once-20261018.service": "e9030f0e725b8e24aa0548bcc8ee54053aa4cb1241a59af061ae09a71aedd8f3",
+      "coin-desk-history-once-20261018.timer": "377052a18347ea7dad31a8463ba6e4964d0888d06ed33817d6b4fa5cc4bf7a9f"
+    },
+    "stopRequestAtUtc": "2026-10-18T03:58:00Z",
+    "immutableGrantExpiresAtUtc": "2026-10-18T04:00:00Z",
+    "maximumServiceRuntime": "3h 53min",
+    "stopTimeout": "1min 10s",
+    "guardrails": {
+      "sameImmutableGrant": true,
+      "dailyCandidateLimit": 1000000,
+      "budgetRolloverByEngineOnly": true,
+      "minimumDiskGiB": 8,
+      "minimumAvailableMemoryGiB": 1.5,
+      "maximumHostLoadPerCpu": 0.8,
+      "operatorCpuQuota": 0.5,
+      "operatorMemoryMiB": 768,
+      "coreQuoteFreshnessRequired": true,
+      "leaseAndSourceFailureGuardsPreserved": true,
+      "noAutomaticRetryAfterGuardStop": true,
+      "atMostOneStartReceipt": true
+    },
+    "grantBudgetCheckpointUnchanged": true,
+    "databaseWritesByInstaller": 0,
+    "operatorStillExited": true,
+    "partitions": 680,
+    "completed": 594,
+    "pending": 86,
+    "pendingKinds": {
+      "funding": 86
+    },
+    "budgetBeforeScheduledRun": {
+      "day": 20743.0,
+      "reserved": 1000000.0
+    },
+    "existingRunningContainersPreserved": true,
+    "existingRunningContainerCount": 21,
+    "existingUnitFilesModifiedByInstaller": false,
+    "freeDiskBytes": 31610884096,
+    "preservedVerificationFailure": "Installer compared NextElapseUSecRealtime to a UTC-formatted string. The server renders the correct trigger as 02:05 CEST. D-Bus epoch and independent systemd calendar both confirm 00:05 UTC. No reinstall or service start was performed.",
+    "scope": "Only the reviewed one-time continuation timer was installed. Recovery has not resumed and 86 funding partitions remain. Execution is conditional on the same grant, exact release, next UTC day and unchanged resource/source/freshness guards. No new grant, budget reset, paid resource, data cleanup or existing service changes were performed."
+  },
+  "finalDeploymentFreshnessSample": {
+    "publicSamples": [
+      {
+        "origin": "https://coin-desk.pages.dev",
+        "httpStatus": 503,
+        "checkedAt": 1792244361,
+        "receivedAt": 1792244360,
+        "ok": false,
+        "active": 1585,
+        "statusCounts": {
+          "ok": 1544,
+          "delayed": 41
+        },
+        "diagnosisCounts": {
+          "TRADE_STALE": 41
+        },
+        "noncurrentSourceTypes": {
+          "quote": 41
+        },
+        "failureCounts": {
+          "1": 6,
+          "2": 2,
+          "10": 1,
+          "0": 14,
+          "7": 1,
+          "4": 4,
+          "3": 7,
+          "21": 1,
+          "6": 1,
+          "19": 1,
+          "9": 1,
+          "13": 1,
+          "12": 1
+        },
+        "sourceErrors": [],
+        "reasonCodes": {
+          "SOURCE_DELAYED": 41
+        },
+        "automation": {
+          "lastCompletedAt": 1792244340,
+          "lastSucceededAt": 1792244340,
+          "lastRunStatus": "idle",
+          "stalled": false
+        }
+      },
+      {
+        "origin": "https://coin-desk.62.171.141.206.sslip.io",
+        "httpStatus": 503,
+        "checkedAt": 1792244364,
+        "receivedAt": 1792244363,
+        "ok": false,
+        "active": 1585,
+        "statusCounts": {
+          "ok": 1545,
+          "delayed": 40
+        },
+        "diagnosisCounts": {
+          "TRADE_STALE": 40
+        },
+        "noncurrentSourceTypes": {
+          "quote": 40
+        },
+        "failureCounts": {
+          "1": 6,
+          "2": 2,
+          "10": 1,
+          "0": 13,
+          "7": 1,
+          "4": 4,
+          "3": 7,
+          "21": 1,
+          "6": 1,
+          "19": 1,
+          "9": 1,
+          "13": 1,
+          "12": 1
+        },
+        "sourceErrors": [],
+        "reasonCodes": {
+          "SOURCE_DELAYED": 40
+        },
+        "automation": {
+          "lastCompletedAt": 1792244340,
+          "lastSucceededAt": 1792244340,
+          "lastRunStatus": "idle",
+          "stalled": false
+        }
+      }
+    ],
+    "coreQuoteCheckedAt": "2026-10-17T13:39:29+00:00",
+    "coreQuoteCount": 6,
+    "allActualTradeFresh": true,
+    "actualTradeAgeSecondsRange": [
+      24,
+      33
+    ],
+    "allRecentChecks": true,
+    "confirmationAgeSecondsRange": [
+      23,
+      26
+    ],
+    "coreFailures": 0,
+    "readOnlyDatabaseChanges": 0,
+    "directCollectionOrOverviewCalled": false,
+    "scope": "Sequential bounded samples. Both health responses remain 503 because 40/41 quotes have old actual trades (TRADE_STALE); no source error is reported. The six BTC/DOGE/ETH exchange quotes are fresh. This does not certify every quote fresh or complete historical recovery."
+  }
 }

@@ -48,7 +48,7 @@
 
 위치 밴드는 표시일 앞의 연속 730일을 요구합니다. 자체 레인보우는 고정 원천 기준일과 이전 유효 일별 관측 730개부터 계산합니다. 결측을 보간하거나 미래 자료를 과거 계산에 사용하지 않습니다. 계산 준비기간 때문에 가격 자체를 지우지 않습니다.
 
-MVRV에서 유도한 실현가격·NUPL은 독립적인 세 가지 검증 근거가 아닙니다. NUPL은 순미실현손익이며 손실만의 비율이 아닙니다. STH/LTH MVRV와 LTH SOPR, 공급량 HODL Waves와 실현가치 가중 HODL Waves를 서로 대체하지 않습니다. [참고 사이트 20개 지표 대조](audit-36/reference-charts.md).
+MVRV에서 유도한 실현가격·NUPL은 독립적인 세 가지 검증 근거가 아닙니다. NUPL은 순미실현손익이며 손실만의 비율이 아닙니다. STH/LTH MVRV와 LTH SOPR, 공급량 HODL Waves와 실현가치 가중 HODL Waves를 서로 대체하지 않습니다. [CryptoDan 참고 차트 20개 대조](audit-36/reference-charts.md).
 
 ## 구조와 운영
 

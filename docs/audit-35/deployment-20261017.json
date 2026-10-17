@@ -1,0 +1,94 @@
+{
+  "schema": "bori-035-deployment-closed-v1",
+  "commit": "32b2396913cf944936da2ff6748069f96eee5d30",
+  "mainCiRunId": 38667850754,
+  "release": "vps-0468d9de09a9705f",
+  "backupVerified": true,
+  "canonicalDistSha256": "834387673e5dfb273f386fec0c328f9dc797ae54db51efe188555214c0128437",
+  "activation": {
+    "commit": "32b2396913cf944936da2ff6748069f96eee5d30",
+    "release": "vps-0468d9de09a9705f",
+    "previousRelease": "vps-84c91c439802eb85",
+    "startedAt": 1792228023,
+    "attemptedServices": [
+      "quote-hub",
+      "api"
+    ],
+    "verifiedServices": [
+      "quote-hub",
+      "api"
+    ],
+    "schemaChanged": false,
+    "promoted": true,
+    "rollbackServices": [],
+    "productionHubProof": {
+      "connected": true,
+      "confirmedAssets": [
+        "BTC",
+        "DOGE",
+        "ETH"
+      ],
+      "boundedProofRows": 80,
+      "checkedAt": 1792228057
+    },
+    "sixCoreConfirmationsAdvanced": true,
+    "naturalCoreProofVerified": true,
+    "protectedContainerIdsVerified": [
+      "quotes",
+      "background",
+      "recent",
+      "analysis",
+      "backup",
+      "migrate"
+    ],
+    "completedAt": 1792228187
+  },
+  "pages": {
+    "exit": 0,
+    "commit": "32b2396913cf944936da2ff6748069f96eee5d30",
+    "privateLog": true,
+    "deploymentUrls": [
+      "https://b329d33c.coin-desk.pages.dev"
+    ],
+    "staticSource": "Verified main CI image canonical dist",
+    "canonicalDistSha256": "834387673e5dfb273f386fec0c328f9dc797ae54db51efe188555214c0128437"
+  },
+  "publicCheckedAt": "2026-10-17T09:12:27.666842+00:00",
+  "origins": {
+    "pages": {
+      "assetCount": 224,
+      "matched": 224,
+      "runtimeRelease": "vps-0468d9de09a9705f",
+      "sourceCounts": {
+        "ok": 1519,
+        "delayed": 66
+      },
+      "healthStatus": 503
+    },
+    "vps": {
+      "assetCount": 224,
+      "matched": 224,
+      "runtimeRelease": "vps-0468d9de09a9705f",
+      "sourceCounts": {
+        "ok": 1518,
+        "delayed": 67
+      },
+      "healthStatus": 503
+    }
+  },
+  "scope": "Snapshot at 0.35 activation; not current 0.36, full-history completion or all-source healthy proof.",
+  "evidence": [
+    {
+      "path": "work/ux-035/deploy/activation-result.json",
+      "sha256": "4fa8a61c970853e332f530c0d6b6791d3cb1d1ed2982490efdb0ec4a080dc28e"
+    },
+    {
+      "path": "work/ux-035/deploy/deployment-public-final.json",
+      "sha256": "fa5bc751395e7e4c3035ed4122a115d6e85ed70166ad2d6dbad5d76d8c43a3e1"
+    },
+    {
+      "path": "work/ux-035/deploy/pages-deployment.json",
+      "sha256": "0673459071766d5ba7188950cb851dfd82cb562d7c34f6c1a95c4f8fbcebcce9"
+    }
+  ]
+}
