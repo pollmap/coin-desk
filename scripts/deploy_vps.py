@@ -88,7 +88,7 @@ print(json.dumps({'transportFilesVerified':len(checks)}))
 def phase(runner,pins,remote,operation):
     target=runner.folder/(operation+'-result.json')
     require(not target.exists(), 'Preserve prior phase result')
-    result=runner.ssh('target='+repr(remote)+'\ncommit='+repr(pins['commit'])+'\nphase='+repr(operation)+'\n'+'''
+    result=runner.ssh('target='+repr(remote)+'\ncommit='+repr(pins['commit'])+'\nphase='+repr(operation)+'\n'+r'''
 import pathlib,subprocess,json,hashlib
 p=pathlib.Path(target);pins=json.loads((p/'reviewed-pins.json').read_text())
 for n,s in pins['files'].items(): assert hashlib.file_digest((p/n).open('rb'),'sha256').hexdigest()==s

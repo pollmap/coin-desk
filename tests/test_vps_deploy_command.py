@@ -37,6 +37,25 @@ class DeploymentCommand(unittest.TestCase):
     def test_modified_image_is_rejected(self):
         (self.folder/'image.tar.gz').write_bytes(b'changed')
         with self.assertRaisesRegex(ValueError,'archive differs'):subject.validate_bundle(self.folder)
+    def test_stage_generated_remote_python_compiles_without_execution(self):
+        runner=subject.Runner(self.folder)
+        scripts=[]
+        def compile_remote(code,*args):
+            compile(code,'<stage-remote>','exec');scripts.append(code)
+            return {}
+        with patch.object(runner,'ssh',side_effect=compile_remote),patch.object(runner,'run'):
+            subject.stage(runner,self.pins,self.artifact,'/srv/services/coin-desk/audit/release-036')
+        self.assertEqual(len(scripts),2)
+    def test_phase_generated_remote_python_compiles_without_execution(self):
+        runner=subject.Runner(self.folder)
+        result={'prepared':True,'backupVerified':True}
+        def compile_remote(code,*args):
+            compile(code,'<phase-remote>','exec')
+            return result
+        for operation in ['prepare','activate']:
+            with self.subTest(operation=operation),patch.object(runner,'ssh',side_effect=compile_remote):
+                self.assertEqual(subject.phase(runner,self.pins,'/srv/services/coin-desk/audit/release-036',operation),result)
+                self.assertEqual(json.loads((self.folder/(operation+'-result.json')).read_text()),result)
     def test_ci_requires_all_jobs_and_exact_main(self):
         runner=subject.Runner(self.folder)
         run={'head_sha':'a'*40,'head_branch':'main','event':'push','conclusion':'success'}
