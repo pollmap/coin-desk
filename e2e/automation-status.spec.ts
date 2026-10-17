@@ -74,10 +74,9 @@ test('unavailable internal runtime does not block market navigation or manufactu
   await expect(coin).toBeVisible();
   await coin.click();
   await expect(page).toHaveURL(/\/coins\/BTC/);
-  await expect(page.locator('[data-chart-kind="analysis"]')).toHaveAttribute(
-    'data-range-ready',
-    '1',
-  );
+  await expect(
+    page.locator('.coin-dashboard-card[data-metric="view:price"] [data-chart-kind="analysis"]'),
+  ).toHaveAttribute('data-range-ready', '1');
   await expect(page.locator('.automation-summary')).toHaveCount(0);
   await expect(page.getByText(/운영 기준 충족|실행 기록 없음|최장 공백/)).toHaveCount(0);
   await page.goBack();

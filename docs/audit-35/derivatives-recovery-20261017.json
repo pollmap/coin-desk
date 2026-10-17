@@ -1,0 +1,64 @@
+{
+  "schema": "bori-bounded-derivative-history-recovery-v1",
+  "status": "running_after_reviewed_resource_resume",
+  "complete": false,
+  "release": "vps-0468d9de09a9705f",
+  "startedAt": "2026-10-17T09:24:52Z",
+  "grant": {
+    "id": "recovery-035-20261017",
+    "dailyCandidateLimit": 1000000,
+    "expiresAt": "2026-10-18T04:00:00Z",
+    "existingNormalDailyLimit": 10000,
+    "existingBudgetReset": false,
+    "automaticExtension": false
+  },
+  "dryRun": {
+    "partitions": 680,
+    "sourceRequests": 0,
+    "databaseWrites": 0,
+    "spaceGuardBytes": 8589934592,
+    "freeDiskBytes": 31678779392,
+    "cpuQuota": 0.5,
+    "memoryLimitBytes": 805306368
+  },
+  "firstRun": {
+    "outcome": "paused_cpu_pressure",
+    "attempts": 220,
+    "pages": 220,
+    "observationsProcessed": 41207,
+    "completedPartitions": 29,
+    "remainingPartitions": 651,
+    "candidateRowsReservedIncludingEarlierJobs": 54000,
+    "sourceFailureEvents": 0,
+    "remainingSourceErrorStates": 0,
+    "oomKilled": false,
+    "latestCollectorsStopped": false
+  },
+  "resourceDiagnosis": {
+    "checkedAt": "2026-10-17T09:30:30Z",
+    "hostCpuCount": 4,
+    "hostLoad1": 3.923828125,
+    "existingPauseThreshold": 3.2,
+    "cause": "The host load exceeded the existing guard. Attribution to a particular workload is not established.",
+    "noOtherProjectsModified": true
+  },
+  "explicitResume": {
+    "at": "2026-10-17T09:31:33Z",
+    "sameContainerAndGrant": true,
+    "checkpointPreserved": true,
+    "candidateBudgetPreserved": true,
+    "limitsChanged": false,
+    "resourceAssessmentAllowed": true,
+    "hostLoad1": 2.6,
+    "hostCpuCount": 4,
+    "availableMemoryBytes": 3284492288,
+    "freeDiskBytes": 31541657600
+  },
+  "limitations": [
+    "The process has not completed all 680 partitions; progress is not a completion claim.",
+    "Provider-confirmed boundaries and documented hourly retention remain distinct from every calendar date being present.",
+    "The one-off operator does not stop or replace regular quote, on-chain or recent-data collectors.",
+    "A later resource pause or provider failure requires diagnosis before any further explicit resume."
+  ],
+  "privateInputsAndOperationalLogsCommitted": false
+}

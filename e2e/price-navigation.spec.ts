@@ -6,6 +6,17 @@ test('market prices, explicit indicators and performance comparison are distinct
 }) => {
   await page.goto('/');
   await page.getByRole('link', { name: '비트코인 BTC', exact: true }).click();
+  await expect(page.locator('.coin-dashboard')).toHaveAttribute('data-asset', 'BTC');
+  expect(new URL(page.url()).searchParams.has('metric')).toBe(false);
+  await page.getByRole('combobox', { name: '차트 가격 통화', exact: true }).selectOption('upbit');
+  await expect(page.getByRole('combobox', { name: '차트 가격 통화', exact: true })).toHaveValue(
+    'upbit',
+  );
+  await expect(
+    page.locator('.coin-dashboard-card[data-metric="view:price"] .coin-dashboard-card-reading'),
+  ).toContainText('KRW');
+  await page.getByRole('link', { name: '가격 차트 크게 보기', exact: true }).click();
+  await expect(page.locator('.coin-dashboard')).toHaveCount(0);
   const chart = page.locator('[data-chart-kind=analysis]');
   await expect(chart).toHaveAttribute('data-primary-metric', 'price');
   await expect(chart).toHaveAttribute('data-price-style', 'candles');
@@ -171,7 +182,7 @@ test('live reference price never replaces historical candles, recreates the canv
 for (const width of [320, 390, 768, 1280, 1440])
   test(`price entry geometry and keyboard accessibility ${width}`, async ({ page }) => {
     await page.setViewportSize({ width, height: 900 });
-    await page.goto('/coins/BTC');
+    await page.goto('/coins/BTC?metric=view:price&price_source=upbit');
     const chart = page.locator('[data-chart-kind=analysis]');
     await expect(chart).toHaveAttribute('data-range-ready', '1');
     const bounds = (await chart.boundingBox())!;

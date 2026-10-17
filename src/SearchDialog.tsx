@@ -4,7 +4,7 @@ import type { Asset } from '../shared/types';
 import type { SearchHit } from '../shared/search';
 import { availableMarket, supportsMarket, referenceAssets } from '../shared/asset-registry';
 import { ASSETS } from '../shared/catalog';
-import { defaultPriceUrl } from '../shared/default-analysis';
+import { defaultDashboardUrl } from '../shared/default-analysis';
 import { DeskDialog } from './DeskDialog';
 import { AssetLogo } from './AssetLogo';
 import './search-dialog.css';
@@ -70,14 +70,15 @@ export default function SearchDialog({
       controller.abort();
     };
   }, [open, query, asset, retry]);
-  const hits = result?.query === query.trim() ? result.hits : [];
+  const hits =
+    result?.query === query.trim() ? result.hits.filter((hit) => hit.kind !== 'relation') : [];
   useEffect(() => {
     if (
       enterQuery.current &&
       enterQuery.current === query.trim() &&
       !loading &&
       result?.query === query.trim() &&
-      result.hits[0] &&
+      hits[0] &&
       document.activeElement === input.current
     ) {
       enterQuery.current = null;
@@ -87,6 +88,11 @@ export default function SearchDialog({
   function destination(hit: SearchHit) {
     const next = new URL(hit.href, window.location.origin),
       previous = new URLSearchParams(location.search);
+    if (hit.kind === 'asset')
+      return defaultDashboardUrl(
+        hit.asset,
+        previous.get('market') === 'binance' ? 'binance' : 'upbit',
+      );
     // Support is resolved server-side; preserve explicit viewing settings, never an unrelated asset.
     for (const k of ['period', 'chart_from', 'chart_to', 'compare_price', 'benchmark_asset'])
       if (previous.has(k)) next.searchParams.set(k, previous.get(k)!);
@@ -178,7 +184,7 @@ export default function SearchDialog({
               <Link
                 className="search-hit"
                 key={a.id}
-                to={defaultPriceUrl(a.id, 'upbit')}
+                to={defaultDashboardUrl(a.id, 'upbit')}
                 onClick={close}
               >
                 <AssetLogo asset={a.id} size={24} />

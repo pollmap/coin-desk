@@ -7,7 +7,7 @@ import { assetDefinition, availableMarket } from '../shared/asset-registry';
 import {
   defaultCoreAnalysisUrl,
   defaultIndicator,
-  defaultPriceUrl,
+  defaultDashboardUrl,
 } from '../shared/default-analysis';
 import type { Asset, Point } from '../shared/types';
 import { AssetLogo } from './AssetLogo';
@@ -86,7 +86,7 @@ export function MarketHome() {
     window.addEventListener('scroll', track);
     return () => window.removeEventListener('scroll', track);
   }, []);
-  const href = (asset: Asset) => defaultPriceUrl(asset, market);
+  const href = (asset: Asset) => defaultDashboardUrl(asset, market);
   // Capture ordering on entry or explicit sorting only. Live ticks update values,
   // never move a row underneath a pointer or keyboard focus.
   const order = useMemo(

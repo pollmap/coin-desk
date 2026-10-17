@@ -1,10 +1,15 @@
 import { lazy, Suspense, useEffect, useRef, useState } from 'react';
 import { Link, Navigate, Route, Routes, useLocation } from 'react-router-dom';
+import { hasFocusedAnalysisParams } from '../shared/default-analysis';
+import { ASSETS } from '../shared/catalog';
 import { ProductTopbar } from './ProductTopbar';
 import { MarketHome as WatchlistPage } from './MarketHome';
 import './analysis-ux.css';
 const AnalysisWorkspace = lazy(() =>
   import('./IndicatorWorkspace').then((m) => ({ default: m.IndicatorWorkspace })),
+);
+const CoinDashboard = lazy(() =>
+  import('./CoinDashboard').then((m) => ({ default: m.CoinDashboard })),
 );
 const ResearchLibrary = lazy(() =>
   import('./ResearchLibrary').then((m) => ({ default: m.ResearchLibrary })),
@@ -22,14 +27,23 @@ const LegacyIndicatorRoute = lazy(() => import('./IndicatorRedirect'));
 function EntryRoute() {
   const location = useLocation(),
     p = new URLSearchParams(location.search);
-  if (
-    ['asset', 'metric', 'visual', 'panels', 'indicators', 'draw_tool', 'patterns'].some((k) =>
-      p.has(k),
-    )
-  ) {
+  if (hasFocusedAnalysisParams(p)) {
     return <LegacyIndicatorRoute />;
   }
+  if (p.has('asset')) {
+    const asset = ASSETS.find((a) => a.id === p.get('asset'))?.id ?? 'BTC';
+    return (
+      <Navigate
+        replace
+        to={{ pathname: '/coins/' + asset, search: location.search, hash: location.hash }}
+      />
+    );
+  }
   return <WatchlistPage />;
+}
+function CoinRoute() {
+  const params = new URLSearchParams(useLocation().search);
+  return hasFocusedAnalysisParams(params) ? <AnalysisWorkspace /> : <CoinDashboard />;
 }
 function Loading({ message = '불러오는 중…' }: { message?: string }) {
   return (
@@ -55,6 +69,11 @@ export default function App() {
       window.removeEventListener('coin-desk-storage-error', storage);
     };
   }, []);
+  const coinMode = /^\/coins\/[^/]+$/.test(location.pathname)
+    ? hasFocusedAnalysisParams(new URLSearchParams(location.search))
+      ? ':focused'
+      : ':dashboard'
+    : '';
   const pageKey =
     location.pathname +
     ':' +
@@ -62,7 +81,8 @@ export default function App() {
       ? ''
       : location.pathname.match(/^\/coins\/([^/]+)$/)?.[1] ||
         new URLSearchParams(location.search).get('asset') ||
-        '');
+        '') +
+    coinMode;
   const previousPage = useRef(pageKey);
   useEffect(() => {
     const frame = requestAnimationFrame(() => {
@@ -72,7 +92,11 @@ export default function App() {
         location.pathname !== '/' &&
         location.pathname !== '/coins'
       ) {
-        window.scrollTo({ top: 0, behavior: 'instant' });
+        // The multi-chart page restores its own saved reading position after layout.
+        const dashboardRoute =
+          /^\/coins\/[^/]+$/.test(location.pathname) &&
+          !hasFocusedAnalysisParams(new URLSearchParams(location.search));
+        if (!dashboardRoute) window.scrollTo({ top: 0, behavior: 'instant' });
         const main = document.getElementById('main-content');
         // Reading pages focus their heading. Do not overwrite that destination
         // with the main landmark in a later animation frame.
@@ -110,7 +134,7 @@ export default function App() {
           <Suspense fallback={<Loading message="화면을 열고 있습니다…" />}>
             <Routes>
               <Route path="/" element={<EntryRoute />} />
-              <Route path="/coins/:asset" element={<AnalysisWorkspace />} />
+              <Route path="/coins/:asset" element={<CoinRoute />} />
               <Route path="/chart/:asset" element={<LegacyIndicatorRoute />} />
               <Route path="/technical/:asset" element={<LegacyIndicatorRoute />} />
               <Route path="/metrics/:metric" element={<LegacyIndicatorRoute />} />

@@ -19,10 +19,16 @@ export function MarketNavigation({
         { id: 'coins', label: '코인 시세', icon: ListFilter, url: '/coins?' + query },
         {
           id: 'compare',
-          label: '성과 비교',
+          label: '가격 성과 비교',
           icon: ArrowLeftRight,
           url:
-            '/compare?' + new URLSearchParams({ market, assets: assets.join(','), period: 'all' }),
+            '/compare?' +
+            new URLSearchParams({
+              mode: 'performance',
+              market,
+              assets: assets.join(','),
+              period: 'all',
+            }),
         },
         { id: 'dominance', label: '시장 비중', icon: ChartPie, url: '/dominance?' + query },
       ].map(({ id, label, icon: Icon, url }) => (

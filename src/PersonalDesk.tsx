@@ -8,6 +8,7 @@ import type { PersonalDesk, Workspace } from '../shared/workspace';
 import { annotationKey } from '../shared/annotations';
 import { PERSONAL_DESK_KEY } from '../shared/personal-favorites';
 import { AssetLogo } from './AssetLogo';
+import { defaultDashboardUrl } from '../shared/default-analysis';
 
 const KEY = PERSONAL_DESK_KEY;
 function readDesk(): PersonalDesk {
@@ -112,12 +113,14 @@ export function WorkspaceBar({
   current,
   embedded = false,
   listOnly = false,
+  hideTransfer = false,
   resolveCurrent,
   onOpenWorkspace,
 }: {
   current: Omit<Workspace, 'name'>;
   embedded?: boolean;
   listOnly?: boolean;
+  hideTransfer?: boolean;
   onOpenWorkspace?: () => void;
   resolveCurrent?: (current: Omit<Workspace, 'name'>) => Omit<Workspace, 'name'>;
 }) {
@@ -166,8 +169,8 @@ export function WorkspaceBar({
             <BookmarkPlus size={16} />
             작업공간 {open ? '닫기' : '저장·불러오기'}
           </button>
-          <Link to="/compare" className="desk-button">
-            코인 성과 비교 ↗
+          <Link to="/compare?mode=performance" className="desk-button">
+            가격 성과 비교 ↗
           </Link>
           <Link to="/explore" className="desk-button">
             지표 찾아보기 ↗
@@ -198,14 +201,16 @@ export function WorkspaceBar({
                   ? '같은 이름 덮어쓰기'
                   : '현재 구성 저장'}
               </button>
-              <button
-                className="desk-button"
-                type="button"
-                aria-expanded={transfer}
-                onClick={() => setTransfer(!transfer)}
-              >
-                설정 백업·이동
-              </button>
+              {!hideTransfer && (
+                <button
+                  className="desk-button"
+                  type="button"
+                  aria-expanded={transfer}
+                  onClick={() => setTransfer(!transfer)}
+                >
+                  설정 백업·이동
+                </button>
+              )}
             </form>
           )}
           <div className="saved-workspaces">
@@ -237,7 +242,11 @@ export function WorkspaceBar({
                     <AssetLogo asset={w.asset} size={24} />
                     <b>{w.name}</b>
                     <small>
-                      {w.asset} · {indicatorDefinition(w.metric ?? '')?.title ?? '가격·지표'} ·{' '}
+                      {w.asset} ·{' '}
+                      {w.dashboard
+                        ? '코인 한눈에 보기'
+                        : (indicatorDefinition(w.metric ?? '')?.title ?? '가격·지표')}{' '}
+                      ·{' '}
                       {w.dateWindow
                         ? `${new Date(w.dateWindow.from * 1000).toISOString().slice(0, 10)}~${new Date(w.dateWindow.to * 1000).toISOString().slice(0, 10)}`
                         : w.period}{' '}
@@ -270,7 +279,7 @@ export function WorkspaceBar({
               <div className="saved-empty">
                 <img src="/brand/bori-128.png" alt="보리" width="64" height="64" />
                 <p>저장한 분석이 없습니다.</p>
-                <Link to="/coins/BTC?metric=net%3Amvrv&period=5y">분석 열기</Link>
+                <Link to={defaultDashboardUrl('BTC')}>분석 열기</Link>
               </div>
             )}
           </div>
@@ -309,7 +318,7 @@ export function WorkspaceBar({
               </button>
             </div>
           )}
-          {transfer ? (
+          {transfer && !hideTransfer ? (
             <div className="settings-transfer">
               <button
                 className="desk-button"

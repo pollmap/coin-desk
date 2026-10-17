@@ -91,7 +91,7 @@ test('failed logos keep their footprint and recover when switching asset in both
 }) => {
   await page.setViewportSize({ width: 320, height: 900 });
   await page.route('**/coin-logos/v2/pengu-*.png', (route) => route.abort());
-  await page.goto('/coins/PENGU');
+  await page.goto('/coins/PENGU?metric=view:price&price_source=upbit');
   const fallback = page.locator('.coin-picker > summary .asset-logo.fallback');
   await expect(fallback).toHaveText('PE');
   for (const theme of ['light', 'dark']) {
@@ -128,7 +128,7 @@ test('search, detail and saved analysis retain the same PENGU logo', async ({ pa
   const path = ASSET_REGISTRY.find((asset) => asset.id === 'PENGU')!.logo;
   await expect(result.locator('img')).toHaveAttribute('src', path);
   await result.click();
-  await expect(page.locator('.coin-picker > summary img')).toHaveAttribute('src', path);
+  await expect(page.locator('.coin-dashboard-identity img')).toHaveAttribute('src', path);
   await page.getByRole('button', { name: '분석 저장', exact: true }).click();
   await page.getByLabel('작업공간 이름', { exact: true }).fill('로고 확인');
   await page.getByRole('button', { name: '현재 구성 저장', exact: true }).click();

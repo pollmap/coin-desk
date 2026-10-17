@@ -30,13 +30,13 @@ export function ComparisonModes({ mode }: { mode: 'indicator' | 'performance' })
   return (
     <nav className="comparison-modes" aria-label="비교 방식">
       <Link aria-current={mode === 'indicator' ? 'page' : undefined} to={'/compare?' + indicators}>
-        지표
+        같은 지표 비교
       </Link>
       <Link
         aria-current={mode === 'performance' ? 'page' : undefined}
         to={'/compare?' + performance}
       >
-        성과
+        가격 성과 비교
       </Link>
     </nav>
   );

@@ -2,10 +2,11 @@ import { ASSET_REGISTRY, ASSET_REGISTRY_VERSION } from './asset-registry';
 import { COIN_ALIASES, exactCoin } from './coin-search';
 import { INDICATORS_CATALOG, navigationIndicators, indicatorUrl } from './indicator-catalog';
 import { GUIDE_ARTICLES } from './learning-catalog';
-import { assetKnowledge, KNOWLEDGE_VERSION } from './knowledge';
+import { KNOWLEDGE_VERSION } from './knowledge';
+import { defaultDashboardUrl } from './default-analysis';
 import type { Asset } from './types';
 
-export const SEARCH_VERSION = '2.1.0';
+export const SEARCH_VERSION = '2.2.0';
 export type SearchKind = 'asset' | 'indicator' | 'guide' | 'relation';
 export interface SearchDocument {
   id: string;
@@ -167,21 +168,6 @@ export function searchDocuments(): SearchDocument[] {
         { name: '한계', text: d.caution },
       ],
     })),
-    ...ASSET_REGISTRY.flatMap((a) =>
-      assetKnowledge(a.id)
-        .edges.filter((e) => e.evidence.review === 'reviewed')
-        .map((e) => ({
-          id: `relation:${a.id}:${e.id}`,
-          title: `${a.name} · ${e.label}`,
-          kind: 'relation' as const,
-          assets: [a.id],
-          aliases: e.target.replaceAll(':', ' '),
-          source: e.evidence.url,
-          checkedAt: e.evidence.checkedAt,
-          review: 'reviewed' as const,
-          sections: [{ name: '관계', text: e.evidence.note }],
-        })),
-    ),
   ];
 }
 export function searchSelection(q: string, context: Asset = 'BTC') {
@@ -244,6 +230,7 @@ export function rankSearch(
   const candidates = documents.filter(
     (d) =>
       (!kind || d.kind === kind) &&
+      d.kind !== 'relation' &&
       d.review === 'reviewed' &&
       (d.kind === 'asset'
         ? !selection.purpose && (!selection.explicit || d.assets.includes(asset))
@@ -272,9 +259,7 @@ export function rankSearch(
           ? indicatorUrl(asset, d.metric!)
           : d.kind === 'guide'
             ? `/learn/${d.id.slice(6)}?asset=${asset}`
-            : d.kind === 'relation'
-              ? `/coins/${asset}?asset=${asset}&knowledge=1`
-              : `/coins/${d.assets[0]}`;
+            : defaultDashboardUrl(d.assets[0]);
       return {
         score,
         hit: {

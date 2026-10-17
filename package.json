@@ -1,6 +1,6 @@
 {
   "name": "coin-desk",
-  "version": "0.35.0",
+  "version": "0.36.0",
   "private": true,
   "type": "module",
   "scripts": {
@@ -22,15 +22,17 @@
     "db:init": "wrangler d1 migrations apply btc-desk --local",
     "seed": "python scripts/bootstrap.py",
     "db:seed": "wrangler d1 execute btc-desk --local --file work/seed.sql",
-    "deploy": "npm run build && wrangler d1 migrations apply btc-desk --remote && npm run deploy:collectors && wrangler deploy && npm run deploy:pages",
+    "deploy": "python scripts/deploy_vps.py --help",
     "seed:assets": "python scripts/bootstrap_assets.py",
     "deploy:pages": "wrangler pages deploy --cwd pages --project-name coin-desk --branch main",
     "db:assets": "node scripts/import_assets.mjs",
     "test:e2e": "node scripts/run_browser_checks.mjs",
     "test:recovery": "python -m unittest discover -s tests -p \"test_backup*.py\"",
-    "deploy:collectors": "wrangler deploy -c wrangler.feed.jsonc && wrangler deploy -c wrangler.quotes.jsonc && wrangler deploy -c wrangler.background.jsonc && wrangler deploy -c wrangler.analysis.jsonc",
+    "deploy:collectors": "node scripts/legacy_deploy_guard.mjs",
     "storybook": "storybook dev -p 6006 --host 127.0.0.1 --no-open",
-    "build:storybook": "storybook build --output-dir work/storybook"
+    "build:storybook": "storybook build --output-dir work/storybook",
+    "deploy:vps": "python scripts/deploy_vps.py",
+    "deploy:verified-pages": "python scripts/publish_vps_pages.py"
   },
   "dependencies": {
     "@base-ui/react": "^1.8.0",

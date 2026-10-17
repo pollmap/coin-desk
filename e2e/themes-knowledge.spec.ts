@@ -21,8 +21,10 @@ test('market only loads themes on demand and restores theme/exchange after analy
   await expect(page.locator('.theme-members').getByRole('link', { name: /온도/ })).toBeVisible();
   await expect(page.locator('.theme-row')).not.toContainText(/확인일|검토 상태|분류 근거/);
   await page.locator('.theme-row').getByRole('link', { name: /온도/ }).click();
-  await expect(page.locator('[data-chart-kind=analysis]')).toHaveAttribute('data-asset', 'ONDO');
-  await expect(page).toHaveURL(/metric=view%3Aprice/);
+  await expect(
+    page.locator('.coin-dashboard-card[data-metric="view:price"] [data-chart-kind=analysis]'),
+  ).toHaveAttribute('data-asset', 'ONDO');
+  expect(new URL(page.url()).searchParams.has('metric')).toBe(false);
   await page.goBack();
   await expect(page).toHaveURL(/theme=rwa/);
   await expect(page.getByRole('button', { name: 'Binance · USDT', exact: true })).toHaveAttribute(
@@ -71,7 +73,7 @@ for (const width of [320, 390, 768, 1440])
 test('purpose search, hover tooltip, explanation and save preserve the latest chart', async ({
   page,
 }) => {
-  await page.goto('/coins/BTC');
+  await page.goto('/coins/BTC?metric=view:price&price_source=upbit');
   const canvas = page.locator('[data-chart-kind=analysis]');
   await expect(canvas).toHaveAttribute('data-range-ready', '1');
   await page.getByRole('button', { name: /지표 변경$/ }).click();

@@ -1,4 +1,5 @@
 import { test, expect } from '@playwright/test';
+import { referenceAssets } from '../shared/asset-registry';
 
 for (const width of [390, 1280])
   test(`150 asset discovery, aliases and watchlist without data panels ${width}`, async ({
@@ -28,7 +29,9 @@ for (const width of [390, 1280])
     await star.click();
     await expect(star).toHaveAttribute('aria-pressed', 'true');
     await row.locator('.market-coin-cell a').click();
-    const chart = page.locator('[data-chart-kind=analysis]');
+    const chart = page.locator(
+      '.coin-dashboard-card[data-metric="view:price"] [data-chart-kind=analysis]',
+    );
     await expect(chart).toHaveAttribute('data-asset', 'PENGU');
     await expect(chart).toHaveAttribute('data-primary-metric', 'price');
     await expect(chart).toHaveAttribute('data-range-ready', '1');
@@ -44,15 +47,15 @@ for (const width of [390, 1280])
     await expect(row).toContainText('Binance USDT');
     await row.locator('.market-coin-cell a').click();
     await expect(chart).toHaveAttribute('data-asset', 'BNB');
-    expect(new URL(page.url()).searchParams.get('price_source')).toBe('binance');
-    await page.getByRole('button', { name: '가격 거래소 선택' }).click();
-    await expect(page.getByRole('combobox', { name: '현재 가격 거래소' })).toHaveValue('binance');
-    await page.keyboard.press('Escape');
+    expect(new URL(page.url()).searchParams.get('market')).toBe('binance');
+    await expect(page.getByRole('combobox', { name: '차트 가격 통화' })).toHaveValue(
+      referenceAssets.includes('BNB') ? 'reference' : 'binance',
+    );
     await page.screenshot({ path: test.info().outputPath(`discovery-${width}.png`) });
   });
 
 test('exact ticker search wins over a longer token ticker', async ({ page }) => {
-  await page.goto('/coins/BTC');
+  await page.goto('/coins/BTC?metric=view:price&price_source=upbit');
   await page.getByRole('button', { name: /코인 변경/ }).click();
   const input = page.getByRole('searchbox', { name: '코인 검색' });
   await input.fill('ETH');

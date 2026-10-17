@@ -959,7 +959,7 @@ export function IndicatorWorkspace() {
                   aria-label={`같은 지표 비교 · ${asset === 'BTC' ? 'ETH' : 'BTC'} 비교`}
                   to={indicatorComparisonUrl(asset, id, context)}
                 >
-                  {asset === 'BTC' ? 'ETH 비교' : 'BTC 비교'}
+                  같은 지표 비교
                 </Link>
               )}
               {id === 'view:price' && basis !== 'reference' && (
@@ -976,7 +976,7 @@ export function IndicatorWorkspace() {
                     })
                   }
                 >
-                  {asset === 'BTC' ? 'ETH 비교' : 'BTC 비교'}
+                  {asset === 'BTC' ? 'ETH 대비 성과' : 'BTC 대비 성과'}
                 </Link>
               )}
               {!d?.comparison && id !== 'view:price' && !isRelative && (
@@ -985,7 +985,7 @@ export function IndicatorWorkspace() {
                   aria-label={`상대강도 비교 · ${asset === 'BTC' ? 'ETH' : 'BTC'} 비교`}
                   to={`/coins/${asset}?${new URLSearchParams({ asset, metric: 'view:relative', benchmark_asset: asset === 'BTC' ? 'ETH' : 'BTC', price_source: basis, period, normalization: 'index' })}`}
                 >
-                  {asset === 'BTC' ? 'ETH 비교' : 'BTC 비교'}
+                  {asset === 'BTC' ? 'ETH 대비 흐름' : 'BTC 대비 흐름'}
                 </Link>
               )}
               <button

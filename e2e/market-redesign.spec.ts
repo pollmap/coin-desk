@@ -47,9 +47,7 @@ test('stale prices remain visibly delayed without exposing collection metadata',
   );
 });
 
-test('market root requests one bounded snapshot, eight assets, and preserves source through detail/back', async ({
-  page,
-}) => {
+test('market keeps the chosen exchange through the coin overview and back', async ({ page }) => {
   const api: string[] = [];
   page.on('request', (r) => {
     if (r.url().includes('/api/')) api.push(r.url());
@@ -65,12 +63,16 @@ test('market root requests one bounded snapshot, eight assets, and preserves sou
   await page.getByRole('button', { name: 'Binance · USDT' }).click();
   await expect(page.locator('.market-table')).toContainText('$60,000.00');
   await page.getByRole('link', { name: '비트코인 BTC', exact: true }).click();
-  await expect(page.locator('[data-chart-kind="analysis"]')).toHaveAttribute(
-    'data-primary-metric',
-    'price',
-  );
+  await expect(
+    page.locator('.coin-dashboard-card[data-metric="view:price"] [data-chart-kind="analysis"]'),
+  ).toHaveAttribute('data-primary-metric', 'price');
   expect(new URL(page.url()).pathname).toBe('/coins/BTC');
-  expect(new URL(page.url()).searchParams.get('price_source')).toBe('binance');
+  expect(new URL(page.url()).searchParams.get('market')).toBe('binance');
+  expect(new URL(page.url()).searchParams.get('price_source')).toBe('reference');
+  expect(new URL(page.url()).searchParams.has('metric')).toBe(false);
+  await expect(page.getByRole('combobox', { name: '차트 가격 통화', exact: true })).toHaveValue(
+    'reference',
+  );
   await page.goBack();
   await expect(page.getByRole('button', { name: 'Binance · USDT' })).toHaveAttribute(
     'aria-pressed',
@@ -92,10 +94,9 @@ test('legacy date links and unsupported coins remain explicit; keyboard search w
   await expect(page.locator('.search-hit').first()).toContainText('ONDO');
   await page.getByRole('searchbox', { name: '코인·지표 검색', exact: true }).press('ArrowDown');
   await page.keyboard.press('Enter');
-  await expect(page.locator('[data-chart-kind="analysis"]')).toHaveAttribute(
-    'data-primary-metric',
-    'price',
-  );
+  await expect(
+    page.locator('.coin-dashboard-card[data-metric="view:price"] [data-chart-kind="analysis"]'),
+  ).toHaveAttribute('data-primary-metric', 'price');
   await page.goto('/coins/ONDO?metric=net%3Amvrv&price_source=reference');
   await expect(page.locator('[data-availability]')).toHaveAttribute(
     'data-availability',
@@ -119,7 +120,9 @@ for (const width of [1280, 1440, 1920])
       (await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa']).analyze()).violations,
     ).toEqual([]);
     await page.getByRole('link', { name: '비트코인 BTC', exact: true }).click();
-    const chart = page.locator('[data-chart-kind="analysis"]');
+    const chart = page.locator(
+      '.coin-dashboard-card[data-metric="view:price"] [data-chart-kind="analysis"]',
+    );
     await expect(chart).toBeVisible();
     const box = (await chart.boundingBox())!;
     expect(box.y).toBeLessThanOrEqual(240);

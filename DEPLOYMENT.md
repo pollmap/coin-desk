@@ -1,4 +1,33 @@
-# Coin Desk VPS 이전과 배포
+# 보리차트 배포·복구
+
+현재 제품 기준은 [PRODUCT](docs/PRODUCT.md), 실제 출시 상태는 [0.36 감사](docs/audit-36/README.md)를 따릅니다. 아래 이전 이관 기록의 버전·종목 수를 현재 상태로 사용하지 않습니다.
+
+## 현재 선택 배포 경로
+
+`npm run deploy`는 도움말만 표시합니다. 과거 Cloudflare 수집기 배포 명령은 차단했습니다. 운영 변경은 `scripts/deploy_vps.py`와 `scripts/publish_vps_pages.py`로 검증된 main CI 빌드를 그대로 반영합니다. 임시 `work/`의 예전 배포 드라이버를 다시 실행하지 않습니다.
+
+배포 묶음은 `deployment.json`, CI 소스·이미지 압축 파일, `source-scope.json`, 검토한 `reviewed-pins.json`, 해당 커밋의 `selective_release.py`·`rollout_engine.py`를 포함합니다. 검토 핀에는 정확한 main 커밋·CI 실행 ID·이전 릴리스·변경 서비스·격리된 점검 포트·각 파일 SHA-256을 넣습니다. 생성·전송된 비공개 로그와 환경 파일은 Git에 넣지 않습니다.
+
+```sh
+python scripts/deploy_vps.py inspect --bundle work/release-reviewed
+python scripts/deploy_vps.py stage-prepare --bundle work/release-reviewed --execute
+python scripts/deploy_vps.py activate --bundle work/release-reviewed --execute
+python scripts/publish_vps_pages.py --bundle work/release-reviewed --execute
+```
+
+- 실행 직전에 main과 다섯 CI 작업의 성공을 다시 확인합니다. 기본 실행은 검사만 하며 `--execute`에서만 변경합니다.
+- 지원 범위는 API만 또는 API·시세 허브입니다. 필요한 수집기 변경은 이 도구의 범위를 임의로 넓히지 말고 별도 검토합니다.
+- 새 백업과 독립 복원의 21개 사용자 테이블·스키마·행 수·내용 해시를 비교합니다. 최대 한 시간 된 검증 백업만 활성화에 사용합니다.
+- 이전/후보 설정·이미지 레이어·소스·정적 파일을 대조하고 다른 서비스 컨테이너의 최초 ID를 유지합니다. 후보 API는 별도 복원 DB로 먼저 검사합니다.
+- 핵심 여섯 시세의 자연 확인 시각 증가·실제 체결 신선도와 Binance 체결 증명을 확인한 뒤 `current`를 승격합니다. 단순 HTTP 200이나 Compose 실행 성공만으로 승격하지 않습니다.
+- 실패 시 시도한 서비스만 이전 이미지로 복구하고 실제 이미지 ID를 대조합니다. 최신 수집이 진행 중인 DB를 오래된 백업으로 되돌리지 않습니다.
+- Pages는 VPS와 같은 CI 이미지에서 추출한 정적 파일을 사용합니다. 배포 후 양 주소의 파일 바이트·런타임 식별·실제 사용 흐름을 별도로 확인합니다.
+- 8GiB 보호, 다른 프로젝트 보존, 이전 릴리스 자산 보존을 유지합니다. 실행 실패 후 자동 재시도하지 않으며 남은 체크포인트와 실패 증거를 먼저 검사합니다.
+
+## 이전 이관 기록
+
+아래는 Cloudflare→VPS 이관과 당시 실행 도구에 대한 기록입니다. 첫 이관·스키마 작업과 평상시 선택 배포를 구분합니다.
+
 
 2026-10-10 KST: **0.25는 150개 종목 개편**입니다. 현재 코드·서비스별 이미지·원천 상태·배포와 복구 검증은 [0.25 운영 기록](docs/audit-25/README.md)을 따릅니다. 아래 0.21 식별자와 8개 종목 검사는 최초 VPS 이전 당시 기록입니다. 주소·포트·프로젝트 격리는 유지합니다.
 

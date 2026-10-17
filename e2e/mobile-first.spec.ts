@@ -19,12 +19,21 @@ for (const width of [320, 390, 430])
     await page.goto('/');
     await expect(page.locator('.market-table tbody tr')).toHaveCount(20);
     await page.getByRole('link', { name: '비트코인 BTC', exact: true }).click();
+    const firstPrice = page.locator(
+      '.coin-dashboard-card[data-metric="view:price"] [data-chart-kind=analysis]',
+    );
+    await expect(firstPrice).toHaveAttribute('data-range-ready', '1');
+    expect(new URL(page.url()).searchParams.has('metric')).toBe(false);
+    expect((await firstPrice.boundingBox())!.y).toBeLessThanOrEqual(280);
+    expect((await firstPrice.boundingBox())!.height).toBeGreaterThanOrEqual(300);
+    expect(calls.filter((u) => /\/market\?/.test(u))).toHaveLength(2);
+    await page.getByRole('link', { name: '가격 차트 크게 보기', exact: true }).click();
+    await expect(page.locator('.coin-dashboard')).toHaveCount(0);
     const chart = page.locator('[data-chart-kind=analysis]');
     await expect(chart).toHaveAttribute('data-primary-metric', 'price');
     await expect(chart).toHaveAttribute('data-range-ready', '1');
     await focused(page);
     expect(calls.filter((u) => /\/overview|\/themes|\/knowledge/.test(u))).toEqual([]);
-    expect(calls.filter((u) => /\/market\?/.test(u))).toHaveLength(2);
     const geometry = (await chart.boundingBox())!;
     expect(geometry.y).toBeLessThanOrEqual(280);
     expect(geometry.height).toBeGreaterThanOrEqual(320);
@@ -86,6 +95,11 @@ test('mobile coin, indicator, explanation, save and reopen preserve the latest a
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto('/');
   await page.getByRole('link', { name: '비트코인 BTC', exact: true }).click();
+  await expect(
+    page.locator('.coin-dashboard-card[data-metric="view:price"] [data-chart-kind=analysis]'),
+  ).toHaveAttribute('data-range-ready', '1');
+  await page.getByRole('link', { name: '가격 차트 크게 보기', exact: true }).click();
+  await expect(page.locator('.coin-dashboard')).toHaveCount(0);
   const chart = page.locator('[data-chart-kind=analysis]');
   await expect(chart).toHaveAttribute('data-range-ready', '1');
   await page.getByRole('button', { name: '코인 변경 · 비트코인 BTC' }).click();
@@ -144,7 +158,10 @@ test('mobile legacy links, theme bookmarks and keyboard search retain their targ
   await input.fill('이더리움');
   await input.press('ArrowDown');
   await page.keyboard.press('Enter');
-  await expect(page.locator('[data-chart-kind=analysis]')).toHaveAttribute('data-asset', 'ETH');
+  await expect(page.locator('.coin-dashboard')).toHaveAttribute('data-asset', 'ETH');
+  await expect(
+    page.locator('.coin-dashboard-card[data-metric="view:price"] [data-chart-kind=analysis]'),
+  ).toHaveAttribute('data-asset', 'ETH');
   await expect(input).not.toBeVisible();
   await page.getByRole('button', { name: '코인·지표 검색 열기' }).click();
   await input.press('Escape');

@@ -155,7 +155,7 @@ export function IndicatorComparisonPage() {
       data-comparison-metric={metric}
     >
       <header className="indicator-comparison-heading">
-        <h1>코인 비교</h1>
+        <h1>같은 지표 비교</h1>
         <ComparisonModes mode="indicator" />
       </header>
       <div className="indicator-comparison-toolbar">
@@ -417,7 +417,9 @@ export function IndicatorComparisonPage() {
               ...c.analysisOptions,
               ...(initialDate !== undefined
                 ? { reading_date: String(initialDate) }
-                : pinned.current === null ? {} : { reading_date: String(pinned.current) }),
+                : pinned.current === null
+                  ? {}
+                  : { reading_date: String(pinned.current) }),
             },
           })}
         />

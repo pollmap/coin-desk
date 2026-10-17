@@ -119,9 +119,9 @@ test('unsupported asset, provider changes, save and reopen keep the intended ind
   await expect(page).toHaveURL(/\/learn\/rsi/);
   await page.goBack();
   await expect(page.locator('[data-chart-kind=analysis]')).toBeVisible();
-  await page.getByRole('link', { name: '성과', exact: true }).click();
-  await expect(page.getByRole('heading', { name: '코인 성과 비교' })).toBeVisible();
-  await page.getByRole('link', { name: '지표', exact: true }).click();
+  await page.getByRole('link', { name: '가격 성과 비교', exact: true }).click();
+  await expect(page.getByRole('heading', { name: '가격 성과 비교' })).toBeVisible();
+  await page.getByRole('link', { name: '같은 지표 비교', exact: true }).click();
   await expect(page.locator('.indicator-comparison-results')).toBeVisible();
 });
 
