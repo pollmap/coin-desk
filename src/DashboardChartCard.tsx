@@ -313,6 +313,7 @@ export function DashboardChartCard({
             advancedTools={false}
             publicFocus
             height={height}
+            allowPageScroll
           />
           {plot.state ? <p className="coin-dashboard-chart-note">{plot.state}</p> : null}
         </>
