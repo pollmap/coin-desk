@@ -1340,5 +1340,67 @@
     ],
     "configuredRetries": 0,
     "scope": "비교 href 후속 수정 이전 커밋입니다. 신규 비교 범위 수정의 원격 통과를 의미하지 않습니다."
+  },
+  "remoteNativeTabFollowup": {
+    "head": "cb095e3ce382f4b1d353e889c15ec15dffa98c40",
+    "runId": 39027082512,
+    "diagnostics": "mcp__code_review.pull_requests_checks; official GitHub artifact connector",
+    "chromium": {
+      "passed": 234,
+      "failed": 1,
+      "skipped": 1,
+      "failure": "Ctrl-click actual destination was absent from Playwright context.pages within 12 seconds"
+    },
+    "webkit": {
+      "passed": 234,
+      "failed": 0,
+      "skipped": 2
+    },
+    "traceFacts": [
+      "The anchor had the current chart_from/chart_to.",
+      "A separate page identifier fetched the exact comparison document and comparison API with HTTP 200.",
+      "The original page remained on the dashboard; the new Page registration event was absent."
+    ],
+    "interpretation": "The failing assertion concerns native-tab observation in Chromium headless shell. It does not prove a broken product link; the exact lower-level cause remains unconfirmed.",
+    "change": "Only the two native tab cases use Chromium channel chromium in a separate test file; WebKit and all other tests keep their previous configuration.",
+    "unchanged": [
+      "Ctrl and middle clicks",
+      "actual destination and rendered range assertions",
+      "normal click and restored range",
+      "retry 0",
+      "timeouts",
+      "no additional skip"
+    ],
+    "local": {
+      "passed": 4,
+      "failed": 0,
+      "skipped": 0,
+      "durationSeconds": 14.9,
+      "platform": "Windows",
+      "remoteLinuxVerification": "pending_new_head"
+    },
+    "officialReference": "https://playwright.dev/docs/browsers",
+    "evidence": [
+      {
+        "path": "e2e/dashboard-native-navigation.spec.ts",
+        "sha256": "ad367c7525daf4a4bb744842a9c60c15a1c7b5235aed258ac3fe63095041725c"
+      },
+      {
+        "path": "work/ux-036/native-full-chromium-channel.log",
+        "sha256": "602b3ec661d44825f2b2e2d949411a9383a8387eac02d58f9650ea72b6634e62"
+      },
+      {
+        "path": "work/ux-036/native-anchor-full-chromium.log",
+        "sha256": "ac483e0b9435288fb4b08c7428ae48adb6226d66f5aac07cb2e6bf58e1589166"
+      },
+      {
+        "path": "work/ux-036/cb095-trace/trace-summary.json",
+        "sha256": "337e6d4e72b3ecdceb2380c4f93b1cff8d98ae5d4287f0423e6ec12203402dc8"
+      },
+      {
+        "path": "work/ux-036/pr74-cb095-chromium-failure.zip",
+        "sha256": "fafe91bc8f7ac3100c86f5899fd0f6bd8a9d91b0513597e8c5fc811f65e0bf84"
+      }
+    ]
   }
 }
