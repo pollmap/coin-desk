@@ -134,6 +134,9 @@ export function MarketHome() {
       <div className="market-body">
         <div className="market-heading">
           <h1>시장</h1>
+          <Link to="/reports" className="desk-button">
+            보고서
+          </Link>
         </div>
         <div className="market-search">
           <button

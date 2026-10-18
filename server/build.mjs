@@ -9,6 +9,9 @@ try {
 await build({
   configFile: false,
   publicDir: false,
+  // The runtime image has no npm tree. Keep the isolated report worker and
+  // its decimal/SDK dependencies runnable from this verified artifact alone.
+  ssr: { noExternal: true },
   build: {
     ssr: true,
     target: 'node24',
@@ -29,6 +32,7 @@ await build({
           ['derivatives', 'worker/derivatives.ts'],
           ['backfill-budget', 'worker/backfill-budget.ts'],
           ['history-operator', 'worker/history-operator.ts'],
+          ['research', 'worker/onchain/entry.ts'],
         ].map(([name, file]) => [name, resolve(file)]),
       ),
       output: { entryFileNames: '[name].mjs', chunkFileNames: 'chunks/[name]-[hash].mjs' },

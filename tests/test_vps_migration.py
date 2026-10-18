@@ -36,7 +36,7 @@ class MigrationRecovery(unittest.TestCase):
         self.assertEqual(report['imported'], self.expected)
         db = sqlite3.connect(destination)
         self.assertEqual(db.execute('SELECT run_id FROM cron_runs').fetchone()[0], 'keep-old')
-        self.assertEqual(db.execute('SELECT COUNT(*) FROM _coin_desk_migrations').fetchone()[0], 9)
+        self.assertEqual(db.execute('SELECT COUNT(*) FROM _coin_desk_migrations').fetchone()[0], len(list((ROOT/'migrations').glob('*.sql'))))
         for file, checksum in db.execute('SELECT name,sha256 FROM _coin_desk_migrations'):
             self.assertEqual(checksum, hashlib.sha256((ROOT/'migrations'/file).read_text(encoding='utf-8').encode()).hexdigest())
         db.close()

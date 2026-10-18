@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
-import { useLocation, useNavigate, useParams, useSearchParams } from 'react-router-dom';
+import { Link, useLocation, useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { Bookmark, ChevronDown, Search, SlidersHorizontal, Star } from 'lucide-react';
 import {
   ASSET_REGISTRY,
@@ -444,6 +444,11 @@ function DashboardBody({ asset, basis }: { asset: Asset; basis: PriceBasis }) {
             />
           ))}
         </div>
+        {asset === 'INJ' && (
+          <Link to="/reports?scope=injective" className="desk-button" onClick={rememberView}>
+            Injective 보고서
+          </Link>
+        )}
       </div>
       <DeskDialog
         open={panel !== null || help !== null}

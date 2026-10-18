@@ -1,0 +1,116 @@
+{
+  "checkedAt": "2026-10-18T01:51:37.000Z",
+  "sdk": "@injectivelabs/sdk-ts@1.20.61",
+  "network": "mainnet",
+  "scope": "bounded public contract probe; no production DB writes",
+  "markets": {
+    "spot": 132,
+    "derivative": 285
+  },
+  "samples": [
+    {
+      "marketId": "0xa508cb32923323679f29a032c70342c147c17d0145625922b0ef22e955c844c0",
+      "ticker": "INJ/USDT",
+      "kind": "spot",
+      "quoteSymbol": "USDT",
+      "baseDecimals": 18,
+      "quoteDecimals": 6,
+      "raw": {
+        "price": "0.000000000008709",
+        "quantity": "50962000000000000000",
+        "executedAt": 1792287922945
+      },
+      "normalized": {
+        "price": "8.709",
+        "quantity": "50.962",
+        "notional": "443.828058"
+      },
+      "fixedWindow": {
+        "start": 1792195200,
+        "end": 1792281600,
+        "rows": 2,
+        "inside": true,
+        "complete": false,
+        "reason": "bounded sample; pagination and economic taker scope are not full-market completeness"
+      },
+      "chronos": {
+        "resolution": "1440",
+        "completedDays": 29,
+        "first": "2026-09-19T00:00:00.000Z",
+        "last": "2026-10-17T00:00:00.000Z",
+        "volumeUsed": false
+      }
+    },
+    {
+      "marketId": "0x790aee464fbbd02cf4476444554c71d1225f7edfe15e6dc7f874c455fd883d31",
+      "ticker": "INJ/USDC PERP",
+      "kind": "perpetual",
+      "quoteSymbol": "USDC",
+      "baseDecimals": null,
+      "quoteDecimals": 6,
+      "raw": {
+        "price": "8726000",
+        "quantity": "0.12",
+        "executedAt": 1792288284348
+      },
+      "normalized": {
+        "price": "8.726",
+        "quantity": "0.12",
+        "notional": "1.04712"
+      },
+      "fixedWindow": {
+        "start": 1792195200,
+        "end": 1792281600,
+        "rows": 2,
+        "inside": true,
+        "complete": false,
+        "reason": "bounded sample; pagination and economic taker scope are not full-market completeness"
+      },
+      "chronos": {
+        "resolution": "1440",
+        "completedDays": 29,
+        "first": "2026-09-19T00:00:00.000Z",
+        "last": "2026-10-17T00:00:00.000Z",
+        "volumeUsed": false
+      }
+    }
+  ],
+  "dex": {
+    "checkedAt": "2026-10-18T01:56:22.000Z",
+    "source": "https://api-docs.defillama.com/llms-free.txt",
+    "definition": "https://docs.llama.fi/analysts/data-definitions",
+    "display": "https://defillama.com/dexs/chain/injective",
+    "chain": "Injective",
+    "reportedChainDay": [
+      1792195200,
+      1643076
+    ],
+    "selectedDay": {
+      "periodStart": "2026-10-17T00:00:00.000Z",
+      "periodEnd": "2026-10-18T00:00:00.000Z",
+      "value": "1642704",
+      "unit": "USD",
+      "status": "verified",
+      "scope": "Injective 현물 DEX 관측 집계 · Choice Exchange V1, Choice Exchange V2, Injective Spot · 중복·파생·예측시장 제외"
+    },
+    "retainedDays": 99,
+    "excluded": [
+      {
+        "name": "Helix Spot",
+        "category": "Dexs",
+        "doublecounted": true
+      },
+      {
+        "name": "Ninja Blaze",
+        "category": "Prediction Market",
+        "doublecounted": false
+      },
+      {
+        "name": "TrueCurrent",
+        "category": "Derivatives",
+        "doublecounted": true
+      }
+    ],
+    "rights": "Public API access verified; redistribution/commercial reuse rights not broadened beyond provider terms."
+  }
+}

@@ -11,6 +11,7 @@ const AnalysisWorkspace = lazy(() =>
 const CoinDashboard = lazy(() =>
   import('./CoinDashboard').then((m) => ({ default: m.CoinDashboard })),
 );
+const ReportsPage = lazy(() => import('./ReportsPage'));
 const ResearchLibrary = lazy(() =>
   import('./ResearchLibrary').then((m) => ({ default: m.ResearchLibrary })),
 );
@@ -144,6 +145,8 @@ export default function App() {
               <Route path="/learn" element={<LearnPage />} />
               <Route path="/learn/:id" element={<LearnPage />} />
               <Route path="/compare" element={<ComparePage />} />
+              <Route path="/reports" element={<ReportsPage />} />
+              <Route path="/reports/:reportId" element={<ReportsPage />} />
               <Route path="/explore" element={<Navigate to="/learn" replace />} />
               <Route path="/dominance" element={<DominancePage />} />
               <Route path="/status" element={<Navigate to="/" replace />} />

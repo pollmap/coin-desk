@@ -29,6 +29,14 @@ def smoke(image='coin-desk:ci'):
             result=json.load(response);assert result['data'][0]['value']==35000 and result['meta']['unit']=='USD'
         with urllib.request.urlopen(base+'/',timeout=10) as response: assert 'id="root"' in response.read().decode()
         with urllib.request.urlopen(base+'/api/v1/runtime',timeout=10) as response: assert json.load(response)['kind']=='vps'
+        with urllib.request.urlopen(base+'/reports',timeout=10) as response: assert 'id="root"' in response.read().decode()
+        with urllib.request.urlopen(base+'/api/v1/reports?scope=injective&type=daily',timeout=10) as response:
+            reports=json.load(response)
+            assert reports['data']==[] and reports['status']=='pending'
+            assert reports['schedule']['daily']=='09:10'
+        # Import the isolated runtime from the image, which contains no npm tree.
+        # This cannot start collection or publish reports as an import side effect.
+        run('docker','exec',name,'node','--input-type=module','-e',"await import('./server-dist/research.mjs')")
         try: urllib.request.urlopen(base+'/api/v1/reference?asset=BEAM',timeout=10)
         except urllib.error.HTTPError as error: assert error.code==400
         else: raise ValueError('Unsupported USD request was accepted')

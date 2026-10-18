@@ -1,5 +1,5 @@
 """Reviewed bundle and CI gates; no network or deployment is performed."""
-import importlib.util,json,pathlib,tempfile,unittest
+import importlib.util,json,pathlib,shutil,sqlite3,sys,tempfile,unittest
 from unittest.mock import patch
 
 spec=importlib.util.spec_from_file_location('deploy_command',pathlib.Path(__file__).resolve().parents[1]/'scripts/deploy_vps.py')
@@ -37,6 +37,26 @@ class DeploymentCommand(unittest.TestCase):
     def test_modified_image_is_rejected(self):
         (self.folder/'image.tar.gz').write_bytes(b'changed')
         with self.assertRaisesRegex(ValueError,'archive differs'):subject.validate_bundle(self.folder)
+    def research_bundle(self):
+        root=pathlib.Path(__file__).resolve().parents[1]
+        sys.path.insert(0,str(root/'deploy/vps'));import research_schema
+        for name in ['research_schema.py','research_release.py']:shutil.copyfile(root/'deploy/vps'/name,self.folder/name)
+        db=sqlite3.connect(':memory:')
+        try:
+            for name in research_schema.LEGACY_TABLES:db.execute('CREATE TABLE "'+name+'"(value TEXT)')
+            self.pins['schemaPlan']=research_schema.make_plan(db,root/research_schema.MIGRATION)
+        finally:db.close()
+        self.pins.update(deploymentKind='research-additive-v1',changedServices=['api','research-worker'],files={n:subject.sha(self.folder/n) for n in subject.RESEARCH_INPUTS});self.save()
+    def test_research_scope_requires_explicit_contract_and_additional_pinned_helpers(self):
+        self.research_bundle();pins,_=subject.validate_bundle(self.folder)
+        self.assertEqual(pins['schemaPlan']['afterTables'].__len__(),27)
+        self.pins.pop('deploymentKind');self.save()
+        with self.assertRaisesRegex(ValueError,'scope'):subject.validate_bundle(self.folder)
+    def test_research_bundle_rejects_changed_schema_and_helper(self):
+        self.research_bundle();self.pins['schemaPlan']['busyTimeoutMs']=60000;self.save()
+        with self.assertRaisesRegex(ValueError,'Bounded migration'):subject.validate_bundle(self.folder)
+        self.research_bundle();(self.folder/'research_schema.py').write_text('changed')
+        with self.assertRaisesRegex(ValueError,'Reviewed file changed'):subject.validate_bundle(self.folder)
     def test_stage_generated_remote_python_compiles_without_execution(self):
         runner=subject.Runner(self.folder)
         scripts=[]
@@ -52,7 +72,7 @@ class DeploymentCommand(unittest.TestCase):
         def compile_remote(code,*args):
             compile(code,'<phase-remote>','exec')
             return result
-        for operation in ['prepare','activate']:
+        for operation in ['prepare','activate','enable']:
             with self.subTest(operation=operation),patch.object(runner,'ssh',side_effect=compile_remote):
                 self.assertEqual(subject.phase(runner,self.pins,'/srv/services/coin-desk/audit/release-036',operation),result)
                 self.assertEqual(json.loads((self.folder/(operation+'-result.json')).read_text()),result)
