@@ -1,6 +1,6 @@
-"""Reviewed 0010 + API + disabled research-worker rollout.
+"""Reviewed 0010 + API + disabled research-worker, with optional backup image rollout.
 
-Legacy collectors, quote hub, migration container, backups and other projects keep
+Legacy collectors, quote hub, migration container and other projects keep
 their current image and identity. A later explicit enable changes only the research
 process. Rollback never overwrites a live DB or removes additive research tables.
 """
@@ -16,18 +16,18 @@ RESEARCH_ENV={'COIN_DESK_DB','COIN_DESK_RELEASE','COIN_DESK_RESEARCH_ENABLED',
 def require(value,message):
     if not value: raise ValueError(message)
 
-def validate_configs(previous,candidate,image,release,before):
+def validate_configs(previous,candidate,image,release,before,replace_backup=False):
     require(previous['name']==candidate['name']=='coin-desk','Compose project changed')
     require(set(candidate['services'])==set(previous['services'])|{WORKER} and WORKER not in previous['services'],'Only a new research service is allowed')
     require(previous.get('networks')==candidate.get('networks'),'Network changed')
     for name,old in previous['services'].items():
         new=candidate['services'][name]
-        if name!='api':require(old==new,'Protected service configuration changed: '+name);continue
-        require(set(old)==set(new),'API fields changed')
-        require(all(old[k]==new[k] for k in old if k not in ['image','environment']),'API containment changed')
-        require({k:v for k,v in old.get('environment',{}).items() if k!='COIN_DESK_RELEASE'}=={k:v for k,v in new.get('environment',{}).items() if k!='COIN_DESK_RELEASE'},'API environment changed')
-        require(new['image']==image and new['environment']['COIN_DESK_RELEASE']==release,'API release differs')
-        require(old['image']==before['api']['Config']['Image'],'Previous API image differs from live baseline')
+        if name not in (['api','backup'] if replace_backup else ['api']):require(old==new,'Protected service configuration changed: '+name);continue
+        require(set(old)==set(new),name+' fields changed')
+        require(all(old[k]==new[k] for k in old if k not in ['image','environment']),name+' containment changed')
+        require({k:v for k,v in old.get('environment',{}).items() if k!='COIN_DESK_RELEASE'}=={k:v for k,v in new.get('environment',{}).items() if k!='COIN_DESK_RELEASE'},name+' environment changed')
+        require(new['image']==image and new['environment']['COIN_DESK_RELEASE']==release,name+' release differs')
+        require(old['image']==before[name]['Config']['Image'],'Previous '+name+' image differs from live baseline')
     worker=candidate['services'][WORKER];env=worker.get('environment',{})
     require(worker['image']==image and env.get('COIN_DESK_RELEASE')==release,'Research image/release differs')
     require(env.get('COIN_DESK_DB')=='/app/data/coin-desk.sqlite' and str(env.get('COIN_DESK_RESEARCH_ENABLED'))=='0','Research must use the existing DB and start disabled')
@@ -76,6 +76,7 @@ def deployment_type(base,pins,scope):
             overrides={'COIN_DESK_API_IMAGE':self.image,'COIN_DESK_API_RELEASE':self.release,
                 'COIN_DESK_RESEARCH_IMAGE':self.image,'COIN_DESK_RESEARCH_RELEASE':self.release,
                 'COIN_DESK_RESEARCH_ENABLED':'0'}
+            if 'backup' in selective.CHANGED: overrides.update(COIN_DESK_BACKUP_IMAGE=self.image,COIN_DESK_BACKUP_RELEASE=self.release)
             content='\n'.join([line for line in self.oldenv.read_text().splitlines() if line.split('=',1)[0] not in overrides]+[k+'='+v for k,v in overrides.items()])+'\n'
             if self.newenv.exists():require(not self.newenv.is_symlink() and self.newenv.read_text()==content,'Research candidate environment differs')
             else:
@@ -86,7 +87,7 @@ def deployment_type(base,pins,scope):
             new=json.loads(self.run(self.config(self.new,self.newenv)+['config','--format','json']))
             base.private_json(selective.AUDIT/'private-logs/previous-compose.json',old)
             base.private_json(selective.AUDIT/'private-logs/candidate-compose.json',new)
-            validate_configs(old,new,self.image,self.release,before)
+            validate_configs(old,new,self.image,self.release,before,replace_backup='backup' in selective.CHANGED)
             self.report['protectedConfigsVerified']=selective.PROTECTED
             self.report['protectedContainerIdsBefore']={n:before[n]['Id'][:12] for n in selective.PROTECTED};self.persist()
 
@@ -157,21 +158,27 @@ def deployment_type(base,pins,scope):
                 result['postMigrationBackupRestored']=saved['verified']
                 result['postMigrationBackupManifestSha256']=selective.sha(snapshots[0].parent/'manifest.json')
                 result['postMigrationBackupAt']=saved['completedAt']
-                for service in ['api',WORKER]:
+                self.verify_reference_backup(snapshots[0],json.loads((snapshots[0].parent/'manifest.json').read_text()),selective.AUDIT/'rainbow-original')
+                for service in ['api',WORKER]+(['backup'] if 'backup' in selective.CHANGED else []):
                     result['attemptedServices'].append(service);base.private_json(selective.AUDIT/'activation.json',result)
                     self.run(self.config(self.new,self.newenv)+['up','-d','--no-deps','--wait','--wait-timeout','180',service],timeout=210)
-                    c=self.inspect_worker() if service==WORKER else self.containers()['api']
-                    require(c['Image'] in self.report['imagePortability']['verifiedIds'] and c['Config']['Image']==self.image,'Activated research/API image differs')
+                    c=self.inspect_worker() if service==WORKER else self.containers()[service]
+                    require(c['Image'] in self.report['imagePortability']['verifiedIds'] and c['Config']['Image']==self.image,'Activated research/API/backup image differs')
                     require(all(self.containers()[n]['Id']==before[n]['Id'] for n in selective.PROTECTED),'A protected service changed')
                 worker=self.inspect_worker();env=dict(item.split('=',1) for item in worker['Config']['Env'])
                 require(env.get('COIN_DESK_RESEARCH_ENABLED')=='0','Worker must be disabled at initial deployment')
                 self.run(['docker','exec','coin-desk-research-worker-1','node','server/research-worker.mjs','--health'],timeout=15)
+                if 'backup' in selective.CHANGED:result['metadataBackupVerified']=self.verify_active_backup(result['startedAt'])
                 first=self.operating_snapshot();time.sleep(60);last=self.operating_snapshot()
                 base.require_core_progress(first,last,time.time());require_collector_progress(first,last,time.time());result['sixCoreConfirmationsAdvanced']=True;result['fourCollectorsAdvanced']=True
                 require(all(self.containers()[n]['Id']==before[n]['Id'] for n in selective.PROTECTED),'A protected service changed')
                 link=selective.ROOT/('.current-'+selective.AUDIT.name+'-next');require(not link.exists() and not link.is_symlink(),'Temporary promotion link exists')
                 link.symlink_to(self.new);os.replace(link,selective.ROOT/'current');result.update(promoted=True,researchEnabled=False,protectedServices=selective.PROTECTED)
             except BaseException:
+                if 'backup' in result['attemptedServices']:
+                    try:
+                        self.run(self.config(selective.OLD,self.oldenv)+['up','-d','--no-deps','--wait','--wait-timeout','180','backup'],timeout=210);base.require_restored_image(before['backup'],self.containers()['backup'],'backup');result['rollbackServices'].append('backup')
+                    except BaseException:result.setdefault('rollbackFailures',[]).append('backup')
                 if WORKER in result['attemptedServices']:
                     try:
                         c=self.inspect_worker();require(c['Config']['Image']==self.image,'Refuse to stop another research image');self.run(['docker','stop','--time','30','coin-desk-research-worker-1']);result['rollbackServices'].append(WORKER)
@@ -198,7 +205,7 @@ def deployment_type(base,pins,scope):
             seal=json.loads((selective.AUDIT/'activation-seal.private.json').read_text())
             require(seal['environmentSha256']==selective.sha(self.newenv),'Disabled environment changed after rehearsal')
             before=self.containers();worker=self.inspect_worker()
-            for container in [before['api'],worker]:
+            for container in [before['api'],worker]+([before['backup']] if 'backup' in selective.CHANGED else []):
                 require(container['Config']['Image']==self.image and container['Image'] in self.report['imagePortability']['verifiedIds'] and container['State'].get('Health',{}).get('Status')=='healthy','API/research current image or health differs')
             require(all(before[n]['Id']==seal['initialContainerIds'][n] for n in selective.PROTECTED),'Protected collector changed after activation')
             with closing(sqlite3.connect((selective.ROOT/'shared/data/coin-desk.sqlite').as_uri()+'?mode=ro',uri=True)) as db:
@@ -209,6 +216,7 @@ def deployment_type(base,pins,scope):
             manifest=snapshots[0].parent/'manifest.json';saved=json.loads(manifest.read_text())
             require(selective.sha(manifest)==activation['postMigrationBackupManifestSha256'] and selective.sha(snapshots[0])==saved['fileSha256'] and 0<=time.time()-saved['completedAt']<3600,'Fresh new-schema backup required before enable')
             require(set(saved['content']['tables'])==set(schema.LEGACY_TABLES+schema.NEW_TABLES),'Post-migration backup table set differs')
+            self.verify_reference_backup(snapshots[0],saved)
             self.capacity('before explicit research enable',memory_required=1024**3)
             original=self.newenv.read_text();updated=enabled_environment(original)
             stage=selective.AUDIT/'research-enabled.env';require(not stage.exists() and not stage.is_symlink(),'Preserve prior research environment checkpoint')

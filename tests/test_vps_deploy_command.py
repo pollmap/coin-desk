@@ -57,6 +57,12 @@ class DeploymentCommand(unittest.TestCase):
         with self.assertRaisesRegex(ValueError,'Bounded migration'):subject.validate_bundle(self.folder)
         self.research_bundle();(self.folder/'research_schema.py').write_text('changed')
         with self.assertRaisesRegex(ValueError,'Reviewed file changed'):subject.validate_bundle(self.folder)
+    def test_research_metadata_backup_scope_is_explicit_and_excludes_collectors(self):
+        self.research_bundle();self.pins['changedServices']=['api','research-worker','backup'];self.save()
+        self.assertEqual(subject.validate_bundle(self.folder)[0]['changedServices'],['api','research-worker','backup'])
+        for services in [['api','backup'],['api','research-worker','backup','quotes'],['api','research-worker','backup','background'],['backup','api','research-worker']]:
+            self.pins['changedServices']=services;self.save()
+            with self.assertRaisesRegex(ValueError,'scope'):subject.validate_bundle(self.folder)
     def test_stage_generated_remote_python_compiles_without_execution(self):
         runner=subject.Runner(self.folder)
         scripts=[]

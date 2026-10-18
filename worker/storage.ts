@@ -1,6 +1,10 @@
 import type { Asset, Candle } from '../shared/types';
 import { isPrimaryAsset } from '../shared/catalog';
 export interface Env {
+  /** Node API's immutable metadata store. Reads never start an upstream refresh. */
+  ORIGINAL_RAINBOW_REFERENCE?: (
+    modelVersion?: string,
+  ) => Promise<import('../shared/btc-rainbow-original').OriginalRainbowReference | null>;
   RUNTIME_KIND?: 'vps' | 'cloudflare';
   READ_ONLY_API?: boolean;
   HISTORY_ALLOWED?: () => boolean;

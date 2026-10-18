@@ -126,6 +126,30 @@ class TwoServiceGuards(unittest.TestCase):
         self.assertEqual({k for k in previous if previous[k]!=after[k]},
                          {'COIN_DESK_API_IMAGE','COIN_DESK_API_RELEASE'})
 
+    def test_metadata_backup_requires_new_contract_and_fresh_completion(self):
+        state={'ok':True,'verified':True,'completedAt':1000,'backupContract':'sqlite-original-v1',
+               'referenceMetadata':{'schemaVersion':1,'state':'verified','snapshotCount':3}}
+        with mock.patch.object(wrapper.time,'time',return_value=1005):
+            wrapper.require_backup_metadata_status(state,999)
+            for damaged in [dict(state,completedAt=998),dict(state,backupContract='sqlite-only'),dict(state,referenceMetadata={}),dict(state,verified=False)]:
+                with self.assertRaises(ValueError):wrapper.require_backup_metadata_status(damaged,999)
+
+    def test_metadata_payload_changes_are_rejected_even_with_unchanged_db_and_manifest(self):
+        helper=Path(__file__).resolve().parents[1]/'scripts/rainbow_reference_backup.py'
+        target=self.job.new/'scripts/rainbow_reference_backup.py';target.parent.mkdir();target.write_bytes(helper.read_bytes())
+        self.scope['candidateFiles']['scripts/rainbow_reference_backup.py']=wrapper.sha(target)
+        sys.path.insert(0,str(helper.parent));import rainbow_reference_backup as metadata
+        source=self.root/'reference-source';source.mkdir()
+        baseline=json.loads((helper.parents[1]/'shared/btc-rainbow-original-reference.json').read_text())
+        (source/('snapshot-'+baseline['snapshotId']+'.json')).write_text(json.dumps(baseline))
+        (source/'index.json').write_text(json.dumps({'schemaVersion':1,'latest':baseline['modelVersion'],'versions':{baseline['modelVersion']:baseline['snapshotId']}}))
+        manifest={'referenceMetadata':metadata.copy_for_backup(source,self.backup/'rainbow-original')}
+        metadata.copy_for_backup(source,self.audit/'rainbow-original')
+        self.job.verify_reference_backup(self.backup/'snapshot.sqlite',manifest,self.audit/'rainbow-original')
+        index=self.backup/'rainbow-original/index.json';index.write_bytes(index.read_bytes()+b'\n')
+        with self.assertRaisesRegex(ValueError,'checksum mismatch'):
+            self.job.verify_reference_backup(self.backup/'snapshot.sqlite',manifest,self.audit/'rainbow-original')
+
     def test_compose_up_never_builds_or_pulls(self):
         self.job.run(['docker','compose','up','-d','--no-deps','api'])
         self.assertEqual(self.job.lastCommand[:6],['docker','compose','up','--no-build','--pull','never'])

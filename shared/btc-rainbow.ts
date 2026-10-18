@@ -19,7 +19,9 @@ export interface RainbowPoint {
   last: number;
 }
 /** O(n) expanding OLS. A plotted day never participates in its own fit. */
-export function btcRainbow(points: Point[]): RainbowPoint[] {
+export function btcRainbow(points: readonly Point[], now = Date.now() / 1000): RainbowPoint[] {
+  if (!(Number.isFinite(now) || now === Infinity) || now < 0)
+    throw new Error('Invalid rainbow observation cutoff');
   const out: RainbowPoint[] = [];
   let n = 0,
     mx = 0,
@@ -34,6 +36,7 @@ export function btcRainbow(points: Point[]): RainbowPoint[] {
       !Number.isSafeInteger(p.time) ||
       p.time % DAY !== 0 ||
       p.time <= GENESIS ||
+      p.time + DAY > now ||
       !Number.isFinite(p.value) ||
       p.value <= 0 ||
       p.time <= last
@@ -46,20 +49,28 @@ export function btcRainbow(points: Point[]): RainbowPoint[] {
         a = my - b * mx,
         variance = Math.max(0, (syy - b * sxy) / n),
         sigma = Math.sqrt(variance),
-        center = Math.exp(a + b * x);
-      out.push({
-        time: p.time,
-        price: p.value,
-        center,
-        sigma,
-        z: sigma > 1e-10 ? (y - a - b * x) / sigma : null,
-        bands: RAINBOW_OFFSETS.map((k) => Math.exp(a + b * x + k * sigma)),
-        a,
-        b,
-        observations: n,
-        first,
-        last,
-      });
+        center = Math.exp(a + b * x),
+        bands = RAINBOW_OFFSETS.map((k) => Math.exp(a + b * x + k * sigma)),
+        score = sigma > 1e-10 ? (y - a - b * x) / sigma : null;
+      if (
+        Number.isFinite(a) &&
+        Number.isFinite(b) &&
+        Number.isFinite(sigma) &&
+        [center, ...bands].every((value) => Number.isFinite(value) && value > 0)
+      )
+        out.push({
+          time: p.time,
+          price: p.value,
+          center,
+          sigma,
+          z: score !== null && Number.isFinite(score) ? score : null,
+          bands,
+          a,
+          b,
+          observations: n,
+          first,
+          last,
+        });
     }
     n++;
     const dx = x - mx,

@@ -10,6 +10,7 @@ import {
   defaultDashboardUrl,
 } from '../shared/default-analysis';
 import type { Asset, Point } from '../shared/types';
+import { axisCoordinates } from '../shared/price-axis';
 import { AssetLogo } from './AssetLogo';
 import { useQuoteFeed } from './useQuoteFeed';
 import { useMarket } from './useMarket';
@@ -19,7 +20,7 @@ const ThemeExplorer = lazy(() => import('./ThemeExplorer'));
 
 function Spark({ points }: { points: Point[] }) {
   if (points.length < 2) return <span className="muted">—</span>;
-  const values = points.map((p) => p.value),
+  const values = axisCoordinates(points.map((p) => p.value)),
     min = Math.min(...values),
     span = Math.max(...values) - min || 1;
   const line = values

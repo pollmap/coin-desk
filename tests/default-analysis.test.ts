@@ -9,6 +9,7 @@ import {
 import { availableMarket } from '../shared/asset-registry';
 import { resolveIndicator } from '../shared/indicator-catalog';
 import { indicatorUrl, INDICATORS_CATALOG } from '../shared/indicator-catalog';
+import { axisPreference } from '../shared/price-axis';
 
 describe('light market links preserve analysis defaults', () => {
   it('core market entries match canonical MVRV/Supertrend links without changing legacy defaults', () => {
@@ -37,7 +38,9 @@ describe('light market links preserve analysis defaults', () => {
         expect(url.searchParams.get('price_source')).toBe(url.searchParams.get('market'));
         expect(resolveIndicator(asset.id, url.pathname, url.searchParams).id).toBe('view:price');
         expect(url.searchParams.get('period')).toBe('all');
-        expect(url.searchParams.get('log')).toBe('0');
+        expect(url.searchParams.has('log')).toBe(false);
+        expect(axisPreference('view:price', url.searchParams.get('log'))).toBe('log');
+        expect(axisPreference('view:price', url.searchParams.get('log'), 'linear')).toBe('linear');
         expect(resolveIndicator(asset.id, url.pathname, new URLSearchParams()).id).toBe(
           'view:price',
         );

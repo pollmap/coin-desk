@@ -10,6 +10,10 @@ import { workspaceIndicators } from '../shared/workspace-indicators';
 import { seasonality, type Seasonality } from '../shared/advanced-analysis';
 import type { AnalysisLine, ChartObservation } from './AnalysisChart';
 import type { BandRow } from './BandPrimitive';
+import { defaultAxis, effectiveAxis, type AxisPreference } from '../shared/price-axis';
+import { ORIGINAL_RAINBOW_BASELINE, type OriginalRainbowReference } from '../shared/btc-rainbow-original';
+import { btcRainbow } from '../shared/btc-rainbow';
+import { originalRainbowLines } from './original-rainbow-plot';
 
 export const DASHBOARD_EMPTY: Point[] = [];
 export function dashboardPriceUrl(asset: Asset, basis: PriceBasis): string {
@@ -58,6 +62,22 @@ export interface DashboardPlot {
   seasonality?: Seasonality;
 }
 
+export function dashboardAxis(plot: DashboardPlot, requested: AxisPreference): AxisPreference {
+  return effectiveAxis(requested, [
+    ...plot.points.map((point) => point.value),
+    ...(plot.candles ?? []).flatMap((candle) => [
+      candle.open,
+      candle.high,
+      candle.low,
+      candle.close,
+    ]),
+    ...plot.lines
+      .filter((line) => line.overlay)
+      .flatMap((line) => line.data.map((point) => point.value)),
+    ...(plot.bands ?? []).flatMap((row) => row.bands),
+  ]);
+}
+
 export function dashboardPlot({
   asset,
   metric,
@@ -66,6 +86,7 @@ export function dashboardPlot({
   series,
   candles,
   benchmark,
+  originalReference = ORIGINAL_RAINBOW_BASELINE,
   now = Date.now() / 1000,
 }: {
   asset: Asset;
@@ -75,13 +96,25 @@ export function dashboardPlot({
   series?: SeriesResponse;
   candles?: CandleResponse;
   benchmark?: Point[];
+  originalReference?: OriginalRainbowReference | null;
   now?: number;
 }): DashboardPlot {
   const definition = indicatorDefinition(metric);
   const unit = basisUnit(basis),
     source = basisName(basis);
-  const base: DashboardPlot = { points: prices, lines: [], unit, source, log: false, step: 86400 };
+  const base: DashboardPlot = {
+    points: prices,
+    lines: [],
+    unit,
+    source,
+    log: defaultAxis(metric) === 'log',
+    step: 86400,
+  };
   if (metric === 'view:price') return base;
+  if (metric === 'view:btc_rainbow_original') {
+    if (asset !== 'BTC' || basis !== 'reference') return { ...base, points: [], state: 'BTC USD 가격에서 사용할 수 있습니다.' };
+    return { ...base, lines: originalReference ? originalRainbowLines(prices, originalReference, now) : [], unit: 'USD' };
+  }
   if (metric === 'view:ribbon' || metric === 'view:bb') {
     const ids =
       metric === 'view:bb'
@@ -124,10 +157,10 @@ export function dashboardPlot({
       ],
     };
   }
-  if (metric === 'view:asset_rainbow') {
+  if (metric === 'view:asset_rainbow' || metric === 'view:btc_rainbow') {
     const context = assetRainbowContext(asset, basis, prices);
     const rows =
-      context.origin === null ? [] : assetRainbowDiagnostics(prices, context.origin, now).rows;
+      metric === 'view:btc_rainbow' ? btcRainbow(prices, now) : context.origin === null ? [] : assetRainbowDiagnostics(prices, context.origin, now).rows;
     return {
       ...base,
       log: true,
@@ -218,16 +251,16 @@ export function dashboardPlot({
     thresholds: definition?.thresholds,
     formula: definition?.formula,
   };
-  const positiveMvrv =
-    ['net:mvrv', 'btc:mvrv', 'btc:sth_mvrv', 'btc:lth_mvrv'].includes(metric) &&
-    data.length > 0 &&
-    data.every((point) => point.value > 0);
   return {
     ...base,
     points: data,
     primary,
     unit: primary.unit,
     source: primary.source,
-    log: positiveMvrv,
+    log:
+      effectiveAxis(
+        defaultAxis(metric),
+        data.map((point) => point.value),
+      ) === 'log',
   };
 }

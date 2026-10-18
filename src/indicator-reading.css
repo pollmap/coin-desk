@@ -1,0 +1,140 @@
+.indicator-reading {
+  min-width: 0;
+  color: var(--text);
+}
+.reading-chart-name {
+  margin: 0 0 20px;
+  font-size: 16px;
+  font-weight: 650;
+}
+.indicator-reading section {
+  margin-top: 22px;
+  padding-top: 20px;
+  border-top: 1px solid var(--border);
+}
+.indicator-reading section:first-child {
+  margin-top: 0;
+  padding-top: 0;
+  border-top: 0;
+}
+.indicator-reading h2 {
+  font-size: 17px;
+  line-height: 1.55;
+  margin: 0 0 10px;
+}
+.indicator-reading h3 {
+  font-size: 15px;
+  margin: 20px 0 8px;
+}
+.indicator-reading p,
+.indicator-reading li {
+  font-size: 14px;
+  line-height: 1.8;
+  overflow-wrap: anywhere;
+}
+.indicator-reading ol {
+  padding-left: 22px;
+}
+.indicator-reading li + li {
+  margin-top: 8px;
+}
+.indicator-reading .reading-meaning {
+  font-size: 15px;
+}
+.indicator-reading .reading-distinction {
+  color: var(--muted);
+}
+.indicator-reading summary {
+  cursor: pointer;
+  min-height: 44px;
+  padding: 10px 0;
+  font-size: 14px;
+  font-weight: 600;
+}
+.indicator-reading summary:hover,
+.indicator-reading summary:focus-visible {
+  color: var(--accent);
+}
+.indicator-reading .guide-method,
+.indicator-reading .guide-caution,
+.indicator-reading .reading-source {
+  margin-top: 0;
+  padding-top: 0;
+}
+.indicator-reading .guide-terms {
+  font-size: 13px;
+  line-height: 1.75;
+}
+.indicator-reading .guide-terms > div {
+  padding: 8px 0;
+  border-bottom: 1px solid var(--border);
+}
+.indicator-reading .guide-terms dt {
+  font-weight: 600;
+}
+.indicator-reading .guide-terms dd {
+  margin: 4px 0 0;
+}
+.indicator-reading .guide-reading {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+  line-height: 1.7;
+}
+.indicator-reading .guide-reading caption {
+  text-align: left;
+  color: var(--muted);
+  font-size: 12px;
+  padding: 8px 0;
+}
+.indicator-reading .guide-reading th,
+.indicator-reading .guide-reading td {
+  padding: 8px;
+  text-align: left;
+  border-bottom: 1px solid var(--border);
+  overflow-wrap: anywhere;
+}
+.indicator-reading .guide-example-label {
+  font-size: 12px;
+  color: var(--muted);
+}
+.indicator-reading .guide-conclusion {
+  padding-left: 12px;
+  border-left: 2px solid var(--accent);
+}
+.indicator-reading .reading-source a {
+  display: inline-block;
+  color: var(--accent);
+  padding: 10px 0;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.reading-dictionary-link {
+  display: flex;
+  align-items: center;
+  min-height: 44px;
+  margin-top: 14px;
+  padding: 10px 0;
+  color: var(--accent);
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.indicator-reading summary:focus-visible,
+.reading-dictionary-link:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+.indicator-reading .pattern-example {
+  margin: 16px 0;
+  max-width: 440px;
+}
+.indicator-reading .pattern-example svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.indicator-reading .pattern-example figcaption {
+  font-size: 12px;
+  color: var(--muted);
+}

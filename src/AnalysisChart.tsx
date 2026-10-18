@@ -18,6 +18,7 @@ import {
 } from 'lightweight-charts';
 import { createDeskChart } from './chart-theme';
 import { eligibleChartPrice, type LiveChartPrice } from '../shared/live-chart-price';
+import { effectiveAxis, isPriceMetric, positiveLogAutoscale } from '../shared/price-axis';
 import type { Candle, Period, Point } from '../shared/types';
 import type { ObservationSignal } from '../shared/signals';
 import { money, numeric, periodStart, priceDigits } from './lib';
@@ -57,6 +58,7 @@ export interface AnalysisLine {
   source: string;
   data: Point[];
   color: string;
+  lineWidth?: 1 | 2 | 3 | 4;
   overlay?: boolean;
   pane?: string;
   thresholds?: number[];
@@ -173,6 +175,16 @@ export const AnalysisChart = memo(function AnalysisChart({
   /** Embedded charts leave wheel input to the page; drag and pinch remain available. */
   allowPageScroll?: boolean;
 }) {
+  const positiveAxisValues = useMemo(
+    () => [
+      ...points.map((p) => p.value),
+      ...(candles ?? []).flatMap((c) => [c.open, c.high, c.low, c.close]),
+      ...lines.filter((line) => line.overlay).flatMap((line) => line.data.map((p) => p.value)),
+      ...(bands ?? []).flatMap((row) => row.bands),
+    ],
+    [points, candles, lines, bands],
+  );
+  const effectiveLog = effectiveAxis(log ? 'log' : 'linear', positiveAxisValues) === 'log';
   const host = useRef<HTMLDivElement>(null),
     chartRef = useRef<IChartApi | null>(null);
   const liveSeries = useRef<ISeriesApi<SeriesType> | null>(null);
@@ -205,8 +217,8 @@ export const AnalysisChart = memo(function AnalysisChart({
   observationClick.current = onObservation;
   const dateSelect = useRef(onDateSelect);
   dateSelect.current = onDateSelect;
-  const settings = useRef({ period, log, allowPageScroll });
-  settings.current = { period, log, allowPageScroll };
+  const settings = useRef({ period, log: effectiveLog, allowPageScroll });
+  settings.current = { period, log: effectiveLog, allowPageScroll };
   const previous = useRef<{
     key: string;
     from: number;
@@ -244,6 +256,7 @@ export const AnalysisChart = memo(function AnalysisChart({
   });
   latest.current = { points, candles, lines, signals, observations, bands, initialWindow, height };
   const updateSeries = useRef<() => void>(() => {});
+  const updateAxes = useRef<() => void>(() => {});
   const chartHeight = () => {
     if (latest.current.height !== undefined)
       return (
@@ -266,21 +279,19 @@ export const AnalysisChart = memo(function AnalysisChart({
         : 440;
     return base + panelCount(latest.current.lines) * 135;
   };
+  const primaryIsPrice = primary
+    ? isPriceMetric(primary.id)
+    : ['USD', 'USDT', 'KRW'].includes(unit);
   const primaryPrecision = useMemo(
     () =>
       chartPrecision(
         points.map((p) => p.value),
-        (v) =>
-          primary || !['USD', 'USDT', 'KRW'].includes(unit)
-            ? readingDigits(v)
-            : priceDigits(v, unit),
+        (v) => (primaryIsPrice ? priceDigits(v, unit) : readingDigits(v)),
       ),
-    [points, primary, unit],
+    [points, primaryIsPrice, unit],
   );
   const display = (value: number | undefined) =>
-    primary || !['USD', 'USDT', 'KRW'].includes(unit)
-      ? numeric(value, readingDigits(value)) + ' ' + unit
-      : money(value, unit);
+    primaryIsPrice ? money(value, unit) : numeric(value, readingDigits(value)) + ' ' + unit;
   const columns = useMemo(
     () => [{ title: primary?.title ?? asset, unit, source, data: points }, ...lines],
     [asset, unit, source, points, lines, primary?.title],
@@ -437,7 +448,7 @@ export const AnalysisChart = memo(function AnalysisChart({
       rightPriceScale: {
         mode: settings.current.log ? PriceScaleMode.Logarithmic : PriceScaleMode.Normal,
         borderVisible: false,
-        scaleMargins: { top: 0.05, bottom: 0.06 },
+        scaleMargins: settings.current.log ? { top: 0, bottom: 0 } : { top: 0.05, bottom: 0.06 },
         alignLabels: true,
         entireTextOnly: true,
         minimumWidth: 56,
@@ -484,6 +495,8 @@ export const AnalysisChart = memo(function AnalysisChart({
       chart.timeScale().setVisibleLogicalRange(next as LogicalRange);
       return true;
     };
+    const primaryAutoscale = (original: () => import('lightweight-charts').AutoscaleInfo | null) =>
+      settings.current.log ? positiveLogAutoscale(original()) : original();
     const price = candles?.length
       ? chart.addSeries(CandlestickSeries, {
           upColor: '#55c8af',
@@ -492,6 +505,7 @@ export const AnalysisChart = memo(function AnalysisChart({
           wickDownColor: '#e98a98',
           borderVisible: false,
           priceLineVisible: false,
+          autoscaleInfoProvider: primaryAutoscale,
           priceFormat: {
             type: 'custom',
             minMove: primaryPrecision.minMove,
@@ -502,6 +516,7 @@ export const AnalysisChart = memo(function AnalysisChart({
           color: primary?.color ?? '#65d4bc',
           lineWidth: 2,
           priceLineVisible: false,
+          autoscaleInfoProvider: primaryAutoscale,
           priceFormat: {
             type: 'custom',
             minMove: primaryPrecision.minMove,
@@ -537,6 +552,19 @@ export const AnalysisChart = memo(function AnalysisChart({
       },
     ];
     const panes = new Map<string, number>();
+    const paneLog = (key: string) => {
+      const members = latest.current.lines.filter(
+        (line) => !line.overlay && (line.pane ?? line.id) === key,
+      );
+      return (
+        members.length > 0 &&
+        members.every((line) => isPriceMetric(line.id)) &&
+        effectiveAxis(
+          'log',
+          members.flatMap((line) => line.data.map((p) => p.value)),
+        ) === 'log'
+      );
+    };
     for (const line of lines) {
       const paneKey = line.pane ?? line.id;
       if (!line.overlay && !panes.has(paneKey)) panes.set(paneKey, panes.size + 1);
@@ -554,8 +582,14 @@ export const AnalysisChart = memo(function AnalysisChart({
           crosshairMarkerVisible: !line.id.startsWith('band:'),
           color: line.color,
           lineVisible: !line.supertrend,
-          lineWidth: 1,
+          lineWidth: line.lineWidth ?? 1,
           priceLineVisible: false,
+          autoscaleInfoProvider: (
+            original: () => import('lightweight-charts').AutoscaleInfo | null,
+          ) =>
+            (line.overlay ? settings.current.log : paneLog(paneKey))
+              ? positiveLogAutoscale(original())
+              : original(),
           priceFormat: {
             type: 'custom',
             minMove: precision.minMove,
@@ -596,11 +630,21 @@ export const AnalysisChart = memo(function AnalysisChart({
           title: String(level),
         });
       }
-      if (index)
-        series
-          .priceScale()
-          .applyOptions({ mode: PriceScaleMode.Normal, scaleMargins: { top: 0.2, bottom: 0.15 } });
     }
+    updateAxes.current = () => {
+      chart.priceScale('right', 0).applyOptions({
+        mode: settings.current.log ? PriceScaleMode.Logarithmic : PriceScaleMode.Normal,
+        scaleMargins: settings.current.log ? { top: 0, bottom: 0 } : { top: 0.05, bottom: 0.06 },
+      });
+      for (const [paneKey, index] of panes) {
+        const log = paneLog(paneKey);
+        chart.priceScale('right', index).applyOptions({
+          mode: log ? PriceScaleMode.Logarithmic : PriceScaleMode.Normal,
+          scaleMargins: log ? { top: 0, bottom: 0 } : { top: 0.2, bottom: 0.15 },
+        });
+      }
+    };
+    updateAxes.current();
     chart.panes()[0].setStretchFactor(3);
     for (const p of chart.panes().slice(1)) p.setStretchFactor(1);
     const dates = new Set(points.map((p) => p.time));
@@ -861,10 +905,7 @@ export const AnalysisChart = memo(function AnalysisChart({
       else price.setData(gapData(data.points, step));
       const precision = chartPrecision(
         data.points.map((p) => p.value),
-        (v) =>
-          primary || !['USD', 'USDT', 'KRW'].includes(unit)
-            ? readingDigits(v)
-            : priceDigits(v, unit),
+        (v) => (primaryIsPrice ? priceDigits(v, unit) : readingDigits(v)),
       );
       price.applyOptions({
         priceFormat: {
@@ -886,6 +927,7 @@ export const AnalysisChart = memo(function AnalysisChart({
             (v) => (line.supertrend ? priceDigits(v, line.unit) : readingDigits(v)),
           );
           entry.series.applyOptions({
+            lineWidth: line.lineWidth ?? 1,
             priceFormat: {
               type: 'custom',
               minMove: precision.minMove,
@@ -898,6 +940,7 @@ export const AnalysisChart = memo(function AnalysisChart({
           (entry.primitive as SupertrendPrimitive).setRows(line?.supertrend?.rows ?? []);
       }
       bandPrimitive?.setRows(data.bands ?? []);
+      updateAxes.current();
       const dates = new Set(data.points.map((p) => p.time));
       markers.setMarkers(
         [
@@ -1109,6 +1152,7 @@ export const AnalysisChart = memo(function AnalysisChart({
       liveLine.current = null;
       chartRef.current = null;
       updateSeries.current = () => {};
+      updateAxes.current = () => {};
       moveCursor.current = () => {};
       inspectAt.current = () => {};
       keyboardInspection.current = null;
@@ -1147,10 +1191,8 @@ export const AnalysisChart = memo(function AnalysisChart({
     updateSeries.current();
   }, [points, candles, lines, signals, observations, bands]);
   useEffect(() => {
-    chartRef.current
-      ?.priceScale('right', 0)
-      .applyOptions({ mode: log ? PriceScaleMode.Logarithmic : PriceScaleMode.Normal });
-  }, [log]);
+    updateAxes.current();
+  }, [effectiveLog]);
   const appliedRange = useRef<string | null>(null);
   useEffect(() => {
     const token = `${key}:${period}:${rangeRevision}`;
@@ -1462,6 +1504,7 @@ export const AnalysisChart = memo(function AnalysisChart({
           className="analysis-canvas"
           style={{ height: (height ?? 440) + panelCount(lines) * 135 }}
           data-chart-kind="analysis"
+          data-axis={effectiveLog ? 'log' : 'linear'}
           data-asset={asset}
           data-primary-metric={primary?.id ?? 'price'}
           data-price-style={candleMode ? 'candles' : 'line'}

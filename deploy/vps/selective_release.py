@@ -31,8 +31,19 @@ def require(value,message):
 def sha(path):
     with pathlib.Path(path).open('rb') as stream:return hashlib.file_digest(stream,'sha256').hexdigest()
 
+def require_backup_metadata_status(state, started_at):
+    require(isinstance(state,dict),'Invalid backup status')
+    require(state.get('ok') is True and state.get('verified') is True and
+            type(state.get('completedAt')) is int and started_at <= state['completedAt'] <= time.time()+60 and
+            state.get('backupContract')=='sqlite-original-v1', 'New backup contract has not completed')
+    metadata=state.get('referenceMetadata',{})
+    require(isinstance(metadata,dict),'Original metadata backup proof is missing')
+    require(metadata.get('schemaVersion')==1 and metadata.get('state') in ['absent','verified','unindexed_snapshots','bundled_reference_only'] and
+            type(metadata.get('snapshotCount')) is int and 0 <= metadata['snapshotCount'] <= 1024,
+            'Original metadata backup proof is missing')
+
 def reviewed_module(commit, research_contract=None):
-    """Only declared API/hub changes; collectors and migrations remain untouched."""
+    """Only declared API/hub/backup changes; collector identities remain untouched."""
     global OLD, CHANGED, PROTECTED
     require(re.fullmatch('[a-f0-9]{40}', commit), 'Exact final main commit required')
     require(AUDIT.resolve() == AUDIT and AUDIT.parent == ROOT/'audit', 'Owned nonsymlink audit required')
@@ -46,7 +57,7 @@ def reviewed_module(commit, research_contract=None):
     if research_contract is None:
         require(CHANGED in [['api'], ['quote-hub','api']], 'Only reviewed API or API/hub rollout supported')
     else:
-        require(pins.get('deploymentKind')=='research-additive-v1' and CHANGED==['api','research-worker'], 'Explicit research-only extension contract required')
+        require(pins.get('deploymentKind')=='research-additive-v1' and CHANGED in [['api','research-worker'], ['api','research-worker','backup']], 'Explicit research-only extension contract required')
         research_contract.validate_plan(pins.get('schemaPlan'))
     PROTECTED = [name for name in SERVICES if name not in CHANGED]
     require(pins.get('mainCiAllFivePassed') is True and pins.get('mainCiHead') == commit, 'Final main CI required')
@@ -78,6 +89,7 @@ def deployment_type(base,pins,scope):
         def write_environment(self):
             overrides={'COIN_DESK_API_IMAGE':self.image,'COIN_DESK_API_RELEASE':self.release}
             if 'quote-hub' in CHANGED: overrides['COIN_DESK_HUB_IMAGE']=self.image
+            if 'backup' in CHANGED: overrides.update(COIN_DESK_BACKUP_IMAGE=self.image, COIN_DESK_BACKUP_RELEASE=self.release)
             content='\n'.join([line for line in self.oldenv.read_text().splitlines() if line.split('=',1)[0] not in overrides]+[key+'='+value for key,value in overrides.items()])+'\n'
             if self.newenv.exists():
                 require(not self.newenv.is_symlink() and self.newenv.read_text()==content,'Candidate environment differs')
@@ -137,6 +149,33 @@ def deployment_type(base,pins,scope):
                 require(fingerprint(db)==expected['content'],'Independent restore content differs')
             proof={'verified':True,'independentRestoreVerified':True,'liveDatabaseOverwritten':False,'sourceSnapshotSha256':sha(snapshot),'restoredSnapshotSha256':sha(clone),'manifestSha256':sha(manifest),'schemaSha256':expected['content']['schemaSha256'],'userTableCount':len(expected['content']['tables']),'manifestRelativePath':str(manifest.relative_to(ROOT)),'sourceSnapshotRelativePath':str(snapshot.relative_to(ROOT)),'restoreRelativePath':str(clone.relative_to(ROOT)),'verifiedAt':int(time.time()),'contentMatches':True}
             base.private_json(AUDIT/'backup-restore-reviewed.private.json',proof)
+            self.verify_reference_backup(snapshot, expected, AUDIT/'rainbow-original')
+
+        def verify_reference_backup(self, snapshot, manifest, restored_directory=None):
+            metadata=manifest.get('referenceMetadata')
+            if metadata is None:
+                require('backup' not in CHANGED, 'Selected backup rollout requires metadata-aware backup')
+                return
+            helper=self.new/'scripts/rainbow_reference_backup.py'
+            require(helper.is_file() and not helper.is_symlink() and sha(helper)==scope['candidateFiles'].get('scripts/rainbow_reference_backup.py'), 'Original metadata restore helper differs from reviewed source')
+            spec=importlib.util.spec_from_file_location('reviewed_rainbow_restore',helper)
+            module=importlib.util.module_from_spec(spec);spec.loader.exec_module(module)
+            module.verify_backup(pathlib.Path(snapshot).parent/'rainbow-original',metadata)
+            if restored_directory is not None:
+                module.verify_backup(restored_directory,metadata)
+
+        def verify_active_backup(self, started_at):
+            deadline=time.monotonic()+180
+            while True:
+                path=ROOT/'shared/data/backup-status.json'
+                try:
+                    require(path.is_file() and not path.is_symlink() and path.stat().st_size<=16384,'Invalid backup status')
+                    state=json.loads(path.read_text())
+                    require_backup_metadata_status(state,started_at)
+                    return {'verified':True,'completedAt':state['completedAt'],'referenceMetadata':state['referenceMetadata']}
+                except (OSError,ValueError):
+                    require(time.monotonic()<deadline,'Updated backup process did not verify metadata within 180 seconds')
+                    time.sleep(2)
 
         def run(self,args,timeout=180,input_bytes=None):
             args=list(args)
@@ -154,6 +193,7 @@ def deployment_type(base,pins,scope):
             proof=json.loads((AUDIT/'backup-restore-reviewed.private.json').read_text())
             snapshots=list((AUDIT/'backups').glob('*/snapshot.sqlite'))
             require(len(snapshots)==1 and sha(snapshots[0])==proof['sourceSnapshotSha256']==seal['backupFileSha256'] and sha(AUDIT/'rehearsal.sqlite')==proof['restoredSnapshotSha256'] and sha(snapshots[0].parent/'manifest.json')==proof['manifestSha256'] and proof['userTableCount']==21 and proof['contentMatches'] is True,'Reviewed independent backup changed')
+            self.verify_reference_backup(snapshots[0],json.loads((snapshots[0].parent/'manifest.json').read_text()),AUDIT/'rainbow-original')
             for field,sha_field in [('sourceArchive','sourceArchiveSha256'),('imageArchive','imageArchiveSha256')]:
                 name=self.manifest[field]
                 require(pathlib.Path(name).name==name and not (AUDIT/name).is_symlink() and sha(AUDIT/name)==self.manifest[sha_field],'Activation artifact hash mismatch')

@@ -118,12 +118,13 @@ services:
     healthcheck: { <<: *collector-health, test: [CMD, node, server/healthcheck.mjs, analysis] }
   backup:
     <<: *service
+    image: ${COIN_DESK_BACKUP_IMAGE:-${COIN_DESK_IMAGE}}
     command: [node, server/backup-runner.mjs]
     volumes:
       - '${COIN_DESK_ROOT}/shared/data:/app/data'
       - '${COIN_DESK_ROOT}/backups:/app/backups'
     environment:
-      { <<: *environment, BACKUP_RETENTION_DAYS: '14', BACKUP_BUDGET_BYTES: '2147483648' }
+      { <<: *environment, COIN_DESK_RELEASE: '${COIN_DESK_BACKUP_RELEASE:-${COIN_DESK_RELEASE}}', BACKUP_RETENTION_DAYS: '14', BACKUP_BUDGET_BYTES: '2147483648' }
     mem_limit: 512m
     healthcheck:
       test: [CMD, node, server/healthcheck.mjs, backup]

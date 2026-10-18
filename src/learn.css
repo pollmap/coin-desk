@@ -97,34 +97,43 @@
   font-size: 15px;
   margin: 0 0 12px;
 }
+/* Presets are reading rows, with one destination per row at every width. */
 .learn-presets > div {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  overflow: hidden;
-}
-.learn-presets a {
-  padding: 16px;
-  min-height: 76px;
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  border-right: 1px solid var(--border);
+  border-top: 1px solid var(--border);
 }
-.learn-presets a:last-child {
-  border-right: 0;
+.learn-presets a {
+  min-height: 64px;
+  display: grid;
+  grid-template-columns: minmax(180px, 1fr) minmax(0, 2fr);
+  gap: 16px;
+  align-items: center;
+  padding: 14px 4px;
+  border-bottom: 1px solid var(--border);
 }
 .learn-presets a:hover,
 .learn-row:hover {
   background: var(--panel);
 }
+.learn-presets a strong {
+  font-size: 14px;
+}
 .learn-presets a span {
   display: flex;
+  align-items: center;
   justify-content: space-between;
-  gap: 6px;
+  gap: 12px;
   color: var(--muted);
-  font-size: 12px;
+  font-size: 13px;
+}
+.learn-presets a svg {
+  flex: none;
+}
+.guide-asset-note {
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.7;
 }
 .learn-filters {
   display: flex;
@@ -235,10 +244,7 @@
 }
 .guide-article {
   min-width: 0;
-  background: var(--panel);
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  padding: 32px;
+  padding: 12px 24px 24px;
 }
 .guide-kicker {
   font-size: 12px;
@@ -265,10 +271,6 @@
 .guide-english {
   color: var(--muted);
   font-size: 13px;
-}
-.guide-intro {
-  font-size: 16px;
-  line-height: 1.8;
 }
 .guide-article section,
 .guide-method {
@@ -324,31 +326,6 @@
 .guide-terms dd {
   margin: 0;
   overflow-wrap: anywhere;
-}
-.guide-supported-assets {
-  margin-top: 6px;
-}
-.guide-supported-assets summary {
-  cursor: pointer;
-  min-height: 44px;
-  padding: 8px 0;
-  color: var(--accent);
-}
-.guide-supported-assets ul {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-  gap: 4px 16px;
-  max-height: 280px;
-  overflow: auto;
-  overscroll-behavior: contain;
-  list-style: none;
-  margin: 0;
-  padding: 8px 0;
-  font-size: 13px;
-}
-.guide-supported-assets li {
-  padding: 4px 0;
-  font-size: 13px;
 }
 .guide-example-label {
   color: var(--muted);
@@ -483,27 +460,6 @@
 }
 .learn-row-main > span {
   font-size: 13px;
-}
-.pattern-example {
-  margin: 20px 0;
-  padding: 12px;
-  background: var(--bg);
-  border-radius: 8px;
-}
-.pattern-example svg {
-  display: block;
-  width: 100%;
-  max-width: 380px;
-  margin: auto;
-  height: 180px;
-}
-.pattern-example text {
-  font-size: 12px;
-}
-.pattern-example figcaption {
-  text-align: center;
-  font-size: 11px;
-  color: var(--muted);
 }
 .guide-trend {
   margin: 18px 0;
@@ -657,9 +613,6 @@
   color: var(--accent);
 }
 @media (max-width: 1000px) {
-  .learn-presets > div {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
   .learn-presets a {
     border-bottom: 1px solid var(--border);
   }
@@ -708,7 +661,7 @@
   }
   .guide-article {
     width: 100%;
-    padding: 18px;
+    padding: 18px 0;
   }
   .guide-title h1 {
     font-size: 25px;
@@ -749,11 +702,11 @@
     gap: 5px;
   }
   .learn-presets a {
-    padding: 12px;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 5px;
+    padding: 12px 4px;
   }
-  .learn-presets > div {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
+
   .learn-search {
     padding: 4px 10px;
   }

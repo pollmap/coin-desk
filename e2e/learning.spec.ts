@@ -219,7 +219,10 @@ test.describe('deferred explanation lesson input', () => {
         );
     });
     let releaseLesson: (() => Promise<void>) | undefined;
-    await page.route('**/*IndicatorMethod*', async (route) => {
+    let lessonHeld = false;
+    await page.route('**/*IndicatorReading*', async (route) => {
+      if (lessonHeld) return route.continue();
+      lessonHeld = true;
       const response = await route.fetch();
       releaseLesson = () => route.fulfill({ response });
     });
@@ -233,10 +236,9 @@ test.describe('deferred explanation lesson input', () => {
       { width: 1280, height: 720 },
     ]) {
       releaseLesson = undefined;
+      lessonHeld = false;
       await page.setViewportSize(viewport);
-      await page.goto('/learn/net-mvrv?asset=ETH&price_source=upbit');
-      await openApply(page);
-      await page.locator('.guide-primary').click();
+      await page.goto('/coins/ETH?asset=ETH&metric=net%3Amvrv&price_source=upbit&period=5y');
       await expect(chart(page)).toHaveAttribute('data-asset', 'ETH');
       await expect(chart(page)).toHaveAttribute('data-range-ready', '1');
       const range = [
@@ -251,7 +253,7 @@ test.describe('deferred explanation lesson input', () => {
       await expect.poll(() => Boolean(releaseLesson)).toBe(true);
       const dialog = page.getByRole('dialog', { name: '지표 설명', exact: true });
       await expect(dialog).toHaveClass(/desk-dialog-reading/);
-      await expect(dialog.locator('.indicator-concept')).toBeVisible();
+      await expect(dialog.locator('.indicator-reading')).toHaveCount(0);
       await expect(dialog.getByText('주의할 점', { exact: true })).toHaveCount(0);
       await expect(dialog.getByText('계산식·기호', { exact: true })).toHaveCount(0);
       await expect(dialog.getByRole('link', { name: '현재 분석 설명', exact: true })).toHaveCount(
@@ -266,7 +268,7 @@ test.describe('deferred explanation lesson input', () => {
       );
       await page.mouse.down();
       await releaseLesson!();
-      await expect(dialog.locator('.indicator-method').first()).toBeVisible();
+      await expect(dialog.locator('.indicator-reading').first()).toBeVisible();
       const closeAfter = await close.boundingBox();
       const dialogAfter = await dialog.boundingBox();
       expect(closeAfter).toEqual(closeBefore);
@@ -491,7 +493,7 @@ test('guide remains usable at 200 percent zoom with keyboard and missing observa
   await expect(page.locator('.guide-apply')).toHaveCount(0);
 });
 
-test('reading shortcuts stay in the dictionary, formulas are open and learning does not fetch chart data', async ({
+test('reading shortcuts stay in the dictionary, examples precede folded formulas and learning does not fetch chart data', async ({
   page,
 }) => {
   const chartRequests: string[] = [];
@@ -609,6 +611,8 @@ test('every existing guide renders an explanation and worked example without a c
   for (const article of GUIDE_ARTICLES) {
     await page.goto('/learn/' + article.id);
     await expect(page.getByRole('heading', { level: 1 })).toHaveText(article.title);
+    await expect(page.locator('.guide-method li').first()).not.toBeVisible();
+    await page.locator('.guide-method summary').click();
     await expect(page.locator('.guide-method li').first()).toBeVisible();
     await expect(page.locator('.guide-example li').first()).toBeVisible();
     await expect(page.locator('canvas, [data-chart-kind], .guide-apply')).toHaveCount(0);
@@ -619,6 +623,6 @@ test('every existing guide renders an explanation and worked example without a c
       await page
         .locator('.guide-toc a')
         .evaluateAll((links) => links.map((link) => link.getAttribute('href'))),
-    ).toEqual(['#meaning', '#method', '#example', '#limits']);
+    ).toEqual(['#meaning', '#example', '#method', '#limits']);
   }
 });

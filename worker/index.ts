@@ -1,5 +1,9 @@
 import { rankSearch, SEARCH_CATALOG_VERSION } from '../shared/search';
 import {
+  ORIGINAL_RAINBOW_BASELINE,
+  originalRainbowVersionValid,
+} from '../shared/btc-rainbow-original';
+import {
   listReports,
   latestReport,
   reportDetail,
@@ -73,6 +77,15 @@ function canonicalRequest(request: Request) {
   const url = new URL(request.url);
   if (url.href.length > 2048) throw new RequestError('Invalid URL length');
   const endpoint = url.pathname.slice('/api/v1/'.length);
+  if (endpoint === 'rainbow/original-reference') {
+    for (const key of url.searchParams.keys())
+      if (key !== 'model_version' || url.searchParams.getAll(key).length !== 1)
+        throw new RequestError('Invalid query parameter');
+    const version = url.searchParams.get('model_version');
+    if (version !== null && !originalRainbowVersionValid(version))
+      throw new RequestError('Invalid model version');
+    return new Request(url, { method: 'GET' });
+  }
   // These endpoints use their own small, bounded contract. Chart defaults
   // (BTC, Binance, 1,000 rows) must never be added to report requests.
   if (
@@ -316,6 +329,17 @@ async function api(request: Request, env: Env): Promise<Response> {
     q = url.searchParams;
   if (request.method !== 'GET') return response({ error: 'Read-only API' }, 405);
   const endpoint = url.pathname.replace('/api/v1/', '');
+  if (endpoint === 'rainbow/original-reference') {
+    const version = q.get('model_version') ?? undefined;
+    const reference = env.ORIGINAL_RAINBOW_REFERENCE
+      ? await env.ORIGINAL_RAINBOW_REFERENCE(version)
+      : !version || version === ORIGINAL_RAINBOW_BASELINE.modelVersion
+        ? ORIGINAL_RAINBOW_BASELINE
+        : null;
+    return reference
+      ? response(reference)
+      : response({ error: 'Unknown rainbow model version' }, 404);
+  }
   if (endpoint === 'reports') return response(await listReports(env.DB, q));
   if (endpoint === 'reports/latest') return response(await latestReport(env.DB, q));
   if (endpoint.startsWith('reports/'))
