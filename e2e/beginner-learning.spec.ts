@@ -69,6 +69,8 @@ for (const width of [320, 390, 768, 1000, 1280, 1440, 1920]) {
         fullPage: true,
       });
       await page.goto('/learn?asset=DOGE');
+      await expect(page.locator('.learn-presets a')).toHaveCount(6);
+      await expect(page.locator('.learn-presets a').first()).toBeVisible();
       await page.screenshot({
         path: info.outputPath(`beginner-list-${width}.png`),
         fullPage: true,
