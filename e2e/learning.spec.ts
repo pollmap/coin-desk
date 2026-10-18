@@ -255,7 +255,7 @@ test.describe('deferred explanation lesson input', () => {
       await expect(dialog).toHaveClass(/desk-dialog-reading/);
       await expect(dialog.locator('.indicator-reading')).toHaveCount(0);
       await expect(dialog.getByText('주의할 점', { exact: true })).toHaveCount(0);
-      await expect(dialog.getByText('계산식·기호', { exact: true })).toHaveCount(0);
+      await expect(dialog.getByText('계산식·용어 자세히 보기', { exact: true })).toHaveCount(0);
       await expect(dialog.getByRole('link', { name: '현재 분석 설명', exact: true })).toHaveCount(
         0,
       );
@@ -506,8 +506,16 @@ test('reading shortcuts stay in the dictionary, examples precede folded formulas
     .locator('.learn-presets a')
     .evaluateAll((els) => els.map((a) => a.getAttribute('href')));
   expect(links.every((href) => href?.startsWith('/learn/'))).toBe(true);
-  await page.getByRole('link', { name: /가격 위치 밴드 읽기/ }).click();
+  const bandGuide = page
+    .locator('.learn-presets')
+    .getByRole('link', { name: /밴드와 레인보우 구분하기/ });
+  await expect(bandGuide).toHaveAttribute('href', /\/learn\/rainbow\?/);
+  await bandGuide.click();
   await expect(page.getByRole('heading', { level: 1 })).toHaveText('가격 위치 밴드');
+  await expect(page.locator('.guide-method li').first()).not.toBeVisible();
+  await expect(page.locator('.guide-example li').first()).toBeVisible();
+  await page.locator('.guide-method summary').click();
+  await expect(page.locator('.guide-method details')).toHaveAttribute('open', '');
   await expect(page.locator('.guide-method')).toContainText('σ = √');
   await expect(page.locator('.guide-example')).toContainText('+0.91');
   await expect(page.locator('.guide-example')).toContainText('111.63');

@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
 import { supertrend } from '../shared/supertrend';
-import type { Candle } from '../shared/types';
+import type { Candle, CandleResponse } from '../shared/types';
 
 test('retains fractional price precision in Supertrend readings', async ({ page }) => {
   await page.route('**/api/v1/candles?**', async (route) => {
@@ -32,12 +32,25 @@ test('retains fractional price precision in Supertrend readings', async ({ page 
 test('selects Supertrend from USD reference, opens actual DOGE weekly candles and preserves latest readings and zoom while reading help', async ({
   page,
 }) => {
-  let inputs: Candle[] = [];
+  const weeklyPages: { order: number; from: number; body: CandleResponse }[] = [];
+  let requestOrder = 0;
+  let pendingWeeklyPages = 0;
   await page.route('**/api/v1/candles?*', async (route) => {
-    const response = await route.fetch();
-    const body = await response.json();
-    if (new URL(route.request().url()).searchParams.get('interval') === '1w') inputs = body.data;
-    await route.fulfill({ response, json: body });
+    const params = new URL(route.request().url()).searchParams;
+    const target =
+      params.get('asset') === 'DOGE' &&
+      params.get('market') === 'binance' &&
+      params.get('interval') === '1w';
+    const order = requestOrder++;
+    if (target) pendingWeeklyPages++;
+    try {
+      const response = await route.fetch();
+      const body: CandleResponse = await response.json();
+      if (target) weeklyPages.push({ order, from: Number(params.get('from') || 0), body });
+      await route.fulfill({ response, json: body });
+    } finally {
+      if (target) pendingWeeklyPages--;
+    }
   });
   await page.goto('/coins/DOGE?metric=net:mvrv&price_source=reference');
   await page.getByRole('button', { name: /지표 변경$/ }).click();
@@ -48,17 +61,48 @@ test('selects Supertrend from USD reference, opens actual DOGE weekly candles an
   await expect(page).toHaveURL(/price_source=binance/);
   await expect(page).toHaveURL(/interval=1w/);
   const chart = page.locator('[data-chart-kind="analysis"]');
-  await expect(chart).toHaveAttribute('data-range-ready', '1');
-  const expected = supertrend(inputs, '1w').at(-1)!;
+  await expect(chart).toHaveAttribute('data-asset', 'DOGE');
+  await expect(chart).toHaveAttribute('data-primary-metric', 'price');
+  await expect(chart).toHaveAttribute('data-price-style', 'candles');
   await expect(page.locator('.supertrend-context')).toHaveAttribute(
     'data-direction',
-    expected.direction,
+    /^(up|down)$/,
+  );
+  await expect(chart).toHaveAttribute('data-range-ready', '1');
+  await expect.poll(() => weeklyPages.length).toBeGreaterThan(0);
+  await expect.poll(() => pendingWeeklyPages).toBe(0);
+  // Compare against every DOGE/Binance weekly page, not whichever response arrived last.
+  // Calendar pages can overlap; their later chronological window owns the repeated candle.
+  const byTime = new Map<number, Candle>();
+  for (const page of [...weeklyPages].sort((a, b) => a.from - b.from || a.order - b.order))
+    for (const candle of page.body.data) byTime.set(candle.time, candle);
+  const inputs = [...byTime.values()].sort((a, b) => a.time - b.time);
+  expect(weeklyPages.some((page) => page.body.nextCursor === null)).toBe(true);
+  expect(inputs.length).toBeGreaterThan(10);
+  const expected = supertrend(inputs, '1w').at(-1);
+  expect(expected).toBeDefined();
+  await test.info().attach('DOGE-binance-weekly-inputs', {
+    body: JSON.stringify({
+      pages: weeklyPages.map(({ from, body }) => ({
+        from,
+        count: body.data.length,
+        nextCursor: body.nextCursor,
+      })),
+      points: inputs.length,
+      first: inputs[0].time,
+      last: inputs.at(-1)!.time,
+    }),
+    contentType: 'application/json',
+  });
+  await expect(page.locator('.supertrend-context')).toHaveAttribute(
+    'data-direction',
+    expected!.direction,
   );
   const actual = page
     .locator('.analysis-secondary-readings > span')
     .filter({ hasText: '슈퍼트렌드 10·3' })
     .locator('b');
-  expect(Number((await actual.innerText()).replace(/,/g, ''))).toBeCloseTo(expected.value, 4);
+  expect(Number((await actual.innerText()).replace(/,/g, ''))).toBeCloseTo(expected!.value, 4);
   const latest = await page.locator('.analysis-reading-value').innerText();
   const box = (await chart.boundingBox())!;
   await page.mouse.move(box.x + box.width * 0.5, box.y + box.height * 0.4);
@@ -68,12 +112,14 @@ test('selects Supertrend from USD reference, opens actual DOGE weekly candles an
   await expect(page.locator('.analysis-reading-date,.indicator-provenance')).toHaveCount(0);
   const from = await chart.getAttribute('data-visible-from');
   await page.getByRole('button', { name: /^지표 설명/ }).click();
-  await page
-    .getByRole('dialog', { name: '지표 설명', exact: true })
-    .getByText('계산식·기호', { exact: true })
-    .click();
-  await expect(page.getByRole('dialog')).toContainText('Wilder');
-  await expect(page.getByRole('dialog')).toContainText('109.6');
+  const explanation = page.getByRole('dialog', { name: '지표 설명', exact: true });
+  await expect(explanation.locator('.guide-example')).toContainText('109.6');
+  await expect(explanation.locator('.guide-example li').first()).toBeVisible();
+  await expect(explanation.locator('.guide-method li').first()).not.toBeVisible();
+  await explanation.getByText('계산식·용어 자세히 보기', { exact: true }).click();
+  await expect(explanation.locator('.guide-method details')).toHaveAttribute('open', '');
+  await expect(explanation.locator('.guide-method')).toContainText('Wilder RMA');
+  await expect(explanation.locator('.guide-method .guide-formula')).toBeVisible();
   await page.keyboard.press('Escape');
   await expect(chart).toHaveAttribute('data-visible-from', from!);
 });

@@ -113,9 +113,23 @@ test('mobile coin, indicator, explanation, save and reopen preserve the latest a
   const picker = page.getByRole('dialog', { name: '지표 선택', exact: true });
   await picker.getByRole('textbox', { name: '지표 검색' }).fill('RSI');
   await picker.getByRole('link', { name: 'RSI 14 RSI', exact: true }).click();
+  await expect(page).toHaveURL(/metric=rsi/);
+  await expect(page).toHaveURL(/period=1y/);
   await expect(chart).toHaveAttribute('data-primary-metric', 'rsi');
   await expect(chart).toHaveAttribute('data-asset', 'ONDO');
   await expect(chart).toHaveAttribute('data-range-ready', '1');
+  await expect(page.getByRole('button', { name: '조회 기간 · 1년', exact: true })).toBeVisible();
+  // The new metric renders before its default window is applied on the next chart frame.
+  // Capture the baseline only once the actual visible range is one calendar year.
+  await expect
+    .poll(async () => {
+      const to = Number(await chart.getAttribute('data-visible-to'));
+      if (!to) return false;
+      const yearAgo = new Date(to * 1000);
+      yearAgo.setUTCFullYear(yearAgo.getUTCFullYear() - 1);
+      return Number(await chart.getAttribute('data-visible-from')) === yearAgo.getTime() / 1000;
+    })
+    .toBe(true);
   const from = await chart.getAttribute('data-visible-from');
   const latest = await page.locator('.analysis-reading-value').innerText();
   await chart.focus();
@@ -123,7 +137,17 @@ test('mobile coin, indicator, explanation, save and reopen preserve the latest a
   await expect(page.locator('.analysis-reading-value')).toHaveText(latest);
   await expect(page).not.toHaveURL(/reading_date=/);
   await page.getByRole('button', { name: /^지표 설명/ }).click();
-  await expect(page.locator('.indicator-explanation')).toContainText('기준선을 읽는 법');
+  const explanation = page.getByRole('dialog', { name: '지표 설명', exact: true });
+  await expect(explanation.locator('.reading-chart-name')).toContainText('RSI');
+  await expect(explanation.locator('.reading-meaning')).toContainText('0~100');
+  await expect(
+    explanation.getByRole('heading', { name: '이렇게 읽으세요', exact: true }),
+  ).toBeVisible();
+  await expect(explanation.locator('.indicator-reading')).toContainText(
+    '70 위에서는 상승폭이, 30 아래에서는 하락폭',
+  );
+  await expect(explanation.locator('.guide-example')).toContainText('66.67');
+  await expect(explanation.locator('.guide-method li').first()).not.toBeVisible();
   await expect(chart).toHaveAttribute('data-visible-from', from!);
   await page.keyboard.press('Escape');
   await page.getByRole('button', { name: '분석 저장', exact: true }).click();

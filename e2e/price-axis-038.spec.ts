@@ -21,15 +21,24 @@ async function recordAxisLabels(page: import('@playwright/test').Page) {
 }
 
 async function axisLabels(page: import('@playwright/test').Page) {
-  return page
-    .locator(chart)
-    .evaluate((host) =>
-      [...host.querySelectorAll('canvas')]
-        .filter((canvas) => canvas.getBoundingClientRect().width < 150)
-        .flatMap(
-          (canvas) => (canvas as HTMLCanvasElement & { axisLabels?: string[] }).axisLabels ?? [],
-        ),
-    );
+  return page.locator(chart).evaluate((host) => {
+    const bounds = host.getBoundingClientRect();
+    return [...host.querySelectorAll('canvas')]
+      .filter((canvas) => {
+        const axis = canvas.getBoundingClientRect();
+        // Identify the actual right-hand price axis, not a font-dependent width.
+        // Wide price ranges can require labels wider than 150px.
+        return (
+          axis.width > 0 &&
+          axis.height > 40 &&
+          axis.x > bounds.x &&
+          Math.abs(axis.right - bounds.right) < 3
+        );
+      })
+      .flatMap(
+        (canvas) => (canvas as HTMLCanvasElement & { axisLabels?: string[] }).axisLabels ?? [],
+      );
+  });
 }
 
 test('positive logarithmic price history never draws negative axis ticks', async ({ page }) => {
@@ -75,6 +84,19 @@ for (const sample of [
     await expect(page.locator(chart)).toHaveAttribute('data-range-ready', '1');
     await expect(page.locator(chart)).toHaveAttribute('data-axis', 'log');
     await expect.poll(() => axisLabels(page)).toContainEqual(expect.stringMatching(/^\$/));
+    await test.info().attach('price-axis-labels', {
+      body: JSON.stringify(
+        await page.locator(chart).evaluate((host) => ({
+          width: host.getBoundingClientRect().width,
+          canvases: [...host.querySelectorAll('canvas')].map((canvas) => ({
+            width: canvas.getBoundingClientRect().width,
+            x: canvas.getBoundingClientRect().x - host.getBoundingClientRect().x,
+            labels: (canvas as HTMLCanvasElement & { axisLabels?: string[] }).axisLabels ?? [],
+          })),
+        })),
+      ),
+      contentType: 'application/json',
+    });
     expect((await axisLabels(page)).filter((label) => /^\$[-−]/.test(label))).toEqual([]);
   });
 
