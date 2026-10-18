@@ -88,9 +88,34 @@ class Guards(unittest.TestCase):
     def test_new_candidate_report_name_reaches_only_the_mocked_read_only_probe(self):
         value = subject.Deployment.__new__(subject.Deployment)
         with tempfile.TemporaryDirectory() as folder, patch.object(subject, 'AUDIT', pathlib.Path(folder)):
-            with patch.object(subject.subprocess, 'run', side_effect=RuntimeError('read-only probe reached')):
-                with self.assertRaisesRegex(RuntimeError, 'read-only probe reached'):
-                    value.rehearsal('candidate-runtime-after-unit-fix.json')
+            for name in [None, 'candidate-runtime-after-unit-fix.json']:
+                with self.subTest(report=name), patch.object(subject.subprocess, 'run', side_effect=RuntimeError('read-only probe reached')) as probe:
+                    with self.assertRaisesRegex(RuntimeError, 'read-only probe reached'):
+                        value.rehearsal(*([] if name is None else [name]))
+                    probe.assert_called_once()
+
+    def test_invalid_report_names_fail_before_any_external_probe(self):
+        value = subject.Deployment.__new__(subject.Deployment)
+        names = ['../candidate-runtime.json', '/candidate-runtime.json',
+                 r'..\candidate-runtime.json', 'folder/candidate-runtime.json',
+                 'candidate-runtimeXjson', 'candidate-runtime.json/extra',
+                 'candidate-runtime.json\n', '', 'candidate-runtime.JSON']
+        with tempfile.TemporaryDirectory() as folder, patch.object(subject, 'AUDIT', pathlib.Path(folder)), patch.object(subject.subprocess, 'run') as probe:
+            for name in names:
+                with self.subTest(report=name), self.assertRaisesRegex(ValueError, 'Candidate report must be new'):
+                    value.rehearsal(name)
+            probe.assert_not_called()
+
+    def test_existing_report_evidence_is_preserved_before_any_external_probe(self):
+        value = subject.Deployment.__new__(subject.Deployment)
+        with tempfile.TemporaryDirectory() as folder, patch.object(subject, 'AUDIT', pathlib.Path(folder)), patch.object(subject.subprocess, 'run') as probe:
+            path = pathlib.Path(folder) / 'candidate-runtime.json'
+            evidence = b'{"reviewed":true}'
+            path.write_bytes(evidence)
+            with self.assertRaisesRegex(ValueError, 'Candidate report must be new'):
+                value.rehearsal()
+            self.assertEqual(path.read_bytes(), evidence)
+            probe.assert_not_called()
 
     def test_preserved_historical_images_are_not_restarted_to_match_compose(self):
         old, next_config, before = fixtures()

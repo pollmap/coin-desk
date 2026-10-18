@@ -83,6 +83,7 @@ export function SpotQuote({
                 const next = new URLSearchParams(previous);
                 next.set('market', value);
                 if (syncPriceSource) {
+                  if ((previous.get('price_source') ?? market) !== value) next.delete('log');
                   next.set('price_source', value);
                   for (const key of ['reading_date', 'chart_from', 'chart_to']) next.delete(key);
                 }

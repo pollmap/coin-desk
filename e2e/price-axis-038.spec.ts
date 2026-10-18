@@ -1,5 +1,6 @@
 import { test, expect } from '@playwright/test';
 import { dragChartTimeAxis } from './chart-gestures';
+import { ORIGINAL_RAINBOW_BASELINE } from '../shared/btc-rainbow-original';
 
 const chart = '.analysis-canvas';
 
@@ -206,5 +207,87 @@ test('focused axis remembers the coin choice but explicit links win without losi
   await expect(plot).toHaveAttribute('data-axis', 'log');
   params.delete('log');
   await page.goto('/coins/DOGE?' + params);
+  await expect(plot).toHaveAttribute('data-axis', 'log');
+});
+
+test('indicator and source navigation restore the destination axis instead of carrying defaults', async ({
+  page,
+}) => {
+  await page.goto('/coins/BTC?metric=view:btc_rainbow_original&price_source=reference&period=all');
+  const plot = page.locator(chart);
+  const shortcuts = page.getByRole('navigation', { name: '자주 보는 지표' });
+  await expect(plot).toHaveAttribute('data-axis', 'log');
+  await expect(shortcuts.getByRole('link', { name: 'MVRV', exact: true })).not.toHaveAttribute(
+    'href',
+    /[?&]log=/,
+  );
+  await shortcuts.getByRole('link', { name: 'MVRV', exact: true }).click();
+  await expect(plot).toHaveAttribute('data-axis', 'linear');
+  await shortcuts.getByRole('link', { name: '가격', exact: true }).click();
+  await expect(plot).toHaveAttribute('data-axis', 'log');
+  await page.getByRole('button', { name: '더보기', exact: true }).click();
+  await page.getByRole('button', { name: '로그 축', exact: true }).click();
+  await expect(plot).toHaveAttribute('data-axis', 'linear');
+  await shortcuts.getByRole('link', { name: 'MVRV', exact: true }).click();
+  await expect(plot).toHaveAttribute('data-axis', 'linear');
+  await shortcuts.getByRole('link', { name: '가격', exact: true }).click();
+  await expect(plot).toHaveAttribute('data-axis', 'linear');
+  await page.getByRole('button', { name: '더보기', exact: true }).click();
+  await page.getByRole('combobox', { name: '가격 기준', exact: true }).selectOption('binance');
+  await expect(plot).toHaveAttribute('data-axis', 'log');
+  await page.getByRole('combobox', { name: '가격 기준', exact: true }).selectOption('reference');
+  await expect(plot).toHaveAttribute('data-axis', 'linear');
+  await page.getByRole('combobox', { name: '가격 기준', exact: true }).selectOption('binance');
+  await expect(plot).toHaveAttribute('data-axis', 'log');
+  await page.getByRole('button', { name: '로그 축', exact: true }).click();
+  await expect(plot).toHaveAttribute('data-axis', 'linear');
+  await page.getByRole('button', { name: '가격 거래소 선택', exact: true }).click();
+  const quote = page.getByRole('dialog', { name: '가격 선택', exact: true });
+  await quote
+    .getByRole('combobox', { name: '현재 가격 거래소', exact: true })
+    .selectOption('upbit');
+  await expect(plot).toHaveAttribute('data-axis', 'log');
+  await quote
+    .getByRole('combobox', { name: '현재 가격 거래소', exact: true })
+    .selectOption('binance');
+  await expect(plot).toHaveAttribute('data-axis', 'linear');
+});
+
+test('a saved dashboard period change retains the current axis and Original model', async ({
+  page,
+}) => {
+  const metric = 'view:btc_rainbow_original';
+  const today = Math.floor(Date.now() / 86400000) * 86400;
+  const params = new URLSearchParams({
+    price_source: 'reference',
+    period: 'all',
+    dashboard_cards: 'view:price,' + metric,
+    dashboard_axes: JSON.stringify({ 'view:price': 'linear', [metric]: 'log' }),
+    dashboard_models: JSON.stringify({ [metric]: ORIGINAL_RAINBOW_BASELINE.modelVersion }),
+    dashboard_ranges: JSON.stringify({
+      'view:price': { from: today - 300 * 86400, to: today - 30 * 86400 },
+    }),
+  });
+  await page.setViewportSize({ width: 1280, height: 800 });
+  await page.goto('/coins/BTC?' + params);
+  const card = page.locator('.coin-dashboard-card[data-metric="view:price"]');
+  const plot = card.locator(chart);
+  await expect(plot).toHaveAttribute('data-range-ready', '1');
+  await expect(plot).toHaveAttribute('data-axis', 'linear');
+  const from = await plot.getAttribute('data-visible-from');
+  await card.getByRole('button', { name: '가격 차트 축', exact: true }).click();
+  await expect(plot).toHaveAttribute('data-axis', 'log');
+  await page.getByRole('button', { name: '1년', exact: true }).click();
+  await expect(plot).toHaveAttribute('data-range-ready', '1');
+  await expect(plot).toHaveAttribute('data-axis', 'log');
+  await expect(plot).not.toHaveAttribute('data-visible-from', from!);
+  const url = new URL(page.url()).searchParams;
+  expect(url.get('period')).toBe('1y');
+  expect(url.has('dashboard_ranges')).toBe(false);
+  expect(JSON.parse(url.get('dashboard_axes')!)['view:price']).toBe('log');
+  expect(JSON.parse(url.get('dashboard_models')!)[metric]).toBe(
+    ORIGINAL_RAINBOW_BASELINE.modelVersion,
+  );
+  await page.reload();
   await expect(plot).toHaveAttribute('data-axis', 'log');
 });

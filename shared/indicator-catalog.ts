@@ -545,6 +545,14 @@ export function indicatorUrl(
   const previousMetric =
     previous.get('metric') ||
     (previous.has('visual') ? 'view:' + previous.get('visual') : undefined);
+  // A display preference belongs to one asset/source/indicator, not the next chart.
+  // Same-chart links keep explicit settings; other destinations restore their own saved choice.
+  if (
+    (previous.has('asset') ? previous.get('asset') !== asset : switchingAsset) ||
+    (previousMetric !== undefined && previousMetric !== next) ||
+    validPriceBasis(asset, previous.get('price_source') || previous.get('market')) !== basis
+  )
+    p.delete('log');
   const keepingRainbow =
     ['view:asset_rainbow', 'view:btc_rainbow_original'].includes(next) && previousMetric === next;
   if (switchingAsset || !keepingRainbow) {

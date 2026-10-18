@@ -320,6 +320,12 @@ export function IndicatorWorkspace() {
         p.delete('reading_date');
       }
       for (const [k, v] of Object.entries(patch)) v === null ? p.delete(k) : p.set(k, v);
+      if (
+        'price_source' in patch &&
+        validPriceBasis(asset, patch.price_source) !== basis &&
+        !('log' in patch)
+      )
+        p.delete('log');
       if ('price_source' in patch)
         for (const k of [
           'rainbow_origin',

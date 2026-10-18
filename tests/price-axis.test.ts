@@ -60,8 +60,38 @@ describe('price-axis meaning and saved preferences', () => {
         indicatorUrl('DOGE', metric, new URLSearchParams('metric=net:mvrv&log=1')),
         'https://example.test',
       ).searchParams;
-      expect(p.get('log')).toBe('1');
+      expect(p.has('log')).toBe(false);
     }
+  });
+  it('keeps explicit axes only when reopening the same asset, source and indicator', () => {
+    for (const log of ['0', '1']) {
+      const previous = new URLSearchParams({
+        asset: 'BTC',
+        metric: 'net:mvrv',
+        price_source: 'reference',
+        log,
+      });
+      const destination = (asset: 'BTC' | 'DOGE', metric: string, switchingAsset = false) =>
+        new URL(indicatorUrl(asset, metric, previous, switchingAsset), 'https://example.test')
+          .searchParams;
+      expect(destination('BTC', 'net:mvrv').get('log')).toBe(log);
+      expect(destination('BTC', 'net:mvrv', true).get('log')).toBe(log);
+      expect(destination('BTC', 'view:price').has('log')).toBe(false);
+      expect(destination('DOGE', 'net:mvrv', true).has('log')).toBe(false);
+      expect(destination('DOGE', 'net:mvrv').has('log')).toBe(false);
+    }
+    const sourceChange = new URLSearchParams({
+      asset: 'BTC',
+      metric: 'view:btc_rainbow_original',
+      price_source: 'upbit',
+      log: '0',
+    });
+    const corrected = new URL(
+      indicatorUrl('BTC', 'view:btc_rainbow_original', sourceChange),
+      'https://example.test',
+    );
+    expect(corrected.searchParams.get('price_source')).toBe('reference');
+    expect(corrected.searchParams.has('log')).toBe(false);
   });
   it('keeps nonpositive observations, including overlays, rather than filtering them for logarithms', () => {
     for (const values of [[1, 0, 2], [1, -0.01, 2], [1, Infinity], []]) {

@@ -271,6 +271,15 @@ function DashboardBody({ asset, basis }: { asset: Asset; basis: PriceBasis }) {
           p.set('period', next);
           p.delete('dashboard_ranges');
           p.delete('dashboard_scroll');
+          // Removing a saved viewport remounts the dashboard. Carry the current choices,
+          // not the original saved URL's axes/model versions, into that new entry.
+          for (const [key, value] of [
+            ['dashboard_axes', state.current.axes],
+            ['dashboard_models', state.current.models],
+          ] as const) {
+            if (Object.keys(value).length) p.set(key, JSON.stringify(value));
+            else p.delete(key);
+          }
           return p;
         },
         { replace: true },

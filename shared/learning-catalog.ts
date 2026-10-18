@@ -907,7 +907,7 @@ export const GUIDE_PRESETS = [
   },
   {
     id: 'compare',
-    title: 'BTC와 비교하기',
+    title: '코인 비교하기',
     description: '수익률·가격 비율·상관의 차이',
     guide: 'relative',
   },
