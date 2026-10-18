@@ -6,6 +6,7 @@ import {
   GUIDE_PRESETS,
   guideArticle,
   guideChartLink,
+  guideContext,
   guideHref,
   searchGuides,
   type GuideArticle,
@@ -204,6 +205,13 @@ export function LearnPage() {
     setParams(
       (p) => {
         const n = new URLSearchParams(p);
+        if ('asset' in patch || 'price_source' in patch) {
+          const origin = guideContext(p);
+          for (const key of ['guide_context_asset', 'guide_context_source']) {
+            const value = origin.get(key);
+            if (value) n.set(key, value);
+          }
+        }
         for (const [k, v] of Object.entries(patch)) v === null ? n.delete(k) : n.set(k, v);
         return n;
       },

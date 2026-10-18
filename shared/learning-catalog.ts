@@ -9,6 +9,7 @@ import { readDateWindow } from './date-navigation';
 import type { Asset } from './types';
 import type { DrawingKind } from './annotations';
 import { validSupertrendOption } from './supertrend';
+import { availableMarket, referenceAssets } from './asset-registry';
 
 export const GUIDE_CATEGORIES = [
   '시작·데이터',
@@ -780,18 +781,25 @@ export function searchGuides(query: string) {
     ),
   );
 }
+function guideSource(asset: Asset, basis: PriceBasis): PriceBasis {
+  return basis !== 'reference'
+    ? availableMarket(asset, basis)
+    : referenceAssets.includes(asset)
+      ? 'reference'
+      : availableMarket(asset, 'binance');
+}
 /** Carry only public chart state. No arbitrary return URL, text, private library IDs or memos. */
 export function guideContext(params: URLSearchParams) {
   const next = new URLSearchParams();
   next.set('asset', core.includes(params.get('asset') as Asset) ? params.get('asset')! : 'BTC');
-  next.set('price_source', priceBasis(params));
+  next.set('price_source', guideSource(next.get('asset') as Asset, priceBasis(params)));
   next.set(
     'period',
     ['1m', '3m', '6m', 'ytd', '1y', '3y', '5y', 'all'].includes(params.get('period') ?? '')
       ? params.get('period')!
       : 'all',
   );
-  next.set('log', params.get('log') === '0' ? '0' : '1');
+  if (['0', '1'].includes(params.get('log') ?? '')) next.set('log', params.get('log')!);
   if (core.includes(params.get('benchmark_asset') as Asset))
     next.set('benchmark_asset', params.get('benchmark_asset')!);
   if (['index', 'percent', 'ratio'].includes(params.get('normalization') ?? ''))
@@ -800,6 +808,26 @@ export function guideContext(params: URLSearchParams) {
     next.set('correlation', params.get('correlation')!);
   if (/^[a-z_0-9:]{1,80}$/.test(params.get('metric') ?? ''))
     next.set('metric', params.get('metric')!);
+  // The guide can change asset/source in place. Keep the originating chart identity
+  // separate from those controls, so its display/model settings cannot leak to another chart.
+  // Explicit axes on old links also belong to their displayed asset and source.
+  const hasChartSettings = next.has('metric') || next.has('log') || params.has('rainbow_model');
+  const originAsset =
+    params.get('guide_context_asset') ?? (hasChartSettings ? next.get('asset') : null);
+  const originSource =
+    params.get('guide_context_source') ?? (hasChartSettings ? next.get('price_source') : null);
+  if (originAsset && core.includes(originAsset as Asset))
+    next.set('guide_context_asset', originAsset);
+  if (originSource && ['reference', 'upbit', 'binance'].includes(originSource))
+    next.set(
+      'guide_context_source',
+      guideSource(
+        originAsset && core.includes(originAsset as Asset)
+          ? (originAsset as Asset)
+          : (next.get('asset') as Asset),
+        originSource as PriceBasis,
+      ),
+    );
   if (['1h', '4h', '1d', '1w', '1M'].includes(params.get('interval') ?? ''))
     next.set('interval', params.get('interval')!);
   const readingDate = params.get('reading_date');
@@ -843,7 +871,24 @@ export function guideChartLink(
 ): string | null {
   if (!article.assets.includes(asset) || (article.basis && !article.basis.includes(basis)))
     return null;
-  const p = guideContext(params);
+  const input = new URLSearchParams(params);
+  // An unbound legacy helper call may specify only an axis for its destination.
+  if (
+    ![
+      'metric',
+      'asset',
+      'price_source',
+      'market',
+      'guide_context_asset',
+      'guide_context_source',
+    ].some((key) => input.has(key))
+  ) {
+    input.set('asset', asset);
+    input.set('price_source', basis);
+  }
+  const p = guideContext(input);
+  const previousMetric = p.get('metric');
+  const sameExplainedMetric = previousMetric && guideForMetric(previousMetric)?.id === article.id;
   p.set('asset', asset);
   p.set('price_source', basis);
   if (basis !== 'reference') p.set('market', basis);
@@ -858,6 +903,9 @@ export function guideChartLink(
     p.set('panels', a.id);
     if (a.section !== 'price') path = `/${a.section}/${asset}`;
   } else if (a.kind === 'indicator') {
+    // An existing focused RSI/MA/etc. returns to the same chart, while old overlay
+    // links retain their price-chart behavior.
+    p.set('metric', sameExplainedMetric ? previousMetric : 'view:price');
     p.set('indicators', validIndicators([a.id]).join(','));
     p.set('panels', '');
   } else if (a.kind === 'view') {
@@ -875,7 +923,32 @@ export function guideChartLink(
   } else if (a.kind === 'drawing') {
     p.set('draw_tool', a.id);
     p.set('panels', '');
-  } else path = a.path;
+  } else {
+    path = a.path;
+    if (path === '/') p.set('metric', 'view:price');
+  }
+  const destinationMetric = p.get('metric') ?? 'view:price';
+  const changedChart =
+    (p.has('guide_context_asset') && p.get('guide_context_asset') !== asset) ||
+    (p.has('guide_context_source') && p.get('guide_context_source') !== basis) ||
+    (previousMetric !== null &&
+      previousMetric.replace(/^price$/, 'view:price') !== destinationMetric);
+  if (changedChart) p.delete('log');
+  const keepingRainbow =
+    ['view:asset_rainbow', 'view:btc_rainbow_original'].includes(destinationMetric) &&
+    !changedChart;
+  if (!keepingRainbow)
+    for (const key of [
+      'rainbow_origin',
+      'rainbow_anchor',
+      'rainbow_model',
+      'rainbow_revision',
+      'rainbow_source',
+      'rainbow_unit',
+    ])
+      p.delete(key);
+  p.delete('guide_context_asset');
+  p.delete('guide_context_source');
   return path + '?' + p;
 }
 export const GUIDE_PRESETS = [
