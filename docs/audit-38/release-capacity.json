@@ -1,0 +1,57 @@
+{
+  "checkedAt": "2026-10-18T07:40:14Z",
+  "operation": "remove_verified_unreferenced_image_cache",
+  "scope": "Coin Desk only",
+  "images": [
+    "vps-3958b602ecc41839",
+    "vps-75052fe184ab964e",
+    "vps-84c91c439802eb85"
+  ],
+  "observedFreeDeltaBytes": 445128704,
+  "archiveShaAndImageLayerChainVerified": true,
+  "compressedRecoveryArchivesPreserved": true,
+  "currentAndPreviousRollbackPreserved": true,
+  "allContainerReferencesChecked": true,
+  "containersPreserved": true,
+  "databaseTouched": false,
+  "forceOrGlobalPruneUsed": false,
+  "otherProjectsChanged": false,
+  "note": "Before/after filesystem free-space difference; concurrent writes can affect the observed delta. An additional 497 MiB compression estimate for closed old audit databases was read-only and was not executed.",
+  "deploymentBudgetReview": {
+    "checkedAt": "2026-10-18T08:38:51+00:00",
+    "freeGiB": 9.537,
+    "historyAndProbeReserveGiB": 8,
+    "targetFreeGiBBeforeFullRollout": 12,
+    "basis": "Six prepared database copies, one isolated provider copy, two post-migration backup/restore copies, image/source staging and reserve. Exact capacity is rechecked before each stage.",
+    "ownedProjectMiB": 6063.66,
+    "ownedAuditMiB": 4458.93,
+    "recentGrowthSampleMiB": 0.27,
+    "recentGrowthSampleMinutes": 2,
+    "recentWholeServerDeclineCause": "unconfirmed",
+    "separatePersistentDataVolumeAvailable": false,
+    "additionalCompressionOrOtherServiceChanges": "not_authorized_or_executed",
+    "closedAuditDatabaseCompression": {
+      "eligibleFiles": 4,
+      "estimatedSavedBytes": 521228288,
+      "allUnprotectedAuditFileAllocatedBytes": 2816995328,
+      "additionalUncompressedStaticCandidates": 0,
+      "sufficientForThreeGiB": false,
+      "compressionPerformed": false,
+      "note": "Prior measured estimates were reused only after file identity, size, timestamps, ownership, mode and absence of live references were rechecked. No original was deleted or converted."
+    },
+    "deploymentStarted": false,
+    "limitsRelaxed": false,
+    "existingSafeLowerSpacePath": "None found: referenced isolated copies and restoration seals cannot be skipped; no separate persistent volume; tmpfs would require new implementation and memory validation.",
+    "artifactFootprintEstimate": {
+      "release": "vps-1b0eed26f44e326c",
+      "uncompressedImageMiB": 288.98,
+      "sourceFilesMiB": 9.05,
+      "archivesMiB": 113.57,
+      "nineDatabaseCopiesMiB": 3118.89,
+      "additionalWorkingReserveMiB": 512,
+      "totalWithEightGiBProtectedGiB": 11.948,
+      "existingDockerLayerSharingCredited": false,
+      "estimateOnly": true
+    }
+  }
+}
