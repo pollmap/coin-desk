@@ -14,6 +14,10 @@ REMOTE_ROOT = '/srv/services/coin-desk'
 EXPECTED_JOBS = {'checks','browser (chromium)','browser (webkit)','container','verify'}
 INPUTS = {'deployment.json','source-scope.json','selective_release.py','rollout_engine.py'}
 RESEARCH_INPUTS = INPUTS | {'research_release.py','research_schema.py'}
+# Whole-phase watchdogs include serial service waits and failure recovery.
+# They do not change the individual service, backup or resource guards.
+PHASE_TIMEOUTS = {'prepare':3600, 'activate':2400, 'enable':1200}
+SSH_PHASE_GRACE_SECONDS = 30
 
 def require(condition, message):
     if not condition: raise ValueError(message)
@@ -96,14 +100,16 @@ print(json.dumps({'transportFilesVerified':len(checks)}))
 ''')
 
 def phase(runner,pins,remote,operation):
+    require(operation in PHASE_TIMEOUTS, 'Unsupported deployment phase')
+    timeout=PHASE_TIMEOUTS[operation]
     target=runner.folder/(operation+'-result.json')
     require(not target.exists(), 'Preserve prior phase result')
-    result=runner.ssh('target='+repr(remote)+'\ncommit='+repr(pins['commit'])+'\nphase='+repr(operation)+'\n'+r'''
+    result=runner.ssh('target='+repr(remote)+'\ncommit='+repr(pins['commit'])+'\nphase='+repr(operation)+'\nphase_timeout='+repr(timeout)+'\n'+r'''
 import pathlib,subprocess,json,hashlib
 p=pathlib.Path(target);pins=json.loads((p/'reviewed-pins.json').read_text())
 for n,s in pins['files'].items(): assert hashlib.file_digest((p/n).open('rb'),'sha256').hexdigest()==s
 entry='research_release.py' if pins.get('deploymentKind')=='research-additive-v1' else 'selective_release.py'
-r=subprocess.run(['python3',str(p/entry),phase,commit,'--audit',str(p),'--execute-reviewed-selective-rollout'],capture_output=True,text=True,timeout=850)
+r=subprocess.run(['python3',str(p/entry),phase,commit,'--audit',str(p),'--execute-reviewed-selective-rollout'],capture_output=True,text=True,timeout=phase_timeout)
 (p/(phase+'-wrapper.private.log')).write_text(r.stdout+'\n'+r.stderr)
 assert r.returncode==0, 'Remote phase failed; preserve checkpoint'
 prepared=json.loads((p/'prepare.json').read_text())
@@ -114,7 +120,7 @@ if phase=='enable':
  assert pins.get('deploymentKind')=='research-additive-v1'
  out['research']=json.loads((p/'research-enable.json').read_text());out['currentRelease']=(p.parent.parent/'current').resolve().name
 print(json.dumps(out))
-''',880)
+''',timeout+SSH_PHASE_GRACE_SECONDS)
     target.write_text(json.dumps(result,indent=2),encoding='utf-8')
     return result
 
