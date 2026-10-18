@@ -104,6 +104,16 @@ class ResearchContainment(unittest.TestCase):
         self.before={'api':{'Config':{'Image':'old'}}}
     def validate(self):rollout.validate_configs(self.old,self.new,self.image,self.release,self.before)
     def test_new_disabled_worker_keeps_all_collectors_and_data_mounts(self):self.validate()
+    def test_compose_integer_and_digit_string_memory_have_same_exact_limit(self):
+        for value in [536870912,'536870912']:
+            with self.subTest(value=value):
+                self.new['services']['research-worker']['mem_limit']=value
+                self.validate()
+    def test_compose_memory_rejects_boolean_float_units_and_different_limits(self):
+        for value in [True,False,None,536870912.0,536870911,536870913,'536870911','536870913','512m','536870912.0',' 536870912','536870912 ','0536870912',{},[]]:
+            with self.subTest(value=value):
+                self.new['services']['research-worker']['mem_limit']=value
+                with self.assertRaisesRegex(ValueError,'resource limits'):self.validate()
     def test_worker_cannot_enable_as_part_of_initial_activation(self):
         self.new['services']['research-worker']['environment']['COIN_DESK_RESEARCH_ENABLED']='1'
         with self.assertRaisesRegex(ValueError,'start disabled'):self.validate()
