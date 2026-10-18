@@ -14,6 +14,7 @@ ROOT=pathlib.Path(__file__).resolve().parents[1]
 sys.path.insert(0,str(ROOT/'deploy/vps'))
 import research_schema as subject
 import research_release as rollout
+import rollout_engine as engine
 sys.path.insert(0,str(ROOT/'scripts'))
 from backup_check import fingerprint
 
@@ -184,7 +185,7 @@ class ActivationFailure(unittest.TestCase):
         self.before={n:{'Id':n,'Image':'sha256:old','Config':{'Image':'old-image'}} for n in ['api',*self.protected]}
         class FakeBase:pass
         def private(path,data):path.write_text(json.dumps(data))
-        self.base=SimpleNamespace(Deployment=FakeBase,private_json=private,require_restored_image=mock.Mock())
+        self.base=SimpleNamespace(Deployment=FakeBase,private_json=private,require_restored_image=mock.Mock(),start_service=engine.start_service)
         for key,value in [('ROOT',self.root),('AUDIT',self.audit),('OLD',self.old),('PROTECTED',self.protected),('CHANGED',['api','research-worker'])]:
             patcher=mock.patch.object(rollout.selective,key,value);patcher.start();self.addCleanup(patcher.stop)
         cls=rollout.deployment_type(self.base,{'schemaPlan':{}},{})

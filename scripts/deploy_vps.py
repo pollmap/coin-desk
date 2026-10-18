@@ -15,8 +15,8 @@ EXPECTED_JOBS = {'checks','browser (chromium)','browser (webkit)','container','v
 INPUTS = {'deployment.json','source-scope.json','selective_release.py','rollout_engine.py'}
 RESEARCH_INPUTS = INPUTS | {'research_release.py','research_schema.py'}
 # Whole-phase watchdogs include serial service waits and failure recovery.
-# They do not change the individual service, backup or resource guards.
-PHASE_TIMEOUTS = {'prepare':3600, 'activate':2400, 'enable':1200}
+# Backup gets its own bounded startup/rollback window. Resource guards stay fixed.
+PHASE_TIMEOUTS = {'prepare':3600, 'activate':4200, 'enable':1200}
 SSH_PHASE_GRACE_SECONDS = 30
 
 def require(condition, message):

@@ -165,7 +165,7 @@ def deployment_type(base,pins,scope):
                 module.verify_backup(restored_directory,metadata)
 
         def verify_active_backup(self, started_at):
-            deadline=time.monotonic()+180
+            deadline=time.monotonic()+base.BACKUP_START_SECONDS
             while True:
                 path=ROOT/'shared/data/backup-status.json'
                 try:
@@ -174,7 +174,7 @@ def deployment_type(base,pins,scope):
                     require_backup_metadata_status(state,started_at)
                     return {'verified':True,'completedAt':state['completedAt'],'referenceMetadata':state['referenceMetadata']}
                 except (OSError,ValueError):
-                    require(time.monotonic()<deadline,'Updated backup process did not verify metadata within 180 seconds')
+                    require(time.monotonic()<deadline,'Updated backup process did not verify metadata within the bounded backup startup window')
                     time.sleep(2)
 
         def run(self,args,timeout=180,input_bytes=None):

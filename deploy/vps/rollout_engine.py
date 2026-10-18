@@ -34,6 +34,24 @@ SHADOW_NETWORK = 'coin-desk-ux-032-check'
 API_PORT, HUB_PORT = 18432, 18433
 
 
+SERVICE_START_SECONDS = 180
+# A full snapshot plus independent restore runs under the existing 0.25 CPU cap.
+# Startup and rollback must allow that verification to finish; health stays strict.
+BACKUP_START_SECONDS = 900
+SERVICE_COMMAND_GRACE_SECONDS = 30
+
+
+def service_start_seconds(service):
+    return BACKUP_START_SECONDS if service == 'backup' else SERVICE_START_SECONDS
+
+
+def start_service(runner, config, service):
+    seconds = service_start_seconds(service)
+    return runner.run(config + ['up', '-d', '--no-deps', '--wait', '--wait-timeout',
+                               str(seconds), service],
+                      timeout=seconds + SERVICE_COMMAND_GRACE_SECONDS)
+
+
 def require(condition, message):
     if not condition:
         raise ValueError(message)
@@ -648,8 +666,7 @@ class Deployment:
                               memory_required=1024 * 1024 ** 2)
                 result['attemptedServices'].append(service)
                 private_json(AUDIT / 'activation.json', result)
-                self.run(new_command + ['up', '-d', '--no-deps', '--wait', '--wait-timeout',
-                                        '180', service], timeout=210)
+                start_service(self, new_command, service)
                 current = self.containers()
                 require(current[service]['Image'] in self.report['imagePortability']['verifiedIds']
                         and current[service]['Config']['Image'] == self.image,
@@ -686,8 +703,7 @@ class Deployment:
         except BaseException:
             for service in reversed(result['attemptedServices']):
                 try:
-                    self.run(old_command + ['up', '-d', '--no-deps', '--wait', '--wait-timeout',
-                                            '180', service], timeout=210)
+                    start_service(self, old_command, service)
                     restored = self.containers()[service]
                     require_restored_image(before[service], restored, service)
                     result['rollbackServices'].append(service)

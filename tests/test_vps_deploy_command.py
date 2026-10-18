@@ -5,6 +5,8 @@ from unittest.mock import patch
 
 spec=importlib.util.spec_from_file_location('deploy_command',pathlib.Path(__file__).resolve().parents[1]/'scripts/deploy_vps.py')
 subject=importlib.util.module_from_spec(spec);spec.loader.exec_module(subject)
+engine_spec=importlib.util.spec_from_file_location('deployment_budget',pathlib.Path(__file__).resolve().parents[1]/'deploy/vps/rollout_engine.py')
+engine=importlib.util.module_from_spec(engine_spec);engine_spec.loader.exec_module(engine)
 
 class DeploymentCommand(unittest.TestCase):
     def setUp(self):
@@ -85,7 +87,7 @@ class DeploymentCommand(unittest.TestCase):
                 self.assertEqual(json.loads((self.folder/(operation+'-result.json')).read_text()),result)
     def test_phase_watchdogs_reach_remote_child_and_ssh_has_cleanup_grace(self):
         runner=subject.Runner(self.folder)
-        for operation,seconds in [('prepare',3600),('activate',2400),('enable',1200)]:
+        for operation,seconds in [('prepare',3600),('activate',4200),('enable',1200)]:
             captured=[]
             def inspect_remote(code,timeout):
                 tree=ast.parse(code)
@@ -131,15 +133,23 @@ class DeploymentCommand(unittest.TestCase):
                 and call.func.value.id=='time' and call.func.attr=='sleep']
         activation=method('research_release.py','activate');enabling=method('research_release.py','enable')
         activation_timeouts=timeouts(activation);enable_timeouts=timeouts(enabling)
-        self.assertEqual(activation_timeouts,[210,15,210,210])
-        self.assertEqual(enable_timeouts,[210,15,210])
+        self.assertEqual(activation_timeouts,[15])
+        self.assertEqual(enable_timeouts,[15])
+        def service_calls(node):
+            return [call for call in ast.walk(node) if isinstance(call,ast.Call)
+                and isinstance(call.func,ast.Attribute) and isinstance(call.func.value,ast.Name)
+                and call.func.value.id=='base' and call.func.attr=='start_service']
+        self.assertEqual(len(service_calls(activation)),3)
+        self.assertEqual(len(service_calls(enabling)),2)
         self.assertEqual(sleeps(activation),[60]);self.assertEqual(sleeps(enabling),[60])
         stop=default(method('rollout_engine.py','run'),'timeout')
         self.assertEqual(stop,180)
         backup=method('selective_release.py','verify_active_backup')
-        backup_wait=next(ast.literal_eval(n.value.right) for n in backup.body if isinstance(n,ast.Assign)
+        backup_deadline=next(n.value.right for n in backup.body if isinstance(n,ast.Assign)
             and isinstance(n.targets[0],ast.Name) and n.targets[0].id=='deadline')
-        self.assertEqual(backup_wait,180)
+        self.assertEqual(ast.unparse(backup_deadline),'base.BACKUP_START_SECONDS')
+        backup_wait=engine.BACKUP_START_SECONDS
+        self.assertEqual(backup_wait,900)
         # Backup status polling can cross the deadline by one two-second sleep.
         backup_wait+=sum(sleeps(backup))
         request=default(method('rollout_engine.py','request'),'timeout')
@@ -155,11 +165,33 @@ class DeploymentCommand(unittest.TestCase):
             +sum(timeouts(method('research_release.py','rehearsal'))))
         # Failure after all three replacements, metadata proof and natural wait;
         # rollback backup, stop the new worker, then rollback API.
-        activate=3*activation_timeouts[0]+activation_timeouts[1]+backup_wait+sum(sleeps(activation))+sum(activation_timeouts[2:])+stop
+        command_wait=lambda service:engine.service_start_seconds(service)+engine.SERVICE_COMMAND_GRACE_SECONDS
+        activate=sum(command_wait(service) for service in ['api','research-worker','backup','backup','api'])+sum(activation_timeouts)+backup_wait+sum(sleeps(activation))+stop
         # Enabling fails after natural observation; disabled restart also fails,
         # so the final fallback stop must still fit, not just the first rollback.
-        enable=sum(enable_timeouts)+sum(sleeps(enabling))+stop
+        enable=2*command_wait('research-worker')+sum(enable_timeouts)+sum(sleeps(enabling))+stop
         return {'prepare':preparation,'activate':activate,'enable':enable}
+    def test_slow_verified_backup_start_and_rollback_fit_without_relaxing_api_wait(self):
+        # The production 0.25-CPU backup was still verifying after 180 seconds.
+        # Simulate that delay without sleeping, for both candidate and rollback.
+        calls=[]
+        def run(args,timeout):
+            seconds=int(args[args.index('--wait-timeout')+1]);service=args[-1]
+            calls.append((service,seconds,timeout))
+            self.assertIn('--wait',args)
+            if 360>=seconds:raise subprocess.TimeoutExpired(args,seconds)
+            return 'verified healthy'
+        runner=SimpleNamespace(run=run)
+        for config in [['docker','compose','candidate'],['docker','compose','rollback']]:
+            self.assertEqual(engine.start_service(runner,config,'backup'),'verified healthy')
+        for service in ['api','research-worker','quote-hub']:
+            with self.assertRaises(subprocess.TimeoutExpired):engine.start_service(runner,['docker','compose'],service)
+        self.assertEqual(calls[:2],[('backup',900,930)]*2)
+        self.assertTrue(all(row[1:]==(180,210) for row in calls[2:]))
+    def test_backup_timeout_is_finite_and_failure_is_not_swallowed(self):
+        def run(args,timeout):raise subprocess.TimeoutExpired(args,timeout)
+        with self.assertRaises(subprocess.TimeoutExpired):engine.start_service(SimpleNamespace(run=run),['docker','compose'],'backup')
+        self.assertEqual(engine.HISTORY_GUARD,8*1024**3)
     def test_phase_watchdogs_include_serial_waits_rollback_and_margin(self):
         for operation,guarded_wait in self.phase_wait_budgets().items():
             with self.subTest(operation=operation):
