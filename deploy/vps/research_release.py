@@ -4,7 +4,7 @@ Legacy collectors, quote hub, migration container and other projects keep
 their current image and identity. A later explicit enable changes only the research
 process. Rollback never overwrites a live DB or removes additive research tables.
 """
-import argparse, copy, hashlib, json, os, pathlib, shutil, sqlite3, subprocess, sys, time
+import argparse, copy, hashlib, json, os, pathlib, re, shutil, sqlite3, subprocess, sys, time
 from contextlib import closing
 import selective_release as selective
 import research_schema as schema
@@ -15,6 +15,55 @@ RESEARCH_ENV={'COIN_DESK_DB','COIN_DESK_RELEASE','COIN_DESK_RESEARCH_ENABLED',
 
 def require(value,message):
     if not value: raise ValueError(message)
+
+def backup_override_documents(baseline):
+    """Canonical, non-secret rollback pins; never rewrite the prior environment."""
+    require(isinstance(baseline,dict) and set(baseline)=={'containerId','imageTag','imageId','release','enabledAssets'},'Invalid backup baseline fields')
+    require(all(isinstance(value,str) for value in baseline.values()),'Invalid backup baseline types')
+    require(re.fullmatch('[a-f0-9]{64}',baseline['containerId']) and re.fullmatch('sha256:[a-f0-9]{64}',baseline['imageId']),'Invalid backup baseline identity')
+    require(re.fullmatch('vps-[a-f0-9]{16}',baseline['release']) and baseline['imageTag']=='coin-desk:'+baseline['release'],'Invalid backup baseline release')
+    assets=baseline['enabledAssets'].split(',')
+    require(len(assets)<=150 and len(assets)==len(set(assets)) and all(re.fullmatch('[A-Z0-9]{1,20}',asset) for asset in assets),'Invalid backup baseline assets')
+    documents={
+        'previous':{'services':{'backup':{'image':baseline['imageTag'],'environment':{'COIN_DESK_RELEASE':baseline['release'],'ENABLED_ASSETS':baseline['enabledAssets']}}}},
+        'candidate':{'services':{'backup':{'environment':{'ENABLED_ASSETS':baseline['enabledAssets']}}}},
+    }
+    return {key:json.dumps(value,sort_keys=True,separators=(',',':'),ensure_ascii=True)+'\n' for key,value in documents.items()}
+
+def require_backup_baseline(baseline,container,image):
+    backup_override_documents(baseline)
+    require(container.get('Id')==baseline['containerId'] and container.get('Image')==baseline['imageId'] and container.get('Config',{}).get('Image')==baseline['imageTag'],'Live backup identity differs from reviewed baseline')
+    require(image.get('Id')==baseline['imageId'],'Backup image tag changed after review')
+    environment=dict(item.split('=',1) for item in container['Config'].get('Env',[]))
+    require(environment.get('COIN_DESK_RELEASE')==baseline['release'] and environment.get('ENABLED_ASSETS')==baseline['enabledAssets'],'Live backup environment differs from reviewed baseline')
+
+def require_backup_override_scope(previous,candidate,resolved_previous,resolved_candidate,baseline):
+    expected_previous=copy.deepcopy(previous);expected_candidate=copy.deepcopy(candidate)
+    expected_previous['services']['backup']['image']=baseline['imageTag']
+    expected_previous['services']['backup']['environment'].update(COIN_DESK_RELEASE=baseline['release'],ENABLED_ASSETS=baseline['enabledAssets'])
+    expected_candidate['services']['backup']['environment']['ENABLED_ASSETS']=baseline['enabledAssets']
+    require(resolved_previous==expected_previous,'Previous backup override changed unrelated configuration')
+    require(resolved_candidate==expected_candidate,'Candidate backup override changed unrelated configuration')
+
+def require_backup_live_config(config,container,image):
+    """The historical image may differ, but its runtime contract must not drift."""
+    live=container['Config'];host=container['HostConfig']
+    expected_environment=dict(item.split('=',1) for item in image.get('Config',{}).get('Env',[]))
+    expected_environment.update(config.get('environment',{}))
+    require(dict(item.split('=',1) for item in live.get('Env',[]))==expected_environment,'Backup rollback environment differs from live baseline')
+    require(live.get('Cmd')==config.get('command') and live.get('User')==config.get('user') and host.get('ReadonlyRootfs')==config.get('read_only'),'Backup rollback process differs from live baseline')
+    # Compose null means inherit the image; an explicit empty list still disables it.
+    entrypoint=config.get('entrypoint')
+    if entrypoint is None:entrypoint=image.get('Config',{}).get('Entrypoint')
+    working_directory=config.get('working_dir')
+    if working_directory is None:working_directory=image.get('Config',{}).get('WorkingDir','')
+    require(live.get('Entrypoint')==entrypoint and live.get('WorkingDir','')==working_directory,'Backup rollback executable context differs from live baseline')
+    require(sorted(host.get('CapDrop') or [])==sorted(config.get('cap_drop') or []) and sorted(host.get('SecurityOpt') or [])==sorted(config.get('security_opt') or []),'Backup rollback permissions differ from live baseline')
+    require(host.get('NanoCpus')==round(float(config['cpus'])*10**9) and host.get('Memory')==int(config['mem_limit']),'Backup rollback resource limits differ from live baseline')
+    require(not config.get('ports') and not host.get('PortBindings'),'Backup must not expose a port')
+    wanted=sorted((item.get('type','bind'),item['source'],item['target'],not item.get('read_only',False)) for item in config.get('volumes',[]))
+    actual=sorted((item['Type'],item['Source'],item['Destination'],item['RW']) for item in container.get('Mounts',[]) if item['Type']!='tmpfs')
+    require(actual==wanted,'Backup rollback mounts differ from live baseline')
 
 def validate_configs(previous,candidate,image,release,before,replace_backup=False):
     require(previous['name']==candidate['name']=='coin-desk','Compose project changed')
@@ -67,7 +116,42 @@ def deployment_type(base,pins,scope):
     Parent=selective.deployment_type(base,pins,scope)
     class ResearchDeployment(Parent):
         def config(self,folder,env):
-            return super().config(folder,env)+['--profile','research']
+            command=super().config(folder,env)+['--profile','research']
+            if folder==self.new and pins.get('backupBaseline') is not None:
+                command+=['-f',str(self.backup_override_path('candidate'))]
+            return command
+
+        def backup_override_path(self,kind):
+            require(kind in ['previous','candidate'],'Invalid backup override kind')
+            documents=backup_override_documents(pins.get('backupBaseline'))
+            hashes=pins.get('backupOverrideSha256',{})
+            require(set(hashes)==set(documents) and all(hashes[key]==hashlib.sha256(value.encode('utf-8')).hexdigest() for key,value in documents.items()),'Reviewed backup override hashes differ')
+            path=selective.AUDIT/(kind+'-backup.override.json');content=documents[kind].encode('utf-8')
+            if path.exists():require(not path.is_symlink() and path.read_bytes()==content,'Backup override changed after review')
+            else:
+                with os.fdopen(os.open(path,os.O_WRONLY|os.O_CREAT|os.O_EXCL,0o600),'wb') as out:out.write(content)
+            return path
+
+        def previous_backup_config(self):
+            command=self.config(selective.OLD,self.oldenv)
+            if pins.get('backupBaseline') is not None:
+                path=self.backup_override_path('previous')
+                # The original container may already have been replaced when rolling back.
+                # Recheck the immutable image identity without requiring its old container ID.
+                image=json.loads(self.run(['docker','image','inspect',pins['backupBaseline']['imageTag']]))[0]
+                require(image.get('Id')==pins['backupBaseline']['imageId'],'Backup rollback image tag changed after review')
+                command+=['-f',str(path)]
+            return command
+
+        def backup_seal(self):
+            if pins.get('backupBaseline') is None:return None
+            return {'backupBaseline':copy.deepcopy(pins['backupBaseline']),
+                'backupOverrideSha256':{kind:selective.sha(self.backup_override_path(kind)) for kind in ['previous','candidate']}}
+
+        def verify_backup_seal(self,seal):
+            proof=self.backup_seal()
+            require({key:seal.get(key) for key in ['backupBaseline','backupOverrideSha256']}==
+                (proof or {'backupBaseline':None,'backupOverrideSha256':None}),'Prepared backup baseline or override changed')
 
         def validate_migrations(self,source,prior):
             schema.validate_migration_set(pins['schemaPlan'],source,prior)
@@ -85,6 +169,15 @@ def deployment_type(base,pins,scope):
         def validate_configs(self,before):
             old=json.loads(self.run(self.config(selective.OLD,self.oldenv)+['config','--format','json']))
             new=json.loads(self.run(self.config(self.new,self.newenv)+['config','--format','json']))
+            if pins.get('backupBaseline') is not None:
+                require('backup' in selective.CHANGED,'Backup baseline requires an explicit backup rollout')
+                image=json.loads(self.run(['docker','image','inspect',pins['backupBaseline']['imageTag']]))[0]
+                require_backup_baseline(pins['backupBaseline'],before['backup'],image)
+                previous=json.loads(self.run(self.previous_backup_config()+['config','--format','json']))
+                raw_candidate=json.loads(self.run(super().config(self.new,self.newenv)+['--profile','research','config','--format','json']))
+                require_backup_override_scope(old,raw_candidate,previous,new,pins['backupBaseline'])
+                require_backup_live_config(previous['services']['backup'],before['backup'],image)
+                old=previous
             base.private_json(selective.AUDIT/'private-logs/previous-compose.json',old)
             base.private_json(selective.AUDIT/'private-logs/candidate-compose.json',new)
             validate_configs(old,new,self.image,self.release,before,replace_backup='backup' in selective.CHANGED)
@@ -136,6 +229,8 @@ def deployment_type(base,pins,scope):
             seal_path=selective.AUDIT/'activation-seal.private.json';seal=json.loads(seal_path.read_text())
             seal['researchSchemaProofSha256']=selective.sha(selective.AUDIT/'research-schema-rehearsal.private.json')
             seal['researchMigratedCloneSha256']=selective.sha(self.rehearsal_database());seal['schemaPlanSha256']=self.report['schemaPlanSha256']
+            backup_seal=self.backup_seal()
+            if backup_seal is not None:seal.update(backup_seal)
             base.private_json(seal_path,seal);self.report['researchDisabledSmokeVerified']=True;self.report['researchReadonlyDryRunVerified']=True;self.report['oldImageReadsNewSchema']=True;self.persist()
 
         def inspect_worker(self):
@@ -143,6 +238,7 @@ def deployment_type(base,pins,scope):
 
         def activate(self):
             self.assert_current();before=self.verify_activation_inputs();seal=json.loads((selective.AUDIT/'activation-seal.private.json').read_text())
+            self.verify_backup_seal(seal)
             require(self.report.get('researchDisabledSmokeVerified') and self.report.get('researchReadonlyDryRunVerified'),'Research image smoke tests required')
             require(seal['researchSchemaProofSha256']==selective.sha(selective.AUDIT/'research-schema-rehearsal.private.json') and seal['researchMigratedCloneSha256']==selective.sha(self.rehearsal_database()) and seal['schemaPlanSha256']==self.report['schemaPlanSha256'],'Research rehearsal seal differs')
             require(subprocess.run(['docker','inspect','coin-desk-research-worker-1'],capture_output=True).returncode!=0,'Research service already exists; use a separately reviewed update')
@@ -177,7 +273,7 @@ def deployment_type(base,pins,scope):
             except BaseException:
                 if 'backup' in result['attemptedServices']:
                     try:
-                        self.run(self.config(selective.OLD,self.oldenv)+['up','-d','--no-deps','--wait','--wait-timeout','180','backup'],timeout=210);base.require_restored_image(before['backup'],self.containers()['backup'],'backup');result['rollbackServices'].append('backup')
+                        self.run(self.previous_backup_config()+['up','-d','--no-deps','--wait','--wait-timeout','180','backup'],timeout=210);base.require_restored_image(before['backup'],self.containers()['backup'],'backup');result['rollbackServices'].append('backup')
                     except BaseException:result.setdefault('rollbackFailures',[]).append('backup')
                 if WORKER in result['attemptedServices']:
                     try:
@@ -203,6 +299,7 @@ def deployment_type(base,pins,scope):
                 path=self.new/name
                 require(path.is_file() and not path.is_symlink() and path.resolve().is_relative_to(self.new) and selective.sha(path)==digest,'Research source changed: '+name)
             seal=json.loads((selective.AUDIT/'activation-seal.private.json').read_text())
+            self.verify_backup_seal(seal)
             require(seal['environmentSha256']==selective.sha(self.newenv),'Disabled environment changed after rehearsal')
             before=self.containers();worker=self.inspect_worker()
             for container in [before['api'],worker]+([before['backup']] if 'backup' in selective.CHANGED else []):
