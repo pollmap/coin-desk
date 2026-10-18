@@ -65,7 +65,12 @@ export const validPriceBasis = (asset: Asset, basis: string | null): PriceBasis 
 const valueMetrics = new Set(['mvrv', 'realized_price', 'realized_cap']);
 type IndicatorBase = Omit<
   IndicatorDefinition,
-  'shortMeaning' | 'baselineMeaning' | 'observationCadence' | 'measurementScope' | 'purpose' | 'axis'
+  | 'shortMeaning'
+  | 'baselineMeaning'
+  | 'observationCadence'
+  | 'measurementScope'
+  | 'purpose'
+  | 'axis'
 >;
 const definitions: IndicatorBase[] = [
   {
@@ -352,7 +357,11 @@ export const INDICATORS_CATALOG: IndicatorDefinition[] = definitions.map((d) => 
           : '일별 확정 관측';
   return {
     ...d,
-    axis: { price: isPriceMetric(d.id), default: defaultAxis(d.id), logarithmic: supportsLogAxis(d.id) },
+    axis: {
+      price: isPriceMetric(d.id),
+      default: defaultAxis(d.id),
+      logarithmic: supportsLogAxis(d.id),
+    },
     purpose:
       d.group === '선물'
         ? '선물 시장'
@@ -487,7 +496,8 @@ export function indicatorUrl(
     !previous.has('rainbow_origin')
   )
     basis = longestPriceBasis(asset, basis);
-  if (['view:btc_rainbow', 'view:btc_rainbow_original', 'view:powerlaw'].includes(next)) basis = 'reference';
+  if (['view:btc_rainbow', 'view:btc_rainbow_original', 'view:powerlaw'].includes(next))
+    basis = 'reference';
   if (['view:vwap', 'volume', 'view:supertrend'].includes(next) && basis === 'reference')
     basis = availableMarket(asset, 'binance');
   if (next === 'view:supertrend' && previous.get('metric') !== next) {
@@ -532,8 +542,11 @@ export function indicatorUrl(
     p.delete('patterns');
     p.delete('compare_price');
   }
-  const previousMetric = previous.get('metric') || (previous.has('visual') ? 'view:' + previous.get('visual') : undefined);
-  const keepingRainbow = ['view:asset_rainbow', 'view:btc_rainbow_original'].includes(next) && previousMetric === next;
+  const previousMetric =
+    previous.get('metric') ||
+    (previous.has('visual') ? 'view:' + previous.get('visual') : undefined);
+  const keepingRainbow =
+    ['view:asset_rainbow', 'view:btc_rainbow_original'].includes(next) && previousMetric === next;
   if (switchingAsset || !keepingRainbow) {
     for (const key of [
       'rainbow_origin',

@@ -122,7 +122,9 @@ function DashboardBody({ asset, basis }: { asset: Asset; basis: PriceBasis }) {
   const [axes, setAxes] = useState<Record<string, AxisPreference>>(initial.axes ?? {});
   const [models, setModels] = useState<Record<string, string>>(initial.models ?? {});
   const rememberModel = useCallback((metric: string, version: string) => {
-    setModels((previous) => previous[metric] === version ? previous : { ...previous, [metric]: version });
+    setModels((previous) =>
+      previous[metric] === version ? previous : { ...previous, [metric]: version },
+    );
   }, []);
   const [rangeRevision, setRangeRevision] = useState(0);
   const [panel, setPanel] = useState<Panel>(null);
@@ -186,7 +188,9 @@ function DashboardBody({ asset, basis }: { asset: Asset; basis: PriceBasis }) {
       axes: Object.fromEntries(
         Object.entries(state.current.axes).filter(([id]) => state.current.charts.includes(id)),
       ),
-      models: Object.fromEntries(Object.entries(state.current.models).filter(([id]) => state.current.charts.includes(id))),
+      models: Object.fromEntries(
+        Object.entries(state.current.models).filter(([id]) => state.current.charts.includes(id)),
+      ),
     }),
     [ohlcSource],
   );
@@ -378,9 +382,19 @@ function DashboardBody({ asset, basis }: { asset: Asset; basis: PriceBasis }) {
     dashboard: { charts, ranges: {}, scrollY: 0, ohlcSource, axes, models },
   };
   const definition = help ? indicatorDefinition(help) : null;
-  const helpParams = new URLSearchParams({ asset, metric: help ?? '', price_source:
-    help === 'view:supertrend' ? ohlcSource : ['view:btc_rainbow', 'view:btc_rainbow_original', 'view:hash_ribbons'].includes(help ?? '') ? 'reference' : basis,
-    period, log: axisPreference(help ?? '', axes[help ?? '']) === 'log' ? '1' : '0',
+  const helpParams = new URLSearchParams({
+    asset,
+    metric: help ?? '',
+    price_source:
+      help === 'view:supertrend'
+        ? ohlcSource
+        : ['view:btc_rainbow', 'view:btc_rainbow_original', 'view:hash_ribbons'].includes(
+              help ?? '',
+            )
+          ? 'reference'
+          : basis,
+    period,
+    log: axisPreference(help ?? '', axes[help ?? '']) === 'log' ? '1' : '0',
   });
   if (help && ranges.current[help]) {
     helpParams.set('chart_from', String(ranges.current[help].from));
@@ -545,11 +559,7 @@ function DashboardBody({ asset, basis }: { asset: Asset; basis: PriceBasis }) {
         {definition && (
           <div className="coin-dashboard-help">
             <Suspense fallback={<p role="status">설명을 불러오는 중…</p>}>
-              <IndicatorReading
-                metric={definition.id}
-                asset={asset}
-                params={helpParams}
-              />
+              <IndicatorReading metric={definition.id} asset={asset} params={helpParams} />
             </Suspense>
           </div>
         )}

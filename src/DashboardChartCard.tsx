@@ -197,13 +197,15 @@ export function DashboardChartCard({
     (isSupertrend ? weekly.error : undefined) ||
     (needsPrices ? priceInput.error : undefined) ||
     (isRelative ? comparison.error : undefined) ||
-    (requiresUsd ? (sharedHashPrice ? priceInput.error : hashPrice.error) : undefined) || original.error;
+    (requiresUsd ? (sharedHashPrice ? priceInput.error : hashPrice.error) : undefined) ||
+    original.error;
   const loading =
     (seriesUrl ? series.loading : false) ||
     (isSupertrend ? weekly.loading : false) ||
     (needsPrices ? priceInput.loading : false) ||
     (isRelative && comparable ? comparison.loading : false) ||
-    (requiresUsd ? (sharedHashPrice ? priceInput.loading : hashPrice.loading) : false) || original.loading;
+    (requiresUsd ? (sharedHashPrice ? priceInput.loading : hashPrice.loading) : false) ||
+    original.loading;
   const stale =
     error ||
     (seriesUrl ? series.data?.meta.stale : undefined) ||
@@ -274,7 +276,9 @@ export function DashboardChartCard({
               aria-pressed={actualAxis === 'log'}
               disabled={!canLog}
               title={
-                !canLog && plot.points.length ? '0 이하 값이 있어 일반 축으로 표시합니다.' : '로그축에서는 같은 상승률이 같은 높이로 보입니다. 100→200과 200→400은 같은 높이입니다.'
+                !canLog && plot.points.length
+                  ? '0 이하 값이 있어 일반 축으로 표시합니다.'
+                  : '로그축에서는 같은 상승률이 같은 높이로 보입니다. 100→200과 200→400은 같은 높이입니다.'
               }
               onClick={() => onAxis(metric, actualAxis === 'log' ? 'linear' : 'log')}
             >
@@ -354,7 +358,11 @@ export function DashboardChartCard({
             allowPageScroll
           />
           {plot.state ? <p className="coin-dashboard-chart-note">{plot.state}</p> : null}
-          {isOriginal && original.error ? <p role="status" className="coin-dashboard-chart-note">{original.error} <button onClick={original.reload}>다시 시도</button></p> : null}
+          {isOriginal && original.error ? (
+            <p role="status" className="coin-dashboard-chart-note">
+              {original.error} <button onClick={original.reload}>다시 시도</button>
+            </p>
+          ) : null}
         </>
       ) : (
         <div className="coin-dashboard-empty" role="status">

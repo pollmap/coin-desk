@@ -137,7 +137,8 @@ export function IndicatorWorkspace() {
   const invalidBasis =
     ((rawBasis === 'upbit' || rawBasis === 'binance') && !supportsMarket(asset, rawBasis)) ||
     (rawBasis === 'reference' && !supportsReference(asset)) ||
-    (['view:btc_rainbow', 'view:btc_rainbow_original', 'view:powerlaw'].includes(id) && basis !== 'reference') ||
+    (['view:btc_rainbow', 'view:btc_rainbow_original', 'view:powerlaw'].includes(id) &&
+      basis !== 'reference') ||
     (['volume', 'view:vwap', 'view:supertrend'].includes(id) && basis === 'reference');
   const supported = active.supported && !invalidBasis;
   const period = active.period,
@@ -157,14 +158,21 @@ export function IndicatorWorkspace() {
   const isSupertrend = id === 'view:supertrend';
   const isAssetRainbow = id === 'view:asset_rainbow';
   const isOriginal = id === 'view:btc_rainbow_original';
-  const original = useOriginalRainbowReference(supported && isOriginal, params.get('rainbow_model') ?? undefined);
+  const original = useOriginalRainbowReference(
+    supported && isOriginal,
+    params.get('rainbow_model') ?? undefined,
+  );
   useEffect(() => {
     if (!isOriginal || !original.data || params.has('rainbow_model')) return;
-    setParams((previous) => {
-      const next = new URLSearchParams(previous);
-      if (next.get('metric') === 'view:btc_rainbow_original') next.set('rainbow_model', original.data!.modelVersion);
-      return next;
-    }, { replace: true });
+    setParams(
+      (previous) => {
+        const next = new URLSearchParams(previous);
+        if (next.get('metric') === 'view:btc_rainbow_original')
+          next.set('rainbow_model', original.data!.modelVersion);
+        return next;
+      },
+      { replace: true },
+    );
   }, [isOriginal, original.data, params, setParams]);
   const isHash = ['view:hash_ribbons', 'view:hashrate_trend'].includes(id);
   const fixedModel = useMemo(() => assetRainbowContext(asset, basis, []), [asset, basis]);
@@ -668,85 +676,87 @@ export function IndicatorWorkspace() {
               : []),
           ]
         : isOriginal
-          ? original.data ? originalRainbowLines(dailyPoints, original.data) : []
-        : bands
-          ? (bandRows[0]?.bands.map((_, i) => ({
-              id: 'band:' + i,
-              title: '경계 ' + (i + 1),
-              unit,
-              source: d?.source ?? '',
-              data: bandRows.map((p) => ({ time: p.time, value: p.bands[i] })),
-              color: 'rgba(125,145,180,0.35)',
-              overlay: true,
-              step: 86400,
-            })) ?? [])
-          : [
-              ...(isSupertrend
-                ? [
-                    {
-                      id: 'supertrend',
-                      title: `슈퍼트렌드 ${stSettings.period}·${stSettings.multiplier}`,
-                      unit,
-                      source: basisName(basis),
-                      color: '#0f666b',
-                      overlay: true,
-                      data: stRows.map((p) => ({ time: p.time, value: p.value })),
-                      supertrend: { rows: stRows, interval },
-                      step:
-                        interval === '1w'
-                          ? 604800
-                          : interval === '1h'
-                            ? 3600
-                            : interval === '4h'
-                              ? 14400
-                              : interval === '1M'
-                                ? 32 * 86400
-                                : 86400,
-                    },
-                  ]
-                : []),
-              ...workspaceIndicators(
-                price,
-                dailyPoints,
-                indicators,
+          ? original.data
+            ? originalRainbowLines(dailyPoints, original.data)
+            : []
+          : bands
+            ? (bandRows[0]?.bands.map((_, i) => ({
+                id: 'band:' + i,
+                title: '경계 ' + (i + 1),
                 unit,
-                interval === '1h'
-                  ? 3600
-                  : interval === '4h'
-                    ? 14400
-                    : interval === '1w'
-                      ? 604800
-                      : interval === '1M'
-                        ? 2764800
-                        : 86400,
-                view === 'ribbon',
-              ),
-              ...(view === 'vwap'
-                ? [
-                    {
-                      id: 'vwap365',
-                      title: '365일 HLC3 VWAP',
-                      unit,
-                      source: basisName(basis),
-                      data: vwap,
-                      color: '#dda857',
-                      overlay: true,
-                    },
-                  ]
-                : view === 'powerlaw'
+                source: d?.source ?? '',
+                data: bandRows.map((p) => ({ time: p.time, value: p.bands[i] })),
+                color: 'rgba(125,145,180,0.35)',
+                overlay: true,
+                step: 86400,
+              })) ?? [])
+            : [
+                ...(isSupertrend
                   ? [
                       {
-                        id: 'powerlaw',
-                        title: '고정식 파워로 · 참고',
+                        id: 'supertrend',
+                        title: `슈퍼트렌드 ${stSettings.period}·${stSettings.multiplier}`,
                         unit,
-                        source: 'Dacoinminster 고정식',
-                        data: powerLaw(dailyPoints),
+                        source: basisName(basis),
+                        color: '#0f666b',
+                        overlay: true,
+                        data: stRows.map((p) => ({ time: p.time, value: p.value })),
+                        supertrend: { rows: stRows, interval },
+                        step:
+                          interval === '1w'
+                            ? 604800
+                            : interval === '1h'
+                              ? 3600
+                              : interval === '4h'
+                                ? 14400
+                                : interval === '1M'
+                                  ? 32 * 86400
+                                  : 86400,
+                      },
+                    ]
+                  : []),
+                ...workspaceIndicators(
+                  price,
+                  dailyPoints,
+                  indicators,
+                  unit,
+                  interval === '1h'
+                    ? 3600
+                    : interval === '4h'
+                      ? 14400
+                      : interval === '1w'
+                        ? 604800
+                        : interval === '1M'
+                          ? 2764800
+                          : 86400,
+                  view === 'ribbon',
+                ),
+                ...(view === 'vwap'
+                  ? [
+                      {
+                        id: 'vwap365',
+                        title: '365일 HLC3 VWAP',
+                        unit,
+                        source: basisName(basis),
+                        data: vwap,
                         color: '#dda857',
                         overlay: true,
                       },
                     ]
-                  : []),
-            ],
+                  : view === 'powerlaw'
+                    ? [
+                        {
+                          id: 'powerlaw',
+                          title: '고정식 파워로 · 참고',
+                          unit,
+                          source: 'Dacoinminster 고정식',
+                          data: powerLaw(dailyPoints),
+                          color: '#dda857',
+                          overlay: true,
+                        },
+                      ]
+                    : []),
+              ],
     [
       d,
       compare,
@@ -869,7 +879,9 @@ export function IndicatorWorkspace() {
   const response = d?.renderer === 'series' && !local ? remote : raw;
   const waitingForCollection = response.errorCode === 'NO_DATA';
   const loading =
-    !!supported && !error && (response.loading || original.loading || (id === 'relative' && benchmark.loading));
+    !!supported &&
+    !error &&
+    (response.loading || original.loading || (id === 'relative' && benchmark.loading));
   const chartPoints = d?.renderer === 'series' ? primaryData : bands ? dailyPoints : price;
   const isStale = !!(
     response.data?.meta.stale || response.data?.meta.sourceStatus === 'backfilling'
@@ -1421,8 +1433,7 @@ export function IndicatorWorkspace() {
           )}
           {isOriginal && original.error && (
             <p className="indicator-notice" role="status">
-              <span>{original.error}</span>{' '}
-              <button onClick={original.reload}>다시 시도</button>
+              <span>{original.error}</span> <button onClick={original.reload}>다시 시도</button>
             </p>
           )}
           {availability === 'delayed' && !original.error && (
@@ -1514,7 +1525,8 @@ export function IndicatorWorkspace() {
                 analysisOptions: {
                   ...c.analysisOptions,
                   ...(isOriginal && (original.data || params.get('rainbow_model'))
-                    ? { rainbow_model: original.data?.modelVersion ?? params.get('rainbow_model')! } : {}),
+                    ? { rainbow_model: original.data?.modelVersion ?? params.get('rainbow_model')! }
+                    : {}),
                   ...(rainbowModel && rainbowModel.origin !== null
                     ? {
                         rainbow_origin: String(rainbowModel.origin),

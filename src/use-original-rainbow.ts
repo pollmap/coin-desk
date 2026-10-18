@@ -16,16 +16,21 @@ export function useOriginalRainbowReference(enabled: boolean, version?: string) 
     false,
     3600000,
   );
-  const invalidData = !!response.data &&
+  const invalidData =
+    !!response.data &&
     (!originalRainbowReferenceValid(response.data) ||
       (!!version && response.data.modelVersion !== version));
   const data = invalidData ? undefined : response.data;
   return {
     data,
     loading: enabled && !invalidVersion && response.loading,
-    error: !enabled ? undefined : invalidVersion || invalidData
-      ? '저장된 레인보우 모델을 확인할 수 없습니다.'
-      : response.error ? '레인보우를 불러오지 못했습니다.' : undefined,
+    error: !enabled
+      ? undefined
+      : invalidVersion || invalidData
+        ? '저장된 레인보우 모델을 확인할 수 없습니다.'
+        : response.error
+          ? '레인보우를 불러오지 못했습니다.'
+          : undefined,
     reload: response.reload,
   };
 }

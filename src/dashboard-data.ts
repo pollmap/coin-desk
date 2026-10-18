@@ -11,7 +11,10 @@ import { seasonality, type Seasonality } from '../shared/advanced-analysis';
 import type { AnalysisLine, ChartObservation } from './AnalysisChart';
 import type { BandRow } from './BandPrimitive';
 import { defaultAxis, effectiveAxis, type AxisPreference } from '../shared/price-axis';
-import { ORIGINAL_RAINBOW_BASELINE, type OriginalRainbowReference } from '../shared/btc-rainbow-original';
+import {
+  ORIGINAL_RAINBOW_BASELINE,
+  type OriginalRainbowReference,
+} from '../shared/btc-rainbow-original';
 import { btcRainbow } from '../shared/btc-rainbow';
 import { originalRainbowLines } from './original-rainbow-plot';
 
@@ -112,8 +115,13 @@ export function dashboardPlot({
   };
   if (metric === 'view:price') return base;
   if (metric === 'view:btc_rainbow_original') {
-    if (asset !== 'BTC' || basis !== 'reference') return { ...base, points: [], state: 'BTC USD 가격에서 사용할 수 있습니다.' };
-    return { ...base, lines: originalReference ? originalRainbowLines(prices, originalReference, now) : [], unit: 'USD' };
+    if (asset !== 'BTC' || basis !== 'reference')
+      return { ...base, points: [], state: 'BTC USD 가격에서 사용할 수 있습니다.' };
+    return {
+      ...base,
+      lines: originalReference ? originalRainbowLines(prices, originalReference, now) : [],
+      unit: 'USD',
+    };
   }
   if (metric === 'view:ribbon' || metric === 'view:bb') {
     const ids =
@@ -160,7 +168,11 @@ export function dashboardPlot({
   if (metric === 'view:asset_rainbow' || metric === 'view:btc_rainbow') {
     const context = assetRainbowContext(asset, basis, prices);
     const rows =
-      metric === 'view:btc_rainbow' ? btcRainbow(prices, now) : context.origin === null ? [] : assetRainbowDiagnostics(prices, context.origin, now).rows;
+      metric === 'view:btc_rainbow'
+        ? btcRainbow(prices, now)
+        : context.origin === null
+          ? []
+          : assetRainbowDiagnostics(prices, context.origin, now).rows;
     return {
       ...base,
       log: true,

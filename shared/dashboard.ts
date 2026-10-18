@@ -45,8 +45,16 @@ export function defaultChartIds(asset: Asset): string[] {
 export function availableDashboardChartIds(asset: Asset): string[] {
   return [
     ...defaultChartIds(asset),
-    ...['view:ribbon', 'view:bb', 'view:seasonality', 'net:transactions', 'view:asset_rainbow', 'view:btc_rainbow'].filter((id) =>
-      !defaultChartIds(asset).includes(id) && indicatorDefinition(id)?.assets.includes(asset),
+    ...[
+      'view:ribbon',
+      'view:bb',
+      'view:seasonality',
+      'net:transactions',
+      'view:asset_rainbow',
+      'view:btc_rainbow',
+    ].filter(
+      (id) =>
+        !defaultChartIds(asset).includes(id) && indicatorDefinition(id)?.assets.includes(asset),
     ),
   ];
 }
@@ -75,7 +83,11 @@ export function normalizeDashboardSettings(asset: Asset, value: unknown): Dashbo
   const models: Record<string, string> = {};
   if (v.models && typeof v.models === 'object' && !Array.isArray(v.models)) {
     const model = (v.models as Record<string, unknown>)['view:btc_rainbow_original'];
-    if (charts.includes('view:btc_rainbow_original') && typeof model === 'string' && /^bc-original-[a-f0-9]{12}-[a-f0-9]{12}$/.test(model))
+    if (
+      charts.includes('view:btc_rainbow_original') &&
+      typeof model === 'string' &&
+      /^bc-original-[a-f0-9]{12}-[a-f0-9]{12}$/.test(model)
+    )
       models['view:btc_rainbow_original'] = model;
   }
   if (v.axes && typeof v.axes === 'object' && !Array.isArray(v.axes)) {
@@ -141,8 +153,14 @@ export function isDashboardSettings(asset: Asset, value: unknown): value is Dash
       Object.entries(v.axes).some(([key, value]) => normalized.axes?.[key] !== value))
   )
     return false;
-  if (v.models !== undefined && (!v.models || typeof v.models !== 'object' || Array.isArray(v.models) ||
-    Object.entries(v.models).some(([key, value]) => normalized.models?.[key] !== value))) return false;
+  if (
+    v.models !== undefined &&
+    (!v.models ||
+      typeof v.models !== 'object' ||
+      Array.isArray(v.models) ||
+      Object.entries(v.models).some(([key, value]) => normalized.models?.[key] !== value))
+  )
+    return false;
   return v.ohlcSource === undefined || v.ohlcSource === normalized.ohlcSource;
 }
 
@@ -156,7 +174,11 @@ export function dashboardSettingsFromParams(
   let models: unknown;
   const rawModels = params.get('dashboard_models');
   if (rawModels && rawModels.length <= 1024) {
-    try { models = JSON.parse(rawModels); } catch { /* Ignore malformed optional model settings. */ }
+    try {
+      models = JSON.parse(rawModels);
+    } catch {
+      /* Ignore malformed optional model settings. */
+    }
   }
   const rawAxes = params.get('dashboard_axes');
   if (rawAxes && rawAxes.length <= 8192) {
@@ -192,6 +214,7 @@ export function dashboardParams(settings: DashboardSettings): URLSearchParams {
   if (settings.ohlcSource) p.set('dashboard_ohlc', settings.ohlcSource);
   if (settings.axes && Object.keys(settings.axes).length)
     p.set('dashboard_axes', JSON.stringify(settings.axes));
-  if (settings.models && Object.keys(settings.models).length) p.set('dashboard_models', JSON.stringify(settings.models));
+  if (settings.models && Object.keys(settings.models).length)
+    p.set('dashboard_models', JSON.stringify(settings.models));
   return p;
 }
