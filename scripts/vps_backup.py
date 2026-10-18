@@ -22,13 +22,19 @@ def failure_code(error):
     if isinstance(error, sqlite3.Error): return 'sqlite_backup'
     return 'backup_verification'
 
-def restore(snapshot, destination, manifest):
+def restore(snapshot, destination, manifest, metadata_destination=None):
     snapshot = pathlib.Path(snapshot).resolve(strict=True)
     destination = pathlib.Path(destination).resolve()
     if destination.exists(): raise ValueError('Restore requires a new destination; stop services before switching DB paths')
     report = json.loads(pathlib.Path(manifest).read_text(encoding='utf-8'))
     if not report.get('verified') or hashlib.sha256(snapshot.read_bytes()).hexdigest() != report['fileSha256']:
         raise ValueError('Snapshot checksum/verification failed')
+    metadata = report.get('referenceMetadata')
+    restored_metadata = {'state': 'not_in_legacy_backup', 'restored': False, 'compatibility': 'bundled_reference_only'}
+    if metadata is not None:
+        from rainbow_reference_backup import verify_backup, restore_metadata
+        metadata_source = snapshot.parent / 'rainbow-original'
+        verify_backup(metadata_source, metadata)
     source = sqlite3.connect(snapshot.as_uri() + '?mode=ro', uri=True)
     destination.parent.mkdir(parents=True, exist_ok=True)
     descriptor = os.open(destination, os.O_WRONLY | os.O_CREAT | os.O_EXCL, 0o600)
@@ -37,10 +43,13 @@ def restore(snapshot, destination, manifest):
     try:
         source.backup(target); check_integrity(target)
         if fingerprint(target) != report['content']: raise ValueError('Restored content mismatch')
+        if metadata is not None:
+            restored_metadata = restore_metadata(metadata_source,
+                pathlib.Path(metadata_destination) if metadata_destination else destination.parent/'rainbow-original', metadata)
     except BaseException:
         target.close(); destination.unlink(missing_ok=True); raise
     finally: source.close(); target.close()
-    return {'verified': True, 'liveDatabaseOverwritten': False}
+    return {'verified': True, 'liveDatabaseOverwritten': False, 'referenceMetadata': restored_metadata}
 
 def backup(source, folder, status, retention_days=14, budget_bytes=2*1024**3):
     source = pathlib.Path(source).resolve()
@@ -60,10 +69,14 @@ def backup(source, folder, status, retention_days=14, budget_bytes=2*1024**3):
             live.backup(saved, pages=512, sleep=0.05)
             check_integrity(saved); content = fingerprint(saved)
         finally: live.close(); saved.close()
-        report = {'verified': True, 'completedAt': int(time.time()), 'fileSha256': hashlib.sha256(snapshot.read_bytes()).hexdigest(), 'content': content}
+        from rainbow_reference_backup import copy_for_backup
+        metadata = copy_for_backup(source.parent/'rainbow-original', temporary/'rainbow-original')
+        report = {'verified': True, 'completedAt': int(time.time()), 'fileSha256': hashlib.sha256(snapshot.read_bytes()).hexdigest(), 'content': content,
+                  'referenceMetadata': metadata}
         atomic_json(temporary / 'manifest.json', report)
-        restore(snapshot, temporary / 'restored.sqlite', temporary / 'manifest.json')
-        (temporary / 'restored.sqlite').unlink()
+        restore_folder = temporary/'restore-check'
+        restore(snapshot, restore_folder/'coin-desk.sqlite', temporary / 'manifest.json')
+        shutil.rmtree(restore_folder)
         os.chmod(snapshot, 0o600)
         final = folder / stamp
         os.replace(temporary, final)
@@ -79,11 +92,14 @@ def backup(source, folder, status, retention_days=14, budget_bytes=2*1024**3):
         total = sum(p.stat().st_size for p in folder.rglob('*') if p.is_file() and not p.is_symlink())
         for entry in entries[:-2]:
             if entry.stat().st_mtime < cutoff or total > budget_bytes:
-                size = sum(p.stat().st_size for p in entry.iterdir() if p.is_file())
+                size = sum(p.stat().st_size for p in entry.rglob('*') if p.is_file() and not p.is_symlink())
                 if entry.parent != folder: raise ValueError('Unsafe retention target')
                 shutil.rmtree(entry); total -= size
         if total > budget_bytes: raise ValueError('Backup budget exceeded; keeping the latest two verified snapshots')
-        atomic_json(status, {'ok': True, 'verified': True, 'completedAt': report['completedAt'], 'retainedBytes': total, 'offsite': False})
+        atomic_json(status, {'ok': True, 'verified': True, 'completedAt': report['completedAt'], 'retainedBytes': total, 'offsite': False,
+                            'backupContract': 'sqlite-original-v1',
+                            'referenceMetadata': {'schemaVersion': 1, 'state': metadata['state'], 'latestModelVersion': metadata['latestModelVersion'],
+                                                  'snapshotCount': metadata['snapshotCount'], 'compatibility': metadata['compatibility']}})
         return report
     except BaseException as error:
         code = failure_code(error)
@@ -105,6 +121,7 @@ if __name__ == '__main__':
     make.add_argument('--retention-days', type=int, default=14); make.add_argument('--budget-bytes', type=int, default=2*1024**3)
     recover = sub.add_parser('restore')
     recover.add_argument('--snapshot', required=True); recover.add_argument('--destination', required=True); recover.add_argument('--manifest', required=True)
+    recover.add_argument('--metadata-destination', help='Defaults to rainbow-original beside the NEW restored DB; never overwrites differing metadata')
     args = vars(parser.parse_args()); operation = args.pop('operation')
     try:
         print(json.dumps(backup(**args) if operation == 'backup' else restore(**args), indent=2))

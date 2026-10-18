@@ -1,6 +1,7 @@
 import { it, expect } from 'vitest';
 import {
   GUIDE_ARTICLES,
+  GUIDE_PRESETS,
   guideArticle,
   guideChartLink,
   guideForMetric,
@@ -18,6 +19,15 @@ import {
   DEFAULT_DESK,
 } from '../shared/workspace';
 import { belongsToSection } from '../shared/analysis-sections';
+it('introduces candles, scale, trend, valuation and comparison in reading order', () => {
+  expect(GUIDE_PRESETS.slice(0, 5).map((preset) => preset.guide)).toEqual([
+    'candles',
+    'log-scale',
+    'supertrend',
+    'net-mvrv',
+    'relative',
+  ]);
+});
 it('covers every current core metric, analysis and detector with valid related content', () => {
   expect(new Set(GUIDE_ARTICLES.map((g) => g.id)).size).toBe(GUIDE_ARTICLES.length);
   for (const m of NETWORK_METRICS) expect(guideForMetric('net:' + m.id)).toBeDefined();
@@ -120,4 +130,47 @@ it('keeps the explicit comparison through the guide without private context', ()
   expect(back.searchParams.get('normalization')).toBe('ratio');
   expect(back.searchParams.get('correlation')).toBe('365');
   expect(back.searchParams.has('memo')).toBe(false);
+});
+
+it('preserves pinned dates, price axes and rainbow model context through the dictionary', () => {
+  const original = guideArticle('btc-rainbow-original')!;
+  const params = new URLSearchParams(
+    'asset=BTC&price_source=reference&period=5y&log=0&reading_date=1700000000&chart_from=1600000000&chart_to=1750000000&rainbow_model=original-1&rainbow_revision=verified-1&rainbow_origin=coinmetrics-BTC&rainbow_unit=USD',
+  );
+  const dictionary = new URL(guideHref(original.id, params), 'https://example.com');
+  const restored = new URL(
+    guideChartLink(original, 'BTC', 'reference', dictionary.searchParams)!,
+    'https://example.com',
+  );
+  for (const key of [
+    'reading_date',
+    'chart_from',
+    'chart_to',
+    'rainbow_model',
+    'rainbow_revision',
+    'rainbow_origin',
+    'rainbow_unit',
+    'period',
+    'log',
+  ])
+    expect(restored.searchParams.get(key), key).toBe(params.get(key));
+  for (const value of ['0', '-1700000000', '1700000000.5', '1700000000000', 'not-a-date'])
+    expect(
+      new URL(
+        guideHref(original.id, new URLSearchParams({ reading_date: value })),
+        'https://example.com',
+      ).searchParams.has('reading_date'),
+    ).toBe(false);
+  const supertrend = guideArticle('supertrend')!;
+  expect(
+    new URL(guideChartLink(supertrend, 'DOGE', 'upbit')!, 'https://example.com').searchParams.get(
+      'log',
+    ),
+  ).toBe('1');
+  expect(
+    new URL(
+      guideChartLink(supertrend, 'DOGE', 'upbit', new URLSearchParams('log=0'))!,
+      'https://example.com',
+    ).searchParams.get('log'),
+  ).toBe('0');
 });

@@ -21,7 +21,7 @@ COPY --from=build /app/server ./server
 COPY --from=build /app/migrations ./migrations
 COPY --from=build /app/scripts/local-db.mjs ./scripts/local-db.mjs
 COPY --from=build /app/scripts/recover_derivative_gaps.mjs ./scripts/recover_derivative_gaps.mjs
-COPY --from=build /app/scripts/backup_check.py /app/scripts/import_d1_export.py /app/scripts/vps_backup.py ./scripts/
+COPY --from=build /app/scripts/backup_check.py /app/scripts/import_d1_export.py /app/scripts/vps_backup.py /app/scripts/rainbow_reference_backup.py ./scripts/
 USER 10001:10001
 ENV HOST=0.0.0.0 PORT=8080 NODE_ENV=production
 EXPOSE 8080

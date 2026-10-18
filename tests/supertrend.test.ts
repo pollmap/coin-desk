@@ -14,6 +14,7 @@ import { normalizeDesk, workspaceUrl } from '../shared/workspace';
 import { rankSearch } from '../shared/search';
 import { bucket, bucketEnd } from '../shared/math';
 import type { Candle, Interval } from '../shared/types';
+import { axisPreference } from '../shared/price-axis';
 
 const bars = fixture.bars as Candle[];
 const now = bars.at(-1)!.closeTime + 1;
@@ -112,7 +113,8 @@ describe('Supertrend selection, explanation and saved settings', () => {
       expect(supportsMarket(a.id, p.get('price_source') as 'binance' | 'upbit')).toBe(true);
       expect(p.get('interval')).toBe('1w');
       expect(p.get('period')).toBe('all');
-      expect(p.get('log')).toBe('0');
+      expect(p.has('log')).toBe(false);
+      expect(axisPreference(d.id, p.get('log'))).toBe('log');
     }
   });
   it('supports Korean and English search without switching the selected coin', () => {

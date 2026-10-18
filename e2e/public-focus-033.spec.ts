@@ -51,8 +51,13 @@ for (const width of [390, 1280]) {
     await expect(
       explanation.locator('.indicator-selected-context,.indicator-provenance'),
     ).toHaveCount(0);
-    await explanation.getByText('계산식·기호', { exact: true }).click();
-    await expect(explanation).toContainText(/MVRV|실현/);
+    await expect(explanation.locator('.guide-example')).toContainText('1.5배');
+    await expect(explanation.locator('.guide-method .guide-formula')).not.toBeVisible();
+    await explanation.getByText('계산식·용어 자세히 보기', { exact: true }).click();
+    await expect(explanation.locator('.guide-method .guide-formula')).toBeVisible();
+    await expect(explanation.locator('.guide-method')).toContainText(
+      'MVRV = 시가총액 / 실현시가총액',
+    );
     await page.keyboard.press('Escape');
     await expect(explanation).not.toBeVisible();
     await expect(

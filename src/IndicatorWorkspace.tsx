@@ -25,6 +25,8 @@ import {
 import { aggregateCloses, powerLaw, rollingVwap, vwapReclaims } from '../shared/advanced-analysis';
 import { historyBands, bandPosition } from '../shared/history-bands';
 import { btcRainbow } from '../shared/btc-rainbow';
+import { originalRainbowLines } from './original-rainbow-plot';
+import { useOriginalRainbowReference } from './use-original-rainbow';
 import {
   assetRainbowDiagnostics,
   assetRainbowContext,
@@ -38,11 +40,10 @@ import {
   signalMatchesAnalysis,
 } from '../shared/indicator-transitions';
 import type { ObservationSignal } from '../shared/signals';
-import { IndicatorConcept } from './IndicatorConcept';
+import { axisPreference, effectiveAxis, supportsLogAxis } from '../shared/price-axis';
 import { workspaceIndicators } from '../shared/workspace-indicators';
 import { readDateWindow, type DateWindow } from '../shared/date-navigation';
 import { closeHistory } from '../shared/price-history';
-import { guideArticle, guideForMetric, guideHref } from '../shared/learning-catalog';
 import { annotationKey, type Annotation, type DrawingKind } from '../shared/annotations';
 import { detectPatterns, validPatterns, trendFilter } from '../shared/candle-patterns';
 import type { Asset, CandleResponse, Interval, Point, SeriesResponse } from '../shared/types';
@@ -71,7 +72,7 @@ import './analysis-workspace.css';
 import './analysis-library.css';
 import './indicator-workspace.css';
 const AnalysisLab = lazy(() => import('./AnalysisLab').then((m) => ({ default: m.AnalysisLab })));
-const IndicatorMethod = lazy(() => import('./IndicatorMethod'));
+const IndicatorReading = lazy(() => import('./IndicatorReading'));
 const RelatedLibrary = lazy(() =>
   import('./ResearchLibrary').then((m) => ({ default: m.RelatedLibrary })),
 );
@@ -136,7 +137,8 @@ export function IndicatorWorkspace() {
   const invalidBasis =
     ((rawBasis === 'upbit' || rawBasis === 'binance') && !supportsMarket(asset, rawBasis)) ||
     (rawBasis === 'reference' && !supportsReference(asset)) ||
-    (['view:btc_rainbow', 'view:powerlaw'].includes(id) && basis !== 'reference') ||
+    (['view:btc_rainbow', 'view:btc_rainbow_original', 'view:powerlaw'].includes(id) &&
+      basis !== 'reference') ||
     (['volume', 'view:vwap', 'view:supertrend'].includes(id) && basis === 'reference');
   const supported = active.supported && !invalidBasis;
   const period = active.period,
@@ -155,6 +157,23 @@ export function IndicatorWorkspace() {
     local = ['rsi', 'drawdown', 'relative', 'volume'].includes(id);
   const isSupertrend = id === 'view:supertrend';
   const isAssetRainbow = id === 'view:asset_rainbow';
+  const isOriginal = id === 'view:btc_rainbow_original';
+  const original = useOriginalRainbowReference(
+    supported && isOriginal,
+    params.get('rainbow_model') ?? undefined,
+  );
+  useEffect(() => {
+    if (!isOriginal || !original.data || params.has('rainbow_model')) return;
+    setParams(
+      (previous) => {
+        const next = new URLSearchParams(previous);
+        if (next.get('metric') === 'view:btc_rainbow_original')
+          next.set('rainbow_model', original.data!.modelVersion);
+        return next;
+      },
+      { replace: true },
+    );
+  }, [isOriginal, original.data, params, setParams]);
   const isHash = ['view:hash_ribbons', 'view:hashrate_trend'].includes(id);
   const fixedModel = useMemo(() => assetRainbowContext(asset, basis, []), [asset, basis]);
   const invalidModel =
@@ -164,8 +183,9 @@ export function IndicatorWorkspace() {
       (params.has('rainbow_model') && params.get('rainbow_model') !== ASSET_RAINBOW_VERSION) ||
       (params.has('rainbow_source') && params.get('rainbow_source') !== basis) ||
       (params.has('rainbow_unit') && params.get('rainbow_unit') !== unit));
-  const log =
-    isSupertrend || id === 'view:price' ? params.get('log') === '1' : params.get('log') !== '0';
+  const axisKey = `axis:${asset}:${basis}:${id}`;
+  const requestedAxis = axisPreference(id, params.get('log'), saved(axisKey, undefined));
+  const log = requestedAxis === 'log';
   const livePriceEnabled = supportsLiveChartPrice(id, basis);
   const quoteMarket = availableMarket(
     asset,
@@ -300,6 +320,12 @@ export function IndicatorWorkspace() {
         p.delete('reading_date');
       }
       for (const [k, v] of Object.entries(patch)) v === null ? p.delete(k) : p.set(k, v);
+      if (
+        'price_source' in patch &&
+        validPriceBasis(asset, patch.price_source) !== basis &&
+        !('log' in patch)
+      )
+        p.delete('log');
       if ('price_source' in patch)
         for (const k of [
           'rainbow_origin',
@@ -499,14 +525,14 @@ export function IndicatorWorkspace() {
   );
   const bandRows = useMemo(
     () =>
-      bands
+      bands && !isOriginal
         ? id === 'view:btc_rainbow'
           ? btcRainbow(dailyPoints)
           : isAssetRainbow
             ? (rainbowFit?.rows ?? [])
             : historyBands(dailyPoints)
         : [],
-    [bands, id, dailyPoints, isAssetRainbow, rainbowFit],
+    [bands, id, dailyPoints, isAssetRainbow, isOriginal, rainbowFit],
   );
   const primaryData = useMemo(
     () =>
@@ -655,84 +681,88 @@ export function IndicatorWorkspace() {
                 ]
               : []),
           ]
-        : bands
-          ? (bandRows[0]?.bands.map((_, i) => ({
-              id: 'band:' + i,
-              title: '경계 ' + (i + 1),
-              unit,
-              source: d?.source ?? '',
-              data: bandRows.map((p) => ({ time: p.time, value: p.bands[i] })),
-              color: 'rgba(125,145,180,0.35)',
-              overlay: true,
-              step: 86400,
-            })) ?? [])
-          : [
-              ...(isSupertrend
-                ? [
-                    {
-                      id: 'supertrend',
-                      title: `슈퍼트렌드 ${stSettings.period}·${stSettings.multiplier}`,
-                      unit,
-                      source: basisName(basis),
-                      color: '#0f666b',
-                      overlay: true,
-                      data: stRows.map((p) => ({ time: p.time, value: p.value })),
-                      supertrend: { rows: stRows, interval },
-                      step:
-                        interval === '1w'
-                          ? 604800
-                          : interval === '1h'
-                            ? 3600
-                            : interval === '4h'
-                              ? 14400
-                              : interval === '1M'
-                                ? 32 * 86400
-                                : 86400,
-                    },
-                  ]
-                : []),
-              ...workspaceIndicators(
-                price,
-                dailyPoints,
-                indicators,
+        : isOriginal
+          ? original.data
+            ? originalRainbowLines(dailyPoints, original.data)
+            : []
+          : bands
+            ? (bandRows[0]?.bands.map((_, i) => ({
+                id: 'band:' + i,
+                title: '경계 ' + (i + 1),
                 unit,
-                interval === '1h'
-                  ? 3600
-                  : interval === '4h'
-                    ? 14400
-                    : interval === '1w'
-                      ? 604800
-                      : interval === '1M'
-                        ? 2764800
-                        : 86400,
-                view === 'ribbon',
-              ),
-              ...(view === 'vwap'
-                ? [
-                    {
-                      id: 'vwap365',
-                      title: '365일 HLC3 VWAP',
-                      unit,
-                      source: basisName(basis),
-                      data: vwap,
-                      color: '#dda857',
-                      overlay: true,
-                    },
-                  ]
-                : view === 'powerlaw'
+                source: d?.source ?? '',
+                data: bandRows.map((p) => ({ time: p.time, value: p.bands[i] })),
+                color: 'rgba(125,145,180,0.35)',
+                overlay: true,
+                step: 86400,
+              })) ?? [])
+            : [
+                ...(isSupertrend
                   ? [
                       {
-                        id: 'powerlaw',
-                        title: '고정식 파워로 · 참고',
+                        id: 'supertrend',
+                        title: `슈퍼트렌드 ${stSettings.period}·${stSettings.multiplier}`,
                         unit,
-                        source: 'Dacoinminster 고정식',
-                        data: powerLaw(dailyPoints),
+                        source: basisName(basis),
+                        color: '#0f666b',
+                        overlay: true,
+                        data: stRows.map((p) => ({ time: p.time, value: p.value })),
+                        supertrend: { rows: stRows, interval },
+                        step:
+                          interval === '1w'
+                            ? 604800
+                            : interval === '1h'
+                              ? 3600
+                              : interval === '4h'
+                                ? 14400
+                                : interval === '1M'
+                                  ? 32 * 86400
+                                  : 86400,
+                      },
+                    ]
+                  : []),
+                ...workspaceIndicators(
+                  price,
+                  dailyPoints,
+                  indicators,
+                  unit,
+                  interval === '1h'
+                    ? 3600
+                    : interval === '4h'
+                      ? 14400
+                      : interval === '1w'
+                        ? 604800
+                        : interval === '1M'
+                          ? 2764800
+                          : 86400,
+                  view === 'ribbon',
+                ),
+                ...(view === 'vwap'
+                  ? [
+                      {
+                        id: 'vwap365',
+                        title: '365일 HLC3 VWAP',
+                        unit,
+                        source: basisName(basis),
+                        data: vwap,
                         color: '#dda857',
                         overlay: true,
                       },
                     ]
-                  : []),
-            ],
+                  : view === 'powerlaw'
+                    ? [
+                        {
+                          id: 'powerlaw',
+                          title: '고정식 파워로 · 참고',
+                          unit,
+                          source: 'Dacoinminster 고정식',
+                          data: powerLaw(dailyPoints),
+                          color: '#dda857',
+                          overlay: true,
+                        },
+                      ]
+                    : []),
+              ],
     [
       d,
       compare,
@@ -742,6 +772,8 @@ export function IndicatorWorkspace() {
       unit,
       basis,
       bands,
+      isOriginal,
+      original.data,
       bandRows,
       indicatorKey,
       interval,
@@ -837,7 +869,6 @@ export function IndicatorWorkspace() {
     primaryData,
     signalFeed.data,
   ]);
-  const article = guideForMetric(id) ?? guideArticle(d?.guide ?? '');
   const context = new URLSearchParams(params);
   context.set('asset', asset);
   context.set('price_source', basis);
@@ -845,11 +876,18 @@ export function IndicatorWorkspace() {
   context.set('metric', id);
   context.set('interval', interval);
   context.set('log', log ? '1' : '0');
-  const error = remote.error || raw.error || benchmark.error || extraDaily.error;
+  if (visible.current) {
+    context.set('chart_from', String(visible.current.from));
+    context.set('chart_to', String(visible.current.to));
+  }
+  if (pinnedDate.current !== null) context.set('reading_date', String(pinnedDate.current));
+  const error = remote.error || raw.error || benchmark.error || extraDaily.error || original.error;
   const response = d?.renderer === 'series' && !local ? remote : raw;
   const waitingForCollection = response.errorCode === 'NO_DATA';
   const loading =
-    !!supported && !error && (response.loading || (id === 'relative' && benchmark.loading));
+    !!supported &&
+    !error &&
+    (response.loading || original.loading || (id === 'relative' && benchmark.loading));
   const chartPoints = d?.renderer === 'series' ? primaryData : bands ? dailyPoints : price;
   const isStale = !!(
     response.data?.meta.stale || response.data?.meta.sourceStatus === 'backfilling'
@@ -863,7 +901,7 @@ export function IndicatorWorkspace() {
           ? 'pending'
           : error && !chartPoints.length
             ? 'error'
-            : (bands && !bandRows.length && dailyPoints.length) ||
+            : (bands && !isOriginal && !bandRows.length && dailyPoints.length) ||
                 (isSupertrend && !stRows.length && price.length) ||
                 (isHash && !hashRows.length && remote.data?.data.length)
               ? 'insufficient-history'
@@ -886,6 +924,20 @@ export function IndicatorWorkspace() {
         : undefined,
     [primary, bands, basis, id, chartStyle, raw.data],
   );
+  const canLog =
+    effectiveAxis('log', [
+      ...chartPoints.map((point) => point.value),
+      ...(chartCandles ?? []).flatMap((candle) => [
+        candle.open,
+        candle.high,
+        candle.low,
+        candle.close,
+      ]),
+      ...chartLines
+        .filter((line) => line.overlay)
+        .flatMap((line) => line.data.map((point) => point.value)),
+      ...bandRows.flatMap((row) => row.bands),
+    ]) === 'log';
   return (
     <div className="indicator-workspace" data-indicator={id} data-availability={availability}>
       <AssetHeader
@@ -1117,9 +1169,22 @@ export function IndicatorWorkspace() {
                   </select>
                 </label>
               )}
-              {!primary && (
-                <button aria-pressed={log} onClick={() => change({ log: log ? '0' : '1' })}>
-                  로그 축
+              {supportsLogAxis(id) && (
+                <button
+                  aria-label="로그 축"
+                  aria-pressed={log && canLog}
+                  disabled={!canLog}
+                  title={
+                    !canLog && chartPoints.length
+                      ? '0 이하 값이 있어 일반 축으로 표시합니다.'
+                      : '로그축에서는 같은 상승률이 같은 높이로 보입니다. 100→200과 200→400은 같은 높이입니다.'
+                  }
+                  onClick={() => {
+                    save(axisKey, log ? 'linear' : 'log');
+                    change({ log: log ? '0' : '1' });
+                  }}
+                >
+                  {log && canLog ? '로그' : '일반'}
                 </button>
               )}
               {view === 'ribbon' && (
@@ -1221,9 +1286,9 @@ export function IndicatorWorkspace() {
                     points={chartPoints}
                     primary={primary}
                     lines={chartLines}
-                    bands={bands ? bandRows : undefined}
+                    bands={bands && !isOriginal ? bandRows : undefined}
                     period={period}
-                    log={d?.renderer === 'series' ? false : log}
+                    log={log}
                     step={
                       primary?.step ??
                       (bands
@@ -1329,7 +1394,7 @@ export function IndicatorWorkspace() {
                       <strong>{bandPosition(lastBand.z)}</strong>
                     </div>
                   )}
-                  {bands && !lastBand && !loading && (
+                  {bands && !isOriginal && !lastBand && !loading && (
                     <p className="band-context" role="status">
                       아직 밴드를 표시할 수 없습니다.
                     </p>
@@ -1359,6 +1424,7 @@ export function IndicatorWorkspace() {
                         remote.reload();
                         raw.reload();
                         benchmark.reload();
+                        if (isOriginal) original.reload();
                       }}
                     >
                       다시 시도
@@ -1371,7 +1437,12 @@ export function IndicatorWorkspace() {
               )}
             </>
           )}
-          {availability === 'delayed' && (
+          {isOriginal && original.error && (
+            <p className="indicator-notice" role="status">
+              <span>{original.error}</span> <button onClick={original.reload}>다시 시도</button>
+            </p>
+          )}
+          {availability === 'delayed' && !original.error && (
             <p className="indicator-notice" role="status">
               값을 확인하는 데 시간이 걸리고 있습니다.
             </p>
@@ -1397,46 +1468,9 @@ export function IndicatorWorkspace() {
             sheet
             reading
           >
-            <div className="indicator-explanation">
-              <p>{d?.shortMeaning ?? article?.summary ?? d?.title}</p>
-              <IndicatorConcept metric={id} />
-              <h2>기준선을 읽는 법</h2>
-              <p>
-                {d?.baselineMeaning ??
-                  article?.read ??
-                  (id === 'view:btc_rainbow'
-                    ? '아래·중앙·위 구간은 과거 회귀 대비 위치입니다. 매수·매도 구간을 뜻하지 않습니다.'
-                    : '확정된 관측의 추세와 단위를 함께 확인하세요.')}
-              </p>
-              <h2>숫자 예시</h2>
-              <Suspense fallback={<p role="status">계산 예시를 불러오는 중…</p>}>
-                {explanationOpen && article ? (
-                  <IndicatorMethod article={article} part="example" />
-                ) : (
-                  <p>{d?.formula}</p>
-                )}
-                <details>
-                  <summary>계산식·기호</summary>
-                  {explanationOpen && article ? (
-                    <IndicatorMethod article={article} part="method" />
-                  ) : (
-                    <p>{d?.formula}</p>
-                  )}
-                </details>
-                <details>
-                  <summary>주의할 점</summary>
-                  <p>
-                    {article?.caution ??
-                      '결측은 보간하지 않고 미래 데이터를 사용하지 않습니다. 관측 이력이 짧으면 계산 결과가 없습니다.'}
-                  </p>
-                  {article && (
-                    <Link aria-label="현재 분석 설명" to={guideHref(article.id, context)}>
-                      상세 설명 읽기
-                    </Link>
-                  )}
-                </details>
-              </Suspense>
-            </div>
+            <Suspense fallback={<p role="status">설명을 불러오는 중…</p>}>
+              {explanationOpen && <IndicatorReading metric={id} asset={asset} params={context} />}
+            </Suspense>
           </DeskDialog>
           <DeskDialog
             open={saving}
@@ -1496,6 +1530,9 @@ export function IndicatorWorkspace() {
                 ...c,
                 analysisOptions: {
                   ...c.analysisOptions,
+                  ...(isOriginal && (original.data || params.get('rainbow_model'))
+                    ? { rainbow_model: original.data?.modelVersion ?? params.get('rainbow_model')! }
+                    : {}),
                   ...(rainbowModel && rainbowModel.origin !== null
                     ? {
                         rainbow_origin: String(rainbowModel.origin),

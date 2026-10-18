@@ -9,11 +9,14 @@ import { indicatorDefinition, supportsReference } from '../shared/indicator-cata
 import { supportsMarket } from '../shared/asset-registry';
 import { basisName, basisUnit } from '../shared/analysis-workspace';
 import { indicatorComparisonUrl } from '../shared/indicator-comparison';
+import { axisPreference, supportsLogAxis, type AxisPreference } from '../shared/price-axis';
 import { AnalysisChart } from './AnalysisChart';
 import { useData } from './hooks';
+import { useOriginalRainbowReference } from './use-original-rainbow';
 import { money, numeric, priceDigits } from './lib';
 import {
   dashboardPlot,
+  dashboardAxis,
   dashboardPriceUrl,
   dashboardPrices,
   dashboardSeriesUrl,
@@ -35,7 +38,6 @@ export interface DashboardPriceInput {
 
 export function dashboardCardTitle(asset: Asset, metric: string): string {
   if (metric === 'view:relative') return `${asset === 'BTC' ? 'ETH' : 'BTC'} 대비 상대강도`;
-  if (metric === 'view:asset_rainbow') return '레인보우';
   return indicatorDefinition(metric)?.title ?? metric;
 }
 export function dashboardValue(value: number | undefined, unit: string): string {
@@ -60,6 +62,10 @@ export function DashboardChartCard({
   onHelp,
   eager = false,
   height = 440,
+  axis,
+  onAxis,
+  modelVersion,
+  onModel,
 }: {
   asset: Asset;
   metric: string;
@@ -75,6 +81,10 @@ export function DashboardChartCard({
   onHelp: (metric: string, trigger: HTMLButtonElement) => void;
   eager?: boolean;
   height?: number;
+  axis?: AxisPreference;
+  onAxis: (metric: string, axis: AxisPreference) => void;
+  modelVersion?: string;
+  onModel: (metric: string, version: string) => void;
 }) {
   const host = useRef<HTMLElement>(null);
   const [viewport, setViewport] = useState(initialWindow);
@@ -100,14 +110,20 @@ export function DashboardChartCard({
   const isSupertrend = metric === 'view:supertrend';
   const isRelative = metric === 'view:relative';
   const isHashRibbons = metric === 'view:hash_ribbons';
-  const sharedHashPrice = isHashRibbons && basis === 'reference';
+  const isOriginal = metric === 'view:btc_rainbow_original';
+  const requiresUsd = isHashRibbons || isOriginal || metric === 'view:btc_rainbow';
+  const sharedHashPrice = requiresUsd && basis === 'reference';
+  const original = useOriginalRainbowReference(active && isOriginal, modelVersion);
+  useEffect(() => {
+    if (isOriginal && original.data && !modelVersion) onModel(metric, original.data.modelVersion);
+  }, [isOriginal, original.data, modelVersion, metric, onModel]);
   const other = asset === 'BTC' ? 'ETH' : 'BTC';
   const comparable =
     basis === 'reference' ? supportsReference(other) : supportsMarket(other, basis);
   const seriesUrl = dashboardSeriesUrl(asset, metric);
   const series = useData<SeriesResponse>(active ? seriesUrl : null, true);
   const hashPrice = useData<SeriesResponse>(
-    active && isHashRibbons && !sharedHashPrice ? dashboardPriceUrl('BTC', 'reference') : null,
+    active && requiresUsd && !sharedHashPrice ? dashboardPriceUrl('BTC', 'reference') : null,
     true,
     3600000,
   );
@@ -137,8 +153,9 @@ export function DashboardChartCard({
         ? dashboardPlot({
             asset,
             metric,
-            basis: isSupertrend ? ohlcSource : basis,
-            prices: isHashRibbons ? hashPricePoints : priceInput.points,
+            basis: isSupertrend ? ohlcSource : requiresUsd ? 'reference' : basis,
+            prices: requiresUsd ? hashPricePoints : priceInput.points,
+            originalReference: original.data ?? null,
             series: series.data,
             candles: weekly.data,
             benchmark,
@@ -159,8 +176,9 @@ export function DashboardChartCard({
       isSupertrend,
       ohlcSource,
       priceInput.points,
-      isHashRibbons,
+      requiresUsd,
       hashPricePoints,
+      original.data,
       series.data,
       weekly.data,
       benchmark,
@@ -179,29 +197,36 @@ export function DashboardChartCard({
     (isSupertrend ? weekly.error : undefined) ||
     (needsPrices ? priceInput.error : undefined) ||
     (isRelative ? comparison.error : undefined) ||
-    (isHashRibbons ? (sharedHashPrice ? priceInput.error : hashPrice.error) : undefined);
+    (requiresUsd ? (sharedHashPrice ? priceInput.error : hashPrice.error) : undefined) ||
+    original.error;
   const loading =
     (seriesUrl ? series.loading : false) ||
     (isSupertrend ? weekly.loading : false) ||
     (needsPrices ? priceInput.loading : false) ||
     (isRelative && comparable ? comparison.loading : false) ||
-    (isHashRibbons ? (sharedHashPrice ? priceInput.loading : hashPrice.loading) : false);
+    (requiresUsd ? (sharedHashPrice ? priceInput.loading : hashPrice.loading) : false) ||
+    original.loading;
   const stale =
     error ||
     (seriesUrl ? series.data?.meta.stale : undefined) ||
     (isSupertrend ? weekly.data?.meta.stale : undefined) ||
     (needsPrices && priceInput.stale) ||
     (isRelative && comparison.data?.meta.stale) ||
-    (isHashRibbons && (sharedHashPrice ? priceInput.stale : hashPrice.data?.meta.stale));
+    (requiresUsd && (sharedHashPrice ? priceInput.stale : hashPrice.data?.meta.stale));
+  const requestedAxis = axisPreference(metric, axis);
+  const actualAxis = dashboardAxis(plot, requestedAxis);
+  const canLog = dashboardAxis(plot, 'log') === 'log';
   const params = new URLSearchParams({
     asset,
     metric,
-    price_source: isSupertrend ? ohlcSource : basis,
+    price_source: isSupertrend ? ohlcSource : requiresUsd ? 'reference' : basis,
     market: ohlcSource,
     period,
     interval: isSupertrend ? '1w' : '1d',
-    log: plot.log ? '1' : '0',
+    log: requestedAxis === 'log' ? '1' : '0',
   });
+  if (isOriginal && (modelVersion || original.data))
+    params.set('rainbow_model', modelVersion ?? original.data!.modelVersion);
   if (viewport) {
     params.set('chart_from', String(viewport.from));
     params.set('chart_to', String(viewport.to));
@@ -216,10 +241,11 @@ export function DashboardChartCard({
     if (isSupertrend) weekly.reload();
     if (needsPrices) priceInput.reload();
     if (isRelative) comparison.reload();
-    if (isHashRibbons) {
+    if (requiresUsd) {
       if (sharedHashPrice) priceInput.reload();
       else hashPrice.reload();
     }
+    if (isOriginal) original.reload();
   };
   return (
     <section className="coin-dashboard-card" ref={host} aria-label={title} data-metric={metric}>
@@ -243,6 +269,22 @@ export function DashboardChartCard({
           ) : null}
         </div>
         <div className="coin-dashboard-card-actions">
+          {supportsLogAxis(metric) && (
+            <button
+              className="coin-dashboard-expand"
+              aria-label={title + ' 축'}
+              aria-pressed={actualAxis === 'log'}
+              disabled={!canLog}
+              title={
+                !canLog && plot.points.length
+                  ? '0 이하 값이 있어 일반 축으로 표시합니다.'
+                  : '로그축에서는 같은 상승률이 같은 높이로 보입니다. 100→200과 200→400은 같은 높이입니다.'
+              }
+              onClick={() => onAxis(metric, actualAxis === 'log' ? 'linear' : 'log')}
+            >
+              {actualAxis === 'log' ? '로그' : '일반'}
+            </button>
+          )}
           {indicatorDefinition(metric)?.comparison && (
             <Link
               className="coin-dashboard-compare"
@@ -297,7 +339,7 @@ export function DashboardChartCard({
             bands={plot.bands}
             observations={plot.observations}
             period={period}
-            log={plot.log}
+            log={requestedAxis === 'log'}
             step={plot.step}
             signals={NO_SIGNALS}
             onSignal={NOOP}
@@ -316,6 +358,11 @@ export function DashboardChartCard({
             allowPageScroll
           />
           {plot.state ? <p className="coin-dashboard-chart-note">{plot.state}</p> : null}
+          {isOriginal && original.error ? (
+            <p role="status" className="coin-dashboard-chart-note">
+              {original.error} <button onClick={original.reload}>다시 시도</button>
+            </p>
+          ) : null}
         </>
       ) : (
         <div className="coin-dashboard-empty" role="status">

@@ -33,6 +33,7 @@ await build({
           ['backfill-budget', 'worker/backfill-budget.ts'],
           ['history-operator', 'worker/history-operator.ts'],
           ['research', 'worker/onchain/entry.ts'],
+          ['rainbow-original-reference', 'worker/rainbow-original-reference.ts'],
         ].map(([name, file]) => [name, resolve(file)]),
       ),
       output: { entryFileNames: '[name].mjs', chunkFileNames: 'chunks/[name]-[hash].mjs' },

@@ -37,16 +37,20 @@ test('latest summary stays stable while exploring and worked help preserves the 
   await expect(page.locator('.analysis-reading-value')).toHaveText(latest);
   expect(new URL(page.url()).searchParams.has('reading_date')).toBe(false);
   await noOperationalUi(page);
-  await expect(page.locator('.indicator-method')).toHaveCount(0);
+  await expect(page.locator('.indicator-reading')).toHaveCount(0);
   await page.getByRole('button', { name: /^지표 설명/ }).click();
   const explanation = page.getByRole('dialog', { name: '지표 설명', exact: true });
-  await expect(explanation.locator('.indicator-method').first()).toContainText(
-    '150 / 실현시가총액 100 = 1.5배',
+  await expect(explanation.locator('.reading-meaning')).toBeVisible();
+  await expect(explanation.locator('.guide-example')).toContainText(
+    '시가총액 150억 달러 / 실현시가총액 100억 달러 = 1.5배',
   );
-  await explanation.getByText('계산식·기호', { exact: true }).click();
-  await expect(
-    explanation.locator('details').filter({ has: page.getByText('계산식·기호', { exact: true }) }),
-  ).toContainText('실현시가총액');
+  await expect(explanation.locator('.guide-example li').first()).toBeVisible();
+  const method = explanation.locator('.guide-method details');
+  await expect(method).not.toHaveAttribute('open', '');
+  await expect(method.locator('.guide-formula')).not.toBeVisible();
+  await method.getByText('계산식·용어 자세히 보기', { exact: true }).click();
+  await expect(method).toHaveAttribute('open', '');
+  await expect(method.locator('.guide-formula')).toContainText('MVRV = 시가총액 / 실현시가총액');
   await expect(
     explanation.locator('dd').filter({ hasText: '실제 매수한 금액의 합계는 아닙니다' }),
   ).toBeVisible();
@@ -60,6 +64,8 @@ test('latest summary stays stable while exploring and worked help preserves the 
   await page.screenshot({ path: test.info().outputPath('mvrv-method.png'), fullPage: true });
   await page.getByRole('link', { name: '현재 분석 설명', exact: true }).click();
   await expect(page.getByRole('heading', { name: 'MVRV', exact: true })).toBeVisible();
+  await expect(page.locator('.guide-method li').first()).not.toBeVisible();
+  await page.locator('.guide-method summary').click();
   await expect(page.locator('.guide-terms dt').filter({ hasText: /^실현시가총액$/ })).toBeVisible();
   expect(new URL(page.url()).searchParams.get('price_source')).toBe('upbit');
 });

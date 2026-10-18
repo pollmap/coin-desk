@@ -218,9 +218,11 @@ test('dictionary rows are concise and illustrations are distinct from real data'
       await page
         .locator('.guide-toc a')
         .evaluateAll((links) => links.map((link) => link.getAttribute('href'))),
-    ).toEqual(['#meaning', '#method', '#example', '#limits']);
+    ).toEqual(['#meaning', '#example', '#method', '#limits']);
     expect(new URL(page.url()).searchParams.get('asset')).toBe('DOGE');
     expect(new URL(page.url()).searchParams.get('price_source')).toBe('upbit');
+    await expect(page.locator('.guide-method li').first()).not.toBeVisible();
+    await page.locator('.guide-method summary').click();
     await expect(page.locator('.guide-method li').first()).toBeVisible();
     await expect(page.locator('.guide-example li').first()).toBeVisible();
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(

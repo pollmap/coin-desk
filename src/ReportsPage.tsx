@@ -327,9 +327,12 @@ function ReportContents({ report }: { report: PublishedReport }) {
     document.title = report.title + ' | 보리차트';
   }, [report.title]);
   useEffect(() => {
-    const frame = requestAnimationFrame(() =>
-      document.getElementById('report-title')?.focus({ preventScroll: true }),
-    );
+    const frame = requestAnimationFrame(() => {
+      // Focus and the entry position must settle together when returning from a chart.
+      // The shell's later frame must not briefly leave the focused heading off screen.
+      window.scrollTo({ top: 0, behavior: 'instant' });
+      document.getElementById('report-title')?.focus({ preventScroll: true });
+    });
     return () => cancelAnimationFrame(frame);
   }, [report.reportId]);
   const params = new URLSearchParams({ scope: report.scopeId, type: report.reportType });

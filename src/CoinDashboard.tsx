@@ -1,4 +1,13 @@
-import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import {
+  lazy,
+  Suspense,
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 import { Link, useLocation, useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { Bookmark, ChevronDown, Search, SlidersHorizontal, Star } from 'lucide-react';
 import {
@@ -25,17 +34,18 @@ import { type PriceBasis } from '../shared/analysis-workspace';
 import type { DateWindow } from '../shared/date-navigation';
 import type { Asset, CandleResponse, Market, Period, SeriesResponse } from '../shared/types';
 import type { Workspace } from '../shared/workspace';
+import { axisPreference, type AxisPreference } from '../shared/price-axis';
 import { useData } from './hooks';
 import { AssetLogo } from './AssetLogo';
 import { DeskDialog } from './DeskDialog';
 import { PeriodPicker } from './PeriodPicker';
 import { WorkspaceBar } from './PersonalDesk';
-import { IndicatorConcept } from './IndicatorConcept';
 import { DashboardChartCard, dashboardCardTitle } from './DashboardChartCard';
 import { SpotQuote } from './SpotQuote';
 import { useFavorites } from './useFavorites';
 import { dashboardPriceUrl, dashboardPrices } from './dashboard-data';
 import './coin-dashboard.css';
+const IndicatorReading = lazy(() => import('./IndicatorReading'));
 
 type Panel = 'coins' | 'save' | 'charts' | null;
 const SESSION_PREFIX = 'coin-desk.dashboard.v1:';
@@ -66,6 +76,8 @@ export function CoinDashboard() {
     params.get('dashboard_ranges'),
     params.get('dashboard_scroll'),
     params.get('dashboard_ohlc'),
+    params.get('dashboard_axes'),
+    params.get('dashboard_models'),
   ].join('|');
   return <DashboardBody key={`${asset}:${basis}:${restore}`} asset={asset} basis={basis} />;
 }
@@ -84,6 +96,8 @@ function DashboardBody({ asset, basis }: { asset: Asset; basis: PriceBasis }) {
       'dashboard_ranges',
       'dashboard_scroll',
       'dashboard_ohlc',
+      'dashboard_axes',
+      'dashboard_models',
     ].some((key) => params.has(key));
     const stored = readSession(sessionKey) as {
       period?: unknown;
@@ -105,6 +119,13 @@ function DashboardBody({ asset, basis }: { asset: Asset; basis: PriceBasis }) {
     return settings;
   });
   const [charts, setCharts] = useState(initial.charts);
+  const [axes, setAxes] = useState<Record<string, AxisPreference>>(initial.axes ?? {});
+  const [models, setModels] = useState<Record<string, string>>(initial.models ?? {});
+  const rememberModel = useCallback((metric: string, version: string) => {
+    setModels((previous) =>
+      previous[metric] === version ? previous : { ...previous, [metric]: version },
+    );
+  }, []);
   const [rangeRevision, setRangeRevision] = useState(0);
   const [panel, setPanel] = useState<Panel>(null);
   const [help, setHelp] = useState<string | null>(null);
@@ -156,14 +177,20 @@ function DashboardBody({ asset, basis }: { asset: Asset; basis: PriceBasis }) {
     }),
     [points, price.loading, price.error, price.data, price.reload],
   );
-  const state = useRef({ charts, period });
-  state.current = { charts, period };
+  const state = useRef({ charts, period, axes, models });
+  state.current = { charts, period, axes, models };
   const snapshot = useCallback(
     (): DashboardSettings => ({
       charts: state.current.charts,
       ranges: { ...ranges.current },
       scrollY: readingPosition.current,
       ohlcSource,
+      axes: Object.fromEntries(
+        Object.entries(state.current.axes).filter(([id]) => state.current.charts.includes(id)),
+      ),
+      models: Object.fromEntries(
+        Object.entries(state.current.models).filter(([id]) => state.current.charts.includes(id)),
+      ),
     }),
     [ohlcSource],
   );
@@ -185,6 +212,9 @@ function DashboardBody({ asset, basis }: { asset: Asset; basis: PriceBasis }) {
     readingPosition.current = Math.max(0, window.scrollY);
     persist();
   }, [persist]);
+  useEffect(() => {
+    persist();
+  }, [axes, models, persist]);
   useLayoutEffect(() => {
     const recordScroll = () => {
       readingPosition.current = Math.max(0, window.scrollY);
@@ -241,6 +271,15 @@ function DashboardBody({ asset, basis }: { asset: Asset; basis: PriceBasis }) {
           p.set('period', next);
           p.delete('dashboard_ranges');
           p.delete('dashboard_scroll');
+          // Removing a saved viewport remounts the dashboard. Carry the current choices,
+          // not the original saved URL's axes/model versions, into that new entry.
+          for (const [key, value] of [
+            ['dashboard_axes', state.current.axes],
+            ['dashboard_models', state.current.models],
+          ] as const) {
+            if (Object.keys(value).length) p.set(key, JSON.stringify(value));
+            else p.delete(key);
+          }
           return p;
         },
         { replace: true },
@@ -345,13 +384,32 @@ function DashboardBody({ asset, basis }: { asset: Asset; basis: PriceBasis }) {
     interval: '1d',
     period,
     indicators: [],
-    log: false,
+    log: true,
     view: 'dashboard',
     cards: [],
     priceSource: basis,
-    dashboard: { charts, ranges: {}, scrollY: 0, ohlcSource },
+    dashboard: { charts, ranges: {}, scrollY: 0, ohlcSource, axes, models },
   };
   const definition = help ? indicatorDefinition(help) : null;
+  const helpParams = new URLSearchParams({
+    asset,
+    metric: help ?? '',
+    price_source:
+      help === 'view:supertrend'
+        ? ohlcSource
+        : ['view:btc_rainbow', 'view:btc_rainbow_original', 'view:hash_ribbons'].includes(
+              help ?? '',
+            )
+          ? 'reference'
+          : basis,
+    period,
+    log: axisPreference(help ?? '', axes[help ?? '']) === 'log' ? '1' : '0',
+  });
+  if (help && ranges.current[help]) {
+    helpParams.set('chart_from', String(ranges.current[help].from));
+    helpParams.set('chart_to', String(ranges.current[help].to));
+  }
+  if (help && models[help]) helpParams.set('rainbow_model', models[help]);
   return (
     <div className="coin-dashboard" data-asset={asset} ref={dashboardHost}>
       <aside className="coin-dashboard-rail">{picker(false)}</aside>
@@ -436,7 +494,12 @@ function DashboardBody({ asset, basis }: { asset: Asset; basis: PriceBasis }) {
               onAll={() => changePeriod('all')}
               eager={index === 0}
               height={chartHeight}
+              axis={axes[metric]}
+              modelVersion={models[metric]}
+              onModel={rememberModel}
+              onAxis={(metric, axis) => setAxes((previous) => ({ ...previous, [metric]: axis }))}
               onHelp={(id, button) => {
+                rememberView();
                 trigger.current = button;
                 setPanel(null);
                 setHelp(id);
@@ -504,13 +567,9 @@ function DashboardBody({ asset, basis }: { asset: Asset; basis: PriceBasis }) {
         )}
         {definition && (
           <div className="coin-dashboard-help">
-            <p>{definition.shortMeaning}</p>
-            <IndicatorConcept metric={definition.id} />
-            {definition.baselineMeaning && <p>{definition.baselineMeaning}</p>}
-            <details>
-              <summary>계산식</summary>
-              <p>{definition.formula}</p>
-            </details>
+            <Suspense fallback={<p role="status">설명을 불러오는 중…</p>}>
+              <IndicatorReading metric={definition.id} asset={asset} params={helpParams} />
+            </Suspense>
           </div>
         )}
       </DeskDialog>

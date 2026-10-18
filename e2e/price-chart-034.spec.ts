@@ -336,7 +336,7 @@ test('tiny PEPE and SHIB price axes preserve nonzero precision and matched toolt
   }
 });
 
-test('DOGE axis zero stays compact without rounding actual observations through refresh', async ({
+test('DOGE linear axis zero stays compact without rounding actual observations through refresh', async ({
   page,
 }) => {
   await page.setViewportSize({ width: 390, height: 844 });
@@ -348,7 +348,9 @@ test('DOGE axis zero stays compact without rounding actual observations through 
   });
   const state = { bars };
   const requests = await fixture(page, 'DOGE', state);
-  await page.goto('/coins/DOGE?metric=view:supertrend&price_source=binance&interval=1d&period=all');
+  await page.goto(
+    '/coins/DOGE?metric=view:supertrend&price_source=binance&interval=1d&period=all&log=0',
+  );
   await ready(page);
   const axis = async () =>
     page.evaluate(() => {

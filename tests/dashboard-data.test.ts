@@ -180,7 +180,7 @@ describe('dashboard shared inputs', () => {
     expect(dashboardValue(0.00000000819, 'BTC')).not.toMatch(/^0\.0+$/);
     expect(dashboardValue(undefined, 'USD')).toBe('—');
   });
-  it('uses a logarithmic MVRV axis without clipping early values and retains nonpositive observations', () => {
+  it('keeps MVRV on a linear axis by default without clipping early or nonpositive observations', () => {
     const data = [
       { time: first, value: 140 },
       { time: first + DAY, value: 1.5 },
@@ -193,7 +193,7 @@ describe('dashboard shared inputs', () => {
         prices: [],
         series: series(data),
       });
-      expect(plot.log).toBe(true);
+      expect(plot.log).toBe(false);
       expect(plot.points).toEqual(data);
       const withZero = [...data, { time: first + 2 * DAY, value: 0 }];
       const linear = dashboardPlot({

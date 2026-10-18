@@ -2,10 +2,19 @@ import { openSqlite } from './sqlite.mjs';
 import { createEnvironment } from './environment.mjs';
 import { createHttpServer } from './http.mjs';
 import worker from '../server-dist/api.mjs';
+import { dirname, join } from 'node:path';
+import { createOriginalReferenceStore } from './rainbow-original.mjs';
 const database = openSqlite(process.env.COIN_DESK_DB || '/app/data/coin-desk.sqlite', {
   readOnly: true,
 });
 const env = await createEnvironment(database);
+const originalReference = await createOriginalReferenceStore({
+  directory: join(
+    dirname(process.env.COIN_DESK_DB || '/app/data/coin-desk.sqlite'),
+    'rainbow-original',
+  ),
+});
+env.ORIGINAL_RAINBOW_REFERENCE = originalReference.read;
 const app = createHttpServer({
   worker,
   env,
@@ -20,8 +29,10 @@ if (!Number.isInteger(port) || port < 1 || port > 65535) throw new Error('Invali
 app.server.listen(port, process.env.HOST || '127.0.0.1', () =>
   console.log(JSON.stringify({ event: 'listening', port })),
 );
+originalReference.start();
 for (const signal of ['SIGTERM', 'SIGINT'])
   process.on(signal, async () => {
+    await originalReference.stop();
     await app.drain();
     database.sqlite.close();
     process.exit(0);

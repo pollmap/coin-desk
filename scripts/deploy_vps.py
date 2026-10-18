@@ -4,7 +4,8 @@ The bundle contains deployment.json, source-scope.json, reviewed-pins.json,
 selective_release.py, rollout_engine.py, and the two CI archives. Commands
 default to inspection; mutations require --execute. Logs remain in the bundle.
 The separate research-additive-v1 contract permits only reviewed migration 0010,
-API replacement and a disabled research worker. Enabling it is a separate command.
+API replacement, a disabled research worker and an optional reviewed backup image.
+Enabling research is a separate command.
 """
 import argparse, datetime, hashlib, json, pathlib, re, subprocess, tarfile
 
@@ -13,6 +14,10 @@ REMOTE_ROOT = '/srv/services/coin-desk'
 EXPECTED_JOBS = {'checks','browser (chromium)','browser (webkit)','container','verify'}
 INPUTS = {'deployment.json','source-scope.json','selective_release.py','rollout_engine.py'}
 RESEARCH_INPUTS = INPUTS | {'research_release.py','research_schema.py'}
+# Whole-phase watchdogs include serial service waits and failure recovery.
+# They do not change the individual service, backup or resource guards.
+PHASE_TIMEOUTS = {'prepare':3600, 'activate':2400, 'enable':1200}
+SSH_PHASE_GRACE_SECONDS = 30
 
 def require(condition, message):
     if not condition: raise ValueError(message)
@@ -29,7 +34,7 @@ def validate_bundle(folder):
     require(re.fullmatch('vps-[a-f0-9]{16}',pins.get('previousRelease','')), 'Invalid previous release')
     require(re.fullmatch('[a-z0-9][a-z0-9-]{0,63}',pins.get('auditName','')), 'Invalid owned audit name')
     research=pins.get('deploymentKind')=='research-additive-v1'
-    require(pins.get('changedServices')==['api','research-worker'] if research else pins.get('changedServices') in [['api'],['quote-hub','api']], 'Unsupported deployment service scope')
+    require(pins.get('changedServices') in [['api','research-worker'],['api','research-worker','backup']] if research else pins.get('changedServices') in [['api'],['quote-hub','api']], 'Unsupported deployment service scope')
     require(pins.get('executeAllowed') is True and pins.get('mainCiAllFivePassed') is True, 'Reviewed CI bundle required')
     require(pins.get('mainCiHead') == pins['commit'], 'Reviewed CI head differs')
     require(set(pins.get('files',{})) == (RESEARCH_INPUTS if research else INPUTS), 'Unexpected helper or input set')
@@ -95,14 +100,16 @@ print(json.dumps({'transportFilesVerified':len(checks)}))
 ''')
 
 def phase(runner,pins,remote,operation):
+    require(operation in PHASE_TIMEOUTS, 'Unsupported deployment phase')
+    timeout=PHASE_TIMEOUTS[operation]
     target=runner.folder/(operation+'-result.json')
     require(not target.exists(), 'Preserve prior phase result')
-    result=runner.ssh('target='+repr(remote)+'\ncommit='+repr(pins['commit'])+'\nphase='+repr(operation)+'\n'+r'''
+    result=runner.ssh('target='+repr(remote)+'\ncommit='+repr(pins['commit'])+'\nphase='+repr(operation)+'\nphase_timeout='+repr(timeout)+'\n'+r'''
 import pathlib,subprocess,json,hashlib
 p=pathlib.Path(target);pins=json.loads((p/'reviewed-pins.json').read_text())
 for n,s in pins['files'].items(): assert hashlib.file_digest((p/n).open('rb'),'sha256').hexdigest()==s
 entry='research_release.py' if pins.get('deploymentKind')=='research-additive-v1' else 'selective_release.py'
-r=subprocess.run(['python3',str(p/entry),phase,commit,'--audit',str(p),'--execute-reviewed-selective-rollout'],capture_output=True,text=True,timeout=850)
+r=subprocess.run(['python3',str(p/entry),phase,commit,'--audit',str(p),'--execute-reviewed-selective-rollout'],capture_output=True,text=True,timeout=phase_timeout)
 (p/(phase+'-wrapper.private.log')).write_text(r.stdout+'\n'+r.stderr)
 assert r.returncode==0, 'Remote phase failed; preserve checkpoint'
 prepared=json.loads((p/'prepare.json').read_text())
@@ -113,7 +120,7 @@ if phase=='enable':
  assert pins.get('deploymentKind')=='research-additive-v1'
  out['research']=json.loads((p/'research-enable.json').read_text());out['currentRelease']=(p.parent.parent/'current').resolve().name
 print(json.dumps(out))
-''',880)
+''',timeout+SSH_PHASE_GRACE_SECONDS)
     target.write_text(json.dumps(result,indent=2),encoding='utf-8')
     return result
 

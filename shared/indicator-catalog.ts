@@ -9,6 +9,7 @@ import type { Asset, Period } from './types';
 import { defaultIndicator } from './default-analysis';
 import { longestPriceBasis } from './price-history';
 import type { PriceBasis } from './analysis-workspace';
+import { defaultAxis, isPriceMetric, supportsLogAxis, type AxisPreference } from './price-axis';
 export { defaultIndicator } from './default-analysis';
 
 export const INDICATOR_GROUPS = ['가치·사이클', '온체인', '선물', '기술·성과'] as const;
@@ -50,6 +51,7 @@ export interface IndicatorDefinition {
   guide: string;
   thresholds?: number[];
   view?: AnalysisView;
+  axis: { price: boolean; default: AxisPreference; logarithmic: boolean };
   comparison?: { definitionKey: string; mode: 'shared-axis' | 'separate-panels'; source: string };
 }
 const all = ASSETS.map((a) => a.id);
@@ -63,9 +65,27 @@ export const validPriceBasis = (asset: Asset, basis: string | null): PriceBasis 
 const valueMetrics = new Set(['mvrv', 'realized_price', 'realized_cap']);
 type IndicatorBase = Omit<
   IndicatorDefinition,
-  'shortMeaning' | 'baselineMeaning' | 'observationCadence' | 'measurementScope' | 'purpose'
+  | 'shortMeaning'
+  | 'baselineMeaning'
+  | 'observationCadence'
+  | 'measurementScope'
+  | 'purpose'
+  | 'axis'
 >;
 const definitions: IndicatorBase[] = [
+  {
+    id: 'view:btc_rainbow_original',
+    title: 'BTC 레인보우 · Original',
+    group: '가치·사이클',
+    assets: ['BTC'],
+    unit: 'USD',
+    source: 'BlockchainCenter Original · BTC USD',
+    formula: 'Lᵢ(n)=10^(aᵢ×ln(n+cᵢ)−19.463) · 원본의 검증된 날짜별 관측 행 번호',
+    defaultPeriod: 'all',
+    renderer: 'bands',
+    guide: 'btc-rainbow-original',
+    view: 'rainbow',
+  },
   {
     id: 'view:asset_rainbow',
     title: '레인보우 · 자체 회귀',
@@ -306,6 +326,7 @@ const definitions: IndicatorBase[] = [
 ];
 // Concise selection copy. The full definition, formula and limits remain in the guide.
 const conciseMeanings: Record<string, string> = {
+  'view:btc_rainbow_original': '공개 Original의 고정 곡선과 BTC 가격 비교',
   'view:asset_rainbow': '이 코인의 과거 로그회귀 대비 가격 위치 · 실험 모형',
   'view:hash_ribbons': 'BTC 해시레이트의 회복과 가격 조건을 함께 확인',
   'view:hashrate_trend': '30일·60일 평균으로 채굴 연산량의 변화를 확인',
@@ -336,6 +357,11 @@ export const INDICATORS_CATALOG: IndicatorDefinition[] = definitions.map((d) => 
           : '일별 확정 관측';
   return {
     ...d,
+    axis: {
+      price: isPriceMetric(d.id),
+      default: defaultAxis(d.id),
+      logarithmic: supportsLogAxis(d.id),
+    },
     purpose:
       d.group === '선물'
         ? '선물 시장'
@@ -380,7 +406,7 @@ export const INDICATORS_CATALOG: IndicatorDefinition[] = definitions.map((d) => 
                 source: 'price',
               }
             : undefined,
-    title: d.id === 'view:btc_rainbow' ? 'BTC 레인보우' : d.title,
+    title: d.id === 'view:btc_rainbow' ? 'BTC 레인보우 · 자체 회귀' : d.title,
     guide: guide?.id ?? d.guide,
     formula: d.formula === '확정 가격 이력으로 계산' ? (guide?.formula ?? d.formula) : d.formula,
     shortMeaning: d.id.endsWith(':mvrv')
@@ -470,16 +496,15 @@ export function indicatorUrl(
     !previous.has('rainbow_origin')
   )
     basis = longestPriceBasis(asset, basis);
-  if (next === 'view:btc_rainbow' || next === 'view:powerlaw') basis = 'reference';
+  if (['view:btc_rainbow', 'view:btc_rainbow_original', 'view:powerlaw'].includes(next))
+    basis = 'reference';
   if (['view:vwap', 'volume', 'view:supertrend'].includes(next) && basis === 'reference')
     basis = availableMarket(asset, 'binance');
   if (next === 'view:supertrend' && previous.get('metric') !== next) {
     p.set('interval', '1w');
-    p.set('log', '0');
   }
   if (next === 'view:price' && previous.get('metric') !== next) {
     p.set('interval', '1d');
-    p.set('log', '0');
   }
   p.set('price_source', basis);
   if (basis === 'reference') p.delete('market');
@@ -500,6 +525,8 @@ export function indicatorUrl(
     'dashboard_ranges',
     'dashboard_scroll',
     'dashboard_ohlc',
+    'dashboard_axes',
+    'dashboard_models',
   ])
     p.delete(key);
   if (!supported) p.set('transition', id);
@@ -515,7 +542,20 @@ export function indicatorUrl(
     p.delete('patterns');
     p.delete('compare_price');
   }
-  if (switchingAsset || next !== 'view:asset_rainbow') {
+  const previousMetric =
+    previous.get('metric') ||
+    (previous.has('visual') ? 'view:' + previous.get('visual') : undefined);
+  // A display preference belongs to one asset/source/indicator, not the next chart.
+  // Same-chart links keep explicit settings; other destinations restore their own saved choice.
+  if (
+    (previous.has('asset') ? previous.get('asset') !== asset : switchingAsset) ||
+    (previousMetric !== undefined && previousMetric !== next) ||
+    validPriceBasis(asset, previous.get('price_source') || previous.get('market')) !== basis
+  )
+    p.delete('log');
+  const keepingRainbow =
+    ['view:asset_rainbow', 'view:btc_rainbow_original'].includes(next) && previousMetric === next;
+  if (switchingAsset || !keepingRainbow) {
     for (const key of [
       'rainbow_origin',
       'rainbow_anchor',

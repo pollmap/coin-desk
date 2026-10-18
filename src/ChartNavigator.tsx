@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState, type RefObject } from 'react';
 import type { IChartApi, UTCTimestamp } from 'lightweight-charts';
 import type { Point } from '../shared/types';
+import { axisCoordinates } from '../shared/price-axis';
 import { dateLabel } from './lib';
 
 /** Full history remains visible even when the main chart is zoomed into a cycle. */
@@ -19,8 +20,7 @@ export function ChartNavigator({
   const path = useMemo(() => {
     if (!rows.length) return '';
     const values = rows.map((p) => p.value);
-    const useLog = log && values.every((v) => v > 0);
-    const scaled = values.map((v) => (useLog ? Math.log(v) : v));
+    const scaled = axisCoordinates(values, log ? 'log' : 'linear');
     const min = Math.min(...scaled),
       max = Math.max(...scaled),
       span = max - min || 1;

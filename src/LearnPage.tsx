@@ -1,4 +1,3 @@
-import { INDICATORS_CATALOG } from '../shared/indicator-catalog';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { Link, useLocation, useParams, useSearchParams } from 'react-router-dom';
 import { ArrowLeft, ArrowRight, ArrowUpRight, BookOpen, Search, Star, X } from 'lucide-react';
@@ -11,57 +10,20 @@ import {
   searchGuides,
   type GuideArticle,
 } from '../shared/learning-catalog';
-import { guideLesson } from '../shared/guide-lessons';
-import { PATTERNS, trendFilter } from '../shared/candle-patterns';
+import { GuideReadingBody } from './IndicatorReading';
+import { guideReading, readingLesson } from '../shared/guide-reading';
+import { trendFilter } from '../shared/candle-patterns';
 import { ASSETS } from '../shared/catalog';
 import { validPriceBasis } from '../shared/indicator-catalog';
 import { networkMetric } from '../shared/network-catalog';
 import { priceBasis, basisName, type PriceBasis } from '../shared/analysis-workspace';
 import { AssetLogo } from './AssetLogo';
-import { IndicatorConcept } from './IndicatorConcept';
 import { saved, save } from './lib';
 import { useData } from './hooks';
 import type { Asset } from '../shared/types';
 import './learn.css';
 const PRIMARY_ASSETS = ASSETS.map((a) => a.id);
 
-export function PatternExample({ id }: { id: string }) {
-  const p = PATTERNS.find((p) => p.id === id);
-  if (!p) return null;
-  return (
-    <figure className="pattern-example">
-      <svg
-        viewBox="0 0 360 180"
-        role="img"
-        aria-label={p.title + ' 설명용 캔들 모양. 실제 가격 자료가 아닙니다.'}
-      >
-        <line x1="24" x2="336" y1="151" y2="151" stroke="var(--border)" />
-        {p.demo.map((c, i) => {
-          const x = p.demo.length === 1 ? 170 : 115 + i * 115,
-            y = (v: number) => 151 - v * 1.3;
-          const color = c.close >= c.open ? '#2f9b83' : '#c36076';
-          return (
-            <g key={i}>
-              <line x1={x} x2={x} y1={y(c.high)} y2={y(c.low)} stroke={color} strokeWidth="3" />
-              <rect
-                x={x - 22}
-                y={y(Math.max(c.open, c.close))}
-                width="44"
-                height={Math.max(3, Math.abs(c.close - c.open) * 1.3)}
-                fill={color}
-                rx="2"
-              />
-              <text x={x} y="174" textAnchor="middle" fill="currentColor">
-                {p.demo.length === 1 ? '확정 봉' : i === 0 ? '앞 봉' : '현재 확정 봉'}
-              </text>
-            </g>
-          );
-        })}
-      </svg>
-      <figcaption>설명용 예시 · 실제 시세가 아닙니다</figcaption>
-    </figure>
-  );
-}
 function ApplyGuide({
   article,
   asset,
@@ -150,7 +112,9 @@ function ApplyGuide({
       {article.basis && !article.basis.includes(basis) && (
         <p>이 가격 기준에는 표시할 수 없습니다. 다른 가격 기준을 선택해 주세요.</p>
       )}
-      {catalogUrl && catalog.loading ? (
+      {catalog.error ? (
+        <p role="alert">지표를 확인하지 못했습니다. 다시 열어 주세요.</p>
+      ) : catalogUrl && catalog.loading ? (
         <p role="status">불러오는 중…</p>
       ) : unavailable ? (
         <p role="status">이 지표를 표시할 수 없습니다. 다른 지표를 선택해 주세요.</p>
@@ -166,7 +130,6 @@ function ApplyGuide({
           );
         })
       )}
-      {catalog.error && <small role="status">차트를 열지 못했습니다. 다시 시도해 주세요.</small>}
     </div>
   );
 }
@@ -227,20 +190,7 @@ export function LearnPage() {
       ? { ...original, unit: definition.unit, formula: definition.formula }
       : original;
   }, [id, asset]);
-  const lesson = useMemo(() => {
-    if (!article) return null;
-    const original = guideLesson(article);
-    const definition = id === 'net-hashrate' ? networkMetric(asset, 'hashrate') : undefined;
-    if (!definition) return original;
-    const scale = definition.unit === 'GH/s' ? '10⁹' : '10¹²';
-    return {
-      ...original,
-      method: [definition.formula, `1 ${definition.unit} = 초당 ${scale} 해시`],
-      example: [`2 ${definition.unit}는 초당 2 × ${scale}회의 해시 계산을 뜻합니다.`],
-      conclusion:
-        '선택 네트워크의 채굴 연산량 추정치입니다. 해시 함수가 다른 코인의 수치 크기나 보안을 직접 비교하지 않습니다.',
-    };
-  }, [article, id, asset]);
+  const lesson = useMemo(() => (article ? readingLesson(article, asset) : null), [article, asset]);
   const results = useMemo(
     () =>
       searchGuides(query).filter(
@@ -278,6 +228,8 @@ export function LearnPage() {
     // Restore the reading destination together on the following frame.
     const frame = requestAnimationFrame(() => {
       if (section) {
+        const details = section.querySelector('details');
+        if (details) details.open = true;
         section.scrollIntoView({ block: 'start', behavior: 'instant' });
         section.focus({ preventScroll: true });
       } else {
@@ -311,8 +263,8 @@ export function LearnPage() {
             <nav className="guide-toc" aria-label="이 설명의 목차">
               <strong>이 설명에서</strong>
               <a href="#meaning">무엇을 보나요</a>
-              <a href="#method">{lesson.procedural ? '사용 방법' : '계산식·조건'}</a>
               <a href="#example">{lesson.procedural ? '사용 예시' : '숫자로 읽어보기'}</a>
+              <a href="#method">{lesson.procedural ? '사용 방법' : '계산식·조건'}</a>
               <a href="#limits">해석할 때 주의할 점</a>
             </nav>
             <article className="guide-article">
@@ -333,90 +285,13 @@ export function LearnPage() {
                 </button>
               </div>
               {article.english && <p className="guide-english">{article.english}</p>}
-              <p className="guide-intro">
-                {article.id === 'net-hashrate'
-                  ? '작업증명 네트워크의 하루 평균 채굴 연산량'
-                  : (INDICATORS_CATALOG.find((d) => d.guide === article.id)?.shortMeaning ??
-                    article.summary)}
-              </p>
-              <section id="meaning" tabIndex={-1}>
-                <h2>{lesson.question}</h2>
-                <p>{article.read}</p>
-                <IndicatorConcept metric={article.id} />
-                {article.action.kind === 'pattern' && <PatternExample id={article.action.id} />}
-                {lesson.reading.length > 0 && article.id !== 'rainbow' && (
-                  <table className="guide-reading">
-                    <caption>값과 화면을 읽는 기준</caption>
-                    <thead>
-                      <tr>
-                        <th scope="col">관찰한 값·모양</th>
-                        <th scope="col">뜻</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {lesson.reading.map(([value, meaning]) => (
-                        <tr key={value}>
-                          <th scope="row">{value}</th>
-                          <td>{meaning}</td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                )}
-              </section>
-              <section id="method" className="guide-method" tabIndex={-1}>
-                <h2>{lesson.procedural ? '사용 방법' : '계산식·판정 조건'}</h2>
-                <ol className={lesson.procedural ? 'guide-steps' : 'guide-formula'}>
-                  {lesson.method.map((line) => (
-                    <li key={line}>{line}</li>
-                  ))}
-                </ol>
-                {lesson.terms.length > 0 && (
-                  <dl className="guide-terms">
-                    {lesson.terms.map(([term, meaning]) => (
-                      <div key={term}>
-                        <dt>{term}</dt>
-                        <dd>{meaning}</dd>
-                      </div>
-                    ))}
-                  </dl>
-                )}
-                {article.id === 'rainbow' && (
-                  <table className="guide-reading">
-                    <caption>위치 점수 z에 따른 색 구간</caption>
-                    <thead>
-                      <tr>
-                        <th scope="col">위치 점수</th>
-                        <th scope="col">뜻</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {lesson.reading.map(([value, meaning]) => (
-                        <tr key={value}>
-                          <th scope="row">{value}</th>
-                          <td>{meaning}</td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                )}
-              </section>
-              <section id="example" className="guide-example" tabIndex={-1}>
-                <h2>{lesson.procedural ? '사용 예시' : '숫자로 읽어보기'}</h2>
-                {!lesson.procedural && (
-                  <p className="guide-example-label">이해를 위한 가상 예시 · 현재 시세 아님</p>
-                )}
-                <ol>
-                  {lesson.example.map((line) => (
-                    <li key={line}>{line}</li>
-                  ))}
-                </ol>
-                <p className="guide-conclusion">{lesson.conclusion}</p>
-              </section>
-              <section id="limits" className="guide-caution" tabIndex={-1}>
-                <h2>해석할 때 주의할 점</h2>
-                <p>{article.caution}</p>
-              </section>
+              {!article.assets.includes(asset) && (
+                <p className="guide-asset-note">
+                  이 설명의 차트는 {article.assets.length === 1 ? article.assets[0] : '지원 코인'}
+                  에서 사용할 수 있습니다. 현재 선택한 {asset}에는 적용되지 않습니다.
+                </p>
+              )}
+              <GuideReadingBody article={article} asset={asset} anchors />
               <section className="guide-related" aria-label="이어 읽기">
                 <h2>이어 읽기</h2>
                 {article.related.map((key) => {
@@ -526,10 +401,9 @@ export function LearnPage() {
                         <Link to={guideHref(g.id, params)}>
                           <span className="learn-row-main">
                             <strong>{g.title}</strong>
-                            <span>{g.summary}</span>
+                            <span>{guideReading(g.id).meaning}</span>
                           </span>
                           <span className="learn-row-meta">
-                            <span>{g.category}</span>
                             <small>
                               {g.assets.includes(asset)
                                 ? `${asset}에 적용 가능`

@@ -25,7 +25,13 @@ export type GuideAction =
   | { kind: 'panel'; id: string; section: 'onchain' | 'futures' | 'price' }
   | {
       kind: 'view';
-      id: AnalysisView | 'supertrend' | 'asset_rainbow' | 'hash_ribbons' | 'hashrate_trend';
+      id:
+        | AnalysisView
+        | 'supertrend'
+        | 'asset_rainbow'
+        | 'btc_rainbow_original'
+        | 'hash_ribbons'
+        | 'hashrate_trend';
     }
   | { kind: 'pattern'; id: PatternId }
   | { kind: 'drawing'; id: DrawingKind }
@@ -603,6 +609,24 @@ const basics: GuideArticle[] = [
 ];
 export const GUIDE_ARTICLES: readonly GuideArticle[] = [
   entry(
+    'btc-rainbow-original',
+    'BTC 레인보우 · Original',
+    '사이클·비교',
+    'BTC 가격을 Original 계열의 고정 로그곡선 구간과 비교합니다.',
+    '가격이 어느 색 구간에 있는지 봅니다. 자체 회귀와 달리 과거 가격으로 계수를 다시 맞추지 않습니다.',
+    'Lᵢ(n)=10^(aᵢ×ln(n+cᵢ)−19.463), n은 2012-01-01부터의 날짜 행 번호입니다. 인접 중심선의 기하평균 √(LᵢLᵢ₊₁)으로 내부 경계를 구합니다.',
+    'Original 계열의 고정 공식을 사용합니다. 2022년 V2·Dynamic 모델이나 보리차트 자체 회귀와 다릅니다. 색 구간은 적정가격·미래 수익을 보장하지 않습니다.',
+    { kind: 'view', id: 'btc_rainbow_original' },
+    {
+      assets: ['BTC'],
+      basis: ['reference'],
+      unit: 'USD',
+      related: ['asset-rainbow', 'btc-rainbow', 'log-scale'],
+      aliases: '비트코인 레인보우 오리지널 original rainbow 고정 로그 곡선',
+      source: 'https://www.blockchaincenter.net/bitcoin-rainbow-chart/',
+    },
+  ),
+  entry(
     'asset-rainbow',
     '레인보우 · 자체 회귀',
     '사이클·비교',
@@ -705,6 +729,7 @@ export const guideArticle = (id: string) =>
         (
           {
             btc_rainbow: 'btc-rainbow',
+            btc_rainbow_original: 'btc-rainbow-original',
             asset_rainbow: 'asset-rainbow',
             hash_ribbons: 'hash-ribbons',
             hashrate_trend: 'hashrate-trend',
@@ -777,6 +802,9 @@ export function guideContext(params: URLSearchParams) {
     next.set('metric', params.get('metric')!);
   if (['1h', '4h', '1d', '1w', '1M'].includes(params.get('interval') ?? ''))
     next.set('interval', params.get('interval')!);
+  const readingDate = params.get('reading_date');
+  if (readingDate && /^\d{9,10}$/.test(readingDate) && Number(readingDate) > 0)
+    next.set('reading_date', readingDate);
   for (const key of ['st_period', 'st_multiplier'])
     if (validSupertrendOption(key, params.get(key))) next.set(key, params.get(key)!);
   for (const key of [
@@ -836,7 +864,6 @@ export function guideChartLink(
     p.set('visual', a.id);
     p.set('metric', 'view:' + a.id);
     if (a.id === 'supertrend' && !params.has('interval')) p.set('interval', '1w');
-    if (a.id === 'supertrend' && !params.has('log')) p.set('log', '0');
   } else if (a.kind === 'pattern') {
     p.set('patterns', a.id);
     p.set(
@@ -853,34 +880,42 @@ export function guideChartLink(
 }
 export const GUIDE_PRESETS = [
   {
-    id: 'position',
-    title: '가격 위치 밴드 읽기',
-    description: '730일 · 색 구간 · 표준편차',
-    guide: 'rainbow',
+    id: 'candles',
+    title: '캔들부터 읽기',
+    description: '몸통·꼬리로 하루 가격을 읽는 방법',
+    guide: 'candles',
+  },
+  {
+    id: 'scale',
+    title: '일반축과 로그축 이해하기',
+    description: '같은 가격 차이와 같은 비율의 차이',
+    guide: 'log-scale',
   },
   {
     id: 'trend',
-    title: '이동평균 리본 이해하기',
-    description: '짧은 선과 긴 선의 배열',
-    visual: 'ribbon',
-    panels: 'rsi',
-    guide: 'ribbon',
+    title: '슈퍼트렌드 읽기',
+    description: '가격 위·아래 선으로 추세를 구분하는 방법',
+    guide: 'supertrend',
   },
   {
     id: 'onchain',
-    title: 'BTC 평가와 손익',
+    title: 'MVRV 1배 이해하기',
     description: 'MVRV 1배는 무슨 뜻일까요',
     section: 'onchain',
     panels: 'net:mvrv',
     guide: 'net-mvrv',
   },
   {
-    id: 'futures',
-    title: '선물 쏠림 확인',
-    description: '펀딩률의 부호와 단위',
-    section: 'futures',
-    panels: 'futures:funding',
-    guide: 'futures-funding',
+    id: 'compare',
+    title: '코인 비교하기',
+    description: '수익률·가격 비율·상관의 차이',
+    guide: 'relative',
+  },
+  {
+    id: 'position',
+    title: '밴드와 레인보우 구분하기',
+    description: '가격 분포와 회귀 곡선은 어떻게 다를까요',
+    guide: 'rainbow',
   },
 ] as const;
 export function guideBasisLabel(basis: PriceBasis) {

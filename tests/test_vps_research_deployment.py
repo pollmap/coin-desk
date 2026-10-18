@@ -104,6 +104,22 @@ class ResearchContainment(unittest.TestCase):
         self.before={'api':{'Config':{'Image':'old'}}}
     def validate(self):rollout.validate_configs(self.old,self.new,self.image,self.release,self.before)
     def test_new_disabled_worker_keeps_all_collectors_and_data_mounts(self):self.validate()
+    def test_backup_replacement_changes_only_explicit_image_and_release(self):
+        self.before['backup']={'Config':{'Image':'old'}}
+        self.new['services']['backup']['image']=self.image
+        self.new['services']['backup']['environment']['COIN_DESK_RELEASE']=self.release
+        rollout.validate_configs(self.old,self.new,self.image,self.release,self.before,replace_backup=True)
+        with self.assertRaisesRegex(ValueError,'Protected service configuration changed: backup'):self.validate()
+        self.new['services']['backup']['cpus']=1
+        with self.assertRaisesRegex(ValueError,'backup containment changed'):
+            rollout.validate_configs(self.old,self.new,self.image,self.release,self.before,replace_backup=True)
+    def test_backup_replacement_does_not_allow_retention_or_mount_changes(self):
+        self.before['backup']={'Config':{'Image':'old'}}
+        self.new['services']['backup']['image']=self.image;self.new['services']['backup']['environment']['COIN_DESK_RELEASE']=self.release
+        self.old['services']['backup']['environment']['BACKUP_RETENTION_DAYS']='14'
+        self.new['services']['backup']['environment']['BACKUP_RETENTION_DAYS']='1'
+        with self.assertRaisesRegex(ValueError,'backup environment changed'):
+            rollout.validate_configs(self.old,self.new,self.image,self.release,self.before,replace_backup=True)
     def test_compose_integer_and_digit_string_memory_have_same_exact_limit(self):
         for value in [536870912,'536870912']:
             with self.subTest(value=value):
@@ -169,7 +185,7 @@ class ActivationFailure(unittest.TestCase):
         class FakeBase:pass
         def private(path,data):path.write_text(json.dumps(data))
         self.base=SimpleNamespace(Deployment=FakeBase,private_json=private,require_restored_image=mock.Mock())
-        for key,value in [('ROOT',self.root),('AUDIT',self.audit),('OLD',self.old),('PROTECTED',self.protected)]:
+        for key,value in [('ROOT',self.root),('AUDIT',self.audit),('OLD',self.old),('PROTECTED',self.protected),('CHANGED',['api','research-worker'])]:
             patcher=mock.patch.object(rollout.selective,key,value);patcher.start();self.addCleanup(patcher.stop)
         cls=rollout.deployment_type(self.base,{'schemaPlan':{}},{})
         self.job=cls();self.job.new=self.new;self.job.newenv=self.root/'new.env';self.job.oldenv=self.root/'old.env'
@@ -210,5 +226,29 @@ class ActivationFailure(unittest.TestCase):
         with mock.patch.object(rollout.schema,'apply',return_value={'applied':True}),self.assertRaisesRegex(ValueError,'restore mismatch'):self.job.activate()
         self.assertEqual(self.actions,[])
         result=json.loads((self.audit/'activation.json').read_text());self.assertTrue(result['additiveTablesRetained']);self.assertEqual(result['attemptedServices'],[])
+    def test_backup_activation_failure_rolls_back_backup_worker_api_only(self):
+        self.job.verify_reference_backup=mock.Mock()
+        protected=[name for name in self.protected if name!='backup']
+        def run(args,**kwargs):
+            self.actions.append(args)
+            service=args[-1]
+            if service in ['api','backup']:
+                state=copy.deepcopy(self.job.containers.return_value)
+                if str(self.new) in args:
+                    state[service]={'Id':'new-'+service,'Image':'sha256:new','Config':{'Image':'new-image'}}
+                    self.job.containers.return_value=state
+                    if service=='backup':raise RuntimeError('backup start failed')
+                elif str(self.old) in args:
+                    state[service]=self.before[service];self.job.containers.return_value=state
+            return b''
+        self.job.run=run
+        with mock.patch.object(rollout.selective,'CHANGED',['api','research-worker','backup']),mock.patch.object(rollout.selective,'PROTECTED',protected),mock.patch.object(rollout.schema,'apply',return_value={'applied':True}),self.assertRaisesRegex(RuntimeError,'backup start failed'):
+            self.job.activate()
+        result=json.loads((self.audit/'activation.json').read_text())
+        self.assertEqual(result['attemptedServices'],['api','research-worker','backup'])
+        self.assertEqual(result['rollbackServices'],['backup','research-worker','api'])
+        self.assertFalse(result['liveDatabaseRestored']);self.assertTrue(result['additiveTablesRetained'])
+        self.assertEqual((self.root/'shared/data/coin-desk.sqlite').read_bytes(),b'live')
+        self.assertEqual(self.job.containers.return_value,self.before)
 
 if __name__=='__main__':unittest.main()

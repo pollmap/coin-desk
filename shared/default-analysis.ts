@@ -53,7 +53,6 @@ export function defaultPriceUrl(asset: Asset, preferred: Market) {
       metric: 'view:price',
       period: 'all',
       interval: '1d',
-      log: '0',
     })
   );
 }
@@ -89,7 +88,7 @@ export function defaultCoreAnalysisUrl(asset: Asset, preferred: Market) {
       price_source: market,
       market,
       period: metric === 'net:mvrv' ? '5y' : 'all',
-      ...(metric === 'view:supertrend' ? { interval: '1w', log: '0' } : {}),
+      ...(metric === 'view:supertrend' ? { interval: '1w' } : {}),
     })
   );
 }
