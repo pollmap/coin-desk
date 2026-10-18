@@ -1,7 +1,7 @@
 {
   "version": "0.38.2",
-  "updatedAt": "2026-10-18T08:43:01.573325+00:00",
-  "state": "code_verified_deployment_capacity_blocked",
+  "updatedAt": "2026-10-18T12:17:38.586759+00:00",
+  "state": "code_verified_candidate_not_deployed_connectivity_incident_under_review",
   "code": {
     "branch": "fix/guide-axis-context-0382",
     "pullRequest": "https://github.com/pollmap/coin-desk/pull/81",
@@ -59,10 +59,10 @@
   "deployment": {
     "previousRelease": "vps-cd0636019209d1d0",
     "release": null,
-    "vps": "not_started_capacity_gate",
+    "vps": "previous_api_restored_then_connection_refused_observed",
     "pages": "not_started_waiting_for_same_vps_release",
-    "backupRestore": "local_and_ci_tests_passed_live_candidate_restore_not_run",
-    "canonicalAssets": "image_archive_verified_remote_dist_comparison_not_run",
+    "backupRestore": "prepared_and_post_migration_independent_restore_verified",
+    "canonicalAssets": "immutable_candidate_239_files_prepared_final_origin_comparison_pending",
     "changedServices": [
       "api",
       "research-worker",
@@ -84,12 +84,19 @@
       "evidence": "deployment-attempt-038.json"
     },
     "capacityGate": {
-      "state": "pending_additional_capacity",
+      "state": "prior_sample_blocked_current_recheck_unavailable",
       "evidence": "release-capacity.json",
+      "checkedAt": "2026-10-18T12:11:43Z",
       "minimumProtectedFreeGiB": 8,
-      "planningTargetFreeGiB": 12,
-      "originalsOrOtherServicesChanged": false,
-      "latestFreeGiB": 9.537
+      "freshBackupAdmissionFormula": "8GiB + 4 * current database bytes + 4 * reference metadata bytes + 128MiB",
+      "estimatedAdmissionGiB": 9.5,
+      "estimateOnly": true,
+      "freeGiBAtSample": 7.375038,
+      "loadAverage1mAtSample": 3.5673828125,
+      "loadAverage1mLimit": 3.2,
+      "existingLiveDatabaseAndProtectedCollectorsPreserved": true,
+      "historicalEvidencePathsTransferredAfterVerification": 6,
+      "guardConfigurationRelaxed": false
     },
     "candidateRelease": "vps-1b0eed26f44e326c"
   },
@@ -335,7 +342,112 @@
     "deployed": false,
     "finalMainCiConclusion": "success"
   },
-  "currentProductionSample": {
+  "mainContainerSecurity": {
+    "gate": "passed_with_ignore_unfixed",
+    "highEntries": 70,
+    "criticalEntries": 2,
+    "uniqueIds": 19,
+    "packages": 26,
+    "fixedVersions": 0,
+    "allVulnerabilitiesResolved": false
+  },
+  "humanUnderstanding": {
+    "state": "not_performed",
+    "participants": 0,
+    "taskFile": "understanding-check.md"
+  },
+  "activationFailure": {
+    "startedAt": "2026-10-18T11:06:48Z",
+    "completedAt": "2026-10-18T11:15:55Z",
+    "promoted": false,
+    "schemaChanged": true,
+    "migration": "0010_research_reports.sql",
+    "oldTableWrites": 0,
+    "ledgerRowsAdded": 1,
+    "liveDatabaseRestored": false,
+    "additiveTablesRetained": true,
+    "reason": "Backup startup verification exceeded the prior 180-second deployment wait. The first rollback backup start also exceeded that wait.",
+    "rollbackApiVerified": true,
+    "newResearchWorkerStopped": true,
+    "previousBackupEventuallyVerified": true,
+    "backupVerificationElapsedSeconds": 338.18,
+    "dockerHealthElapsedSeconds": 603.99,
+    "backupStatusTimestampIsNotVerificationFinishTime": true,
+    "originalFailureEvidencePreserved": true,
+    "resumed": false
+  },
+  "deploymentToolFix": {
+    "pullRequest": "https://github.com/pollmap/coin-desk/pull/82",
+    "commit": "5afd8ed",
+    "backupStartupAndRollbackSeconds": 900,
+    "apiAndWorkerSeconds": 180,
+    "activationWatchdogSeconds": 4200,
+    "localNodePassed": 59,
+    "localPythonPassed": 148,
+    "localPythonSeconds": 31.304,
+    "localFailureHistory": [
+      "Two mock setup references missed the shared start_service helper and were fixed.",
+      "A subsequent full Python run exhausted local disk and did not count as passing."
+    ],
+    "remoteCi": "success_pr_attempt_1_all_five_jobs",
+    "productionImageRebuildRequired": false,
+    "prValidation": {
+      "pullRequest": 82,
+      "runId": 39123428789,
+      "commit": "5afd8ed82010f4a8b0c9e679897c061ce904b33d",
+      "attempt": 1,
+      "conclusion": "success",
+      "completedAt": "2026-10-18T11:48:36Z",
+      "jobs": {
+        "container": "success",
+        "browser (webkit)": "success",
+        "checks": "success",
+        "browser (chromium)": "success",
+        "verify": "success"
+      }
+    },
+    "mergedIntoMain": false,
+    "deployedApplicationArtifactChanged": false
+  },
+  "capacityInterruption": {
+    "checkedAt": "2026-10-18T11:53:45Z",
+    "state": "waiting_for_capacity_and_load",
+    "freeGiB": 7.07,
+    "requiredGiB": 8.74,
+    "requiredGiBIsEstimate": true,
+    "load1": 5.5849609375,
+    "loadLimit": 3.2,
+    "availableMemoryGiB": 3.471,
+    "activeSharedHostJobsObserved": true,
+    "attribution": "Temporary shared-host usage observed; exact peak cause not fully identified",
+    "currentRelease": "vps-cd0636019209d1d0",
+    "apiHealthy": true,
+    "backupHealthy": true,
+    "protectedSixInstancesUnchanged": true,
+    "coreQuotes": {
+      "assets": [
+        "BTC",
+        "DOGE",
+        "ETH"
+      ],
+      "venues": 2,
+      "failures": 0,
+      "tradeAgeSeconds": [
+        26,
+        119
+      ]
+    },
+    "resumeExecuted": false,
+    "sourceTransferExecuted": false,
+    "sourceTransferBlockedBeforeMutation": "CPU guard",
+    "localEvidenceGroupsVerified": 2,
+    "laterExportBlockedBeforeSourceRead": "CPU pressure",
+    "diskProtectionRelaxed": false,
+    "backupAgeLimitRelaxed": false,
+    "historicalObservation": true,
+    "supersededBy": "lastHealthyProductionSample"
+  },
+  "preActivationProductionSample": {
     "checkedAt": "2026-10-18T08:38:51+00:00",
     "release": "vps-cd0636019209d1d0",
     "tables": 21,
@@ -349,9 +461,10 @@
     ],
     "freeGiB": 9.537,
     "availableMemoryGiB": 3.877,
-    "allSourcesOrHistoryComplete": false
+    "allSourcesOrHistoryComplete": false,
+    "historicalObservation": true
   },
-  "currentPublicOrigins": {
+  "preActivationPublicOrigins": {
     "checkedAt": "2026-10-18T08:39:21.390529+00:00",
     "readOnly": true,
     "newDeploymentStarted": false,
@@ -368,20 +481,148 @@
         "release": "vps-cd0636019209d1d0",
         "version": null
       }
-    ]
+    ],
+    "historicalObservation": true
   },
-  "mainContainerSecurity": {
-    "gate": "passed_with_ignore_unfixed",
-    "highEntries": 70,
-    "criticalEntries": 2,
-    "uniqueIds": 19,
-    "packages": 26,
-    "fixedVersions": 0,
-    "allVulnerabilitiesResolved": false
+  "freshBackupResumeV2": {
+    "state": "prepared_offline_verified_not_executed",
+    "version": 2,
+    "sameCandidateAndMainArtifact": true,
+    "migrationReapplied": false,
+    "originalFailureEvidencePreserved": true,
+    "liveDatabaseRestorePerformed": false,
+    "requiresFreshActualSnapshotAndIndependentDiskRestore": true,
+    "freshnessSeconds": 3600,
+    "oldV1Snapshot": {
+      "completedAt": "2026-10-18T11:07:35Z",
+      "expiresAt": "2026-10-18T12:07:35Z",
+      "expired": true,
+      "eligibleForResume": false
+    },
+    "admissionFormula": "8GiB + 4 * current database bytes + 4 * reference metadata bytes + 128MiB",
+    "estimatedAdmissionGiB": 9.5,
+    "allStageGuardsPreserved": true,
+    "guardConfigurationRelaxed": false,
+    "localTests": {
+      "passed": 16,
+      "failed": 0,
+      "seconds": 0.677,
+      "remoteSystemdExecutionIncluded": false
+    },
+    "independentFinalReview": "passed_no_remaining_actionable_issue_in_reviewed_scope",
+    "filesSha256": {
+      "resume-activation-0382-v2.py": "572c3dcaf44d8558ef9022605b115c71f3e19be37bb7c93b4f88fb6f2b339e85",
+      "run-resume-activation-0382-v2.py": "40d70dc0387572a2dd827377409d76d64586e9262fef143f079e7d343e93d6ed",
+      "test-resume-activation-0382-v2.py": "70ef51ef177ceee70d99daea04ab58b1c85e65e796d7fe3d870dd0e6b14328eb"
+    },
+    "scopeContract": {
+      "unit": "bori-fresh-seal-v2-backup.scope",
+      "runtimeMaxSeconds": 1800,
+      "stopTimeoutSeconds": 60,
+      "killMode": "control-group",
+      "initialSignal": "SIGINT",
+      "finalSignal": "SIGKILL",
+      "transportTimeoutSeconds": 1920,
+      "sshTimeoutSeconds": 1950,
+      "operatingServiceSignalCommands": false,
+      "remoteVerification": false
+    },
+    "remoteExecution": false
   },
-  "humanUnderstanding": {
-    "state": "not_performed",
-    "participants": 0,
-    "taskFile": "understanding-check.md"
+  "historicalEvidencePreservation": {
+    "evidence": "release-capacity.json",
+    "completedBundles": 2,
+    "preservedFiles": 6,
+    "permanentArchiveAndIndependentRawVerified": true,
+    "sourceBytesDeleted": false,
+    "thirdBundleLocalExportVerified": true,
+    "thirdBundleRemoteTransferCommitted": false,
+    "fourthBundleTransferNotClaimed": true
+  },
+  "lastHealthyProductionSample": {
+    "checkedAt": "2026-10-18T12:11:43Z",
+    "productionVersion": "0.36.1",
+    "productionRelease": "vps-cd0636019209d1d0",
+    "candidateRelease": "vps-1b0eed26f44e326c",
+    "state": "waiting_for_fresh_backup_capacity_and_load",
+    "freeBytes": 7918886912,
+    "freeGiB": 7.375038,
+    "availableMemoryBytes": 4440358912,
+    "availableMemoryGiB": 4.135406,
+    "loadAverage1m": 3.5673828125,
+    "cpuCount": 4,
+    "loadAverage1mLimit": 3.2,
+    "minimumProtectedFreeGiB": 8,
+    "freshBackupAdmissionFormula": "8GiB + 4 * current database bytes + 4 * reference metadata bytes + 128MiB",
+    "estimatedAdmissionGiB": 9.5,
+    "estimateOnly": true,
+    "resourceGatePassed": false,
+    "blockedBy": [
+      "free_disk",
+      "cpu_load"
+    ],
+    "apiHealthy": true,
+    "backupHealthy": true,
+    "researchWorkerRunning": false,
+    "sameEightObservedContainerIds": true,
+    "protectedServicesUnchanged": true,
+    "laneProgressAgeRangeSeconds": [
+      13,
+      43
+    ],
+    "coreQuoteConfirmAgeRangeSeconds": [
+      31,
+      36
+    ],
+    "coreTradeAgeRangeSeconds": [
+      37,
+      43
+    ],
+    "coreQuoteCount": 6,
+    "coreQuoteFailures": 0,
+    "runtimeHttpStatus": 200,
+    "historyState": "paused_low_space",
+    "freshBackupV2Executed": false,
+    "resumeV2Executed": false,
+    "candidatePagesPublished": false,
+    "allAssetDataCompletenessClaimed": false,
+    "evidenceSha256": "4e294124416c9cba16e8157208f959a07a83a7ace0759afca28fae80ee585242",
+    "historicalLastHealthySample": true
+  },
+  "currentProductionState": {
+    "state": "connectivity_incident",
+    "lastHealthySampleAt": "2026-10-18T12:11:43Z",
+    "lastKnownVersion": "0.36.1",
+    "lastKnownRelease": "vps-cd0636019209d1d0",
+    "currentApiHealth": "unverified_connection_refused",
+    "candidateDeploymentComplete": false
+  },
+  "accessInterruption": {
+    "checkedWindowUtc": [
+      "2026-10-18T12:15:00Z",
+      "2026-10-18T12:17:00Z"
+    ],
+    "lastHealthyServerSampleUtc": "2026-10-18T12:11:43Z",
+    "ssh": "connection_refused",
+    "vpsHttps": "connection_refused",
+    "pagesStaticBrowser": "loaded",
+    "pagesMarketBrowser": "quote_fetch_failed",
+    "browserMessage": "시세를 가져오지 못했습니다.",
+    "newDeploymentOrServiceChangesInThisWindow": false,
+    "probeV1SourceRetirementExecuted": false,
+    "freshBackupExecuted": false,
+    "cause": "unconfirmed",
+    "note": "Python Pages runtime returned403; this alone is not used to infer origin outage. Actual browser market failure separately observed.",
+    "evidenceSha256": "019b4701d8cce4b3e0cab758603b807e872eaec5da73ca53f2ac6f26b494daf6",
+    "recoveryConfirmed": false,
+    "independentNetworkRecheck": {
+      "checkedAt": "2026-10-18T12:16:51Z",
+      "tcp22": "connection_refused",
+      "tcp443": "connection_refused",
+      "sshExitCode": 255,
+      "vpsRuntimeHttps": "connection_refused",
+      "privateEvidenceSha256": "a18d0e9f8fce703b570ba7d5dcb23d3b4491c2c1a6a6a4490a789e19176a246f",
+      "changesOrRestarts": false
+    }
   }
 }
