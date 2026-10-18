@@ -257,7 +257,7 @@ def deployment_type(base,pins,scope):
                 self.verify_reference_backup(snapshots[0],json.loads((snapshots[0].parent/'manifest.json').read_text()),selective.AUDIT/'rainbow-original')
                 for service in ['api',WORKER]+(['backup'] if 'backup' in selective.CHANGED else []):
                     result['attemptedServices'].append(service);base.private_json(selective.AUDIT/'activation.json',result)
-                    self.run(self.config(self.new,self.newenv)+['up','-d','--no-deps','--wait','--wait-timeout','180',service],timeout=210)
+                    base.start_service(self,self.config(self.new,self.newenv),service)
                     c=self.inspect_worker() if service==WORKER else self.containers()[service]
                     require(c['Image'] in self.report['imagePortability']['verifiedIds'] and c['Config']['Image']==self.image,'Activated research/API/backup image differs')
                     require(all(self.containers()[n]['Id']==before[n]['Id'] for n in selective.PROTECTED),'A protected service changed')
@@ -273,7 +273,7 @@ def deployment_type(base,pins,scope):
             except BaseException:
                 if 'backup' in result['attemptedServices']:
                     try:
-                        self.run(self.previous_backup_config()+['up','-d','--no-deps','--wait','--wait-timeout','180','backup'],timeout=210);base.require_restored_image(before['backup'],self.containers()['backup'],'backup');result['rollbackServices'].append('backup')
+                        base.start_service(self,self.previous_backup_config(),'backup');base.require_restored_image(before['backup'],self.containers()['backup'],'backup');result['rollbackServices'].append('backup')
                     except BaseException:result.setdefault('rollbackFailures',[]).append('backup')
                 if WORKER in result['attemptedServices']:
                     try:
@@ -281,7 +281,7 @@ def deployment_type(base,pins,scope):
                     except BaseException:result.setdefault('rollbackFailures',[]).append(WORKER)
                 if 'api' in result['attemptedServices']:
                     try:
-                        self.run(self.config(selective.OLD,self.oldenv)+['up','-d','--no-deps','--wait','--wait-timeout','180','api'],timeout=210);base.require_restored_image(before['api'],self.containers()['api'],'api');result['rollbackServices'].append('api')
+                        base.start_service(self,self.config(selective.OLD,self.oldenv),'api');base.require_restored_image(before['api'],self.containers()['api'],'api');result['rollbackServices'].append('api')
                     except BaseException:result.setdefault('rollbackFailures',[]).append('api')
                 result['liveDatabaseRestored']=False;result['additiveTablesRetained']=result['schemaChanged'];raise
             finally:result['completedAt']=int(time.time());base.private_json(selective.AUDIT/'activation.json',result)
@@ -328,7 +328,7 @@ def deployment_type(base,pins,scope):
                 with os.fdopen(os.open(temporary,os.O_WRONLY|os.O_CREAT|os.O_EXCL,0o600),'w') as out:out.write(updated);out.flush();os.fsync(out.fileno())
                 require(selective.sha(self.newenv)==seal['environmentSha256'],'Environment changed concurrently')
                 os.replace(temporary,self.newenv)
-                self.run(self.config(self.new,self.newenv)+['up','-d','--no-deps','--wait','--wait-timeout','180',WORKER],timeout=210)
+                base.start_service(self,self.config(self.new,self.newenv),WORKER)
                 current=self.inspect_worker();env=dict(item.split('=',1) for item in current['Config']['Env'])
                 require(current['Config']['Image']==self.image and current['Image'] in self.report['imagePortability']['verifiedIds'] and env.get('COIN_DESK_RESEARCH_ENABLED')=='1','Enabled worker identity differs')
                 self.run(['docker','exec','coin-desk-research-worker-1','node','server/research-worker.mjs','--health'],timeout=15)
@@ -344,7 +344,7 @@ def deployment_type(base,pins,scope):
                 with os.fdopen(os.open(rollback,os.O_WRONLY|os.O_CREAT|os.O_EXCL,0o600),'w') as out:out.write(original);out.flush();os.fsync(out.fileno())
                 os.replace(rollback,self.newenv)
                 try:
-                    self.run(self.config(self.new,self.newenv)+['up','-d','--no-deps','--wait','--wait-timeout','180',WORKER],timeout=210);result['rollbackDisabled']=True
+                    base.start_service(self,self.config(self.new,self.newenv),WORKER);result['rollbackDisabled']=True
                 except BaseException:
                     current=self.inspect_worker();require(current['Config']['Image']==self.image,'Refuse to stop another research release');self.run(['docker','stop','--time','30','coin-desk-research-worker-1']);result['rollbackStopped']=True
                 raise

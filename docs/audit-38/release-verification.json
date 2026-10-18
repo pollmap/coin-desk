@@ -1,0 +1,387 @@
+{
+  "version": "0.38.2",
+  "updatedAt": "2026-10-18T08:43:01.573325+00:00",
+  "state": "code_verified_deployment_capacity_blocked",
+  "code": {
+    "branch": "fix/guide-axis-context-0382",
+    "pullRequest": "https://github.com/pollmap/coin-desk/pull/81",
+    "prCiConclusion": "success",
+    "mainCiConclusion": "success",
+    "prHead": "9755421e3bb4d3487d2d335c619f3a3ec9341ba5",
+    "prCiRunId": 39109923199,
+    "mainCommit": "9a19bb5d157f2c58906c749524b38e807f4d584b",
+    "mainCiRunId": 39111164095,
+    "mergedAt": "2026-10-18T08:22:00Z"
+  },
+  "prValidation": {
+    "jobsPassed": 5,
+    "unit": {
+      "files": 90,
+      "passed": 968
+    },
+    "serverNodePassed": 59,
+    "serverPythonPassed": 146,
+    "recoveryPassed": 2,
+    "chromium": {
+      "total": 287,
+      "passed": 286,
+      "failed": 0,
+      "skipped": 1,
+      "duration": "14.0m",
+      "retries": 0
+    },
+    "webkit": {
+      "total": 287,
+      "passed": 285,
+      "failed": 0,
+      "skipped": 2,
+      "duration": "17.3m",
+      "retries": 0
+    },
+    "excluded": [
+      {
+        "file": "e2e/private-archive.spec.ts",
+        "engines": [
+          "chromium",
+          "webkit"
+        ],
+        "reason": "Local private archive requires explicit opt-in; private original archive was not supplied."
+      },
+      {
+        "file": "e2e/price-chart-034.spec.ts",
+        "engines": [
+          "webkit"
+        ],
+        "reason": "Native touch inspection uses Chromium CDP; WebKit has no corresponding CDP API."
+      }
+    ]
+  },
+  "deployment": {
+    "previousRelease": "vps-cd0636019209d1d0",
+    "release": null,
+    "vps": "not_started_capacity_gate",
+    "pages": "not_started_waiting_for_same_vps_release",
+    "backupRestore": "local_and_ci_tests_passed_live_candidate_restore_not_run",
+    "canonicalAssets": "image_archive_verified_remote_dist_comparison_not_run",
+    "changedServices": [
+      "api",
+      "research-worker",
+      "backup"
+    ],
+    "protectedServices": [
+      "quotes",
+      "background",
+      "recent",
+      "analysis",
+      "quote-hub",
+      "migrate"
+    ],
+    "originalDataDeleted": false,
+    "previousAttempt": {
+      "release": "vps-3958b602ecc41839",
+      "result": "prepare_stopped_before_database_or_service_changes",
+      "reason": "backup_compose_and_actual_runtime_differed",
+      "evidence": "deployment-attempt-038.json"
+    },
+    "capacityGate": {
+      "state": "pending_additional_capacity",
+      "evidence": "release-capacity.json",
+      "minimumProtectedFreeGiB": 8,
+      "planningTargetFreeGiB": 12,
+      "originalsOrOtherServicesChanged": false,
+      "latestFreeGiB": 9.537
+    },
+    "candidateRelease": "vps-1b0eed26f44e326c"
+  },
+  "liveValidation": {
+    "originalModel": "not_run_for_candidate_capacity_gate",
+    "chartAndGuideFlow": "not_run_for_candidate_capacity_gate",
+    "naturalCollection": "not_run_for_candidate_capacity_gate"
+  },
+  "limitations": [
+    "A 150-asset catalog/URL regression is not a census of every current upstream observation.",
+    "Physical phone, Apple Safari, VoiceOver and human comprehension tasks are not completed.",
+    "Expired one-off derivatives recovery is separate and was not restarted.",
+    "No 48-hour waiting condition was added."
+  ],
+  "containsSecretsOrPersonalOriginals": false,
+  "mainValidation": {
+    "jobsPassed": 5,
+    "attempt": 1,
+    "unit": {
+      "files": 90,
+      "passed": 968
+    },
+    "serverNodePassed": 59,
+    "serverPythonPassed": 146,
+    "recoveryPassed": 2,
+    "chromium": {
+      "total": 287,
+      "passed": 286,
+      "failed": 0,
+      "skipped": 1,
+      "duration": "13.6m",
+      "retries": 0
+    },
+    "webkit": {
+      "total": 287,
+      "passed": 285,
+      "failed": 0,
+      "skipped": 2,
+      "duration": "18.0m",
+      "retries": 0
+    },
+    "excluded": [
+      {
+        "file": "e2e/private-archive.spec.ts",
+        "engines": [
+          "chromium",
+          "webkit"
+        ],
+        "reason": "Local private archive requires explicit opt-in; private original archive was not supplied."
+      },
+      {
+        "file": "e2e/price-chart-034.spec.ts",
+        "engines": [
+          "webkit"
+        ],
+        "reason": "Playwright exposes only native tap for WebKit; native multi-touch remains separately unverified and is not replaced by DOM-dispatched events."
+      }
+    ],
+    "deploymentArtifact": {
+      "id": 12130522456,
+      "name": "verified-linux-deployment",
+      "bytes": 119152452,
+      "expired": false,
+      "head": "9a19bb5d157f2c58906c749524b38e807f4d584b"
+    }
+  },
+  "priorVerifiedImplementation": {
+    "version": "0.38.0",
+    "code": {
+      "pullRequest": "https://github.com/pollmap/coin-desk/pull/79",
+      "prHead": "3b9921be6029546d0f3a55516562027dee547230",
+      "mainCommit": "cf9ee85d397547270421434326795af0c292d652",
+      "prCiRunId": 39102457255,
+      "prCiConclusion": "success",
+      "mainCiRunId": 39103658723,
+      "mainCiConclusion": "success"
+    },
+    "prValidation": {
+      "unit": {
+        "files": 89,
+        "passed": 953
+      },
+      "serverNodePassed": 59,
+      "serverPythonPassed": 138,
+      "recoveryPassed": 2,
+      "chromium": {
+        "passed": 278,
+        "skipped": 1,
+        "retries": 0
+      },
+      "webkit": {
+        "passed": 277,
+        "skipped": 2,
+        "retries": 0
+      },
+      "excluded": [
+        "Private-original opt-in checks",
+        "CDP-only native touch case on WebKit"
+      ],
+      "containerGate": "passed_with_ignore_unfixed",
+      "unfixedContainerFindings": {
+        "highEntries": 70,
+        "criticalEntries": 2,
+        "uniqueIds": 19,
+        "packages": 26
+      }
+    },
+    "mainValidation": {
+      "unit": {
+        "files": 89,
+        "passed": 953
+      },
+      "serverNodePassed": 59,
+      "serverPythonPassed": 138,
+      "recoveryPassed": 2,
+      "chromium": {
+        "passed": 278,
+        "skipped": 1,
+        "retries": 0,
+        "minutes": 13.5
+      },
+      "webkit": {
+        "passed": 277,
+        "skipped": 2,
+        "retries": 0,
+        "minutes": 17.5
+      },
+      "excluded": [
+        "Private-original opt-in checks",
+        "CDP-only native touch case on WebKit"
+      ],
+      "containerGate": "passed_with_ignore_unfixed",
+      "unfixedContainerFindings": {
+        "highEntries": 70,
+        "criticalEntries": 2,
+        "uniqueIds": 19,
+        "packages": 26
+      },
+      "jobsPassed": 5
+    }
+  },
+  "supersededPatch0381": {
+    "code": {
+      "pullRequest": "https://github.com/pollmap/coin-desk/pull/80",
+      "prHead": "899c5280fbe3160badfb5115df7df58f4f5f00bf",
+      "prCiRunId": 39106150598,
+      "prCiConclusion": "success",
+      "mainCommit": "d43d4853ad112095e529359301152eb973edbd3c",
+      "mainCiRunId": 39107436965,
+      "mainCiConclusion": "attempt_1_failed_attempt_2_cancelled_after_new_guide_bug"
+    },
+    "prValidation": {
+      "unit": {
+        "files": 89,
+        "passed": 953
+      },
+      "serverNodePassed": 59,
+      "serverPythonPassed": 146,
+      "recoveryPassed": 2,
+      "chromium": {
+        "passed": 278,
+        "skipped": 1,
+        "retries": 0,
+        "minutes": 13.5
+      },
+      "webkit": {
+        "passed": 277,
+        "skipped": 2,
+        "retries": 0,
+        "minutes": 17.3
+      },
+      "excluded": [
+        "Private-original opt-in checks",
+        "CDP-only native touch case on WebKit"
+      ],
+      "containerGate": "passed_with_ignore_unfixed",
+      "unfixedContainerFindings": {
+        "highEntries": 70,
+        "criticalEntries": 2,
+        "uniqueIds": 19,
+        "packages": 26
+      },
+      "jobsPassed": 5
+    },
+    "mainValidation": {
+      "state": "superseded_by_guide_context_fix",
+      "firstAttempt": {
+        "webkitPassed": 276,
+        "webkitFailed": 1,
+        "webkitSkipped": 2,
+        "testRetries": 0,
+        "failure": "WebKit network process crashed during the second DOGE navigation before functional assertions",
+        "evidenceRetained": true
+      },
+      "sameHeadLocalReproduction": {
+        "project": "webkit",
+        "executions": 3,
+        "passed": 3,
+        "testRetries": 0,
+        "seconds": 33.2
+      },
+      "rerunScope": "Failed WebKit job and dependent verify only; same main commit; no source changes"
+    }
+  },
+  "localGuideFix": {
+    "reproducedBeforeFix": [
+      "Unspecified dictionary axis became log=1 on MVRV",
+      "Candle guide opened default MVRV rather than price"
+    ],
+    "manualAfterFix": {
+      "environment": "local fixture IAB",
+      "mvrvAxis": "linear",
+      "priceAxis": "log",
+      "manufacturedLogParameter": false
+    },
+    "finalAutomatedChecks": {
+      "unitPassed": 42,
+      "browserPassed": 18,
+      "browserSeconds": 42.0,
+      "retries": 0,
+      "typecheckExitCode": 0,
+      "assetsSourcePolicyCompared": 150,
+      "independentReview": "No remaining P1/P2 found in the changed guide context paths"
+    }
+  },
+  "artifactValidation": {
+    "checkedAt": "2026-10-18T08:25:32.942822+00:00",
+    "commit": "9a19bb5d157f2c58906c749524b38e807f4d584b",
+    "release": "vps-1b0eed26f44e326c",
+    "version": "0.38.2",
+    "archivesMatchDeclaredSha256": true,
+    "sourceFilesMatchCommittedMain": 602,
+    "containsPrivateData": false,
+    "platform": "linux/amd64",
+    "imageLayers": 14,
+    "runtimeCommand": [
+      "node",
+      "server/index.mjs"
+    ],
+    "ciRunId": 39111164095,
+    "mainCiAtVerification": "browser_jobs_pending",
+    "remoteWrites": false,
+    "deployed": false,
+    "finalMainCiConclusion": "success"
+  },
+  "currentProductionSample": {
+    "checkedAt": "2026-10-18T08:38:51+00:00",
+    "release": "vps-cd0636019209d1d0",
+    "tables": 21,
+    "researchWorkerPresent": false,
+    "runningHealthyServices": 7,
+    "coreQuoteCount": 6,
+    "coreQuoteFailures": 0,
+    "coreTradeAgeRangeSeconds": [
+      32,
+      51
+    ],
+    "freeGiB": 9.537,
+    "availableMemoryGiB": 3.877,
+    "allSourcesOrHistoryComplete": false
+  },
+  "currentPublicOrigins": {
+    "checkedAt": "2026-10-18T08:39:21.390529+00:00",
+    "readOnly": true,
+    "newDeploymentStarted": false,
+    "origins": [
+      {
+        "origin": "https://coin-desk.pages.dev",
+        "status": 200,
+        "release": "vps-cd0636019209d1d0",
+        "version": null
+      },
+      {
+        "origin": "https://coin-desk.62.171.141.206.sslip.io",
+        "status": 200,
+        "release": "vps-cd0636019209d1d0",
+        "version": null
+      }
+    ]
+  },
+  "mainContainerSecurity": {
+    "gate": "passed_with_ignore_unfixed",
+    "highEntries": 70,
+    "criticalEntries": 2,
+    "uniqueIds": 19,
+    "packages": 26,
+    "fixedVersions": 0,
+    "allVulnerabilitiesResolved": false
+  },
+  "humanUnderstanding": {
+    "state": "not_performed",
+    "participants": 0,
+    "taskFile": "understanding-check.md"
+  }
+}
