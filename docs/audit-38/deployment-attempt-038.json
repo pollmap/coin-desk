@@ -1,0 +1,18 @@
+{
+  "attempt": "release-038-20261018",
+  "commit": "cf9ee85d397547270421434326795af0c292d652",
+  "candidateRelease": "vps-3958b602ecc41839",
+  "previousRelease": "vps-cd0636019209d1d0",
+  "mainCiRunId": 39103658723,
+  "mainCiJobsPassed": 5,
+  "phase": "prepare",
+  "outcome": "stopped_before_backup_migration_or_service_replacement",
+  "reason": "Previous backup image differs from live baseline",
+  "configuredBackupRelease": "vps-a1c06604282c8ca1",
+  "actualBackupRelease": "vps-6270048e66efc7fa",
+  "additionalEnvironmentDifference": "ENABLED_ASSETS",
+  "productionDatabaseChanged": false,
+  "existingServicesChanged": false,
+  "evidencePreserved": true,
+  "correctiveAction": "Pin the actual backup identity and asset selection for both candidate configuration and rollback; keep existing image/configuration guards."
+}
