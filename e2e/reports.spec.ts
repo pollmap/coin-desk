@@ -133,6 +133,27 @@ async function expectReportEntryUncovered(page: Page) {
   return geometry;
 }
 
+test('a first partial report without token snapshots still opens a related chart', async ({
+  page,
+}) => {
+  const report = fixture();
+  report.dataQuality = 'partial';
+  report.sections = [
+    {
+      kind: 'facts',
+      title: '체인 TVL',
+      items: [{ label: 'TVL', value: '100', unit: 'USD', evidenceIds: ['e1'] }],
+    },
+  ];
+  await mockReports(page, report);
+  await page.goto('/reports/global-daily');
+  await page.getByRole('link', { name: 'BTC 차트 보기', exact: true }).click();
+  await expect(page).toHaveURL(/\/coins\/BTC/);
+  await expect(page.locator('.coin-dashboard')).toBeVisible();
+  await page.goBack();
+  await expect(page.locator('#report-title')).toHaveText(report.title);
+});
+
 for (const width of [320, 390, 768, 1000, 1280, 1440, 1920]) {
   test(`reports list, detail and evidence fit both themes at ${width}px`, async ({ page }) => {
     await page.setViewportSize({ width, height: 900 });

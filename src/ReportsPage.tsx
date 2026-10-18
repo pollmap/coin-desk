@@ -374,11 +374,12 @@ function ReportContents({ report }: { report: PublishedReport }) {
       {report.sections.map((section, index) => (
         <Section key={index} section={section} />
       ))}
-      {report.scopeId === 'injective' && (
-        <Link className="report-chart-link" to="/coins/INJ">
-          INJ 차트 보기
-        </Link>
-      )}
+      <Link
+        className="report-chart-link"
+        to={report.scopeId === 'injective' ? '/coins/INJ' : '/coins/BTC'}
+      >
+        {report.scopeId === 'injective' ? 'INJ' : 'BTC'} 차트 보기
+      </Link>
       <details
         className="report-evidence"
         onKeyDown={(event) => {
