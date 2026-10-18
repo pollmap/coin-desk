@@ -166,7 +166,7 @@ it('preserves pinned dates, price axes and rainbow model context through the dic
     new URL(guideChartLink(supertrend, 'DOGE', 'upbit')!, 'https://example.com').searchParams.get(
       'log',
     ),
-  ).toBe('1');
+  ).toBeNull();
   expect(
     new URL(
       guideChartLink(supertrend, 'DOGE', 'upbit', new URLSearchParams('log=0'))!,
