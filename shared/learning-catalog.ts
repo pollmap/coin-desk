@@ -892,18 +892,10 @@ export const GUIDE_PRESETS = [
     guide: 'log-scale',
   },
   {
-    id: 'position',
-    title: '가격 위치 밴드 읽기',
-    description: '과거 가격 범위에서 지금의 위치 읽기',
-    guide: 'rainbow',
-  },
-  {
     id: 'trend',
-    title: '이동평균 리본 이해하기',
-    description: '짧은 선과 긴 선의 배열',
-    visual: 'ribbon',
-    panels: 'rsi',
-    guide: 'ribbon',
+    title: '슈퍼트렌드 읽기',
+    description: '가격 위·아래 선으로 추세를 구분하는 방법',
+    guide: 'supertrend',
   },
   {
     id: 'onchain',
@@ -914,12 +906,16 @@ export const GUIDE_PRESETS = [
     guide: 'net-mvrv',
   },
   {
-    id: 'futures',
-    title: '선물 쏠림 확인',
-    description: '펀딩률의 부호와 단위',
-    section: 'futures',
-    panels: 'futures:funding',
-    guide: 'futures-funding',
+    id: 'compare',
+    title: 'BTC와 비교하기',
+    description: '수익률·가격 비율·상관의 차이',
+    guide: 'relative',
+  },
+  {
+    id: 'position',
+    title: '밴드와 레인보우 구분하기',
+    description: '가격 분포와 회귀 곡선은 어떻게 다를까요',
+    guide: 'rainbow',
   },
 ] as const;
 export function guideBasisLabel(basis: PriceBasis) {

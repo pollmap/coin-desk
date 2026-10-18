@@ -1,6 +1,7 @@
 import { it, expect } from 'vitest';
 import {
   GUIDE_ARTICLES,
+  GUIDE_PRESETS,
   guideArticle,
   guideChartLink,
   guideForMetric,
@@ -18,6 +19,15 @@ import {
   DEFAULT_DESK,
 } from '../shared/workspace';
 import { belongsToSection } from '../shared/analysis-sections';
+it('introduces candles, scale, trend, valuation and comparison in reading order', () => {
+  expect(GUIDE_PRESETS.slice(0, 5).map((preset) => preset.guide)).toEqual([
+    'candles',
+    'log-scale',
+    'supertrend',
+    'net-mvrv',
+    'relative',
+  ]);
+});
 it('covers every current core metric, analysis and detector with valid related content', () => {
   expect(new Set(GUIDE_ARTICLES.map((g) => g.id)).size).toBe(GUIDE_ARTICLES.length);
   for (const m of NETWORK_METRICS) expect(guideForMetric('net:' + m.id)).toBeDefined();
