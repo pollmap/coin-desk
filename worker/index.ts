@@ -1,4 +1,13 @@
 import { rankSearch, SEARCH_CATALOG_VERSION } from '../shared/search';
+import {
+  listReports,
+  latestReport,
+  reportDetail,
+  researchMarkets,
+  researchCoverage,
+  researchSeries,
+  ResearchReadError,
+} from './onchain/read';
 import { dailyTechnical } from '../shared/market-watch';
 import { quoteTradeFresh, describeStoredQuote } from '../shared/quote-freshness';
 import { indicatorComparison } from './indicator-comparison';
@@ -64,6 +73,28 @@ function canonicalRequest(request: Request) {
   const url = new URL(request.url);
   if (url.href.length > 2048) throw new RequestError('Invalid URL length');
   const endpoint = url.pathname.slice('/api/v1/'.length);
+  // These endpoints use their own small, bounded contract. Chart defaults
+  // (BTC, Binance, 1,000 rows) must never be added to report requests.
+  if (
+    endpoint === 'reports' ||
+    endpoint.startsWith('reports/') ||
+    endpoint.startsWith('onchain/')
+  ) {
+    const allowed: Record<string, string[]> = {
+      reports: ['type', 'scope', 'cursor', 'limit'],
+      'reports/latest': ['type', 'scope'],
+      'onchain/coverage': ['scope'],
+      'onchain/markets': ['kind', 'limit', 'cursor'],
+      'onchain/series': ['scope', 'entity', 'metric', 'from', 'to', 'limit', 'cursor'],
+    };
+    const keys = allowed[endpoint] ?? [];
+    for (const key of url.searchParams.keys()) {
+      if (!keys.includes(key) || url.searchParams.getAll(key).length !== 1)
+        throw new RequestError('Invalid query parameter');
+    }
+    url.searchParams.sort();
+    return new Request(url, { method: 'GET' });
+  }
   const fields: Record<string, string[]> = {
     market: ['market', 'assets', 'q', 'supported', 'sort', 'offset', 'limit', 'spark_limit'],
     'theme-market': ['market'],
@@ -283,9 +314,16 @@ async function overview(env: Env, asset: Asset, market: Market): Promise<Overvie
 async function api(request: Request, env: Env): Promise<Response> {
   const url = new URL(request.url),
     q = url.searchParams;
-  const { asset, market } = selection(q);
   if (request.method !== 'GET') return response({ error: 'Read-only API' }, 405);
   const endpoint = url.pathname.replace('/api/v1/', '');
+  if (endpoint === 'reports') return response(await listReports(env.DB, q));
+  if (endpoint === 'reports/latest') return response(await latestReport(env.DB, q));
+  if (endpoint.startsWith('reports/'))
+    return response(await reportDetail(env.DB, endpoint.slice(8)));
+  if (endpoint === 'onchain/coverage') return response(await researchCoverage(env.DB, q));
+  if (endpoint === 'onchain/markets') return response(await researchMarkets(env.DB, q));
+  if (endpoint === 'onchain/series') return response(await researchSeries(env.DB, q));
+  const { asset, market } = selection(q);
   if (endpoint === 'theme-market') {
     if (!['upbit', 'binance'].includes(q.get('market') ?? 'binance'))
       throw new RequestError('Unknown market');
@@ -749,7 +787,7 @@ export default {
       // Quotes bypass edge caching so a newly committed scheduled snapshot is
       // visible immediately instead of waiting for an older response to expire.
       const liveStatus =
-        /\/(health|status(?:\/summary|\/sources)?|market|theme-market|overview|dominance|research\/public|indicator-comparison|coverage)$/.test(
+        /\/(health|status(?:\/summary|\/sources)?|market|theme-market|overview|dominance|research\/public|indicator-comparison|coverage|reports(?:\/[^/]+)?|onchain\/[^/]+)$/.test(
           url.pathname,
         );
       const cached = liveStatus ? undefined : await cache.match(canonical).catch(() => undefined);
@@ -784,6 +822,11 @@ export default {
       }
       return (await task).clone();
     } catch (e) {
+      if (e instanceof ResearchReadError)
+        return response(
+          { error: e.message, code: e.status === 404 ? 'NOT_FOUND' : 'INVALID_REQUEST' },
+          e.status,
+        );
       const message = String(e);
       const bad = e instanceof RequestError;
       return response(

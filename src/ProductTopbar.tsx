@@ -33,7 +33,9 @@ export function ProductTopbar() {
               ? '내 저장'
               : location.pathname === '/compare'
                 ? '코인 비교'
-                : '보리차트') + ' | 보리차트';
+                : location.pathname.startsWith('/reports')
+                  ? '시장 보고서'
+                  : '보리차트') + ' | 보리차트';
   }, [location.pathname, location.search]);
   useEffect(() => {
     const modalIsOpen = () =>
@@ -82,7 +84,11 @@ export function ProductTopbar() {
         <NavLink
           to="/coins"
           end
-          className={({ isActive }) => (isActive || location.pathname === '/' ? 'active' : '')}
+          className={({ isActive }) =>
+            isActive || location.pathname === '/' || location.pathname.startsWith('/reports')
+              ? 'active'
+              : ''
+          }
         >
           <List size={20} aria-hidden="true" />
           시장

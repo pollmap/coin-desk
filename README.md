@@ -2,7 +2,7 @@
 
 **코인을 고르고, 가격과 사이클을 차트로 이어 읽는 한국어 분석 서비스입니다.** 시장에서 150개 코인을 찾고, 코인별 대시보드에서 실제 지원되는 분석을 확인한 뒤 필요한 차트만 크게 열어 비교하고 저장합니다.
 
-[운영 사이트](https://coin-desk.pages.dev/) · [VPS 주소](https://coin-desk.62.171.141.206.sslip.io/) · **[현재 제품 기준](docs/PRODUCT.md)** · [0.36 변경 명세](docs/RELEASE36.md) · [검증·배포 상태](docs/audit-36/README.md)
+[운영 사이트](https://coin-desk.pages.dev/) · [VPS 주소](https://coin-desk.62.171.141.206.sslip.io/) · **[현재 제품 기준](docs/PRODUCT.md)** · [0.37 보고서 설계](docs/ONCHAIN_RESEARCH_INTEGRATION_PLAN.md) · [검증·배포 상태](docs/audit-37/README.md)
 
 ## 사용 흐름
 
@@ -11,6 +11,8 @@
 3. 필요한 차트를 확대해 날짜·기간·추세를 확인합니다. 지표가 명시된 기존 링크는 집중 차트로 바로 열립니다.
 4. BTC 대비 성과와 같은 지표 비교를 구분해 봅니다. BTC의 기본 비교 상대는 ETH입니다.
 5. 분석의 구성·기간·확대·읽던 위치를 저장하고 다시 엽니다.
+
+시장과 INJ 대시보드의 보고서 링크에서 전체 시장·Injective 일간/주간 관측을 읽습니다. 계산과 문장은 코드로 만들며 AI·Telegram 기능은 없습니다. 보고서의 실제 데이터·예약 실행·출시 여부는 [별도 기록](docs/audit-37/README.md)을 따릅니다.
 
 장기 가격은 검증된 USD 종가를 우선합니다. 슈퍼트렌드는 실제 거래소 OHLC를 사용하며 KRW·USDT를 USD로 바꾸어 표기하지 않습니다. MVRV에서 유도한 실현가격·NUPL은 서로 독립적인 근거가 아닙니다. 무료로 검증할 수 없는 지표는 다른 값으로 대체하지 않습니다.
 
@@ -46,7 +48,9 @@ React·Base UI·Lightweight Charts → Pages 또는 Nginx HTTPS → Node 읽기 
 | `src/` | 시장·대시보드·집중 차트·저장·기기 내 개인 자료 |
 | `shared/` | 자산·지표 정의·계산·공유 타입·입력 검증 |
 | `worker/` | 재사용하는 읽기 API·원천 연결·수집 정책 |
+| `worker/onchain/` | 정기 보고서 원천·검증·계산·발행·읽기 조회 |
 | `server/` | VPS Node 실행부·중앙 시세·SQLite 어댑터 |
+| `server/research-worker.mjs` | 기존 시세 수집과 분리한 보고서 작업자 |
 | `deploy/vps/` | 서비스 격리·백업·검증된 선택 배포 |
 | `tests/`, `e2e/` | 계산·복원·서버·브라우저 회귀 |
 | `docs/PRODUCT.md` | 현재 제품 기준. 과거 RELEASE 문서는 당시 이력 |
@@ -61,6 +65,8 @@ CI 통과·배포·데이터 복구·성능은 따로 보고합니다. **48시�
 - [Bitview](https://bitview.space/api), [Bitcoin Research Kit](https://github.com/bitcoinresearchkit/mono), [가격 모듈](https://github.com/bitcoinresearchkit/mono/blob/main/crates/brk_oracle/README.md)
 - [Coin Metrics Community 데이터](https://github.com/coinmetrics/data/blob/master/README.md), [PriceUSD 정의](https://docs.coinmetrics.io/network-data/network-data-overview/market/price), [CC BY-NC 4.0](https://creativecommons.org/licenses/by-nc/4.0/). 장기 USD 참조가격에 출처·라이선스·비상업 이용을 표시합니다. 상업적 재사용 권한을 제공하는 데이터로 취급하지 않습니다.
 - [CoinLore 무료 API](https://www.coinlore.com/cryptocurrency-data-api), [DefiLlama Stablecoins](https://defillama.com/stablecoins)
+- [Injective 공식 SDK](https://github.com/InjectiveLabs/injective-ts), [Apache-2.0 고지](public/licenses/injective-sdk-Apache-2.0.txt). 보고서 작업자의 공개 조회에 사용합니다.
+- [Decimal.js](https://github.com/MikeMcl/decimal.js), [MIT 고지](public/licenses/decimal-js-MIT.txt). 보고서의 십진수 계산에 사용합니다.
 - [TradingView Lightweight Charts](https://github.com/tradingview/lightweight-charts), Apache-2.0. 화면의 귀속 로고와 저작권 표시를 유지합니다.
 
 보리차트는 독립적으로 만든 개인 분석 도구이며 CoinDesk 뉴스, CoinGlass, TradingView 또는 데이터 제공자의 공식 서비스가 아닙니다. 타사 화면 이미지를 제품 자산으로 재배포하지 않습니다. 저장소 자체 소스에는 별도의 배포 라이선스를 아직 지정하지 않았습니다.

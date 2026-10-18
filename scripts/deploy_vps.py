@@ -1,8 +1,10 @@
-"""Deploy only a reviewed main-CI bundle. No build, migration or collector restart.
+"""Deploy only a reviewed main-CI bundle. No build or existing collector restart.
 
 The bundle contains deployment.json, source-scope.json, reviewed-pins.json,
 selective_release.py, rollout_engine.py, and the two CI archives. Commands
 default to inspection; mutations require --execute. Logs remain in the bundle.
+The separate research-additive-v1 contract permits only reviewed migration 0010,
+API replacement and a disabled research worker. Enabling it is a separate command.
 """
 import argparse, datetime, hashlib, json, pathlib, re, subprocess, tarfile
 
@@ -10,6 +12,7 @@ HOST = 'chanhee-vps'
 REMOTE_ROOT = '/srv/services/coin-desk'
 EXPECTED_JOBS = {'checks','browser (chromium)','browser (webkit)','container','verify'}
 INPUTS = {'deployment.json','source-scope.json','selective_release.py','rollout_engine.py'}
+RESEARCH_INPUTS = INPUTS | {'research_release.py','research_schema.py'}
 
 def require(condition, message):
     if not condition: raise ValueError(message)
@@ -25,13 +28,19 @@ def validate_bundle(folder):
     require(re.fullmatch('vps-[a-f0-9]{16}',pins.get('release','')), 'Invalid release')
     require(re.fullmatch('vps-[a-f0-9]{16}',pins.get('previousRelease','')), 'Invalid previous release')
     require(re.fullmatch('[a-z0-9][a-z0-9-]{0,63}',pins.get('auditName','')), 'Invalid owned audit name')
-    require(pins.get('changedServices') in [['api'],['quote-hub','api']], 'Only API or API/hub scope allowed')
+    research=pins.get('deploymentKind')=='research-additive-v1'
+    require(pins.get('changedServices')==['api','research-worker'] if research else pins.get('changedServices') in [['api'],['quote-hub','api']], 'Unsupported deployment service scope')
     require(pins.get('executeAllowed') is True and pins.get('mainCiAllFivePassed') is True, 'Reviewed CI bundle required')
     require(pins.get('mainCiHead') == pins['commit'], 'Reviewed CI head differs')
-    require(set(pins.get('files',{})) == INPUTS, 'Unexpected helper or input set')
+    require(set(pins.get('files',{})) == (RESEARCH_INPUTS if research else INPUTS), 'Unexpected helper or input set')
     for name, expected in pins['files'].items():
         path=folder/name
         require(not path.is_symlink() and sha(path)==expected, 'Reviewed file changed: '+name)
+    if research:
+        import importlib.util
+        spec=importlib.util.spec_from_file_location('reviewed_research_schema',folder/'research_schema.py')
+        contract=importlib.util.module_from_spec(spec);spec.loader.exec_module(contract)
+        contract.validate_plan(pins.get('schemaPlan'))
     require(artifact['commit']==pins['commit'] and artifact['release']==pins['release'] and artifact['containsPrivateData'] is False, 'Artifact identity/privacy differs')
     for field, digest in [('sourceArchive','sourceArchiveSha256'),('imageArchive','imageArchiveSha256')]:
         name=artifact[field]
@@ -62,7 +71,7 @@ class Runner:
 
 def stage(runner,pins,artifact,remote):
     require(not (runner.folder/'prepare-result.json').exists(), 'Preserve prior prepare result')
-    files=['reviewed-pins.json',*sorted(INPUTS),artifact['sourceArchive'],artifact['imageArchive']]
+    files=['reviewed-pins.json',*sorted(pins['files']),artifact['sourceArchive'],artifact['imageArchive']]
     checks={name:sha(runner.folder/name) for name in files}
     needed=sum((runner.folder/name).stat().st_size for name in files)
     runner.ssh('target='+repr(remote)+'\nprevious='+repr(pins['previousRelease'])+'\nneeded='+str(needed)+'\n'+'''
@@ -92,13 +101,17 @@ def phase(runner,pins,remote,operation):
 import pathlib,subprocess,json,hashlib
 p=pathlib.Path(target);pins=json.loads((p/'reviewed-pins.json').read_text())
 for n,s in pins['files'].items(): assert hashlib.file_digest((p/n).open('rb'),'sha256').hexdigest()==s
-r=subprocess.run(['python3',str(p/'selective_release.py'),phase,commit,'--audit',str(p),'--execute-reviewed-selective-rollout'],capture_output=True,text=True,timeout=850)
+entry='research_release.py' if pins.get('deploymentKind')=='research-additive-v1' else 'selective_release.py'
+r=subprocess.run(['python3',str(p/entry),phase,commit,'--audit',str(p),'--execute-reviewed-selective-rollout'],capture_output=True,text=True,timeout=850)
 (p/(phase+'-wrapper.private.log')).write_text(r.stdout+'\n'+r.stderr)
 assert r.returncode==0, 'Remote phase failed; preserve checkpoint'
 prepared=json.loads((p/'prepare.json').read_text())
 out={k:prepared[k] for k in ['commit','release','prepared','backupVerified','canonicalDistSha256']}
 if phase=='activate':
  out['activation']=json.loads((p/'activation.json').read_text());out['currentRelease']=(p.parent.parent/'current').resolve().name
+if phase=='enable':
+ assert pins.get('deploymentKind')=='research-additive-v1'
+ out['research']=json.loads((p/'research-enable.json').read_text());out['currentRelease']=(p.parent.parent/'current').resolve().name
 print(json.dumps(out))
 ''',880)
     target.write_text(json.dumps(result,indent=2),encoding='utf-8')
@@ -125,7 +138,7 @@ def canonical(runner,pins,remote):
 
 def main():
     parser=argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('phase',choices=['inspect','stage-prepare','activate','canonical'])
+    parser.add_argument('phase',choices=['inspect','stage-prepare','activate','canonical','enable-research'])
     parser.add_argument('--bundle',required=True,type=pathlib.Path)
     parser.add_argument('--execute',action='store_true')
     args=parser.parse_args();folder=args.bundle.resolve(strict=True)
@@ -138,6 +151,9 @@ def main():
         stage(runner,pins,artifact,remote);result=phase(runner,pins,remote,'prepare')
         result['canonical']=canonical(runner,pins,remote)
     elif args.phase=='activate': result=phase(runner,pins,remote,'activate')
+    elif args.phase=='enable-research':
+        require(pins.get('deploymentKind')=='research-additive-v1','Separate reviewed research deployment required')
+        result=phase(runner,pins,remote,'enable')
     else: result=canonical(runner,pins,remote)
     print(json.dumps(result))
 

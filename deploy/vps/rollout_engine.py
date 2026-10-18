@@ -278,9 +278,7 @@ class Deployment:
             require(not path.is_absolute() and '..' not in path.parts and digest(self.new / name) == sha,
                     'Source file checksum mismatch')
         prior = json.loads((OLD / 'release-manifest.json').read_text())
-        require({k: v for k, v in source['files'].items() if k.startswith('migrations/')} ==
-                {k: v for k, v in prior['files'].items() if k.startswith('migrations/')},
-                'Schema/migration change requires a different reviewed procedure')
+        self.validate_migrations(source, prior)
         self.run(['docker', 'load', '-i', str(AUDIT / self.manifest['imageArchive'])], timeout=300)
         loaded = json.loads(self.run(['docker', 'image', 'inspect', self.manifest['imageTag']]))[0]
         require(loaded['Id'] in [config_id, oci_id] and loaded['RootFS']['Layers'] == cfg['rootfs']['diff_ids']
@@ -293,6 +291,14 @@ class Deployment:
         }
         self.report['sourceFilesVerified'] = len(source['files'])
         self.capacity('after verified image load', database_bytes * 3 + 256 * 1024 ** 2)
+
+    def validate_migrations(self, source, prior):
+        require({k: v for k, v in source['files'].items() if k.startswith('migrations/')} ==
+                {k: v for k, v in prior['files'].items() if k.startswith('migrations/')},
+                'Schema/migration change requires a different reviewed procedure')
+
+    def rehearsal_database(self):
+        return AUDIT / 'rehearsal.sqlite'
 
     def backup_and_restore(self):
         sys.path.insert(0, str(self.new / 'scripts'))
@@ -426,7 +432,7 @@ class Deployment:
             created.append(SHADOW_API)
             self.run(['docker', 'run', '-d', '--name', SHADOW_API, *common, '--memory', '768m',
                       '--cpus', '1', '-p', f'127.0.0.1:{API_PORT}:8080', '-v',
-                      str(AUDIT / 'rehearsal.sqlite') + ':/app/data/rehearsal.sqlite:ro', '-v',
+                       str(self.rehearsal_database()) + ':/app/data/rehearsal.sqlite:ro', '-v',
                       str(ROOT / 'shared/assets') + ':/app/retained-assets:ro',
                       '-e', 'COIN_DESK_DB=/app/data/rehearsal.sqlite', '-e',
                       'COIN_DESK_RELEASE=' + self.release, '-e', 'HOST=0.0.0.0', '-e', 'PORT=8080',
@@ -436,7 +442,7 @@ class Deployment:
                       '-e', 'COIN_DESK_CSP_MODE=enforce', self.image, 'node', 'server/index.mjs'])
             self.wait_process(API_PORT)
             self.run(['python3', str(self.new / 'deploy/vps/verify_runtime.py'), '--base',
-                      f'http://127.0.0.1:{API_PORT}', '--database', str(AUDIT / 'rehearsal.sqlite'),
+                       f'http://127.0.0.1:{API_PORT}', '--database', str(self.rehearsal_database()),
                       '--shadow', '--output', str(AUDIT / report_name)], timeout=300)
             unit_evidence = []
             for asset in ['DASH', 'ZEC']:
@@ -552,9 +558,7 @@ class Deployment:
                     (self.new / name).resolve().is_relative_to(self.new) and
                     digest(self.new / name) == checksum, 'Resume source checksum mismatch')
         prior = json.loads((OLD / 'release-manifest.json').read_text())
-        require({k: v for k, v in source['files'].items() if k.startswith('migrations/')} ==
-                {k: v for k, v in prior['files'].items() if k.startswith('migrations/')},
-                'Resume migration set changed')
+        self.validate_migrations(source, prior)
         with tarfile.open(AUDIT / self.manifest['imageArchive'], 'r:gz') as archive:
             manifest = json.load(archive.extractfile('manifest.json'))
             require(len(manifest) == 1 and manifest[0]['RepoTags'] == [self.manifest['imageTag']],

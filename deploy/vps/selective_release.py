@@ -31,7 +31,7 @@ def require(value,message):
 def sha(path):
     with pathlib.Path(path).open('rb') as stream:return hashlib.file_digest(stream,'sha256').hexdigest()
 
-def reviewed_module(commit):
+def reviewed_module(commit, research_contract=None):
     """Only declared API/hub changes; collectors and migrations remain untouched."""
     global OLD, CHANGED, PROTECTED
     require(re.fullmatch('[a-f0-9]{40}', commit), 'Exact final main commit required')
@@ -43,10 +43,17 @@ def reviewed_module(commit):
     require(re.fullmatch('vps-[a-f0-9]{16}', pins.get('previousRelease','')), 'Invalid previous release')
     OLD = ROOT/'releases'/pins['previousRelease']
     CHANGED = pins.get('changedServices')
-    require(CHANGED in [['api'], ['quote-hub','api']], 'Only reviewed API or API/hub rollout supported')
+    if research_contract is None:
+        require(CHANGED in [['api'], ['quote-hub','api']], 'Only reviewed API or API/hub rollout supported')
+    else:
+        require(pins.get('deploymentKind')=='research-additive-v1' and CHANGED==['api','research-worker'], 'Explicit research-only extension contract required')
+        research_contract.validate_plan(pins.get('schemaPlan'))
     PROTECTED = [name for name in SERVICES if name not in CHANGED]
     require(pins.get('mainCiAllFivePassed') is True and pins.get('mainCiHead') == commit, 'Final main CI required')
-    for name in ['deployment.json','source-scope.json','selective_release.py','rollout_engine.py']:
+    inputs=['deployment.json','source-scope.json','selective_release.py','rollout_engine.py']
+    if research_contract is not None: inputs+=['research_release.py','research_schema.py']
+    require(set(pins.get('files',{}))==set(inputs),'Unexpected reviewed input set')
+    for name in inputs:
         require(sha(AUDIT/name) == pins['files'][name], 'Reviewed input differs: '+name)
     require(artifact.get('containsPrivateData') is False and scope.get('containsPrivateData') is False, 'Private-free source required')
     require(pins.get('release') == artifact.get('release') == scope.get('release'), 'Artifact/source/runtime release differs')
@@ -138,7 +145,7 @@ def deployment_type(base,pins,scope):
                 args[offset:offset]=['--no-build','--pull','never']
             return super().run(args,timeout,input_bytes)
 
-        def activate(self):
+        def verify_activation_inputs(self):
             seal=json.loads((AUDIT/'activation-seal.private.json').read_text())
             require(seal['commit']==self.commit and seal['release']==self.release,'Candidate seal identity differs')
             require(seal['canonicalSha256']==sha(AUDIT/'canonical-dist.tar') and seal['environmentSha256']==sha(self.newenv) and seal['sourceScopeSha256']==sha(AUDIT/'source-scope.json'),'Candidate sealed inputs changed')
@@ -167,6 +174,10 @@ def deployment_type(base,pins,scope):
             require(loaded['Id']==seal['imagePortability']['loadedId'] and loaded['RootFS']['Layers']==cfg['rootfs']['diff_ids'] and loaded['Os']=='linux' and loaded['Architecture']=='amd64','Activation loaded image changed')
             before=self.containers()
             require(all(before[name]['Id']==seal['initialContainerIds'][name] for name in SERVICES),'An original service changed after rehearsal')
+            return before
+
+        def activate(self):
+            before=self.verify_activation_inputs()
             super().activate()
             require(all(self.containers()[name]['Id']==before[name]['Id'] for name in PROTECTED),'A protected service changed')
     return Deployment
