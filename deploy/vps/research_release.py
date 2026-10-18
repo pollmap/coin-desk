@@ -36,7 +36,10 @@ def validate_configs(previous,candidate,image,release,before):
     require(str(env['COIN_DESK_RESEARCH_MAX_JOB_SECONDS'])=='600' and str(env['COIN_DESK_RESEARCH_MAX_MARKETS'])=='10' and env['COIN_DESK_INJECTIVE_NETWORK']=='mainnet','Research execution bounds changed')
     require(worker.get('depends_on',{})=={} and worker.get('profiles')==['research'],'Research must not automatically migrate or join collectors')
     require(worker.get('command')==['node','server/research-worker.mjs'],'Research command differs')
-    require(float(worker['cpus'])==0.5 and worker['mem_limit']==512*1024**2,'Research resource limits differ')
+    # Compose versions serialize byte limits as either integers or digit strings.
+    # Match the exact reviewed value; do not coerce booleans, floats or units.
+    memory=worker.get('mem_limit')
+    require(float(worker['cpus'])==0.5 and (type(memory) is int and memory==512*1024**2 or type(memory) is str and memory==str(512*1024**2)),'Research resource limits differ')
     require(worker.get('read_only') is True and worker.get('user')=='10001:10001' and worker.get('cap_drop')==['ALL'] and 'no-new-privileges:true' in worker.get('security_opt',[]),'Research containment differs')
     require(not worker.get('ports') and len(worker.get('volumes',[]))==1 and worker['volumes'][0]['target']=='/app/data','Unexpected research ports or mounts')
     require(worker['volumes'][0]['source']==str(selective.ROOT/'shared/data'),'Research data source differs')
